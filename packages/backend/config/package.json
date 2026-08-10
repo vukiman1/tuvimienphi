@@ -1,0 +1,28 @@
+{
+  "name": "@org/backend-config",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "@org/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "nx": {
+    "name": "backend-config",
+    "tags": [
+      "scope:backend",
+      "type:lib"
+    ]
+  },
+  "dependencies": {
+    "config": "^5.0.0",
+    "dotenv": "^17.4.2",
+    "zod": "^4.4.3"
+  }
+}

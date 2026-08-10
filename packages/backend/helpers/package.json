@@ -1,0 +1,30 @@
+{
+  "name": "@org/backend-helpers",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "@org/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "nx": {
+    "name": "backend-helpers",
+    "tags": [
+      "scope:backend",
+      "type:lib"
+    ]
+  },
+  "dependencies": {
+    "@org/backend-constants": "workspace:*",
+    "express": "5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6"
+  }
+}

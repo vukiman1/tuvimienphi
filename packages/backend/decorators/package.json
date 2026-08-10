@@ -1,0 +1,31 @@
+{
+  "name": "@org/backend-decorators",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "@org/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "nx": {
+    "name": "backend-decorators",
+    "tags": [
+      "scope:backend",
+      "type:lib"
+    ]
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.1.28",
+    "express": "5.2.1"
+  },
+  "devDependencies": {
+    "@nestjs/testing": "^11.1.28",
+    "@types/express": "^5.0.6"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Backend (Direct)",
+      "preLaunchTask": "build backend development",
+      "program": "${workspaceFolder}/apps/backend/dist/main.js",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**"],
+      "sourceMaps": true,
+      "outFiles": ["${workspaceFolder}/apps/backend/dist/**/*.js"],
+      "sourceMapPathOverrides": {
+        "webpack://@org/backend/./*": "${workspaceFolder}/apps/backend/*",
+        "webpack://@org/backend/*": "${workspaceFolder}/apps/backend/*"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Backend (Nx)",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["nx", "run", "@org/backend:serve", "--inspect=inspect", "--port=9229"],
+      "autoAttachChildProcesses": true,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**"],
+      "sourceMaps": true,
+      "outFiles": ["${workspaceFolder}/apps/backend/dist/**/*.js"],
+      "sourceMapPathOverrides": {
+        "webpack://@org/backend/./*": "${workspaceFolder}/apps/backend/*",
+        "webpack://@org/backend/*": "${workspaceFolder}/apps/backend/*"
+      }
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach Backend (Nx)",
+      "port": 9229,
+      "restart": true,
+      "skipFiles": ["<node_internals>/**", "${workspaceFolder}/**/node_modules/**"],
+      "sourceMaps": true
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Jest (current file)",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/jest",
+      "args": ["--runTestsByPath", "${file}", "--runInBand", "--watchAll=false"],
+      "cwd": "${fileDirname}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}

@@ -1,0 +1,206 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'react-toastify/dist/ReactToastify.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/*
+ * One hue drives the whole palette. The neutrals carry a trace of it rather than being pure grey,
+ * so surfaces sit with the brand colour instead of looking washed against it.
+ *
+ * Every foreground/background pair here was measured against WCAG AA (4.5:1), muted text included
+ * — that is the pair usually left failing.
+ */
+:root {
+  --brand-hue: 45;
+  --radius: 0.5rem;
+
+  /* Surfaces */
+  --background: oklch(0.99 0.004 var(--brand-hue));
+  --foreground: oklch(0.16 0.01 var(--brand-hue));
+  --card: oklch(1 0.002 var(--brand-hue));
+  --card-foreground: var(--foreground);
+  --popover: var(--card);
+  --popover-foreground: var(--foreground);
+
+  /* Brand */
+  --primary: oklch(0.52 0.13 var(--brand-hue));
+  --primary-foreground: oklch(0.99 0 0);
+
+  /* Supporting surfaces */
+  --secondary: oklch(0.96 0.008 var(--brand-hue));
+  --secondary-foreground: oklch(0.28 0.03 var(--brand-hue));
+  --muted: var(--secondary);
+  --muted-foreground: oklch(0.52 0.02 var(--brand-hue));
+  --accent: oklch(0.95 0.015 var(--brand-hue));
+  --accent-foreground: var(--secondary-foreground);
+
+  /* Feedback */
+  --destructive: oklch(0.577 0.245 27.325);
+
+  /* Lines and focus */
+  --border: oklch(0.9 0.008 var(--brand-hue));
+  --input: var(--border);
+  --ring: var(--primary);
+}
+
+.dark {
+  --background: oklch(0.16 0.012 var(--brand-hue));
+  --foreground: oklch(0.97 0.004 var(--brand-hue));
+  --card: oklch(0.21 0.014 var(--brand-hue));
+  --card-foreground: var(--foreground);
+  --popover: var(--card);
+  --popover-foreground: var(--foreground);
+
+  /* Lighter than the light-mode brand, so it reads against a dark surface. That flips the text on
+     it to dark: white would drop to 2.99:1. */
+  --primary: oklch(0.68 0.12 48);
+  --primary-foreground: oklch(0.16 0.012 var(--brand-hue));
+
+  --secondary: oklch(0.26 0.016 var(--brand-hue));
+  --secondary-foreground: var(--foreground);
+  --muted: var(--secondary);
+  --muted-foreground: oklch(0.72 0.015 var(--brand-hue));
+  --accent: oklch(0.3 0.02 var(--brand-hue));
+  --accent-foreground: var(--foreground);
+
+  --destructive: oklch(0.704 0.191 22.216);
+
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: var(--primary);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family:
+      Inter,
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      sans-serif;
+  }
+}
+
+/*
+ * Animate the `scale` property, never `transform`. Tailwind centres the dialog with the individual
+ * `translate` property, and a `transform: translate(...)` in a keyframe stacks on top of it instead
+ * of replacing it — which throws the modal into the top-left corner for the length of the animation.
+ */
+@theme {
+  --animate-caret-blink: caret-blink 1.25s ease-out infinite;
+
+  @keyframes caret-blink {
+    0%,
+    70%,
+    100% {
+      opacity: 1;
+    }
+    20%,
+    50% {
+      opacity: 0;
+    }
+  }
+
+  --animate-modal-in: modal-in 0.3s;
+  --animate-modal-out: modal-out 0.15s;
+  --animate-backdrop-in: backdrop-in 0.3s;
+  --animate-backdrop-out: backdrop-out 0.15s;
+
+  @keyframes modal-in {
+    0% {
+      opacity: 0;
+      scale: 0.7;
+    }
+    45% {
+      scale: 1.05;
+    }
+    80% {
+      scale: 0.95;
+    }
+    100% {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+
+  @keyframes modal-out {
+    0% {
+      opacity: 1;
+      scale: 1;
+    }
+    100% {
+      opacity: 0;
+      scale: 0.5;
+    }
+  }
+
+  @keyframes backdrop-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes backdrop-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot='modal'],
+  [data-slot='modal-backdrop'] {
+    animation: none;
+  }
+}
+
+/* react-toastify ships its own palette; point it at the app tokens so toasts follow the theme. */
+:root,
+.dark {
+  --toastify-color-light: var(--background);
+  --toastify-color-dark: var(--background);
+  --toastify-text-color-light: var(--foreground);
+  --toastify-text-color-dark: var(--foreground);
+  --toastify-color-success: var(--primary);
+  --toastify-color-error: var(--destructive);
+  --toastify-font-family: inherit;
+}

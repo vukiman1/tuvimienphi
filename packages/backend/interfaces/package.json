@@ -1,0 +1,24 @@
+{
+  "name": "@org/backend-interfaces",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "@org/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "nx": {
+    "name": "backend-interfaces",
+    "tags": [
+      "scope:backend",
+      "type:lib"
+    ]
+  },
+  "dependencies": {}
+}

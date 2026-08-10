@@ -1,0 +1,73 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "sourceMap": true,
+    "types": ["node", "react"],
+    "rootDir": "../..",
+    "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo",
+    "jsx": "react-jsx",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "noImplicitAny": false,
+    "noImplicitOverride": false,
+    "noImplicitReturns": false,
+    "noUnusedLocals": false,
+    "strict": false,
+    "strictBindCallApply": false,
+    "strictNullChecks": true,
+    "target": "es2021"
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "ormconfigs.ts"],
+  "exclude": [
+    "out-tsc",
+    "dist",
+    "jest.config.ts",
+    "jest.config.cts",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "eslint.config.js",
+    "eslint.config.cjs",
+    "eslint.config.mjs"
+  ],
+  "references": [
+    {
+      "path": "../../packages/backend/redis/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/backend/jwt/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/backend/interceptors/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/backend/helpers/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/backend/filters/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/backend/enum/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/backend/decorators/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/backend/database/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/backend/crypto/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/backend/constants/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/backend/base/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/backend/config/tsconfig.lib.json"
+    }
+  ]
+}

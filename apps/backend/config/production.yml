@@ -1,0 +1,16 @@
+app:
+  nodeEnv: production
+  logLevels:
+    - error
+    - warn
+    - log
+
+db:
+  tls: true
+  replicas: []
+  log:
+    enabled: false
+
+redis:
+  cluster: false
+  tls: true

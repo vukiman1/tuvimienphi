@@ -1,0 +1,189 @@
+{
+  "name": "@org/backend",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "tags": [
+      "scope:backend",
+      "type:app"
+    ],
+    "targets": {
+      "build": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "webpack-cli build",
+          "args": [
+            "--mode=production"
+          ],
+          "cwd": "apps/backend"
+        },
+        "configurations": {
+          "development": {
+            "args": [
+              "--mode=development"
+            ]
+          }
+        }
+      },
+      "prune-lockfile": {
+        "dependsOn": [
+          "build"
+        ],
+        "cache": true,
+        "executor": "@nx/js:prune-lockfile",
+        "outputs": [
+          "{workspaceRoot}/apps/backend/dist/package.json",
+          "{workspaceRoot}/apps/backend/dist/pnpm-lock.yaml"
+        ],
+        "options": {
+          "buildTarget": "build"
+        }
+      },
+      "copy-workspace-modules": {
+        "dependsOn": [
+          "build"
+        ],
+        "cache": true,
+        "outputs": [
+          "{workspaceRoot}/apps/backend/dist/workspace_modules"
+        ],
+        "executor": "@nx/js:copy-workspace-modules",
+        "options": {
+          "buildTarget": "build"
+        }
+      },
+      "prune": {
+        "dependsOn": [
+          "build-migrations",
+          "prune-lockfile",
+          "copy-workspace-modules"
+        ],
+        "executor": "nx:noop"
+      },
+      "serve": {
+        "continuous": true,
+        "executor": "@nx/js:node",
+        "defaultConfiguration": "development",
+        "dependsOn": [
+          "build"
+        ],
+        "options": {
+          "buildTarget": "@org/backend:build",
+          "runBuildTargetDependencies": false
+        },
+        "configurations": {
+          "development": {
+            "buildTarget": "@org/backend:build:development"
+          },
+          "production": {
+            "buildTarget": "@org/backend:build:production"
+          }
+        }
+      },
+      "test": {
+        "options": {
+          "passWithNoTests": true
+        }
+      },
+      "build-migrations": {
+        "dependsOn": [
+          "build",
+          "^build"
+        ],
+        "cache": true,
+        "executor": "nx:run-commands",
+        "outputs": [
+          "{workspaceRoot}/apps/backend/dist/ormconfigs.js",
+          "{workspaceRoot}/apps/backend/dist/src/migrations"
+        ],
+        "options": {
+          "command": "tsc -p apps/backend/tsconfig.migrations.json"
+        }
+      },
+      "docker-build": {
+        "dependsOn": [
+          "prune"
+        ],
+        "executor": "nx:noop"
+      },
+      "migration-run": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node tools/typeorm-migration.mjs run"
+        }
+      },
+      "migration-revert": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node tools/typeorm-migration.mjs revert"
+        }
+      },
+      "migration-show": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node tools/typeorm-migration.mjs show"
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.1.28",
+    "@nestjs/config": "^4.0.4",
+    "@nestjs/core": "^11.1.27",
+    "@nestjs/jwt": "^11.0.2",
+    "@nestjs/passport": "^11.0.5",
+    "@nestjs/platform-express": "^11.1.28",
+    "@nestjs/serve-static": "^5.0.5",
+    "@nestjs/swagger": "^11.4.6",
+    "@nestjs/terminus": "^11.1.1",
+    "@nestjs/throttler": "^6.5.0",
+    "@nestjs/typeorm": "^11.0.3",
+    "@org/backend-base": "workspace:*",
+    "@org/backend-config": "workspace:*",
+    "@org/backend-constants": "workspace:*",
+    "@org/backend-crypto": "workspace:*",
+    "@org/backend-database": "workspace:*",
+    "@org/backend-decorators": "workspace:*",
+    "@org/backend-enum": "workspace:*",
+    "@org/backend-filters": "workspace:*",
+    "@org/backend-helpers": "workspace:*",
+    "@org/backend-interceptors": "workspace:*",
+    "@org/backend-jwt": "workspace:*",
+    "@org/backend-redis": "workspace:*",
+    "@react-email/components": "^1.0.12",
+    "@react-email/render": "^2.1.0",
+    "@sentry/nestjs": "^10.69.0",
+    "@sentry/profiling-node": "^10.69.0",
+    "argon2": "^0.45.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.15.1",
+    "config": "^5.0.0",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.4.2",
+    "express": "5.2.1",
+    "google-auth-library": "^10.9.0",
+    "helmet": "^8.3.0",
+    "ioredis": "^5.11.1",
+    "passport-jwt": "^4.0.1",
+    "passport-local": "^1.0.0",
+    "pg": "^8.22.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "reflect-metadata": "^0.2.2",
+    "resend": "^6.18.1",
+    "rxjs": "^7.8.0",
+    "tslib": "^2.3.0",
+    "typeorm": "^1.1.0"
+  },
+  "devDependencies": {
+    "@nestjs/testing": "^11.1.28",
+    "@types/express": "^5.0.6",
+    "tsconfig-paths-webpack-plugin": "4.2.0"
+  },
+  "scripts": {
+    "start": "node main.js",
+    "migration:run:prod": "node ./node_modules/typeorm/cli.js -d ./ormconfigs.js migration:run",
+    "migration:revert:prod": "node ./node_modules/typeorm/cli.js -d ./ormconfigs.js migration:revert",
+    "migration:show:prod": "node ./node_modules/typeorm/cli.js -d ./ormconfigs.js migration:show"
+  }
+}
