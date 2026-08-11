@@ -51,8 +51,8 @@ export function TwoFactorCard() {
 
   if (statusQuery.isError) {
     return (
-      <Card>
-        <CardContent className="py-6 text-sm font-medium text-destructive" role="alert">
+      <Card className="py-5">
+        <CardContent className="text-sm font-medium text-destructive" role="alert">
           Could not load two-factor settings.
         </CardContent>
       </Card>
@@ -61,14 +61,14 @@ export function TwoFactorCard() {
 
   if (!status) {
     return (
-      <Card>
-        <CardContent className="py-6 text-sm text-muted-foreground">Loading...</CardContent>
+      <Card className="py-5">
+        <CardContent className="text-sm text-muted-foreground">Loading...</CardContent>
       </Card>
     );
   }
 
   return (
-    <Card>
+    <Card className="gap-4 py-5">
       <CardHeader>
         <CardTitle>Two-factor authentication</CardTitle>
         <CardDescription>
@@ -77,7 +77,7 @@ export function TwoFactorCard() {
             : 'Add a second step at sign-in using an authenticator app.'}
         </CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-4">
+      <CardContent className="grid gap-3">
         {status.enabled ? (
           <>
             <p className="text-sm text-muted-foreground">
@@ -89,6 +89,7 @@ export function TwoFactorCard() {
               <Button
                 disabled={regenerateMutation.isPending}
                 onClick={() => regenerateMutation.mutate()}
+                size="sm"
                 type="button"
                 variant="outline"
               >
@@ -97,6 +98,7 @@ export function TwoFactorCard() {
               <Button
                 disabled={disableMutation.isPending}
                 onClick={() => setIsDisabling(true)}
+                size="sm"
                 type="button"
                 variant="ghost"
               >
@@ -112,7 +114,12 @@ export function TwoFactorCard() {
               </p>
             )}
             <div>
-              <Button disabled={!hasPassword} onClick={() => setIsSettingUp(true)} type="button">
+              <Button
+                disabled={!hasPassword}
+                onClick={() => setIsSettingUp(true)}
+                size="sm"
+                type="button"
+              >
                 Set up two-factor authentication
               </Button>
             </div>

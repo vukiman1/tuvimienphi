@@ -8,16 +8,16 @@ export function ProfileCard() {
 
   if (meQuery.isLoading) {
     return (
-      <Card>
-        <CardContent className="py-6 text-sm text-muted-foreground">Loading profile...</CardContent>
+      <Card className="py-5">
+        <CardContent className="text-sm text-muted-foreground">Loading profile...</CardContent>
       </Card>
     );
   }
 
   if (meQuery.isError || !user) {
     return (
-      <Card>
-        <CardContent className="py-6 text-sm font-medium text-destructive">
+      <Card className="py-5">
+        <CardContent className="text-sm font-medium text-destructive">
           Could not load your profile.
         </CardContent>
       </Card>
@@ -25,16 +25,16 @@ export function ProfileCard() {
   }
 
   return (
-    <Card>
+    <Card className="gap-4 py-5">
       <CardHeader>
         <CardTitle>Profile</CardTitle>
         <CardDescription>How this account signs in.</CardDescription>
       </CardHeader>
       <CardContent className="flex items-center gap-4">
         {user.avatar ? (
-          <img alt={user.email} className="size-14 rounded-full object-cover" src={user.avatar} />
+          <img alt={user.email} className="size-12 rounded-full object-cover" src={user.avatar} />
         ) : (
-          <span className="flex size-14 items-center justify-center rounded-full bg-muted text-lg font-extrabold text-muted-foreground">
+          <span className="flex size-12 items-center justify-center rounded-full bg-muted text-base font-extrabold text-muted-foreground">
             {user.email.charAt(0).toUpperCase()}
           </span>
         )}

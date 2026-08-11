@@ -11,19 +11,23 @@ export function DashboardSettingsPage() {
     <main className="min-h-screen bg-muted/40">
       <SiteHeader />
 
-      <section className="mx-auto w-full max-w-4xl px-6 py-16">
-        <p className="mb-3 text-sm font-extrabold uppercase text-primary">Dashboard</p>
-        <h1 className="text-3xl font-extrabold text-foreground">Settings</h1>
+      <section className="mx-auto w-full max-w-4xl px-4 py-8 md:px-6 md:py-10">
+        <p className="mb-1 text-xs font-extrabold tracking-wide uppercase text-primary">
+          Dashboard
+        </p>
+        <h1 className="text-2xl font-extrabold text-foreground md:text-3xl">Settings</h1>
 
-        <div className="mt-8 grid gap-8">
+        <div className="mt-6 flex flex-col gap-4">
           <ProfileCard />
-          <SecurityCard />
-          <TwoFactorCard />
+          <div className="grid gap-4 md:grid-cols-2">
+            <SecurityCard />
+            <TwoFactorCard />
+          </div>
           <SessionsCard />
         </div>
 
-        <div className="mt-8 flex items-center gap-3">
-          <Button asChild variant="outline">
+        <div className="mt-6">
+          <Button asChild size="sm" variant="outline">
             <Link to="/dashboard">Back to dashboard</Link>
           </Button>
         </div>

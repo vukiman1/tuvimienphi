@@ -20,14 +20,14 @@ export function SecurityCard() {
 
   if (!user) {
     return (
-      <Card>
-        <CardContent className="py-6 text-sm text-muted-foreground">Loading...</CardContent>
+      <Card className="py-5">
+        <CardContent className="text-sm text-muted-foreground">Loading...</CardContent>
       </Card>
     );
   }
 
   return (
-    <Card>
+    <Card className="gap-4 py-5">
       <CardHeader>
         <CardTitle>Password</CardTitle>
         <CardDescription>
@@ -38,13 +38,14 @@ export function SecurityCard() {
       </CardHeader>
       <CardContent>
         {user.hasPassword ? (
-          <Button onClick={() => setIsChanging(true)} type="button">
+          <Button onClick={() => setIsChanging(true)} size="sm" type="button">
             Change password
           </Button>
         ) : (
           <Button
             disabled={emailMutation.isPending}
             onClick={() => emailMutation.mutate(user.email)}
+            size="sm"
             type="button"
           >
             Email me a link to set a password
