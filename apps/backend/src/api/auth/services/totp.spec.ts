@@ -70,9 +70,9 @@ describe('totp', () => {
   });
 
   it('labels the QR payload with the issuer and account', () => {
-    const uri = buildOtpauthUri('GEZDGNBVGY3TQOJQ', 'a@b.c', 'My Workspace');
+    const uri = buildOtpauthUri('GEZDGNBVGY3TQOJQ', 'a@b.c', 'Tu Vi Mien Phi');
 
-    expect(decodeURIComponent(uri)).toContain('My Workspace:a@b.c');
+    expect(decodeURIComponent(uri)).toContain('Tu Vi Mien Phi:a@b.c');
     expect(new URL(uri).searchParams.get('secret')).toBe('GEZDGNBVGY3TQOJQ');
     expect(new URL(uri).searchParams.get('period')).toBe('30');
   });

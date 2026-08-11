@@ -7,7 +7,7 @@
 Use one of the private channels below:
 
 1. **GitHub Security Advisories** (preferred): open a draft at
-   https://github.com/vukiman1/nx-fullstack-starter-kit/security/advisories/new
+   https://github.com/vukiman1/tuvimienphi/security/advisories/new
 2. **Email**: `vukiman1@protonmail.com` (replace with maintainer-preferred address before publishing).
 
 Include:
@@ -45,7 +45,7 @@ Out of scope:
 
 ## Supported versions
 
-This is a starter kit; only the latest commit on `dev` is supported. There are no LTS branches.
+Only the latest commit on `dev` is supported. There are no LTS branches.
 
 ## Hall of fame
 

@@ -13,8 +13,8 @@ export function useSwagger(app: INestApplication) {
   const port = configuration().app.port || process.env.PORT || 3000;
   const path = 'docs';
   const config = new DocumentBuilder()
-    .setTitle('NestJS Example')
-    .setDescription('NestJS Example Documentation')
+    .setTitle('Tu Vi Mien Phi API')
+    .setDescription('Tu Vi Mien Phi API documentation')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
@@ -25,18 +25,8 @@ export function useSwagger(app: INestApplication) {
     swaggerOptions: {
       tagsSorter: 'alpha',
       operationsSorter: (a: SwaggerOperation, b: SwaggerOperation) => {
-        const methodsOrder = [
-          'get',
-          'post',
-          'put',
-          'patch',
-          'delete',
-          'options',
-          'trace',
-        ];
-        let result =
-          methodsOrder.indexOf(a.get('method')) -
-          methodsOrder.indexOf(b.get('method'));
+        const methodsOrder = ['get', 'post', 'put', 'patch', 'delete', 'options', 'trace'];
+        let result = methodsOrder.indexOf(a.get('method')) - methodsOrder.indexOf(b.get('method'));
 
         if (result === 0) {
           result = a.get('path').localeCompare(b.get('path'));
@@ -46,7 +36,5 @@ export function useSwagger(app: INestApplication) {
       },
     },
   });
-  logger.log(
-    `Your documentation is running on http://localhost:${port}/${path}`,
-  );
+  logger.log(`Your documentation is running on http://localhost:${port}/${path}`);
 }

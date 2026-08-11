@@ -7,7 +7,7 @@ const db = new pg.Client({
   port: Number(process.env.DB_PORT || 5432),
   user: process.env.DB_USERNAME || 'postgres',
   password: process.env.DB_PASSWORD || 'password',
-  database: process.env.DB_NAME || 'nestdb',
+  database: process.env.DB_NAME || 'tuvimienphi',
 });
 
 const redis = new Redis({
@@ -24,9 +24,7 @@ try {
   await redis.ping();
 
   // Explicit seed hook for backend e2e. Current smoke tests do not require rows.
-  console.log(
-    'backend e2e seed: infrastructure verified; no seed rows required',
-  );
+  console.log('backend e2e seed: infrastructure verified; no seed rows required');
 } finally {
   await db.end().catch(() => undefined);
   redis.disconnect();

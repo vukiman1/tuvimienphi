@@ -27,7 +27,7 @@ describe('frontend config', () => {
     const config = loadFrontendConfig('test');
 
     expect(config).toEqual({
-      app: { name: 'My Workspace', environment: 'test' },
+      app: { name: 'Tử Vi Miễn Phí', environment: 'test' },
       api: { baseUrl: 'http://localhost:3000/api' },
       sentry: { dsn: '' },
       google: { clientId: '' },
@@ -53,7 +53,7 @@ describe('frontend config', () => {
 
   it('exposes the loaded config via appConfig at runtime', () => {
     expect(appConfig.app.environment).toBe('test');
-    expect(appConfig.app.name).toBe('My Workspace');
+    expect(appConfig.app.name).toBe('Tử Vi Miễn Phí');
     expect(appConfig.api.baseUrl).toBe('http://localhost:3000/api');
     expect(appConfig.google.clientId).toBe('');
   });

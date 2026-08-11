@@ -4,7 +4,7 @@ import { TotpService } from './totp.service';
 
 function buildService(): TotpService {
   const config = {
-    get: (key: string) => (key === 'crypto.secretKey' ? 'test-secret-key' : 'My Workspace'),
+    get: (key: string) => (key === 'crypto.secretKey' ? 'test-secret-key' : 'Tu Vi Mien Phi'),
   } as unknown as ConfigService;
 
   return new TotpService(new CryptoService(config), config);
@@ -25,7 +25,7 @@ describe('TotpService', () => {
     const { otpauthUri } = service.createEnrolment('a@b.c');
 
     expect(decodeURIComponent(otpauthUri)).toContain('a@b.c');
-    expect(decodeURIComponent(otpauthUri)).toContain('My Workspace');
+    expect(decodeURIComponent(otpauthUri)).toContain('Tu Vi Mien Phi');
   });
 
   it('accepts the code its own secret produces', () => {

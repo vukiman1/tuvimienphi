@@ -1,5 +1,5 @@
 app:
-  name: My Workspace
+  name: Tu Vi Mien Phi
   port: 3000
   nodeEnv: development
   url: http://localhost:4200
@@ -14,7 +14,7 @@ app:
 db:
   username: postgres
   password: password
-  database: nestdb
+  database: tuvimienphi
   tls: false
   primary:
     host: localhost
@@ -48,7 +48,7 @@ crypto:
 
 email:
   resendApiKey: ''
-  from: Acme <onboarding@resend.dev>
+  from: Tu Vi Mien Phi <onboarding@resend.dev>
 
 session:
   maxSessionsPerUser: 5

@@ -14,15 +14,10 @@ Thanks for taking the time to contribute. This guide gets you from clone to merg
 ## Initial setup
 
 ```bash
-git clone https://github.com/vukiman1/nx-fullstack-starter-kit.git
-cd nx-fullstack-starter-kit
+git clone https://github.com/vukiman1/tuvimienphi.git
+cd tuvimienphi
 pnpm install                          # also wires up husky hooks via the `prepare` script
-
-cp apps/backend/.env.example apps/backend/.env
-cp apps/frontend/.env.example apps/frontend/.env
-
-pnpm infra:up                         # docker compose up -d db redis
-pnpm db:migration:run                 # apply latest migrations
+pnpm bootstrap                        # copies .env files, boots Postgres + Redis, runs migrations
 ```
 
 Run both apps in dev mode:
@@ -151,7 +146,7 @@ See [README — Project Structure](./README.md#-project-structure).
 
 - **Bug**: open a [Bug report issue](./.github/ISSUE_TEMPLATE/bug-report.yml).
 - **Feature**: open a [Feature request issue](./.github/ISSUE_TEMPLATE/feature-request.yml).
-- **Security vulnerability**: do **NOT** file a public issue. Use [GitHub Security Advisories](https://github.com/vukiman1/nx-fullstack-starter-kit/security/advisories/new) instead.
+- **Security vulnerability**: do **NOT** file a public issue. Use [GitHub Security Advisories](https://github.com/vukiman1/tuvimienphi/security/advisories/new) instead.
 - **Open-ended question**: use Discussions (if enabled), not Issues.
 
 ## Style notes
