@@ -1,4 +1,4 @@
-import { act, fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render, within } from '@testing-library/react';
 
 import App from './app';
 import { router } from './router';
@@ -26,7 +26,8 @@ describe('App', () => {
     const { findByAltText, findByRole } = render(<App />);
 
     expect(await findByAltText('Tử Vi Miễn Phí')).toBeTruthy();
-    expect(await findByRole('link', { name: 'Lá Số' })).toBeTruthy();
+    const primaryNav = await findByRole('navigation', { name: 'Primary' });
+    expect(within(primaryNav).getByRole('link', { name: 'Lá Số' })).toBeTruthy();
     expect(await findByRole('button', { name: /đăng nhập/i })).toBeTruthy();
   });
 
