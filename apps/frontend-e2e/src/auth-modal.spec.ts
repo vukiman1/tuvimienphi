@@ -3,8 +3,8 @@ import { test, expect } from '@playwright/test';
 test('opens the sign-in modal without leaving the page', async ({ page }) => {
   await page.goto('/');
 
-  await expect(page.getByAltText('Tử Vi Miễn Phí')).toBeVisible();
-  await page.getByRole('button', { name: /login/i }).click();
+  await expect(page.locator('header').getByAltText('Tử Vi Miễn Phí')).toBeVisible();
+  await page.getByRole('button', { name: /đăng nhập/i }).click();
 
   const dialog = page.getByRole('dialog');
   await expect(dialog.getByRole('heading', { name: /welcome back/i })).toBeVisible();
@@ -20,10 +20,10 @@ test('opens the sign-in modal without leaving the page', async ({ page }) => {
 
 test('closing the modal leaves the user where they were', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: /login/i }).click();
+  await page.getByRole('button', { name: /đăng nhập/i }).click();
   await expect(page.getByRole('dialog')).toBeVisible();
 
-  await page.getByRole('button', { name: 'Close' }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Close' }).click();
 
   await expect(page.getByRole('dialog')).toBeHidden();
   await expect(page).toHaveURL('/');
