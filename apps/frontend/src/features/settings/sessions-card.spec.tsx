@@ -64,8 +64,10 @@ describe('SessionsCard', () => {
 
     renderCard();
 
-    const button = await screen.findByRole('button', { name: 'Revoke session' });
-    expect(button.hasAttribute('disabled')).toBe(true);
+    const buttons = await screen.findAllByRole('button', { name: 'Revoke session' });
+    for (const button of buttons) {
+      expect(button.hasAttribute('disabled')).toBe(true);
+    }
   });
 
   it('asks for confirmation before signing out other devices', async () => {

@@ -1,18 +1,10 @@
 import { Link, useRouterState } from '@tanstack/react-router';
+import { NAV_ITEMS, type NavItem } from '@/components/layout/nav-items';
 import { NavigationProgress } from '@/components/layout/navigation-progress';
 import { UserMenu } from '@/components/layout/user-menu';
 import { useAuthModal } from '@/features/auth/use-auth-modal';
 import { appConfig } from '@/config/app-config';
 import { selectIsInitializing, selectUser, useAuthStore } from '@/stores/auth-store';
-
-const NAV_ITEMS = [
-  { label: 'Lá Số', href: '/la-so' },
-  { label: 'Lịch Âm', href: '/lich-am' },
-  { label: 'Ngày Tốt', href: '/ngay-tot' },
-  { label: 'Gieo Quẻ', href: '/gieo-que' },
-] as const;
-
-type NavItem = (typeof NAV_ITEMS)[number];
 
 const HEADER_GRADIENT = 'linear-gradient(110deg, #131315 0%, #35332e 55%, #17171a 100%)';
 

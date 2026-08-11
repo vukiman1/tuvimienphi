@@ -50,7 +50,7 @@ export function SessionsCard() {
   const hasOtherSessions = sessions.some((session) => !session.isCurrent);
 
   return (
-    <Card>
+    <Card className="gap-4 py-5">
       <CardHeader className="gap-3 sm:flex sm:flex-row sm:items-start sm:justify-between">
         <div>
           <CardTitle>Login sessions</CardTitle>
@@ -77,7 +77,7 @@ export function SessionsCard() {
           <p className="text-sm text-muted-foreground">No active sessions found.</p>
         ) : (
           <>
-            <div className="overflow-x-auto">
+            <div className="hidden overflow-x-auto md:block">
               <table className="w-full min-w-[820px] border-separate border-spacing-0 text-left text-sm">
                 <thead>
                   <tr className="border-b text-muted-foreground">
@@ -104,11 +104,23 @@ export function SessionsCard() {
               </table>
             </div>
 
+            <ul className="divide-y md:hidden">
+              {sessions.map((session) => (
+                <SessionListItem
+                  key={session.id}
+                  isRevoking={revokeMutation.isPending && revokeMutation.variables === session.id}
+                  onRevoke={() => revokeMutation.mutate(session.id)}
+                  session={session}
+                />
+              ))}
+            </ul>
+
             {hasOtherSessions && (
-              <div className="mt-6">
+              <div className="mt-4">
                 <Button
                   disabled={revokeOthersMutation.isPending}
                   onClick={askThenRevokeOthers}
+                  size="sm"
                   type="button"
                   variant="outline"
                 >
@@ -134,7 +146,7 @@ function SessionRow({ session, isRevoking, onRevoke }: SessionRowProps) {
 
   return (
     <tr className="border-b last:border-b-0">
-      <td className="border-b py-4 pr-4 last:border-b-0">
+      <td className="border-b py-3 pr-4 last:border-b-0">
         <div className="flex items-start gap-3">
           <span className="mt-0.5 flex size-8 items-center justify-center rounded-md bg-muted text-muted-foreground">
             <Icon className="size-4" />
@@ -154,11 +166,11 @@ function SessionRow({ session, isRevoking, onRevoke }: SessionRowProps) {
           </div>
         </div>
       </td>
-      <td className="border-b py-4 pr-4 text-muted-foreground">{sessionLocation(session)}</td>
-      <td className="border-b py-4 pr-4 text-muted-foreground">{session.ipAddress ?? 'Unknown'}</td>
-      <td className="border-b py-4 pr-4 text-muted-foreground">{formatDate(session.lastSeenAt)}</td>
-      <td className="border-b py-4 pr-4 text-muted-foreground">{formatDate(session.expiresAt)}</td>
-      <td className="border-b py-4 text-right">
+      <td className="border-b py-3 pr-4 text-muted-foreground">{sessionLocation(session)}</td>
+      <td className="border-b py-3 pr-4 text-muted-foreground">{session.ipAddress ?? 'Unknown'}</td>
+      <td className="border-b py-3 pr-4 text-muted-foreground">{formatDate(session.lastSeenAt)}</td>
+      <td className="border-b py-3 pr-4 text-muted-foreground">{formatDate(session.expiresAt)}</td>
+      <td className="border-b py-3 text-right">
         <Button
           aria-label="Revoke session"
           disabled={session.isCurrent || isRevoking}
@@ -172,6 +184,50 @@ function SessionRow({ session, isRevoking, onRevoke }: SessionRowProps) {
         </Button>
       </td>
     </tr>
+  );
+}
+
+function SessionListItem({ session, isRevoking, onRevoke }: SessionRowProps) {
+  const Icon = session.deviceType === 'Mobile' ? Smartphone : Monitor;
+
+  return (
+    <li className="flex items-start justify-between gap-3 py-3">
+      <div className="flex min-w-0 items-start gap-3">
+        <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
+          <Icon className="size-4" />
+        </span>
+        <div className="min-w-0 text-sm">
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="font-medium text-foreground">{sessionName(session)}</p>
+            {session.isCurrent && (
+              <span className="rounded-md bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
+                Current
+              </span>
+            )}
+          </div>
+          <p className="mt-1 text-xs text-muted-foreground">
+            {sessionLocation(session)} · {session.ipAddress ?? 'Unknown'}
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Last seen: {formatDate(session.lastSeenAt)}
+          </p>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            Expires: {formatDate(session.expiresAt)}
+          </p>
+        </div>
+      </div>
+      <Button
+        aria-label="Revoke session"
+        disabled={session.isCurrent || isRevoking}
+        onClick={onRevoke}
+        size="icon-sm"
+        title={session.isCurrent ? 'Use logout for the current session' : 'Revoke session'}
+        type="button"
+        variant="outline"
+      >
+        <Trash2 />
+      </Button>
+    </li>
   );
 }
 
