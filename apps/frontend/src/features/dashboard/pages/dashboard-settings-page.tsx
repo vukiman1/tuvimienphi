@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { SimpleHeader } from '@/components/layout/simple-header';
+import { SiteHeader } from '@/components/layout/site-header';
 import { Button } from '@/components/ui/button';
 import { ProfileCard } from '@/features/settings/profile-card';
 import { SecurityCard } from '@/features/settings/security-card';
@@ -9,7 +9,7 @@ import { SessionsCard } from '@/features/settings/sessions-card';
 export function DashboardSettingsPage() {
   return (
     <main className="min-h-screen bg-muted/40">
-      <SimpleHeader />
+      <SiteHeader />
 
       <section className="mx-auto w-full max-w-4xl px-6 py-16">
         <p className="mb-3 text-sm font-extrabold uppercase text-primary">Dashboard</p>

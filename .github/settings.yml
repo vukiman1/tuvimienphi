@@ -1,5 +1,6 @@
 repository:
-  name: nx-fullstack-starter-kit
+  name: tuvimienphi
+  description: Free Vietnamese astrology (tu vi) web app — NestJS + React on an Nx monorepo
   default_branch: dev
   allow_squash_merge: true
   allow_merge_commit: false

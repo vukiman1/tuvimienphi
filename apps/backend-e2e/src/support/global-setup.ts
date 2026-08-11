@@ -10,18 +10,16 @@ module.exports = async function () {
 
   const host = process.env.HOST ?? 'localhost';
   const port = process.env.PORT ? Number(process.env.PORT) : 3000;
-  const dbContainerName = process.env.DB_CONTAINER_NAME ?? 'nx-starter-e2e-db';
-  const redisContainerName =
-    process.env.REDIS_CONTAINER_NAME ?? 'nx-starter-e2e-redis';
+  const dbContainerName = process.env.DB_CONTAINER_NAME ?? 'tuvimienphi-e2e-db';
+  const redisContainerName = process.env.REDIS_CONTAINER_NAME ?? 'tuvimienphi-e2e-redis';
   const dbPort = process.env.DB_PORT ?? '15432';
   const redisPort = process.env.REDIS_PORT ?? '16379';
-  const dbName = process.env.DB_NAME ?? 'nestdb_e2e';
+  const dbName = process.env.DB_NAME ?? 'tuvimienphi_e2e';
   const dbUsername = process.env.DB_USERNAME ?? 'postgres';
   const dbPassword = process.env.DB_PASSWORD ?? 'password';
   const env = {
     ...process.env,
-    COMPOSE_PROJECT_NAME:
-      process.env.COMPOSE_PROJECT_NAME ?? 'nx-fullstack-starter-e2e',
+    COMPOSE_PROJECT_NAME: process.env.COMPOSE_PROJECT_NAME ?? 'tuvimienphi-e2e',
     NODE_ENV: 'test',
     PORT: String(port),
     DB_CONTAINER_NAME: dbContainerName,
@@ -96,10 +94,7 @@ function run(command: string, args: string[], env: NodeJS.ProcessEnv) {
   }
 }
 
-async function waitForDockerHealth(
-  containerName: string,
-  env: NodeJS.ProcessEnv,
-) {
+async function waitForDockerHealth(containerName: string, env: NodeJS.ProcessEnv) {
   const deadline = Date.now() + 60_000;
 
   while (Date.now() < deadline) {
@@ -135,7 +130,5 @@ function pickRuntimeEnv(env: NodeJS.ProcessEnv) {
     'POSTGRES_DB',
   ];
 
-  return Object.fromEntries(
-    keys.flatMap((key) => (env[key] ? [[key, env[key]]] : [])),
-  );
+  return Object.fromEntries(keys.flatMap((key) => (env[key] ? [[key, env[key]]] : [])));
 }

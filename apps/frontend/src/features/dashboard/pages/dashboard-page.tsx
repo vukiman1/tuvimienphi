@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
-import { SimpleHeader } from '@/components/layout/simple-header';
+import { SiteHeader } from '@/components/layout/site-header';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { userQueries } from '@/services/user-service';
@@ -10,7 +10,7 @@ export function DashboardPage() {
 
   return (
     <main className="min-h-screen bg-muted/40">
-      <SimpleHeader />
+      <SiteHeader />
 
       <section className="mx-auto w-full max-w-3xl px-6 py-16">
         <p className="mb-3 text-sm font-extrabold uppercase text-primary">Dashboard</p>

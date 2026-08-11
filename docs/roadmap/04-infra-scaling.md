@@ -1,6 +1,6 @@
 # Infra & Scaling
 
-Các điểm liên quan vận hành / mở rộng. Không chặn ở quy mô starter, nhưng cần biết trước khi scale.
+Các điểm liên quan vận hành / mở rộng. Không chặn ở quy mô hiện tại, nhưng cần biết trước khi scale.
 
 ---
 

@@ -6,7 +6,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://nx-fullstack-starter-kit-backend.vercel.app/api/$1"
+      "destination": "https://tuvimienphi-backend.vercel.app/api/$1"
     },
     {
       "source": "/(.*)",

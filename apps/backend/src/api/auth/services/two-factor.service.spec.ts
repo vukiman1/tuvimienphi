@@ -12,7 +12,7 @@ const USER_ID = 'user-1';
 
 function buildTotpService(): TotpService {
   const config = {
-    get: (key: string) => (key === 'crypto.secretKey' ? 'test-secret-key' : 'My Workspace'),
+    get: (key: string) => (key === 'crypto.secretKey' ? 'test-secret-key' : 'Tu Vi Mien Phi'),
   } as unknown as ConfigService;
   return new TotpService(new CryptoService(config), config);
 }

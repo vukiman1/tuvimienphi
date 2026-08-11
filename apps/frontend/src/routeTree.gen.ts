@@ -10,14 +10,23 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SiteRouteImport } from './routes/_site'
 import { Route as authLoginRouteImport } from './routes/(auth)/login'
 import { Route as authRegisterRouteImport } from './routes/(auth)/register'
+import { Route as SiteGieoQueRouteImport } from './routes/_site/gieo-que'
+import { Route as SiteLaSoRouteImport } from './routes/_site/la-so'
+import { Route as SiteLichAmRouteImport } from './routes/_site/lich-am'
+import { Route as SiteNgayTotRouteImport } from './routes/_site/ngay-tot'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SiteRoute = SiteRouteImport.update({
+  id: '/_site',
   getParentRoute: () => rootRouteImport,
 } as any)
 const authLoginRoute = authLoginRouteImport.update({
@@ -29,6 +38,26 @@ const authRegisterRoute = authRegisterRouteImport.update({
   id: '/(auth)/register',
   path: '/register',
   getParentRoute: () => rootRouteImport,
+} as any)
+const SiteGieoQueRoute = SiteGieoQueRouteImport.update({
+  id: '/gieo-que',
+  path: '/gieo-que',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteLaSoRoute = SiteLaSoRouteImport.update({
+  id: '/la-so',
+  path: '/la-so',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteLichAmRoute = SiteLichAmRouteImport.update({
+  id: '/lich-am',
+  path: '/lich-am',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteNgayTotRoute = SiteNgayTotRouteImport.update({
+  id: '/ngay-tot',
+  path: '/ngay-tot',
+  getParentRoute: () => SiteRoute,
 } as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/dashboard/',
@@ -45,6 +74,10 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
+  '/gieo-que': typeof SiteGieoQueRoute
+  '/la-so': typeof SiteLaSoRoute
+  '/lich-am': typeof SiteLichAmRoute
+  '/ngay-tot': typeof SiteNgayTotRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
@@ -52,34 +85,66 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
+  '/gieo-que': typeof SiteGieoQueRoute
+  '/la-so': typeof SiteLaSoRoute
+  '/lich-am': typeof SiteLichAmRoute
+  '/ngay-tot': typeof SiteNgayTotRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard': typeof DashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_site': typeof SiteRouteWithChildren
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/register': typeof authRegisterRoute
+  '/_site/gieo-que': typeof SiteGieoQueRoute
+  '/_site/la-so': typeof SiteLaSoRoute
+  '/_site/lich-am': typeof SiteLichAmRoute
+  '/_site/ngay-tot': typeof SiteNgayTotRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/login' | '/register' | '/dashboard/settings' | '/dashboard/'
+    | '/'
+    | '/login'
+    | '/register'
+    | '/gieo-que'
+    | '/la-so'
+    | '/lich-am'
+    | '/ngay-tot'
+    | '/dashboard/settings'
+    | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/register' | '/dashboard/settings' | '/dashboard'
+  to:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/gieo-que'
+    | '/la-so'
+    | '/lich-am'
+    | '/ngay-tot'
+    | '/dashboard/settings'
+    | '/dashboard'
   id:
     | '__root__'
     | '/'
+    | '/_site'
     | '/(auth)/login'
     | '/(auth)/register'
+    | '/_site/gieo-que'
+    | '/_site/la-so'
+    | '/_site/lich-am'
+    | '/_site/ngay-tot'
     | '/dashboard/settings'
     | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SiteRoute: typeof SiteRouteWithChildren
   authLoginRoute: typeof authLoginRoute
   authRegisterRoute: typeof authRegisterRoute
   DashboardSettingsRoute: typeof DashboardSettingsRoute
@@ -95,6 +160,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_site': {
+      id: '/_site'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof SiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(auth)/login': {
       id: '/(auth)/login'
       path: '/login'
@@ -108,6 +180,34 @@ declare module '@tanstack/react-router' {
       fullPath: '/register'
       preLoaderRoute: typeof authRegisterRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_site/gieo-que': {
+      id: '/_site/gieo-que'
+      path: '/gieo-que'
+      fullPath: '/gieo-que'
+      preLoaderRoute: typeof SiteGieoQueRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/la-so': {
+      id: '/_site/la-so'
+      path: '/la-so'
+      fullPath: '/la-so'
+      preLoaderRoute: typeof SiteLaSoRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/lich-am': {
+      id: '/_site/lich-am'
+      path: '/lich-am'
+      fullPath: '/lich-am'
+      preLoaderRoute: typeof SiteLichAmRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/ngay-tot': {
+      id: '/_site/ngay-tot'
+      path: '/ngay-tot'
+      fullPath: '/ngay-tot'
+      preLoaderRoute: typeof SiteNgayTotRouteImport
+      parentRoute: typeof SiteRoute
     }
     '/dashboard/': {
       id: '/dashboard/'
@@ -126,8 +226,25 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface SiteRouteChildren {
+  SiteGieoQueRoute: typeof SiteGieoQueRoute
+  SiteLaSoRoute: typeof SiteLaSoRoute
+  SiteLichAmRoute: typeof SiteLichAmRoute
+  SiteNgayTotRoute: typeof SiteNgayTotRoute
+}
+
+const SiteRouteChildren: SiteRouteChildren = {
+  SiteGieoQueRoute: SiteGieoQueRoute,
+  SiteLaSoRoute: SiteLaSoRoute,
+  SiteLichAmRoute: SiteLichAmRoute,
+  SiteNgayTotRoute: SiteNgayTotRoute,
+}
+
+const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SiteRoute: SiteRouteWithChildren,
   authLoginRoute: authLoginRoute,
   authRegisterRoute: authRegisterRoute,
   DashboardSettingsRoute: DashboardSettingsRoute,

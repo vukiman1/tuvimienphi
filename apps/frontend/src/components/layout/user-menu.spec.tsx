@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
   RouterProvider,
@@ -12,6 +13,15 @@ import { useAuthStore } from '@/stores/auth-store';
 
 jest.mock('@/services/auth-service', () => ({
   authService: { logout: jest.fn() },
+}));
+
+jest.mock('@/services/user-service', () => ({
+  userQueries: {
+    credit: () => ({
+      queryKey: ['user', 'credit'],
+      queryFn: () => Promise.resolve({ balance: 0 }),
+    }),
+  },
 }));
 
 function renderMenu() {
@@ -31,7 +41,15 @@ function renderMenu() {
     history: createMemoryHistory({ initialEntries: ['/'] }),
   });
 
-  return render(<RouterProvider router={router} />);
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false } },
+  });
+
+  return render(
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>,
+  );
 }
 
 describe('UserMenu', () => {

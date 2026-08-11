@@ -23,17 +23,17 @@ describe('App', () => {
   });
 
   it('renders the home page header with auth actions', async () => {
-    const { findByRole, findByText } = render(<App />);
+    const { findByAltText, findByRole } = render(<App />);
 
-    expect(await findByText('My Workspace')).toBeTruthy();
-    expect(await findByRole('button', { name: /login/i })).toBeTruthy();
-    expect(await findByRole('button', { name: /register/i })).toBeTruthy();
+    expect(await findByAltText('Tử Vi Miễn Phí')).toBeTruthy();
+    expect(await findByRole('link', { name: 'Lá Số' })).toBeTruthy();
+    expect(await findByRole('button', { name: /đăng nhập/i })).toBeTruthy();
   });
 
   it('opens the sign-in modal without leaving the page', async () => {
     const { findByLabelText, findByRole, findByText } = render(<App />);
 
-    fireEvent.click(await findByRole('button', { name: /login/i }));
+    fireEvent.click(await findByRole('button', { name: /đăng nhập/i }));
     fireEvent.click(await findByRole('button', { name: /continue with email/i }));
 
     expect(await findByRole('dialog')).toBeTruthy();
@@ -47,7 +47,7 @@ describe('App', () => {
   it('validates login input before submit', async () => {
     const { findByLabelText, findByRole, findByText } = render(<App />);
 
-    fireEvent.click(await findByRole('button', { name: /login/i }));
+    fireEvent.click(await findByRole('button', { name: /đăng nhập/i }));
     fireEvent.click(await findByRole('button', { name: /continue with email/i }));
 
     const emailInput = await findByLabelText('Email');
@@ -64,7 +64,7 @@ describe('App', () => {
   it('switches from sign-in to register inside the modal', async () => {
     const { findByLabelText, findByRole } = render(<App />);
 
-    fireEvent.click(await findByRole('button', { name: /login/i }));
+    fireEvent.click(await findByRole('button', { name: /đăng nhập/i }));
     fireEvent.click(await findByRole('button', { name: /create an account/i }));
 
     expect(await findByRole('heading', { name: /create your account/i })).toBeTruthy();

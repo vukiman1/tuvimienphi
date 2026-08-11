@@ -1,8 +1,8 @@
 <div align="center">
 
-# Nx Fullstack Starter Kit
+# Tử Vi Miễn Phí
 
-A production-ready fullstack monorepo template — **NestJS backend** + **React frontend** + **Nx tooling**, batteries included.
+Free Vietnamese astrology (tử vi) web app — **NestJS backend** + **React frontend** on an **Nx monorepo**.
 
 [![Nx](https://img.shields.io/badge/Nx-23.1-143055?logo=nx&logoColor=white)](https://nx.dev)
 [![NestJS](https://img.shields.io/badge/NestJS-11-E0234E?logo=nestjs&logoColor=white)](https://nestjs.com)
@@ -73,16 +73,17 @@ as a global rather than activated through it.
 ### Install
 
 ```bash
-git clone https://github.com/vukiman1/nx-fullstack-starter-kit.git
-cd nx-fullstack-starter-kit
+git clone https://github.com/vukiman1/tuvimienphi.git
+cd tuvimienphi
 pnpm install                              # installs deps + sets up husky
-cp apps/backend/.env.example apps/backend/.env
-cp apps/frontend/.env.example apps/frontend/.env
+pnpm bootstrap                            # copies .env files, boots Postgres + Redis, runs migrations
 ```
 
-### Boot infrastructure (Postgres + Redis)
+`pnpm bootstrap` is idempotent — it never overwrites an existing `.env`. The manual equivalent:
 
 ```bash
+cp apps/backend/.env.example apps/backend/.env
+cp apps/frontend/.env.example apps/frontend/.env
 pnpm infra:up                             # docker compose up -d db redis
 pnpm db:migration:run                     # apply latest migrations
 ```
@@ -194,8 +195,8 @@ docker compose --profile backend --profile frontend up --build
 
 ```bash
 pnpm nx run-many -t docker-build         # Nx prep pipeline for both
-docker build -f apps/backend/Dockerfile -t starter-backend .
-docker build -f apps/frontend/Dockerfile -t starter-frontend .
+docker build -f apps/backend/Dockerfile -t tuvimienphi-backend .
+docker build -f apps/frontend/Dockerfile -t tuvimienphi-frontend .
 ```
 
 ## 🤖 CI / CD
@@ -227,7 +228,7 @@ Sentry — have since landed.
 
 ## 📝 License
 
-MIT — see [LICENSE](LICENSE).
+MIT.
 
 ---
 

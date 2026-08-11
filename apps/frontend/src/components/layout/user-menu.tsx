@@ -1,6 +1,7 @@
 import { useRef } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
-import { ChevronDown, LogOut, Settings } from 'lucide-react';
+import { ChevronDown, LogOut, Settings, UserRound, Wallet } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +13,19 @@ import {
 import { endSession } from '@/features/auth/session';
 import { notify } from '@/lib/toast';
 import { authService } from '@/services/auth-service';
+import { userQueries } from '@/services/user-service';
 import { selectUser, useAuthStore } from '@/stores/auth-store';
+
+function BalanceRow() {
+  const { data: credit, isError } = useQuery(userQueries.credit());
+
+  return (
+    <div className="flex items-center gap-2 px-2 py-1.5 text-sm text-muted-foreground">
+      <Wallet className="size-4" />
+      {isError ? 'Balance unavailable' : credit ? `Balance: ${credit.balance}` : 'Loading...'}
+    </div>
+  );
+}
 
 export function UserMenu() {
   const navigate = useNavigate();
@@ -41,10 +54,12 @@ export function UserMenu() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="inline-flex items-center gap-2 rounded-md px-2 py-1.5 text-sm text-muted-foreground transition-colors outline-none hover:bg-accent hover:text-accent-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50">
+      <DropdownMenuTrigger className="group inline-flex items-center gap-2 rounded-xl p-1 text-sm outline-none transition-colors hover:bg-white/5 focus-visible:ring-[3px] focus-visible:ring-[#c9a15c]/50 md:gap-3">
         <Avatar user={user} />
-        <span className="max-w-40 truncate">{user.email}</span>
-        <ChevronDown className="size-4" />
+        <span className="hidden max-w-40 truncate font-medium tracking-wide text-[#e5c886] md:inline">
+          {user.displayName ?? user.email}
+        </span>
+        <ChevronDown className="size-4 text-[#c9a15c] transition-transform group-data-[state=open]:rotate-180" />
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
@@ -60,9 +75,16 @@ export function UserMenu() {
         }}
       >
         <DropdownMenuLabel className="flex items-center gap-2 font-normal">
-          <Avatar user={user} />
-          <span className="truncate text-sm font-medium text-foreground">{user.email}</span>
+          <span className="flex min-w-0 flex-col">
+            {user.displayName ? (
+              <span className="truncate text-sm font-medium text-foreground">
+                {user.displayName}
+              </span>
+            ) : null}
+            <span className="truncate text-sm text-muted-foreground">{user.email}</span>
+          </span>
         </DropdownMenuLabel>
+        <BalanceRow />
         <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={() => navigate({ to: '/dashboard/settings' })}>
           <Settings />
@@ -78,13 +100,13 @@ export function UserMenu() {
 }
 
 function Avatar({ user }: { user: { email: string; avatar?: string | null } }) {
-  if (user.avatar) {
-    return <img alt={user.email} className="size-7 rounded-full object-cover" src={user.avatar} />;
-  }
-
   return (
-    <span className="flex size-7 items-center justify-center rounded-full bg-muted text-xs font-extrabold text-muted-foreground">
-      {user.email.charAt(0).toUpperCase()}
+    <span className="flex size-7 items-center justify-center overflow-hidden rounded-lg border-[1.5px] border-[#c9a15c] bg-white/5 text-[#e5c886] md:size-8">
+      {user.avatar ? (
+        <img alt={user.email} className="size-full object-cover" src={user.avatar} />
+      ) : (
+        <UserRound aria-hidden className="size-4" />
+      )}
     </span>
   );
 }
