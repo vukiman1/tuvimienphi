@@ -15,8 +15,8 @@ import { Route as authLoginRouteImport } from './routes/(auth)/login'
 import { Route as authRegisterRouteImport } from './routes/(auth)/register'
 import { Route as SiteGieoQueRouteImport } from './routes/_site/gieo-que'
 import { Route as SiteLaSoRouteImport } from './routes/_site/la-so'
-import { Route as SiteLichAmRouteImport } from './routes/_site/lich-am'
 import { Route as SiteNgayTotRouteImport } from './routes/_site/ngay-tot'
+import { Route as SiteVanHanRouteImport } from './routes/_site/van-han'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
 
@@ -49,14 +49,14 @@ const SiteLaSoRoute = SiteLaSoRouteImport.update({
   path: '/la-so',
   getParentRoute: () => SiteRoute,
 } as any)
-const SiteLichAmRoute = SiteLichAmRouteImport.update({
-  id: '/lich-am',
-  path: '/lich-am',
-  getParentRoute: () => SiteRoute,
-} as any)
 const SiteNgayTotRoute = SiteNgayTotRouteImport.update({
   id: '/ngay-tot',
   path: '/ngay-tot',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteVanHanRoute = SiteVanHanRouteImport.update({
+  id: '/van-han',
+  path: '/van-han',
   getParentRoute: () => SiteRoute,
 } as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
@@ -76,8 +76,8 @@ export interface FileRoutesByFullPath {
   '/register': typeof authRegisterRoute
   '/gieo-que': typeof SiteGieoQueRoute
   '/la-so': typeof SiteLaSoRoute
-  '/lich-am': typeof SiteLichAmRoute
   '/ngay-tot': typeof SiteNgayTotRoute
+  '/van-han': typeof SiteVanHanRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
@@ -87,8 +87,8 @@ export interface FileRoutesByTo {
   '/register': typeof authRegisterRoute
   '/gieo-que': typeof SiteGieoQueRoute
   '/la-so': typeof SiteLaSoRoute
-  '/lich-am': typeof SiteLichAmRoute
   '/ngay-tot': typeof SiteNgayTotRoute
+  '/van-han': typeof SiteVanHanRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard': typeof DashboardIndexRoute
 }
@@ -100,8 +100,8 @@ export interface FileRoutesById {
   '/(auth)/register': typeof authRegisterRoute
   '/_site/gieo-que': typeof SiteGieoQueRoute
   '/_site/la-so': typeof SiteLaSoRoute
-  '/_site/lich-am': typeof SiteLichAmRoute
   '/_site/ngay-tot': typeof SiteNgayTotRoute
+  '/_site/van-han': typeof SiteVanHanRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
@@ -113,8 +113,8 @@ export interface FileRouteTypes {
     | '/register'
     | '/gieo-que'
     | '/la-so'
-    | '/lich-am'
     | '/ngay-tot'
+    | '/van-han'
     | '/dashboard/settings'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
@@ -124,8 +124,8 @@ export interface FileRouteTypes {
     | '/register'
     | '/gieo-que'
     | '/la-so'
-    | '/lich-am'
     | '/ngay-tot'
+    | '/van-han'
     | '/dashboard/settings'
     | '/dashboard'
   id:
@@ -136,8 +136,8 @@ export interface FileRouteTypes {
     | '/(auth)/register'
     | '/_site/gieo-que'
     | '/_site/la-so'
-    | '/_site/lich-am'
     | '/_site/ngay-tot'
+    | '/_site/van-han'
     | '/dashboard/settings'
     | '/dashboard/'
   fileRoutesById: FileRoutesById
@@ -195,18 +195,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteLaSoRouteImport
       parentRoute: typeof SiteRoute
     }
-    '/_site/lich-am': {
-      id: '/_site/lich-am'
-      path: '/lich-am'
-      fullPath: '/lich-am'
-      preLoaderRoute: typeof SiteLichAmRouteImport
-      parentRoute: typeof SiteRoute
-    }
     '/_site/ngay-tot': {
       id: '/_site/ngay-tot'
       path: '/ngay-tot'
       fullPath: '/ngay-tot'
       preLoaderRoute: typeof SiteNgayTotRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/van-han': {
+      id: '/_site/van-han'
+      path: '/van-han'
+      fullPath: '/van-han'
+      preLoaderRoute: typeof SiteVanHanRouteImport
       parentRoute: typeof SiteRoute
     }
     '/dashboard/': {
@@ -229,15 +229,15 @@ declare module '@tanstack/react-router' {
 interface SiteRouteChildren {
   SiteGieoQueRoute: typeof SiteGieoQueRoute
   SiteLaSoRoute: typeof SiteLaSoRoute
-  SiteLichAmRoute: typeof SiteLichAmRoute
   SiteNgayTotRoute: typeof SiteNgayTotRoute
+  SiteVanHanRoute: typeof SiteVanHanRoute
 }
 
 const SiteRouteChildren: SiteRouteChildren = {
   SiteGieoQueRoute: SiteGieoQueRoute,
   SiteLaSoRoute: SiteLaSoRoute,
-  SiteLichAmRoute: SiteLichAmRoute,
   SiteNgayTotRoute: SiteNgayTotRoute,
+  SiteVanHanRoute: SiteVanHanRoute,
 }
 
 const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
