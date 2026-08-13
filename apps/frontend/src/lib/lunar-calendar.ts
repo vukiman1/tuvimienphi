@@ -196,9 +196,14 @@ export function getMonthCanChi(lunar: LunarDate): string {
   return `${CAN[(lunar.year * 12 + lunar.month + 3) % 10]} ${CHI[(lunar.month + 1) % 12]}`;
 }
 
-export function getDayCanChi(date: Date): string {
+export function getDayPillar(date: Date): CanChiIndex {
   const jd = jdFromDate(date.getDate(), date.getMonth() + 1, date.getFullYear());
-  return `${CAN[(jd + 9) % 10]} ${CHI[(jd + 1) % 12]}`;
+  return { can: (jd + 9) % 10, chi: (jd + 1) % 12 };
+}
+
+export function getDayCanChi(date: Date): string {
+  const { can, chi } = getDayPillar(date);
+  return `${CAN[can]} ${CHI[chi]}`;
 }
 
 export function getSolarTerm(date: Date): string {

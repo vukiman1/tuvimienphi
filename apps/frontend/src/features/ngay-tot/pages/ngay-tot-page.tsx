@@ -9,10 +9,10 @@ import {
   HOUR_QUALITY_PLACEHOLDER,
   NHI_THAP_BAT_TU_PILLARS_PLACEHOLDER,
   NHI_THAP_BAT_TU_VERSES_PLACEHOLDER,
-  PHI_TINH_PLACEHOLDER,
 } from '@/features/ngay-tot/placeholder-data';
 import { getGioXuatHanh } from '@/lib/gio-xuat-hanh';
 import { convertSolarToLunar } from '@/lib/lunar-calendar';
+import { getPhiTinhBoards } from '@/lib/phi-tinh';
 
 const PAGE_TABS = [
   { id: 'hiep-ky', label: 'Hiệp Kỷ' },
@@ -110,7 +110,7 @@ export function NgayTotPage() {
             </div>
           </>
         ) : activeTab === 'phi-tinh' ? (
-          <PhiTinhBoards boards={PHI_TINH_PLACEHOLDER} />
+          <PhiTinhBoards boards={getPhiTinhBoards(selectedDate, new Date().getHours())} />
         ) : (
           <NhiThapBatTuPanel
             pillars={NHI_THAP_BAT_TU_PILLARS_PLACEHOLDER}

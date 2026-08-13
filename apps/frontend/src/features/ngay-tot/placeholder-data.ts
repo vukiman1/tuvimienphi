@@ -3,21 +3,8 @@ import type {
   NhiThapBatTuPillar,
   NhiThapBatTuVerse,
 } from '@/features/ngay-tot/components/nhi-thap-bat-tu-panel';
-import type { PhiTinhBoard } from '@/features/ngay-tot/components/phi-tinh-boards';
 
 // Placeholder layout data until the real hour-quality algorithms land.
-
-const phiTinhCells = (
-  values: readonly number[],
-  goodValues: readonly number[],
-): PhiTinhBoard['cells'] => values.map((value) => ({ value, isGood: goodValues.includes(value) }));
-
-export const PHI_TINH_PLACEHOLDER: readonly PhiTinhBoard[] = [
-  { label: 'Năm', cells: phiTinhCells([9, 5, 7, 8, 1, 3, 4, 6, 2], [9, 8, 1, 4]) },
-  { label: 'Tháng', cells: phiTinhCells([1, 6, 8, 9, 2, 4, 5, 7, 3], [1, 6, 8, 2]) },
-  { label: 'Ngày', cells: phiTinhCells([9, 5, 7, 8, 1, 3, 4, 6, 2], [9, 8, 1, 4]) },
-  { label: 'Giờ', cells: phiTinhCells([3, 8, 1, 2, 4, 6, 7, 9, 5], [3, 8, 1, 4, 9]) },
-];
 
 export const NHI_THAP_BAT_TU_PILLARS_PLACEHOLDER: readonly NhiThapBatTuPillar[] = [
   {

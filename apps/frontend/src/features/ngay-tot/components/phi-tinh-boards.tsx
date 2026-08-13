@@ -1,14 +1,5 @@
 import { useState } from 'react';
-
-export interface PhiTinhCell {
-  readonly value: number;
-  readonly isGood: boolean;
-}
-
-export interface PhiTinhBoard {
-  readonly label: string;
-  readonly cells: readonly PhiTinhCell[];
-}
+import type { PhiTinhBoard } from '@/lib/phi-tinh';
 
 interface PhiTinhBoardsProps {
   readonly boards: readonly PhiTinhBoard[];
