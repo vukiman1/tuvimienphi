@@ -5,13 +5,10 @@ import { MonthCalendar } from '@/features/ngay-tot/components/month-calendar';
 import { NhiThapBatTuPanel } from '@/features/ngay-tot/components/nhi-thap-bat-tu-panel';
 import { PhiTinhBoards } from '@/features/ngay-tot/components/phi-tinh-boards';
 import { XuatHanhHours } from '@/features/ngay-tot/components/xuat-hanh-hours';
-import {
-  NHI_THAP_BAT_TU_PILLARS_PLACEHOLDER,
-  NHI_THAP_BAT_TU_VERSES_PLACEHOLDER,
-} from '@/features/ngay-tot/placeholder-data';
 import { getGioHoangDao } from '@/lib/gio-hoang-dao';
 import { getGioXuatHanh } from '@/lib/gio-xuat-hanh';
 import { convertSolarToLunar } from '@/lib/lunar-calendar';
+import { getNhiThapBatTu } from '@/lib/nhi-thap-bat-tu';
 import { getPhiTinhBoards } from '@/lib/phi-tinh';
 
 const PAGE_TABS = [
@@ -112,10 +109,7 @@ export function NgayTotPage() {
         ) : activeTab === 'phi-tinh' ? (
           <PhiTinhBoards boards={getPhiTinhBoards(selectedDate, new Date().getHours())} />
         ) : (
-          <NhiThapBatTuPanel
-            pillars={NHI_THAP_BAT_TU_PILLARS_PLACEHOLDER}
-            verses={NHI_THAP_BAT_TU_VERSES_PLACEHOLDER}
-          />
+          <NhiThapBatTuPanel {...getNhiThapBatTu(selectedDate, new Date().getHours())} />
         )}
       </div>
     </main>
