@@ -6,10 +6,10 @@ import { NhiThapBatTuPanel } from '@/features/ngay-tot/components/nhi-thap-bat-t
 import { PhiTinhBoards } from '@/features/ngay-tot/components/phi-tinh-boards';
 import { XuatHanhHours } from '@/features/ngay-tot/components/xuat-hanh-hours';
 import {
-  HOUR_QUALITY_PLACEHOLDER,
   NHI_THAP_BAT_TU_PILLARS_PLACEHOLDER,
   NHI_THAP_BAT_TU_VERSES_PLACEHOLDER,
 } from '@/features/ngay-tot/placeholder-data';
+import { getGioHoangDao } from '@/lib/gio-hoang-dao';
 import { getGioXuatHanh } from '@/lib/gio-xuat-hanh';
 import { convertSolarToLunar } from '@/lib/lunar-calendar';
 import { getPhiTinhBoards } from '@/lib/phi-tinh';
@@ -104,7 +104,7 @@ export function NgayTotPage() {
 
             <div className="mt-4">
               <HourQualityList
-                items={HOUR_QUALITY_PLACEHOLDER}
+                items={getGioHoangDao(selectedDate)}
                 isToday={selectedDate.toDateString() === new Date().toDateString()}
               />
             </div>
