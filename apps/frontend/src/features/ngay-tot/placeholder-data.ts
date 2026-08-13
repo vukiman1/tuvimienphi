@@ -4,60 +4,8 @@ import type {
   NhiThapBatTuVerse,
 } from '@/features/ngay-tot/components/nhi-thap-bat-tu-panel';
 import type { PhiTinhBoard } from '@/features/ngay-tot/components/phi-tinh-boards';
-import type { XuatHanhSlot } from '@/features/ngay-tot/components/xuat-hanh-hours';
 
 // Placeholder layout data until the real hour-quality algorithms land.
-
-export const XUAT_HANH_PLACEHOLDER: readonly XuatHanhSlot[] = [
-  {
-    name: 'Lưu Niên',
-    isGood: false,
-    hours: [
-      { chi: 'Thìn', range: '7h-9h' },
-      { chi: 'Tuất', range: '19h-21h' },
-    ],
-  },
-  {
-    name: 'Tốc Hỷ',
-    isGood: true,
-    hours: [
-      { chi: 'Tị', range: '9h-11h' },
-      { chi: 'Hợi', range: '21h-23h' },
-    ],
-  },
-  {
-    name: 'Xích Khẩu',
-    isGood: false,
-    hours: [
-      { chi: 'Ngọ', range: '11h-13h' },
-      { chi: 'Tý', range: '23h-1h' },
-    ],
-  },
-  {
-    name: 'Đại An',
-    isGood: true,
-    hours: [
-      { chi: 'Mão', range: '5h-7h' },
-      { chi: 'Dậu', range: '17h-19h' },
-    ],
-  },
-  {
-    name: 'Không Vong',
-    isGood: false,
-    hours: [
-      { chi: 'Thân', range: '15h-17h' },
-      { chi: 'Dần', range: '3h-5h' },
-    ],
-  },
-  {
-    name: 'Tiểu Cát',
-    isGood: true,
-    hours: [
-      { chi: 'Mùi', range: '13h-15h' },
-      { chi: 'Sửu', range: '1h-3h' },
-    ],
-  },
-];
 
 const phiTinhCells = (
   values: readonly number[],

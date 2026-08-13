@@ -10,8 +10,9 @@ import {
   NHI_THAP_BAT_TU_PILLARS_PLACEHOLDER,
   NHI_THAP_BAT_TU_VERSES_PLACEHOLDER,
   PHI_TINH_PLACEHOLDER,
-  XUAT_HANH_PLACEHOLDER,
 } from '@/features/ngay-tot/placeholder-data';
+import { getGioXuatHanh } from '@/lib/gio-xuat-hanh';
+import { convertSolarToLunar } from '@/lib/lunar-calendar';
 
 const PAGE_TABS = [
   { id: 'hiep-ky', label: 'Hiệp Kỷ' },
@@ -97,7 +98,7 @@ export function NgayTotPage() {
               />
               <div className="flex flex-col gap-4">
                 <DayDetailCard date={selectedDate} />
-                <XuatHanhHours slots={XUAT_HANH_PLACEHOLDER} />
+                <XuatHanhHours slots={getGioXuatHanh(convertSolarToLunar(selectedDate))} />
               </div>
             </div>
 
