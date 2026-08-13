@@ -178,8 +178,18 @@ export function convertSolarToLunar(date: Date): LunarDate {
   return { day: lunarDay, month: lunarMonth, year: lunarYear, isLeapMonth };
 }
 
+export interface CanChiIndex {
+  readonly can: number;
+  readonly chi: number;
+}
+
+export function getYearPillar(lunarYear: number): CanChiIndex {
+  return { can: (lunarYear + 6) % 10, chi: (lunarYear + 8) % 12 };
+}
+
 export function getYearCanChi(lunarYear: number): string {
-  return `${CAN[(lunarYear + 6) % 10]} ${CHI[(lunarYear + 8) % 12]}`;
+  const { can, chi } = getYearPillar(lunarYear);
+  return `${CAN[can]} ${CHI[chi]}`;
 }
 
 export function getMonthCanChi(lunar: LunarDate): string {
