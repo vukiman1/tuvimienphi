@@ -178,17 +178,32 @@ export function convertSolarToLunar(date: Date): LunarDate {
   return { day: lunarDay, month: lunarMonth, year: lunarYear, isLeapMonth };
 }
 
+export interface CanChiIndex {
+  readonly can: number;
+  readonly chi: number;
+}
+
+export function getYearPillar(lunarYear: number): CanChiIndex {
+  return { can: (lunarYear + 6) % 10, chi: (lunarYear + 8) % 12 };
+}
+
 export function getYearCanChi(lunarYear: number): string {
-  return `${CAN[(lunarYear + 6) % 10]} ${CHI[(lunarYear + 8) % 12]}`;
+  const { can, chi } = getYearPillar(lunarYear);
+  return `${CAN[can]} ${CHI[chi]}`;
 }
 
 export function getMonthCanChi(lunar: LunarDate): string {
   return `${CAN[(lunar.year * 12 + lunar.month + 3) % 10]} ${CHI[(lunar.month + 1) % 12]}`;
 }
 
-export function getDayCanChi(date: Date): string {
+export function getDayPillar(date: Date): CanChiIndex {
   const jd = jdFromDate(date.getDate(), date.getMonth() + 1, date.getFullYear());
-  return `${CAN[(jd + 9) % 10]} ${CHI[(jd + 1) % 12]}`;
+  return { can: (jd + 9) % 10, chi: (jd + 1) % 12 };
+}
+
+export function getDayCanChi(date: Date): string {
+  const { can, chi } = getDayPillar(date);
+  return `${CAN[can]} ${CHI[chi]}`;
 }
 
 export function getSolarTerm(date: Date): string {

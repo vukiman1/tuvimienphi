@@ -1,24 +1,6 @@
-export interface NhiThapBatTuPillar {
-  readonly label: string;
-  readonly value: string;
-  readonly canChi: string;
-  readonly star: string;
-  readonly element: string;
-  readonly animal: string;
-}
+import type { NhiThapBatTuResult } from '@/lib/nhi-thap-bat-tu';
 
-export interface NhiThapBatTuVerse {
-  readonly title: string;
-  readonly subtitle: string;
-  readonly lines: readonly string[];
-}
-
-interface NhiThapBatTuPanelProps {
-  readonly pillars: readonly NhiThapBatTuPillar[];
-  readonly verses: readonly NhiThapBatTuVerse[];
-}
-
-export function NhiThapBatTuPanel({ pillars, verses }: NhiThapBatTuPanelProps) {
+export function NhiThapBatTuPanel({ pillars, verses }: NhiThapBatTuResult) {
   return (
     <div className="rounded-xl border border-[#c9a15c]/40 bg-card p-3 shadow-md md:p-4">
       <div className="flex items-center justify-center gap-3 py-1">
@@ -43,10 +25,10 @@ export function NhiThapBatTuPanel({ pillars, verses }: NhiThapBatTuPanelProps) {
             </p>
             <p className="text-sm font-semibold text-foreground">{pillar.canChi}</p>
             <p className="mt-1 rounded-full bg-gradient-to-br from-[#e8c987] to-[#b8894a] px-2.5 py-0.5 text-xs font-bold text-[#1a1a1c]">
-              {pillar.star}
+              Sao {pillar.tu.name}
             </p>
             <p className="mt-1 text-xs text-muted-foreground">
-              {pillar.element} · {pillar.animal}
+              {pillar.tu.element} · {pillar.tu.animal}
             </p>
           </div>
         ))}
@@ -55,13 +37,15 @@ export function NhiThapBatTuPanel({ pillars, verses }: NhiThapBatTuPanelProps) {
       <div className="mt-3 grid gap-3 md:grid-cols-2">
         {verses.map((verse) => (
           <div
-            key={verse.title}
+            key={verse.subtitle}
             className="rounded-lg border border-[#c9a15c]/30 bg-muted/20 px-4 py-3 text-center"
           >
-            <p className="font-display text-base font-bold text-primary">{verse.title}</p>
+            <p className="font-display text-base font-bold text-primary uppercase">
+              {verse.tu.fullName}
+            </p>
             <p className="text-xs text-muted-foreground">{verse.subtitle}</p>
             <div className="mt-2 flex flex-col gap-0.5">
-              {verse.lines.map((line) => (
+              {verse.tu.verse.map((line) => (
                 <p key={line} className="text-sm leading-relaxed text-foreground italic">
                   {line}
                 </p>

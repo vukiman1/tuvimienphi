@@ -1,15 +1,5 @@
 import { Check, X } from 'lucide-react';
-
-export interface XuatHanhHour {
-  readonly chi: string;
-  readonly range: string;
-}
-
-export interface XuatHanhSlot {
-  readonly name: string;
-  readonly isGood: boolean;
-  readonly hours: readonly [XuatHanhHour, XuatHanhHour];
-}
+import type { XuatHanhSlot } from '@/lib/gio-xuat-hanh';
 
 interface XuatHanhHoursProps {
   readonly slots: readonly XuatHanhSlot[];

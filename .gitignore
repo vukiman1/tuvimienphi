@@ -63,3 +63,4 @@ apps/backend/docker/data
 .docker-data
 .nx/migrate-runs
 .vercel
+.scratch-algo/
