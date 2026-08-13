@@ -9,40 +9,13 @@ const CHI = [
   'Dần',
   'Mão',
   'Thìn',
-  'Tỵ',
+  'Tị',
   'Ngọ',
   'Mùi',
   'Thân',
   'Dậu',
   'Tuất',
   'Hợi',
-] as const;
-
-const TIET_KHI = [
-  'Xuân phân',
-  'Thanh minh',
-  'Cốc vũ',
-  'Lập hạ',
-  'Tiểu mãn',
-  'Mang chủng',
-  'Hạ chí',
-  'Tiểu thử',
-  'Đại thử',
-  'Lập thu',
-  'Xử thử',
-  'Bạch lộ',
-  'Thu phân',
-  'Hàn lộ',
-  'Sương giáng',
-  'Lập đông',
-  'Tiểu tuyết',
-  'Đại tuyết',
-  'Đông chí',
-  'Tiểu hàn',
-  'Đại hàn',
-  'Lập xuân',
-  'Vũ thủy',
-  'Kinh trập',
 ] as const;
 
 export interface LunarDate {
@@ -206,8 +179,55 @@ export function getDayCanChi(date: Date): string {
   return `${CAN[can]} ${CHI[chi]}`;
 }
 
+// Solar-term boundaries matched to lichdungsu: day-granular, from the same
+// TIET24 minute-offset table over the tropical year rather than an instant
+// longitude, so a date belongs to whichever term has begun by that calendar day.
+const TROPICAL_YEAR_MS = 31556925974.7;
+const TIET_EPOCH_MS = Date.UTC(1900, 0, 6, 2, 5);
+const TIET24_OFFSETS = [
+  0, 21208, 42467, 63836, 85337, 107014, 128867, 150921, 173149, 195551, 218072, 240693, 263343,
+  285989, 308563, 331033, 353350, 375494, 397447, 419210, 440795, 462224, 483532, 504758,
+];
+const TIET24_NAMES = [
+  'Tiểu Hàn',
+  'Đại Hàn',
+  'Lập Xuân',
+  'Vũ Thủy',
+  'Kinh Trập',
+  'Xuân Phân',
+  'Thanh Minh',
+  'Cốc Vũ',
+  'Lập Hạ',
+  'Tiểu Mãn',
+  'Mang Chủng',
+  'Hạ Chí',
+  'Tiểu Thử',
+  'Đại Thử',
+  'Lập Thu',
+  'Xử Thử',
+  'Bạch Lộ',
+  'Thu Phân',
+  'Hàn Lộ',
+  'Sương Giáng',
+  'Lập Đông',
+  'Tiểu Tuyết',
+  'Đại Tuyết',
+  'Đông Chí',
+] as const;
+
+function tietStartDay(year: number, termIndex: number): number {
+  const ms = TROPICAL_YEAR_MS * (year - 1900) + TIET24_OFFSETS[termIndex] * 60000 + TIET_EPOCH_MS;
+  return new Date(ms).getUTCDate();
+}
+
 export function getSolarTerm(date: Date): string {
-  const jd = jdFromDate(date.getDate(), date.getMonth() + 1, date.getFullYear());
-  const degrees = getSunLongitudeDegrees(jd, VN_TIMEZONE_OFFSET_HOURS);
-  return TIET_KHI[Math.floor(degrees / 15)];
+  const dd = date.getDate();
+  const monthIndex = date.getMonth();
+  const year = date.getFullYear();
+  const tiet = tietStartDay(year, monthIndex * 2);
+  const khi = tietStartDay(year, monthIndex * 2 + 1);
+
+  if (dd >= tiet && dd < khi) return TIET24_NAMES[monthIndex * 2];
+  if (dd >= khi) return TIET24_NAMES[monthIndex * 2 + 1];
+  return TIET24_NAMES[(((monthIndex * 2 - 1) % 24) + 24) % 24];
 }

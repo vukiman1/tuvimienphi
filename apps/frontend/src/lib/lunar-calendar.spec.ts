@@ -59,7 +59,7 @@ describe('convertSolarToLunar', () => {
 describe('can chi', () => {
   it('names the lunar years', () => {
     expect(getYearCanChi(2024)).toBe('Giáp Thìn');
-    expect(getYearCanChi(2025)).toBe('Ất Tỵ');
+    expect(getYearCanChi(2025)).toBe('Ất Tị');
     expect(getYearCanChi(2026)).toBe('Bính Ngọ');
   });
 
@@ -74,8 +74,8 @@ describe('can chi', () => {
 
 describe('getSolarTerm', () => {
   it('returns the solar term active on a date', () => {
-    expect(getSolarTerm(new Date(2026, 7, 11))).toBe('Lập thu');
-    expect(getSolarTerm(new Date(2025, 11, 22))).toBe('Đông chí');
-    expect(getSolarTerm(new Date(2025, 2, 21))).toBe('Xuân phân');
+    expect(getSolarTerm(new Date(2026, 7, 11))).toBe('Lập Thu');
+    expect(getSolarTerm(new Date(2025, 11, 22))).toBe('Đông Chí');
+    expect(getSolarTerm(new Date(2025, 2, 21))).toBe('Xuân Phân');
   });
 });

@@ -4,7 +4,7 @@ export const ZODIAC_CHI = [
   { chi: 'Dần', icon: '03-dan' },
   { chi: 'Mão', icon: '04-mao' },
   { chi: 'Thìn', icon: '05-thin' },
-  { chi: 'Tỵ', icon: '06-ti' },
+  { chi: 'Tị', icon: '06-ti' },
   { chi: 'Ngọ', icon: '07-ngo' },
   { chi: 'Mùi', icon: '08-mui' },
   { chi: 'Thân', icon: '09-than' },
@@ -15,7 +15,7 @@ export const ZODIAC_CHI = [
 
 export type ZodiacChi = (typeof ZODIAC_CHI)[number]['chi'];
 
-const CHI_ALIASES: Readonly<Record<string, ZodiacChi>> = { Tị: 'Tỵ' };
+const CHI_ALIASES: Readonly<Record<string, ZodiacChi>> = { Tỵ: 'Tị' };
 
 export function normalizeChi(chi: string): ZodiacChi | null {
   const normalized = CHI_ALIASES[chi] ?? chi;
