@@ -62,3 +62,7 @@ captcha:
 
 google:
   clientId: ''
+
+queueBoard:
+  user: admin
+  password: ''

@@ -160,3 +160,29 @@ export interface UserCredit {
   balance: number | string;
   token?: number | string;
 }
+
+// Vận hạn
+export interface VanHanAspectData {
+  aspect: string;
+  rating: number;
+  body: string;
+}
+
+export interface VanHanAgeData {
+  birthYear: number;
+  canChi: string;
+  menh: string;
+  male: string;
+  female: string;
+}
+
+export interface VanHanEntry {
+  zodiac: string;
+  zodiacOrder: number;
+  year: number;
+  title: string;
+  bornYears: number[];
+  luuNien: string;
+  luanGiai: VanHanAspectData[];
+  tungTuoi: VanHanAgeData[];
+}

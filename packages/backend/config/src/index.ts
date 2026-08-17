@@ -107,6 +107,11 @@ interface GoogleConfig {
   clientId: string;
 }
 
+interface QueueBoardConfig {
+  user: string;
+  password: string;
+}
+
 const stringListSchema = z.preprocess(
   (value) =>
     typeof value === 'string'
@@ -187,6 +192,10 @@ const backendConfigSchema = z.object({
   google: z.object({
     clientId: z.string().default(''),
   }),
+  queueBoard: z.object({
+    user: z.string().default('admin'),
+    password: z.string().default(''),
+  }),
 });
 
 function resolveBackendRoot() {
@@ -225,9 +234,11 @@ export default () => {
     email: nodeConfig.get<EmailConfig>('email'),
     captcha: nodeConfig.get<CaptchaConfig>('captcha'),
     google: nodeConfig.get<GoogleConfig>('google'),
+    queueBoard: nodeConfig.get<QueueBoardConfig>('queueBoard'),
   });
 
-  const { app, db, redis, cors, jwt, session, crypto, sentry, email, captcha, google } = validated;
+  const { app, db, redis, cors, jwt, session, crypto, sentry, email, captcha, google, queueBoard } =
+    validated;
 
   return {
     app: {
@@ -265,5 +276,6 @@ export default () => {
     email,
     captcha,
     google,
+    queueBoard,
   };
 };

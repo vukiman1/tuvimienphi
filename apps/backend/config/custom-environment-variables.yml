@@ -76,3 +76,7 @@ captcha:
 
 google:
   clientId: GOOGLE_CLIENT_ID
+
+queueBoard:
+  user: QUEUE_BOARD_USER
+  password: QUEUE_BOARD_PASSWORD
