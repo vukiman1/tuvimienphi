@@ -133,6 +133,10 @@
     "webpack-cli": "^7.2.2"
   },
   "dependencies": {
+    "@bull-board/api": "^8.6.1",
+    "@bull-board/express": "^8.6.1",
+    "@bull-board/nestjs": "^8.6.1",
+    "@nestjs/bullmq": "^11.0.5",
     "@nestjs/common": "^11.1.28",
     "@nestjs/config": "^4.0.4",
     "@nestjs/core": "^11.1.27",
@@ -148,6 +152,7 @@
     "@tanstack/react-router": "^1.170.21",
     "argon2": "^0.45.1",
     "axios": "^1.19.0",
+    "bullmq": "^6.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
     "class-variance-authority": "^0.7.1",
@@ -162,6 +167,7 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "pg": "^8.22.0",
+    "playwright": "^1.62.1",
     "qrcode": "^1.5.4",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
