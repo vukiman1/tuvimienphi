@@ -13,12 +13,14 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as SiteRouteImport } from './routes/_site'
 import { Route as authLoginRouteImport } from './routes/(auth)/login'
 import { Route as authRegisterRouteImport } from './routes/(auth)/register'
-import { Route as SiteGieoQueRouteImport } from './routes/_site/gieo-que'
+import { Route as SiteKienThucRouteImport } from './routes/_site/kien-thuc'
 import { Route as SiteLaSoRouteImport } from './routes/_site/la-so'
 import { Route as SiteNgayTotRouteImport } from './routes/_site/ngay-tot'
 import { Route as SiteVanHanRouteImport } from './routes/_site/van-han'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
+import { Route as SiteKienThucIndexRouteImport } from './routes/_site/kien-thuc.index'
+import { Route as SiteKienThucSlugRouteImport } from './routes/_site/kien-thuc.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -39,9 +41,9 @@ const authRegisterRoute = authRegisterRouteImport.update({
   path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SiteGieoQueRoute = SiteGieoQueRouteImport.update({
-  id: '/gieo-que',
-  path: '/gieo-que',
+const SiteKienThucRoute = SiteKienThucRouteImport.update({
+  id: '/kien-thuc',
+  path: '/kien-thuc',
   getParentRoute: () => SiteRoute,
 } as any)
 const SiteLaSoRoute = SiteLaSoRouteImport.update({
@@ -69,28 +71,41 @@ const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
   path: '/dashboard/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SiteKienThucIndexRoute = SiteKienThucIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SiteKienThucRoute,
+} as any)
+const SiteKienThucSlugRoute = SiteKienThucSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => SiteKienThucRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
-  '/gieo-que': typeof SiteGieoQueRoute
+  '/kien-thuc': typeof SiteKienThucRouteWithChildren
   '/la-so': typeof SiteLaSoRoute
   '/ngay-tot': typeof SiteNgayTotRoute
   '/van-han': typeof SiteVanHanRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/kien-thuc/$slug': typeof SiteKienThucSlugRoute
+  '/kien-thuc/': typeof SiteKienThucIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
-  '/gieo-que': typeof SiteGieoQueRoute
   '/la-so': typeof SiteLaSoRoute
   '/ngay-tot': typeof SiteNgayTotRoute
   '/van-han': typeof SiteVanHanRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/kien-thuc/$slug': typeof SiteKienThucSlugRoute
+  '/kien-thuc': typeof SiteKienThucIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -98,12 +113,14 @@ export interface FileRoutesById {
   '/_site': typeof SiteRouteWithChildren
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/register': typeof authRegisterRoute
-  '/_site/gieo-que': typeof SiteGieoQueRoute
+  '/_site/kien-thuc': typeof SiteKienThucRouteWithChildren
   '/_site/la-so': typeof SiteLaSoRoute
   '/_site/ngay-tot': typeof SiteNgayTotRoute
   '/_site/van-han': typeof SiteVanHanRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/_site/kien-thuc/$slug': typeof SiteKienThucSlugRoute
+  '/_site/kien-thuc/': typeof SiteKienThucIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,35 +128,40 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
-    | '/gieo-que'
+    | '/kien-thuc'
     | '/la-so'
     | '/ngay-tot'
     | '/van-han'
     | '/dashboard/settings'
     | '/dashboard/'
+    | '/kien-thuc/$slug'
+    | '/kien-thuc/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
     | '/register'
-    | '/gieo-que'
     | '/la-so'
     | '/ngay-tot'
     | '/van-han'
     | '/dashboard/settings'
     | '/dashboard'
+    | '/kien-thuc/$slug'
+    | '/kien-thuc'
   id:
     | '__root__'
     | '/'
     | '/_site'
     | '/(auth)/login'
     | '/(auth)/register'
-    | '/_site/gieo-que'
+    | '/_site/kien-thuc'
     | '/_site/la-so'
     | '/_site/ngay-tot'
     | '/_site/van-han'
     | '/dashboard/settings'
     | '/dashboard/'
+    | '/_site/kien-thuc/$slug'
+    | '/_site/kien-thuc/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -181,11 +203,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authRegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_site/gieo-que': {
-      id: '/_site/gieo-que'
-      path: '/gieo-que'
-      fullPath: '/gieo-que'
-      preLoaderRoute: typeof SiteGieoQueRouteImport
+    '/_site/kien-thuc': {
+      id: '/_site/kien-thuc'
+      path: '/kien-thuc'
+      fullPath: '/kien-thuc'
+      preLoaderRoute: typeof SiteKienThucRouteImport
       parentRoute: typeof SiteRoute
     }
     '/_site/la-so': {
@@ -223,18 +245,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_site/kien-thuc/': {
+      id: '/_site/kien-thuc/'
+      path: '/'
+      fullPath: '/kien-thuc/'
+      preLoaderRoute: typeof SiteKienThucIndexRouteImport
+      parentRoute: typeof SiteKienThucRoute
+    }
+    '/_site/kien-thuc/$slug': {
+      id: '/_site/kien-thuc/$slug'
+      path: '/$slug'
+      fullPath: '/kien-thuc/$slug'
+      preLoaderRoute: typeof SiteKienThucSlugRouteImport
+      parentRoute: typeof SiteKienThucRoute
+    }
   }
 }
 
+interface SiteKienThucRouteChildren {
+  SiteKienThucSlugRoute: typeof SiteKienThucSlugRoute
+  SiteKienThucIndexRoute: typeof SiteKienThucIndexRoute
+}
+
+const SiteKienThucRouteChildren: SiteKienThucRouteChildren = {
+  SiteKienThucSlugRoute: SiteKienThucSlugRoute,
+  SiteKienThucIndexRoute: SiteKienThucIndexRoute,
+}
+
+const SiteKienThucRouteWithChildren = SiteKienThucRoute._addFileChildren(
+  SiteKienThucRouteChildren,
+)
+
 interface SiteRouteChildren {
-  SiteGieoQueRoute: typeof SiteGieoQueRoute
+  SiteKienThucRoute: typeof SiteKienThucRouteWithChildren
   SiteLaSoRoute: typeof SiteLaSoRoute
   SiteNgayTotRoute: typeof SiteNgayTotRoute
   SiteVanHanRoute: typeof SiteVanHanRoute
 }
 
 const SiteRouteChildren: SiteRouteChildren = {
-  SiteGieoQueRoute: SiteGieoQueRoute,
+  SiteKienThucRoute: SiteKienThucRouteWithChildren,
   SiteLaSoRoute: SiteLaSoRoute,
   SiteNgayTotRoute: SiteNgayTotRoute,
   SiteVanHanRoute: SiteVanHanRoute,
