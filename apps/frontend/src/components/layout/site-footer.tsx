@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import { NAV_ITEMS } from '@/components/layout/nav-items';
 import { appConfig } from '@/config/app-config';
+import { MEDIA } from '@/config/media';
 
 const FOOTER_GRADIENT = 'linear-gradient(110deg, #17171a 0%, #2b2925 55%, #131315 100%)';
 
@@ -14,7 +15,7 @@ export function SiteFooter() {
             to="/"
             aria-label={appConfig.app.name}
           >
-            <img src="/logo.png" alt="" className="h-8 w-auto" />
+            <img src={MEDIA.brand.logo} alt="" className="h-8 w-auto" />
           </Link>
 
           <nav

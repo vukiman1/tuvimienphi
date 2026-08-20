@@ -4,6 +4,7 @@ import { NavigationProgress } from '@/components/layout/navigation-progress';
 import { UserMenu } from '@/components/layout/user-menu';
 import { useAuthModal } from '@/features/auth/use-auth-modal';
 import { appConfig } from '@/config/app-config';
+import { MEDIA } from '@/config/media';
 import { selectIsInitializing, selectUser, useAuthStore } from '@/stores/auth-store';
 
 const HEADER_GRADIENT = 'linear-gradient(110deg, #131315 0%, #35332e 55%, #17171a 100%)';
@@ -38,7 +39,7 @@ export function SiteHeader() {
     >
       <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-1 px-4 py-2 md:px-6">
         <Link className="flex shrink-0 items-center no-underline" to="/">
-          <img src="/logo.png" alt={appConfig.app.name} className="h-7 w-auto md:h-10" />
+          <img src={MEDIA.brand.logo} alt={appConfig.app.name} className="h-7 w-auto md:h-10" />
         </Link>
 
         <nav

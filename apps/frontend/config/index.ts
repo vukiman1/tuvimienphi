@@ -28,6 +28,16 @@ const frontendPublicConfigSchema = z.object({
         'api.baseUrl must be an absolute URL or same-origin path',
       ),
   }),
+  media: z.object({
+    baseUrl: z
+      .string()
+      .default('')
+      .refine(
+        (value) => value === '' || URL.canParse(value),
+        'media.baseUrl must be empty or an absolute URL',
+      )
+      .transform((value) => value.replace(/\/$/, '')),
+  }),
   sentry: z.object({
     dsn: z.string().default(''),
   }),

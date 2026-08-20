@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Flame, Gem, Leaf, Mountain, Star, Waves } from 'lucide-react';
+import { MEDIA } from '@/config/media';
 import { getYearCanChi } from '@/lib/lunar-calendar';
 import { zodiacIconPath, type ZodiacChi } from '@/lib/zodiac-icons';
 import type {
@@ -111,10 +112,10 @@ function BirthYearCard({ entry }: { readonly entry: VanHanBirthYearFortune }) {
 }
 
 const ASPECT_ICONS = [
-  '/icons/icon-tai-van.png',
-  '/icons/icon-su-nghiep.png',
-  '/icons/icon-suc-khoe.png',
-  '/icons/icon-tinh-duyen.png',
+  MEDIA.vanHan.aspectTaiVan,
+  MEDIA.vanHan.aspectSuNghiep,
+  MEDIA.vanHan.aspectSucKhoe,
+  MEDIA.vanHan.aspectTinhDuyen,
 ] as const;
 
 function AspectRating({ rating }: { readonly rating: number }) {
@@ -155,7 +156,7 @@ function AspectCard({
         alt=""
         aria-hidden
         className="pointer-events-none absolute top-1 right-1 h-12 opacity-15"
-        src="/icons/decor-cloud.png"
+        src={MEDIA.vanHan.decorCloud}
       />
 
       <p className="relative flex items-center gap-2 border-b border-[#c9a15c]/20 pb-2 text-sm font-bold tracking-wide text-primary uppercase">
@@ -173,7 +174,7 @@ function AspectCard({
               alt=""
               aria-hidden
               className="mt-1.5 h-2.5 w-auto shrink-0"
-              src="/icons/bullet-arrow.png"
+              src={MEDIA.vanHan.bulletArrow}
             />
             {point}
           </li>
