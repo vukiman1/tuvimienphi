@@ -42,6 +42,12 @@
   --brand-hue: 45;
   --radius: 0.5rem;
 
+  /* Measured height of SiteHeader, in px because the root font-size is 137.5% and rem here would
+     mislead. The home hero subtracts it to fill exactly the first screen. Three values because the
+     header reflows twice: the nav drops to its own row below md, and the sign-in button to its own
+     row below lg. */
+  --site-header-height: 123px;
+
   /* Surfaces */
   --background: oklch(0.99 0.004 var(--brand-hue));
   --foreground: oklch(0.16 0.01 var(--brand-hue));
@@ -96,6 +102,18 @@
   --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 16%);
   --ring: var(--primary);
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --site-header-height: 133px;
+  }
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --site-header-height: 78px;
+  }
 }
 
 @layer base {
