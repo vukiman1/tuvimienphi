@@ -27,6 +27,8 @@ interface FormFieldProps extends ControlOwnProps {
   label: string;
   /** Swap in PasswordInput, or anything else taking the same props. */
   control?: ComponentType<ControlProps>;
+  /** Hides the label visually; it stays available to a screen reader. */
+  isLabelHidden?: boolean;
 }
 
 /**
@@ -37,13 +39,16 @@ export function FormField({
   field,
   label,
   control: Control = Input,
+  isLabelHidden = false,
   ...controlProps
 }: FormFieldProps) {
   const errorId = `${field.name}-error`;
 
   return (
     <div className="grid gap-2">
-      <Label htmlFor={field.name}>{label}</Label>
+      <Label className={isLabelHidden ? 'sr-only' : undefined} htmlFor={field.name}>
+        {label}
+      </Label>
       <Control
         aria-describedby={errorId}
         aria-invalid={field.state.meta.errors.length > 0}

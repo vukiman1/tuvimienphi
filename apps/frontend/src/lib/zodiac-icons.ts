@@ -1,3 +1,5 @@
+import { zodiacIconUrl } from '@/config/media';
+
 export const ZODIAC_CHI = [
   { chi: 'Tý', icon: '01-ty' },
   { chi: 'Sửu', icon: '02-suu' },
@@ -31,5 +33,5 @@ export function zodiacIconPath(
   if (!entry) {
     return null;
   }
-  return `/zodiac/${entry.icon}${variant === 'gold' ? '-gold' : ''}.png`;
+  return zodiacIconUrl(`${entry.icon}${variant === 'gold' ? '-gold' : ''}`);
 }

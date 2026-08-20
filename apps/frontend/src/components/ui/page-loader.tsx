@@ -1,3 +1,5 @@
+import { MEDIA } from '@/config/media';
+
 export function PageLoader() {
   return (
     <main
@@ -6,7 +8,7 @@ export function PageLoader() {
       className="flex flex-col items-center justify-center gap-4 py-24"
     >
       <img
-        src="/icon.png"
+        src={MEDIA.brand.icon}
         alt=""
         className="size-12 animate-spin [animation-duration:6s] motion-reduce:animate-none"
       />

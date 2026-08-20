@@ -48,3 +48,20 @@ Object.defineProperty(window, 'scrollTo', {
   value: () => undefined,
   writable: true,
 });
+
+// jsdom implements no media queries. Report "no match" so components read the default branch —
+// notably prefers-reduced-motion, where the default is that motion is allowed.
+Object.defineProperty(window, 'matchMedia', {
+  value: (query: string): MediaQueryList =>
+    ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addEventListener: () => undefined,
+      removeEventListener: () => undefined,
+      addListener: () => undefined,
+      removeListener: () => undefined,
+      dispatchEvent: () => false,
+    }) as MediaQueryList,
+  writable: true,
+});

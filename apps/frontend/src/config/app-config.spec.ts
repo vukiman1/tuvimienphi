@@ -29,6 +29,7 @@ describe('frontend config', () => {
     expect(config).toEqual({
       app: { name: 'Tử Vi Miễn Phí', environment: 'test' },
       api: { baseUrl: 'http://localhost:3000/api' },
+      media: { baseUrl: '' },
       sentry: { dsn: '' },
       google: { clientId: '' },
     });
@@ -39,6 +40,7 @@ describe('frontend config', () => {
     const requireStub = createRequireStub(() => ({
       app: { name: appName, environment: 'test' },
       api: { baseUrl: 'http://localhost:3000/api' },
+      media: { baseUrl: '' },
       sentry: { dsn: '' },
       google: { clientId: '' },
     }));

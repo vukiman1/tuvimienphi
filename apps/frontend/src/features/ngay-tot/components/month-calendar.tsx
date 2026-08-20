@@ -1,4 +1,6 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { MEDIA } from '@/config/media';
+import { CornerBrackets } from '@/features/ngay-tot/components/corner-brackets';
 import { convertSolarToLunar } from '@/lib/lunar-calendar';
 
 const WEEKDAY_LABELS = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'] as const;
@@ -44,8 +46,17 @@ export function MonthCalendar({
   const dates = buildCalendarDates(viewYear, viewMonth);
 
   return (
-    <div className="rounded-xl border border-[#c9a15c]/40 bg-card p-3 shadow-md md:p-4">
-      <div className="flex items-center justify-between gap-2">
+    <div className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-[#c9a15c]/40 bg-card p-3 pb-[36%] shadow-md md:p-5 md:pb-[36%]">
+      <CornerBrackets />
+      <img
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 w-full opacity-35 select-none"
+        loading="lazy"
+        src={MEDIA.ngayTot.calendarFoot}
+      />
+
+      <div className="relative flex items-center justify-between gap-2">
         <button
           aria-label="Tháng trước"
           className={NAV_BUTTON_CLASS}
@@ -54,12 +65,12 @@ export function MonthCalendar({
         >
           <ChevronLeft className="size-4" />
         </button>
-        <p className="font-display text-base font-bold whitespace-nowrap text-primary md:text-lg">
+        <p className="font-display text-sm font-bold tracking-wide whitespace-nowrap text-primary uppercase sm:text-base md:text-xl">
           Tháng {viewMonth}, {viewYear}
         </p>
         <div className="flex items-center gap-2">
           <button
-            className="rounded-md px-2 py-1 text-xs font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-primary outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+            className="rounded-full border border-[#c9a15c]/40 px-2.5 py-1 text-[0.7rem] font-medium whitespace-nowrap text-muted-foreground transition-colors outline-none hover:border-[#c9a15c] hover:text-primary focus-visible:ring-2 focus-visible:ring-ring/60 sm:px-3.5 sm:text-xs"
             onClick={onGoToday}
             type="button"
           >
@@ -76,7 +87,7 @@ export function MonthCalendar({
         </div>
       </div>
 
-      <div className="mt-3 grid grid-cols-7 gap-0.5">
+      <div className="relative mt-4 grid flex-1 grid-cols-7 gap-y-1 content-between">
         {WEEKDAY_LABELS.map((label) => (
           <p
             key={label}
@@ -120,7 +131,7 @@ export function MonthCalendar({
               aria-pressed={isSelected}
               onClick={() => onSelectDate(date)}
               type="button"
-              className={`flex flex-col items-center rounded-md py-1 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring/60 ${
+              className={`mx-auto flex aspect-square w-full max-w-11 flex-col items-center justify-center rounded-full transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring/60 ${
                 isSelected
                   ? 'bg-gradient-to-br from-[#e8c987] to-[#b8894a] shadow-sm'
                   : `hover:bg-primary/10 ${isToday ? 'ring-1 ring-[#c9a15c]' : ''}`

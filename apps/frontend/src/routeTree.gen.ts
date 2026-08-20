@@ -9,10 +9,10 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as SiteRouteImport } from './routes/_site'
 import { Route as authLoginRouteImport } from './routes/(auth)/login'
 import { Route as authRegisterRouteImport } from './routes/(auth)/register'
+import { Route as SiteIndexRouteImport } from './routes/_site/index'
 import { Route as SiteKienThucRouteImport } from './routes/_site/kien-thuc'
 import { Route as SiteLaSoRouteImport } from './routes/_site/la-so'
 import { Route as SiteNgayTotRouteImport } from './routes/_site/ngay-tot'
@@ -22,11 +22,6 @@ import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settin
 import { Route as SiteKienThucIndexRouteImport } from './routes/_site/kien-thuc.index'
 import { Route as SiteKienThucSlugRouteImport } from './routes/_site/kien-thuc.$slug'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SiteRoute = SiteRouteImport.update({
   id: '/_site',
   getParentRoute: () => rootRouteImport,
@@ -40,6 +35,11 @@ const authRegisterRoute = authRegisterRouteImport.update({
   id: '/(auth)/register',
   path: '/register',
   getParentRoute: () => rootRouteImport,
+} as any)
+const SiteIndexRoute = SiteIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SiteRoute,
 } as any)
 const SiteKienThucRoute = SiteKienThucRouteImport.update({
   id: '/kien-thuc',
@@ -83,7 +83,7 @@ const SiteKienThucSlugRoute = SiteKienThucSlugRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof SiteIndexRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
   '/kien-thuc': typeof SiteKienThucRouteWithChildren
@@ -96,20 +96,19 @@ export interface FileRoutesByFullPath {
   '/kien-thuc/': typeof SiteKienThucIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
   '/la-so': typeof SiteLaSoRoute
   '/ngay-tot': typeof SiteNgayTotRoute
   '/van-han': typeof SiteVanHanRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
+  '/': typeof SiteIndexRoute
   '/dashboard': typeof DashboardIndexRoute
   '/kien-thuc/$slug': typeof SiteKienThucSlugRoute
   '/kien-thuc': typeof SiteKienThucIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/_site': typeof SiteRouteWithChildren
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/register': typeof authRegisterRoute
@@ -118,6 +117,7 @@ export interface FileRoutesById {
   '/_site/ngay-tot': typeof SiteNgayTotRoute
   '/_site/van-han': typeof SiteVanHanRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
+  '/_site/': typeof SiteIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/_site/kien-thuc/$slug': typeof SiteKienThucSlugRoute
   '/_site/kien-thuc/': typeof SiteKienThucIndexRoute
@@ -138,19 +138,18 @@ export interface FileRouteTypes {
     | '/kien-thuc/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | '/login'
     | '/register'
     | '/la-so'
     | '/ngay-tot'
     | '/van-han'
     | '/dashboard/settings'
+    | '/'
     | '/dashboard'
     | '/kien-thuc/$slug'
     | '/kien-thuc'
   id:
     | '__root__'
-    | '/'
     | '/_site'
     | '/(auth)/login'
     | '/(auth)/register'
@@ -159,13 +158,13 @@ export interface FileRouteTypes {
     | '/_site/ngay-tot'
     | '/_site/van-han'
     | '/dashboard/settings'
+    | '/_site/'
     | '/dashboard/'
     | '/_site/kien-thuc/$slug'
     | '/_site/kien-thuc/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   SiteRoute: typeof SiteRouteWithChildren
   authLoginRoute: typeof authLoginRoute
   authRegisterRoute: typeof authRegisterRoute
@@ -175,13 +174,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_site': {
       id: '/_site'
       path: ''
@@ -202,6 +194,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/register'
       preLoaderRoute: typeof authRegisterRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_site/': {
+      id: '/_site/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof SiteIndexRouteImport
+      parentRoute: typeof SiteRoute
     }
     '/_site/kien-thuc': {
       id: '/_site/kien-thuc'
@@ -281,6 +280,7 @@ interface SiteRouteChildren {
   SiteLaSoRoute: typeof SiteLaSoRoute
   SiteNgayTotRoute: typeof SiteNgayTotRoute
   SiteVanHanRoute: typeof SiteVanHanRoute
+  SiteIndexRoute: typeof SiteIndexRoute
 }
 
 const SiteRouteChildren: SiteRouteChildren = {
@@ -288,12 +288,12 @@ const SiteRouteChildren: SiteRouteChildren = {
   SiteLaSoRoute: SiteLaSoRoute,
   SiteNgayTotRoute: SiteNgayTotRoute,
   SiteVanHanRoute: SiteVanHanRoute,
+  SiteIndexRoute: SiteIndexRoute,
 }
 
 const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   SiteRoute: SiteRouteWithChildren,
   authLoginRoute: authLoginRoute,
   authRegisterRoute: authRegisterRoute,

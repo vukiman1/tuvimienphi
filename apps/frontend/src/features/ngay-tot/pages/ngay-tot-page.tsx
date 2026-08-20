@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { MEDIA } from '@/config/media';
 import { DayDetailCard } from '@/features/ngay-tot/components/day-detail-card';
 import { HourQualityList } from '@/features/ngay-tot/components/hour-quality-list';
 import { MonthCalendar } from '@/features/ngay-tot/components/month-calendar';
@@ -18,6 +19,23 @@ const PAGE_TABS = [
 ] as const;
 
 type PageTabId = (typeof PAGE_TABS)[number]['id'];
+
+/**
+ * Two gradients intersected: the art dissolves before it reaches the heading on the left, and
+ * again at the bottom and right so its rectangular edge never shows against the cream.
+ */
+const BACKDROP_FADE = [
+  'linear-gradient(to right, transparent 0%, black 32%)',
+  'linear-gradient(to bottom, black 45%, transparent 98%)',
+  'linear-gradient(to left, transparent 0%, black 14%)',
+].join(', ');
+
+const BACKDROP_MASK = {
+  maskImage: BACKDROP_FADE,
+  maskComposite: 'intersect',
+  WebkitMaskImage: BACKDROP_FADE,
+  WebkitMaskComposite: 'source-in',
+} as const;
 
 export function NgayTotPage() {
   const [activeTab, setActiveTab] = useState<PageTabId>('hiep-ky');
@@ -44,72 +62,87 @@ export function NgayTotPage() {
     setViewMonth(date.getMonth() + 1);
   };
 
+  const isToday = selectedDate.toDateString() === new Date().toDateString();
+
   return (
-    <main className="mx-auto w-full max-w-3xl px-4 py-8 md:px-6">
-      <h1 className="font-display text-3xl font-bold text-foreground">Ngày Tốt</h1>
-      <p className="mt-1 text-sm text-muted-foreground">
-        Xem lịch âm dương trong tháng, ngày mùng 1 và ngày rằm.
-      </p>
+    <main className="relative overflow-hidden bg-[#fdf9f0]">
+      {/* Page backdrop: the cards sit over it, so everything after this needs its own stacking context. */}
+      <img
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute top-0 right-0 w-[78%] max-w-[1080px] opacity-80 select-none"
+        style={BACKDROP_MASK}
+        src={MEDIA.ngayTot.sceneTop}
+      />
 
-      <div
-        aria-label="Trường phái luận giải"
-        className="mt-4 flex w-fit max-w-full gap-1 overflow-x-auto rounded-full border border-[#c9a15c]/30 bg-card p-1 shadow-sm"
-        role="tablist"
-      >
-        {PAGE_TABS.map((tab) => (
-          <button
-            key={tab.id}
-            aria-controls={`panel-${tab.id}`}
-            aria-selected={activeTab === tab.id}
-            id={`tab-${tab.id}`}
-            onClick={() => setActiveTab(tab.id)}
-            role="tab"
-            type="button"
-            className={`rounded-full px-4 py-1.5 text-xs font-semibold whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring/60 ${
-              activeTab === tab.id
-                ? 'bg-gradient-to-br from-[#e8c987] to-[#b8894a] text-[#1a1a1c] shadow-sm'
-                : 'text-muted-foreground hover:text-primary'
-            }`}
+      <div className="relative mx-auto w-full max-w-[1400px] px-4 py-10 md:px-8 md:py-14">
+        {/* Header sits outside the grid so both cards start on the same line, as the design has it. */}
+        <div className="flex flex-col gap-6">
+          <div>
+            <h1 className="font-display text-4xl font-bold text-foreground md:text-5xl">
+              Ngày Tốt
+            </h1>
+            <p className="mt-2 text-sm text-muted-foreground md:text-base">
+              Xem lịch âm dương trong tháng, ngày mùng 1 và ngày rằm.
+            </p>
+          </div>
+
+          <div aria-label="Trường phái luận giải" className="flex flex-wrap gap-2" role="tablist">
+            {PAGE_TABS.map((tab) => (
+              <button
+                key={tab.id}
+                aria-controls={`panel-${tab.id}`}
+                aria-selected={activeTab === tab.id}
+                id={`tab-${tab.id}`}
+                onClick={() => setActiveTab(tab.id)}
+                role="tab"
+                type="button"
+                className={`rounded-full border px-5 py-2 text-sm font-semibold whitespace-nowrap transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring/60 ${
+                  activeTab === tab.id
+                    ? 'border-transparent bg-gradient-to-br from-[#e8c987] to-[#b8894a] text-[#1a1a1c] shadow-sm'
+                    : 'border-[#c9a15c]/40 bg-card text-muted-foreground hover:text-primary'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)] xl:grid-cols-[minmax(0,560px)_minmax(0,1fr)]">
+          {/* Outside the tab panel: every school still needs a date picked. */}
+          <MonthCalendar
+            onGoToday={goToday}
+            onSelectDate={selectDate}
+            onStepMonth={stepMonth}
+            selectedDate={selectedDate}
+            viewMonth={viewMonth}
+            viewYear={viewYear}
+          />
+
+          <div
+            aria-labelledby={`tab-${activeTab}`}
+            className="flex min-w-0 flex-col gap-6"
+            id={`panel-${activeTab}`}
+            role="tabpanel"
           >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      <div
-        aria-labelledby={`tab-${activeTab}`}
-        className="mt-4"
-        id={`panel-${activeTab}`}
-        role="tabpanel"
-      >
-        {activeTab === 'hiep-ky' ? (
-          <>
-            <div className="grid items-start gap-4 md:grid-cols-[minmax(0,400px)_1fr]">
-              <MonthCalendar
-                onGoToday={goToday}
-                onSelectDate={selectDate}
-                onStepMonth={stepMonth}
-                selectedDate={selectedDate}
-                viewMonth={viewMonth}
-                viewYear={viewYear}
-              />
-              <div className="flex flex-col gap-4">
+            {activeTab === 'hiep-ky' ? (
+              <>
                 <DayDetailCard date={selectedDate} />
                 <XuatHanhHours slots={getGioXuatHanh(convertSolarToLunar(selectedDate))} />
-              </div>
-            </div>
+              </>
+            ) : activeTab === 'phi-tinh' ? (
+              <PhiTinhBoards boards={getPhiTinhBoards(selectedDate, new Date().getHours())} />
+            ) : (
+              <NhiThapBatTuPanel {...getNhiThapBatTu(selectedDate, new Date().getHours())} />
+            )}
+          </div>
+        </div>
 
-            <div className="mt-4">
-              <HourQualityList
-                items={getGioHoangDao(selectedDate)}
-                isToday={selectedDate.toDateString() === new Date().toDateString()}
-              />
-            </div>
-          </>
-        ) : activeTab === 'phi-tinh' ? (
-          <PhiTinhBoards boards={getPhiTinhBoards(selectedDate, new Date().getHours())} />
-        ) : (
-          <NhiThapBatTuPanel {...getNhiThapBatTu(selectedDate, new Date().getHours())} />
+        {activeTab === 'hiep-ky' && (
+          <div className="mt-8">
+            <HourQualityList items={getGioHoangDao(selectedDate)} isToday={isToday} />
+          </div>
         )}
       </div>
     </main>
