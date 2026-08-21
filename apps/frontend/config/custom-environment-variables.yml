@@ -1,5 +1,8 @@
+# Only values that differ per deployment. Everything constant lives in default.yml —
+# nothing here is secret anyway, since the whole object is inlined into the browser bundle.
+
 app:
-  name: VITE_APP_NAME
+  # Kept so a preview or staging deploy can tag itself without a separate build config.
   environment: VITE_APP_ENVIRONMENT
 
 api:
