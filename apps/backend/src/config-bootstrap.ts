@@ -25,3 +25,22 @@ for (const [name, contents] of FILES) {
 }
 
 process.env.NODE_CONFIG_DIR = CONFIG_DIR;
+
+// TEMPORARY: prints which configuration variables the runtime can actually see, and nothing about
+// their contents. Remove once the deployed function starts.
+const WATCHED =
+  /^(NODE_ENV|APP_URL|CORS_ORIGINS|DATABASE_URL|REDIS_URL|DB_|REDIS_|JWT_|SECRET_KEY|QUEUE_BOARD_)/;
+console.log('[env-probe] NODE_ENV =', JSON.stringify(process.env.NODE_ENV));
+console.log(
+  '[env-probe] CONFIG_DIR =',
+  CONFIG_DIR,
+  '| files =',
+  FILES.map(([name]) => name).join(','),
+);
+console.log(
+  '[env-probe] present =',
+  Object.keys(process.env)
+    .filter((key) => WATCHED.test(key))
+    .sort()
+    .join(',') || '(none)',
+);
