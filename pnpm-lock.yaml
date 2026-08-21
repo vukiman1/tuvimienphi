@@ -97,8 +97,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       config:
-        specifier: ^5.0.0
-        version: 5.0.0
+        specifier: ^4.1.1
+        version: 4.4.2
       cookie-parser:
         specifier: ^1.4.7
         version: 1.4.7
@@ -6150,6 +6150,10 @@ packages:
 
   concat-with-sourcemaps@1.1.0:
     resolution: {integrity: sha512-4gEjHJFT9e+2W/77h/DS5SGUgwDaOwprX8L/gl5+3ixnzkVJJsZWDSelmN3Oilw3LNDZjZV0yqH1hLG3k6nghg==}
+
+  config@4.4.2:
+    resolution: {integrity: sha512-5HJD7TX70gOG2dAd72eDjDeSTYn6D8nOiKgysQQS8mRUo9X1wDtlzb1JlmIWkP+sM9zKRVdYJxmj+qmCsYu6DQ==}
+    engines: {node: '>= 20.0.0'}
 
   config@5.0.0:
     resolution: {integrity: sha512-LaZ/Z113nYJ4YNrH13dWdHvgIehYACiJZPxFVK8ykqO+6CaMAiJ7NkyrxTPAimMJoIKn7qPrvTFzIBPgm4/SLA==}
@@ -17634,6 +17638,10 @@ snapshots:
   concat-with-sourcemaps@1.1.0:
     dependencies:
       source-map: 0.6.1
+
+  config@4.4.2:
+    dependencies:
+      json5: 2.2.3
 
   config@5.0.0:
     dependencies:
