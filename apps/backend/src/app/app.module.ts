@@ -1,5 +1,3 @@
-import { ExpressAdapter } from '@bull-board/express';
-import { BullBoardModule } from '@bull-board/nestjs';
 import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { SentryModule } from '@sentry/nestjs/setup';
@@ -21,9 +19,7 @@ import { ScraperLichDungSuModule } from '../api/scraper/lichdungsu/lichdungsu.mo
 import { AppController } from './app.controller';
 import { providers } from './app.provider';
 import { AppService } from './app.service';
-import { createQueueBoardAuth } from './queue-board-auth';
-
-const { app: appConfig, queueBoard } = configuration();
+import { queueBoardRootImports } from './queue-board-registration';
 
 @Module({
   imports: [
@@ -57,15 +53,7 @@ const { app: appConfig, queueBoard } = configuration();
         },
       }),
     }),
-    BullBoardModule.forRoot({
-      route: '/queues',
-      adapter: ExpressAdapter,
-      middleware: createQueueBoardAuth(
-        queueBoard.user,
-        queueBoard.password,
-        appConfig.nodeEnv === 'production',
-      ),
-    }),
+    ...queueBoardRootImports(),
     DatabaseModule,
     JwtModule,
     CryptoModule,

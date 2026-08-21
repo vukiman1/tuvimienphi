@@ -1,7 +1,6 @@
-import { BullBoardModule } from '@bull-board/nestjs';
-import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
+import { queueBoardFeatureImports } from '../../../app/queue-board-registration';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScraperCoreModule } from '../core/core.module';
 import { LICHDUNGSU_QUEUE } from './lichdungsu.constants';
@@ -18,7 +17,7 @@ import { VanHanService } from './van-han/van-han.service';
   imports: [
     ScraperCoreModule,
     BullModule.registerQueue({ name: LICHDUNGSU_QUEUE }),
-    BullBoardModule.forFeature({ name: LICHDUNGSU_QUEUE, adapter: BullMQAdapter }),
+    ...queueBoardFeatureImports(LICHDUNGSU_QUEUE),
     TypeOrmModule.forFeature([VanHanEntity]),
   ],
   controllers: [LichDungSuController, VanHanPublicController],

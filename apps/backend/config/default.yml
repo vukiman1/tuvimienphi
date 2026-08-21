@@ -47,5 +47,6 @@ google:
   clientId: ''
 
 queueBoard:
+  enabled: true
   user: admin
   password: ''

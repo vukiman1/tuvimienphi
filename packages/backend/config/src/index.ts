@@ -108,6 +108,7 @@ interface GoogleConfig {
 }
 
 interface QueueBoardConfig {
+  enabled: boolean;
   user: string;
   password: string;
 }
@@ -194,6 +195,7 @@ const backendConfigSchema = z.object({
     clientId: z.string().default(''),
   }),
   queueBoard: z.object({
+    enabled: z.boolean().default(true),
     user: z.string().default('admin'),
     password: z.string().default(''),
   }),
