@@ -1,25 +1,13 @@
+# Everything else matches default.yml; repeating it here only invites the two to drift apart.
 app:
-  nodeEnv: development
   logLevels:
     - error
     - warn
     - log
 
-db:
-  primary:
-    host: localhost
-    port: 5432
-  username: postgres
-  password: password
-  database: tuvimienphi
-  tls: false
-  replicas: []
-  log:
-    enabled: true
-
-redis:
-  host: localhost
-  port: 6379
-  password: ''
-  tls: false
-  db: 0
+# The dev deployment's frontend, alongside a local Vite server. Whole arrays are replaced rather
+# than merged, so both origins have to be listed here and local.yml must leave cors alone.
+cors:
+  origins:
+    - http://localhost:4200
+    - https://tuvimienphi-frontend.vercel.app

@@ -1,8 +1,10 @@
+# Values that hold everywhere. Anything machine-specific (localhost hosts, dev credentials) lives
+# in local.yml; production takes those from environment variables instead.
+
 app:
   name: Tu Vi Mien Phi
   port: 3000
   nodeEnv: development
-  url: http://localhost:4200
   trustProxy: 0
   logLevels:
     - error
@@ -12,39 +14,20 @@ app:
     - verbose
 
 db:
-  username: postgres
-  password: password
-  database: tuvimienphi
-  tls: false
-  primary:
-    host: localhost
-    port: 5432
   replicas: []
   log:
     enabled: true
 
 redis:
   cluster: false
-  password: ''
-  tls: false
-  host: localhost
-  port: 6379
   db: 0
 
 sentry:
   dsn: ''
   tracesSampleRate: 0.1
 
-cors:
-  origins:
-    - http://localhost:4200
-
 jwt:
-  secret: super-secret-key
   accessTokenExpiresIn: 15m
-
-crypto:
-  secretKey: yoursecretkeymustbe32characters!!
 
 email:
   resendApiKey: ''

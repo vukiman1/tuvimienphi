@@ -1,14 +1,17 @@
+# Only secrets and per-deployment infrastructure belong here. Tuning values (TTLs, log levels,
+# sample rates, feature flags) live in default.yml and production.yml — an env var for them just
+# adds a second place to look.
+#
+# db.tls, redis.tls and redis.db look like plain toggles but must stay: connection-urls.ts derives
+# them from DATABASE_URL / REDIS_URL, so dropping the mapping would silently disable TLS on a
+# managed provider.
+
 app:
-  name: APP_NAME
   port:
     __name: PORT
     __format: number
   nodeEnv: NODE_ENV
   url: APP_URL
-  trustProxy:
-    __name: TRUST_PROXY
-    __format: number
-  logLevels: LOG_LEVELS
 
 db:
   primary:
@@ -22,10 +25,6 @@ db:
   tls:
     __name: DB_TLS
     __format: boolean
-  log:
-    enabled:
-      __name: DB_LOG_ENABLED
-      __format: boolean
 
 redis:
   host: REDIS_HOST
@@ -42,16 +41,12 @@ redis:
 
 sentry:
   dsn: SENTRY_DSN
-  tracesSampleRate:
-    __name: SENTRY_TRACES_SAMPLE_RATE
-    __format: number
 
 cors:
   origins: CORS_ORIGINS
 
 jwt:
   secret: JWT_SECRET
-  accessTokenExpiresIn: JWT_ACCESS_TOKEN_EXPIRES_IN
 
 crypto:
   secretKey: SECRET_KEY
@@ -60,18 +55,7 @@ email:
   resendApiKey: RESEND_API_KEY
   from: EMAIL_FROM
 
-session:
-  maxSessionsPerUser:
-    __name: MAX_SESSIONS_PER_USER
-    __format: number
-  refreshTtl: SESSION_REFRESH_TTL
-  refreshTtlRemember: SESSION_REFRESH_TTL_REMEMBER
-  refreshTtlOauth: SESSION_REFRESH_TTL_OAUTH
-
 captcha:
-  enabled:
-    __name: CAPTCHA_ENABLED
-    __format: boolean
   secretKey: CAPTCHA_SECRET_KEY
 
 google:

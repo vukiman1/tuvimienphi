@@ -4,13 +4,13 @@ describe('applyConnectionUrls', () => {
   it('expands a Neon pooler URL into the discrete database settings', () => {
     const env: Record<string, string | undefined> = {
       DATABASE_URL:
-        'postgresql://neondb_owner:secret@ep-x-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require',
+        'postgresql://neondb_owner:secret@ep-example-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require',
     };
 
     applyConnectionUrls(env);
 
     expect(env).toMatchObject({
-      DB_HOST: 'ep-x-pooler.ap-southeast-1.aws.neon.tech',
+      DB_HOST: 'ep-example-pooler.ap-southeast-1.aws.neon.tech',
       DB_PORT: '5432',
       DB_USERNAME: 'neondb_owner',
       DB_PASSWORD: 'secret',
@@ -21,13 +21,13 @@ describe('applyConnectionUrls', () => {
 
   it('expands an Upstash URL and turns TLS on for the rediss scheme', () => {
     const env: Record<string, string | undefined> = {
-      REDIS_URL: 'rediss://default:token@outgoing-drake.upstash.io:6379',
+      REDIS_URL: 'rediss://default:token@example-instance.upstash.io:6379',
     };
 
     applyConnectionUrls(env);
 
     expect(env).toMatchObject({
-      REDIS_HOST: 'outgoing-drake.upstash.io',
+      REDIS_HOST: 'example-instance.upstash.io',
       REDIS_PORT: '6379',
       REDIS_PASSWORD: 'token',
       REDIS_TLS: 'true',
