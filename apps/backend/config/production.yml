@@ -20,3 +20,9 @@ redis:
 cors:
   origins:
     - https://tuvimienphi-frontend.vercel.app
+
+# The dashboard only makes sense next to a running worker, and BullMQ workers need a process that
+# stays alive — a serverless function is not one. Mounting it also drags @bull-board/ui into the
+# bundle through an eval'd require the file tracer cannot follow, which crashes the function.
+queueBoard:
+  enabled: false

@@ -62,5 +62,8 @@ google:
   clientId: GOOGLE_CLIENT_ID
 
 queueBoard:
+  enabled:
+    __name: QUEUE_BOARD_ENABLED
+    __format: boolean
   user: QUEUE_BOARD_USER
   password: QUEUE_BOARD_PASSWORD
