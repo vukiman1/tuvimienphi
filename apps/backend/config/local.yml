@@ -1,5 +1,11 @@
+# Local development only. config-bootstrap.ts inlines just default.yml, production.yml and
+# custom-environment-variables.yml into the serverless bundle, so nothing here can ever reach
+# production — there the same keys come from environment variables.
+#
+# Committed on purpose: a fresh clone (and CI) needs these to boot. Edit freely for your machine.
+
 app:
-  port: 3000
+  url: http://localhost:4200
 
 db:
   primary:
@@ -8,8 +14,16 @@ db:
   username: postgres
   password: password
   database: tuvimienphi
+  tls: false
 
 redis:
   host: localhost
   port: 6379
   password: ''
+  tls: false
+
+jwt:
+  secret: dev-only-jwt-secret-not-for-production!!
+
+crypto:
+  secretKey: yoursecretkeymustbe32characters!!

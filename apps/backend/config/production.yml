@@ -1,5 +1,9 @@
 app:
   nodeEnv: production
+  # The deployed frontend. Not a secret, so it lives here rather than costing an env var; the
+  # CORS_ORIGINS / APP_URL mappings still win, for when a custom domain arrives.
+  url: https://tuvimienphi-frontend.vercel.app
+  trustProxy: 1
   logLevels:
     - error
     - warn
@@ -7,10 +11,12 @@ app:
 
 db:
   tls: true
-  replicas: []
   log:
     enabled: false
 
 redis:
-  cluster: false
   tls: true
+
+cors:
+  origins:
+    - https://tuvimienphi-frontend.vercel.app

@@ -165,7 +165,8 @@ const backendConfigSchema = z.object({
     origins: stringListSchema,
   }),
   jwt: z.object({
-    secret: z.string().min(1),
+    // Same floor as crypto.secretKey: a short signing key is the whole auth system's weakest link.
+    secret: z.string().min(32),
     accessTokenExpiresIn: durationSchema,
   }),
   session: z.object({
