@@ -31,6 +31,20 @@ process.env.NODE_CONFIG_DIR = process.env.NODE_CONFIG_DIR || configDir;
 
 const nodeConfig = require('config') as ConfigReader;
 
+// TEMPORARY: node-config resolves silently, so ask it which files it actually read and which
+// environment-variable mappings it applied. Names only, never values.
+try {
+  const sources = (
+    nodeConfig as unknown as { util: { getConfigSources: () => Array<{ name: string }> } }
+  ).util.getConfigSources();
+  console.log('[cfg-probe] sources =', sources.map((source) => source.name).join(' | '));
+  console.log('[cfg-probe] NODE_ENV =', JSON.stringify(process.env.NODE_ENV));
+  console.log('[cfg-probe] NODE_CONFIG_DIR =', JSON.stringify(process.env.NODE_CONFIG_DIR));
+  console.log('[cfg-probe] DB_HOST set =', process.env.DB_HOST !== undefined);
+} catch (error) {
+  console.log('[cfg-probe] failed:', (error as Error).message);
+}
+
 interface ConfigReader {
   get<T>(key: string): T;
 }
