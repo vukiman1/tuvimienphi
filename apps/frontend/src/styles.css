@@ -135,6 +135,12 @@
     @apply bg-background text-foreground;
     font-family: 'Cormorant Garamond', ui-serif, Georgia, serif;
   }
+
+  /* Preflight của Tailwind 4 bỏ `cursor: pointer` mặc định trên nút, trả chúng về con trỏ mũi tên. */
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
 /*
