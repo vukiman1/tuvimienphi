@@ -1,0 +1,951 @@
+import type { ChartView } from './chart-types';
+
+/**
+ * Dữ liệu mẫu để dựng giao diện — chụp từ một lá số có thật (Canh Tuất 1910, giờ Ngọ, Dương Nam)
+ * nên đủ mọi trường hợp hiển thị: cung vô chính diệu, cung hai chính tinh, Tuần, Triệt, sao có
+ * miếu vượng. Sẽ thay bằng dữ liệu tính từ engine.
+ */
+export const MOCK_CHART: ChartView = {
+  meta: {
+    fullName: 'Nguyễn Văn A',
+    solarYear: '1911',
+    lunarYear: 'Canh Tuất',
+    solarMonth: '1 (12)',
+    lunarMonth: 'Kỷ Sửu',
+    solarDay: '1 (2)',
+    lunarDay: 'Tân Mùi',
+    solarHour: '12 giờ 30 phút',
+    lunarHour: 'Giáp Ngọ',
+    viewYear: 'Bính Ngọ (2026), 117 tuổi',
+    amDuong: 'Dương Nam',
+    banMenh: 'Thoa Xuyến Kim - Mộc Tam Cục (Mệnh Kim khắc Cục Mộc)',
+    canLuong: '3 lượng 4 chỉ',
+    chuMenh: 'Lộc Tồn',
+    chuThan: 'Văn Xương',
+    laiNhanCung: 'Tử Tức',
+  },
+  cungs: [
+    {
+      index: 0,
+      chi: 'Tý',
+      canChi: 'M.Tý',
+      name: 'NÔ BỘC',
+      element: '+Thuỷ',
+      daiVanStartAge: 53,
+      monthOrder: 'Th.6',
+      isMenh: false,
+      isThan: false,
+      hasTuan: false,
+      hasTriet: false,
+      daiVan: 'ĐV.DI',
+      trangSinh: 'Mộc Dục',
+      luuNien: 'LN.HUYNH',
+      chinhTinh: [
+        {
+          name: 'THIÊN CƠ',
+          polarity: '-',
+          rating: 'Đ',
+        },
+      ],
+      catTinh: [
+        {
+          name: 'Thai Phụ',
+          rating: null,
+          tone: 'muted',
+        },
+        {
+          name: 'Thiên Y',
+          rating: null,
+          tone: 'default',
+        },
+        {
+          name: 'Giải Thần',
+          rating: null,
+          tone: 'green',
+        },
+        {
+          name: 'Phượng Các',
+          rating: null,
+          tone: 'amber',
+        },
+        {
+          name: 'ĐV. Khúc',
+          rating: null,
+          tone: 'default',
+        },
+        {
+          name: 'L.Hóa Quyền',
+          rating: null,
+          tone: 'default',
+        },
+      ],
+      hungTinh: [
+        {
+          name: 'Thiên Diêu',
+          rating: 'H',
+          tone: 'default',
+        },
+        {
+          name: 'Tang Môn',
+          rating: null,
+          tone: 'green',
+        },
+        {
+          name: 'Tướng Quân',
+          rating: null,
+          tone: 'green',
+        },
+        {
+          name: 'L.Thiên Khốc',
+          rating: null,
+          tone: 'default',
+        },
+        {
+          name: 'L.Thiên Hư',
+          rating: null,
+          tone: 'default',
+        },
+        {
+          name: 'Thiên Thương',
+          rating: null,
+          tone: 'amber',
+        },
+        {
+          name: 'ĐV. K Dương',
+          rating: null,
+          tone: 'muted',
+        },
+      ],
+    },
+    {
+      index: 1,
+      chi: 'Sửu',
+      canChi: 'K.Sửu',
+      name: 'THIÊN DI',
+      element: '-Thổ',
+      daiVanStartAge: 63,
+      monthOrder: 'Th.7',
+      isMenh: false,
+      isThan: false,
+      hasTuan: false,
+      hasTriet: false,
+      daiVan: 'ĐV.TẬT',
+      trangSinh: 'Quan Đới',
+      luuNien: 'LN.MỆNH',
+      chinhTinh: [
+        {
+          name: 'PHÁ QUÂN',
+          polarity: '-',
+          rating: 'V',
+        },
+        {
+          name: 'TỬ VI',
+          polarity: '+',
+          rating: 'Đ',
+        },
+      ],
+      catTinh: [
+        {
+          name: 'Đường Phù',
+          rating: null,
+          tone: 'green',
+        },
+        {
+          name: 'Thiếu Âm',
+          rating: null,
+          tone: 'default',
+        },
+        {
+          name: 'Tấu Thư',
+          rating: null,
+          tone: 'muted',
+        },
+        {
+          name: 'ĐV. H Quyền',
+          rating: null,
+          tone: 'default',
+        },
+      ],
+      hungTinh: [
+        {
+          name: 'Phá Toái',
+          rating: null,
+          tone: 'red',
+        },
+      ],
+    },
+    {
+      index: 2,
+      chi: 'Dần',
+      canChi: 'M.Dần',
+      name: 'TẬT ÁCH',
+      element: '+Mộc',
+      daiVanStartAge: 73,
+      monthOrder: 'Th.8',
+      isMenh: false,
+      isThan: false,
+      hasTuan: true,
+      hasTriet: false,
+      daiVan: 'ĐV.TÀI',
+      trangSinh: 'Lâm Quan',
+      luuNien: 'LN.PHỤ',
+      chinhTinh: [],
+      catTinh: [
+        {
+          name: 'Thiên Việt',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'Thiên Trù',
+          rating: null,
+          tone: 'amber',
+        },
+        {
+          name: 'Long Trì',
+          rating: null,
+          tone: 'default',
+        },
+        {
+          name: 'ĐV. Xương',
+          rating: null,
+          tone: 'muted',
+        },
+      ],
+      hungTinh: [
+        {
+          name: 'Quan Phù',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'Phi Liêm',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'L.Bạch Hổ',
+          rating: null,
+          tone: 'muted',
+        },
+        {
+          name: 'Thiên Sứ',
+          rating: null,
+          tone: 'default',
+        },
+      ],
+    },
+    {
+      index: 3,
+      chi: 'Mão',
+      canChi: 'K.Mão',
+      name: 'TÀI BẠCH',
+      element: '-Mộc',
+      daiVanStartAge: 83,
+      monthOrder: 'Th.9',
+      isMenh: false,
+      isThan: false,
+      hasTuan: true,
+      hasTriet: false,
+      daiVan: 'ĐV.TỬ',
+      trangSinh: 'Đế Vượng',
+      luuNien: 'LN.PHÚC',
+      chinhTinh: [
+        {
+          name: 'THIÊN PHỦ',
+          polarity: '-',
+          rating: 'B',
+        },
+      ],
+      catTinh: [
+        {
+          name: 'Tả Phù',
+          rating: null,
+          tone: 'amber',
+        },
+        {
+          name: 'Đào Hoa',
+          rating: null,
+          tone: 'green',
+        },
+        {
+          name: 'Nguyệt Đức',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'Hỷ Thần',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'L.Đào Hoa',
+          rating: null,
+          tone: 'green',
+        },
+        {
+          name: 'L.Thiên Đức',
+          rating: null,
+          tone: 'amber',
+        },
+        {
+          name: 'ĐV. H Khoa',
+          rating: null,
+          tone: 'default',
+        },
+        {
+          name: 'ĐV. T Khôi',
+          rating: null,
+          tone: 'red',
+        },
+      ],
+      hungTinh: [
+        {
+          name: 'Tử Phù',
+          rating: null,
+          tone: 'muted',
+        },
+      ],
+    },
+    {
+      index: 4,
+      chi: 'Thìn',
+      canChi: 'C.Thìn',
+      name: 'TỬ TỨC',
+      element: '+Thổ',
+      daiVanStartAge: 93,
+      monthOrder: 'Th.10',
+      isMenh: false,
+      isThan: false,
+      hasTuan: false,
+      hasTriet: false,
+      daiVan: 'ĐV.PHỐI',
+      trangSinh: 'Suy',
+      luuNien: 'LN.ĐIỀN',
+      chinhTinh: [
+        {
+          name: 'THÁI ÂM',
+          polarity: '-',
+          rating: 'H',
+        },
+      ],
+      catTinh: [
+        {
+          name: 'Văn Xương',
+          rating: 'Đ',
+          tone: 'muted',
+        },
+        {
+          name: 'Quốc Ấn',
+          rating: null,
+          tone: 'amber',
+        },
+        {
+          name: 'Ân Quang',
+          rating: null,
+          tone: 'green',
+        },
+        {
+          name: 'Tam Thai',
+          rating: null,
+          tone: 'default',
+        },
+        {
+          name: 'L.Hóa Khoa',
+          rating: null,
+          tone: 'default',
+        },
+        {
+          name: 'Hóa Khoa',
+          rating: null,
+          tone: 'default',
+        },
+      ],
+      hungTinh: [
+        {
+          name: 'Lưu Hà',
+          rating: null,
+          tone: 'default',
+        },
+        {
+          name: 'Thiên Hư',
+          rating: 'H',
+          tone: 'default',
+        },
+        {
+          name: 'Tuế Phá',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'Bệnh Phù',
+          rating: null,
+          tone: 'amber',
+        },
+        {
+          name: 'Thiên La',
+          rating: null,
+          tone: 'muted',
+        },
+      ],
+    },
+    {
+      index: 5,
+      chi: 'Tị',
+      canChi: 'T.Tị',
+      name: 'PHU THÊ',
+      element: '-Hoả',
+      daiVanStartAge: 103,
+      monthOrder: 'Th.11',
+      isMenh: false,
+      isThan: false,
+      hasTuan: false,
+      hasTriet: false,
+      daiVan: 'ĐV.HUYNH',
+      trangSinh: 'Bệnh',
+      luuNien: 'LN.QUAN',
+      chinhTinh: [
+        {
+          name: 'THAM LANG',
+          polarity: '-',
+          rating: 'H',
+        },
+        {
+          name: 'LIÊM TRINH',
+          polarity: '-',
+          rating: 'H',
+        },
+      ],
+      catTinh: [
+        {
+          name: 'Hồng Loan',
+          rating: null,
+          tone: 'default',
+        },
+        {
+          name: 'Long Đức',
+          rating: null,
+          tone: 'default',
+        },
+        {
+          name: 'Thiên Tài',
+          rating: null,
+          tone: 'amber',
+        },
+        {
+          name: 'Thiên Thọ',
+          rating: null,
+          tone: 'amber',
+        },
+        {
+          name: 'L.Lộc Tồn',
+          rating: null,
+          tone: 'amber',
+        },
+        {
+          name: 'L.Long Đức',
+          rating: null,
+          tone: 'default',
+        },
+        {
+          name: 'ĐV. T Việt',
+          rating: null,
+          tone: 'red',
+        },
+      ],
+      hungTinh: [
+        {
+          name: 'Địa Không',
+          rating: 'Đ',
+          tone: 'red',
+        },
+        {
+          name: 'Địa Kiếp',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'Đại Hao',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'Đầu Quân',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'L.Hóa Kỵ',
+          rating: null,
+          tone: 'default',
+        },
+      ],
+    },
+    {
+      index: 6,
+      chi: 'Ngọ',
+      canChi: 'N.Ngọ',
+      name: 'HUYNH ĐỆ',
+      element: '+Hoả',
+      daiVanStartAge: 113,
+      monthOrder: 'Th.12',
+      isMenh: false,
+      isThan: false,
+      hasTuan: false,
+      hasTriet: true,
+      daiVan: 'ĐV.MỆNH',
+      trangSinh: 'Tử',
+      luuNien: 'LN.NÔ',
+      chinhTinh: [
+        {
+          name: 'CỰ MÔN',
+          polarity: '-',
+          rating: 'V',
+        },
+      ],
+      catTinh: [
+        {
+          name: 'Địa Giải',
+          rating: null,
+          tone: 'amber',
+        },
+        {
+          name: 'Thiên Khôi',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'Thiên Phúc',
+          rating: null,
+          tone: 'amber',
+        },
+        {
+          name: 'L.Văn Khúc',
+          rating: null,
+          tone: 'default',
+        },
+      ],
+      hungTinh: [
+        {
+          name: 'Bạch Hổ',
+          rating: null,
+          tone: 'muted',
+        },
+        {
+          name: 'Phục Binh',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'L.Thái Tuế',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'L.Kình Dương',
+          rating: null,
+          tone: 'muted',
+        },
+      ],
+    },
+    {
+      index: 7,
+      chi: 'Mùi',
+      canChi: 'Q.Mùi',
+      name: 'MỆNH',
+      element: '-Thổ',
+      daiVanStartAge: 3,
+      monthOrder: 'Th.1',
+      isMenh: true,
+      isThan: true,
+      hasTuan: false,
+      hasTriet: true,
+      daiVan: 'ĐV.PHỤ',
+      trangSinh: 'Mộ',
+      luuNien: 'LN.DI',
+      chinhTinh: [
+        {
+          name: 'THIÊN TƯỚNG',
+          polarity: '+',
+          rating: 'Đ',
+        },
+      ],
+      catTinh: [
+        {
+          name: 'Thiên Giải',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'Thiên Đức',
+          rating: null,
+          tone: 'amber',
+        },
+        {
+          name: 'Phúc Đức',
+          rating: null,
+          tone: 'amber',
+        },
+        {
+          name: 'L.Phúc Đức',
+          rating: null,
+          tone: 'amber',
+        },
+      ],
+      hungTinh: [
+        {
+          name: 'Hỏa Tinh',
+          rating: 'H',
+          tone: 'red',
+        },
+        {
+          name: 'Đà La',
+          rating: 'Đ',
+          tone: 'muted',
+        },
+        {
+          name: 'Quả Tú',
+          rating: null,
+          tone: 'amber',
+        },
+        {
+          name: 'Quan Phủ',
+          rating: null,
+          tone: 'red',
+        },
+      ],
+    },
+    {
+      index: 8,
+      chi: 'Thân',
+      canChi: 'G.Thân',
+      name: 'PHỤ MẪU',
+      element: '+Kim',
+      daiVanStartAge: 13,
+      monthOrder: 'Th.2',
+      isMenh: false,
+      isThan: false,
+      hasTuan: false,
+      hasTriet: false,
+      daiVan: 'ĐV.PHÚC',
+      trangSinh: 'Tuyệt',
+      luuNien: 'LN.TẬT',
+      chinhTinh: [
+        {
+          name: 'THIÊN ĐỒNG',
+          polarity: '+',
+          rating: 'M',
+        },
+        {
+          name: 'THIÊN LƯƠNG',
+          polarity: '+',
+          rating: 'V',
+        },
+      ],
+      catTinh: [
+        {
+          name: 'Phong Cáo',
+          rating: null,
+          tone: 'amber',
+        },
+        {
+          name: 'Lộc Tồn',
+          rating: 'B',
+          tone: 'amber',
+        },
+        {
+          name: 'Thiên Mã',
+          rating: 'H',
+          tone: 'red',
+        },
+        {
+          name: 'Bác Sỹ',
+          rating: null,
+          tone: 'default',
+        },
+        {
+          name: 'L.Văn Xương',
+          rating: null,
+          tone: 'muted',
+        },
+        {
+          name: 'L.Thiên Mã',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'ĐV. H Lộc',
+          rating: null,
+          tone: 'green',
+        },
+        {
+          name: 'ĐV. T Mã',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'L.Hóa Lộc',
+          rating: null,
+          tone: 'green',
+        },
+      ],
+      hungTinh: [
+        {
+          name: 'Thiên Hình',
+          rating: 'Đ',
+          tone: 'red',
+        },
+        {
+          name: 'Thiên Khốc',
+          rating: 'H',
+          tone: 'default',
+        },
+        {
+          name: 'Điếu Khách',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'L.Tang Môn',
+          rating: null,
+          tone: 'green',
+        },
+        {
+          name: 'Hóa Kỵ',
+          rating: null,
+          tone: 'default',
+        },
+      ],
+    },
+    {
+      index: 9,
+      chi: 'Dậu',
+      canChi: 'Ấ.Dậu',
+      name: 'PHÚC ĐỨC',
+      element: '-Kim',
+      daiVanStartAge: 23,
+      monthOrder: 'Th.3',
+      isMenh: false,
+      isThan: false,
+      hasTuan: false,
+      hasTriet: false,
+      daiVan: 'ĐV.ĐIỀN',
+      trangSinh: 'Thai',
+      luuNien: 'LN.TÀI',
+      chinhTinh: [
+        {
+          name: 'THẤT SÁT',
+          polarity: '+',
+          rating: 'H',
+        },
+        {
+          name: 'VŨ KHÚC',
+          polarity: '-',
+          rating: 'Đ',
+        },
+      ],
+      catTinh: [
+        {
+          name: 'Lực Sỹ',
+          rating: null,
+          tone: 'default',
+        },
+        {
+          name: 'L.Hồng Loan',
+          rating: null,
+          tone: 'default',
+        },
+        {
+          name: 'L.Thiên Việt',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'Hóa Quyền',
+          rating: null,
+          tone: 'default',
+        },
+      ],
+      hungTinh: [
+        {
+          name: 'Linh Tinh',
+          rating: 'H',
+          tone: 'red',
+        },
+        {
+          name: 'Kình Dương',
+          rating: 'H',
+          tone: 'muted',
+        },
+        {
+          name: 'Trực Phù',
+          rating: null,
+          tone: 'muted',
+        },
+        {
+          name: 'ĐV. H Kỵ',
+          rating: null,
+          tone: 'default',
+        },
+      ],
+    },
+    {
+      index: 10,
+      chi: 'Tuất',
+      canChi: 'B.Tuất',
+      name: 'ĐIỀN TRẠCH',
+      element: '+Thổ',
+      daiVanStartAge: 33,
+      monthOrder: 'Th.4',
+      isMenh: false,
+      isThan: false,
+      hasTuan: false,
+      hasTriet: false,
+      daiVan: 'ĐV.QUAN',
+      trangSinh: 'Dưỡng',
+      luuNien: 'LN.TỬ',
+      chinhTinh: [
+        {
+          name: 'THÁI DƯƠNG',
+          polarity: '+',
+          rating: 'H',
+        },
+      ],
+      catTinh: [
+        {
+          name: 'Văn Khúc',
+          rating: 'Đ',
+          tone: 'default',
+        },
+        {
+          name: 'Hoa Cái',
+          rating: null,
+          tone: 'muted',
+        },
+        {
+          name: 'Thanh Long',
+          rating: null,
+          tone: 'default',
+        },
+        {
+          name: 'Thiên Quý',
+          rating: null,
+          tone: 'amber',
+        },
+        {
+          name: 'Bát Tọa',
+          rating: null,
+          tone: 'green',
+        },
+        {
+          name: 'Hóa Lộc',
+          rating: null,
+          tone: 'green',
+        },
+      ],
+      hungTinh: [
+        {
+          name: 'Thái Tuế',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'Địa Võng',
+          rating: null,
+          tone: 'muted',
+        },
+        {
+          name: 'ĐV. Đà La',
+          rating: null,
+          tone: 'muted',
+        },
+      ],
+    },
+    {
+      index: 11,
+      chi: 'Hợi',
+      canChi: 'Đ.Hợi',
+      name: 'QUAN LỘC',
+      element: '-Thuỷ',
+      daiVanStartAge: 43,
+      monthOrder: 'Th.5',
+      isMenh: false,
+      isThan: false,
+      hasTuan: false,
+      hasTriet: false,
+      daiVan: 'ĐV.NÔ',
+      trangSinh: 'Tràng Sinh',
+      luuNien: 'LN.PHỐI',
+      chinhTinh: [],
+      catTinh: [
+        {
+          name: 'Hữu Bật',
+          rating: null,
+          tone: 'default',
+        },
+        {
+          name: 'Văn Tinh',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'Thiên Quan',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'Thiên Hỉ',
+          rating: null,
+          tone: 'default',
+        },
+        {
+          name: 'Thiếu Dương',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'L.Thiên Khôi',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'L.Nguyệt Đức',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'ĐV. Lộc Tồn',
+          rating: null,
+          tone: 'amber',
+        },
+      ],
+      hungTinh: [
+        {
+          name: 'Cô Thần',
+          rating: null,
+          tone: 'amber',
+        },
+        {
+          name: 'Kiếp Sát',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'Thiên Không',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'Tiểu Hao',
+          rating: null,
+          tone: 'red',
+        },
+        {
+          name: 'L.Kiếp Sát',
+          rating: null,
+          tone: 'red',
+        },
+      ],
+    },
+  ],
+};

@@ -1,0 +1,23 @@
+/**
+ * Ba mức nền của lá số, đậm dần: nền mặc định → cung tam hợp / xung chiếu → cung đang rê chuột.
+ *
+ * Ghi cả tên lớp thay vì chỉ mã màu: Tailwind quét mã nguồn dạng chuỗi, ghép `bg-[${...}]` lúc chạy
+ * thì lớp đó không được sinh ra.
+ */
+export const CUNG_SURFACE_CLASS = {
+  base: 'bg-[#faf6ec]',
+  related: 'bg-[#f7f0dd]',
+  focused: 'bg-[#f6e4bd]',
+} as const;
+
+/**
+ * Nét kẻ địa bàn dùng tông vàng của site thay cho nét đen: nhẹ mắt hơn trên nền kem và bớt cảm giác
+ * bảng biểu. Chọn `#b8894a` chứ không phải vàng nhạt `#c9a15c` vì lưới ở đây gánh vai trò cấu trúc —
+ * nhạt quá thì 12 ô nhoè vào nhau.
+ */
+export const CHART_RULE_CLASS = {
+  border: 'border-[#b8894a]',
+  fill: 'bg-[#b8894a]',
+  /** Nhãn Tuần / Triệt giữ nền đen: nó đè lên nét kẻ nên cần bật hẳn ra, và chữ trắng mới đọc rõ. */
+  blockLabel: 'bg-[#17150f]',
+} as const;
