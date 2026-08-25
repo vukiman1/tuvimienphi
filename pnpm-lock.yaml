@@ -97,8 +97,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       config:
-        specifier: ^4.1.1
-        version: 4.4.2
+        specifier: ^5.0.1
+        version: 5.0.1
       cookie-parser:
         specifier: ^1.4.7
         version: 1.4.7
@@ -452,8 +452,8 @@ importers:
         specifier: ^0.15.1
         version: 0.15.1
       config:
-        specifier: ^4.1.1
-        version: 4.4.2
+        specifier: ^5.0.1
+        version: 5.0.1
       cookie-parser:
         specifier: ^1.4.7
         version: 1.4.7
@@ -560,8 +560,8 @@ importers:
   packages/backend/config:
     dependencies:
       config:
-        specifier: ^4.1.1
-        version: 4.4.2
+        specifier: ^5.0.1
+        version: 5.0.1
       dotenv:
         specifier: ^17.4.2
         version: 17.4.2
@@ -6249,9 +6249,9 @@ packages:
   concat-with-sourcemaps@1.1.0:
     resolution: {integrity: sha512-4gEjHJFT9e+2W/77h/DS5SGUgwDaOwprX8L/gl5+3ixnzkVJJsZWDSelmN3Oilw3LNDZjZV0yqH1hLG3k6nghg==}
 
-  config@4.4.2:
-    resolution: {integrity: sha512-5HJD7TX70gOG2dAd72eDjDeSTYn6D8nOiKgysQQS8mRUo9X1wDtlzb1JlmIWkP+sM9zKRVdYJxmj+qmCsYu6DQ==}
-    engines: {node: '>= 20.0.0'}
+  config@5.0.1:
+    resolution: {integrity: sha512-vnJGpQA9FjKSTafO9TiNZr1+NiZAIuZXScp034tH+R6VH3Ufe7r+Z730j/f6/KQ2+kNIly6auTYloIaNhpK8lg==}
+    engines: {node: '>= 20.11.0'}
 
   confusing-browser-globals@1.0.11:
     resolution: {integrity: sha512-JsPKdmh8ZkmnHxDk55FZ1TqVLvEQTvoByJZRN9jzI0UjxK/QgAmsphz7PGtqgPieQZ/CQcHWXCR7ATDNhGe+YA==}
@@ -17757,7 +17757,7 @@ snapshots:
     dependencies:
       source-map: 0.6.1
 
-  config@4.4.2:
+  config@5.0.1:
     dependencies:
       json5: 2.2.3
 
