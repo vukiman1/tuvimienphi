@@ -29,8 +29,8 @@ export function SiteHeader() {
   const isInitializing = useAuthStore(selectIsInitializing);
   const pathname = useRouterState({ select: (state) => state.location.pathname });
 
-  const isItemActive = (item: NavItem): boolean =>
-    pathname.startsWith(item.href) || (pathname === '/' && item === NAV_ITEMS[0]);
+  // Trang chủ không thuộc mục nào nên không mục nào sáng; logo bên trái đã là đường về trang chủ.
+  const isItemActive = (item: NavItem): boolean => pathname.startsWith(item.href);
 
   return (
     <header
