@@ -26,16 +26,16 @@ importers:
     dependencies:
       '@bull-board/api':
         specifier: ^8.6.1
-        version: 8.6.1(@bull-board/ui@8.6.1(bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0)))(bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0))
+        version: 8.6.1(@bull-board/ui@8.6.1(bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0)))(bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0))
       '@bull-board/express':
         specifier: ^8.6.1
-        version: 8.6.1(bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0))
+        version: 8.6.1(bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0))
       '@bull-board/nestjs':
         specifier: ^8.6.1
-        version: 8.6.1(@bull-board/api@8.6.1(@bull-board/ui@8.6.1(bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0)))(bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0)))(@nestjs/bull-shared@11.0.5(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1))(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+        version: 8.6.1(@bull-board/api@8.6.1(@bull-board/ui@8.6.1(bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0)))(bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0)))(@nestjs/bull-shared@11.0.5(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1))(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/bullmq':
         specifier: ^11.0.5
-        version: 11.0.5(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0))
+        version: 11.0.5(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0))
       '@nestjs/common':
         specifier: ^11.2.1
         version: 11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -82,8 +82,8 @@ importers:
         specifier: ^1.19.0
         version: 1.19.0
       bullmq:
-        specifier: ^6.1.1
-        version: 6.1.2(ioredis@5.11.1)(pg@8.23.0)
+        specifier: ^6.2.0
+        version: 6.2.0(ioredis@5.11.1)(pg@8.23.0)
       class-transformer:
         specifier: ^0.5.1
         version: 0.5.1
@@ -494,8 +494,8 @@ importers:
         specifier: ^0.2.2
         version: 0.2.2
       resend:
-        specifier: ^6.21.0
-        version: 6.21.0(@react-email/render@2.1.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))
+        specifier: ^6.22.0
+        version: 6.22.0(@react-email/render@2.1.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8))
       rxjs:
         specifier: ^7.8.0
         version: 7.8.2
@@ -527,11 +527,11 @@ importers:
         specifier: ^10.70.0
         version: 10.70.0(react@19.2.8)
       '@tanstack/react-query':
-        specifier: ^5.101.4
-        version: 5.101.4(react@19.2.8)
+        specifier: ^5.102.0
+        version: 5.102.0(react@19.2.8)
       '@tanstack/react-query-devtools':
-        specifier: ^5.101.4
-        version: 5.101.4(@tanstack/react-query@5.101.4(react@19.2.8))(react@19.2.8)
+        specifier: ^5.102.0
+        version: 5.102.0(@tanstack/react-query@5.102.0(react@19.2.8))(react@19.2.8)
       radix-ui:
         specifier: ^1.6.7
         version: 1.6.7(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -4887,11 +4887,11 @@ packages:
     resolution: {integrity: sha512-y/xtNPNt/YeyoVxE/JCx+T7yjEzpezmbb+toK8DDD1P4m7Kzs5YR956+7OKexG3f8aXgC3rLZl7b1V+yNUSy5w==}
     engines: {node: '>=18'}
 
-  '@tanstack/query-core@5.101.4':
-    resolution: {integrity: sha512-gNwcvOJcRbLWPOLG/2OBm+zM+Yv+MKsXKEOWC57USuZDEsI71hEErQsiEGx5wX9rzWWkfwM0fVSPoiIFSsxfiw==}
+  '@tanstack/query-core@5.102.0':
+    resolution: {integrity: sha512-tvBzr11Q7StuMCEsIJdqX8TAWt6WZIzfw/yrSAjObZDerwTTPeCxeLXN2R8ZSn4ZxFpQV819Xn8QmoO+vtnDvw==}
 
-  '@tanstack/query-devtools@5.101.4':
-    resolution: {integrity: sha512-z5IPHnDX3aUWeTWlRKLyooBQekaCAw4xRpZqPQ390RiWTDBcTynjpPT221BArw0u2+pnQMdGvPQI9YNNubBcmA==}
+  '@tanstack/query-devtools@5.102.0':
+    resolution: {integrity: sha512-Ll0lWGwTMK5LEctjcUFMCC6fXln8wxg9UnoqGPI3YdMkhwTL4Gh26YQ8daoBW11ZVIoJBf9okBkwrtm+JmbNAQ==}
 
   '@tanstack/react-form@1.33.5':
     resolution: {integrity: sha512-LlRB28qJwO/QCGaHvWnbdh4haBgTFiZVmzA2uzxSBS3YA7/IqrQ6HOBK70CkFQ+DbflZ7NawsmSln13h5iIdTA==}
@@ -4902,14 +4902,14 @@ packages:
       '@tanstack/react-start':
         optional: true
 
-  '@tanstack/react-query-devtools@5.101.4':
-    resolution: {integrity: sha512-VeK2gtmfj7kvRBjtxS7TKxt/6qKhn8VzabY4UiYMr7NV9CddjSRYRgeYyld+NpjAkgMV9dd+2Qdr8ah5I03NeA==}
+  '@tanstack/react-query-devtools@5.102.0':
+    resolution: {integrity: sha512-B+r5BiTmiNfQJC7rZz26GuXdzyVjmuGUBeYSsRvhGyNPZOIxVjg3nKje7x2kDCFNwpjC6Q4O71zFZhSQ4jGotw==}
     peerDependencies:
-      '@tanstack/react-query': ^5.101.4
+      '@tanstack/react-query': ^5.102.0
       react: ^18 || ^19
 
-  '@tanstack/react-query@5.101.4':
-    resolution: {integrity: sha512-yRg2pfOCxIs4ZJW3XYYHU/WgtD04FHSnfHlpRT7h7pR77hwkdRG4wxbKe4aq6P0RvXUTBSQpQeadS1SUYUe+KA==}
+  '@tanstack/react-query@5.102.0':
+    resolution: {integrity: sha512-0GyVyEcGt9M7jHPCua16hNVtstUXE2R4HsnNubFYcDs7DJaLzh1dSiXsADDU/cNn/SqrLfa0vRKyjUmbx4rZLA==}
     peerDependencies:
       react: ^18 || ^19
 
@@ -6016,8 +6016,8 @@ packages:
   buffer@5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
 
-  bullmq@6.1.2:
-    resolution: {integrity: sha512-GSX8JfWN8CElAGDyt7Zmq59n1FfWZ0L7IjsThNUQq7X8mvVVDb9I5i2F+nFg4A00UbysJ5yejN0oWzmbUJPDFg==}
+  bullmq@6.2.0:
+    resolution: {integrity: sha512-9BVvqp1nJ6jzG2Ap37sZ+ucseAgHU+fxecLkHCcTJf8SMvLtRPSy1q5J7n7kutw+Hfwsa+araPPTULJSX3ID8g==}
     engines: {node: '>=14.17.0'}
     peerDependencies:
       bullmq-otel: '>=2.0.0'
@@ -9699,8 +9699,8 @@ packages:
   requires-port@1.0.0:
     resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
 
-  resend@6.21.0:
-    resolution: {integrity: sha512-XT1eP2iA8rZ51NSO2CJlL1ZE2baBoPpOGMgz2p0o2uluz/YU3XfItpGymXDlL0Sp2Mc+y9+Xxsfdccfi4f2FzQ==}
+  resend@6.22.0:
+    resolution: {integrity: sha512-dP1jyl0n1Dx7GYDb0bcsbv9Yx0oBRLhUtSyNFRIOsSzV9MvCVbua/3WP6YUP2JptAU5BciEWGInV+hFjUuYLUw==}
     engines: {node: '>=20'}
     peerDependencies:
       '@react-email/render': '*'
@@ -12329,17 +12329,17 @@ snapshots:
 
   '@bufbuild/protobuf@2.13.0': {}
 
-  '@bull-board/api@8.6.1(@bull-board/ui@8.6.1(bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0)))(bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0))':
+  '@bull-board/api@8.6.1(@bull-board/ui@8.6.1(bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0)))(bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0))':
     dependencies:
-      '@bull-board/ui': 8.6.1(bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0))
+      '@bull-board/ui': 8.6.1(bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0))
       redis-info: 3.1.0
     optionalDependencies:
-      bullmq: 6.1.2(ioredis@5.11.1)(pg@8.23.0)
+      bullmq: 6.2.0(ioredis@5.11.1)(pg@8.23.0)
 
-  '@bull-board/express@8.6.1(bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0))':
+  '@bull-board/express@8.6.1(bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0))':
     dependencies:
-      '@bull-board/api': 8.6.1(@bull-board/ui@8.6.1(bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0)))(bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0))
-      '@bull-board/ui': 8.6.1(bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0))
+      '@bull-board/api': 8.6.1(@bull-board/ui@8.6.1(bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0)))(bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0))
+      '@bull-board/ui': 8.6.1(bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0))
       ejs: 6.0.1
       express: 5.2.1
     transitivePeerDependencies:
@@ -12347,18 +12347,18 @@ snapshots:
       - bullmq
       - supports-color
 
-  '@bull-board/nestjs@8.6.1(@bull-board/api@8.6.1(@bull-board/ui@8.6.1(bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0)))(bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0)))(@nestjs/bull-shared@11.0.5(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1))(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)':
+  '@bull-board/nestjs@8.6.1(@bull-board/api@8.6.1(@bull-board/ui@8.6.1(bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0)))(bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0)))(@nestjs/bull-shared@11.0.5(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1))(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)':
     dependencies:
-      '@bull-board/api': 8.6.1(@bull-board/ui@8.6.1(bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0)))(bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0))
+      '@bull-board/api': 8.6.1(@bull-board/ui@8.6.1(bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0)))(bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0))
       '@nestjs/bull-shared': 11.0.5(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)
       '@nestjs/common': 11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.2.1(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.2.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       reflect-metadata: 0.2.2
       rxjs: 7.8.2
 
-  '@bull-board/ui@8.6.1(bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0))':
+  '@bull-board/ui@8.6.1(bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0))':
     dependencies:
-      '@bull-board/api': 8.6.1(@bull-board/ui@8.6.1(bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0)))(bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0))
+      '@bull-board/api': 8.6.1(@bull-board/ui@8.6.1(bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0)))(bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0))
     transitivePeerDependencies:
       - bull
       - bullmq
@@ -13445,12 +13445,12 @@ snapshots:
       '@nestjs/core': 11.2.1(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.2.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       tslib: 2.8.1
 
-  '@nestjs/bullmq@11.0.5(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0))':
+  '@nestjs/bullmq@11.0.5(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)(bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0))':
     dependencies:
       '@nestjs/bull-shared': 11.0.5(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.2.1)
       '@nestjs/common': 11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.2.1(@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.2.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      bullmq: 6.1.2(ioredis@5.11.1)(pg@8.23.0)
+      bullmq: 6.2.0(ioredis@5.11.1)(pg@8.23.0)
       tslib: 2.8.1
 
   '@nestjs/common@11.2.1(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)':
@@ -16128,9 +16128,9 @@ snapshots:
 
   '@tanstack/pacer-lite@0.1.1': {}
 
-  '@tanstack/query-core@5.101.4': {}
+  '@tanstack/query-core@5.102.0': {}
 
-  '@tanstack/query-devtools@5.101.4': {}
+  '@tanstack/query-devtools@5.102.0': {}
 
   '@tanstack/react-form@1.33.5(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
@@ -16140,15 +16140,15 @@ snapshots:
     transitivePeerDependencies:
       - react-dom
 
-  '@tanstack/react-query-devtools@5.101.4(@tanstack/react-query@5.101.4(react@19.2.8))(react@19.2.8)':
+  '@tanstack/react-query-devtools@5.102.0(@tanstack/react-query@5.102.0(react@19.2.8))(react@19.2.8)':
     dependencies:
-      '@tanstack/query-devtools': 5.101.4
-      '@tanstack/react-query': 5.101.4(react@19.2.8)
+      '@tanstack/query-devtools': 5.102.0
+      '@tanstack/react-query': 5.102.0(react@19.2.8)
       react: 19.2.8
 
-  '@tanstack/react-query@5.101.4(react@19.2.8)':
+  '@tanstack/react-query@5.102.0(react@19.2.8)':
     dependencies:
-      '@tanstack/query-core': 5.101.4
+      '@tanstack/query-core': 5.102.0
       react: 19.2.8
 
   '@tanstack/react-router@1.170.31(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
@@ -17535,7 +17535,7 @@ snapshots:
       base64-js: 1.5.1
       ieee754: 1.2.1
 
-  bullmq@6.1.2(ioredis@5.11.1)(pg@8.23.0):
+  bullmq@6.2.0(ioredis@5.11.1)(pg@8.23.0):
     dependencies:
       cron-parser: 5.10.0
       msgpackr: 2.0.5
@@ -21722,7 +21722,7 @@ snapshots:
 
   requires-port@1.0.0: {}
 
-  resend@6.21.0(@react-email/render@2.1.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)):
+  resend@6.22.0(@react-email/render@2.1.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)):
     dependencies:
       postal-mime: 2.7.5
       standardwebhooks: 1.0.0
