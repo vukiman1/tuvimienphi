@@ -29,6 +29,10 @@ node_modules
 !.vscode/extensions.json
 
 # misc
+# This is a pnpm workspace — pnpm-lock.yaml is the only lockfile. Ignore lockfiles from
+# other package managers so a stray `npm install` / `yarn` doesn't add a competing one.
+package-lock.json
+yarn.lock
 /.sass-cache
 /connect.lock
 /coverage
