@@ -16,6 +16,11 @@ updates:
       prefix: 'chore'
       include: 'scope'
     versioning-strategy: 'increase'
+    ignore:
+      # config@5 chỉ có entry CommonJS gọi `require()` vào file ESM, mà loader hàm của Vercel
+      # không hỗ trợ `require(esm)` — hàm chết lúc load. Xem PR #16 và #26.
+      - dependency-name: 'config'
+        versions: ['>=5']
     groups:
       production-minor-patch:
         dependency-type: 'production'
