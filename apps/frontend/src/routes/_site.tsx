@@ -8,7 +8,7 @@ export const Route = createFileRoute('/_site')({
 
 function SiteLayout() {
   return (
-    <div className="flex min-h-screen flex-col bg-muted/40">
+    <div className="flex min-h-screen flex-col overflow-x-clip bg-muted/40">
       <SiteHeader />
       <div className="flex-1">
         <Outlet />

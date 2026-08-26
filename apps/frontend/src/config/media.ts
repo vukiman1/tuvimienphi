@@ -25,6 +25,17 @@ export const MEDIA = {
     laSoDemo: mediaUrl('/home/la-so-demo.webp'),
     decorPhongCanh: mediaUrl('/home/decor-phong-canh.webp'),
   },
+  laSo: {
+    decorLeft: mediaUrl('/la-so/left.webp'),
+    decorRight: mediaUrl('/la-so/right.webp'),
+    illustrationCrane: mediaUrl('/la-so/crane-pine.webp'),
+    seal: mediaUrl('/la-so/seal.webp'),
+    cloudDivider: mediaUrl('/la-so/cloud-divider.webp'),
+    luopan: mediaUrl('/la-so/luopan.webp'),
+    headerOrnament: mediaUrl('/la-so/header-ornament.webp'),
+    taiji: mediaUrl('/la-so/taiji.webp'),
+    badge: mediaUrl('/la-so/badge.webp'),
+  },
   ngayTot: {
     lichBackground: mediaUrl('/ngay-tot/lich-bg.svg'),
     barWood: mediaUrl('/ngay-tot/bar-wood.png'),
@@ -47,6 +58,11 @@ export const MEDIA = {
     aspectTinhDuyen: mediaUrl('/van-han/aspect-tinh-duyen.png'),
   },
 } as const;
+
+/** Huy hiệu của từng mục luận giải. Tách riêng vì tên file được chọn lúc chạy, không cố định. */
+export function laSoIconUrl(name: string): string {
+  return mediaUrl(`/la-so/icons/${name}.webp`);
+}
 
 /** The six Lục Diệu discs, keyed by the slot's slug. */
 export function xuatHanhIconUrl(slug: string): string {

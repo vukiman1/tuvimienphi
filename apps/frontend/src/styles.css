@@ -25,6 +25,11 @@
   --color-ring: var(--ring);
   --font-sans: 'Cormorant Garamond', ui-serif, Georgia, serif;
   --font-display: 'Cormorant Garamond', ui-serif, Georgia, serif;
+  /* Lá số xếp rất nhiều chữ nhỏ trong ô hẹp; serif của site nhoè ở cỡ đó nên dùng sans riêng. */
+  --font-chart: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* Cormorant là serif cho tiêu đề: nét mảnh, đặt dấu chồng tiếng Việt kém, đọc văn dài rất mỏi.
+     Noto Serif giữ đúng chất serif nhưng nét dày và dựng dấu tiếng Việt chuẩn. */
+  --font-body: 'Noto Serif', Charter, Georgia, serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -129,6 +134,12 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'Cormorant Garamond', ui-serif, Georgia, serif;
+  }
+
+  /* Preflight của Tailwind 4 bỏ `cursor: pointer` mặc định trên nút, trả chúng về con trỏ mũi tên. */
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
   }
 }
 
