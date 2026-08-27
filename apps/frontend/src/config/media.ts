@@ -19,10 +19,12 @@ export const MEDIA = {
   },
   home: {
     heroVideo: mediaUrl('/home/hero-video.mp4'),
+    heroVideoCalm: mediaUrl('/home/hero-video-calm.mp4'),
     heroPoster: mediaUrl('/home/hero-poster.webp'),
     heroAmDuong: mediaUrl('/home/hero-am-duong.webp'),
     ctaPlate: mediaUrl('/home/cta-plate.webp'),
     laSoDemo: mediaUrl('/home/la-so-demo.webp'),
+    woodPanel: mediaUrl('/home/wood-panel.webp'),
     readerGalaxy: mediaUrl('/home/reader-galaxy.webp'),
     decorPhongCanh: mediaUrl('/home/decor-phong-canh.webp'),
   },
