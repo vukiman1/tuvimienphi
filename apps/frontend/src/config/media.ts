@@ -23,6 +23,7 @@ export const MEDIA = {
     heroAmDuong: mediaUrl('/home/hero-am-duong.webp'),
     ctaPlate: mediaUrl('/home/cta-plate.webp'),
     laSoDemo: mediaUrl('/home/la-so-demo.webp'),
+    readerGalaxy: mediaUrl('/home/reader-galaxy.webp'),
     decorPhongCanh: mediaUrl('/home/decor-phong-canh.webp'),
   },
   laSo: {
