@@ -7,6 +7,7 @@ import { SelectField, type SelectOption } from '@/components/ui/select-field';
 import { Button } from '@/components/ui/button';
 import { MEDIA } from '@/config/media';
 import { useFormWithSubmitError } from '@/lib/use-form-with-submit-error';
+import { cn } from '@/lib/utils';
 import {
   BIRTH_HOURS,
   DAYS_IN_LONGEST_MONTH,
@@ -25,8 +26,15 @@ import {
   type HeroBirthFormValues,
 } from '@/features/home/hero-birth-schema';
 
-const FIELD_CLASS =
-  'h-10 w-full rounded-lg border-0 bg-white px-3 text-sm text-[#2a1f0e] shadow-md placeholder:text-[#7a6a55] focus-visible:ring-2 focus-visible:ring-[#e0bd76] focus-visible:outline-none';
+const FIELD_CLASS = [
+  'h-10 w-full rounded-lg border-0 bg-white px-3 text-sm text-[#2a1f0e] shadow-md',
+  'placeholder:text-[#7a6a55] focus-visible:outline-none',
+  'transition-[box-shadow,color] duration-150 ease-out motion-reduce:transition-none',
+  // Sáu ô này trước đó không có phản hồi rê chuột nào; viền vàng mảnh là đủ để biết bấm được.
+  'hover:shadow-lg hover:ring-1 hover:ring-[#e0bd76]/60',
+  // Lúc đang nhập phải nổi hơn hẳn lúc rê chuột, nếu không hai trạng thái lẫn vào nhau.
+  'focus-visible:ring-2 focus-visible:ring-[#e0bd76] focus-visible:shadow-[0_0_16px_rgba(224,189,118,0.45)]',
+].join(' ');
 
 /* The plate is a transparent PNG: set it as an inline background so no `bg-*` utility can win
    the merge and paint a colour behind its cut corners. */
@@ -36,7 +44,12 @@ const SUBMIT_PLATE_STYLE = {
   backgroundRepeat: 'no-repeat',
 } as const;
 
-const SELECT_CLASS = `${FIELD_CLASS} appearance-none pr-8`;
+/**
+ * `<select>` gốc không có `::placeholder`, nên chưa chọn gì thì chữ "Ngày" trông đậm y như "12" đã
+ * chọn — nhìn vào không biết còn thiếu ô nào. `:has()` bắt đúng lúc option rỗng đang được chọn để
+ * hạ chữ xuống màu mờ, khỏi phải nhớ trạng thái bằng JS.
+ */
+const SELECT_CLASS = `${FIELD_CLASS} appearance-none pr-8 [&:has(option[value='']:checked)]:text-[#7a6a55]`;
 
 function countingOptions(count: number, from: number): readonly SelectOption<string>[] {
   return Array.from({ length: count }, (_, index) => {
@@ -231,11 +244,20 @@ export function HeroBirthForm() {
         selector={({ isSubmitting }) => isSubmitting}
         children={(isSubmitting) => (
           <Button
-            className="mx-auto mt-2 flex aspect-[808/161] h-auto w-full max-w-[420px] items-center justify-center rounded-none bg-transparent p-0 font-display text-lg font-bold tracking-wide text-[#fdf3dc] uppercase [text-shadow:0_1px_3px_rgba(60,26,4,0.85)] hover:bg-transparent hover:brightness-110 sm:text-2xl sm:tracking-wider"
+            className={cn(
+              'mx-auto mt-2 flex aspect-[808/161] h-auto w-full max-w-[420px] items-center justify-center rounded-none bg-transparent p-0 font-display text-lg font-bold tracking-wide text-[#fdf3dc] uppercase [text-shadow:0_1px_3px_rgba(60,26,4,0.85)] hover:bg-transparent sm:text-2xl sm:tracking-wider',
+              // Phóng bằng thuộc tính `scale` chứ không phải `transform` — xem ghi chú trong styles.css.
+              'transition-[scale,filter] duration-200 ease-out hover:scale-[1.03] active:scale-[0.98]',
+              // Quầng sáng vẽ bằng `drop-shadow` chứ không phải `box-shadow`: nền nút là ảnh PNG có
+              // góc cắt, `box-shadow` sẽ đổ bóng theo hình chữ nhật chứ không theo dáng nút.
+              'hover:brightness-110 hover:drop-shadow-[0_0_18px_rgba(224,189,118,0.55)]',
+              'focus-visible:brightness-110 focus-visible:drop-shadow-[0_0_18px_rgba(224,189,118,0.55)]',
+              'motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100',
+            )}
             style={SUBMIT_PLATE_STYLE}
             type="submit"
           >
-            {isSubmitting ? 'Đang mở lá số...' : 'Lập lá số của tôi →'}
+            {isSubmitting ? 'Đang mở lá số...' : 'Lập lá số của tôi'}
           </Button>
         )}
       />
