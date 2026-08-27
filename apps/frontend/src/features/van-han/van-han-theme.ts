@@ -39,6 +39,7 @@ export const ELEMENT_THEMES = {
     pill: 'bg-violet-100/80 text-violet-700',
     namDisc: 'bg-violet-100 text-violet-600',
     divider: 'border-violet-200/70',
+    glow: 'bg-violet-400/25',
   },
   Mộc: {
     coin: vanHanCoinUrl('moc'),
@@ -47,6 +48,7 @@ export const ELEMENT_THEMES = {
     pill: 'bg-green-100/80 text-green-700',
     namDisc: 'bg-green-100 text-green-600',
     divider: 'border-green-200/70',
+    glow: 'bg-green-400/25',
   },
   Thủy: {
     coin: vanHanCoinUrl('thuy'),
@@ -55,6 +57,7 @@ export const ELEMENT_THEMES = {
     pill: 'bg-sky-100/80 text-sky-700',
     namDisc: 'bg-sky-100 text-sky-600',
     divider: 'border-sky-200/70',
+    glow: 'bg-sky-400/25',
   },
   Hỏa: {
     coin: vanHanCoinUrl('hoa'),
@@ -63,6 +66,7 @@ export const ELEMENT_THEMES = {
     pill: 'bg-orange-100/80 text-orange-700',
     namDisc: 'bg-orange-100 text-orange-500',
     divider: 'border-orange-200/70',
+    glow: 'bg-orange-400/25',
   },
   Thổ: {
     coin: vanHanCoinUrl('tho'),
@@ -71,6 +75,7 @@ export const ELEMENT_THEMES = {
     pill: 'bg-amber-100/80 text-amber-700',
     namDisc: 'bg-amber-100 text-amber-600',
     divider: 'border-amber-200/70',
+    glow: 'bg-amber-400/25',
   },
 } as const;
 

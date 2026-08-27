@@ -63,18 +63,24 @@ function BirthYearCard({
 
   return (
     <div
-      className={`overflow-hidden rounded-2xl border shadow-sm transition-shadow duration-200 hover:shadow-md ${theme.card} ${CARD_ENTER}`}
+      className={`group overflow-hidden rounded-2xl border shadow-sm transition-shadow duration-200 hover:shadow-md ${theme.card} ${CARD_ENTER}`}
       style={{ animationDelay: `${index * CARD_STAGGER_MS}ms` }}
     >
       <div className="flex flex-col gap-4 p-4 md:flex-row md:items-center md:gap-2 md:p-5">
-        {/* Đồng xu ngũ hành + tên can-chi + năm sinh + pill ngũ hành */}
+        {/* Đồng xu ngũ hành (quầng sáng pulse + xoay khi hover) + tên can-chi + năm sinh + pill */}
         <div className="flex items-center gap-4 md:w-60 md:shrink-0">
-          <img
-            alt={element}
-            className="size-20 shrink-0 object-contain"
-            src={theme.coin}
-            title={entry.menh}
-          />
+          <span className="relative flex size-20 shrink-0 items-center justify-center">
+            <span
+              aria-hidden
+              className={`absolute inset-2 animate-pulse rounded-full blur-md ${theme.glow}`}
+            />
+            <img
+              alt={element}
+              className="relative size-20 object-contain transition-transform duration-700 ease-out group-hover:rotate-[360deg]"
+              src={theme.coin}
+              title={entry.menh}
+            />
+          </span>
           <div className="min-w-0">
             <p className={`font-display text-2xl leading-tight font-bold ${theme.title}`}>
               {entry.canChi}
