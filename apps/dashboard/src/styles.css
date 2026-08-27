@@ -1,0 +1,553 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+/* Class-based dark mode: `.dark` on <html> switches the night theme (default), else the day theme. */
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-border: var(--sidebar-border);
+
+  /* Ngũ hành palette, tuned to glow against the night sky. */
+  --color-kim: var(--kim);
+  --color-moc: var(--moc);
+  --color-thuy: var(--thuy);
+  --color-hoa: var(--hoa);
+  --color-tho: var(--tho);
+
+  --color-nebula: var(--nebula);
+  --color-star: var(--star);
+
+  /* Type system: a sturdy book serif (renders Vietnamese diacritics properly, unlike the thin
+     "elegant" serifs), a Vietnamese-native geometric sans for the UI, and a techy grotesk for
+     numerals + spaced labels. */
+  --font-display: 'Noto Serif', 'Times New Roman', serif;
+  --font-body: 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: var(--font-body);
+  --font-label: 'Space Grotesk', system-ui, sans-serif;
+  --font-chart: 'Space Grotesk', system-ui, sans-serif;
+  /* Brush calligraphy for Hán characters — the "thầy đồ viết chữ nho" voice on seals. */
+  --font-seal: 'Ma Shan Zheng', 'Noto Serif TC', ui-serif, serif;
+  --color-cinnabar: var(--cinnabar);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/*
+ * DAY theme — "giấy dó ban ngày". A warm aged-paper ground with ink text, antique gold and a
+ * cinnabar seal, so the tử vi character carries into light mode instead of a sterile white admin.
+ * The sidebar stays deep ink in both modes for contrast.
+ */
+:root {
+  --void-hue: 255;
+  --radius: 0.9rem;
+
+  --background: oklch(0.965 0.012 86);
+  --foreground: oklch(0.25 0.02 64);
+
+  --card: oklch(0.995 0.006 86);
+  --card-foreground: var(--foreground);
+  --popover: oklch(0.99 0.006 86);
+  --popover-foreground: var(--foreground);
+
+  --primary: oklch(0.58 0.11 74);
+  --primary-foreground: oklch(0.99 0 0);
+
+  --secondary: oklch(0.93 0.014 84);
+  --secondary-foreground: oklch(0.3 0.02 64);
+  --muted: oklch(0.93 0.014 84);
+  --muted-foreground: oklch(0.48 0.02 68);
+  --accent: oklch(0.9 0.022 82);
+  --accent-foreground: oklch(0.3 0.02 64);
+
+  --destructive: oklch(0.55 0.19 27);
+
+  --border: oklch(0.28 0.02 66 / 12%);
+  --input: oklch(0.28 0.02 66 / 16%);
+  --ring: var(--primary);
+
+  /* Sidebar stays ink in day mode too — a dark rail against the paper. */
+  --sidebar: oklch(0.16 0.02 var(--void-hue));
+  --sidebar-foreground: oklch(0.92 0.012 92);
+  --sidebar-accent: oklch(0.3 0.035 var(--void-hue));
+  --sidebar-border: oklch(0.8 0.03 258 / 12%);
+
+  --nebula: oklch(0.7 0.06 85);
+  --star: oklch(0.35 0.02 64);
+  --cinnabar: oklch(0.52 0.19 30);
+
+  /* Ngũ hành darkened so they read on the pale paper surfaces. */
+  --kim: oklch(0.62 0.11 78);
+  --moc: oklch(0.52 0.11 158);
+  --thuy: oklch(0.5 0.13 245);
+  --hoa: oklch(0.55 0.18 28);
+  --tho: oklch(0.58 0.09 66);
+}
+
+/*
+ * NIGHT theme — "Thiên văn huyền học". Deep ink-blue void, antique gold starlight, glass surfaces
+ * over a constellation field. This is the default (html carries `.dark`).
+ */
+.dark {
+  --void-hue: 255;
+  --radius: 0.9rem;
+
+  --background: oklch(0.145 0.022 var(--void-hue));
+  --foreground: oklch(0.94 0.012 92);
+
+  /* Glass panels: a lifted ink the layout renders at partial opacity. */
+  --card: oklch(0.215 0.026 var(--void-hue));
+  --card-foreground: var(--foreground);
+  --popover: oklch(0.2 0.026 var(--void-hue));
+  --popover-foreground: var(--foreground);
+
+  /* Antique / champagne gold — desaturated so it glints rather than glares. */
+  --primary: oklch(0.8 0.1 87);
+  --primary-foreground: oklch(0.16 0.02 var(--void-hue));
+
+  --secondary: oklch(0.27 0.025 var(--void-hue));
+  --secondary-foreground: oklch(0.92 0.012 92);
+  --muted: oklch(0.25 0.022 var(--void-hue));
+  --muted-foreground: oklch(0.7 0.02 258);
+  --accent: oklch(0.31 0.03 var(--void-hue));
+  --accent-foreground: oklch(0.94 0.012 92);
+
+  --destructive: oklch(0.64 0.15 22);
+
+  --border: oklch(0.8 0.03 258 / 12%);
+  --input: oklch(0.8 0.03 258 / 16%);
+  --ring: var(--primary);
+
+  --sidebar: oklch(0.125 0.02 var(--void-hue));
+  --sidebar-foreground: oklch(0.92 0.012 92);
+  --sidebar-accent: oklch(0.28 0.035 var(--void-hue));
+  --sidebar-border: oklch(0.8 0.03 258 / 12%);
+
+  /* Nebula is now a restrained deep teal-blue (no magenta), used faintly. */
+  --nebula: oklch(0.5 0.07 220);
+  --star: oklch(0.96 0.012 95);
+  /* Chu sa (cinnabar) — the red of a carved seal. */
+  --cinnabar: oklch(0.55 0.19 30);
+
+  /* Ngũ hành, muted to an antique register. */
+  --kim: oklch(0.82 0.1 87);
+  --moc: oklch(0.72 0.09 162);
+  --thuy: oklch(0.7 0.1 232);
+  --hoa: oklch(0.63 0.15 28);
+  --tho: oklch(0.74 0.08 68);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    font-size: 112.5%;
+  }
+
+  body {
+    @apply text-foreground;
+    background-color: var(--background);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: 0;
+  }
+
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+    font-family: var(--font-chart);
+  }
+
+  /* Drop the native number-input spinner arrows — they clash with the themed inputs. */
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  ::selection {
+    background: color-mix(in oklch, var(--primary) 35%, transparent);
+  }
+}
+
+/* --------------------------------------------------------------------------------------------- *
+ * Night sky — a fixed, non-interactive backdrop. Two soft nebula washes + two tiled star layers
+ * (near/far) drifting at different speeds so the field feels deep rather than flat.
+ * --------------------------------------------------------------------------------------------- */
+.night-sky {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  /* Day: a warm paper wash with faint gold light in the corners. */
+  background:
+    radial-gradient(
+      1100px 720px at 88% -10%,
+      color-mix(in oklch, var(--primary) 9%, transparent),
+      transparent 58%
+    ),
+    radial-gradient(
+      950px 680px at 2% 112%,
+      color-mix(in oklch, var(--nebula) 16%, transparent),
+      transparent 58%
+    );
+}
+
+.night-sky::before,
+.night-sky::after {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background-repeat: repeat;
+  opacity: 0; /* stars only appear at night */
+}
+
+/* Night: nebula washes behind the constellation field. */
+.dark .night-sky {
+  background:
+    radial-gradient(
+      1100px 720px at 88% -10%,
+      color-mix(in oklch, var(--primary) 7%, transparent),
+      transparent 58%
+    ),
+    radial-gradient(
+      950px 680px at 2% 112%,
+      color-mix(in oklch, var(--nebula) 14%, transparent),
+      transparent 58%
+    );
+}
+
+/* Far stars: small, dim, slow. */
+.dark .night-sky::before {
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, var(--star), transparent),
+    radial-gradient(
+      1px 1px at 90px 120px,
+      color-mix(in oklch, var(--star) 70%, transparent),
+      transparent
+    ),
+    radial-gradient(
+      1px 1px at 160px 60px,
+      color-mix(in oklch, var(--star) 55%, transparent),
+      transparent
+    ),
+    radial-gradient(
+      1px 1px at 200px 180px,
+      color-mix(in oklch, var(--star) 65%, transparent),
+      transparent
+    );
+  background-size: 240px 240px;
+  opacity: 0.22;
+}
+
+/* Near stars: a few slightly brighter points. Static and faint — a whisper, not a galaxy. */
+.dark .night-sky::after {
+  background-image:
+    radial-gradient(
+      1.4px 1.4px at 50px 80px,
+      color-mix(in oklch, var(--primary) 70%, transparent),
+      transparent
+    ),
+    radial-gradient(
+      1.4px 1.4px at 300px 200px,
+      color-mix(in oklch, var(--star) 60%, transparent),
+      transparent
+    );
+  background-size: 360px 360px;
+  opacity: 0.24;
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-240px, -120px, 0);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .night-sky::before,
+  .night-sky::after {
+    animation: none;
+  }
+}
+
+/* Surface panel — a clean, near-opaque card. No backdrop-blur: with dozens of cards on screen the
+   filter is a real scroll cost, and over the near-static backdrop the difference is invisible. */
+.glass {
+  background: color-mix(in oklch, var(--card) 94%, transparent);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 2px oklch(0 0 0 / 0.18);
+}
+
+/* Restrained gold ring for the few real emphasis spots (avatar, active nav marker). */
+.glow-ring {
+  box-shadow: 0 0 0 1px color-mix(in oklch, var(--primary) 22%, transparent);
+}
+
+/* Kept as a no-op hook so existing markup is harmless; emphasis now comes from weight/scale. */
+.text-glow {
+  text-shadow: none;
+}
+
+/* Solid gold button — flat, with a hairline darker rim. Confident, not shiny. */
+.btn-gold {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border: 1px solid color-mix(in oklch, var(--primary) 60%, black 22%);
+  transition: filter 0.15s ease;
+}
+.btn-gold:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+
+/* Outline button — a thin gold rim that fills faintly on hover. */
+.btn-brass {
+  border-color: color-mix(in oklch, var(--primary) 40%, transparent);
+}
+.btn-brass:hover:not(:disabled) {
+  border-color: color-mix(in oklch, var(--primary) 60%, transparent);
+  background: color-mix(in oklch, var(--primary) 8%, transparent);
+  color: var(--foreground);
+}
+
+.font-label {
+  font-family: var(--font-label);
+}
+.font-seal {
+  font-family: var(--font-seal);
+}
+
+/* Ấn triện — a carved cinnabar seal. Vermilion fill, a gold hairline "carved" border, brush Hán
+   character. The tiny rotation + inset shadow make it read as pressed onto the surface. */
+.seal-stamp {
+  display: grid;
+  place-items: center;
+  font-family: var(--font-seal);
+  color: color-mix(in oklch, var(--star) 92%, var(--cinnabar));
+  background: radial-gradient(
+    120% 120% at 30% 20%,
+    color-mix(in oklch, var(--cinnabar) 92%, white 8%),
+    var(--cinnabar)
+  );
+  border: 1.5px solid color-mix(in oklch, var(--primary) 55%, var(--cinnabar));
+  box-shadow:
+    inset 0 0 0 2px color-mix(in oklch, var(--cinnabar) 70%, black 30%),
+    0 6px 16px -8px color-mix(in oklch, var(--cinnabar) 70%, transparent);
+  border-radius: 0.55rem;
+  transform: rotate(-3deg);
+}
+
+/* Traditional divider: a thin gold rule fading out from a small lozenge node. */
+.rule-ornament {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    color-mix(in oklch, var(--primary) 70%, transparent),
+    transparent 70%
+  );
+}
+
+/* Make chart line/curve strokes glow like a star trail, and give donut slices a soft halo. */
+.chart-glow .recharts-area-curve,
+.chart-glow .recharts-line-curve {
+  filter: drop-shadow(0 0 5px color-mix(in oklch, var(--primary) 65%, transparent));
+}
+.chart-glow .recharts-sector,
+.chart-glow .recharts-bar-rectangle path {
+  filter: drop-shadow(0 3px 10px oklch(0 0 0 / 45%));
+}
+.recharts-cartesian-axis-tick-value {
+  font-family: var(--font-chart);
+  font-size: 11px;
+}
+
+/* --------------------------------------------------------------------------------------------- *
+ * Motion. Entrance = fade + rise (stagger via inline --d delay). Interactions = lift + glow.
+ * --------------------------------------------------------------------------------------------- */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-rise {
+  animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 1px color-mix(in oklch, var(--primary) 30%, transparent);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1px color-mix(in oklch, var(--primary) 55%, transparent),
+      0 0 22px -4px color-mix(in oklch, var(--primary) 60%, transparent);
+  }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3.5s ease-in-out infinite;
+}
+
+/* Hover lift for interactive cards — rises slightly and deepens its glow. */
+.lift {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+  will-change: transform;
+}
+.lift:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in oklch, var(--primary) 45%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in oklch, var(--primary) 22%, transparent),
+    0 30px 60px -28px oklch(0 0 0 / 70%),
+    0 0 30px -10px color-mix(in oklch, var(--primary) 45%, transparent);
+}
+
+/* Sweeping starlight shimmer, e.g. across a hero band. */
+@keyframes shimmer {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+.shimmer-text {
+  background: linear-gradient(
+    100deg,
+    var(--foreground) 30%,
+    var(--primary) 50%,
+    var(--foreground) 70%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+
+/* Page transition — the whole view fades + rises when the route changes (keyed remount). */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+.page-enter {
+  animation: page-enter 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Skeleton loading: a starlight sweep across the placeholder instead of a flat pulse. */
+@keyframes skeleton-sweep {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+.skeleton-shimmer {
+  background-image: linear-gradient(
+    100deg,
+    transparent 20%,
+    color-mix(in oklch, var(--primary) 12%, transparent) 45%,
+    color-mix(in oklch, var(--star) 10%, transparent) 55%,
+    transparent 80%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-sweep 1.6s ease-in-out infinite;
+}
+
+/* Slow orbital spin for the branded loader. */
+@keyframes orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-orbit {
+  animation: orbit 3.2s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise,
+  .animate-glow-pulse,
+  .shimmer-text,
+  .page-enter,
+  .skeleton-shimmer,
+  .animate-orbit {
+    animation: none;
+  }
+  .lift {
+    transition: none;
+  }
+}

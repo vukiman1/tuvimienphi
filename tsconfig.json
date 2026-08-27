@@ -56,6 +56,9 @@
     },
     {
       "path": "./packages/shared/contracts"
+    },
+    {
+      "path": "./apps/dashboard"
     }
   ]
 }

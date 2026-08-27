@@ -72,3 +72,5 @@ apps/backend/docker/data
 # Artwork originals. Only the generated WebP/MP4 next to them are committed; keep these in shared
 # storage so a clone does not pull tens of megabytes nobody serves.
 apps/frontend/public/**/_src/
+
+vitest.config.*.timestamp*
