@@ -1,16 +1,6 @@
 import type { CSSProperties } from 'react';
-import {
-  Briefcase,
-  Coins,
-  Flame,
-  Gem,
-  HeartPulse,
-  Leaf,
-  Mountain,
-  Users,
-  Waves,
-} from 'lucide-react';
-import { vanHanHeroUrl } from '@/config/media';
+import { Briefcase, Coins, HeartPulse, Users } from 'lucide-react';
+import { vanHanCoinUrl, vanHanHeroUrl } from '@/config/media';
 import { ZODIAC_CHI, type ZodiacChi } from '@/lib/zodiac-icons';
 
 /** Tô sepia icon con giáp thành đỏ maroon (giữ sắc độ) cho icon silhouette ở fallback hero. */
@@ -40,55 +30,45 @@ export const HAN_BY_CHI: Readonly<Record<ZodiacChi, string>> = {
   Hợi: '亥',
 };
 
-/** Mỗi ngũ hành một tông màu cho card năm sinh: nền card, tên can-chi, huy chương tròn,
- * icon, pill ngũ hành, và đĩa nhỏ trước nhãn NAM. Kim = tím (theo mockup). */
+/** Mỗi ngũ hành một tông màu cho card năm sinh: nền card, tên can-chi, đồng xu ngũ hành,
+ * pill ngũ hành, và đĩa nhỏ trước nhãn NAM. Kim = tím (theo mockup). */
 export const ELEMENT_THEMES = {
   Kim: {
-    icon: Gem,
+    coin: vanHanCoinUrl('kim'),
     card: 'border-violet-200 bg-gradient-to-br from-violet-50/70 to-purple-50/30',
     title: 'text-violet-700',
-    ring: 'border-violet-400/60',
-    iconColor: 'text-violet-600',
     pill: 'bg-violet-100/80 text-violet-700',
     namDisc: 'bg-violet-100 text-violet-600',
     divider: 'border-violet-200/70',
   },
   Mộc: {
-    icon: Leaf,
+    coin: vanHanCoinUrl('moc'),
     card: 'border-green-200 bg-gradient-to-br from-green-50/70 to-emerald-50/30',
     title: 'text-green-700',
-    ring: 'border-green-400/60',
-    iconColor: 'text-green-600',
     pill: 'bg-green-100/80 text-green-700',
     namDisc: 'bg-green-100 text-green-600',
     divider: 'border-green-200/70',
   },
   Thủy: {
-    icon: Waves,
+    coin: vanHanCoinUrl('thuy'),
     card: 'border-sky-200 bg-gradient-to-br from-sky-50/70 to-blue-50/30',
     title: 'text-sky-700',
-    ring: 'border-sky-400/60',
-    iconColor: 'text-sky-600',
     pill: 'bg-sky-100/80 text-sky-700',
     namDisc: 'bg-sky-100 text-sky-600',
     divider: 'border-sky-200/70',
   },
   Hỏa: {
-    icon: Flame,
+    coin: vanHanCoinUrl('hoa'),
     card: 'border-orange-200 bg-gradient-to-br from-orange-50/70 to-amber-50/30',
     title: 'text-orange-700',
-    ring: 'border-orange-400/60',
-    iconColor: 'text-orange-500',
     pill: 'bg-orange-100/80 text-orange-700',
     namDisc: 'bg-orange-100 text-orange-500',
     divider: 'border-orange-200/70',
   },
   Thổ: {
-    icon: Mountain,
+    coin: vanHanCoinUrl('tho'),
     card: 'border-amber-200 bg-gradient-to-br from-amber-50/80 to-yellow-50/40',
     title: 'text-amber-700',
-    ring: 'border-amber-400/60',
-    iconColor: 'text-amber-600',
     pill: 'bg-amber-100/80 text-amber-700',
     namDisc: 'bg-amber-100 text-amber-600',
     divider: 'border-amber-200/70',

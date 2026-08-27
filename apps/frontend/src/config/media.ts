@@ -59,6 +59,11 @@ export function vanHanHeroUrl(slug: string): string {
   return mediaUrl(`/van-han/hero-${slug}.png`);
 }
 
+/** Đồng xu ngũ hành cho card năm sinh, theo slug hành (thuy/hoa/tho/moc/kim). */
+export function vanHanCoinUrl(slug: string): string {
+  return mediaUrl(`/van-han/coin-${slug}.png`);
+}
+
 /** Huy hiệu của từng mục luận giải. Tách riêng vì tên file được chọn lúc chạy, không cố định. */
 export function laSoIconUrl(name: string): string {
   return mediaUrl(`/la-so/icons/${name}.webp`);

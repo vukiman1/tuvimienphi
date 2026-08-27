@@ -50,22 +50,18 @@ function GenderColumn({
 function BirthYearCard({ entry }: { readonly entry: VanHanBirthYearFortune }) {
   const element = elementOfMenh(entry.menh);
   const theme = ELEMENT_THEMES[element];
-  const Icon = theme.icon;
 
   return (
     <div className={`overflow-hidden rounded-2xl border shadow-sm ${theme.card}`}>
       <div className="flex flex-col gap-4 p-4 md:flex-row md:items-center md:gap-2 md:p-5">
-        {/* Huy chương tròn + tên can-chi + năm sinh + pill ngũ hành */}
+        {/* Đồng xu ngũ hành + tên can-chi + năm sinh + pill ngũ hành */}
         <div className="flex items-center gap-4 md:w-60 md:shrink-0">
-          <span
-            className={`relative flex size-20 shrink-0 items-center justify-center rounded-full border-2 bg-white/60 ${theme.ring}`}
+          <img
+            alt={element}
+            className="size-20 shrink-0 object-contain"
+            src={theme.coin}
             title={entry.menh}
-          >
-            <span
-              className={`absolute inset-1.5 rounded-full border border-dashed ${theme.ring}`}
-            />
-            <Icon className={`size-8 ${theme.iconColor}`} />
-          </span>
+          />
           <div className="min-w-0">
             <p className={`font-display text-2xl leading-tight font-bold ${theme.title}`}>
               {entry.canChi}
