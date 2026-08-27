@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { VanHanDetail } from '@/features/van-han/components/van-han-detail';
 import { ZodiacPicker } from '@/features/van-han/components/zodiac-picker';
 import { toVanHanFortune } from '@/features/van-han/map-van-han';
-import { VAN_HAN_FORTUNE_PLACEHOLDER } from '@/features/van-han/placeholder-data';
+import { VAN_HAN_FORTUNE_BY_CHI } from '@/features/van-han/van-han-mock';
 import { getYearCanChi } from '@/lib/lunar-calendar';
 import { ZODIAC_CHI, type ZodiacChi } from '@/lib/zodiac-icons';
 import { vanHanQueries } from '@/services/van-han-service';
@@ -24,8 +24,8 @@ export function VanHanPage() {
 
   const { data: entries } = useQuery(vanHanQueries.byYear(currentYear));
   const entry = entries?.find((item) => item.zodiacOrder === orderOfChi(selectedChi));
-  // Chưa có dữ liệu thật thì hiển thị nội dung minh họa (tuổi Ngọ) để giữ nguyên bố cục trang.
-  const fortune = entry ? toVanHanFortune(entry) : VAN_HAN_FORTUNE_PLACEHOLDER;
+  // Chưa có dữ liệu thật thì hiển thị nội dung minh họa riêng theo từng con giáp.
+  const fortune = entry ? toVanHanFortune(entry) : VAN_HAN_FORTUNE_BY_CHI[selectedChi];
 
   return (
     <main className="mx-auto w-full max-w-5xl px-4 py-8 font-body md:px-6">
