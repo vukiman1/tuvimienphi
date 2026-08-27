@@ -194,6 +194,29 @@ jobs:
       - run: pnpm exec playwright install --with-deps
       - run: pnpm nx run @org/frontend-e2e:e2e
 
+  dashboard-e2e:
+    name: dashboard-e2e
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          filter: tree:0
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: 'pnpm'
+          cache-dependency-path: pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps
+      - run: pnpm nx run @org/dashboard-e2e:e2e
+
   security-scan:
     name: security-scan
     runs-on: ubuntu-latest
