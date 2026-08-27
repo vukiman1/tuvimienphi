@@ -16,9 +16,10 @@ export function App() {
       <ToastContainer
         autoClose={4000}
         closeOnClick
+        hideProgressBar
         newestOnTop
         position="top-right"
-        theme="colored"
+        theme="light"
       />
     </QueryClientProvider>
   );
