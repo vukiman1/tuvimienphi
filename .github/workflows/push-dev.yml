@@ -157,10 +157,12 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      # ormconfigs.ts pulls in two workspace packages that resolve to their build output rather than
-      # their source: backend-config expands DATABASE_URL, and the entities it imports extend
-      # BaseEntity from backend-base. Miss either and the TypeORM CLI cannot load the data source.
-      - run: pnpm nx run-many -t build -p backend-config backend-base
+      # The TypeORM CLI loads ormconfigs.ts, which reaches an open-ended set of workspace packages
+      # through the entity classes it imports — and those resolve to build output, not source.
+      # Naming them one by one is whack-a-mole: it was backend-config, then backend-base, then
+      # backend-enum. Building the app makes Nx build whatever it actually depends on, today and
+      # after the next import lands. `needs: [build]` means this is normally a cache hit.
+      - run: pnpm nx build @org/backend
 
       # Neon's pooled endpoint runs PgBouncer in transaction mode, which cannot be trusted with DDL.
       - name: Run pending migrations
