@@ -569,6 +569,8 @@ importers:
         specifier: ^5.0.15
         version: 5.0.15(@types/react@19.2.18)(immer@11.1.18)(react@19.2.8)(use-sync-external-store@1.6.0(react@19.2.8))
 
+  apps/dashboard-e2e: {}
+
   apps/frontend:
     dependencies:
       '@org/shared-contracts':
