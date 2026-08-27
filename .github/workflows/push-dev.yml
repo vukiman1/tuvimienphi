@@ -157,9 +157,10 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      # ormconfigs.ts imports @org/backend-config to expand DATABASE_URL, and that package resolves
-      # to its build output rather than its source.
-      - run: pnpm nx build backend-config
+      # ormconfigs.ts pulls in two workspace packages that resolve to their build output rather than
+      # their source: backend-config expands DATABASE_URL, and the entities it imports extend
+      # BaseEntity from backend-base. Miss either and the TypeORM CLI cannot load the data source.
+      - run: pnpm nx run-many -t build -p backend-config backend-base
 
       # Neon's pooled endpoint runs PgBouncer in transaction mode, which cannot be trusted with DDL.
       - name: Run pending migrations
