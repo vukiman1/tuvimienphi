@@ -1,5 +1,4 @@
 import type { CSSProperties } from 'react';
-import { Briefcase, Coins, HeartPulse, Users } from 'lucide-react';
 import { vanHanCoinUrl, vanHanHeroUrl } from '@/config/media';
 import { ZODIAC_CHI, type ZodiacChi } from '@/lib/zodiac-icons';
 
@@ -84,30 +83,26 @@ export function elementOfMenh(menh: string): ElementName {
   return ELEMENT_THEMES[last] ? last : 'Thổ';
 }
 
-/** Mỗi mục luận giải một tông màu: đĩa icon tô đặc + chữ trắng, nhãn và dấu » cùng tông.
+/** Mỗi mục luận giải một tông màu: đồng xu riêng, nhãn và dấu » cùng tông.
  * Tài Vận vàng, Sức Khoẻ lục, Sự Nghiệp lam, Tình Duyên hồng. */
 export const ASPECT_THEMES = {
   'Tài Vận': {
-    Icon: Coins,
-    disc: 'bg-gradient-to-br from-[#d9a441] to-[#b9862c]',
+    coin: vanHanCoinUrl('taivan'),
     label: 'text-[#a9752a]',
     bullet: 'text-[#c08a2d]',
   },
   'Sức Khoẻ': {
-    Icon: HeartPulse,
-    disc: 'bg-gradient-to-br from-[#6aa877] to-[#3f7d52]',
+    coin: vanHanCoinUrl('suckhoe'),
     label: 'text-[#3f7d52]',
     bullet: 'text-[#3f7d52]',
   },
   'Sự Nghiệp': {
-    Icon: Briefcase,
-    disc: 'bg-gradient-to-br from-[#6088c6] to-[#3f66a8]',
+    coin: vanHanCoinUrl('sunghiep'),
     label: 'text-[#3f66a8]',
     bullet: 'text-[#3f66a8]',
   },
   'Tình Duyên': {
-    Icon: Users,
-    disc: 'bg-gradient-to-br from-[#d3767e] to-[#b64c58]',
+    coin: vanHanCoinUrl('tinhduyen'),
     label: 'text-[#b64c58]',
     bullet: 'text-[#b64c58]',
   },

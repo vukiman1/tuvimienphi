@@ -118,7 +118,6 @@ function AspectRating({ rating }: { readonly rating: number }) {
 function AspectCard({ aspect }: { readonly aspect: VanHanAspect }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const theme = aspectTheme(aspect.label);
-  const Icon = theme.Icon;
   const hasMore = aspect.points.length > COLLAPSED_POINT_COUNT;
   const visiblePoints = isExpanded ? aspect.points : aspect.points.slice(0, COLLAPSED_POINT_COUNT);
 
@@ -127,11 +126,7 @@ function AspectCard({ aspect }: { readonly aspect: VanHanAspect }) {
       {/* Khung kép: viền ngoài + đường viền trong mảnh. */}
       <div className="flex h-full flex-col rounded-xl border border-[#ece0c2] px-4 py-4">
         <div className="flex items-center gap-3">
-          <span
-            className={`flex size-11 shrink-0 items-center justify-center rounded-full text-white shadow-sm ${theme.disc}`}
-          >
-            <Icon className="size-5" />
-          </span>
+          <img alt="" className="size-11 shrink-0 object-contain" src={theme.coin} />
           <p className={`font-display text-lg font-bold tracking-wide uppercase ${theme.label}`}>
             {aspect.label}
           </p>
