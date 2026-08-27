@@ -241,11 +241,17 @@
   --toastify-color-success: var(--primary);
   --toastify-color-error: var(--destructive);
   --toastify-font-family: inherit;
-  --toastify-toast-width: 420px;
+}
+
+/* Toast rộng hơn mặc định (320px) để tiêu đề + mô tả nằm gọn 1 dòng, dáng thon. */
+.Toastify__toast-container {
+  width: 480px !important;
+  max-width: 96vw;
 }
 
 /* Toast phong thủy (ToastCard) tự vẽ nền/panel riêng, nên bỏ hết style mặc định của toastify. */
 .Toastify__toast.ec-toast {
+  width: 100%;
   padding: 0;
   min-height: 0;
   background: transparent;
