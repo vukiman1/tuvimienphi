@@ -312,3 +312,46 @@ export function VanHanDetail({ chi, currentYear, fortune }: VanHanDetailProps) {
     </div>
   );
 }
+
+const SKELETON_BAR = 'animate-pulse rounded bg-[#c9a15c]/15';
+
+/** Khung xương (skeleton) hiển thị khi đang tải / chuyển tuổi, giữ nguyên bố cục trang. */
+export function VanHanDetailSkeleton() {
+  return (
+    <div className="flex flex-col gap-4" aria-busy="true" aria-live="polite">
+      <div className="rounded-2xl border border-[#c9a15c]/40 bg-gradient-to-b from-[#fdf9f0] to-[#faf3e4] p-4 shadow-md md:p-6">
+        <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-start">
+          <div className={`size-48 shrink-0 rounded-full sm:size-52 ${SKELETON_BAR}`} />
+          <div className="w-full flex-1 space-y-3">
+            <div className={`h-8 w-40 ${SKELETON_BAR}`} />
+            <div className={`h-4 w-56 ${SKELETON_BAR}`} />
+            <div className={`h-4 w-64 ${SKELETON_BAR}`} />
+            <div className="mt-5 space-y-2 pt-2">
+              <div className={`h-3 w-full ${SKELETON_BAR}`} />
+              <div className={`h-3 w-11/12 ${SKELETON_BAR}`} />
+              <div className={`h-3 w-10/12 ${SKELETON_BAR}`} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-3 md:grid-cols-2">
+        {Array.from({ length: 4 }, (_, index) => (
+          <div
+            key={index}
+            className="rounded-2xl border border-[#e2d3a6] bg-gradient-to-b from-[#fdfbf4] to-[#f7efdd] p-5 shadow-sm"
+          >
+            <div className="flex items-center gap-3">
+              <div className={`size-11 rounded-full ${SKELETON_BAR}`} />
+              <div className={`h-5 w-28 ${SKELETON_BAR}`} />
+            </div>
+            <div className="mt-4 space-y-2">
+              <div className={`h-3 w-full ${SKELETON_BAR}`} />
+              <div className={`h-3 w-5/6 ${SKELETON_BAR}`} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
