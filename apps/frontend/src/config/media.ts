@@ -85,10 +85,10 @@ export function zodiacIconUrl(fileName: string): string {
 
 /** Icon tròn cho toast theo loại (scroll/success/info/warning/error). */
 export function toastIconUrl(type: string): string {
-  return mediaUrl(`/toast/icon-${type}.png`);
+  return mediaUrl(`/toast/icon-${type}.webp`);
 }
 
 /** Nền panel (có cảnh núi/mây) cho toast theo loại. */
 export function toastPanelUrl(type: string): string {
-  return mediaUrl(`/toast/panel-${type}.png`);
+  return mediaUrl(`/toast/panel-${type}.webp`);
 }
