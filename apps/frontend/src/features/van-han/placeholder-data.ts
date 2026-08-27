@@ -40,16 +40,6 @@ export const VAN_HAN_FORTUNE_PLACEHOLDER: VanHanFortune = {
       ],
     },
     {
-      label: 'Sự Nghiệp',
-      rating: 4,
-      points: [
-        'Tuế Quân và Thiên Can đồng hành Hỏa vượng, biểu thị môi trường cạnh tranh quyết liệt. Người tuổi Ngọ năm nay sẽ có nhiều cơ hội hợp tác và thử thách mới, vừa là thời điểm phát triển năng lực, vừa là áp lực lớn về công việc.',
-        'Cát tinh Tướng Tinh và Kim Quỹ giúp nâng đỡ, mở rộng năng lực quản lý, có khả năng được trọng dụng, giao phó nhiệm vụ lớn.',
-        'Tuy nhiên, do tự hình và Thái Tuế tác động, công việc dễ gặp điều chỉnh, thay đổi vị trí hoặc dự án, cùng với hiểu lầm, cạnh tranh, tiểu nhân cản trở.',
-        'Cần tránh cố chấp, giữ tâm thế cầu tiến nhưng khiêm nhường, biết điều tiết cảm xúc và giao tiếp. Bình tĩnh, linh hoạt, chịu khó học hỏi sẽ giúp hóa giải khó khăn, duy trì thành tựu.',
-      ],
-    },
-    {
       label: 'Sức Khoẻ',
       rating: 2,
       points: [
@@ -58,6 +48,16 @@ export const VAN_HAN_FORTUNE_PLACEHOLDER: VanHanFortune = {
         'Ảnh hưởng từ Ngũ Hoàng, Thái Tuế và Phục Thi làm miễn dịch giảm, dễ mắc bệnh vặt hoặc tai nạn nhỏ.',
         'Khuyên nên rèn luyện điều độ, ăn uống thanh đạm, tránh xa nơi nguy hiểm, kiểm soát tâm lý, và chú trọng sức khỏe tinh thần.',
         'Đặc biệt, phụ nữ mang thai nên thận trọng, chuẩn bị kỹ lưỡng trong giai đoạn sinh nở.',
+      ],
+    },
+    {
+      label: 'Sự Nghiệp',
+      rating: 4,
+      points: [
+        'Tuế Quân và Thiên Can đồng hành Hỏa vượng, biểu thị môi trường cạnh tranh quyết liệt. Người tuổi Ngọ năm nay sẽ có nhiều cơ hội hợp tác và thử thách mới, vừa là thời điểm phát triển năng lực, vừa là áp lực lớn về công việc.',
+        'Cát tinh Tướng Tinh và Kim Quỹ giúp nâng đỡ, mở rộng năng lực quản lý, có khả năng được trọng dụng, giao phó nhiệm vụ lớn.',
+        'Tuy nhiên, do tự hình và Thái Tuế tác động, công việc dễ gặp điều chỉnh, thay đổi vị trí hoặc dự án, cùng với hiểu lầm, cạnh tranh, tiểu nhân cản trở.',
+        'Cần tránh cố chấp, giữ tâm thế cầu tiến nhưng khiêm nhường, biết điều tiết cảm xúc và giao tiếp. Bình tĩnh, linh hoạt, chịu khó học hỏi sẽ giúp hóa giải khó khăn, duy trì thành tựu.',
       ],
     },
     {

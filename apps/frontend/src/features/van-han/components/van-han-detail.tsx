@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Flame, Gem, Leaf, Mountain, Star, Waves } from 'lucide-react';
+import { Star, User } from 'lucide-react';
 import { MEDIA } from '@/config/media';
 import { getYearCanChi } from '@/lib/lunar-calendar';
 import { zodiacIconPath, type ZodiacChi } from '@/lib/zodiac-icons';
@@ -8,115 +8,110 @@ import type {
   VanHanBirthYearFortune,
   VanHanFortune,
 } from '@/features/van-han/placeholder-data';
+import {
+  aspectTheme,
+  ELEMENT_THEMES,
+  elementOfMenh,
+  HAN_BY_CHI,
+  HERO_ILLUSTRATION_BY_CHI,
+  RED_ICON_STYLE,
+} from '@/features/van-han/van-han-theme';
 
 const MAX_RATING = 5;
 const COLLAPSED_POINT_COUNT = 3;
 
-const ELEMENT_THEMES = {
-  Kim: {
-    icon: Gem,
-    container: 'border-slate-300/70 bg-gradient-to-b from-slate-100 to-slate-50',
-    title: 'text-slate-800',
-    iconWrap: 'border-slate-400/50 text-slate-600',
-    divider: 'border-slate-300/60 divide-slate-300/60',
-    namPill: 'bg-white/70 text-slate-700',
-  },
-  Mộc: {
-    icon: Leaf,
-    container: 'border-green-300/70 bg-gradient-to-b from-green-50 to-emerald-50/40',
-    title: 'text-green-900',
-    iconWrap: 'border-green-500/40 text-green-700',
-    divider: 'border-green-300/50 divide-green-300/50',
-    namPill: 'bg-white/70 text-green-800',
-  },
-  Thủy: {
-    icon: Waves,
-    container: 'border-sky-300/70 bg-gradient-to-b from-sky-50 to-cyan-50/40',
-    title: 'text-sky-900',
-    iconWrap: 'border-sky-500/40 text-sky-700',
-    divider: 'border-sky-300/50 divide-sky-300/50',
-    namPill: 'bg-white/70 text-sky-800',
-  },
-  Hỏa: {
-    icon: Flame,
-    container: 'border-orange-300/70 bg-gradient-to-b from-orange-50 to-amber-50/50',
-    title: 'text-orange-900',
-    iconWrap: 'border-orange-500/40 text-orange-700',
-    divider: 'border-orange-300/50 divide-orange-300/50',
-    namPill: 'bg-white/70 text-orange-800',
-  },
-  Thổ: {
-    icon: Mountain,
-    container: 'border-amber-500/40 bg-gradient-to-b from-amber-100/80 to-yellow-50/60',
-    title: 'text-amber-900',
-    iconWrap: 'border-amber-600/40 text-amber-800',
-    divider: 'border-amber-500/30 divide-amber-500/30',
-    namPill: 'bg-white/70 text-amber-800',
-  },
-} as const;
+/** Hiệu ứng từng card trượt-mờ vào; dùng kèm animationDelay để tạo hiệu ứng lần lượt (stagger). */
+const CARD_ENTER = 'animate-in fade-in slide-in-from-bottom-3 fill-mode-both duration-500 ease-out';
+const CARD_STAGGER_MS = 70;
 
-type ElementName = keyof typeof ELEMENT_THEMES;
-
-function elementOfMenh(menh: string): ElementName {
-  const parts = menh.split(' ');
-  const last = parts[parts.length - 1] as ElementName;
-  return ELEMENT_THEMES[last] ? last : 'Thổ';
-}
-
-function BirthYearCard({ entry }: { readonly entry: VanHanBirthYearFortune }) {
-  const element = elementOfMenh(entry.menh);
-  const theme = ELEMENT_THEMES[element];
-  const Icon = theme.icon;
-
+/** Một cột luận giải theo giới tính (👤 NAM / 👤 NỮ): nhãn có đĩa tròn + đoạn văn. */
+function GenderColumn({
+  label,
+  disc,
+  text,
+  divider,
+  content,
+}: {
+  readonly label: string;
+  readonly disc: string;
+  readonly text: string;
+  readonly divider: string;
+  readonly content: string;
+}) {
   return (
-    <div className={`overflow-hidden rounded-xl border shadow-sm ${theme.container}`}>
-      <div className="flex flex-col sm:flex-row">
-        <div className="flex items-center gap-2.5 px-3 py-2.5 sm:w-48 sm:shrink-0">
-          <span
-            className={`flex size-9 shrink-0 items-center justify-center rounded-full border bg-white/50 ${theme.iconWrap}`}
-            title={entry.menh}
-          >
-            <Icon className="size-4" />
-          </span>
-          <div className="min-w-0">
-            <p className={`font-display text-lg leading-tight font-bold ${theme.title}`}>
-              {entry.canChi}
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Sinh năm {entry.birthYear} ({element})
-            </p>
-          </div>
-        </div>
-
-        <div
-          className={`grid flex-1 border-t bg-white/50 sm:grid-cols-2 sm:divide-x sm:border-t-0 sm:border-l ${theme.divider}`}
-        >
-          <div className={`border-b px-3 py-2.5 sm:border-b-0 ${theme.divider}`}>
-            <span
-              className={`inline-block rounded-full px-2 py-0.5 text-[0.65rem] font-bold tracking-wide uppercase ${theme.namPill}`}
-            >
-              Nam
-            </span>
-            <p className="mt-1 text-sm leading-relaxed text-foreground">{entry.male}</p>
-          </div>
-          <div className="px-3 py-2.5">
-            <span className="inline-block rounded-full bg-rose-100 px-2 py-0.5 text-[0.65rem] font-bold tracking-wide text-rose-700 uppercase">
-              Nữ
-            </span>
-            <p className="mt-1 text-sm leading-relaxed text-foreground">{entry.female}</p>
-          </div>
-        </div>
+    <div className={`flex-1 md:self-stretch md:border-l md:pl-5 ${divider}`}>
+      <div className="flex items-center gap-2">
+        <span className={`flex size-6 items-center justify-center rounded-full ${disc}`}>
+          <User className="size-3.5" />
+        </span>
+        <span className={`text-sm font-bold tracking-wide uppercase ${text}`}>{label}</span>
       </div>
+      <p className="mt-2 text-sm leading-relaxed text-foreground">{content}</p>
     </div>
   );
 }
 
-const ASPECT_ICONS = [
-  MEDIA.vanHan.aspectTaiVan,
-  MEDIA.vanHan.aspectSuNghiep,
-  MEDIA.vanHan.aspectSucKhoe,
-  MEDIA.vanHan.aspectTinhDuyen,
-] as const;
+function BirthYearCard({
+  entry,
+  index,
+}: {
+  readonly entry: VanHanBirthYearFortune;
+  readonly index: number;
+}) {
+  const element = elementOfMenh(entry.menh);
+  const theme = ELEMENT_THEMES[element];
+
+  return (
+    <div
+      className={`group overflow-hidden rounded-2xl border shadow-sm transition-shadow duration-200 hover:shadow-md ${theme.card} ${CARD_ENTER}`}
+      style={{ animationDelay: `${index * CARD_STAGGER_MS}ms` }}
+    >
+      <div className="flex flex-col gap-4 p-4 md:flex-row md:items-center md:gap-2 md:p-5">
+        {/* Đồng xu ngũ hành (quầng sáng pulse + xoay khi hover) + tên can-chi + năm sinh + pill */}
+        <div className="flex items-center gap-4 md:w-60 md:shrink-0">
+          <span className="relative flex size-20 shrink-0 items-center justify-center">
+            <span
+              aria-hidden
+              className={`absolute inset-2 animate-pulse rounded-full blur-md ${theme.glow}`}
+            />
+            <img
+              alt={element}
+              className="relative size-20 object-contain transition-transform duration-700 ease-out group-hover:rotate-[360deg]"
+              src={theme.coin}
+              title={entry.menh}
+            />
+          </span>
+          <div className="min-w-0">
+            <p className={`font-display text-2xl leading-tight font-bold ${theme.title}`}>
+              {entry.canChi}
+            </p>
+            <p className="mt-0.5 text-sm text-muted-foreground">Sinh năm {entry.birthYear}</p>
+            <span
+              className={`mt-1.5 inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold ${theme.pill}`}
+            >
+              {element}
+            </span>
+          </div>
+        </div>
+
+        <GenderColumn
+          content={entry.male}
+          disc={theme.namDisc}
+          divider={theme.divider}
+          label="Nam"
+          text={theme.title}
+        />
+        <GenderColumn
+          content={entry.female}
+          disc="bg-rose-100 text-rose-500"
+          divider={theme.divider}
+          label="Nữ"
+          text="text-rose-600"
+        />
+      </div>
+    </div>
+  );
+}
 
 function AspectRating({ rating }: { readonly rating: number }) {
   return (
@@ -130,8 +125,8 @@ function AspectRating({ rating }: { readonly rating: number }) {
           key={index}
           className={`size-3.5 ${
             index < rating
-              ? 'fill-[#c9a15c] text-[#c9a15c]'
-              : 'fill-transparent text-muted-foreground/40'
+              ? 'fill-[#e0a83a] text-[#e0a83a]'
+              : 'fill-transparent text-muted-foreground/35'
           }`}
         />
       ))}
@@ -139,57 +134,48 @@ function AspectRating({ rating }: { readonly rating: number }) {
   );
 }
 
-function AspectCard({
-  aspect,
-  iconSrc,
-}: {
-  readonly aspect: VanHanAspect;
-  readonly iconSrc: string;
-}) {
+function AspectCard({ aspect, index }: { readonly aspect: VanHanAspect; readonly index: number }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const theme = aspectTheme(aspect.label);
   const hasMore = aspect.points.length > COLLAPSED_POINT_COUNT;
   const visiblePoints = isExpanded ? aspect.points : aspect.points.slice(0, COLLAPSED_POINT_COUNT);
 
   return (
-    <div className="relative mb-3 break-inside-avoid overflow-hidden rounded-lg border border-[#c9a15c]/30 bg-[#fdf9f0] px-3 py-2.5">
-      <img
-        alt=""
-        aria-hidden
-        className="pointer-events-none absolute top-1 right-1 h-12 opacity-15"
-        src={MEDIA.vanHan.decorCloud}
-      />
+    <div
+      className={`break-inside-avoid rounded-2xl border border-[#e2d3a6] bg-gradient-to-b from-[#fdfbf4] to-[#f7efdd] p-1.5 shadow-sm transition-shadow duration-200 hover:shadow-md ${CARD_ENTER}`}
+      style={{ animationDelay: `${index * CARD_STAGGER_MS}ms` }}
+    >
+      {/* Khung kép: viền ngoài + đường viền trong mảnh. */}
+      <div className="flex h-full flex-col rounded-xl border border-[#ece0c2] px-4 py-4">
+        <div className="flex items-center gap-3">
+          <img alt="" className="size-11 shrink-0 object-contain" src={theme.coin} />
+          <p className={`font-display text-lg font-bold tracking-wide uppercase ${theme.label}`}>
+            {aspect.label}
+          </p>
+          <span className="ml-auto">
+            <AspectRating rating={aspect.rating} />
+          </span>
+        </div>
 
-      <p className="relative flex items-center gap-2 border-b border-[#c9a15c]/20 pb-2 text-sm font-bold tracking-wide text-primary uppercase">
-        <img alt="" className="h-7 w-auto max-w-10 shrink-0 object-contain" src={iconSrc} />
-        {aspect.label}
-        <span className="ml-auto">
-          <AspectRating rating={aspect.rating} />
-        </span>
-      </p>
+        <ul className="mt-3 flex flex-1 flex-col gap-2">
+          {visiblePoints.map((point, index) => (
+            <li key={index} className="flex gap-2 text-sm leading-relaxed text-foreground">
+              <span className={`shrink-0 font-bold ${theme.bullet}`}>»</span>
+              {point}
+            </li>
+          ))}
+        </ul>
 
-      <ul className="relative mt-2 flex flex-col gap-1.5">
-        {visiblePoints.map((point) => (
-          <li key={point} className="flex gap-2 text-sm leading-relaxed text-foreground">
-            <img
-              alt=""
-              aria-hidden
-              className="mt-1.5 h-2.5 w-auto shrink-0"
-              src={MEDIA.vanHan.bulletArrow}
-            />
-            {point}
-          </li>
-        ))}
-      </ul>
-
-      <div className="relative mt-2 flex justify-end">
         {hasMore && (
-          <button
-            className="text-xs font-semibold text-primary underline-offset-2 outline-none hover:underline focus-visible:ring-2 focus-visible:ring-ring/60"
-            onClick={() => setIsExpanded((current) => !current)}
-            type="button"
-          >
-            {isExpanded ? 'Thu gọn' : 'Xem thêm'}
-          </button>
+          <div className="mt-3 flex justify-end">
+            <button
+              className="rounded-full border border-[#d9c48f] px-3.5 py-1 text-xs font-semibold text-[#9a7b3a] transition-colors outline-none hover:bg-[#f3e8c9]/60 focus-visible:ring-2 focus-visible:ring-ring/60"
+              onClick={() => setIsExpanded((current) => !current)}
+              type="button"
+            >
+              {isExpanded ? 'Thu gọn' : 'Xem chi tiết ›'}
+            </button>
+          </div>
         )}
       </div>
     </div>
@@ -202,67 +188,183 @@ interface VanHanDetailProps {
   readonly fortune: VanHanFortune;
 }
 
-function SectionTitle({ title }: { readonly title: string }) {
+function SectionTitle({
+  title,
+  subtitle,
+  align = 'center',
+}: {
+  readonly title: string;
+  readonly subtitle?: string;
+  readonly align?: 'center' | 'left';
+}) {
+  if (align === 'left') {
+    return (
+      <div className="flex items-center gap-2.5 pt-4 pb-3">
+        <span className="h-px w-10 bg-gradient-to-r from-transparent to-[#c9a15c]/70" />
+        <span className="text-[0.6rem] text-[#c9a15c]">◆</span>
+        <p className="font-display text-lg font-bold whitespace-nowrap text-[#a8332a]">{title}</p>
+        <span className="text-[0.6rem] text-[#c9a15c]">◆</span>
+        <span className="h-px w-10 bg-gradient-to-l from-transparent to-[#c9a15c]/70" />
+      </div>
+    );
+  }
+
   return (
-    <div className="flex items-center justify-center gap-3 pt-4 pb-2">
-      <span className="h-px max-w-20 flex-1 bg-gradient-to-r from-transparent to-[#c9a15c]/70" />
-      <p className="font-display text-base font-bold whitespace-nowrap text-primary">{title}</p>
-      <span className="h-px max-w-20 flex-1 bg-gradient-to-l from-transparent to-[#c9a15c]/70" />
+    <div className="pt-5 pb-3">
+      <div className="flex items-center justify-center gap-2.5">
+        <span className="h-px max-w-16 flex-1 bg-gradient-to-r from-transparent to-[#c9a15c]/70" />
+        <span className="text-xs text-[#c9a15c]">❖</span>
+        <p className="font-display text-xl font-bold whitespace-nowrap text-[#a8332a]">{title}</p>
+        <span className="text-xs text-[#c9a15c]">❖</span>
+        <span className="h-px max-w-16 flex-1 bg-gradient-to-l from-transparent to-[#c9a15c]/70" />
+      </div>
+      {subtitle && <p className="mt-1.5 text-center text-sm text-muted-foreground">{subtitle}</p>}
+    </div>
+  );
+}
+
+function HeroCard({
+  chi,
+  currentYear,
+  fortune,
+}: {
+  readonly chi: ZodiacChi;
+  readonly currentYear: number;
+  readonly fortune: VanHanFortune;
+}) {
+  const heroImage = HERO_ILLUSTRATION_BY_CHI[chi];
+
+  return (
+    <div
+      className={`relative overflow-hidden rounded-2xl border border-[#c9a15c]/40 bg-gradient-to-b from-[#fdf9f0] to-[#faf3e4] p-4 shadow-md md:p-6 ${CARD_ENTER}`}
+    >
+      <img
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute top-0 right-0 h-28 opacity-20"
+        src={MEDIA.vanHan.decorCloud}
+      />
+
+      <div className="relative flex flex-col items-center gap-5 sm:flex-row sm:items-start">
+        {/* Ảnh minh hoạ vẽ tay nếu có; nếu chưa thì khung tròn CSS + icon silhouette. */}
+        {heroImage ? (
+          <img
+            alt={`Tuổi ${chi}`}
+            className="size-48 shrink-0 object-contain sm:size-52"
+            src={heroImage}
+          />
+        ) : (
+          <div className="relative shrink-0">
+            <div className="relative flex size-48 items-center justify-center overflow-hidden rounded-full border-2 border-[#c9a15c]/50 bg-gradient-to-b from-[#fdf6e6] to-[#f3e4c4] shadow-inner sm:size-52">
+              {/* Vòng trong mảnh + nền mây mờ, mô phỏng khung tranh vẽ tay. */}
+              <span className="absolute inset-2 rounded-full border border-[#c9a15c]/40" />
+              <img
+                alt=""
+                aria-hidden
+                className="pointer-events-none absolute -right-1 -bottom-2 h-20 opacity-25"
+                src={MEDIA.vanHan.decorCloud}
+              />
+              <img
+                alt={`Tuổi ${chi}`}
+                className="relative h-28 w-auto max-w-32 object-contain drop-shadow"
+                src={zodiacIconPath(chi) ?? undefined}
+                style={RED_ICON_STYLE}
+              />
+            </div>
+            <span className="absolute top-3 -left-1 flex flex-col items-center rounded-md bg-[#a8332a] px-1.5 py-1 font-display text-sm leading-tight font-bold text-[#f7e2b0] shadow">
+              <span>{HAN_BY_CHI[chi]}</span>
+              <span>年</span>
+            </span>
+          </div>
+        )}
+
+        <div className="min-w-0 flex-1 text-center sm:text-left">
+          <p className="font-display text-3xl font-bold text-[#a8332a]">Tuổi {chi}</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Vận hạn năm {getYearCanChi(currentYear)} {currentYear}
+          </p>
+          <p className="text-sm text-muted-foreground">Sinh năm: {fortune.birthYears.join(', ')}</p>
+
+          <SectionTitle align="left" title="Lưu Niên Vận Thế" />
+          <div className="flex flex-col gap-2 text-left">
+            {fortune.overview.map((paragraph, index) => (
+              <p key={index} className="text-sm leading-relaxed text-foreground">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
 
 export function VanHanDetail({ chi, currentYear, fortune }: VanHanDetailProps) {
   return (
-    <div className="rounded-xl border border-[#c9a15c]/40 bg-card p-3 shadow-md md:p-4">
-      <div className="flex items-center gap-3">
-        <span className="flex size-14 shrink-0 items-center justify-center rounded-xl border border-[#c9a15c]/40 bg-gradient-to-b from-[#c9a15c]/15 to-[#c9a15c]/5">
-          <img
-            alt=""
-            className="h-9 w-auto max-w-12 object-contain"
-            src={zodiacIconPath(chi) ?? undefined}
-          />
-        </span>
-        <div className="min-w-0">
-          <p className="font-display text-xl font-bold text-primary">Tuổi {chi}</p>
-          <p className="text-xs text-muted-foreground">
-            Vận hạn năm {getYearCanChi(currentYear)} {currentYear} · Sinh năm:{' '}
-            {fortune.birthYears.join(', ')}
-          </p>
+    <div className="flex flex-col gap-4">
+      <HeroCard chi={chi} currentYear={currentYear} fortune={fortune} />
+
+      <section>
+        <SectionTitle title="Vận Thế Luận Giải" />
+        <div className="grid gap-3 md:grid-cols-2">
+          {fortune.aspects.map((aspect, index) => (
+            <AspectCard key={aspect.label} aspect={aspect} index={index} />
+          ))}
         </div>
-      </div>
+      </section>
 
-      <SectionTitle title="Lưu Niên Vận Thế" />
-      <div className="flex flex-col gap-2">
-        {fortune.overview.map((paragraph) => (
-          <p key={paragraph} className="text-sm leading-relaxed text-foreground">
-            {paragraph}
-          </p>
-        ))}
-      </div>
+      <section>
+        <SectionTitle
+          subtitle={`Khám phá vận hạn chi tiết theo từng năm sinh của tuổi ${chi}`}
+          title="Vận Hạn Từng Tuổi"
+        />
+        <div className="flex flex-col gap-3">
+          {fortune.byBirthYear.map((entry, index) => (
+            <BirthYearCard key={entry.birthYear} entry={entry} index={index} />
+          ))}
+        </div>
+      </section>
 
-      <SectionTitle title="Vận Thế Luận Giải" />
-      <div className="md:columns-2 md:gap-3">
-        {fortune.aspects.map((aspect, index) => (
-          <AspectCard
-            key={aspect.label}
-            aspect={aspect}
-            iconSrc={ASPECT_ICONS[index % ASPECT_ICONS.length]}
-          />
-        ))}
+      <div className="mt-2 flex items-center justify-center gap-3 rounded-xl border border-[#e2d3a6] bg-[#fdfbf4]/60 px-4 py-3">
+        <span className="text-lg text-[#d9a441]">❖</span>
+        <p className="text-center text-xs text-muted-foreground">
+          Nội dung đang là dữ liệu minh họa cho tuổi {chi} — luận giải theo từng con giáp sẽ được
+          cập nhật.
+        </p>
+        <span className="text-lg text-[#d9a441]">❖</span>
       </div>
+    </div>
+  );
+}
 
-      <SectionTitle title="Vận Hạn Từng Tuổi" />
-      <div className="flex flex-col gap-3">
-        {fortune.byBirthYear.map((entry) => (
-          <BirthYearCard key={entry.birthYear} entry={entry} />
-        ))}
+/** Loader phong thủy: la bàn (luopan) xoay chậm + quầng vàng, hiện khi đang luận giải/chuyển tuổi. */
+export function VanHanDetailLoader() {
+  return (
+    <div
+      aria-busy="true"
+      aria-live="polite"
+      className="flex min-h-[420px] flex-col items-center justify-center gap-5 py-16"
+    >
+      <div className="relative flex items-center justify-center">
+        <span
+          aria-hidden
+          className="absolute size-32 animate-pulse rounded-full bg-[#d9a441]/20 blur-2xl"
+        />
+        <span
+          aria-hidden
+          className="absolute size-28 animate-spin rounded-full border border-[#c9a15c]/25 border-t-[#c9a15c]/80 [animation-duration:2.4s]"
+        />
+        <img
+          alt=""
+          aria-hidden
+          className="relative size-24 animate-spin opacity-90 [animation-duration:9s]"
+          src={MEDIA.laSo.luopan}
+        />
       </div>
-
-      <p className="mt-4 rounded-lg bg-muted/40 px-3 py-2 text-center text-xs text-muted-foreground">
-        Nội dung đang là dữ liệu minh họa cho tuổi Ngọ — luận giải theo từng con giáp sẽ được cập
-        nhật.
+      <p className="font-display text-base font-semibold tracking-wide text-[#a8332a]">
+        Đang luận giải vận hạn…
       </p>
+      <span className="text-sm tracking-[0.4em] text-[#c9a15c]">❖ ❖ ❖</span>
     </div>
   );
 }

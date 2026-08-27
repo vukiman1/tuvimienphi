@@ -50,14 +50,19 @@ export const MEDIA = {
     labelIconSun: mediaUrl('/ngay-tot/label-icon-sun.webp'),
   },
   vanHan: {
-    bulletArrow: mediaUrl('/van-han/bullet-arrow.png'),
     decorCloud: mediaUrl('/van-han/decor-cloud.png'),
-    aspectTaiVan: mediaUrl('/van-han/aspect-tai-van.png'),
-    aspectSuNghiep: mediaUrl('/van-han/aspect-su-nghiep.png'),
-    aspectSucKhoe: mediaUrl('/van-han/aspect-suc-khoe.png'),
-    aspectTinhDuyen: mediaUrl('/van-han/aspect-tinh-duyen.png'),
   },
 } as const;
+
+/** Ảnh minh hoạ hero vẽ tay của từng con giáp, theo slug con giáp (ví dụ "07-ngo"). */
+export function vanHanHeroUrl(slug: string): string {
+  return mediaUrl(`/van-han/hero-${slug}.png`);
+}
+
+/** Đồng xu ngũ hành cho card năm sinh, theo slug hành (thuy/hoa/tho/moc/kim). */
+export function vanHanCoinUrl(slug: string): string {
+  return mediaUrl(`/van-han/coin-${slug}.png`);
+}
 
 /** Huy hiệu của từng mục luận giải. Tách riêng vì tên file được chọn lúc chạy, không cố định. */
 export function laSoIconUrl(name: string): string {
