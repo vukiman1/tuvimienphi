@@ -50,10 +50,14 @@ export const MEDIA = {
     labelIconSun: mediaUrl('/ngay-tot/label-icon-sun.webp'),
   },
   vanHan: {
-    heroNgo: mediaUrl('/van-han/hero-ngo.png'),
     decorCloud: mediaUrl('/van-han/decor-cloud.png'),
   },
 } as const;
+
+/** Ảnh minh hoạ hero vẽ tay của từng con giáp, theo slug con giáp (ví dụ "07-ngo"). */
+export function vanHanHeroUrl(slug: string): string {
+  return mediaUrl(`/van-han/hero-${slug}.png`);
+}
 
 /** Huy hiệu của từng mục luận giải. Tách riêng vì tên file được chọn lúc chạy, không cố định. */
 export function laSoIconUrl(name: string): string {

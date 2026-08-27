@@ -10,19 +10,19 @@ import {
   Users,
   Waves,
 } from 'lucide-react';
-import { MEDIA } from '@/config/media';
-import type { ZodiacChi } from '@/lib/zodiac-icons';
+import { vanHanHeroUrl } from '@/config/media';
+import { ZODIAC_CHI, type ZodiacChi } from '@/lib/zodiac-icons';
 
 /** Tô sepia icon con giáp thành đỏ maroon (giữ sắc độ) cho icon silhouette ở fallback hero. */
 export const RED_ICON_STYLE: CSSProperties = {
   filter: 'sepia(1) saturate(6) hue-rotate(-28deg) brightness(0.72)',
 };
 
-/** Ảnh minh hoạ hero vẽ tay (đã có sẵn khung tròn + phù hiệu + nền) cho từng con giáp.
- * Con giáp chưa có ảnh riêng sẽ fallback về khung tròn CSS + icon silhouette. */
-export const HERO_ILLUSTRATION_BY_CHI: Partial<Record<ZodiacChi, string>> = {
-  Ngọ: MEDIA.vanHan.heroNgo,
-};
+/** Ảnh minh hoạ hero vẽ tay (khung tròn + phù hiệu + nền có sẵn) cho cả 12 con giáp,
+ * dựng từ slug con giáp (ví dụ Ngọ → "07-ngo" → /van-han/hero-07-ngo.png). */
+export const HERO_ILLUSTRATION_BY_CHI: Readonly<Record<ZodiacChi, string>> = Object.fromEntries(
+  ZODIAC_CHI.map((entry) => [entry.chi, vanHanHeroUrl(entry.icon)]),
+) as Record<ZodiacChi, string>;
 
 /** Địa chi bằng chữ Hán, dùng cho phù hiệu trên khung ảnh con giáp (ví dụ 午年). */
 export const HAN_BY_CHI: Readonly<Record<ZodiacChi, string>> = {
