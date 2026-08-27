@@ -137,7 +137,7 @@ export const ASPECT_THEMES = {
  * cảnh báo ở môi trường DEV để phát hiện lệch dữ liệu backend lúc QA, không phải khi production. */
 export function aspectTheme(label: string) {
   const theme = ASPECT_THEMES[label as keyof typeof ASPECT_THEMES];
-  if (!theme && import.meta.env.DEV) {
+  if (!theme && process.env.NODE_ENV === 'development') {
     console.warn(`[aspectTheme] nhãn luận giải không khớp theme: "${label}"`);
   }
   return theme ?? ASPECT_THEMES['Tài Vận'];
