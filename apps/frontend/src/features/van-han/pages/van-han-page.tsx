@@ -59,10 +59,7 @@ export function VanHanPage() {
         {isSwitching ? (
           <VanHanDetailLoader />
         ) : (
-          <div
-            key={selectedChi}
-            className="animate-in fade-in zoom-in-95 slide-in-from-bottom-3 duration-700 ease-out"
-          >
+          <div key={selectedChi}>
             <VanHanDetail chi={selectedChi} currentYear={currentYear} fortune={fortune} />
           </div>
         )}

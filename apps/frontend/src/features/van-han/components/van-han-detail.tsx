@@ -20,6 +20,10 @@ import {
 const MAX_RATING = 5;
 const COLLAPSED_POINT_COUNT = 3;
 
+/** Hiệu ứng từng card trượt-mờ vào; dùng kèm animationDelay để tạo hiệu ứng lần lượt (stagger). */
+const CARD_ENTER = 'animate-in fade-in slide-in-from-bottom-3 fill-mode-both duration-500 ease-out';
+const CARD_STAGGER_MS = 70;
+
 /** Một cột luận giải theo giới tính (👤 NAM / 👤 NỮ): nhãn có đĩa tròn + đoạn văn. */
 function GenderColumn({
   label,
@@ -47,12 +51,21 @@ function GenderColumn({
   );
 }
 
-function BirthYearCard({ entry }: { readonly entry: VanHanBirthYearFortune }) {
+function BirthYearCard({
+  entry,
+  index,
+}: {
+  readonly entry: VanHanBirthYearFortune;
+  readonly index: number;
+}) {
   const element = elementOfMenh(entry.menh);
   const theme = ELEMENT_THEMES[element];
 
   return (
-    <div className={`overflow-hidden rounded-2xl border shadow-sm ${theme.card}`}>
+    <div
+      className={`overflow-hidden rounded-2xl border shadow-sm transition-shadow duration-200 hover:shadow-md ${theme.card} ${CARD_ENTER}`}
+      style={{ animationDelay: `${index * CARD_STAGGER_MS}ms` }}
+    >
       <div className="flex flex-col gap-4 p-4 md:flex-row md:items-center md:gap-2 md:p-5">
         {/* Đồng xu ngũ hành + tên can-chi + năm sinh + pill ngũ hành */}
         <div className="flex items-center gap-4 md:w-60 md:shrink-0">
@@ -115,14 +128,17 @@ function AspectRating({ rating }: { readonly rating: number }) {
   );
 }
 
-function AspectCard({ aspect }: { readonly aspect: VanHanAspect }) {
+function AspectCard({ aspect, index }: { readonly aspect: VanHanAspect; readonly index: number }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const theme = aspectTheme(aspect.label);
   const hasMore = aspect.points.length > COLLAPSED_POINT_COUNT;
   const visiblePoints = isExpanded ? aspect.points : aspect.points.slice(0, COLLAPSED_POINT_COUNT);
 
   return (
-    <div className="break-inside-avoid rounded-2xl border border-[#e2d3a6] bg-gradient-to-b from-[#fdfbf4] to-[#f7efdd] p-1.5 shadow-sm">
+    <div
+      className={`break-inside-avoid rounded-2xl border border-[#e2d3a6] bg-gradient-to-b from-[#fdfbf4] to-[#f7efdd] p-1.5 shadow-sm transition-shadow duration-200 hover:shadow-md ${CARD_ENTER}`}
+      style={{ animationDelay: `${index * CARD_STAGGER_MS}ms` }}
+    >
       {/* Khung kép: viền ngoài + đường viền trong mảnh. */}
       <div className="flex h-full flex-col rounded-xl border border-[#ece0c2] px-4 py-4">
         <div className="flex items-center gap-3">
@@ -213,7 +229,9 @@ function HeroCard({
   const heroImage = HERO_ILLUSTRATION_BY_CHI[chi];
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-[#c9a15c]/40 bg-gradient-to-b from-[#fdf9f0] to-[#faf3e4] p-4 shadow-md md:p-6">
+    <div
+      className={`relative overflow-hidden rounded-2xl border border-[#c9a15c]/40 bg-gradient-to-b from-[#fdf9f0] to-[#faf3e4] p-4 shadow-md md:p-6 ${CARD_ENTER}`}
+    >
       <img
         alt=""
         aria-hidden
@@ -283,8 +301,8 @@ export function VanHanDetail({ chi, currentYear, fortune }: VanHanDetailProps) {
       <section>
         <SectionTitle title="Vận Thế Luận Giải" />
         <div className="grid gap-3 md:grid-cols-2">
-          {fortune.aspects.map((aspect) => (
-            <AspectCard key={aspect.label} aspect={aspect} />
+          {fortune.aspects.map((aspect, index) => (
+            <AspectCard key={aspect.label} aspect={aspect} index={index} />
           ))}
         </div>
       </section>
@@ -295,8 +313,8 @@ export function VanHanDetail({ chi, currentYear, fortune }: VanHanDetailProps) {
           title="Vận Hạn Từng Tuổi"
         />
         <div className="flex flex-col gap-3">
-          {fortune.byBirthYear.map((entry) => (
-            <BirthYearCard key={entry.birthYear} entry={entry} />
+          {fortune.byBirthYear.map((entry, index) => (
+            <BirthYearCard key={entry.birthYear} entry={entry} index={index} />
           ))}
         </div>
       </section>
