@@ -29,6 +29,8 @@ export interface PaginatedResult<T> {
 }
 
 // Auth
+export type UserRole = 'SUPER_ADMIN' | 'ADMIN' | 'USER' | 'SELLER';
+
 export interface User {
   email: string;
   displayName?: string | null;
@@ -36,6 +38,7 @@ export interface User {
   balance?: number | string;
   isEmailVerified?: boolean;
   hasPassword?: boolean;
+  role?: UserRole;
 }
 
 export interface LoginPayload {

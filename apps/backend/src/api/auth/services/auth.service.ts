@@ -60,7 +60,7 @@ export class AuthService {
   ) {}
 
   me(user: UserEntity) {
-    const { email, avatar, balance, isEmailVerified, displayName } = user;
+    const { email, avatar, balance, isEmailVerified, displayName, role } = user;
     return {
       user: {
         email,
@@ -69,6 +69,7 @@ export class AuthService {
         balance,
         isEmailVerified,
         hasPassword: Boolean(user.password),
+        role,
       },
     };
   }
