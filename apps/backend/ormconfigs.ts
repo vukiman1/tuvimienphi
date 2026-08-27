@@ -7,6 +7,8 @@ import { UserEntity } from './src/api/user/entities/user.entity';
 import { UserSessionEntity } from './src/api/auth/entities/user-session.entity';
 import { UserTotpEntity } from './src/api/auth/entities/user-totp.entity';
 import { UserRecoveryCodeEntity } from './src/api/auth/entities/user-recovery-code.entity';
+import { AuthIdentityEntity } from './src/api/auth/entities/auth-identity.entity';
+import { VanHanEntity } from './src/api/scraper/lichdungsu/van-han/entities/van-han.entity';
 
 interface DatabaseConfig {
   host: string;
@@ -56,7 +58,16 @@ export const options: DataSourceOptions = {
   ...dbConfig,
   // Hosted Postgres refuses plaintext connections, so without this migrations cannot connect.
   ssl: process.env.DB_TLS === 'true' ? { rejectUnauthorized: false } : false,
-  entities: [UserEntity, UserSessionEntity, UserTotpEntity, UserRecoveryCodeEntity],
+  // Mọi entity có bảng thật đều phải có mặt ở đây. Thiếu một cái thì `migration:generate` coi bảng
+  // của nó là thừa và sinh ra lệnh DROP.
+  entities: [
+    UserEntity,
+    UserSessionEntity,
+    UserTotpEntity,
+    UserRecoveryCodeEntity,
+    AuthIdentityEntity,
+    VanHanEntity,
+  ],
   migrationsTableName: 'migrations',
   migrations: [join(__dirname, `src/migrations/*.${migrationExtension}`)],
   synchronize: false,
