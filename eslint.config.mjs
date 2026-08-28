@@ -10,6 +10,7 @@ export default [
       '**/out-tsc',
       '**/vite.config.*.timestamp*',
       '**/test-output',
+      '**/vitest.config.*.timestamp*',
     ],
   },
   {
@@ -51,11 +52,7 @@ export default [
             },
             {
               sourceTag: 'type:e2e',
-              onlyDependOnLibsWithTags: [
-                'type:app',
-                'type:lib',
-                'type:contracts',
-              ],
+              onlyDependOnLibsWithTags: ['type:app', 'type:lib', 'type:contracts'],
             },
           ],
         },
