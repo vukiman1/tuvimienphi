@@ -1,84 +1,127 @@
-import { useState } from 'react';
-import { Link } from '@tanstack/react-router';
+import { useCallback, useMemo, useState } from 'react';
+import { ChevronDown } from 'lucide-react';
+import { ARTICLES } from '@/features/kien-thuc/kien-thuc-data';
+import { KienThucHero } from '@/features/kien-thuc/components/kien-thuc-hero';
+import { ALL_FILTER, CategoryNav, type Filter } from '@/features/kien-thuc/components/category-nav';
+import { FeaturedCarousel } from '@/features/kien-thuc/components/featured-carousel';
 import { ArticleCard } from '@/features/kien-thuc/components/article-card';
-import {
-  ARTICLE_CATEGORIES,
-  ARTICLES,
-  type ArticleCategory,
-  formatArticleDate,
-} from '@/features/kien-thuc/kien-thuc-data';
+import { SectionTitle } from '@/features/kien-thuc/components/section-title';
+import { PopularTopics } from '@/features/kien-thuc/components/popular-topics';
+import { Handbook } from '@/features/kien-thuc/components/handbook';
+import { QuoteCard } from '@/features/kien-thuc/components/quote-card';
+import { SocialFollow } from '@/features/kien-thuc/components/social-follow';
+import { Reveal } from '@/features/kien-thuc/components/reveal';
 
-const ALL = 'Tất cả';
-type Filter = typeof ALL | ArticleCategory;
+const PAGE_SIZE = 6;
 
-const FILTERS: readonly Filter[] = [ALL, ...ARTICLE_CATEGORIES];
+const FEATURED_COUNT = 4;
 
 export function KienThucPage() {
-  const [active, setActive] = useState<Filter>(ALL);
-  const articles = active === ALL ? ARTICLES : ARTICLES.filter((item) => item.category === active);
-  const [featured, ...rest] = articles;
+  const [active, setActive] = useState<Filter>(ALL_FILTER);
+  const [query, setQuery] = useState('');
+  const [visible, setVisible] = useState(PAGE_SIZE);
+
+  const filtered = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    return ARTICLES.filter((article) => {
+      const matchesCategory = active === ALL_FILTER || article.category === active;
+      const matchesQuery =
+        needle === '' ||
+        article.title.toLowerCase().includes(needle) ||
+        article.excerpt.toLowerCase().includes(needle);
+      return matchesCategory && matchesQuery;
+    });
+  }, [active, query]);
+
+  // The first few results form the featured carousel; the rest fill the latest grid.
+  const featuredPool = filtered.slice(0, FEATURED_COUNT);
+  const latest = filtered.slice(featuredPool.length);
+  const shown = latest.slice(0, visible);
+
+  // Stable handler refs so the memoized nav/hero don't re-render on unrelated state changes.
+  const changeFilter = useCallback((next: Filter) => {
+    setActive(next);
+    setVisible(PAGE_SIZE);
+  }, []);
+
+  const changeQuery = useCallback((next: string) => {
+    setQuery(next);
+    setVisible(PAGE_SIZE);
+  }, []);
 
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-10 md:px-6">
-      <header className="max-w-2xl">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Kiến thức</p>
-        <h1 className="mt-2 font-display text-4xl font-bold leading-tight text-foreground md:text-5xl">
-          Học tử vi từ gốc
-        </h1>
-        <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-          Những bài viết ngắn giải thích thuật ngữ và cách luận giải tử vi, phong thủy, tứ trụ —
-          viết cho người mới bắt đầu.
-        </p>
-      </header>
+    <main className="font-body text-foreground">
+      {/* Serif display for headings (font-display), Noto Serif for body — the site's two-tier type. */}
+      <KienThucHero query={query} onQueryChange={changeQuery} />
 
-      <div className="mt-8 flex flex-wrap gap-2">
-        {FILTERS.map((filter) => (
-          <button
-            key={filter}
-            type="button"
-            onClick={() => setActive(filter)}
-            aria-pressed={active === filter}
-            className={
-              active === filter
-                ? 'rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-primary-foreground'
-                : 'rounded-full border border-border px-4 py-1.5 text-sm font-medium text-muted-foreground transition hover:border-primary/50 hover:text-foreground'
-            }
-          >
-            {filter}
-          </button>
-        ))}
-      </div>
-
-      {featured && (
-        <Link
-          to="/kien-thuc/$slug"
-          params={{ slug: featured.slug }}
-          className="group mt-8 flex flex-col rounded-2xl border border-border bg-card p-8 shadow-sm transition hover:border-primary/50 hover:shadow-md"
-        >
-          <span className="text-xs font-semibold uppercase tracking-widest text-primary">
-            {featured.category}
-          </span>
-          <h2 className="mt-3 max-w-3xl font-display text-3xl font-semibold leading-snug text-foreground transition group-hover:text-primary md:text-4xl">
-            {featured.title}
-          </h2>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
-            {featured.excerpt}
-          </p>
-          <div className="mt-6 flex items-center gap-2 text-xs text-muted-foreground">
-            <time dateTime={featured.date}>{formatArticleDate(featured.date)}</time>
-            <span aria-hidden>·</span>
-            <span>{featured.readingMinutes} phút đọc</span>
-          </div>
-        </Link>
-      )}
-
-      {rest.length > 0 && (
-        <div className="mt-6 grid gap-6 sm:grid-cols-2">
-          {rest.map((article) => (
-            <ArticleCard key={article.slug} article={article} />
-          ))}
+      <div className="mx-auto w-full max-w-6xl px-4 md:px-6">
+        {/* Pulled up by ~half a chip so the hero's bottom rule runs through the middle of the row. */}
+        <div className="relative z-10 -mt-[54px]">
+          <CategoryNav active={active} onChange={changeFilter} />
         </div>
-      )}
+
+        <div className="mt-9 grid gap-8 pb-16 lg:grid-cols-[minmax(0,3fr)_minmax(0,1fr)]">
+          <div className="min-w-0">
+            <Reveal>
+              {featuredPool.length > 0 ? (
+                <section>
+                  <SectionTitle title="Bài viết nổi bật" />
+                  <div className="mt-5">
+                    <FeaturedCarousel
+                      key={featuredPool.map((item) => item.slug).join('|')}
+                      articles={featuredPool}
+                    />
+                  </div>
+                </section>
+              ) : (
+                <div className="rounded-2xl border border-dashed border-[#e0cfa5] bg-[#faf5ea] p-12 text-center">
+                  <p className="font-display text-[20px] font-semibold text-[#2a1f0e]">
+                    Chưa có bài viết phù hợp
+                  </p>
+                  <p className="mt-2 text-[13px] text-[#8d7a5c]">
+                    Thử chọn chủ đề khác hoặc đổi từ khóa tìm kiếm.
+                  </p>
+                </div>
+              )}
+            </Reveal>
+
+            {shown.length > 0 && (
+              <Reveal delay={100}>
+                <section className="mt-10">
+                  <SectionTitle title="Bài viết mới nhất" />
+                  <div className="mt-5 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                    {shown.map((article, index) => (
+                      <ArticleCard key={article.slug} article={article} index={index} />
+                    ))}
+                  </div>
+
+                  {latest.length > visible && (
+                    <div className="mt-8 flex justify-center">
+                      <button
+                        type="button"
+                        onClick={() => setVisible((current) => current + PAGE_SIZE)}
+                        className="inline-flex items-center gap-2 rounded-full bg-[#9e2b1e] px-6 py-2.5 text-[12px] font-semibold tracking-wide text-[#fdf3dc] uppercase transition-colors hover:bg-[#8a2318] focus-visible:ring-2 focus-visible:ring-[#e0bd76] focus-visible:outline-none"
+                      >
+                        Xem thêm bài viết
+                        <ChevronDown className="size-4" />
+                      </button>
+                    </div>
+                  )}
+                </section>
+              </Reveal>
+            )}
+          </div>
+
+          <Reveal delay={150}>
+            <aside className="flex flex-col gap-5">
+              <PopularTopics />
+              <Handbook />
+              <QuoteCard />
+              <SocialFollow />
+            </aside>
+          </Reveal>
+        </div>
+      </div>
     </main>
   );
 }

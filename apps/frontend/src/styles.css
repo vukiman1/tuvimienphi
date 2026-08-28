@@ -264,3 +264,149 @@
   padding: 0;
   margin: 0;
 }
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Kiến Thức — ambient motion. Slow, subtle, transform/opacity only; the page
+ * should feel like an ink painting breathing, never like a landing-page demo.
+ * Every ambient loop is disabled under prefers-reduced-motion.
+ * ────────────────────────────────────────────────────────────────────────── */
+@keyframes kt-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -7px, 0);
+  }
+}
+
+@keyframes kt-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(9px, -3px, 0);
+  }
+}
+
+.kt-float {
+  animation: kt-float 7s ease-in-out infinite;
+  will-change: transform;
+}
+
+.kt-drift {
+  animation: kt-drift 20s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* The parallax layers ease toward the pointer offset written by useHeroParallax. */
+.kt-parallax {
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+/* A flock of ink birds crossing the hero sky, wings flapping softly. */
+@keyframes kt-fly {
+  from {
+    transform: translate3d(-8vw, 40px, 0);
+  }
+  to {
+    transform: translate3d(108vw, -54px, 0);
+  }
+}
+
+@keyframes kt-flap {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.6);
+  }
+}
+
+.kt-flock {
+  animation: kt-fly 34s linear infinite;
+  will-change: transform;
+}
+
+.kt-bird {
+  transform-origin: center;
+  animation: kt-flap 0.8s ease-in-out infinite;
+}
+
+/* Signature feng-shui touches: the compass of fate turning, and Tử Vi stars breathing. */
+@keyframes kt-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes kt-twinkle {
+  0%,
+  100% {
+    opacity: 0.12;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+}
+
+.kt-spin {
+  animation: kt-spin 90s linear infinite;
+  will-change: transform;
+}
+
+.kt-twinkle {
+  animation: kt-twinkle var(--kt-tw, 4s) ease-in-out infinite;
+  will-change: opacity, transform;
+}
+
+/* A soft cinnabar-gold aura breathing around the featured card. Applied to an overlay whose static
+ * shadow is rasterised once; only opacity animates, so it composites instead of repainting. */
+@keyframes kt-aura {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+.kt-aura {
+  box-shadow:
+    0 0 0 1px rgba(201, 161, 92, 0.45),
+    0 8px 34px rgba(201, 161, 92, 0.3);
+  animation: kt-aura 5.5s ease-in-out infinite;
+  will-change: opacity;
+}
+
+/* Freeze the hero's ambient loops while it's scrolled out of view — no off-screen GPU churn. */
+.kt-paused .kt-float,
+.kt-paused .kt-drift,
+.kt-paused .kt-spin,
+.kt-paused .kt-twinkle,
+.kt-paused .kt-flock,
+.kt-paused .kt-bird {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kt-float,
+  .kt-drift,
+  .kt-flock,
+  .kt-bird,
+  .kt-spin,
+  .kt-twinkle,
+  .kt-aura {
+    animation: none;
+  }
+  .kt-parallax {
+    transition: none;
+    transform: none !important;
+  }
+}
