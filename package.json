@@ -8,9 +8,10 @@
   },
   "scripts": {
     "bootstrap": "node tools/setup.mjs",
-    "dev": "pnpm nx run-many -t serve -p @org/frontend @org/backend --parallel=2",
+    "dev": "pnpm nx run-many -t serve -p @org/frontend @org/backend @org/dashboard --parallel=3",
     "dev:frontend": "pnpm nx serve @org/frontend",
     "dev:backend": "pnpm nx serve @org/backend",
+    "dev:dashboard": "pnpm nx serve @org/dashboard",
     "build": "pnpm nx run-many -t build",
     "analyze:frontend": "ANALYZE=true pnpm nx build @org/frontend",
     "test": "pnpm nx run-many -t test",
