@@ -33,6 +33,7 @@ export const MEDIA = {
     decorRight: mediaUrl('/la-so/right.webp'),
     illustrationCrane: mediaUrl('/la-so/crane-pine.webp'),
     seal: mediaUrl('/la-so/seal.webp'),
+    sealSmall: mediaUrl('/la-so/seal-sm.webp'),
     cloudDivider: mediaUrl('/la-so/cloud-divider.webp'),
     luopan: mediaUrl('/la-so/luopan.webp'),
     headerOrnament: mediaUrl('/la-so/header-ornament.webp'),
@@ -84,6 +85,11 @@ export function homeIconUrl(name: string): string {
 
 export function zodiacIconUrl(fileName: string): string {
   return mediaUrl(`/zodiac/${fileName}.png`);
+}
+
+/** Hand-drawn feng-shui glyph for a Kiến Thức topic chip (icon_1..icon_8, in category order). */
+export function categoryIconUrl(index: number): string {
+  return mediaUrl(`/separated_icons/icon_${index}.webp`);
 }
 
 /** Icon tròn cho toast theo loại (scroll/success/info/warning/error). */
