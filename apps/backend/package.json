@@ -137,7 +137,7 @@
     "@nestjs/swagger": "^11.4.7",
     "@nestjs/terminus": "^11.1.1",
     "@nestjs/throttler": "^6.5.0",
-    "@nestjs/typeorm": "^11.0.3",
+    "@nestjs/typeorm": "^12.0.0",
     "@org/backend-base": "workspace:*",
     "@org/backend-config": "workspace:*",
     "@org/backend-constants": "workspace:*",
