@@ -1,11 +1,5 @@
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { TitledDialog } from '@/components/ui/titled-dialog';
 import { notify } from '@/lib/toast';
 
 interface RecoveryCodesDialogProps {
@@ -28,31 +22,26 @@ export function RecoveryCodesDialog({ codes, onClose }: RecoveryCodesDialogProps
   };
 
   return (
-    <Dialog onOpenChange={(open) => !open && onClose()} open={Boolean(codes)}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Save your recovery codes</DialogTitle>
-          <DialogDescription>
-            Each code works once, and this is the only time they are shown. Keep them somewhere you
-            can reach without your phone.
-          </DialogDescription>
-        </DialogHeader>
+    <TitledDialog
+      onOpenChange={(open) => !open && onClose()}
+      open={Boolean(codes)}
+      title="Save your recovery codes"
+      description="Each code works once, and this is the only time they are shown. Keep them somewhere you can reach without your phone."
+    >
+      <ul className="grid grid-cols-2 gap-2 rounded-md border bg-muted/40 p-4 font-mono text-sm">
+        {(codes ?? []).map((code) => (
+          <li key={code}>{code}</li>
+        ))}
+      </ul>
 
-        <ul className="grid grid-cols-2 gap-2 rounded-md border bg-muted/40 p-4 font-mono text-sm">
-          {(codes ?? []).map((code) => (
-            <li key={code}>{code}</li>
-          ))}
-        </ul>
-
-        <div className="flex flex-wrap gap-3">
-          <Button onClick={copy} type="button" variant="outline">
-            Copy codes
-          </Button>
-          <Button onClick={onClose} type="button">
-            I have saved them
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+      <div className="flex flex-wrap gap-3">
+        <Button onClick={copy} type="button" variant="outline">
+          Copy codes
+        </Button>
+        <Button onClick={onClose} type="button">
+          I have saved them
+        </Button>
+      </div>
+    </TitledDialog>
   );
 }

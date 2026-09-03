@@ -3,13 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import QRCode from 'qrcode';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { TitledDialog } from '@/components/ui/titled-dialog';
 import { FormError } from '@/components/ui/form-error';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -24,19 +18,16 @@ interface TwoFactorSetupDialogProps {
 
 export function TwoFactorSetupDialog({ open, onOpenChange, onEnabled }: TwoFactorSetupDialogProps) {
   return (
-    <Dialog onOpenChange={onOpenChange} open={open}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Set up two-factor authentication</DialogTitle>
-          <DialogDescription>
-            Scan this with an authenticator app, then enter the code it shows.
-          </DialogDescription>
-        </DialogHeader>
-        {/* Inside the content so Radix unmounts it on close: a half-finished setup should not
-            survive to the next time the dialog opens. */}
-        {open && <SetupSteps onEnabled={onEnabled} />}
-      </DialogContent>
-    </Dialog>
+    <TitledDialog
+      onOpenChange={onOpenChange}
+      open={open}
+      title="Set up two-factor authentication"
+      description="Scan this with an authenticator app, then enter the code it shows."
+    >
+      {/* Inside the content so Radix unmounts it on close: a half-finished setup should not
+          survive to the next time the dialog opens. */}
+      {open && <SetupSteps onEnabled={onEnabled} />}
+    </TitledDialog>
   );
 }
 

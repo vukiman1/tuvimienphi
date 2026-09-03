@@ -1,13 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { TitledDialog } from '@/components/ui/titled-dialog';
 import { FormError } from '@/components/ui/form-error';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -28,17 +22,14 @@ export function DisableTwoFactorDialog({
   error,
 }: DisableTwoFactorDialogProps) {
   return (
-    <Dialog onOpenChange={onOpenChange} open={open}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Turn off two-factor authentication?</DialogTitle>
-          <DialogDescription>
-            Your account will be protected by its password alone.
-          </DialogDescription>
-        </DialogHeader>
-        {open && <ConfirmForm error={error} isPending={isPending} onConfirm={onConfirm} />}
-      </DialogContent>
-    </Dialog>
+    <TitledDialog
+      onOpenChange={onOpenChange}
+      open={open}
+      title="Turn off two-factor authentication?"
+      description="Your account will be protected by its password alone."
+    >
+      {open && <ConfirmForm error={error} isPending={isPending} onConfirm={onConfirm} />}
+    </TitledDialog>
   );
 }
 

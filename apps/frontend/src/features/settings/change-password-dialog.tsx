@@ -1,13 +1,7 @@
 import { useState } from 'react';
 import { useForm } from '@tanstack/react-form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { TitledDialog } from '@/components/ui/titled-dialog';
 import { Form } from '@/components/ui/form';
 import { FormError } from '@/components/ui/form-error';
 import { FormField } from '@/components/ui/form-field';
@@ -34,17 +28,16 @@ interface ChangePasswordDialogProps {
 
 export function ChangePasswordDialog({ open, onOpenChange }: ChangePasswordDialogProps) {
   return (
-    <Dialog onOpenChange={onOpenChange} open={open}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Change password</DialogTitle>
-          <DialogDescription>Changing it signs out every other device.</DialogDescription>
-        </DialogHeader>
-        {/* Lives inside the content so Radix unmounts it on close, which clears the typed
-            passwords without any reset logic of its own. */}
-        <ChangePasswordForm onDone={() => onOpenChange(false)} />
-      </DialogContent>
-    </Dialog>
+    <TitledDialog
+      onOpenChange={onOpenChange}
+      open={open}
+      title="Change password"
+      description="Changing it signs out every other device."
+    >
+      {/* Lives inside the content so Radix unmounts it on close, which clears the typed
+          passwords without any reset logic of its own. */}
+      <ChangePasswordForm onDone={() => onOpenChange(false)} />
+    </TitledDialog>
   );
 }
 
