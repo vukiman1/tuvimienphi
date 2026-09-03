@@ -9,6 +9,7 @@
     ]
   },
   "dependencies": {
+    "@org/frontend-shared": "workspace:*",
     "@org/shared-contracts": "workspace:*",
     "@tanstack/react-query": "^5.102.0",
     "@tanstack/react-query-devtools": "^5.102.0",
