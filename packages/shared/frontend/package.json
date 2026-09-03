@@ -28,5 +28,11 @@
     "clsx": "^2.1.1",
     "tailwind-merge": "^3.6.0",
     "tslib": "^2.3.0"
+  },
+  "peerDependencies": {
+    "react": "^19.2.7"
+  },
+  "devDependencies": {
+    "react": "^19.2.7"
   }
 }
