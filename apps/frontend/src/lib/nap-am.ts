@@ -17,7 +17,7 @@ const NAP_AM_NAMES = [
   'Dương Liễu Mộc',
   'Tuyền Trung Thủy',
   'Ốc Thượng Thổ',
-  'Phích Lịch Hỏa',
+  'Tích Lịch Hỏa',
   'Tùng Bách Mộc',
   'Trường Lưu Thủy',
   'Sa Trung Kim',
@@ -25,7 +25,7 @@ const NAP_AM_NAMES = [
   'Bình Địa Mộc',
   'Bích Thượng Thổ',
   'Kim Bạc Kim',
-  'Phúc Đăng Hỏa',
+  'Phú Đăng Hỏa',
   'Thiên Hà Thủy',
   'Đại Dịch Thổ',
   'Thoa Xuyến Kim',
@@ -55,6 +55,10 @@ function sexagenaryIndex({ can, chi }: CanChiIndex): number {
   throw new Error(`Invalid can-chi pairing: can ${can}, chi ${chi}`);
 }
 
+/**
+ * Hai tên từng viết chệch, nay theo đúng chữ Hán: 覆燈火 là "Phú Đăng Hỏa" (覆 = phú, che đậy) chứ
+ * không phải "Phúc", và 霹靂火 phổ biến là "Tích Lịch Hỏa" chứ không phải "Phích Lịch".
+ */
 export function getNapAm(pillar: CanChiIndex): NapAm {
   const name = NAP_AM_NAMES[Math.floor(sexagenaryIndex(pillar) / 2)];
   const words = name.split(' ');

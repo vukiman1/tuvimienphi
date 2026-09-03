@@ -2,8 +2,19 @@ const VN_TIMEZONE_OFFSET_HOURS = 7;
 const SYNODIC_MONTH_DAYS = 29.530588853;
 const NEW_MOON_EPOCH_JD = 2415021.076998695;
 
-const CAN = ['Giáp', 'Ất', 'Bính', 'Đinh', 'Mậu', 'Kỷ', 'Canh', 'Tân', 'Nhâm', 'Quý'] as const;
-const CHI = [
+export const CAN = [
+  'Giáp',
+  'Ất',
+  'Bính',
+  'Đinh',
+  'Mậu',
+  'Kỷ',
+  'Canh',
+  'Tân',
+  'Nhâm',
+  'Quý',
+] as const;
+export const CHI = [
   'Tý',
   'Sửu',
   'Dần',
@@ -151,6 +162,58 @@ export function convertSolarToLunar(date: Date): LunarDate {
   return { day: lunarDay, month: lunarMonth, year: lunarYear, isLeapMonth };
 }
 
+/** Ngược của `jdFromDate`, theo đúng thuật toán lịch Gregory. */
+function dateFromJd(jd: number): { day: number; month: number; year: number } {
+  const a = jd + 32044;
+  const b = Math.floor((4 * a + 3) / 146097);
+  const c = a - Math.floor((b * 146097) / 4);
+  const d = Math.floor((4 * c + 3) / 1461);
+  const e = c - Math.floor((1461 * d) / 4);
+  const m = Math.floor((5 * e + 2) / 153);
+
+  return {
+    day: e - Math.floor((153 * m + 2) / 5) + 1,
+    month: m + 3 - 12 * Math.floor(m / 10),
+    year: b * 100 + d - 4800 + Math.floor(m / 10),
+  };
+}
+
+/**
+ * Đổi ngày âm sang ngày dương — chiều ngược của `convertSolarToLunar`, dùng chung mọi mốc trăng
+ * mới và tháng nhuận của nó nên hai chiều luôn khớp nhau.
+ *
+ * Cần cho lá số: can chi NGÀY suy từ số ngày Julian của lịch dương, không suy thẳng từ ngày âm được.
+ */
+export function convertLunarToSolar(lunar: LunarDate): Date {
+  const timeZone = VN_TIMEZONE_OFFSET_HOURS;
+
+  // Tháng 11 âm là mốc neo của cả năm. Tháng 11 và 12 neo vào chính năm âm đó; các tháng từ 1 đến
+  // 10 rơi vào nửa sau của chu kỳ nên neo vào năm trước.
+  const anchorYear = lunar.month < 11 ? lunar.year - 1 : lunar.year;
+  const a11 = getLunarMonth11(anchorYear, timeZone);
+  const b11 = getLunarMonth11(anchorYear + 1, timeZone);
+
+  let offset = lunar.month - 11;
+  if (offset < 0) {
+    offset += 12;
+  }
+
+  // Năm nhuận có mười ba tuần trăng, nên mọi tháng kể từ tháng nhuận bị đẩy lùi một bậc — và bản
+  // thân tháng nhuận cũng nằm sau tháng thường cùng số.
+  if (b11 - a11 > 365) {
+    const leapOffset = getLeapMonthOffset(a11, timeZone);
+    if (lunar.isLeapMonth || offset >= leapOffset) {
+      offset += 1;
+    }
+  }
+
+  const k = Math.floor(0.5 + (a11 - NEW_MOON_EPOCH_JD) / SYNODIC_MONTH_DAYS);
+  const monthStart = getNewMoonDay(k + offset, timeZone);
+  const { day, month, year } = dateFromJd(monthStart + lunar.day - 1);
+
+  return new Date(year, month - 1, day);
+}
+
 export interface CanChiIndex {
   readonly can: number;
   readonly chi: number;
@@ -165,8 +228,13 @@ export function getYearCanChi(lunarYear: number): string {
   return `${CAN[can]} ${CHI[chi]}`;
 }
 
+export function getMonthPillar(lunar: LunarDate): CanChiIndex {
+  return { can: (lunar.year * 12 + lunar.month + 3) % 10, chi: (lunar.month + 1) % 12 };
+}
+
 export function getMonthCanChi(lunar: LunarDate): string {
-  return `${CAN[(lunar.year * 12 + lunar.month + 3) % 10]} ${CHI[(lunar.month + 1) % 12]}`;
+  const { can, chi } = getMonthPillar(lunar);
+  return `${CAN[can]} ${CHI[chi]}`;
 }
 
 export function getDayPillar(date: Date): CanChiIndex {
@@ -176,6 +244,19 @@ export function getDayPillar(date: Date): CanChiIndex {
 
 export function getDayCanChi(date: Date): string {
   const { can, chi } = getDayPillar(date);
+  return `${CAN[can]} ${CHI[chi]}`;
+}
+
+/**
+ * Ngũ thử độn: can của giờ Tý bằng `(can ngày mod 5) × 2`, các giờ sau đếm thuận theo chi.
+ * Ba chỗ cần luật này — giờ hoàng đạo, nhị thập bát tú và lá số — nên nó ở đây thay vì chép lại.
+ */
+export function getHourPillar(dayCan: number, hourChi: number): CanChiIndex {
+  return { can: ((((dayCan % 5) * 2 + hourChi) % 10) + 10) % 10, chi: hourChi };
+}
+
+export function getHourCanChi(dayCan: number, hourChi: number): string {
+  const { can, chi } = getHourPillar(dayCan, hourChi);
   return `${CAN[can]} ${CHI[chi]}`;
 }
 
