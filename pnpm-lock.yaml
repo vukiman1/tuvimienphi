@@ -529,6 +529,9 @@ importers:
 
   apps/dashboard:
     dependencies:
+      '@org/frontend-shared':
+        specifier: workspace:*
+        version: link:../../packages/shared/frontend
       '@org/shared-contracts':
         specifier: workspace:*
         version: link:../../packages/shared/contracts
@@ -573,6 +576,9 @@ importers:
 
   apps/frontend:
     dependencies:
+      '@org/frontend-shared':
+        specifier: workspace:*
+        version: link:../../packages/shared/frontend
       '@org/shared-contracts':
         specifier: workspace:*
         version: link:../../packages/shared/contracts
@@ -755,6 +761,24 @@ importers:
 
   packages/shared/contracts:
     dependencies:
+      tslib:
+        specifier: ^2.3.0
+        version: 2.8.1
+
+  packages/shared/frontend:
+    dependencies:
+      '@org/shared-contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@tanstack/react-query':
+        specifier: ^5.102.0
+        version: 5.102.0(react@19.2.8)
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
+      tailwind-merge:
+        specifier: ^3.6.0
+        version: 3.6.0
       tslib:
         specifier: ^2.3.0
         version: 2.8.1

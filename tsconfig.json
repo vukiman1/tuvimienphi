@@ -62,6 +62,9 @@
     },
     {
       "path": "./apps/dashboard-e2e"
+    },
+    {
+      "path": "./packages/shared/frontend"
     }
   ]
 }

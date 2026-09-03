@@ -40,6 +40,9 @@
   "references": [
     {
       "path": "../../packages/shared/contracts/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/shared/frontend/tsconfig.lib.json"
     }
   ]
 }

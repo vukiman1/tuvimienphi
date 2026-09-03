@@ -1,9 +1,4 @@
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+export { cn } from '@org/frontend-shared';
 
 /** Two-letter initials from a Vietnamese name (first + last word). */
 export function initials(name: string | null | undefined): string {
