@@ -14,7 +14,9 @@ jobs:
       - run:
           name: Enable Corepack (pins pnpm from package.json packageManager)
           command: |
-            corepack enable
+            # cimg images run as the non-root `circleci` user; the corepack shims live in
+            # /usr/local/bin, which only root can write — hence sudo for the enable step.
+            sudo corepack enable
             pnpm config set store-dir .pnpm-store
 
       - restore_cache:
