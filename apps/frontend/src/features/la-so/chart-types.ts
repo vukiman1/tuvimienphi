@@ -1,19 +1,21 @@
+import type { NguHanh } from '@/lib/nap-am';
+import type { PhuTinhName } from '@/lib/tu-vi/sao-names';
+import type { Rating } from '@/lib/tu-vi/sao-rating';
+
 /** Kiểu dữ liệu mà giao diện lá số cần. Engine an sao sẽ trả về đúng hình dạng này. */
 
-/** Sắc thái của một sao trên lá số — quyết định màu chữ, không mang ý nghĩa luận giải. */
-export type SaoTone = 'default' | 'amber' | 'green' | 'red' | 'muted';
-
 export interface SaoView {
-  readonly name: string;
-  /** Miếu / Vượng / Đắc / Bình / Hãm, in trong ngoặc sau tên sao. */
-  readonly rating: string | null;
-  readonly tone: SaoTone;
+  readonly name: PhuTinhName;
+  readonly rating: Rating | null;
+  /** Ngũ hành của sao, quyết định màu chữ. */
+  readonly element: NguHanh;
 }
 
 export interface ChinhTinhView {
   readonly name: string;
   readonly polarity: string | null;
-  readonly rating: string | null;
+  readonly rating: Rating | null;
+  readonly element: NguHanh;
 }
 
 export interface CungView {
@@ -37,6 +39,8 @@ export interface CungView {
   readonly trangSinh: string;
   /** Tên cung theo lưu niên, ví dụ "LN.ĐIỀN". */
   readonly luuNien: string;
+  /** Sao của tầng lưu niên, in kèm tiền tố `L.`. */
+  readonly luuTinh: readonly SaoView[];
   readonly chinhTinh: readonly ChinhTinhView[];
   /** Cột trái của ô. */
   readonly catTinh: readonly SaoView[];

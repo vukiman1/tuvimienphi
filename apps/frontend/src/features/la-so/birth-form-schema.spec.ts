@@ -1,5 +1,5 @@
 import { CalendarType, Gender, MAX_NAME_LENGTH } from '@/features/la-so/birth-input';
-import { EMPTY_HERO_BIRTH_FORM, heroBirthSchema, toBirthSearch } from './hero-birth-schema';
+import { EMPTY_BIRTH_FORM, birthFormSchema, toBirthSearch } from './birth-form-schema';
 
 const FILLED = {
   fullName: 'Nguyễn Văn A',
@@ -13,37 +13,62 @@ const FILLED = {
 
 describe('hero birth form', () => {
   it('rejects an empty form', () => {
-    expect(heroBirthSchema.safeParse(EMPTY_HERO_BIRTH_FORM).success).toBe(false);
+    expect(birthFormSchema.safeParse(EMPTY_BIRTH_FORM).success).toBe(false);
   });
 
   it('rejects a day the chosen month cannot hold', () => {
-    expect(heroBirthSchema.safeParse({ ...FILLED, day: '30', month: '2' }).success).toBe(false);
+    expect(birthFormSchema.safeParse({ ...FILLED, day: '30', month: '2' }).success).toBe(false);
   });
 
   it('accepts 29 February in a leap year', () => {
     expect(
-      heroBirthSchema.safeParse({ ...FILLED, day: '29', month: '2', year: '1996' }).success,
+      birthFormSchema.safeParse({ ...FILLED, day: '29', month: '2', year: '1996' }).success,
     ).toBe(true);
   });
 
   it('rejects 29 February outside a leap year', () => {
     expect(
-      heroBirthSchema.safeParse({ ...FILLED, day: '29', month: '2', year: '1995' }).success,
+      birthFormSchema.safeParse({ ...FILLED, day: '29', month: '2', year: '1995' }).success,
+    ).toBe(false);
+  });
+
+  it('accepts day 30 of a lunar month that runs a full thirty days', () => {
+    // Tháng 2 năm Nhâm Ngọ 2002 âm có đủ 30 ngày, rơi vào 12/4/2002 dương.
+    expect(
+      birthFormSchema.safeParse({
+        ...FILLED,
+        day: '30',
+        month: '2',
+        year: '2002',
+        calendar: CalendarType.Lunar,
+      }).success,
+    ).toBe(true);
+  });
+
+  it('rejects day 30 of a lunar month that only runs twenty-nine', () => {
+    expect(
+      birthFormSchema.safeParse({
+        ...FILLED,
+        day: '30',
+        month: '2',
+        year: '2007',
+        calendar: CalendarType.Lunar,
+      }).success,
     ).toBe(false);
   });
 
   it('accepts a fully filled form', () => {
-    expect(heroBirthSchema.safeParse(FILLED).success).toBe(true);
+    expect(birthFormSchema.safeParse(FILLED).success).toBe(true);
   });
 
   it('accepts a form with no name, since the name is optional', () => {
-    expect(heroBirthSchema.safeParse({ ...FILLED, fullName: '' }).success).toBe(true);
+    expect(birthFormSchema.safeParse({ ...FILLED, fullName: '' }).success).toBe(true);
   });
 
   it('still rejects a name past the length cap', () => {
     const tooLong = 'a'.repeat(MAX_NAME_LENGTH + 1);
 
-    expect(heroBirthSchema.safeParse({ ...FILLED, fullName: tooLong }).success).toBe(false);
+    expect(birthFormSchema.safeParse({ ...FILLED, fullName: tooLong }).success).toBe(false);
   });
 
   it('leaves the name out of the search entirely when it is blank', () => {

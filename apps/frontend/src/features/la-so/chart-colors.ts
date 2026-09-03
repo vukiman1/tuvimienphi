@@ -1,3 +1,5 @@
+import type { NguHanh } from '@/lib/nap-am';
+
 /**
  * Ba mức nền của lá số, đậm dần: nền mặc định → cung tam hợp / xung chiếu → cung đang rê chuột.
  *
@@ -21,3 +23,16 @@ export const CHART_RULE_CLASS = {
   /** Nhãn Tuần / Triệt giữ nền đen: nó đè lên nét kẻ nên cần bật hẳn ra, và chữ trắng mới đọc rõ. */
   blockLabel: 'bg-[#17150f]',
 } as const;
+
+/**
+ * Màu chữ của sao theo ngũ hành, hạ độ chói so với bản gốc tuvi.vn để đọc được trên nền kem
+ * `#faf6ec`. Kim phải đậm hơn mã gốc `#999999`, nếu không sao Kim chìm hẳn vào nền; Thổ ngả đồng
+ * cho ăn với nét kẻ địa bàn.
+ */
+export const SAO_ELEMENT_CLASS: Readonly<Record<NguHanh, string>> = {
+  Kim: 'text-[#8a8578]',
+  Mộc: 'text-[#0b7a33]',
+  Thủy: 'text-[#17150f]',
+  Hỏa: 'text-[#c62828]',
+  Thổ: 'text-[#b8860b]',
+};

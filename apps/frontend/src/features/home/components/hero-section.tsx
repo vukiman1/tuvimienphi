@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BadgeCheck, LayoutGrid, ShieldCheck, Sparkles } from 'lucide-react';
-import { HeroBirthForm } from '@/features/home/components/hero-birth-form';
+import { BirthForm } from '@/features/la-so/components/birth-form';
 import { usePrefersReducedMotion } from '@/hooks/use-prefers-reduced-motion';
 import { MEDIA } from '@/config/media';
 
@@ -113,7 +113,7 @@ export function HeroSection() {
           style={PANEL_WOOD}
         >
           <div className="rounded-xl border border-[#c9a15c]/45 px-4 py-5 text-left md:px-6 md:py-6">
-            <HeroBirthForm />
+            <BirthForm />
           </div>
         </div>
 
