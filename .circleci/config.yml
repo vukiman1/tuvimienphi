@@ -34,8 +34,12 @@ jobs:
             - .pnpm-store
 
       - run:
+          name: Fetch base branch (so nx can diff against origin/dev like GitHub Actions)
+          command: git fetch --no-tags origin +refs/heads/dev:refs/remotes/origin/dev
+
+      - run:
           name: Format check
-          command: pnpm nx format:check
+          command: pnpm nx format:check --base=origin/dev --head=HEAD
 
       - run:
           name: Lint
