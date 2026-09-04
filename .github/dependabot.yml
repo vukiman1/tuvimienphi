@@ -21,7 +21,20 @@ updates:
       # không hỗ trợ `require(esm)` — hàm chết lúc load. Xem PR #16 và #26.
       - dependency-name: 'config'
         versions: ['>=5']
+      # @nestjs/typeorm@12 bỏ hẳn entry CommonJS, chỉ còn ESM. Backend chạy Jest dạng CJS nên toàn bộ
+      # suite backend và server e2e chết ngay lúc load module. Xem PR #41.
+      - dependency-name: '@nestjs/typeorm'
+        versions: ['>=12']
     groups:
+      # nx và mọi @nx/* phải cùng version; lệch một patch là Nx không load được plugin. Xem PR #47.
+      nx:
+        patterns:
+          - 'nx'
+          - '@nx/*'
+      # Các gói @bull-board/* dùng chung type từ @bull-board/api; bump lẻ một gói là typecheck vỡ. Xem PR #42.
+      bull-board:
+        patterns:
+          - '@bull-board/*'
       production-minor-patch:
         dependency-type: 'production'
         update-types:
