@@ -14,14 +14,14 @@ export function HistoryList() {
 
   if (entries.length === 0) {
     return (
-      <p className="mt-10 text-sm text-muted-foreground">
+      <p className="mt-14 text-center text-sm text-[#6b5b48]">
         Chưa có lá số nào. Lập một lá số ở trang chủ, nó sẽ được lưu lại đây.
       </p>
     );
   }
 
   return (
-    <ul className="mt-8 grid gap-3 sm:grid-cols-2">
+    <ul className="mt-12 grid gap-5 md:grid-cols-2">
       {entries.map((entry) => (
         <HistoryCard entry={entry} key={entry.birthKey} onRemove={remove} />
       ))}

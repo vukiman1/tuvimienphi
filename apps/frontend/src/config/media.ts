@@ -39,6 +39,9 @@ export const MEDIA = {
     headerOrnament: mediaUrl('/la-so/header-ornament.webp'),
     taiji: mediaUrl('/la-so/taiji.webp'),
     badge: mediaUrl('/la-so/badge.webp'),
+    historyCraneSun: mediaUrl('/la-so/history/crane-sun.webp'),
+    historyPavilionPine: mediaUrl('/la-so/history/pavilion-pine.webp'),
+    historyBagua: mediaUrl('/la-so/history/bagua.webp'),
   },
   ngayTot: {
     lichBackground: mediaUrl('/ngay-tot/lich-bg.svg'),
