@@ -28,8 +28,11 @@ export default defineConfig(({ mode }) => {
       __FRONTEND_CONFIG__: JSON.stringify(frontendConfig),
     },
     plugins: [
+      // autoCodeSplitting splits each route's component (and its deps, e.g. the large mock/data
+      // modules) into its own chunk, loaded on navigation instead of in the initial bundle.
       tanstackRouter({
         target: 'react',
+        autoCodeSplitting: true,
       }),
       react(),
       tailwindcss(),
@@ -57,6 +60,20 @@ export default defineConfig(({ mode }) => {
       reportCompressedSize: true,
       commonjsOptions: {
         transformMixedEsModules: true,
+      },
+      rollupOptions: {
+        output: {
+          // Keep heavy, rarely-changing vendors in their own long-cacheable chunks.
+          manualChunks(id) {
+            if (!id.includes('node_modules')) return undefined;
+            // Match the package dir precisely so sibling packages (@sentry/react,
+            // react-toastify, radix-ui) are not swept into the React runtime chunk.
+            if (/[\\/](react|react-dom|scheduler)@/.test(id)) return 'react';
+            if (id.includes('@tanstack')) return 'tanstack';
+            if (id.includes('@sentry')) return 'sentry';
+            return 'vendor';
+          },
+        },
       },
     },
   };
