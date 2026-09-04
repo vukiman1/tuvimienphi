@@ -1,6 +1,10 @@
-import type { CungView, SaoTone, SaoView } from '@/features/la-so/chart-types';
+import type { CungView, SaoView } from '@/features/la-so/chart-types';
 import { cn } from '@/lib/utils';
-import { CHART_RULE_CLASS, CUNG_SURFACE_CLASS } from '@/features/la-so/chart-colors';
+import {
+  CHART_RULE_CLASS,
+  CUNG_SURFACE_CLASS,
+  SAO_ELEMENT_CLASS,
+} from '@/features/la-so/chart-colors';
 
 interface CungCardProps {
   readonly cung: CungView;
@@ -16,14 +20,6 @@ interface CungCardProps {
   readonly onFocusCung: (cungIndex: number | null) => void;
 }
 
-const TONE_CLASS: Readonly<Record<SaoTone, string>> = {
-  default: 'text-[#17150f]',
-  amber: 'text-[#e08a0b]',
-  green: 'text-[#0b9c3a]',
-  red: 'text-[#e01b1b]',
-  muted: 'text-[#9b9b9b]',
-};
-
 function SaoColumn({
   sao,
   align,
@@ -36,7 +32,10 @@ function SaoColumn({
       {sao.map((item) => (
         <li
           key={item.name}
-          className={cn('truncate text-[13px] leading-[18px] font-semibold', TONE_CLASS[item.tone])}
+          className={cn(
+            'truncate text-[13px] leading-[18px] font-semibold',
+            SAO_ELEMENT_CLASS[item.element],
+          )}
         >
           {item.name}
           {item.rating && <span className="text-[11px] font-normal"> ({item.rating})</span>}
@@ -66,7 +65,7 @@ export function CungCard({
       onMouseLeave={() => onFocusCung(null)}
       type="button"
       className={cn(
-        'relative block h-full w-full overflow-hidden border px-[4px] py-[4px] text-left transition-colors outline-none',
+        'relative block h-full w-full overflow-hidden border px-[4px] py-[11px] text-left transition-colors outline-none',
         CHART_RULE_CLASS.border,
         'focus-visible:ring-2 focus-visible:ring-[#e08a0b]',
         isFocused
@@ -98,7 +97,10 @@ export function CungCard({
             {cung.chinhTinh.map((sao) => (
               <span
                 key={sao.name}
-                className="text-[14px] leading-[19px] font-bold whitespace-nowrap text-[#17150f]"
+                className={cn(
+                  'text-[14px] leading-[19px] font-bold whitespace-nowrap',
+                  SAO_ELEMENT_CLASS[sao.element],
+                )}
               >
                 {sao.polarity}
                 {sao.name}
@@ -115,6 +117,19 @@ export function CungCard({
           <SaoColumn align="left" sao={cung.catTinh} />
           <SaoColumn align="right" sao={cung.hungTinh} />
         </div>
+
+        {cung.luuTinh.length > 0 && (
+          <ul className="flex flex-wrap gap-x-2 pt-[2px] text-[12px] leading-[16px] font-semibold">
+            {cung.luuTinh.map((sao) => (
+              <li
+                key={sao.name}
+                className={cn('whitespace-nowrap', SAO_ELEMENT_CLASS[sao.element])}
+              >
+                L.{sao.name}
+              </li>
+            ))}
+          </ul>
+        )}
 
         <div className="mt-auto flex items-baseline justify-between gap-1 pt-[4px] text-[12px] leading-[16px] font-semibold text-[#17150f]">
           <span>{cung.daiVan}</span>

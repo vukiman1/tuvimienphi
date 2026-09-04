@@ -1,4 +1,5 @@
 import {
+  convertLunarToSolar,
   convertSolarToLunar,
   getDayCanChi,
   getMonthCanChi,
@@ -77,5 +78,42 @@ describe('getSolarTerm', () => {
     expect(getSolarTerm(new Date(2026, 7, 11))).toBe('Lập Thu');
     expect(getSolarTerm(new Date(2025, 11, 22))).toBe('Đông Chí');
     expect(getSolarTerm(new Date(2025, 2, 21))).toBe('Xuân Phân');
+  });
+});
+
+describe('convertLunarToSolar', () => {
+  it('inverts convertSolarToLunar for every day across four decades', () => {
+    // Đi qua từng ngày dương, đổi sang âm rồi đổi ngược lại; chệch một ngày là can chi ngày sai,
+    // kéo theo cả lá số sai.
+    const start = new Date(1985, 0, 1);
+    const end = new Date(2025, 0, 1);
+    const mismatches: string[] = [];
+
+    for (let date = start; date < end; date = new Date(date.getTime() + 86400000)) {
+      const lunar = convertSolarToLunar(date);
+      const back = convertLunarToSolar(lunar);
+      if (back.getTime() !== date.getTime()) {
+        mismatches.push(`${date.toISOString().slice(0, 10)} → ${back.toISOString().slice(0, 10)}`);
+      }
+    }
+
+    expect(mismatches.slice(0, 5)).toEqual([]);
+  });
+
+  it('round-trips the leap month of 2023 and the Tết boundaries', () => {
+    const cases = [
+      new Date(2023, 2, 22), // mùng 1 tháng 2 âm
+      new Date(2023, 3, 20), // trong tháng 2 nhuận
+      new Date(2026, 1, 17), // Tết Bính Ngọ
+      new Date(2025, 0, 29), // Tết Ất Tị
+    ];
+
+    for (const date of cases) {
+      const lunar = convertSolarToLunar(date);
+      expect([date.toISOString(), convertLunarToSolar(lunar).toISOString()]).toEqual([
+        date.toISOString(),
+        date.toISOString(),
+      ]);
+    }
   });
 });

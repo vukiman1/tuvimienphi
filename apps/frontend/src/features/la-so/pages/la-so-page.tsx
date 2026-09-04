@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { getRouteApi, useNavigate } from '@tanstack/react-router';
 import { MEDIA } from '@/config/media';
-import { CUNG_SURFACE_CLASS } from '@/features/la-so/chart-colors';
 import { LaSoBoard } from '@/features/la-so/components/la-so-board';
 import { LuanGiaiSection } from '@/features/la-so/components/luan-giai-section';
 import { MOCK_LUAN_GIAI } from '@/features/la-so/luan-giai-data';
-import { MOCK_CHART } from '@/features/la-so/mock-chart';
+import { birthInputSchema } from '@/features/la-so/birth-input';
+import { BirthPrompt } from '@/features/la-so/components/birth-prompt';
+import { ViewYearPicker } from '@/features/la-so/components/view-year-picker';
+import { toChartView } from '@/features/la-so/to-chart-view';
 
 /**
  * Dải trang trí chạy hết bề ngang màn hình, thoát khỏi lề của `main` — vốn được canh giữa và có
@@ -23,11 +26,27 @@ const FADE_TOWARD_BOARD = {
   right: { maskImage: 'linear-gradient(to left, black 40%, transparent 100%)' },
 } as const;
 
+const route = getRouteApi('/_site/la-so');
+
 export function LaSoPage() {
-  const chart = MOCK_CHART;
-  const menhIndex = chart.cungs.findIndex((cung) => cung.isMenh);
-  const [selectedIndex, setSelectedIndex] = useState(menhIndex);
+  const search = route.useSearch();
+  const navigate = useNavigate({ from: '/la-so' });
+  const viewYear = search.viewYear ?? new Date().getFullYear();
+
+  const chart = useMemo(() => {
+    const parsed = birthInputSchema.safeParse(search);
+    return parsed.success ? toChartView({ ...parsed.data, viewYear }) : null;
+  }, [search, viewYear]);
+  // Chưa chọn cung nào thì mặc định về cung Mệnh; giữ `null` để lá số mới luôn bắt đầu từ Mệnh
+  // thay vì kẹt ở cung đã chọn của lá số trước.
+  const [pickedIndex, setPickedIndex] = useState<number | null>(null);
   const [activeChapter, setActiveChapter] = useState(MOCK_LUAN_GIAI.chapters[0].order);
+
+  if (!chart) {
+    return <BirthPrompt />;
+  }
+
+  const selectedIndex = pickedIndex ?? chart.cungs.findIndex((cung) => cung.isMenh);
   const selected = chart.cungs[selectedIndex];
 
   return (
@@ -39,11 +58,11 @@ export function LaSoPage() {
             {chart.meta.amDuong} · {chart.meta.banMenh}
           </p>
         </div>
-        <p
-          className={`rounded-full px-4 py-1.5 text-sm font-semibold text-[#5b5347] ${CUNG_SURFACE_CLASS.related}`}
-        >
-          {chart.meta.viewYear}
-        </p>
+        <ViewYearPicker
+          birthYear={search.year ?? viewYear}
+          onChange={(year) => void navigate({ search: (prev) => ({ ...prev, viewYear: year }) })}
+          value={viewYear}
+        />
       </div>
 
       <div className="relative mt-6">
@@ -68,7 +87,7 @@ export function LaSoPage() {
 
         {/* Sau hai ảnh trong DOM nên luôn vẽ đè lên chúng, kể cả khi khung hẹp và ảnh lấn vào. */}
         <div className="relative">
-          <LaSoBoard chart={chart} onSelect={setSelectedIndex} selectedIndex={selectedIndex} />
+          <LaSoBoard chart={chart} onSelect={setPickedIndex} selectedIndex={selectedIndex} />
         </div>
       </div>
 

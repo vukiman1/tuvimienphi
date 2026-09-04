@@ -1,7 +1,5 @@
-import { getDayPillar } from '@/lib/lunar-calendar';
+import { CHI, getDayPillar, getHourCanChi } from '@/lib/lunar-calendar';
 
-const CAN = ['Giáp', 'Ất', 'Bính', 'Đinh', 'Mậu', 'Kỷ', 'Canh', 'Tân', 'Nhâm', 'Quý'];
-const CHI = ['Tý', 'Sửu', 'Dần', 'Mão', 'Thìn', 'Tị', 'Ngọ', 'Mùi', 'Thân', 'Dậu', 'Tuất', 'Hợi'];
 const CHI_RANGES = [
   '23h - 1h',
   '1h - 3h',
@@ -66,18 +64,13 @@ const HAC_DAO_FAVORABLE = 'Chỉ nên làm việc thường nhật, tránh khở
 const HAC_DAO_UNFAVORABLE =
   'Giờ hắc đạo, kỵ việc trọng đại: cưới hỏi, khai trương, an táng, xuất hành xa.';
 
-function hourCanIndex(dayCan: number, hourChi: number): number {
-  // Ngũ thử độn: giờ Tý can = (dayCan mod 5) * 2, then advance by chi.
-  return ((((dayCan % 5) * 2 + hourChi) % 10) + 10) % 10;
-}
-
 export function getGioHoangDao(date: Date): readonly HoangDaoHour[] {
   const { can: dayCan, chi: dayChi } = getDayPillar(date);
   const rotation = HHD_ROTATIONS[dayChi % 6];
 
   return CHI.map((_, hour) => {
     const sao = SAO_TRUC[rotation[hour] - 1];
-    const canChi = `${CAN[hourCanIndex(dayCan, hour)]} ${CHI[hour % CHI_COUNT]}`;
+    const canChi = getHourCanChi(dayCan, hour % CHI_COUNT);
     return {
       range: CHI_RANGES[hour],
       canChi,

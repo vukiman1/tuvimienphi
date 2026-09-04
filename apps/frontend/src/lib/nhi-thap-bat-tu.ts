@@ -2,13 +2,12 @@ import {
   convertSolarToLunar,
   getDayCanChi,
   getDayPillar,
+  getHourCanChi,
   getMonthCanChi,
   getYearCanChi,
 } from '@/lib/lunar-calendar';
 import { TINH28_ORDER, TU_28, type Tu28 } from '@/lib/tu-28-data';
 
-const CAN = ['Giáp', 'Ất', 'Bính', 'Đinh', 'Mậu', 'Kỷ', 'Canh', 'Tân', 'Nhâm', 'Quý'];
-const CHI = ['Tý', 'Sửu', 'Dần', 'Mão', 'Thìn', 'Tị', 'Ngọ', 'Mùi', 'Thân', 'Dậu', 'Tuất', 'Hợi'];
 const TU_COUNT = 28;
 const CHI_COUNT = 12;
 const YEAR_TU_EPOCH = 1684;
@@ -89,9 +88,7 @@ function formatHour(hour: number): string {
 }
 
 function hourCanChi(date: Date, hour: number): string {
-  const chi = hourChiIndex(hour);
-  const tyCan = (getDayPillar(date).can % 5) * 2;
-  return `${CAN[(tyCan + chi) % 10]} ${CHI[chi]}`;
+  return getHourCanChi(getDayPillar(date).can, hourChiIndex(hour));
 }
 
 export function getNhiThapBatTu(date: Date, hour: number): NhiThapBatTuResult {

@@ -17,14 +17,14 @@ import {
   MIN_BIRTH_YEAR,
   MONTHS_IN_YEAR,
 } from '@/features/la-so/birth-input';
-import { CalendarToggle } from '@/features/home/components/calendar-toggle';
+import { CalendarToggle } from '@/features/la-so/components/calendar-toggle';
 import {
-  EMPTY_HERO_BIRTH_FORM,
-  heroBirthFieldSchemas,
-  heroBirthSchema,
+  EMPTY_BIRTH_FORM,
+  birthFieldSchemas,
+  birthFormSchema,
   toBirthSearch,
-  type HeroBirthFormValues,
-} from '@/features/home/hero-birth-schema';
+  type BirthFormValues,
+} from '@/features/la-so/birth-form-schema';
 
 const FIELD_CLASS = [
   'h-10 w-full rounded-lg border-0 bg-white px-3 text-sm text-[#2a1f0e] shadow-md',
@@ -70,8 +70,8 @@ const GENDER_OPTIONS: readonly SelectOption<Gender | ''>[] = Object.values(Gende
 }));
 
 const HOUR_OPTIONS: readonly SelectOption<string>[] = BIRTH_HOURS.map((hour) => ({
-  value: hour.chi,
-  label: `${hour.chi} (${hour.range})`,
+  value: hour.key,
+  label: `${hour.key} (${hour.range})`,
 }));
 
 function SelectChevron() {
@@ -83,12 +83,12 @@ function SelectChevron() {
   );
 }
 
-export function HeroBirthForm() {
+export function BirthForm() {
   const navigate = useNavigate();
 
-  const { form, submitError } = useFormWithSubmitError<HeroBirthFormValues>({
-    defaultValues: EMPTY_HERO_BIRTH_FORM,
-    schema: heroBirthSchema,
+  const { form, submitError } = useFormWithSubmitError<BirthFormValues>({
+    defaultValues: EMPTY_BIRTH_FORM,
+    schema: birthFormSchema,
     fallbackError: 'Không mở được lá số. Thử lại sau ít phút.',
     onSubmit: async (values) => {
       await navigate({ to: '/la-so', search: toBirthSearch(values) });
@@ -103,9 +103,9 @@ export function HeroBirthForm() {
         <form.Field
           name="fullName"
           validators={{
-            onChange: heroBirthFieldSchemas.fullName,
-            onBlur: heroBirthFieldSchemas.fullName,
-            onSubmit: heroBirthFieldSchemas.fullName,
+            onChange: birthFieldSchemas.fullName,
+            onBlur: birthFieldSchemas.fullName,
+            onSubmit: birthFieldSchemas.fullName,
           }}
           children={(field) => (
             <FormField
@@ -126,8 +126,8 @@ export function HeroBirthForm() {
             <form.Field
               name="day"
               validators={{
-                onChange: heroBirthFieldSchemas.day,
-                onSubmit: heroBirthFieldSchemas.day,
+                onChange: birthFieldSchemas.day,
+                onSubmit: birthFieldSchemas.day,
               }}
               children={(field) => (
                 <SelectField
@@ -147,8 +147,8 @@ export function HeroBirthForm() {
             <form.Field
               name="month"
               validators={{
-                onChange: heroBirthFieldSchemas.month,
-                onSubmit: heroBirthFieldSchemas.month,
+                onChange: birthFieldSchemas.month,
+                onSubmit: birthFieldSchemas.month,
               }}
               children={(field) => (
                 <SelectField
@@ -168,8 +168,8 @@ export function HeroBirthForm() {
             <form.Field
               name="year"
               validators={{
-                onChange: heroBirthFieldSchemas.year,
-                onSubmit: heroBirthFieldSchemas.year,
+                onChange: birthFieldSchemas.year,
+                onSubmit: birthFieldSchemas.year,
               }}
               children={(field) => (
                 <SelectField
@@ -199,8 +199,8 @@ export function HeroBirthForm() {
           <form.Field
             name="hour"
             validators={{
-              onChange: heroBirthFieldSchemas.hour,
-              onSubmit: heroBirthFieldSchemas.hour,
+              onChange: birthFieldSchemas.hour,
+              onSubmit: birthFieldSchemas.hour,
             }}
             children={(field) => (
               <SelectField
@@ -220,8 +220,8 @@ export function HeroBirthForm() {
           <form.Field
             name="gender"
             validators={{
-              onChange: heroBirthFieldSchemas.gender,
-              onSubmit: heroBirthFieldSchemas.gender,
+              onChange: birthFieldSchemas.gender,
+              onSubmit: birthFieldSchemas.gender,
             }}
             children={(field) => (
               <SelectField
