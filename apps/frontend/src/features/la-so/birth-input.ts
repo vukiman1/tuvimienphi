@@ -1,17 +1,30 @@
 import { z } from 'zod';
+import {
+  BIRTH_HOUR_KEYS,
+  CalendarType,
+  DAYS_IN_LONGEST_MONTH,
+  Gender,
+  MAX_NAME_LENGTH,
+  MIN_BIRTH_YEAR,
+  MONTHS_IN_YEAR,
+} from '@org/shared-contracts';
 import { convertLunarToSolar, convertSolarToLunar } from '@/lib/lunar-calendar';
 
 /** The birth details a chart is cast from — shared by the form that collects them and /la-so. */
 
-export enum CalendarType {
-  Lunar = 'am',
-  Solar = 'duong',
-}
-
-export enum Gender {
-  Male = 'nam',
-  Female = 'nu',
-}
+export {
+  BIRTH_HOURS,
+  BIRTH_HOUR_KEYS,
+  CalendarType,
+  DAYS_IN_LONGEST_MONTH,
+  Gender,
+  MAX_NAME_LENGTH,
+  MIN_BIRTH_YEAR,
+  MONTHS_IN_YEAR,
+  birthHourIndex,
+  birthKey,
+} from '@org/shared-contracts';
+export type { BirthHour, BirthHourKey, BirthInput } from '@org/shared-contracts';
 
 export const CALENDAR_LABELS: Readonly<Record<CalendarType, string>> = {
   [CalendarType.Lunar]: 'Âm',
@@ -23,37 +36,7 @@ export const GENDER_LABELS: Readonly<Record<Gender, string>> = {
   [Gender.Female]: 'Nữ',
 };
 
-/**
- * The thirteen birth-hour choices, in clock order. Giờ Tý is split in two because it straddles
- * midnight: a birth at 23:00-23:59 already belongs to the NEXT lunar day, so the two halves of the
- * same chi cast different charts.
- */
-export const BIRTH_HOURS = [
-  { key: 'Tý', range: '00:00 - 00:59', hour: 0 },
-  { key: 'Sửu', range: '01:00 - 02:59', hour: 2 },
-  { key: 'Dần', range: '03:00 - 04:59', hour: 4 },
-  { key: 'Mão', range: '05:00 - 06:59', hour: 6 },
-  { key: 'Thìn', range: '07:00 - 08:59', hour: 8 },
-  { key: 'Tị', range: '09:00 - 10:59', hour: 10 },
-  { key: 'Ngọ', range: '11:00 - 12:59', hour: 12 },
-  { key: 'Mùi', range: '13:00 - 14:59', hour: 14 },
-  { key: 'Thân', range: '15:00 - 16:59', hour: 16 },
-  { key: 'Dậu', range: '17:00 - 18:59', hour: 18 },
-  { key: 'Tuất', range: '19:00 - 20:59', hour: 20 },
-  { key: 'Hợi', range: '21:00 - 22:59', hour: 22 },
-  { key: 'Tý sớm', range: '23:00 - 23:59', hour: 23 },
-] as const;
-
-export type BirthHour = (typeof BIRTH_HOURS)[number];
-export type BirthHourKey = BirthHour['key'];
-
-const BIRTH_HOUR_VALUES = BIRTH_HOURS.map((hour) => hour.key) as [BirthHourKey, ...BirthHourKey[]];
-
-export const MIN_BIRTH_YEAR = 1900;
 export const MAX_BIRTH_YEAR = new Date().getFullYear();
-export const MAX_NAME_LENGTH = 60;
-export const DAYS_IN_LONGEST_MONTH = 31;
-export const MONTHS_IN_YEAR = 12;
 
 /** Năm xem quyết định nhãn đại vận, cung tháng và tiểu hạn — không đụng tới sao gốc. */
 export const MIN_VIEW_YEAR = 1900;
@@ -90,24 +73,23 @@ export function isRealBirthDate({ day, month, year, calendar }: BirthDateParts):
     : isRealSolarDate(day, month, year);
 }
 
-const birthFields = z.object({
+/** The fields alone, without the "does this date exist" rule — a base for schemas that add to it. */
+export const birthFieldsSchema = z.object({
   fullName: z.string().min(1).max(MAX_NAME_LENGTH).optional(),
   day: z.number().int().min(1).max(DAYS_IN_LONGEST_MONTH),
   month: z.number().int().min(1).max(MONTHS_IN_YEAR),
   year: z.number().int().min(MIN_BIRTH_YEAR).max(MAX_BIRTH_YEAR),
   calendar: z.enum(CalendarType),
-  hour: z.enum(BIRTH_HOUR_VALUES),
+  hour: z.enum(BIRTH_HOUR_KEYS),
   gender: z.enum(Gender),
 });
 
-export const birthInputSchema = birthFields.refine(isRealBirthDate, {
+export const birthInputSchema = birthFieldsSchema.refine(isRealBirthDate, {
   message: INVALID_BIRTH_DATE_MESSAGE,
   path: ['day'],
 });
 
-export type BirthInput = z.infer<typeof birthInputSchema>;
-
 /** Optional throughout: /la-so is reachable directly, without anyone having filled the form. */
-export const birthSearchSchema = birthFields.partial().extend({
+export const birthSearchSchema = birthFieldsSchema.partial().extend({
   viewYear: z.number().int().min(MIN_VIEW_YEAR).max(MAX_VIEW_YEAR).optional(),
 });

@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react';
-import { getRouteApi, useNavigate } from '@tanstack/react-router';
+import { Navigate, getRouteApi, useNavigate } from '@tanstack/react-router';
 import { MEDIA } from '@/config/media';
 import { LaSoBoard } from '@/features/la-so/components/la-so-board';
 import { LuanGiaiSection } from '@/features/la-so/components/luan-giai-section';
 import { MOCK_LUAN_GIAI } from '@/features/la-so/luan-giai-data';
 import { birthInputSchema } from '@/features/la-so/birth-input';
-import { BirthPrompt } from '@/features/la-so/components/birth-prompt';
 import { ViewYearPicker } from '@/features/la-so/components/view-year-picker';
+import { useRecordChartView } from '@/features/la-so/history/use-record-chart-view';
 import { toChartView } from '@/features/la-so/to-chart-view';
 
 /**
@@ -26,24 +26,32 @@ const FADE_TOWARD_BOARD = {
   right: { maskImage: 'linear-gradient(to left, black 40%, transparent 100%)' },
 } as const;
 
-const route = getRouteApi('/_site/la-so');
+const route = getRouteApi('/_site/la-so/detail');
 
 export function LaSoPage() {
   const search = route.useSearch();
-  const navigate = useNavigate({ from: '/la-so' });
+  const navigate = useNavigate({ from: '/la-so/detail' });
   const viewYear = search.viewYear ?? new Date().getFullYear();
 
-  const chart = useMemo(() => {
+  const birth = useMemo(() => {
     const parsed = birthInputSchema.safeParse(search);
-    return parsed.success ? toChartView({ ...parsed.data, viewYear }) : null;
-  }, [search, viewYear]);
+    return parsed.success ? parsed.data : null;
+  }, [search]);
+  const chart = useMemo(
+    () => (birth ? toChartView({ ...birth, viewYear }) : null),
+    [birth, viewYear],
+  );
+
+  useRecordChartView(birth);
   // Chưa chọn cung nào thì mặc định về cung Mệnh; giữ `null` để lá số mới luôn bắt đầu từ Mệnh
   // thay vì kẹt ở cung đã chọn của lá số trước.
   const [pickedIndex, setPickedIndex] = useState<number | null>(null);
   const [activeChapter, setActiveChapter] = useState(MOCK_LUAN_GIAI.chapters[0].order);
 
+  // The route already turns incomplete search params away; this only keeps the impossible case
+  // from rendering a blank page.
   if (!chart) {
-    return <BirthPrompt />;
+    return <Navigate to="/la-so" />;
   }
 
   const selectedIndex = pickedIndex ?? chart.cungs.findIndex((cung) => cung.isMenh);
