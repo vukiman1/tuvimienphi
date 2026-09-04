@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { appConfig } from '@/config/app-config';
 import { ensureGoogleIdentity, promptGoogleOneTap } from '@/lib/google-identity';
+import { notify } from '@/lib/toast';
 import { authService } from '@/services/auth-service';
 import { selectIsAuthenticated, selectIsInitializing, useAuthStore } from '@/stores/auth-store';
 import { startSession } from './session';
@@ -25,6 +26,8 @@ export function useGoogleOneTap(): void {
       try {
         const result = await authService.googleOneTap(credential);
         startSession(result.user);
+        // Same confirmation the email and 2FA sign-in paths already show.
+        notify.success('Signed in.');
         await navigate({ to: '/' });
       } catch (error) {
         console.error('Google One Tap sign-in failed', error);

@@ -4,6 +4,7 @@ import { useGoogleOneTap } from './use-google-one-tap';
 import { ensureGoogleIdentity, promptGoogleOneTap } from '@/lib/google-identity';
 import { authService } from '@/services/auth-service';
 import { useAuthStore } from '@/stores/auth-store';
+import { notify } from '@/lib/toast';
 
 jest.mock('@/config/app-config', () => ({
   appConfig: {
@@ -22,6 +23,9 @@ jest.mock('@/services/auth-service', () => ({
 }));
 const mockNavigate = jest.fn();
 jest.mock('@tanstack/react-router', () => ({ useNavigate: () => mockNavigate }));
+jest.mock('@/lib/toast', () => ({
+  notify: { success: jest.fn(), error: jest.fn(), info: jest.fn() },
+}));
 
 describe('useGoogleOneTap', () => {
   beforeEach(() => {
@@ -69,6 +73,7 @@ describe('useGoogleOneTap', () => {
 
     expect(authService.googleOneTap).toHaveBeenCalledWith('cred-1');
     expect(useAuthStore.getState().user).toEqual({ email: 'jane@example.com' });
+    expect(notify.success).toHaveBeenCalledWith('Signed in.');
     await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith({ to: '/' }));
   });
 
