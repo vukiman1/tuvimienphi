@@ -6,6 +6,7 @@ import { ErrorPage } from '@/features/error/error-page';
 import { NotFoundPage } from '@/features/error/not-found-page';
 import { AuthModal } from '@/features/auth/auth-modal';
 import { GoogleOneTap } from '@/features/auth/google-one-tap';
+import { useSyncLaSoHistoryOnLogin } from '@/features/la-so/history/use-sync-on-login';
 
 export interface RouterContext {
   queryClient: QueryClient;
@@ -36,6 +37,8 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 });
 
 function RootRoute() {
+  useSyncLaSoHistoryOnLogin();
+
   return (
     <>
       <GoogleOneTap />

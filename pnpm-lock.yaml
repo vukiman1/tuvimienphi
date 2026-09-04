@@ -439,6 +439,9 @@ importers:
       '@org/backend-redis':
         specifier: workspace:*
         version: link:../../packages/backend/redis
+      '@org/shared-contracts':
+        specifier: workspace:*
+        version: link:../../packages/shared/contracts
       '@react-email/components':
         specifier: ^1.0.12
         version: 1.0.12(react-dom@19.2.8(react@19.2.8))(react@19.2.8)

@@ -189,3 +189,7 @@ export interface VanHanEntry {
   luanGiai: VanHanAspectData[];
   tungTuoi: VanHanAgeData[];
 }
+
+// Lá số
+export * from './birth-input.js';
+export * from './la-so-history.js';

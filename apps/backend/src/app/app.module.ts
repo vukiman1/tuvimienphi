@@ -11,6 +11,7 @@ import configuration from '@org/backend-config';
 import { RedisModule } from '@org/backend-redis';
 import { join } from 'path';
 import { AuthModule } from '../api/auth/auth.module';
+import { LaSoModule } from '../api/la-so/la-so.module';
 import { UserModule } from '../api/user/user.module';
 import { EmailModule } from '../email/email.module';
 import { HealthModule } from '../health/health.module';
@@ -60,6 +61,7 @@ import { queueBoardRootImports } from './queue-board-registration';
     EmailModule,
     AuthModule,
     UserModule,
+    LaSoModule,
     RedisModule,
     HealthModule,
     QueueModule,

@@ -91,7 +91,7 @@ export function BirthForm() {
     schema: birthFormSchema,
     fallbackError: 'Không mở được lá số. Thử lại sau ít phút.',
     onSubmit: async (values) => {
-      await navigate({ to: '/la-so', search: toBirthSearch(values) });
+      await navigate({ to: '/la-so/detail', search: toBirthSearch(values) });
     },
   });
 

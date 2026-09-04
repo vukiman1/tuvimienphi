@@ -1,8 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { birthSearchSchema } from '@/features/la-so/birth-input';
-import { LaSoPage } from '@/features/la-so/pages/la-so-page';
 
+/** Thông tin sinh nằm ở tầng này để cả trang nhập lẫn trang lá số cùng đọc một bộ tham số. */
 export const Route = createFileRoute('/_site/la-so')({
-  component: LaSoPage,
   validateSearch: birthSearchSchema,
 });
