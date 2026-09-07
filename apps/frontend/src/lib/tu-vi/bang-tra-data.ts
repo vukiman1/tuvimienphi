@@ -4,8 +4,9 @@ import type { Rating } from '@/lib/tu-vi/sao-rating';
 /**
  * Ba bảng tra còn lại của lá số, suy từ 33 lá số trên tuvi.vn giống các bảng phụ tinh.
  *
- * Miếu vượng đắc bình hãm chưa phủ hết: 33 lá số chạm tới 154 trong 168 ô của bảng 14 chính tinh ×
- * 12 cung. Ô chưa có chứng thì để `null` và giao diện không in gì, thay vì đoán một mức.
+ * Bảng miếu vượng của chính tinh đã kín cả 168 ô. Mười bốn ô cuối đều thuộc **một** cấu hình duy
+ * nhất — Tử Vi tại Tý — vì vị trí mười ba sao còn lại suy ra từ Tử Vi; hai lá số dựng riêng cho cấu
+ * hình đó cho cùng một kết quả.
  */
 
 /** Mười hai sao vòng Tràng Sinh, xếp theo đúng thứ tự đi vòng. */
@@ -65,21 +66,21 @@ export const CHU_THAN_BY_YEAR_CHI = [
 ] as const;
 
 /** Miếu (M) / Vượng (V) / Đắc (Đ) / Bình (B) / Hãm (H) của chính tinh tại từng cung. */
-export const CHINH_TINH_RATINGS: Readonly<Record<ChinhTinhName, ReadonlyArray<Rating | null>>> = {
-  'Tử Vi': [null, 'Đ', 'M', 'B', 'V', 'M', 'M', 'Đ', 'M', 'B', 'V', 'B'],
-  'Thiên Cơ': ['Đ', 'Đ', 'H', 'M', 'M', 'V', 'Đ', 'Đ', 'V', 'M', 'M', null],
-  'Thái Dương': ['H', 'Đ', 'V', 'V', 'V', 'M', 'M', 'Đ', 'H', null, 'H', 'H'],
-  'Vũ Khúc': ['V', 'M', 'V', 'Đ', 'M', 'H', 'V', 'M', null, 'Đ', 'M', 'H'],
-  'Thiên Đồng': ['V', 'H', 'M', 'Đ', 'H', 'Đ', 'H', null, 'M', 'H', 'H', 'Đ'],
-  'Liêm Trinh': ['V', 'Đ', 'V', 'H', null, 'H', 'V', 'Đ', 'V', 'H', 'M', 'H'],
-  'Thiên Phủ': ['M', 'B', 'M', 'B', null, 'Đ', 'M', 'Đ', 'M', 'B', 'V', 'Đ'],
-  'Thái Âm': ['V', 'Đ', 'H', 'H', 'H', null, 'H', 'Đ', 'V', 'M', 'M', 'M'],
-  'Tham Lang': ['H', 'M', 'Đ', 'H', 'V', 'H', null, 'M', 'Đ', 'H', 'V', 'H'],
-  'Cự Môn': ['V', 'H', 'V', 'M', 'H', 'H', 'V', null, 'Đ', 'M', 'H', 'Đ'],
-  'Thiên Tướng': ['V', 'Đ', 'M', 'H', 'V', 'Đ', 'V', 'Đ', null, 'H', 'V', 'Đ'],
-  'Thiên Lương': ['V', 'Đ', 'V', 'V', 'M', 'H', 'M', 'Đ', 'V', null, 'M', 'H'],
-  'Thất Sát': ['M', 'Đ', 'M', 'H', 'H', 'V', 'M', 'Đ', 'M', 'H', null, 'V'],
-  'Phá Quân': ['M', 'V', null, 'H', 'Đ', 'H', 'M', 'V', 'H', 'H', 'Đ', 'H'],
+export const CHINH_TINH_RATINGS: Readonly<Record<ChinhTinhName, readonly Rating[]>> = {
+  'Tử Vi': ['B', 'Đ', 'M', 'B', 'V', 'M', 'M', 'Đ', 'M', 'B', 'V', 'B'],
+  'Thiên Cơ': ['Đ', 'Đ', 'H', 'M', 'M', 'V', 'Đ', 'Đ', 'V', 'M', 'M', 'H'],
+  'Thái Dương': ['H', 'Đ', 'V', 'V', 'V', 'M', 'M', 'Đ', 'H', 'H', 'H', 'H'],
+  'Vũ Khúc': ['V', 'M', 'V', 'Đ', 'M', 'H', 'V', 'M', 'V', 'Đ', 'M', 'H'],
+  'Thiên Đồng': ['V', 'H', 'M', 'Đ', 'H', 'Đ', 'H', 'H', 'M', 'H', 'H', 'Đ'],
+  'Liêm Trinh': ['V', 'Đ', 'V', 'H', 'M', 'H', 'V', 'Đ', 'V', 'H', 'M', 'H'],
+  'Thiên Phủ': ['M', 'B', 'M', 'B', 'V', 'Đ', 'M', 'Đ', 'M', 'B', 'V', 'Đ'],
+  'Thái Âm': ['V', 'Đ', 'H', 'H', 'H', 'H', 'H', 'Đ', 'V', 'M', 'M', 'M'],
+  'Tham Lang': ['H', 'M', 'Đ', 'H', 'V', 'H', 'H', 'M', 'Đ', 'H', 'V', 'H'],
+  'Cự Môn': ['V', 'H', 'V', 'M', 'H', 'H', 'V', 'H', 'Đ', 'M', 'H', 'Đ'],
+  'Thiên Tướng': ['V', 'Đ', 'M', 'H', 'V', 'Đ', 'V', 'Đ', 'M', 'H', 'V', 'Đ'],
+  'Thiên Lương': ['V', 'Đ', 'V', 'V', 'M', 'H', 'M', 'Đ', 'V', 'H', 'M', 'H'],
+  'Thất Sát': ['M', 'Đ', 'M', 'H', 'H', 'V', 'M', 'Đ', 'M', 'H', 'H', 'V'],
+  'Phá Quân': ['M', 'V', 'H', 'H', 'Đ', 'H', 'M', 'V', 'H', 'H', 'Đ', 'H'],
 };
 
 /**

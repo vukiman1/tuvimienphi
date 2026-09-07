@@ -1,10 +1,4 @@
-import {
-  CUNG_GRID_POSITIONS,
-  centerAnchor,
-  nhiHopIndex,
-  tamHopIndexes,
-  xungChieuIndex,
-} from './board-layout';
+import { CUNG_GRID_POSITIONS, centerAnchor } from './board-layout';
 
 const TY = 0;
 const THIN = 4;
@@ -30,35 +24,6 @@ describe('centerAnchor', () => {
       expect(y).toBeGreaterThanOrEqual(1);
       expect(y).toBeLessThanOrEqual(3);
       expect(x === 1 || x === 3 || y === 1 || y === 3).toBe(true);
-    }
-  });
-});
-
-describe('tam phương tứ chính', () => {
-  it('pairs Thân · Tý · Thìn as one tam hợp group', () => {
-    expect(tamHopIndexes(TY)).toEqual([THIN, THAN]);
-    expect(tamHopIndexes(THIN)).toEqual([THAN, TY]);
-    expect(tamHopIndexes(THAN)).toEqual([TY, THIN]);
-  });
-
-  it('faces Tý against Ngọ', () => {
-    expect(xungChieuIndex(TY)).toBe(NGO);
-    expect(xungChieuIndex(NGO)).toBe(TY);
-  });
-
-  it('binds the six nhị hợp couples both ways', () => {
-    const couples: ReadonlyArray<readonly [number, number]> = [
-      [0, 1], // Tý – Sửu
-      [2, 11], // Dần – Hợi
-      [3, 10], // Mão – Tuất
-      [4, 9], // Thìn – Dậu
-      [5, 8], // Tị – Thân
-      [6, 7], // Ngọ – Mùi
-    ];
-
-    for (const [a, b] of couples) {
-      expect(nhiHopIndex(a)).toBe(b);
-      expect(nhiHopIndex(b)).toBe(a);
     }
   });
 });

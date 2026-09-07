@@ -1,5 +1,5 @@
 import type { CanChiIndex } from '@/lib/lunar-calendar';
-import { PHU_TINH_RULES, PhuTinhKey, type PhuTinhRule } from '@/lib/tu-vi/phu-tinh-data';
+import { anSaoTheoTru } from '@/lib/tu-vi/an-sao-theo-tru';
 import type { PhuTinhName } from '@/lib/tu-vi/sao-names';
 import type { SaoPlacement } from '@/lib/tu-vi/sao-placement';
 
@@ -41,19 +41,6 @@ const REUSED_NAMES: ReadonlySet<PhuTinhName> = new Set<PhuTinhName>([
 const LUU_VAN_XUONG: readonly (number | null)[] = [5, 6, 8, null, null, 9, 11, 0, 2, 3];
 const LUU_VAN_KHUC: readonly (number | null)[] = [9, 8, 6, null, null, 5, 3, 2, 0, 11];
 
-function lookupValue(rule: PhuTinhRule, viewYear: CanChiIndex): number {
-  switch (rule.key) {
-    case PhuTinhKey.YearCan:
-      return viewYear.can;
-    case PhuTinhKey.YearChi:
-      return viewYear.chi;
-    default:
-      throw new Error(
-        `Lưu tinh chỉ an theo can hoặc chi năm xem, còn ${rule.name} an theo ${rule.key}`,
-      );
-  }
-}
-
 function xuongKhucAt(yearCan: number): readonly SaoPlacement<PhuTinhName>[] {
   const pairs = [
     ['Văn Xương', LUU_VAN_XUONG[yearCan]],
@@ -64,10 +51,5 @@ function xuongKhucAt(yearCan: number): readonly SaoPlacement<PhuTinhName>[] {
 
 /** Trụ năm của năm đang xem, không phải của năm sinh. */
 export function anLuuTinh(viewYear: CanChiIndex): readonly SaoPlacement<PhuTinhName>[] {
-  const reused = PHU_TINH_RULES.filter((rule) => REUSED_NAMES.has(rule.name)).map((rule) => ({
-    name: rule.name,
-    chiIndex: rule.byValue[lookupValue(rule, viewYear)],
-  }));
-
-  return [...reused, ...xuongKhucAt(viewYear.can)];
+  return [...anSaoTheoTru(REUSED_NAMES, viewYear), ...xuongKhucAt(viewYear.can)];
 }

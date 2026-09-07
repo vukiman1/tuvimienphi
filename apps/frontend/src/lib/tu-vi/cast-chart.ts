@@ -9,6 +9,7 @@ import {
 } from '@/lib/lunar-calendar';
 import { getNapAm } from '@/lib/nap-am';
 import { anChinhTinh } from '@/lib/tu-vi/an-chinh-tinh';
+import { anLuuDaiVanTinh } from '@/lib/tu-vi/an-luu-dai-van';
 import { anLuuTinh } from '@/lib/tu-vi/an-luu-tinh';
 import { anHoaLinhTinh } from '@/lib/tu-vi/an-hoa-linh-tinh';
 import { anPhuTinh } from '@/lib/tu-vi/an-phu-tinh';
@@ -29,7 +30,7 @@ import {
   cungNameAt,
   type Cuc,
 } from '@/lib/tu-vi/dia-ban';
-import { CHI_COUNT } from '@/lib/tu-vi/chi';
+import { CHI_COUNT, xungChieuIndex } from '@/lib/tu-vi/chi';
 import { anLuuNienLabels } from '@/lib/tu-vi/luu-nien';
 import type { ChinhTinhName, PhuTinhName, SaoName } from '@/lib/tu-vi/sao-names';
 import type { SaoPlacement } from '@/lib/tu-vi/sao-placement';
@@ -44,6 +45,7 @@ import {
   anAmDuong,
   anDaiVan,
   anDaiVanLabels,
+  daiVanAt,
   type AmDuong,
   type DaiVan,
 } from '@/lib/tu-vi/van-han';
@@ -97,6 +99,13 @@ export interface NatalCungView {
   readonly hasTuan: boolean;
   readonly hasTriet: boolean;
   readonly chinhTinh: readonly SaoView<ChinhTinhName>[];
+  /** Cung không có chính tinh nào toạ thủ. */
+  readonly isVoChinhDieu: boolean;
+  /**
+   * Chính tinh mượn từ cung xung chiếu khi cung này vô chính diệu, giữ nguyên bậc miếu vượng ở cung
+   * gốc của chúng. Rỗng khi cung đã có chính tinh của chính nó.
+   */
+  readonly chinhTinhMuon: readonly SaoView<ChinhTinhName>[];
   readonly phuTinh: readonly SaoView<PhuTinhName>[];
   readonly trangSinh: string;
   readonly daiVanStartAge: number;
@@ -105,6 +114,8 @@ export interface NatalCungView {
 export interface CungView extends NatalCungView {
   /** Sao của tầng lưu niên, rỗng khi không truyền năm xem. In kèm tiền tố `L.` trên lá số. */
   readonly luuTinh: readonly PhuTinhName[];
+  /** Sao của tầng lưu đại vận; đổi theo vận chứ không theo năm. In kèm tiền tố `ĐV.`. */
+  readonly daiVanTinh: readonly PhuTinhName[];
   readonly daiVanLabel: string;
   /** Nhãn `LN.*`; rỗng khi không truyền năm xem. */
   readonly luuNienLabel: string;
@@ -221,7 +232,7 @@ export function castNatal(input: NatalInput): NatalChart {
   const trangSinh = anVongTrangSinh(cuc.value, amDuong.isForward);
   const startAgeByChi = new Map(daiVan.map((span) => [span.chiIndex, span.startAge]));
 
-  const cungs = Array.from({ length: CHI_COUNT }, (_, chiIndex) => ({
+  const placed = Array.from({ length: CHI_COUNT }, (_, chiIndex) => ({
     chiIndex,
     name: cungNameAt(chiIndex, menhIndex),
     can: canOfCung(chiIndex, year.can),
@@ -236,6 +247,16 @@ export function castNatal(input: NatalInput): NatalChart {
       .map((star) => ({ name: star.name, rating: phuTinhRatingOf(star.name, chiIndex) })),
     daiVanStartAge: startAgeByChi.get(chiIndex) ?? 0,
   }));
+
+  // Mượn sao phải chạy sau khi cả mười hai cung đã an xong, vì nó đọc sang cung xung chiếu.
+  const cungs = placed.map((cung) => {
+    const isVoChinhDieu = cung.chinhTinh.length === 0;
+    return {
+      ...cung,
+      isVoChinhDieu,
+      chinhTinhMuon: isVoChinhDieu ? placed[xungChieuIndex(cung.chiIndex)].chinhTinh : [],
+    };
+  });
 
   return {
     lunar,
@@ -266,11 +287,23 @@ export function castNatal(input: NatalInput): NatalChart {
   };
 }
 
+/** Vị trí natal của mọi sao, để hoá khí của tầng đại vận đóng đúng vào cung của sao nhận hoá. */
+function starPlacesOf(natal: NatalChart): ReadonlyMap<SaoName, number> {
+  return new Map(
+    natal.cungs.flatMap((cung) =>
+      [...cung.chinhTinh, ...cung.phuTinh].map((star): [SaoName, number] => [
+        star.name,
+        cung.chiIndex,
+      ]),
+    ),
+  );
+}
+
 /**
- * Bốn tầng đổi theo năm xem: nhãn `ĐV.*`, nhãn `LN.*`, cung tiểu hạn và cung tháng. Bỏ trống năm
- * xem thì cả bốn về rỗng.
+ * Sáu tầng đổi theo năm xem: nhãn `ĐV.*`, nhãn `LN.*`, cung tiểu hạn, cung tháng, lưu tinh và lưu
+ * tinh theo đại vận. Bỏ trống năm xem thì cả sáu về rỗng.
  *
- * Nhận lá số gốc đã dựng sẵn, nên đổi năm không phải an lại sao nào.
+ * Nhận lá số gốc đã dựng sẵn, nên đổi năm không phải an lại sao natal nào.
  */
 export function applyViewYear(natal: NatalChart, viewYear: number | undefined): TuViChart {
   const age = viewYear === undefined ? null : ageInYear(natal.lunar.year, viewYear);
@@ -289,12 +322,27 @@ export function applyViewYear(natal: NatalChart, viewYear: number | undefined): 
       ? []
       : anLuuTinh(getYearPillar(convertSolarToLunar(new Date(viewYear, 6, 1)).year));
 
+  const currentDaiVan = age === null ? undefined : daiVanAt(natal.daiVan, age);
+  const daiVanTinh =
+    currentDaiVan === undefined
+      ? []
+      : anLuuDaiVanTinh(
+          {
+            can: canOfCung(currentDaiVan.chiIndex, natal.pillars.year.can),
+            chi: currentDaiVan.chiIndex,
+          },
+          starPlacesOf(natal),
+        );
+
   return {
     ...natal,
     tieuHan,
     cungs: natal.cungs.map((cung) => ({
       ...cung,
       luuTinh: luuTinh.filter((star) => star.chiIndex === cung.chiIndex).map((star) => star.name),
+      daiVanTinh: daiVanTinh
+        .filter((star) => star.chiIndex === cung.chiIndex)
+        .map((star) => star.name),
       daiVanLabel: daiVanLabels[cung.chiIndex],
       luuNienLabel: luuNienLabels[cung.chiIndex],
       cungThang: cungThang[cung.chiIndex],
@@ -302,11 +350,7 @@ export function applyViewYear(natal: NatalChart, viewYear: number | undefined): 
   };
 }
 
-/**
- * Dựng lá số hoàn chỉnh từ ngày sinh dương lịch.
- *
- * Lưu tinh `L.*` chưa có.
- */
+/** Dựng lá số hoàn chỉnh từ ngày sinh dương lịch. */
 export function castChart(input: BirthInput): TuViChart {
   return applyViewYear(castNatal(input), input.viewYear);
 }

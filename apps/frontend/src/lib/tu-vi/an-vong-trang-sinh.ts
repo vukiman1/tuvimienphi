@@ -34,8 +34,8 @@ export function chuThanOf(yearChi: number): string {
   return CHU_THAN_BY_YEAR_CHI[yearChi];
 }
 
-/** Miếu vượng của một chính tinh tại một cung; `null` khi bảng chưa có chứng cho ô đó. */
-export function ratingOf(star: ChinhTinhName, chiIndex: number): Rating | null {
+/** Miếu vượng của một chính tinh tại một cung. Bảng kín cả 168 ô nên luôn có bậc. */
+export function ratingOf(star: ChinhTinhName, chiIndex: number): Rating {
   return CHINH_TINH_RATINGS[star][chiIndex];
 }
 

@@ -72,28 +72,6 @@ export function centerAnchorLabel(cungIndex: number): {
   };
 }
 
-const TAM_HOP_STEPS = [4, 8];
-const XUNG_CHIEU_STEP = 6;
-const CHI_COUNT = 12;
-
-export function tamHopIndexes(cungIndex: number): readonly number[] {
-  return TAM_HOP_STEPS.map((step) => (cungIndex + step) % CHI_COUNT);
-}
-
-export function xungChieuIndex(cungIndex: number): number {
-  return (cungIndex + XUNG_CHIEU_STEP) % CHI_COUNT;
-}
-
-/**
- * Nhị hợp (lục hợp): sáu cặp Tý–Sửu, Dần–Hợi, Mão–Tuất, Thìn–Dậu, Tị–Thân, Ngọ–Mùi. Hai chi trong
- * một cặp luôn có tổng chỉ số bằng 1 (tính vòng), nên soi gương qua mốc đó là ra bạn của nó.
- */
-const NHI_HOP_MIRROR = 1;
-
-export function nhiHopIndex(cungIndex: number): number {
-  return (((NHI_HOP_MIRROR - cungIndex) % CHI_COUNT) + CHI_COUNT) % CHI_COUNT;
-}
-
 /**
  * Vị trí (theo % của bàn) để đặt nhãn Tuần / Triệt: chúng đè lên đúng cạnh chung của hai cung bị
  * chắn — cạnh dọc nếu hai cung cùng hàng, cạnh ngang nếu cùng cột.
