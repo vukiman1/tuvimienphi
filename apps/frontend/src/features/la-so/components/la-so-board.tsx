@@ -5,11 +5,9 @@ import {
   CUNG_GRID_POSITIONS,
   centerAnchor,
   centerAnchorLabel,
-  nhiHopIndex,
   sharedEdge,
-  tamHopIndexes,
-  xungChieuIndex,
 } from '@/features/la-so/board-layout';
+import { nhiHopIndex, tamHopIndexes, xungChieuIndex } from '@/lib/tu-vi/chi';
 import { CHART_RULE_CLASS } from '@/features/la-so/chart-colors';
 import { CungCard } from '@/features/la-so/components/cung-card';
 import { ThienBan } from '@/features/la-so/components/thien-ban';
