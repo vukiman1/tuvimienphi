@@ -70,12 +70,17 @@ export function ageInYear(birthLunarYear: number, viewYear: number): number {
   return viewYear - birthLunarYear + 1;
 }
 
+/** Đại vận đang hiệu lực ở một tuổi; `undefined` khi tuổi rơi ngoài mười hai vận đã tính. */
+export function daiVanAt(spans: readonly DaiVan[], age: number): DaiVan | undefined {
+  return spans.find((span) => age >= span.startAge && age <= span.endAge);
+}
+
 /**
  * Nhãn `ĐV.*` cho mười hai cung: cung chứa đại vận của tuổi năm xem thành `ĐV.MỆNH`, các cung sau
  * đếm thuận. Ngoài khoảng đại vận đã tính thì không có nhãn nào.
  */
 export function anDaiVanLabels(spans: readonly DaiVan[], age: number): readonly string[] {
-  const current = spans.find((span) => age >= span.startAge && age <= span.endAge);
+  const current = daiVanAt(spans, age);
   if (!current) {
     return new Array<string>(CHI_COUNT).fill('');
   }

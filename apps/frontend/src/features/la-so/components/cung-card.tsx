@@ -45,6 +45,20 @@ function SaoColumn({
   );
 }
 
+/** Một dòng sao của tầng phủ, in tràn ngang dưới hai cột phụ tinh. */
+function SaoRow({ sao, prefix }: { readonly sao: readonly SaoView[]; readonly prefix: string }) {
+  return (
+    <ul className="flex flex-wrap gap-x-2 pt-[2px] text-[12px] leading-[16px] font-semibold">
+      {sao.map((item) => (
+        <li key={item.name} className={cn('whitespace-nowrap', SAO_ELEMENT_CLASS[item.element])}>
+          {prefix}
+          {item.name}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export function CungCard({
   cung,
   isFocused,
@@ -94,42 +108,56 @@ export function CungCard({
             {cung.element}
           </span>
           <span className="flex min-w-0 flex-wrap justify-center gap-x-2">
-            {cung.chinhTinh.map((sao) => (
-              <span
-                key={sao.name}
-                className={cn(
-                  'text-[14px] leading-[19px] font-bold whitespace-nowrap',
-                  SAO_ELEMENT_CLASS[sao.element],
-                )}
-              >
-                {sao.polarity}
-                {sao.name}
-                {sao.rating && <span className="text-[12px] font-normal"> ({sao.rating})</span>}
+            {cung.isVoChinhDieu ? (
+              <span className="text-[13px] leading-[19px] font-semibold text-[#6b6455] italic">
+                vô chính diệu
               </span>
-            ))}
+            ) : (
+              cung.chinhTinh.map((sao) => (
+                <span
+                  key={sao.name}
+                  className={cn(
+                    'text-[14px] leading-[19px] font-bold whitespace-nowrap',
+                    SAO_ELEMENT_CLASS[sao.element],
+                  )}
+                >
+                  {sao.polarity}
+                  {sao.name}
+                  {sao.rating && <span className="text-[12px] font-normal"> ({sao.rating})</span>}
+                </span>
+              ))
+            )}
           </span>
           <span className="shrink-0 text-[13px] leading-[17px] font-bold whitespace-nowrap text-[#17150f]">
             {cung.monthOrder}
           </span>
         </div>
 
+        {cung.chinhTinhMuon.length > 0 && (
+          <span className="flex min-w-0 flex-wrap justify-center gap-x-2 opacity-70">
+            {cung.chinhTinhMuon.map((sao) => (
+              <span
+                key={sao.name}
+                className={cn(
+                  'text-[12px] leading-[16px] font-semibold whitespace-nowrap',
+                  SAO_ELEMENT_CLASS[sao.element],
+                )}
+              >
+                ({sao.name}
+                {sao.rating && ` ${sao.rating}`})
+              </span>
+            ))}
+          </span>
+        )}
+
         <div className="mt-[3px] grid flex-1 grid-cols-2 gap-x-1">
           <SaoColumn align="left" sao={cung.catTinh} />
           <SaoColumn align="right" sao={cung.hungTinh} />
         </div>
 
-        {cung.luuTinh.length > 0 && (
-          <ul className="flex flex-wrap gap-x-2 pt-[2px] text-[12px] leading-[16px] font-semibold">
-            {cung.luuTinh.map((sao) => (
-              <li
-                key={sao.name}
-                className={cn('whitespace-nowrap', SAO_ELEMENT_CLASS[sao.element])}
-              >
-                L.{sao.name}
-              </li>
-            ))}
-          </ul>
-        )}
+        {cung.luuTinh.length > 0 && <SaoRow prefix="L." sao={cung.luuTinh} />}
+
+        {cung.daiVanTinh.length > 0 && <SaoRow prefix="ĐV." sao={cung.daiVanTinh} />}
 
         <div className="mt-auto flex items-baseline justify-between gap-1 pt-[4px] text-[12px] leading-[16px] font-semibold text-[#17150f]">
           <span>{cung.daiVan}</span>

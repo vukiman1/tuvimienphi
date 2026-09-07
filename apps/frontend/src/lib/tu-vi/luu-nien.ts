@@ -1,5 +1,5 @@
 import { CHI_COUNT, mod12 } from '@/lib/tu-vi/chi';
-import { DAI_VAN_LABELS, type DaiVan } from '@/lib/tu-vi/van-han';
+import { DAI_VAN_LABELS, daiVanAt, type DaiVan } from '@/lib/tu-vi/van-han';
 
 /**
  * Nhãn `LN.*` — vòng lưu niên. Neo vào cung đại vận đang hiệu lực chứ không vào địa bàn gốc.
@@ -31,9 +31,7 @@ export interface LuuNienParams {
 
 /** Mười hai nhãn theo chi. Ngoài khoảng đại vận đã tính thì trả về mảng rỗng. */
 export function anLuuNienLabels(params: LuuNienParams): readonly string[] {
-  const current = params.spans.find(
-    (span) => params.age >= span.startAge && params.age <= span.endAge,
-  );
+  const current = daiVanAt(params.spans, params.age);
   if (!current) {
     return new Array<string>(CHI_COUNT).fill('');
   }

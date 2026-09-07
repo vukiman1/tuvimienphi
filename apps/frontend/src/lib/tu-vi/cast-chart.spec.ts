@@ -1,5 +1,6 @@
 import { CAN, CHI } from '@/lib/lunar-calendar';
 import { applyViewYear, castChart, castNatal } from './cast-chart';
+import { xungChieuIndex } from './chi';
 import { Gender } from './van-han';
 
 /**
@@ -96,6 +97,37 @@ describe('castChart — lá số Canh Tuất 1910', () => {
       'Thái Âm',
       'Thiên Đồng',
     ]);
+  });
+});
+
+describe('castChart — vô chính diệu', () => {
+  it('marks a palace vô chính diệu exactly when no major star sits there', () => {
+    for (const cung of chart.cungs) {
+      expect(cung.isVoChinhDieu).toBe(cung.chinhTinh.length === 0);
+    }
+  });
+
+  it('borrows the facing palace major stars, and only into empty palaces', () => {
+    for (const cung of chart.cungs) {
+      const facing = chart.cungs[xungChieuIndex(cung.chiIndex)];
+      expect(cung.chinhTinhMuon).toEqual(cung.isVoChinhDieu ? facing.chinhTinh : []);
+    }
+  });
+
+  it('leaves Tật Ách and Quan Lộc empty, each lent the two stars facing it', () => {
+    const empty = chart.cungs.filter((cung) => cung.isVoChinhDieu);
+    expect(empty.map((cung) => cung.name)).toEqual(['Tật Ách', 'Quan Lộc']);
+    expect(empty.map((cung) => cung.chinhTinhMuon.map((sao) => sao.name))).toEqual([
+      ['Thiên Đồng', 'Thiên Lương'],
+      ['Liêm Trinh', 'Tham Lang'],
+    ]);
+  });
+
+  it('keeps the borrowed rating from the star own palace, not the empty one', () => {
+    const DAN = 2;
+    const THAN = 8;
+    const tatAch = chart.cungs[DAN];
+    expect(tatAch.chinhTinhMuon).toEqual(chart.cungs[THAN].chinhTinh);
   });
 });
 

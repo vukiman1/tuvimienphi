@@ -41,7 +41,13 @@ export interface CungView {
   readonly luuNien: string;
   /** Sao của tầng lưu niên, in kèm tiền tố `L.`. */
   readonly luuTinh: readonly SaoView[];
+  /** Sao của tầng lưu đại vận, in kèm tiền tố `ĐV.`. */
+  readonly daiVanTinh: readonly SaoView[];
   readonly chinhTinh: readonly ChinhTinhView[];
+  /** Cung không có chính tinh nào toạ thủ. */
+  readonly isVoChinhDieu: boolean;
+  /** Chính tinh mượn từ cung xung chiếu; chỉ có khi cung vô chính diệu. */
+  readonly chinhTinhMuon: readonly ChinhTinhView[];
   /** Cột trái của ô. */
   readonly catTinh: readonly SaoView[];
   /** Cột phải của ô. */

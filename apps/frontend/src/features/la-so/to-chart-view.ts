@@ -6,10 +6,10 @@ import {
   CHINH_TINH_POLARITY,
   PHU_TINH_NGU_HANH,
 } from '@/lib/tu-vi/sao-ngu-hanh-data';
-import type { PhuTinhName } from '@/lib/tu-vi/sao-names';
+import type { ChinhTinhName, PhuTinhName } from '@/lib/tu-vi/sao-names';
 import { Gender as EngineGender } from '@/lib/tu-vi/van-han';
 import { BIRTH_HOURS, CalendarType, Gender, type BirthInput } from '@/features/la-so/birth-input';
-import type { ChartView, CungView, SaoView } from '@/features/la-so/chart-types';
+import type { ChartView, ChinhTinhView, CungView, SaoView } from '@/features/la-so/chart-types';
 
 /** Bắc cầu từ kết quả engine sang hình dạng giao diện đang vẽ. */
 
@@ -82,6 +82,20 @@ function shortCanChi(can: number, chi: number): string {
   return `${CAN[can].charAt(0)}.${CHI[chi]}`;
 }
 
+/** Sao của hai tầng phủ không mang bậc miếu vượng — trang gốc chỉ in tên. */
+function toLuuSaoView(name: PhuTinhName): SaoView {
+  return { name, rating: null, element: PHU_TINH_NGU_HANH[name] };
+}
+
+function toChinhTinhView(star: EngineSao<ChinhTinhName>): ChinhTinhView {
+  return {
+    name: star.name.toUpperCase(),
+    polarity: CHINH_TINH_POLARITY[star.name],
+    rating: star.rating,
+    element: CHINH_TINH_NGU_HANH[star.name],
+  };
+}
+
 function toCungViews(chart: TuViChart): readonly CungView[] {
   return chart.cungs.map((cung) => {
     const phuTinh = [...cung.phuTinh];
@@ -100,17 +114,11 @@ function toCungViews(chart: TuViChart): readonly CungView[] {
       daiVan: cung.daiVanLabel,
       trangSinh: cung.trangSinh,
       luuNien: cung.luuNienLabel,
-      luuTinh: cung.luuTinh.map((name) => ({
-        name,
-        rating: null,
-        element: PHU_TINH_NGU_HANH[name],
-      })),
-      chinhTinh: cung.chinhTinh.map((star) => ({
-        name: star.name.toUpperCase(),
-        polarity: CHINH_TINH_POLARITY[star.name],
-        rating: star.rating,
-        element: CHINH_TINH_NGU_HANH[star.name],
-      })),
+      luuTinh: cung.luuTinh.map(toLuuSaoView),
+      daiVanTinh: cung.daiVanTinh.map(toLuuSaoView),
+      chinhTinh: cung.chinhTinh.map(toChinhTinhView),
+      isVoChinhDieu: cung.isVoChinhDieu,
+      chinhTinhMuon: cung.chinhTinhMuon.map(toChinhTinhView),
       catTinh: phuTinh.filter((star) => !HUNG_TINH.has(star.name)).map(toSaoView),
       hungTinh: phuTinh.filter((star) => HUNG_TINH.has(star.name)).map(toSaoView),
     };
