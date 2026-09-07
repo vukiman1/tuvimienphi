@@ -1,8 +1,7 @@
 # Lá Số
 
-> Mục 1–3 và 5–8 đã xong; chi tiết giữ lại làm ngữ cảnh. **Chỉ còn mục 4** — 35 lưu tinh `L.*`,
-> kẹt ở khâu thu dữ liệu chứ không phải khâu code.
-> Luận giải và lưu lá số đẩy sang **phase sau**, gom ở cuối file.
+> Mục 1–9 đã xong; chi tiết giữ lại làm ngữ cảnh.
+> Luận giải đẩy sang **phase sau**, ở cuối file.
 
 Việc còn lại của trang `/la-so` và engine an sao trong [apps/frontend/src/lib/tu-vi/](../../apps/frontend/src/lib/tu-vi/).
 
@@ -120,7 +119,15 @@ Cả mười can đều có chứng, không còn chỗ nào suy diễn.
 rơi vào đúng hai ô đó rồi harvest riêng hai lá số. Hai sao hoá ra có bảng bậc **giống hệt nhau** —
 đắc ở Dần–Ngọ, hãm phần còn lại; hợp lý vì cả hai đều thuộc Hỏa.
 
-Bảng chính tinh vẫn còn 14/168 ô trống, làm được theo đúng cách này.
+**Bảng chính tinh cũng đã kín 168/168.** Mười bốn ô còn lại hoá ra là **một** cấu hình duy nhất —
+Tử Vi tại Tý — vì vị trí mười ba sao kia đều suy ra từ Tử Vi, nên chỉ một lá số là chạm được cả mười
+bốn ô cùng lúc. Lấy hai lá số rơi vào cấu hình đó (khác cục, khác giới), kết quả trùng khít; cả hai
+đã vào fixture nên cross-spec phủ chúng ở mọi tầng, không riêng miếu vượng. Nhờ bảng kín, `ratingOf`
+trả thẳng `Rating` thay vì `Rating | null`, và nhánh "bỏ qua ô chưa có chứng" trong cross-spec bỏ
+được.
+
+Một chỗ trang gốc đã đổi kể từ lần thu trước: **`chuMenh` và `chuThan` không còn được in ra**. Hai
+trường này chỉ phụ thuộc chi năm sinh nên hai lá số mới chép từ lá số cùng chi đã có sẵn trong bộ.
 
 ---
 
@@ -294,18 +301,46 @@ Type safety vẫn đủ: gõ `'D'` (chữ D Latin) thay vì `'Đ'` trong bảng 
 
 ---
 
-## 9. 🟡 Tầng `ĐV.*` — sao lưu theo đại vận
+## 9. ✅ Tầng `ĐV.*` — sao lưu theo đại vận
 
-**Phát hiện trong lúc cào mục 4, chưa có ở mô tả cũ nào.** API lưu niên trả thêm mười hai sao mang
-`type: "luu-theo-dai-van"`: `ĐV. Lộc Tồn`, `ĐV. K Dương`, `ĐV. Đà La`, `ĐV. Xương`, `ĐV. Khúc`,
-`ĐV. T Khôi`, `ĐV. T Việt`, `ĐV. T Mã`, và bốn hoá `ĐV. H Lộc / H Quyền / H Khoa / H Kỵ`.
+**Phát hiện trong lúc cào mục 4.** Mười hai sao mang `type: "luu-theo-dai-van"`: `ĐV. Lộc Tồn`,
+`ĐV. K Dương`, `ĐV. Đà La`, `ĐV. Xương`, `ĐV. Khúc`, `ĐV. T Khôi`, `ĐV. T Việt`, `ĐV. T Mã`, và bốn
+hoá `ĐV. H Lộc / H Quyền / H Khoa / H Kỵ`. Chúng đổi theo **đại vận**, không theo năm xem.
 
-Chúng **không đổi theo năm xem mà đổi theo đại vận** — trong mẫu 2015–2030 chúng giữ nguyên suốt
-2015–2023 rồi nhảy một lần ở 2024, đúng lúc lá số sang vận mới.
+Giả thuyết của mục này đúng: **dùng lại bảng natal, thay can chi năm sinh bằng can chi cung đại
+vận** — can lấy từ `canOfCung` vốn đã có sẵn. Kiểm trên 28 lá số phủ đủ 10 can và 11/12 chi:
+**322 ô, không ô nào lệch**. Cài ở [an-luu-dai-van.ts](../../apps/frontend/src/lib/tu-vi/an-luu-dai-van.ts),
+nối vào `applyViewYear` nên `castNatal` không phải đụng tới.
 
-**Cách làm:** cào lại với các năm xem trải nhiều đại vận của cùng một lá số, rồi thử giả thuyết
-tương tự mục 4 — dùng lại bảng natal nhưng thay can chi năm sinh bằng **can chi của cung đại vận**.
-Hạ tầng cào đã có sẵn, chỉ đổi tham số.
+Hai chỗ tầng này **không** dùng chung bảng với tầng khác, cả hai đều có nhiều lá số làm chứng:
+
+- **Can Canh, Văn Khúc về Hợi** thay vì Mão. Bốn lá số can Canh đều thế, mà tầng lưu niên của chính
+  chúng vẫn để Văn Khúc ở Mão — nên là hai bảng khác nhau thật, không phải một bảng chép sai.
+- **Can Nhâm, hoá Khoa vào Thiên Phủ** thay vì Tả Phù như tầng sinh niên. Ba lá số can Nhâm đều thế.
+
+Hai ghi chú về đường thu dữ liệu, khác mô tả cũ:
+
+- API `POST /la-so/sao-luu-nien` **giờ trả 500** ở mọi biến thể tham số đã thử. Không cần tới nó:
+  trang HTML lá số mang sẵn cả tầng `L.*` lẫn `ĐV.*`, và `data-cung-full-id` chính là chi 0-based.
+- `POST /la-so` nhận `gender=true|false`, `calendar=true|false` và tôn trọng `viewYear` khi lá số
+  chưa tồn tại. Tham số `nam-xem` trên URL của lá số **đã** tồn tại thì bị bỏ qua.
+
+---
+
+## 10. ✅ Vô chính diệu
+
+Cung không có chính tinh nào toạ thủ giờ mang `isVoChinhDieu` và `chinhTinhMuon` — chính tinh mượn
+từ cung xung chiếu, **giữ nguyên bậc miếu vượng ở cung gốc của chúng** chứ không tính lại theo cung
+đang mượn. Ô cung in nhãn "vô chính diệu" kèm các sao mượn trong ngoặc.
+
+`tamHopIndexes` / `xungChieuIndex` / `nhiHopIndex` chuyển từ `features/la-so/board-layout.ts` xuống
+[chi.ts](../../apps/frontend/src/lib/tu-vi/chi.ts): chúng là quan hệ giữa các cung, không phải bố cục
+bàn, và engine cần `xungChieuIndex` để mượn sao. `board-layout.ts` mất luôn bản `CHI_COUNT` cục bộ —
+một phần của khoản dọn còn treo ở mục 8.1.
+
+**Chưa làm, và cố ý:** helper ngũ hành sinh khắc (mệnh ↔ cục ↔ sao ↔ cung). Chưa có call site nào
+cho tới khi lớp dữ kiện luận giải tồn tại, nên dựng bây giờ là đoán trước hình dạng API. Gom vào
+P2-1.
 
 ---
 
@@ -324,6 +359,17 @@ liên quan tới lá số người dùng.
 **Cách làm:** cần chốt trước — sinh chữ từ bảng luật viết tay, hay gọi AI. Bước chung cho cả hai
 hướng là rút **dữ kiện** từ `TuViChart` cho mỗi mục con (cung nào, sao nào, miếu hãm ra sao, có Tuần
 Triệt không), vì cả hai hướng đều cần lớp dữ kiện ấy.
+
+Hai việc kéo theo, cùng chờ lớp dữ kiện đó:
+
+- **Helper ngũ hành sinh khắc.** Ngũ hành của 12 chi hiện nằm ở `to-chart-view.ts` dưới dạng chuỗi
+  `"+Thổ"`; muốn so sinh khắc thì phải hạ nó xuống engine dưới dạng `NguHanh` trước.
+- **Nhật vận.** Chương 06 của bản mẫu có bốn lát đại / tiểu / nguyệt / nhật, mà engine chỉ có ba lát
+  đầu — chưa có cung ngày. Hoặc bỏ lát nhật vận, hoặc chốt luật an.
+
+Ngoài ra engine đang nằm ở `apps/frontend/src/lib/tu-vi`, còn backend `api/la-so` chỉ lưu
+`BirthInput`. Sinh chữ bằng AI ở backend thì phải chuyển engine sang `packages/shared` trước — nên
+chốt cùng lúc với hướng bảng-luật-hay-AI.
 
 **Acceptance:** hai ngày sinh khác nhau cho hai bài luận khác nhau ở mọi chương.
 
