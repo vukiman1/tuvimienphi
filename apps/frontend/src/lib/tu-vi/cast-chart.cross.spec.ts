@@ -6,13 +6,14 @@ import { TUVI_VN_CHARTS } from './tuvi-vn-charts.fixture';
 /**
  * Đối chiếu với tuvi.vn — nguồn chân lý của dự án cho những chỗ có nhiều trường phái.
  *
- * Năm mươi bảy lá số thu bằng cách POST form lập lá số của họ, phủ đủ bốn tổ hợp Dương Nam /
+ * Tám mươi ba lá số thu bằng cách POST form lập lá số của họ, phủ đủ bốn tổ hợp Dương Nam /
  * Dương Nữ / Âm Nam / Âm Nữ, cả năm cục, và hai mươi mốt năm xem khác nhau — nhờ đó các tầng phụ
- * thuộc năm xem (nhãn đại vận, tiểu hạn, cung tháng) được kiểm ở nhiều tuổi chứ không chỉ một. Query string trên URL lá số chỉ để trang trí — id trong slug
- * mới quyết định lá số nào được dựng, nên không thể đổi ngày sinh bằng cách sửa URL.
+ * thuộc năm xem (nhãn đại vận, tiểu hạn, cung tháng) được kiểm ở nhiều tuổi chứ không chỉ một.
+ * Query string trên URL lá số chỉ để trang trí — id trong slug mới quyết định lá số nào được dựng,
+ * nên không thể đổi ngày sinh bằng cách sửa URL.
  *
- * Fixture nằm cạnh file này. Muốn thu thêm thì chạy `harvest.py` trong thư mục nháp của phiên làm
- * việc; script không nằm trong repo vì nó phụ thuộc vào cấu trúc HTML của một trang bên ngoài.
+ * Fixture nằm cạnh file này. Script thu không nằm trong repo vì nó phụ thuộc vào cấu trúc HTML của
+ * một trang bên ngoài; cách dựng lại ghi trong chú thích đầu fixture.
  */
 
 /**
@@ -148,18 +149,14 @@ describe('castChart đối chiếu tuvi.vn', () => {
         );
       });
 
-      it('rates the major stars the same way where the source prints a rating', () => {
-        // Bảng miếu vượng suy từ chính bộ này nên chưa phủ hết 168 ô; ô nào engine chưa có chứng
-        // thì bỏ qua thay vì bắt nó đoán.
+      it('rates the major stars the same way', () => {
         for (const cung of expected.cungs) {
           const actual = chart.cungs[cung.chiIndex].chinhTinh;
-          cung.chinhTinh.forEach((name, index) => {
-            const wanted = cung.ratings[index];
-            const got = actual.find((star) => star.name === name)?.rating ?? null;
-            if (wanted !== null && got !== null) {
-              expect([name, got]).toEqual([name, wanted]);
-            }
-          });
+          const got = cung.chinhTinh.map((name) => [
+            name,
+            actual.find((star) => star.name === name)?.rating ?? null,
+          ]);
+          expect(got).toEqual(cung.chinhTinh.map((name, index) => [name, cung.ratings[index]]));
         }
       });
 
