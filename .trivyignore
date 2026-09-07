@@ -1,0 +1,18 @@
+# Vulnerabilities accepted with a reason. Trivy reads this file automatically from the scan root,
+# so both pull-request.yml and push-dev.yml pick it up with no extra workflow configuration.
+#
+# Only put something here when no fixed release exists. When a fix is published, pin it through the
+# `overrides` block in pnpm-workspace.yaml and delete the entry instead.
+
+# image-size 0.5.5 — denial of service through a crafted image buffer (generic box parser) and
+# through a crafted ICNS buffer. Both hang the event loop on a zero-valued size field.
+#
+# Not reachable here. image-size is an optional dependency of less, and less is itself only an
+# optional peer of @nx/webpack, less-loader and vite: this workspace has no .less sources and no
+# package depends on less, so the parser never runs. Under less it would measure files already on
+# disk at build time, never request input.
+#
+# No fix to take: the advisory covers image-size through 2.0.2, which is the latest published
+# version. Revisit once upstream ships a patched release — review by 2027-03-01.
+CVE-2025-71329
+CVE-2025-71330
