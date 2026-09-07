@@ -5,6 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
+  nwsapi: <=2.2.25
   multer: ^2.2.0
   js-yaml: ^4.2.0
   qs: ^6.16.0
