@@ -1,4 +1,4 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import { Outlet, createRootRouteWithContext } from '@tanstack/react-router';
 import type { QueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
@@ -38,15 +38,25 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
 function RootRoute() {
   useSyncLaSoHistoryOnLogin();
+  const [isDesktop, setIsDesktop] = useState(() => window.innerWidth >= 768);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
   return (
     <>
       <GoogleOneTap />
       <AuthModal />
       <Outlet />
-      <Suspense>
-        <QueryDevtools />
-      </Suspense>
+      {isDesktop && (
+        <Suspense>
+          <QueryDevtools buttonPosition="bottom-right" />
+        </Suspense>
+      )}
     </>
   );
 }

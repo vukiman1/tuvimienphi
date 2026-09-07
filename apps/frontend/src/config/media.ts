@@ -13,6 +13,9 @@ function mediaUrl(path: string): string {
 }
 
 export const MEDIA = {
+  navBar: {
+    bagua: '/nav_bar/04_bagua.png',
+  },
   brand: {
     logo: mediaUrl('/brand/logo.png'),
     icon: mediaUrl('/brand/icon.png'),
