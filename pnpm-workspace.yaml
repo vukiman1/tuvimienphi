@@ -19,6 +19,11 @@ onlyBuiltDependencies:
   - 'unrs-resolver'
 
 overrides:
+  # jsdom asks for nwsapi ^2.2.16, so a lockfile refresh silently takes the newest release. 2.2.26
+  # made its selector matching spin: the *ByRole queries in user-menu.spec.tsx burn CPU until the
+  # test times out, turning a 5s suite into a 5-minute one. 2.2.27 is still affected and is the
+  # newest release, so cap here rather than pin one version.
+  nwsapi: '<=2.2.25'
   multer: '^2.2.0'
   js-yaml: '^4.2.0'
   qs: '^6.16.0'
