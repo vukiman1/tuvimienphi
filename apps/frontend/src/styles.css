@@ -25,8 +25,9 @@
   --color-ring: var(--ring);
   --font-sans: 'Cormorant Garamond', ui-serif, Georgia, serif;
   --font-display: 'Cormorant Garamond', ui-serif, Georgia, serif;
-  /* Lá số xếp rất nhiều chữ nhỏ trong ô hẹp; serif của site nhoè ở cỡ đó nên dùng sans riêng. */
-  --font-chart: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* Sans của site, dùng ở những chỗ serif nhoè: chữ nhỏ xếp dày trong ô lá số, và chữ sáng trên
+     nền tối — nét serif mảnh mất định dạng khi đảo sáng tối. */
+  --font-ui: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
   /* Cormorant là serif cho tiêu đề: nét mảnh, đặt dấu chồng tiếng Việt kém, đọc văn dài rất mỏi.
      Noto Serif giữ đúng chất serif nhưng nét dày và dựng dấu tiếng Việt chuẩn. */
   --font-body: 'Noto Serif', Charter, Georgia, serif;

@@ -118,7 +118,7 @@ export function LaSoBoard({ chart, selectedIndex, onSelect }: LaSoBoardProps) {
       {/* Khối đệm mang kích thước đã thu nhỏ, vì transform không làm thay đổi chỗ chiếm của phần tử. */}
       <div className="mx-auto" style={{ width: BOARD_WIDTH * scale, height: BOARD_HEIGHT * scale }}>
         <div
-          className={`relative grid origin-top-left font-chart ${CHART_RULE_CLASS.fill}`}
+          className={`relative grid origin-top-left font-ui ${CHART_RULE_CLASS.fill}`}
           style={{
             width: BOARD_WIDTH,
             height: BOARD_HEIGHT,

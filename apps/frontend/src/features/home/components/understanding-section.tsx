@@ -1,125 +1,102 @@
 import { Link } from '@tanstack/react-router';
 import { ArrowRight } from 'lucide-react';
+import { Reveal } from '@/components/reveal';
 import { MEDIA, homeIconUrl } from '@/config/media';
 import { UNDERSTANDING_SECTION } from '@/features/home/home-content';
+import { cn } from '@/lib/utils';
 
 const HEADING_ID = 'home-understanding-title';
 
-const CONTENT_MAX_WIDTH = 1120;
-
-/** Dải tối chạy hết bề ngang màn hình, thoát khỏi lề của trang. */
+/** Dải nền chạy hết bề ngang màn hình, thoát khỏi lề của trang. */
 const FULL_BLEED = { marginLeft: 'calc(50% - 50vw)', width: '100vw' } as const;
 
-/** Đen thuần, chỉ hơi nhấc sáng quanh chỗ đặt ảnh để thiên hà không dán lên một mảng phẳng lì. */
-const NIGHT_SKY = 'radial-gradient(120% 120% at 78% 45%, #0d0d10 0%, #050506 45%, #000000 100%)';
-
 /**
- * Sao vẽ bằng hai lớp chấm tròn thưa thay vì ảnh nền: vùng này phải giãn hết bề ngang mọi màn hình,
- * mà ảnh sao tile lên thì lộ đường lặp.
+ * Tranh trời sao phủ kín dải. `#070a14` giữ lại làm lớp đỡ: ảnh nặng và nạp muộn, mà chữ ở đây là
+ * chữ sáng — nền trắng trong lúc chờ sẽ loá và đọc không ra.
  */
-const STARFIELD = [
-  'radial-gradient(1.5px 1.5px at 12% 22%, rgba(255,255,255,0.55) 50%, transparent 50%)',
-  'radial-gradient(1px 1px at 34% 68%, rgba(255,255,255,0.4) 50%, transparent 50%)',
-  'radial-gradient(1.5px 1.5px at 58% 18%, rgba(255,255,255,0.45) 50%, transparent 50%)',
-  'radial-gradient(1px 1px at 8% 76%, rgba(255,255,255,0.35) 50%, transparent 50%)',
-  'radial-gradient(1px 1px at 44% 40%, rgba(255,255,255,0.3) 50%, transparent 50%)',
-].join(', ');
-
-const EDGE_FADE_GRADIENT = 'linear-gradient(to right, transparent 0%, black 26%)';
-
-const EDGE_FADE = {
-  maskImage: EDGE_FADE_GRADIENT,
-  WebkitMaskImage: EDGE_FADE_GRADIENT,
+const NIGHT_SKY = {
+  backgroundImage: `url('${MEDIA.home.understandingSky}')`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundColor: '#070a14',
 } as const;
 
-/**
- * Kích thước thật của file. Bắt buộc phải khai: ảnh neo tuyệt đối và để `w-auto`, nên trước khi tải
- * xong bề rộng của nó tính ra 0 — hộp 0px nằm sát mép phải thường rơi ngoài ngưỡng mà trình duyệt
- * dùng để quyết định nạp ảnh `lazy`, và ảnh không bao giờ hiện.
- */
-const READER_SIZE = { width: 1000, height: 672 } as const;
+/** Màn phủ mỏng, chỉ 10% — vừa đủ giữ chữ đọc được mà tranh gần như nguyên bản. */
+const SCRIM = 'rgba(4, 7, 15, 0.1)';
 
-/**
- * Dải nền chạy hết bề ngang màn hình còn chữ thì gói trong khung 1120px căn giữa, nên neo ảnh vào
- * `right: 0` sẽ dán nó vào mép màn hình và càng màn rộng thì càng rời xa chữ. Lùi vào đúng nửa
- * phần thừa để mép phải ảnh luôn trùng mép khung chữ.
- */
-const READER_ANCHOR = { right: `calc(50% - ${CONTENT_MAX_WIDTH / 2}px)` } as const;
+/** Khoảng lệch giữa hai cột khi cả ba cùng hiện ra. */
+const STAGGER_MS = 110;
 
 export function UnderstandingSection() {
   return (
     <section
       aria-labelledby={HEADING_ID}
       className="relative overflow-hidden"
-      style={{ ...FULL_BLEED, background: NIGHT_SKY }}
+      style={{ ...FULL_BLEED, ...NIGHT_SKY }}
     >
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{ background: STARFIELD }}
-      />
+      <span aria-hidden className="absolute inset-0" style={{ backgroundColor: SCRIM }} />
 
-      {/* Ảnh neo tuyệt đối bên phải, chặn bề ngang để dải nút bên trái không bị thiên hà đè lên.
-          Mép trái nhoè dần cho ảnh tan vào nền thay vì đứng thành một khối chữ nhật. */}
-      <img
-        alt=""
-        aria-hidden
-        className="pointer-events-none absolute bottom-0 hidden h-full w-auto max-w-[620px] object-contain object-right-bottom select-none lg:block"
-        height={READER_SIZE.height}
-        loading="lazy"
-        src={MEDIA.home.readerGalaxy}
-        style={{ ...EDGE_FADE, ...READER_ANCHOR }}
-        width={READER_SIZE.width}
-      />
+      <div className="relative mx-auto w-full max-w-[1360px] px-4 py-[56px] md:px-6 md:py-[76px]">
+        <Reveal>
+          <h2
+            className="font-body text-[28px] leading-[38px] font-bold text-[#e8c887] md:text-[42px] md:leading-[54px]"
+            id={HEADING_ID}
+          >
+            {UNDERSTANDING_SECTION.title}
+          </h2>
+          <p className="mt-3 max-w-[760px] font-ui text-[15px] leading-[24px] text-[#c3c9dd] md:text-[17px] md:leading-[27px]">
+            {UNDERSTANDING_SECTION.subtitle}
+          </p>
+        </Reveal>
 
-      <div className="relative mx-auto w-full max-w-[1120px] px-4 py-[52px] md:px-6 md:py-[64px]">
-        <h2
-          className="font-display text-3xl font-bold tracking-wide text-[#e8c887] uppercase md:text-4xl"
-          id={HEADING_ID}
-        >
-          {UNDERSTANDING_SECTION.title}
-        </h2>
+        {/*
+          Vạch ngăn vẽ bằng viền trái của cột thứ hai trở đi, nên nó tự biến mất khi lưới rút về
+          một cột — dùng `divide-x` thì viền vẫn còn và nằm chỏng chơ bên trái từng cột.
+        */}
+        <ul className="mt-10 grid gap-10 md:mt-14 md:grid-cols-3 md:gap-0">
+          {UNDERSTANDING_SECTION.points.map((point, index) => (
+            <li
+              className={cn(
+                'md:pr-8 lg:pr-10',
+                index > 0 && 'md:border-l md:border-[#c9a15c]/30 md:pl-8 lg:pl-10',
+              )}
+              key={point.icon}
+            >
+              <Reveal className="h-full" delay={index * STAGGER_MS}>
+                {/* `mt-auto` ở link đẩy nó xuống đáy cột, để ba link thẳng hàng dù mô tả dài ngắn
+                    khác nhau — cột phải căng hết chiều cao hàng thì mới có đáy để đẩy tới. */}
+                <div className="group flex h-full flex-col items-start">
+                  <img
+                    alt=""
+                    aria-hidden
+                    className="size-[54px] shrink-0 transition-transform duration-300 ease-out group-hover:scale-110 motion-reduce:transition-none motion-reduce:group-hover:scale-100 md:size-[62px]"
+                    loading="lazy"
+                    src={homeIconUrl(point.icon)}
+                  />
 
-        <div className="mt-9 flex flex-col gap-9 md:mt-11 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,280px)_minmax(0,300px)] lg:items-center lg:gap-10">
-          <ul className="flex flex-col gap-6">
-            {UNDERSTANDING_SECTION.points.map((point) => (
-              <li className="flex items-start gap-4" key={point.icon}>
-                <img
-                  alt=""
-                  aria-hidden
-                  className="mt-[2px] size-[38px] shrink-0 select-none"
-                  loading="lazy"
-                  src={homeIconUrl(point.icon)}
-                />
-                <div className="min-w-0">
-                  <p className="font-body text-[15px] leading-[22px] font-semibold text-[#f3ead8]">
+                  <p className="mt-5 font-body text-[18px] leading-[26px] font-bold text-[#f3ead8] md:text-[19px] md:leading-[28px]">
                     {point.title}
                   </p>
-                  <p className="mt-1 font-body text-[14px] leading-[21px] text-[#a9b0c9]">
+                  <p className="mt-2 font-ui text-[14px] leading-[22px] text-[#a9b0c9] md:text-[15px] md:leading-[24px]">
                     {point.description}
                   </p>
+
+                  <Link
+                    className="mt-auto inline-flex items-center gap-2 pt-6 font-ui text-[14px] leading-[20px] font-semibold text-[#e8c887] no-underline transition-colors outline-none hover:text-[#f7dda6] focus-visible:ring-2 focus-visible:ring-[#e8c887] md:text-[15px]"
+                    to={point.to}
+                  >
+                    {point.linkLabel}
+                    {/* Cỡ ghi bằng px: root font-size 137.5% biến `size-4` thành 22px, to hơn hẳn chữ. */}
+                    <ArrowRight
+                      aria-hidden
+                      className="size-[16px] transition-transform duration-200 ease-out group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
+                    />
+                  </Link>
                 </div>
-              </li>
-            ))}
-          </ul>
-
-          <nav aria-label="Bài viết về cách hiểu tử vi" className="flex flex-col gap-4">
-            {UNDERSTANDING_SECTION.links.map((link) => (
-              <Link
-                key={link.label}
-                className="flex items-center justify-between gap-4 rounded-lg border border-[#c9a15c]/60 bg-black/65 px-5 py-3 font-body text-[15px] leading-[22px] font-medium text-[#f3ead8] no-underline transition-colors outline-none hover:border-[#e8c887] hover:bg-[#c9a15c]/15 focus-visible:ring-2 focus-visible:ring-[#e8c887]"
-                to={link.to}
-              >
-                {link.label}
-                {/* Cỡ ghi bằng px: root font-size 137.5% biến `size-4` thành 22px, to hơn hẳn chữ. */}
-                <ArrowRight aria-hidden className="size-[18px] shrink-0 text-[#e8c887]" />
-              </Link>
-            ))}
-          </nav>
-
-          {/* Cột rỗng giữ chỗ cho ảnh neo tuyệt đối, để chữ không chạy xuống dưới nó. */}
-          <span aria-hidden className="hidden lg:block" />
-        </div>
+              </Reveal>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
