@@ -21,18 +21,18 @@ export const THAN_CU_CUNGS = [
   'Phu Thê',
 ] as const satisfies readonly CungName[];
 
-const HE_SO_BAC: Record<Rating, number> = { M: 1.2, V: 1.1, Đ: 1.0, B: 0.9, H: 0.8 };
-const HE_SO_HOI_CHIEU = 0.6;
+const BRIGHTNESS_FACTOR: Record<Rating, number> = { M: 1.2, V: 1.1, Đ: 1.0, B: 0.9, H: 0.8 };
+const HOI_CHIEU_FACTOR = 0.6;
 /** Tuần hay Triệt án ngữ làm nhẹ cả mặt tốt lẫn mặt xấu, nên hạ đều chứ không hạ riêng chiều nào. */
-const HE_SO_AN_NGU = 0.75;
-const THUONG_HOA_KY = 15;
-const THUONG_HOA_KHAC = 10;
+const AN_NGU_FACTOR = 0.75;
+const HOA_KY_BONUS = 15;
+const HOA_KHAC_BONUS = 10;
 
 /**
  * Trần cắt phải khớp ngân sách câu của bài: bài Thân cư chỉ có hai đoạn AI viết, mỗi đoạn hai câu.
  * Đưa nhiều hơn năm mệnh đề vào bốn câu thì mô hình buộc phải liệt kê, ra danh sách chứ không ra văn.
  */
-const TRAN: Record<Sac, number> = { [Sac.Thuan]: 2, [Sac.Nghich]: 2, [Sac.HoaGiai]: 1 };
+const LIMIT: Record<Sac, number> = { [Sac.Thuan]: 2, [Sac.Nghich]: 2, [Sac.HoaGiai]: 1 };
 
 export interface ThanCuBrief {
   readonly cungThan: CungName;
@@ -47,64 +47,75 @@ export interface ThanCuBrief {
   readonly luan: readonly LuanDe[];
 }
 
-type MenhDe = {
-  -readonly [K in keyof LuanDe]: LuanDe[K] extends readonly (infer U)[] ? U[] : LuanDe[K];
-};
-
-function nen(the: TheCung): MenhDe[] {
-  const bang = CHINH_TINH_THAN_CU[toHopKey(the.chinhTinh)]?.[the.cung] ?? [];
-  return bang.map((de) => ({ ...de, do: [...de.do], tuKhoa: [...de.tuKhoa] }));
+interface DraftClaim {
+  y: string;
+  do: SaoName[];
+  sac: Sac;
+  trong: number;
+  tuKhoa: string[];
 }
 
-function theoBac(de: MenhDe[], the: TheCung): MenhDe[] {
-  const heSo = the.chinhTinh.reduce((tich, sao) => tich * (HE_SO_BAC[sao.rating ?? 'B'] ?? 1), 1);
-  return de.map((mot) => ({ ...mot, trong: Math.round(mot.trong * heSo) }));
+function draft(claim: LuanDe, factor: number): DraftClaim {
+  return {
+    y: claim.y,
+    do: [...claim.do],
+    sac: claim.sac,
+    trong: Math.round(claim.trong * factor),
+    tuKhoa: [...claim.tuKhoa],
+  };
 }
 
-function tuPhuTinh(ten: readonly PhuTinhName[], heSo: number): MenhDe[] {
-  return ten.flatMap((sao) => {
-    const de = PHU_TINH_LUAN[sao];
-    if (!de) return [];
-    return [{ ...de, do: [...de.do], tuKhoa: [...de.tuKhoa], trong: Math.round(de.trong * heSo) }];
+function baseClaims(the: TheCung): DraftClaim[] {
+  const table = CHINH_TINH_THAN_CU[toHopKey(the.chinhTinh)]?.[the.cung] ?? [];
+  const brightness = the.chinhTinh.reduce(
+    (product, sao) => product * (BRIGHTNESS_FACTOR[sao.rating ?? 'B'] ?? 1),
+    1,
+  );
+  return table.map((claim) => draft(claim, brightness));
+}
+
+function phuTinhClaims(names: readonly PhuTinhName[], factor: number): DraftClaim[] {
+  return names.flatMap((sao) => {
+    const claim = PHU_TINH_LUAN[sao];
+    return claim ? [draft(claim, factor)] : [];
   });
 }
 
 /** Hoá Kỵ lật hẳn chiều của mệnh đề nó bám vào; ba hoá còn lại chỉ nâng trọng số. */
-function theoTuHoa(de: MenhDe[], the: TheCung): MenhDe[] {
+function applyTuHoa(claims: DraftClaim[], the: TheCung): void {
   for (const hoa of the.tuHoaTacDong) {
-    for (const mot of de) {
-      if (!mot.do.includes(hoa.star)) continue;
+    for (const claim of claims) {
+      if (!claim.do.includes(hoa.star)) continue;
       if (hoa.hoa === 'Hóa Kỵ') {
-        mot.sac = Sac.Nghich;
-        mot.trong += THUONG_HOA_KY;
+        claim.sac = Sac.Nghich;
+        claim.trong += HOA_KY_BONUS;
       } else {
-        mot.trong += THUONG_HOA_KHAC;
+        claim.trong += HOA_KHAC_BONUS;
       }
     }
   }
-  return de;
 }
 
-function gopTrung(de: MenhDe[]): MenhDe[] {
-  const theoY = new Map<string, MenhDe>();
-  for (const mot of de) {
-    const cu = theoY.get(mot.y);
-    if (!cu) {
-      theoY.set(mot.y, mot);
+function mergeDuplicates(claims: DraftClaim[]): DraftClaim[] {
+  const merged = new Map<string, DraftClaim>();
+  for (const claim of claims) {
+    const existing = merged.get(claim.y);
+    if (!existing) {
+      merged.set(claim.y, claim);
       continue;
     }
-    cu.trong = Math.max(cu.trong, mot.trong);
-    for (const sao of mot.do) if (!cu.do.includes(sao)) cu.do.push(sao);
+    existing.trong = Math.max(existing.trong, claim.trong);
+    for (const sao of claim.do) if (!existing.do.includes(sao)) existing.do.push(sao);
   }
-  return [...theoY.values()];
+  return [...merged.values()];
 }
 
-function cat(de: MenhDe[]): MenhDe[] {
+function cull(claims: DraftClaim[]): DraftClaim[] {
   return Object.values(Sac).flatMap((sac) =>
-    de
-      .filter((mot) => mot.sac === sac)
+    claims
+      .filter((claim) => claim.sac === sac)
       .sort((a, b) => b.trong - a.trong)
-      .slice(0, TRAN[sac]),
+      .slice(0, LIMIT[sac]),
   );
 }
 
@@ -115,26 +126,29 @@ function cat(de: MenhDe[]): MenhDe[] {
 export function buildThanCuBrief(chart: NatalChart): ThanCuBrief | null {
   const the = theCungAt(chart, chart.thanIndex);
 
-  let de = nen(the);
-  de = theoBac(de, the);
-  de.push(...tuPhuTinh(the.phuTinhToaThu, 1));
-  de.push(...tuPhuTinh(the.phuTinhHoiChieu, HE_SO_HOI_CHIEU));
-  de = theoTuHoa(de, the);
-  if (the.anNgu) de = de.map((mot) => ({ ...mot, trong: Math.round(mot.trong * HE_SO_AN_NGU) }));
-  const luan = cat(gopTrung(de));
+  const claims = [
+    ...baseClaims(the),
+    ...phuTinhClaims(the.phuTinhToaThu, 1),
+    ...phuTinhClaims(the.phuTinhHoiChieu, HOI_CHIEU_FACTOR),
+  ];
+  applyTuHoa(claims, the);
+  if (the.anNgu) {
+    for (const claim of claims) claim.trong = Math.round(claim.trong * AN_NGU_FACTOR);
+  }
+  const luan = cull(mergeDuplicates(claims));
 
-  const chinhTinhTen = new Set<SaoName>(the.chinhTinh.map((sao) => sao.name));
+  const chinhTinhNames = new Set<SaoName>(the.chinhTinh.map((sao) => sao.name));
 
   // Chính tinh là xương sống của bài: câu mở phải dẫn được tên nó kèm bậc. Chỉ có mệnh đề phụ tinh
   // thì bài gọi tên chính tinh mà không nói được gì về nó — rỗng ruột, thà bỏ trống.
-  const coNen = luan.some((mot) => mot.do.some((sao) => chinhTinhTen.has(sao)));
-  const coDuMach =
-    luan.some((mot) => mot.sac === Sac.Thuan) && luan.some((mot) => mot.sac === Sac.Nghich);
-  if (!coNen || !coDuMach) return null;
+  const hasBase = luan.some((claim) => claim.do.some((sao) => chinhTinhNames.has(sao)));
+  const hasArc =
+    luan.some((claim) => claim.sac === Sac.Thuan) && luan.some((claim) => claim.sac === Sac.Nghich);
+  if (!hasBase || !hasArc) return null;
 
   // Chỉ liệt kê sao thực sự đứng sau mệnh đề còn giữ: tên sao lọt vào brief là tên bài được phép gọi.
-  const phuTinhDung = [...new Set(luan.flatMap((mot) => mot.do))].filter(
-    (sao): sao is PhuTinhName => !chinhTinhTen.has(sao),
+  const phuTinhUsed = [...new Set(luan.flatMap((claim) => claim.do))].filter(
+    (sao): sao is PhuTinhName => !chinhTinhNames.has(sao),
   );
 
   return {
@@ -144,8 +158,8 @@ export function buildThanCuBrief(chart: NatalChart): ThanCuBrief | null {
     chiNamSinh: CHI[chart.pillars.year.chi],
     chinhTinh: the.chinhTinh.map((sao) => ({ ten: sao.name, bac: sao.rating })),
     laVoChinhDieu: the.laVoChinhDieu,
-    hungTinh: phuTinhDung.filter(isHungTinh),
-    catTinh: phuTinhDung.filter((sao) => !isHungTinh(sao)),
+    hungTinh: phuTinhUsed.filter(isHungTinh),
+    catTinh: phuTinhUsed.filter((sao) => !isHungTinh(sao)),
     anNgu: the.anNgu,
     luan,
   };
