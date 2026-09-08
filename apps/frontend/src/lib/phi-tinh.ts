@@ -1,4 +1,4 @@
-import { convertSolarToLunar, getDayPillar, getSolarTerm } from '@/lib/lunar-calendar';
+import { convertSolarToLunar, getDayPillar, getSolarTerm } from '@org/shared-tu-vi';
 
 const FLY_STEPS = [5, 2, 1, 2, 2, 1, 2, 5] as const;
 const GOOD_STARS: ReadonlySet<number> = new Set([1, 6, 8, 9]);

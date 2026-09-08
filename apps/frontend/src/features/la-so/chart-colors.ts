@@ -1,4 +1,4 @@
-import type { NguHanh } from '@/lib/nap-am';
+import { type NguHanh } from '@org/shared-tu-vi';
 
 /**
  * Ba mức nền của lá số, đậm dần: nền mặc định → cung tam hợp / xung chiếu → cung đang rê chuột.

@@ -6,7 +6,7 @@ import {
   getMonthCanChi,
   getSolarTerm,
   getYearCanChi,
-} from '@/lib/lunar-calendar';
+} from '@org/shared-tu-vi';
 
 const WEEKDAY_NAMES = [
   'Chủ Nhật',

@@ -8,7 +8,7 @@ import { PhiTinhBoards } from '@/features/ngay-tot/components/phi-tinh-boards';
 import { XuatHanhHours } from '@/features/ngay-tot/components/xuat-hanh-hours';
 import { getGioHoangDao } from '@/lib/gio-hoang-dao';
 import { getGioXuatHanh } from '@/lib/gio-xuat-hanh';
-import { convertSolarToLunar } from '@/lib/lunar-calendar';
+import { convertSolarToLunar } from '@org/shared-tu-vi';
 import { getNhiThapBatTu } from '@/lib/nhi-thap-bat-tu';
 import { getPhiTinhBoards } from '@/lib/phi-tinh';
 

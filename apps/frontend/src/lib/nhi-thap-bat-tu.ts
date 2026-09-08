@@ -5,7 +5,7 @@ import {
   getHourCanChi,
   getMonthCanChi,
   getYearCanChi,
-} from '@/lib/lunar-calendar';
+} from '@org/shared-tu-vi';
 import { TINH28_ORDER, TU_28, type Tu28 } from '@/lib/tu-28-data';
 
 const TU_COUNT = 28;

@@ -1,6 +1,4 @@
-import type { NguHanh } from '@/lib/nap-am';
-import type { PhuTinhName } from '@/lib/tu-vi/sao-names';
-import type { Rating } from '@/lib/tu-vi/sao-rating';
+import { type NguHanh, type PhuTinhName, type Rating } from '@org/shared-tu-vi';
 
 /** Kiểu dữ liệu mà giao diện lá số cần. Engine an sao sẽ trả về đúng hình dạng này. */
 

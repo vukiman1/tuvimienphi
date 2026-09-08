@@ -1,7 +1,7 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { MEDIA } from '@/config/media';
 import { CornerBrackets } from '@/features/ngay-tot/components/corner-brackets';
-import { convertSolarToLunar } from '@/lib/lunar-calendar';
+import { convertSolarToLunar } from '@org/shared-tu-vi';
 
 const WEEKDAY_LABELS = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'] as const;
 const CALENDAR_CELL_COUNT = 42;

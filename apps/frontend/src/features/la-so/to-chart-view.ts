@@ -1,13 +1,20 @@
-import { CAN, CHI, convertLunarToSolar, type CanChiIndex } from '@/lib/lunar-calendar';
-import { castChart, type SaoView as EngineSao, type TuViChart } from '@/lib/tu-vi/cast-chart';
-import { cungNameAt } from '@/lib/tu-vi/dia-ban';
 import {
+  CAN,
+  type CanChiIndex,
+  castChart,
+  CHI,
   CHINH_TINH_NGU_HANH,
   CHINH_TINH_POLARITY,
+  type ChinhTinhName,
+  convertLunarToSolar,
+  cungNameAt,
+  Gender as EngineGender,
+  isHungTinh,
   PHU_TINH_NGU_HANH,
-} from '@/lib/tu-vi/sao-ngu-hanh-data';
-import type { ChinhTinhName, PhuTinhName } from '@/lib/tu-vi/sao-names';
-import { Gender as EngineGender } from '@/lib/tu-vi/van-han';
+  type PhuTinhName,
+  type SaoView as EngineSao,
+  type TuViChart,
+} from '@org/shared-tu-vi';
 import { BIRTH_HOURS, CalendarType, Gender, type BirthInput } from '@/features/la-so/birth-input';
 import type { ChartView, ChinhTinhView, CungView, SaoView } from '@/features/la-so/chart-types';
 
@@ -33,37 +40,6 @@ const CHI_ELEMENTS = [
  * Sao xấu đọc theo cột riêng bên phải trong ô cung. Danh sách này chỉ quyết định chỗ đứng và màu
  * chữ, không mang ý nghĩa luận giải.
  */
-const HUNG_TINH_NAMES = [
-  'Kình Dương',
-  'Đà La',
-  'Hỏa Tinh',
-  'Linh Tinh',
-  'Địa Không',
-  'Địa Kiếp',
-  'Thiên Hình',
-  'Thiên Diêu',
-  'Thiên Khốc',
-  'Thiên Hư',
-  'Đại Hao',
-  'Tiểu Hao',
-  'Bạch Hổ',
-  'Tang Môn',
-  'Điếu Khách',
-  'Tuế Phá',
-  'Kiếp Sát',
-  'Cô Thần',
-  'Quả Tú',
-  'Phá Toái',
-  'Thiên Thương',
-  'Thiên Sứ',
-  'Thiên Không',
-  'Hóa Kỵ',
-  'Bệnh Phù',
-  'Quan Phù',
-  'Phục Binh',
-] as const satisfies readonly PhuTinhName[];
-
-const HUNG_TINH: ReadonlySet<PhuTinhName> = new Set(HUNG_TINH_NAMES);
 
 function toSaoView(star: EngineSao<PhuTinhName>): SaoView {
   return {
@@ -119,8 +95,8 @@ function toCungViews(chart: TuViChart): readonly CungView[] {
       chinhTinh: cung.chinhTinh.map(toChinhTinhView),
       isVoChinhDieu: cung.isVoChinhDieu,
       chinhTinhMuon: cung.chinhTinhMuon.map(toChinhTinhView),
-      catTinh: phuTinh.filter((star) => !HUNG_TINH.has(star.name)).map(toSaoView),
-      hungTinh: phuTinh.filter((star) => HUNG_TINH.has(star.name)).map(toSaoView),
+      catTinh: phuTinh.filter((star) => !isHungTinh(star.name)).map(toSaoView),
+      hungTinh: phuTinh.filter((star) => isHungTinh(star.name)).map(toSaoView),
     };
   });
 }

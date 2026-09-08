@@ -39,6 +39,9 @@
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
   "references": [
     {
+      "path": "../../packages/shared/tu-vi/tsconfig.lib.json"
+    },
+    {
       "path": "../../packages/shared/contracts/tsconfig.lib.json"
     },
     {

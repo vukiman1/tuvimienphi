@@ -1,4 +1,4 @@
-import { getYearCanChi } from '@/lib/lunar-calendar';
+import { getYearCanChi } from '@org/shared-tu-vi';
 import { ZODIAC_CHI, type ZodiacChi } from '@/lib/zodiac-icons';
 import {
   VAN_HAN_FORTUNE_PLACEHOLDER,

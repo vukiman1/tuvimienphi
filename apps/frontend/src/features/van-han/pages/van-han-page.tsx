@@ -4,7 +4,7 @@ import { VanHanDetail, VanHanDetailLoader } from '@/features/van-han/components/
 import { ZodiacPicker } from '@/features/van-han/components/zodiac-picker';
 import { toVanHanFortune } from '@/features/van-han/map-van-han';
 import { VAN_HAN_FORTUNE_BY_CHI } from '@/features/van-han/van-han-mock';
-import { getYearCanChi } from '@/lib/lunar-calendar';
+import { getYearCanChi } from '@org/shared-tu-vi';
 import { ZODIAC_CHI, type ZodiacChi } from '@/lib/zodiac-icons';
 import { vanHanQueries } from '@/services/van-han-service';
 
