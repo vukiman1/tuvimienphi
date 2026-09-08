@@ -10,7 +10,7 @@ import { PopularTopics } from '@/features/kien-thuc/components/popular-topics';
 import { Handbook } from '@/features/kien-thuc/components/handbook';
 import { QuoteCard } from '@/features/kien-thuc/components/quote-card';
 import { SocialFollow } from '@/features/kien-thuc/components/social-follow';
-import { Reveal } from '@/features/kien-thuc/components/reveal';
+import { Reveal } from '@/components/reveal';
 
 const PAGE_SIZE = 6;
 
