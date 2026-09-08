@@ -29,6 +29,15 @@ sentry:
 jwt:
   accessTokenExpiresIn: 15m
 
+# Gói free của Google chỉ mở một phần model và model mới thường quá tải, nên phải có danh sách
+# để thử lần lượt. Xếp model đã đo là dùng được lên đầu.
+ai:
+  geminiApiKey: ''
+  models:
+    - gemini-3.5-flash-lite
+    - gemini-3.8-flash
+  temperature: 0.7
+
 email:
   resendApiKey: ''
   from: Tu Vi Mien Phi <onboarding@resend.dev>
