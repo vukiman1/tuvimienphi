@@ -1,4 +1,5 @@
 import { Outlet, createFileRoute } from '@tanstack/react-router';
+import { MobileNavBar } from '@/components/layout/mobile-nav-bar';
 import { SiteFooter } from '@/components/layout/site-footer';
 import { SiteHeader } from '@/components/layout/site-header';
 
@@ -13,7 +14,13 @@ function SiteLayout() {
       <div className="flex-1">
         <Outlet />
       </div>
-      <SiteFooter />
+      {/* Footer hidden on mobile — replaced by MobileNavBar */}
+      <div className="hidden md:block">
+        <SiteFooter />
+      </div>
+      <MobileNavBar />
+      {/* Bottom padding on mobile so content clears the fixed nav bar (64px bar height) */}
+      <div className="h-[calc(64px+env(safe-area-inset-bottom))] md:hidden" aria-hidden />
     </div>
   );
 }
