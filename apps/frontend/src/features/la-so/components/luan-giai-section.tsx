@@ -1,12 +1,15 @@
 import { Fragment, useState } from 'react';
 import { MEDIA } from '@/config/media';
-import type { LuanGiai } from '@/features/la-so/luan-giai-data';
+import type { BirthInput } from '@org/shared-contracts';
+import type { LuanGiaiChapter } from '@/features/la-so/luan-giai-data';
 import { LuanGiaiChapterContent } from '@/features/la-so/components/luan-giai-chapter-content';
 import { LuanGiaiChapters } from '@/features/la-so/components/luan-giai-chapters';
 import { cn } from '@/lib/utils';
 
 interface LuanGiaiSectionProps {
-  readonly luanGiai: LuanGiai;
+  readonly birth: BirthInput;
+  readonly chapters: readonly LuanGiaiChapter[];
+  readonly motto: readonly string[];
   readonly activeChapter: string;
   readonly onSelectChapter: (order: string) => void;
 }
@@ -55,13 +58,14 @@ function TitleOrnament({ side }: { readonly side: 'left' | 'right' }) {
 }
 
 export function LuanGiaiSection({
-  luanGiai,
+  birth,
+  chapters,
+  motto,
   activeChapter,
   onSelectChapter,
 }: LuanGiaiSectionProps) {
   // Mục lục và nội dung luôn khớp nhau: khoá lạ thì rơi về mục đầu chứ không để trống thân trang.
-  const chapter =
-    luanGiai.chapters.find((item) => item.order === activeChapter) ?? luanGiai.chapters[0];
+  const chapter = chapters.find((item) => item.order === activeChapter) ?? chapters[0];
 
   // Giữ ở đây chứ không giữ trong thẻ: đổi sang mục khác rồi quay lại thì không phải bấm xem lần nữa.
   const [requestedOrders, setRequestedOrders] = useState<readonly string[]>([]);
@@ -87,7 +91,7 @@ export function LuanGiaiSection({
         <div className="mx-auto mt-8 max-w-[1100px]">
           <LuanGiaiChapters
             activeOrder={activeChapter}
-            chapters={luanGiai.chapters}
+            chapters={chapters}
             onSelect={onSelectChapter}
           />
         </div>
@@ -95,6 +99,7 @@ export function LuanGiaiSection({
         {/* Giới hạn bề ngang: dòng chữ dài quá 90 ký tự là mất mạch đọc. */}
         <div className="mx-auto mt-6 max-w-[1100px]">
           <LuanGiaiChapterContent
+            birth={birth}
             chapter={chapter}
             isRequested={requestedOrders.includes(chapter.order)}
             onRequest={() => setRequestedOrders((current) => [...current, chapter.order])}
@@ -106,7 +111,7 @@ export function LuanGiaiSection({
           nằm giữa, thay vì bị dính vào vế sau.
         */}
         <p className="mt-8 flex flex-wrap items-center justify-center gap-x-[10px] gap-y-2 text-center font-body text-[14px] leading-[21px] text-[#e8cd97]">
-          {luanGiai.motto.map((line, index) => (
+          {motto.map((line, index) => (
             <Fragment key={line}>
               {index > 0 && (
                 // `basis-full` đặt ở khung bọc chứ không đặt lên ảnh: đặt thẳng lên ảnh thì nó ép

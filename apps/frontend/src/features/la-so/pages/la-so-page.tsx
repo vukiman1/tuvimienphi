@@ -3,7 +3,7 @@ import { Navigate, getRouteApi, useNavigate } from '@tanstack/react-router';
 import { MEDIA } from '@/config/media';
 import { LaSoBoard } from '@/features/la-so/components/la-so-board';
 import { LuanGiaiSection } from '@/features/la-so/components/luan-giai-section';
-import { MOCK_LUAN_GIAI } from '@/features/la-so/luan-giai-data';
+import { LUAN_GIAI_CHAPTERS, LUAN_GIAI_MOTTO } from '@/features/la-so/luan-giai-data';
 import { birthInputSchema } from '@/features/la-so/birth-input';
 import { ViewYearPicker } from '@/features/la-so/components/view-year-picker';
 import { useRecordChartView } from '@/features/la-so/history/use-record-chart-view';
@@ -46,11 +46,11 @@ export function LaSoPage() {
   // Chưa chọn cung nào thì mặc định về cung Mệnh; giữ `null` để lá số mới luôn bắt đầu từ Mệnh
   // thay vì kẹt ở cung đã chọn của lá số trước.
   const [pickedIndex, setPickedIndex] = useState<number | null>(null);
-  const [activeChapter, setActiveChapter] = useState(MOCK_LUAN_GIAI.chapters[0].order);
+  const [activeChapter, setActiveChapter] = useState(LUAN_GIAI_CHAPTERS[0].order);
 
   // The route already turns incomplete search params away; this only keeps the impossible case
   // from rendering a blank page.
-  if (!chart) {
+  if (!birth || !chart) {
     return <Navigate to="/la-so" />;
   }
 
@@ -106,7 +106,9 @@ export function LaSoPage() {
 
       <LuanGiaiSection
         activeChapter={activeChapter}
-        luanGiai={MOCK_LUAN_GIAI}
+        birth={birth}
+        chapters={LUAN_GIAI_CHAPTERS}
+        motto={LUAN_GIAI_MOTTO}
         onSelectChapter={setActiveChapter}
       />
     </main>

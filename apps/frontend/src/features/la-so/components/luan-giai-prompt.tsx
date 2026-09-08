@@ -5,10 +5,18 @@ import { LuanGiaiCard, LuanGiaiCardHeader } from '@/features/la-so/components/lu
 interface LuanGiaiPromptCardProps {
   readonly chapter: LuanGiaiChapter;
   readonly onRequest: () => void;
+  readonly isSubmitting?: boolean;
+  /** Lý do lần xin trước hỏng, thường là đã hết suất trong ngày. */
+  readonly error?: string;
 }
 
 /** Trạng thái chưa nạp: chỉ nạp nội dung khi người dùng thật sự muốn đọc mục này. */
-export function LuanGiaiPromptCard({ chapter, onRequest }: LuanGiaiPromptCardProps) {
+export function LuanGiaiPromptCard({
+  chapter,
+  onRequest,
+  isSubmitting,
+  error,
+}: LuanGiaiPromptCardProps) {
   return (
     <LuanGiaiCard>
       <LuanGiaiCardHeader order={chapter.order} title={chapter.title} />
@@ -19,13 +27,19 @@ export function LuanGiaiPromptCard({ chapter, onRequest }: LuanGiaiPromptCardPro
         </p>
         <button
           className="inline-flex items-center gap-[9px] rounded-full bg-[#a8281c] px-7 py-[10px] font-body text-[16px] leading-[24px] font-semibold text-[#f5e8d0] transition-colors outline-none hover:bg-[#8f2016] focus-visible:ring-2 focus-visible:ring-[#a8281c] focus-visible:ring-offset-2 focus-visible:ring-offset-[#faf6ec]"
+          disabled={isSubmitting}
           onClick={onRequest}
           type="button"
         >
           {/* Cỡ ghi bằng px: root font-size 137.5% biến `size-5` thành 27.5px, to hơn hẳn chữ 16px. */}
           <Eye aria-hidden className="size-[18px]" />
-          Xem luận giải
+          {isSubmitting ? 'Đang gửi…' : 'Xem luận giải'}
         </button>
+        {error ? (
+          <p className="max-w-[46ch] font-body text-[15px] leading-[24px] text-[#a8281c]">
+            {error}
+          </p>
+        ) : null}
       </div>
     </LuanGiaiCard>
   );
