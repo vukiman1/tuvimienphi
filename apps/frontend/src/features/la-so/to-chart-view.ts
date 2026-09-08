@@ -1,21 +1,19 @@
 import {
   CAN,
   type CanChiIndex,
-  castChart,
+  chartFromBirthInput,
   CHI,
   CHINH_TINH_NGU_HANH,
   CHINH_TINH_POLARITY,
   type ChinhTinhName,
-  convertLunarToSolar,
   cungNameAt,
-  Gender as EngineGender,
   isHungTinh,
   PHU_TINH_NGU_HANH,
   type PhuTinhName,
   type SaoView as EngineSao,
   type TuViChart,
 } from '@org/shared-tu-vi';
-import { BIRTH_HOURS, CalendarType, Gender, type BirthInput } from '@/features/la-so/birth-input';
+import type { BirthInput } from '@/features/la-so/birth-input';
 import type { ChartView, ChinhTinhView, CungView, SaoView } from '@/features/la-so/chart-types';
 
 /** Bắc cầu từ kết quả engine sang hình dạng giao diện đang vẽ. */
@@ -105,33 +103,10 @@ export interface ChartViewInput extends BirthInput {
   readonly viewYear: number;
 }
 
-/**
- * Dựng lá số cho giao diện từ thông tin sinh người dùng nhập.
- *
- * Nhập lịch âm thì đổi sang dương trước: can chi NGÀY suy từ số ngày Julian của lịch dương, không
- * suy thẳng từ ngày âm được. Form chưa hỏi tháng nhuận nên hiểu là tháng thường.
- */
+/** Dựng lá số cho giao diện. Việc đổi lịch và an sao nằm ở `chartFromBirthInput` để backend đi
+ * đúng một đường với chỗ này — hai bên ra lá số khác nhau là đầu độc cache luận giải. */
 export function toChartView(input: ChartViewInput): ChartView {
-  const solarDate =
-    input.calendar === CalendarType.Lunar
-      ? convertLunarToSolar({
-          day: input.day,
-          month: input.month,
-          year: input.year,
-          isLeapMonth: false,
-        })
-      : new Date(input.year, input.month - 1, input.day);
-  const birthHour = BIRTH_HOURS.find((entry) => entry.key === input.hour);
-  if (!birthHour) {
-    throw new Error(`Giờ sinh không có trong bảng: ${input.hour}`);
-  }
-
-  const chart = castChart({
-    solarDate,
-    hour: birthHour.hour,
-    gender: input.gender === Gender.Male ? EngineGender.Nam : EngineGender.Nu,
-    viewYear: input.viewYear,
-  });
+  const { chart, solarDate, birthHour } = chartFromBirthInput(input, input.viewYear);
 
   return {
     meta: {

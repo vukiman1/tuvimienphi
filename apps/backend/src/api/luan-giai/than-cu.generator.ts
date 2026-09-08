@@ -28,6 +28,13 @@ function parseParagraphs(text: string): ThanCuParagraphs {
   return { doan1: raw.doan1, doan2: raw.doan2 };
 }
 
+export interface ThanCuResult {
+  readonly article: LuanGiaiArticle;
+  /** Model nào viết ra bài và phải sinh lại mấy lần — lưu lại để theo dõi prompt xuống cấp. */
+  readonly model: string;
+  readonly attempts: number;
+}
+
 @Injectable()
 export class ThanCuGenerator {
   private readonly logger = new Logger(ThanCuGenerator.name);
@@ -38,7 +45,7 @@ export class ThanCuGenerator {
    * Trả `null` khi bảng luận chưa soạn tới lá số này — chờ thêm cũng không có bài, nên gọi bên phải
    * phân biệt với trường hợp đang sinh.
    */
-  async generate(chart: NatalChart): Promise<LuanGiaiArticle | null> {
+  async generate(chart: NatalChart): Promise<ThanCuResult | null> {
     const brief = buildThanCuBrief(chart);
     if (!brief) return null;
 
@@ -54,7 +61,11 @@ export class ThanCuGenerator {
       const loi = checkParagraphs(brief, paragraphs);
 
       if (loi.length === 0) {
-        return assembleThanCuArticle(brief, paragraphs);
+        return {
+          article: assembleThanCuArticle(brief, paragraphs),
+          model: result.model,
+          attempts: lan,
+        };
       }
 
       this.logger.warn(`lần ${lan} bị bộ kiểm chặn (${result.model}): ${loi.join('; ')}`);

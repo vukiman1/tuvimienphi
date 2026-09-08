@@ -39,7 +39,10 @@ module.exports = (_env, argv) => {
         target: 'node',
         compiler: 'tsc',
         main: './src/main.ts',
-        additionalEntryPoints: [{ entryName: 'serverless', entryPath: './src/serverless.ts' }],
+        additionalEntryPoints: [
+          { entryName: 'serverless', entryPath: './src/serverless.ts' },
+          { entryName: 'worker', entryPath: './src/worker.ts' },
+        ],
         tsConfig: './tsconfig.app.json',
         assets: ['./src/assets', { input: './config', glob: '**/*', output: './config' }],
         optimization: false,

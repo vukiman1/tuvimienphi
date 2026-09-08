@@ -1,7 +1,6 @@
-import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { SentryModule } from '@sentry/nestjs/setup';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { DatabaseModule } from '@org/backend-database';
@@ -12,6 +11,7 @@ import { RedisModule } from '@org/backend-redis';
 import { join } from 'path';
 import { AuthModule } from '../api/auth/auth.module';
 import { LaSoModule } from '../api/la-so/la-so.module';
+import { LuanGiaiModule } from '../api/luan-giai/luan-giai.module';
 import { UserModule } from '../api/user/user.module';
 import { EmailModule } from '../email/email.module';
 import { HealthModule } from '../health/health.module';
@@ -20,6 +20,7 @@ import { ScraperLichDungSuModule } from '../api/scraper/lichdungsu/lichdungsu.mo
 import { AppController } from './app.controller';
 import { providers } from './app.provider';
 import { AppService } from './app.service';
+import { bullRootImport } from './bull-root';
 import { queueBoardRootImports } from './queue-board-registration';
 
 @Module({
@@ -40,20 +41,7 @@ import { queueBoardRootImports } from './queue-board-registration';
         limit: 60,
       },
     ]),
-    BullModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        connection: {
-          host: config.get<string>('redis.host'),
-          port: config.get<number>('redis.port'),
-          password: config.get<string>('redis.password') || undefined,
-          db: config.get<number>('redis.db'),
-          ...(config.get<boolean>('redis.tls') ? { tls: {} } : {}),
-          maxRetriesPerRequest: null,
-        },
-      }),
-    }),
+    bullRootImport(),
     ...queueBoardRootImports(),
     DatabaseModule,
     JwtModule,
@@ -62,6 +50,7 @@ import { queueBoardRootImports } from './queue-board-registration';
     AuthModule,
     UserModule,
     LaSoModule,
+    LuanGiaiModule,
     RedisModule,
     HealthModule,
     QueueModule,

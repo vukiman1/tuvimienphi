@@ -41,7 +41,8 @@ class AiGia extends AiClient {
 
 describe('ThanCuGenerator', () => {
   it('ghép bài từ khung cố định và hai đoạn mô hình viết', async () => {
-    const article = await new ThanCuGenerator(new AiGia([DAT])).generate(CO_BANG);
+    const ket = await new ThanCuGenerator(new AiGia([DAT])).generate(CO_BANG);
+    const article = ket?.article;
 
     expect(article?.title).toBe('Thân cư Phu Thê');
     expect(article?.subheading).toBe('Nam tuổi Tý – Thân cư Phu Thê');
@@ -52,9 +53,9 @@ describe('ThanCuGenerator', () => {
   it('sinh lại kèm danh sách lỗi khi bản đầu không qua bộ kiểm', async () => {
     const ai = new AiGia([HONG, DAT]);
 
-    const article = await new ThanCuGenerator(ai).generate(CO_BANG);
+    const ket = await new ThanCuGenerator(ai).generate(CO_BANG);
 
-    expect(article).not.toBeNull();
+    expect(ket?.attempts).toBe(2);
     expect(ai.requests).toHaveLength(2);
     expect(ai.requests[1].messages.at(-1)?.text).toContain('câu, cần đúng 2');
   });

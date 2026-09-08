@@ -2,6 +2,7 @@ export * from './lich/lunar-calendar.js';
 export * from './lich/nap-am.js';
 
 export * from './cast-chart.js';
+export * from './from-birth-input.js';
 
 export * from './chi.js';
 export * from './dia-ban.js';

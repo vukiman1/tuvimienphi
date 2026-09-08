@@ -27,7 +27,12 @@ QUY TẮC HÌNH THỨC:
 1. Mỗi đoạn đúng 2 câu.
 2. Mỗi đoạn đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
 3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều phải kèm bậc, kể cả lần thứ hai trong bài.
-4. Phụ tinh gói theo vai: hung tinh nhắc trong đoạn gói vào MỘT cặp **, cát tinh gói vào MỘT cặp ** khác. Không kèm bậc, không trộn hung với cát, không tách lẻ.
+4. Phụ tinh gói theo vai. Mỗi đoạn nhiều nhất MỘT cặp ** cho hung tinh và MỘT cặp ** cho cát tinh.
+   ĐÚNG:  **Đại Hao, Kiếp Sát, Thiên Diêu**
+   SAI:   **Đại Hao, Kiếp Sát** và **Thiên Diêu**   (tách thành hai cặp)
+   SAI:   **Đại Hao** ... **Kiếp Sát**              (tách lẻ từng sao)
+   SAI:   **Đại Hao, Thiên Thọ**                    (trộn hung với cát)
+   Không kèm bậc cho phụ tinh.
 5. Không nhắc tên sao nào ngoài brief.
 6. anNgu khác null: giọng tiết chế, không tuyệt đối hoá. Không gọi tên "Tuần" hay "Triệt" trong bài.`;
 
