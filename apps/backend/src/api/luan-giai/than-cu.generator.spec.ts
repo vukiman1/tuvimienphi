@@ -1,7 +1,11 @@
 import { castNatal, Gender, type NatalChart } from '@org/shared-tu-vi';
 import { AiClient } from '../../ai/ai.client';
 import type { AiRequest, AiResult } from '../../ai/ai.types';
-import { ChapterRejectedError, MalformedChapterError } from './luan-giai.errors';
+import {
+  ChapterRejectedError,
+  ChapterTimedOutError,
+  MalformedChapterError,
+} from './luan-giai.errors';
 import { ThanCuGenerator } from './than-cu.generator';
 
 const CO_BANG: NatalChart = castNatal({
@@ -25,6 +29,9 @@ const DAT = JSON.stringify({
 
 const HONG = JSON.stringify({ doan1: 'Một câu thôi.', doan2: 'Cũng một câu thôi.' });
 
+/** Rộng rãi để test hành vi chứ không test đồng hồ. */
+const BUDGET_MS = 60_000;
+
 class AiGia extends AiClient {
   readonly requests: AiRequest[] = [];
 
@@ -41,7 +48,7 @@ class AiGia extends AiClient {
 
 describe('ThanCuGenerator', () => {
   it('ghép bài từ khung cố định và hai đoạn mô hình viết', async () => {
-    const ket = await new ThanCuGenerator(new AiGia([DAT])).generate(CO_BANG);
+    const ket = await new ThanCuGenerator(new AiGia([DAT])).generate(CO_BANG, BUDGET_MS);
     const article = ket?.article;
 
     expect(article?.title).toBe('Thân cư Phu Thê');
@@ -53,7 +60,7 @@ describe('ThanCuGenerator', () => {
   it('sinh lại kèm danh sách lỗi khi bản đầu không qua bộ kiểm', async () => {
     const ai = new AiGia([HONG, DAT]);
 
-    const ket = await new ThanCuGenerator(ai).generate(CO_BANG);
+    const ket = await new ThanCuGenerator(ai).generate(CO_BANG, BUDGET_MS);
 
     expect(ket?.attempts).toBe(2);
     expect(ai.requests).toHaveLength(2);
@@ -63,20 +70,33 @@ describe('ThanCuGenerator', () => {
   it('bỏ cuộc sau ba lần và nêu rõ vi phạm còn lại', async () => {
     const ai = new AiGia([HONG, HONG, HONG]);
 
-    await expect(new ThanCuGenerator(ai).generate(CO_BANG)).rejects.toThrow(ChapterRejectedError);
+    await expect(new ThanCuGenerator(ai).generate(CO_BANG, BUDGET_MS)).rejects.toThrow(
+      ChapterRejectedError,
+    );
     expect(ai.requests).toHaveLength(3);
   });
 
   it('trả null khi bảng luận chưa soạn tới lá số, không gọi mô hình', async () => {
     const ai = new AiGia([DAT]);
 
-    await expect(new ThanCuGenerator(ai).generate(CHUA_SOAN)).resolves.toBeNull();
+    await expect(new ThanCuGenerator(ai).generate(CHUA_SOAN, BUDGET_MS)).resolves.toBeNull();
+    expect(ai.requests).toHaveLength(0);
+  });
+
+  it('dừng trước khi gọi mô hình nếu ngân sách thời gian không đủ cho một lượt', async () => {
+    const ai = new AiGia([DAT]);
+
+    await expect(new ThanCuGenerator(ai).generate(CO_BANG, 100)).rejects.toThrow(
+      ChapterTimedOutError,
+    );
     expect(ai.requests).toHaveLength(0);
   });
 
   it('ném lỗi khi mô hình trả về thứ không phải hai đoạn', async () => {
     const ai = new AiGia(['không phải json']);
 
-    await expect(new ThanCuGenerator(ai).generate(CO_BANG)).rejects.toThrow(MalformedChapterError);
+    await expect(new ThanCuGenerator(ai).generate(CO_BANG, BUDGET_MS)).rejects.toThrow(
+      MalformedChapterError,
+    );
   });
 });

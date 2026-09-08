@@ -1,5 +1,4 @@
-import { InjectQueue } from '@nestjs/bullmq';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   birthKey,
@@ -9,21 +8,15 @@ import {
   type LuanGiaiChapterResponse,
 } from '@org/shared-contracts';
 import { buildThanCuBrief, chartFromBirthInput } from '@org/shared-tu-vi';
-import { Queue } from 'bullmq';
 import { Repository } from 'typeorm';
 import { ChapterQuotaService } from './chapter-quota.service';
 import { LuanGiaiChapterEntity } from './entities/luan-giai-chapter.entity';
-import { ChapterQuotaExceededException } from './luan-giai.exceptions';
+import { GENERATION_BUDGET_MS, SUPPORTED_CHAPTERS } from './luan-giai.constants';
 import {
-  LUAN_GIAI_QUEUE,
-  SUPPORTED_CHAPTERS,
-  type GenerateChapterJob,
-} from './luan-giai.constants';
-
-const RETRY_ATTEMPTS = 2;
-const BACKOFF_DELAY_MS = 5_000;
-const KEEP_COMPLETED = 100;
-const KEEP_FAILED = 200;
+  ChapterGenerationFailedException,
+  ChapterQuotaExceededException,
+} from './luan-giai.exceptions';
+import { ThanCuGenerator } from './than-cu.generator';
 
 /** Năm chương còn lại chưa có bảng luận nên sẽ không có bài, dù chờ bao lâu. */
 function laChuongCoBang(order: string): boolean {
@@ -32,11 +25,13 @@ function laChuongCoBang(order: string): boolean {
 
 @Injectable()
 export class LuanGiaiService {
+  private readonly logger = new Logger(LuanGiaiService.name);
+
   constructor(
     @InjectRepository(LuanGiaiChapterEntity)
     private readonly repo: Repository<LuanGiaiChapterEntity>,
-    @InjectQueue(LUAN_GIAI_QUEUE) private readonly queue: Queue<GenerateChapterJob>,
     private readonly quota: ChapterQuotaService,
+    private readonly generator: ThanCuGenerator,
   ) {}
 
   /** Đọc chương đã có. Không cần đăng nhập: bài gắn với lá số chứ không gắn với người xem. */
@@ -49,6 +44,11 @@ export class LuanGiaiService {
       : { status: LuanGiaiChapterStatus.Pending };
   }
 
+  /**
+   * Sinh ngay trong request rồi trả bài luôn. Đo thật thì một lượt mất 1,5–2,2 giây và ba lượt sinh
+   * lại mất 5,7 giây, còn cách trần 30 giây của hàm serverless khá xa; `GENERATION_BUDGET_MS` gác
+   * phần đuôi dài, vì đã gặp model trả UNAVAILABLE sau 27 giây.
+   */
   async request(
     userId: string,
     input: BirthInput,
@@ -61,31 +61,33 @@ export class LuanGiaiService {
     const daCo = await this.findArticle(key, order);
     if (daCo) return { status: LuanGiaiChapterStatus.Ready, article: daCo };
 
-    // Dựng brief là phép tính thuần, chạy ngay tại đây được. Biết trước là bảng chưa soạn thì đừng
-    // xếp hàng và đừng trừ suất của người dùng cho một việc chắc chắn không ra bài.
+    // Dựng brief là phép tính thuần, không gọi mô hình. Biết trước bảng chưa soạn tới lá số này thì
+    // đừng trừ suất của người dùng cho một việc chắc chắn không ra bài.
     const { chart } = chartFromBirthInput(input);
     if (!buildThanCuBrief(chart)) {
       return { status: LuanGiaiChapterStatus.Unavailable };
     }
 
+    // Trừ trước chứ không trừ sau: trừ sau thì mười request song song cùng lọt qua cửa.
     if (!(await this.quota.consume(userId))) {
       throw new ChapterQuotaExceededException();
     }
 
-    await this.queue.add(
-      'chapter',
-      { birthKey: key, order, birth: input },
-      {
-        // Hai người cùng xem một lá số chỉ tạo một job.
-        jobId: `${key}:${order}`,
-        attempts: RETRY_ATTEMPTS,
-        backoff: { type: 'exponential', delay: BACKOFF_DELAY_MS },
-        removeOnComplete: KEEP_COMPLETED,
-        removeOnFail: KEEP_FAILED,
-      },
-    );
+    try {
+      const ket = await this.generator.generate(chart, GENERATION_BUDGET_MS);
+      if (!ket) {
+        await this.quota.refund(userId);
+        return { status: LuanGiaiChapterStatus.Unavailable };
+      }
 
-    return { status: LuanGiaiChapterStatus.Pending };
+      await this.save(key, order, ket.article, ket.model, ket.attempts);
+      return { status: LuanGiaiChapterStatus.Ready, article: ket.article };
+    } catch (error) {
+      // Hỏng vì phía hệ thống thì hoàn suất lại; người dùng không nên trả giá cho lỗi của mình.
+      await this.quota.refund(userId);
+      this.logger.warn(`${key}:${order} sinh hỏng: ${(error as Error).message}`);
+      throw new ChapterGenerationFailedException();
+    }
   }
 
   async save(

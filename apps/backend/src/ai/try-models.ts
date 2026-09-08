@@ -14,10 +14,13 @@ function reasonOf(error: unknown): string {
 export async function tryModels<T>(
   models: readonly string[],
   call: (model: string) => Promise<T>,
+  /** Hết ngân sách thời gian thì dừng hẳn: thử model kế tiếp cũng chỉ hỏng ngay lập tức. */
+  shouldStop?: () => boolean,
 ): Promise<{ readonly result: T; readonly model: string }> {
   const attempts: ModelAttempt[] = [];
 
   for (const model of models) {
+    if (shouldStop?.()) break;
     try {
       return { result: await call(model), model };
     } catch (error) {

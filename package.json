@@ -11,7 +11,6 @@
     "dev": "pnpm nx run-many -t serve -p @org/frontend @org/backend @org/dashboard --parallel=3",
     "dev:frontend": "pnpm nx serve @org/frontend",
     "dev:backend": "pnpm nx serve @org/backend",
-    "dev:worker": "pnpm nx build @org/backend && node --env-file-if-exists=apps/backend/.env apps/backend/dist/worker.js",
     "dev:dashboard": "pnpm nx serve @org/dashboard",
     "build": "pnpm nx run-many -t build",
     "analyze:frontend": "ANALYZE=true pnpm nx build @org/frontend",

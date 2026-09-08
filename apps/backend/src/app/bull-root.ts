@@ -2,7 +2,7 @@ import { BullModule } from '@nestjs/bullmq';
 import type { DynamicModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-/** Dùng chung cho tiến trình API và tiến trình worker — hai bên phải nối vào đúng một Redis. */
+/** Nối BullMQ vào cùng Redis với phần còn lại của ứng dụng. */
 export function bullRootImport(): DynamicModule {
   return BullModule.forRootAsync({
     imports: [ConfigModule],
@@ -19,9 +19,3 @@ export function bullRootImport(): DynamicModule {
     }),
   });
 }
-
-export const CONFIG_ROOT_OPTIONS = {
-  isGlobal: true,
-  ignoreEnvFile: true,
-  expandVariables: true,
-} as const;

@@ -29,7 +29,4 @@ RUN pnpm install --prod --frozen-lockfile
 
 EXPOSE 3000
 
-# Cùng một image chạy được cả hai vai. Ghi đè CMD thành ["node", "worker.js"] để chạy tiến trình
-# tiêu thụ hàng đợi: hàm serverless không sống đủ lâu để giữ một worker BullMQ, nên vai đó phải
-# nằm trên container host.
 CMD ["node", "main.js"]

@@ -14,3 +14,13 @@ export class ChapterRejectedError extends Error {
     this.name = 'ChapterRejectedError';
   }
 }
+
+export class ChapterTimedOutError extends Error {
+  constructor(
+    readonly attempts: number,
+    readonly violations: readonly string[],
+  ) {
+    super(`ran out of time budget after ${attempts} attempts`);
+    this.name = 'ChapterTimedOutError';
+  }
+}

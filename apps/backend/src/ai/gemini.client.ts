@@ -34,27 +34,32 @@ export class GeminiClient extends AiClient {
       throw new AiNotConfiguredError();
     }
 
-    const { result, model } = await tryModels(this.models, async (candidate) => {
-      const response = await genai.models.generateContent({
-        model: candidate,
-        contents: request.messages.map((message) => ({
-          role: message.role,
-          parts: [{ text: message.text }],
-        })),
-        config: {
-          systemInstruction: request.system,
-          responseMimeType: JSON_MIME_TYPE,
-          responseSchema: request.schema,
-          temperature: this.temperature,
-        },
-      });
+    const { result, model } = await tryModels(
+      this.models,
+      async (candidate) => {
+        const response = await genai.models.generateContent({
+          model: candidate,
+          contents: request.messages.map((message) => ({
+            role: message.role,
+            parts: [{ text: message.text }],
+          })),
+          config: {
+            systemInstruction: request.system,
+            responseMimeType: JSON_MIME_TYPE,
+            responseSchema: request.schema,
+            temperature: this.temperature,
+            abortSignal: request.signal,
+          },
+        });
 
-      const text = response.text;
-      if (!text) {
-        throw new Error('response carried no text');
-      }
-      return { text, outputTokens: response.usageMetadata?.candidatesTokenCount ?? 0 };
-    });
+        const text = response.text;
+        if (!text) {
+          throw new Error('response carried no text');
+        }
+        return { text, outputTokens: response.usageMetadata?.candidatesTokenCount ?? 0 };
+      },
+      () => request.signal?.aborted ?? false,
+    );
 
     return { text: result.text, model, outputTokens: result.outputTokens };
   }

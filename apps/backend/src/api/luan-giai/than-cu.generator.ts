@@ -3,13 +3,23 @@ import type { LuanGiaiArticle } from '@org/shared-contracts';
 import { buildThanCuBrief, type NatalChart } from '@org/shared-tu-vi';
 import { AiClient } from '../../ai/ai.client';
 import { assembleThanCuArticle } from './assemble-than-cu-article';
-import { ChapterRejectedError, MalformedChapterError } from './luan-giai.errors';
+import {
+  ChapterRejectedError,
+  ChapterTimedOutError,
+  MalformedChapterError,
+} from './luan-giai.errors';
 import { THAN_CU_SCHEMA, type ThanCuParagraphs } from './prompt/chapter-schema';
 import { buildThanCuMessages, THAN_CU_SYSTEM_PROMPT } from './prompt/than-cu-prompt';
 import { checkParagraphs } from './validate/check-paragraphs';
 
 /** Đo lúc dựng: bản đạt thường rơi vào lần một hoặc lần hai, chưa lần nào cần quá ba. */
 const MAX_ATTEMPTS = 3;
+
+/**
+ * Dưới ngần này thì đừng gọi thêm lượt nữa. Một lượt đạt mất 1,5–2,2 giây, nhưng có lần model trả
+ * UNAVAILABLE sau 27 giây — đủ để một mình nó ăn hết trần của hàm serverless.
+ */
+const MIN_ATTEMPT_MS = 4_000;
 
 function isParagraphs(value: unknown): value is ThanCuParagraphs {
   if (typeof value !== 'object' || value === null) return false;
@@ -45,17 +55,24 @@ export class ThanCuGenerator {
    * Trả `null` khi bảng luận chưa soạn tới lá số này — chờ thêm cũng không có bài, nên gọi bên phải
    * phân biệt với trường hợp đang sinh.
    */
-  async generate(chart: NatalChart): Promise<ThanCuResult | null> {
+  async generate(chart: NatalChart, budgetMs: number): Promise<ThanCuResult | null> {
     const brief = buildThanCuBrief(chart);
     if (!brief) return null;
 
     const daThu: { paragraphs: ThanCuParagraphs; loi: readonly string[] }[] = [];
+    const deadline = Date.now() + budgetMs;
 
     for (let lan = 1; lan <= MAX_ATTEMPTS; lan += 1) {
+      const conLai = deadline - Date.now();
+      if (conLai < MIN_ATTEMPT_MS) {
+        throw new ChapterTimedOutError(lan - 1, daThu[daThu.length - 1]?.loi ?? []);
+      }
+
       const result = await this.ai.generate({
         system: THAN_CU_SYSTEM_PROMPT,
         messages: buildThanCuMessages(brief, daThu),
         schema: THAN_CU_SCHEMA,
+        signal: AbortSignal.timeout(conLai),
       });
       const paragraphs = parseParagraphs(result.text);
       const loi = checkParagraphs(brief, paragraphs);

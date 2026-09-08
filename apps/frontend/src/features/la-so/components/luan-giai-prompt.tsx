@@ -23,7 +23,7 @@ export function LuanGiaiPromptCard({
 
       <div className="flex min-h-[280px] flex-col items-center justify-center gap-5 py-10 text-center">
         <p className="max-w-[46ch] font-body text-[16px] leading-[27px] text-[#6b6152]">
-          Mục này được phân tích riêng từ lá số của bạn. Bấm để xem.
+          Mục này được phân tích riêng từ lá số của bạn. Bấm để xem — mất vài giây.
         </p>
         <button
           className="inline-flex items-center gap-[9px] rounded-full bg-[#a8281c] px-7 py-[10px] font-body text-[16px] leading-[24px] font-semibold text-[#f5e8d0] transition-colors outline-none hover:bg-[#8f2016] focus-visible:ring-2 focus-visible:ring-[#a8281c] focus-visible:ring-offset-2 focus-visible:ring-offset-[#faf6ec]"
@@ -33,7 +33,7 @@ export function LuanGiaiPromptCard({
         >
           {/* Cỡ ghi bằng px: root font-size 137.5% biến `size-5` thành 27.5px, to hơn hẳn chữ 16px. */}
           <Eye aria-hidden className="size-[18px]" />
-          {isSubmitting ? 'Đang gửi…' : 'Xem luận giải'}
+          {isSubmitting ? 'Đang luận giải…' : 'Xem luận giải'}
         </button>
         {error ? (
           <p className="max-w-[46ch] font-body text-[15px] leading-[24px] text-[#a8281c]">

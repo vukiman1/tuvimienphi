@@ -31,7 +31,7 @@ export interface LuanGiaiArticle {
 export enum LuanGiaiChapterStatus {
   /** Đã có bài, đọc được ngay. */
   Ready = 'ready',
-  /** Đang sinh, client hỏi lại sau. */
+  /** Chưa sinh bao giờ. Client phải xin qua đường POST, và chính lời gọi đó trả về bài. */
   Pending = 'pending',
   /** Bảng luận chưa soạn tới lá số này; sẽ không có bài dù chờ bao lâu. */
   Unavailable = 'unavailable',

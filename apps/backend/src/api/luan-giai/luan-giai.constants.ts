@@ -1,10 +1,6 @@
-import type { BirthInput } from '@org/shared-contracts';
-
 /** Chương 01 là Thân cư. Năm chương còn lại chưa có bảng luận nên chưa nhận yêu cầu sinh. */
 export const CHAPTER_THAN_CU = '01';
 export const SUPPORTED_CHAPTERS = [CHAPTER_THAN_CU] as const;
-
-export const LUAN_GIAI_QUEUE = 'luan-giai';
 
 /**
  * Mỗi lượt sinh là một lần gọi API mất tiền, và người dùng gõ ngày sinh bất kỳ cũng kích hoạt được.
@@ -13,9 +9,9 @@ export const LUAN_GIAI_QUEUE = 'luan-giai';
 export const DAILY_CHAPTER_QUOTA = 3;
 export const QUOTA_WINDOW_SECONDS = 24 * 60 * 60;
 
-export interface GenerateChapterJob {
-  readonly birthKey: string;
-  readonly order: string;
-  /** Đầu vào ngày sinh để worker tự dựng lại lá số; nó không nhận lá số từ đâu khác. */
-  readonly birth: BirthInput;
-}
+/**
+ * Trần thời gian cho một lượt sinh. Hàm serverless của Vercel bị cắt ở 30 giây, nên chừa lại tám
+ * giây cho cold start, truy vấn database và serialize — sinh không kịp thì báo bận, đừng để Vercel
+ * cắt ngang giữa chừng và trả về một lỗi không nói lên điều gì.
+ */
+export const GENERATION_BUDGET_MS = 22_000;
