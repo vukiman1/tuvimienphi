@@ -446,6 +446,9 @@ importers:
       '@org/shared-contracts':
         specifier: workspace:*
         version: link:../../packages/shared/contracts
+      '@org/shared-tu-vi':
+        specifier: workspace:*
+        version: link:../../packages/shared/tu-vi
       '@react-email/components':
         specifier: ^1.0.12
         version: 1.0.12(react-dom@19.2.8(react@19.2.8))(react@19.2.8)

@@ -152,6 +152,7 @@
     "@org/backend-jwt": "workspace:*",
     "@org/backend-redis": "workspace:*",
     "@org/shared-contracts": "workspace:*",
+    "@org/shared-tu-vi": "workspace:*",
     "@react-email/components": "^1.0.12",
     "@react-email/render": "^2.1.0",
     "@sentry/nestjs": "^10.73.0",
