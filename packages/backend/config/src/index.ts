@@ -107,6 +107,12 @@ interface SentryConfig {
   tracesSampleRate: number;
 }
 
+interface AiConfig {
+  geminiApiKey: string;
+  models: string[];
+  temperature: number;
+}
+
 interface EmailConfig {
   resendApiKey: string;
   from: string;
@@ -197,6 +203,13 @@ const backendConfigSchema = z.object({
     dsn: z.string().default(''),
     tracesSampleRate: z.coerce.number().min(0).max(1),
   }),
+  ai: z.object({
+    geminiApiKey: z.string().default(''),
+    // Danh sách chứ không phải một model: gói free của Google mở rất hẹp và model mới hay quá tải,
+    // nên phải có chỗ để thử lần lượt.
+    models: z.array(z.string().min(1)).min(1),
+    temperature: z.coerce.number().min(0).max(2),
+  }),
   email: z.object({
     resendApiKey: z.string().default(''),
     from: z.string().min(1),
@@ -248,14 +261,28 @@ export default () => {
     session: nodeConfig.get<SessionConfig>('session'),
     crypto: nodeConfig.get<CryptoConfig>('crypto'),
     sentry: nodeConfig.get<SentryConfig>('sentry'),
+    ai: nodeConfig.get<AiConfig>('ai'),
     email: nodeConfig.get<EmailConfig>('email'),
     captcha: nodeConfig.get<CaptchaConfig>('captcha'),
     google: nodeConfig.get<GoogleConfig>('google'),
     queueBoard: nodeConfig.get<QueueBoardConfig>('queueBoard'),
   });
 
-  const { app, db, redis, cors, jwt, session, crypto, sentry, email, captcha, google, queueBoard } =
-    validated;
+  const {
+    app,
+    db,
+    redis,
+    cors,
+    jwt,
+    session,
+    crypto,
+    sentry,
+    ai,
+    email,
+    captcha,
+    google,
+    queueBoard,
+  } = validated;
 
   return {
     app: {
@@ -290,6 +317,7 @@ export default () => {
     session,
     crypto,
     sentry,
+    ai,
     email,
     captcha,
     google,
