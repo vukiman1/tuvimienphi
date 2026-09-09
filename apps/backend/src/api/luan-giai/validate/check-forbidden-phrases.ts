@@ -24,23 +24,33 @@ const VAN_HANH_CHINH = [
   'khi xét qua',
 ] as const;
 
-/**
- * Tầng bốn: cụm từ bị cấm.
- *
- * Sinh ra từ một quan sát lặp lại ba lần trong lúc dựng — luật nào chỉ nằm trong prompt mà không có
- * tầng kiểm nào gác thì mô hình bỏ qua.
- */
-export function checkForbiddenPhrases(brief: ThanCuBrief, paragraphs: ThanCuParagraphs): string[] {
-  const cam = [
-    ...(brief.cungThan === 'Mệnh' ? [] : CHI_DUNG_O_CUNG_MENH),
-    ...HUA_HEN_VO_CAN_CU,
-    ...VAN_HANH_CHINH,
-  ];
-
+function tim(paragraphs: ThanCuParagraphs, cam: readonly string[]): string[] {
   return [paragraphs.doan1, paragraphs.doan2].flatMap((doan, chiSo) => {
     const thuong = doan.toLowerCase();
     return cam
       .filter((cum) => thuong.includes(cum))
       .map((cum) => `đoạn ${chiSo + 1}: dùng cụm bị cấm "${cum}"`);
   });
+}
+
+/**
+ * Tầng bốn, phần BẮT BUỘC: cụm SAI chứ không phải cụm xấu. Sai thuật ngữ tử vi và hứa hẹn không có
+ * trong brief — hai thứ đó lọt ra ngoài là bài nói sai, nên chặn tới cùng.
+ *
+ * Sinh ra từ một quan sát lặp lại bốn lần trong lúc dựng: luật nào chỉ nằm trong prompt mà không có
+ * tầng kiểm nào gác thì mô hình bỏ qua.
+ */
+export function checkForbiddenPhrases(brief: ThanCuBrief, paragraphs: ThanCuParagraphs): string[] {
+  return tim(paragraphs, [
+    ...(brief.cungThan === 'Mệnh' ? [] : CHI_DUNG_O_CUNG_MENH),
+    ...HUA_HEN_VO_CAN_CU,
+  ]);
+}
+
+/**
+ * Phần NÊN TRÁNH: lối văn hành chính. Đáng sinh lại để bài đọc xuôi hơn, nhưng không đáng để người
+ * dùng nhận 503 — đo trên hai mươi lá số thì đúng chuyện đó đã xảy ra với hai bài.
+ */
+export function checkStyle(paragraphs: ThanCuParagraphs): string[] {
+  return tim(paragraphs, VAN_HANH_CHINH);
 }

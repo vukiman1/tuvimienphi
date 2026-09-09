@@ -12,8 +12,12 @@ import { THAN_CU_SCHEMA, type ThanCuParagraphs } from './prompt/chapter-schema';
 import { buildThanCuMessages, THAN_CU_SYSTEM_PROMPT } from './prompt/than-cu-prompt';
 import { checkParagraphs } from './validate/check-paragraphs';
 
-/** Đo lúc dựng: bản đạt thường rơi vào lần một hoặc lần hai, chưa lần nào cần quá ba. */
-const MAX_ATTEMPTS = 3;
+/**
+ * Đo trên hai mươi lá số: trung bình 2,0 lượt, và ba lượt vẫn để lọt hai bài hỏng hẳn. Độ trễ ở đây
+ * gần như không mất gì — người dùng chờ vài giây cho một bài luận giải là hợp lý, còn nhận 503 thì
+ * không — nên nới trần lượt thay vì nới bộ kiểm.
+ */
+const MAX_ATTEMPTS = 5;
 
 /**
  * Dưới ngần này thì đừng gọi thêm lượt nữa. Một lượt đạt mất 1,5–2,2 giây, nhưng có lần model trả
@@ -75,7 +79,7 @@ export class ThanCuGenerator {
         signal: AbortSignal.timeout(conLai),
       });
       const paragraphs = parseParagraphs(result.text);
-      const loi = checkParagraphs(brief, paragraphs);
+      const loi = checkParagraphs(brief, paragraphs, lan < MAX_ATTEMPTS);
 
       if (loi.length === 0) {
         return {

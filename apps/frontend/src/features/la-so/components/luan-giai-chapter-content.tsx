@@ -44,7 +44,10 @@ export function LuanGiaiChapterContent({
   const xin = useMutation({
     mutationFn: () => requestChapter(birth, chapter.order),
     onSuccess: (response) => {
-      // Bài có sẵn thì đường POST trả luôn, khỏi phải chờ một vòng hỏi lại.
+      // Chỉ nhớ khi đã có bài. `unavailable` nghĩa là bảng luận chưa soạn tới lá số này — nhớ nó
+      // với staleTime vô hạn thì lúc bảng được bổ sung, người đang mở trang vẫn thấy "chưa biên
+      // soạn" cho tới khi tải lại, mà nút bấm lại cũng đã bị khoá.
+      if (response.status !== LuanGiaiChapterStatus.Ready) return;
       queryClient.setQueryData(options.queryKey, response);
       onRequest();
     },
@@ -54,6 +57,11 @@ export function LuanGiaiChapterContent({
   // chỉ khoá nút lại — nút xám đứng im lâu như vậy trông như trang bị treo.
   if (xin.isPending) {
     return <LuanGiaiSkeletonCard steps={CAC_BUOC} />;
+  }
+
+  // Lấy thẳng từ lần xin gần nhất chứ không qua cache: đổi mục rồi quay lại là hỏi lại từ đầu.
+  if (xin.data?.status === LuanGiaiChapterStatus.Unavailable) {
+    return <LuanGiaiPendingCard chapter={chapter} />;
   }
 
   if (!isRequested) {

@@ -67,13 +67,13 @@ describe('ThanCuGenerator', () => {
     expect(ai.requests[1].messages.at(-1)?.text).toContain('câu, cần đúng 2');
   });
 
-  it('bỏ cuộc sau ba lần và nêu rõ vi phạm còn lại', async () => {
-    const ai = new AiGia([HONG, HONG, HONG]);
+  it('bỏ cuộc sau khi hết lượt và nêu rõ vi phạm còn lại', async () => {
+    const ai = new AiGia([HONG, HONG, HONG, HONG, HONG]);
 
     await expect(new ThanCuGenerator(ai).generate(CO_BANG, BUDGET_MS)).rejects.toThrow(
       ChapterRejectedError,
     );
-    expect(ai.requests).toHaveLength(3);
+    expect(ai.requests).toHaveLength(5);
   });
 
   it('trả null khi bảng luận chưa soạn tới lá số, không gọi mô hình', async () => {
