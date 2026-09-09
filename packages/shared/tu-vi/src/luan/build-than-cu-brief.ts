@@ -66,12 +66,22 @@ function draft(claim: LuanDe, factor: number): DraftClaim {
 }
 
 function baseClaims(the: TheCung): DraftClaim[] {
-  const table = CHINH_TINH_THAN_CU[toHopKey(the.chinhTinh)]?.[the.cung] ?? [];
+  const cell = CHINH_TINH_THAN_CU[toHopKey(the.chinhTinh)]?.[the.cung];
+  if (!cell) return [];
+
   const brightness = the.chinhTinh.reduce(
     (product, sao) => product * (BRIGHTNESS_FACTOR[sao.rating ?? 'B'] ?? 1),
     1,
   );
-  return table.map((claim) => draft(claim, brightness));
+
+  // Phần riêng theo bậc chỉ lấy khi cả cụm chính tinh cùng một bậc: hai sao lệch bậc thì mệnh đề
+  // viết cho một bậc không còn đúng cho ô đó nữa.
+  const bacChung = the.chinhTinh.every((sao) => sao.rating === the.chinhTinh[0]?.rating)
+    ? the.chinhTinh[0]?.rating
+    : null;
+  const theoBac = bacChung ? (cell.theoBac?.[bacChung] ?? []) : [];
+
+  return [...cell.chung, ...theoBac].map((claim) => draft(claim, brightness));
 }
 
 function phuTinhClaims(names: readonly PhuTinhName[], factor: number): DraftClaim[] {

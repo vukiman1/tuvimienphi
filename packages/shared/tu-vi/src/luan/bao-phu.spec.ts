@@ -44,6 +44,7 @@ describe('bảng mệnh đề nền cho chương Thân cư', () => {
       (tong, theoCung) => tong + Object.keys(theoCung ?? {}).length,
       0,
     );
+    expect(can).toBeGreaterThan(0);
     expect(co).toBeGreaterThan(0);
     expect(co).toBeLessThanOrEqual(can);
   });
