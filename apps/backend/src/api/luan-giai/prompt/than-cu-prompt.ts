@@ -36,6 +36,8 @@ G. Mỗi phụ tinh trong brief có trường "the" ghi thế chiếu của nó.
 QUY TẮC HÌNH THỨC:
 1. Mỗi đoạn đúng 2 câu.
 2. Mỗi đoạn đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. Viết **Tham Lang (H)** và ==cụm chốt ý== ở hai chỗ tách rời.
+    SAI: **==nhẹ nhõm==**    SAI: ==**Tham Lang (H)**==
 3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều phải kèm bậc, kể cả lần thứ hai trong bài.
 4. Phụ tinh gói theo vai. Mỗi đoạn nhiều nhất MỘT cặp ** cho hung tinh và MỘT cặp ** cho cát tinh.
    ĐÚNG:  **Đại Hao, Kiếp Sát, Thiên Diêu**

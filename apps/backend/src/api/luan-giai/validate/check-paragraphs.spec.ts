@@ -139,6 +139,21 @@ describe('checkParagraphs', () => {
     expect(loi.join('\n')).toMatch(/vượt qua mọi/);
   });
 
+  it('chỉ ra đúng lỗi khi hai dấu bị lồng vào nhau', () => {
+    const loi = checkParagraphs(BRIEF, {
+      ...DAT,
+      doan1: DAT.doan1.replace(
+        '==hợp duyên và được quý mến==',
+        '**==hợp duyên và được quý mến==**',
+      ),
+    });
+
+    expect(loi).toContain(
+      'đoạn 1: không được lồng ==...== vào trong **...**, hai dấu phải tách rời',
+    );
+    expect(loi.join('\n')).not.toMatch(/không có trong brief/);
+  });
+
   it('chặn việc nói sao chiếu tới là đang đóng tại cung', () => {
     const loi = checkParagraphs(BRIEF, {
       ...DAT,

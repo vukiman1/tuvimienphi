@@ -50,6 +50,13 @@ function kiemMotDoan(
 
   const nhomPhuTinh: string[][] = [];
   for (const nhom of boldGroups(doan)) {
+    // Lồng ==...== vào trong **...** thì phần bên trong bị bóc ra như một tên sao, kéo theo hai
+    // thông báo sai chỗ — "không có trong brief" và "tách thành 2 cặp". Bắt riêng và nói thẳng,
+    // vì mô hình đọc hai thông báo kia xong không biết đường nào mà sửa.
+    if (nhom.some((token) => token.includes('='))) {
+      loi.push(`đoạn ${thuTu}: không được lồng ==...== vào trong **...**, hai dấu phải tách rời`);
+      continue;
+    }
     const coChinhTinh = nhom.some((token) => bacCua.has(stripRating(token)));
     if (coChinhTinh && nhom.length > 1) {
       loi.push(`đoạn ${thuTu}: chính tinh bị gói chung — "${nhom.join(', ')}"`);
