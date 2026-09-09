@@ -6,11 +6,22 @@ const BLOCK_CLASS = 'animate-pulse rounded bg-[#e3d7ba] motion-reduce:animate-no
 /** Bề rộng lệch nhau cho mấy vạch chờ trông như đoạn văn thật, không như bảng biểu. */
 const LINE_WIDTHS = ['w-full', 'w-[96%]', 'w-[88%]', 'w-[93%]', 'w-[62%]'] as const;
 
+interface LuanGiaiSkeletonCardProps {
+  /** Chỉ truyền khi đang thực sự viết bài — đọc bài đã có thì xong trong tích tắc, nói thời gian
+   *  chờ ở đó là nói sai. */
+  readonly note?: string;
+}
+
 /** Khung chờ dựng theo đúng bố cục thẻ bài, để lúc nội dung về không bị nhảy layout. */
-export function LuanGiaiSkeletonCard() {
+export function LuanGiaiSkeletonCard({ note }: LuanGiaiSkeletonCardProps) {
   return (
     <LuanGiaiCard>
       <div aria-label="Đang tải luận giải" role="status">
+        {note ? (
+          <p className="mb-6 text-center font-body text-[15px] leading-[24px] text-[#8a7a63]">
+            {note}
+          </p>
+        ) : null}
         <div className="flex items-center gap-[14px] pl-[3%]">
           <div className={cn(BLOCK_CLASS, 'size-[64px] shrink-0 rounded-full md:size-[88px]')} />
           <div className="min-w-0 flex-1">

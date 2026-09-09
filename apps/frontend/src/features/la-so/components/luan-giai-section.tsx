@@ -98,7 +98,10 @@ export function LuanGiaiSection({
 
         {/* Giới hạn bề ngang: dòng chữ dài quá 90 ký tự là mất mạch đọc. */}
         <div className="mx-auto mt-6 max-w-[1100px]">
+          {/* Khoá theo mục: React dùng lại instance khi đổi mục, nên không có khoá thì trạng thái
+              đang sinh của mục này tràn sang mục vừa chuyển tới. */}
           <LuanGiaiChapterContent
+            key={chapter.order}
             birth={birth}
             chapter={chapter}
             isRequested={requestedOrders.includes(chapter.order)}

@@ -35,12 +35,17 @@ export function LuanGiaiChapterContent({
     },
   });
 
+  // Bài viết ra mất vài giây tới vài chục giây, nên chuyển sang khung chờ ngay khi bấm chứ không
+  // chỉ khoá nút lại — nút xám đứng im lâu như vậy trông như trang bị treo.
+  if (xin.isPending) {
+    return <LuanGiaiSkeletonCard note="Đang luận giải từ lá số của bạn, mất khoảng 10–20 giây…" />;
+  }
+
   if (!isRequested) {
     return (
       <LuanGiaiPromptCard
         chapter={chapter}
         error={xin.error ? errorMessage(xin.error, DEFAULT_ERROR_MESSAGE) : undefined}
-        isSubmitting={xin.isPending}
         onRequest={() => xin.mutate()}
       />
     );
