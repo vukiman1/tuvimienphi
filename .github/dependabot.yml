@@ -25,6 +25,11 @@ updates:
       # suite backend và server e2e chết ngay lúc load module. Xem PR #41.
       - dependency-name: '@nestjs/typeorm'
         versions: ['>=12']
+      # @nestjs/terminus@12 là ESM thuần ("type": "module", không có lối CommonJS). Bundle backend
+      # để nó ở externals nên `require()` nó lúc chạy, và loader hàm của Vercel không hỗ trợ
+      # `require(esm)` — hàm chết lúc load, mọi route 500. Xem PR #61 và #67.
+      - dependency-name: '@nestjs/terminus'
+        versions: ['>=12']
     groups:
       # nx và mọi @nx/* phải cùng version; lệch một patch là Nx không load được plugin. Xem PR #47.
       nx:
