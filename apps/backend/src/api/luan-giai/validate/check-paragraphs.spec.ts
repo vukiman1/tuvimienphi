@@ -60,6 +60,22 @@ describe('checkParagraphs', () => {
     expect(loi.join('\n')).toMatch(/áp lực/);
   });
 
+  it('chặn thuật ngữ chỉ đúng ở cung Mệnh khi Thân không cư Mệnh', () => {
+    const loi = checkParagraphs(BRIEF, {
+      ...DAT,
+      doan1: DAT.doan1.replace('Cung Phu Thê có', 'Thủ mệnh có'),
+    });
+    expect(loi).toContain('đoạn 1: dùng cụm bị cấm "thủ mệnh"');
+  });
+
+  it('chặn lời hứa hẹn không có trong brief', () => {
+    const loi = checkParagraphs(BRIEF, {
+      ...DAT,
+      doan2: DAT.doan2.replace('hơn là ở cả chặng đường.', 'và bạn sẽ vượt qua mọi khó khăn.'),
+    });
+    expect(loi.join('\n')).toMatch(/vượt qua mọi/);
+  });
+
   it('chặn mệnh đề bị gán cho sao không sinh ra nó', () => {
     const loi = checkParagraphs(BRIEF, {
       ...DAT,

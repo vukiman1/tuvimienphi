@@ -21,7 +21,11 @@ TRUNG THÀNH VỚI BRIEF:
 A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của chính nó, nguyên văn.
 B. Mỗi mệnh đề phải nằm CÙNG CÂU với ít nhất một sao trong do[] của nó.
 C. KHÔNG làm nhẹ mệnh đề sac="nghich". Viết đúng mức độ brief nêu.
-D. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+D. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief. Nếu brief không có mệnh đề
+   sac="hoa-giai", câu cuối vẫn tái định khung nhưng KHÔNG được hứa hẹn gì — nói lại vấn đề theo
+   hướng người đọc còn quyền chủ động là đủ.
+E. Sao đang xét toạ thủ tại cung an Thân, KHÔNG phải cung Mệnh. Đừng viết "thủ mệnh", "chiếu mệnh"
+   hay "toạ mệnh" trừ khi cung an Thân đúng là Mệnh.
 
 QUY TẮC HÌNH THỨC:
 1. Mỗi đoạn đúng 2 câu.

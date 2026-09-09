@@ -3,6 +3,10 @@ import type { Rating } from '../../sao-rating.js';
 import { Sac, type LuanDe } from '../luan-de.js';
 
 /**
+ * Viết mệnh đề như một MỆNH ĐỀ, không như một câu hoàn chỉnh: bỏ liên từ dẫn ("sao còn vượng nên…",
+ * "đắc địa nên…") vì mô hình trích gần như nguyên văn, và một câu văn nhét vào giữa câu khác thì
+ * đọc gãy. Bậc miếu vượng đã nằm ở khoá `theoBac` rồi, không cần nhắc lại trong lời.
+ *
  * Mệnh đề của một ô bảng. `chung` đúng ở mọi bậc; `theoBac` dành cho những sao mà miếu và hãm luận
  * khác nhau về CHẤT chứ không phải về mức — Thái Dương miếu ở Ngọ là mặt trời giữa trưa, hãm ở Tý
  * là mặt trời nửa đêm, không phải cùng một kết luận đọc nhẹ đi.
@@ -72,7 +76,7 @@ export const CHINH_TINH_THAN_CU: Readonly<
       theoBac: {
         Đ: [
           {
-            y: 'đắc địa nên nét phong lưu chuyển thành sức hút lành mạnh',
+            y: 'nét phong lưu chuyển thành sức hút lành mạnh',
             do: ['Tham Lang'],
             sac: Sac.HoaGiai,
             trong: 65,
@@ -103,7 +107,7 @@ export const CHINH_TINH_THAN_CU: Readonly<
       theoBac: {
         M: [
           {
-            y: 'Thái Dương sáng nhất ở đây nên người ấy có chỗ đứng riêng, được người ngoài nể trọng',
+            y: 'người ấy có chỗ đứng riêng, được người ngoài nể trọng',
             do: ['Thái Dương'],
             sac: Sac.Thuan,
             trong: 92,
@@ -112,7 +116,7 @@ export const CHINH_TINH_THAN_CU: Readonly<
         ],
         V: [
           {
-            y: 'sao còn vượng nên người ấy vẫn giữ được sự rộng rãi và biết lo cho người khác',
+            y: 'người ấy rộng rãi, biết lo cho người khác',
             do: ['Thái Dương'],
             sac: Sac.Thuan,
             trong: 84,
@@ -121,7 +125,7 @@ export const CHINH_TINH_THAN_CU: Readonly<
         ],
         H: [
           {
-            y: 'Thái Dương hãm nên người ấy dễ mệt vì gánh vác, sáng với người ngoài mà mỏi ở trong nhà',
+            y: 'dễ mệt vì gánh vác, sáng với người ngoài mà mỏi ở trong nhà',
             do: ['Thái Dương'],
             sac: Sac.Nghich,
             trong: 82,
