@@ -26,6 +26,9 @@ D. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong br
    hướng người đọc còn quyền chủ động là đủ.
 E. Sao đang xét toạ thủ tại cung an Thân, KHÔNG phải cung Mệnh. Đừng viết "thủ mệnh", "chiếu mệnh"
    hay "toạ mệnh" trừ khi cung an Thân đúng là Mệnh.
+F. Mỗi phụ tinh trong brief có trường "the" ghi thế chiếu của nó. Chỉ sao the="toạ thủ" mới được nói
+   là đóng tại cung. Sao "xung chiếu", "tam hợp", "nhị hợp" đứng ở cung KHÁC và chiếu tới — viết
+   "hội chiếu", "chiếu tới", "cùng chiếu về" chứ đừng viết "toạ thủ" hay "đóng tại đây".
 
 QUY TẮC HÌNH THỨC:
 1. Mỗi đoạn đúng 2 câu.

@@ -10,7 +10,7 @@ import { CAP_DOI_THAN_CU } from './bang/cap-doi-than-cu.js';
 import { CHINH_TINH_THAN_CU } from './bang/than-cu/index.js';
 import { PHU_TINH_LUAN } from './bang/phu-tinh.js';
 import { Sac, type LuanDe } from './luan-de.js';
-import { theCungAt, type AnNgu, type TheCung } from './the-cung.js';
+import { TheChieu, theCungAt, type AnNgu, type SaoTheoThe, type TheCung } from './the-cung.js';
 import { toHopKey } from './to-hop.js';
 
 /** Thân chỉ an vào sáu cung này, không bao giờ vào sáu cung còn lại. `than-cu.spec.ts` kiểm lại. */
@@ -24,7 +24,16 @@ export const THAN_CU_CUNGS = [
 ] as const satisfies readonly CungName[];
 
 const BRIGHTNESS_FACTOR: Record<Rating, number> = { M: 1.2, V: 1.1, Đ: 1.0, B: 0.9, H: 0.8 };
-const HOI_CHIEU_FACTOR = 0.6;
+/**
+ * Bốn thế tác động lên một cung, mạnh dần từ dưới lên. Xung chiếu là chính chiếu nên nặng hơn tam
+ * hợp; nhị hợp nhẹ nhất, chỉ đủ để bổ nghĩa chứ không đủ đổi kết luận.
+ */
+const THE_FACTOR: Record<TheChieu, number> = {
+  [TheChieu.ToaThu]: 1,
+  [TheChieu.XungChieu]: 0.75,
+  [TheChieu.TamHop]: 0.6,
+  [TheChieu.NhiHop]: 0.4,
+};
 /** Tuần hay Triệt án ngữ làm nhẹ cả mặt tốt lẫn mặt xấu, nên hạ đều chứ không hạ riêng chiều nào. */
 const AN_NGU_FACTOR = 0.75;
 const HOA_KY_BONUS = 15;
@@ -36,6 +45,11 @@ const HOA_KHAC_BONUS = 10;
  */
 const LIMIT: Record<Sac, number> = { [Sac.Thuan]: 2, [Sac.Nghich]: 2, [Sac.HoaGiai]: 1 };
 
+export interface SaoTrongBai {
+  readonly ten: PhuTinhName;
+  readonly the: TheChieu;
+}
+
 export interface ThanCuBrief {
   readonly cungThan: CungName;
   readonly chi: string;
@@ -43,8 +57,9 @@ export interface ThanCuBrief {
   readonly chiNamSinh: string;
   readonly chinhTinh: readonly { readonly ten: ChinhTinhName; readonly bac: Rating | null }[];
   readonly laVoChinhDieu: boolean;
-  readonly hungTinh: readonly PhuTinhName[];
-  readonly catTinh: readonly PhuTinhName[];
+  /** Kèm thế chiếu để bài gọi đúng vị trí: chỉ sao toạ thủ mới được nói là đóng tại cung. */
+  readonly hungTinh: readonly SaoTrongBai[];
+  readonly catTinh: readonly SaoTrongBai[];
   readonly anNgu: AnNgu;
   readonly luan: readonly LuanDe[];
 }
@@ -100,10 +115,13 @@ function baseClaims(the: TheCung): DraftClaim[] {
   });
 }
 
-function phuTinhClaims(names: readonly PhuTinhName[], factor: number): DraftClaim[] {
-  return names.flatMap((sao) => {
-    const claim = PHU_TINH_LUAN[sao];
-    return claim ? [draft(claim, factor)] : [];
+function phuTinhClaims(phuTinh: readonly SaoTheoThe[]): DraftClaim[] {
+  return phuTinh.flatMap((sao) => {
+    const claim = PHU_TINH_LUAN[sao.name];
+    if (!claim) return [];
+    // Cung nguồn bị án ngữ thì cái nó gửi sang cũng nhẹ đi, không riêng gì cung đang xét.
+    const factor = THE_FACTOR[sao.the] * (sao.bienAnNgu ? AN_NGU_FACTOR : 1);
+    return [draft(claim, factor)];
   });
 }
 
@@ -152,11 +170,7 @@ function cull(claims: DraftClaim[]): DraftClaim[] {
 export function buildThanCuBrief(chart: NatalChart): ThanCuBrief | null {
   const the = theCungAt(chart, chart.thanIndex);
 
-  const claims = [
-    ...baseClaims(the),
-    ...phuTinhClaims(the.phuTinhToaThu, 1),
-    ...phuTinhClaims(the.phuTinhHoiChieu, HOI_CHIEU_FACTOR),
-  ];
+  const claims = [...baseClaims(the), ...phuTinhClaims(the.phuTinh)];
   applyTuHoa(claims, the);
   if (the.anNgu) {
     for (const claim of claims) claim.trong = Math.round(claim.trong * AN_NGU_FACTOR);
@@ -173,9 +187,13 @@ export function buildThanCuBrief(chart: NatalChart): ThanCuBrief | null {
   if (!hasBase || !hasArc) return null;
 
   // Chỉ liệt kê sao thực sự đứng sau mệnh đề còn giữ: tên sao lọt vào brief là tên bài được phép gọi.
-  const phuTinhUsed = [...new Set(luan.flatMap((claim) => claim.do))].filter(
-    (sao): sao is PhuTinhName => !chinhTinhNames.has(sao),
-  );
+  const daDung = new Set(luan.flatMap((claim) => claim.do));
+  const phuTinhUsed: SaoTrongBai[] = [];
+  for (const sao of the.phuTinh) {
+    if (chinhTinhNames.has(sao.name) || !daDung.has(sao.name)) continue;
+    if (phuTinhUsed.some((da) => da.ten === sao.name)) continue;
+    phuTinhUsed.push({ ten: sao.name, the: sao.the });
+  }
 
   return {
     cungThan: the.cung,
@@ -184,8 +202,8 @@ export function buildThanCuBrief(chart: NatalChart): ThanCuBrief | null {
     chiNamSinh: CHI[chart.pillars.year.chi],
     chinhTinh: the.chinhTinh.map((sao) => ({ ten: sao.name, bac: sao.rating })),
     laVoChinhDieu: the.laVoChinhDieu,
-    hungTinh: phuTinhUsed.filter(isHungTinh),
-    catTinh: phuTinhUsed.filter((sao) => !isHungTinh(sao)),
+    hungTinh: phuTinhUsed.filter((sao) => isHungTinh(sao.ten)),
+    catTinh: phuTinhUsed.filter((sao) => !isHungTinh(sao.ten)),
     anNgu: the.anNgu,
     luan,
   };

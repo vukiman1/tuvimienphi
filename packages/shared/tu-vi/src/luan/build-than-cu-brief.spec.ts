@@ -2,6 +2,7 @@ import { castNatal, type NatalChart } from '../cast-chart.js';
 import { Gender } from '../van-han.js';
 import { buildThanCuBrief } from './build-than-cu-brief.js';
 import { Sac } from './luan-de.js';
+import { TheChieu } from './the-cung.js';
 
 /** Thân cư Phu Thê, Liêm Trinh (H) đi cùng Tham Lang (H), cung có Tuần án ngữ. */
 const LIEM_THAM: NatalChart = castNatal({
@@ -39,8 +40,18 @@ describe('buildThanCuBrief', () => {
       const brief = buildThanCuBrief(chart);
       const dungToi = new Set(brief?.luan.flatMap((de) => de.do));
       for (const sao of [...(brief?.hungTinh ?? []), ...(brief?.catTinh ?? [])]) {
-        expect(dungToi.has(sao)).toBe(true);
+        expect(dungToi.has(sao.ten)).toBe(true);
       }
+    }
+  });
+
+  it('ghi kèm thế chiếu của từng sao để bài gọi đúng vị trí', () => {
+    const brief = buildThanCuBrief(LIEM_THAM);
+    const moiSao = [...(brief?.hungTinh ?? []), ...(brief?.catTinh ?? [])];
+
+    expect(moiSao.length).toBeGreaterThan(0);
+    for (const sao of moiSao) {
+      expect(Object.values(TheChieu)).toContain(sao.the);
     }
   });
 

@@ -1,3 +1,10 @@
+/**
+ * Bộ kiểm được mock: spec này kiểm chuyện ĐIỀU PHỐI — sinh lại mấy lần, dừng khi nào, trả gì khi
+ * bảng chưa soạn — chứ không kiểm nội dung. Để nó gọi bộ kiểm thật thì mỗi lần đổi bảng luận là
+ * spec vỡ, dù phần điều phối không đụng tới.
+ */
+jest.mock('./validate/check-paragraphs', () => ({ checkParagraphs: jest.fn() }));
+
 import { castNatal, Gender, type NatalChart } from '@org/shared-tu-vi';
 import { AiClient } from '../../ai/ai.client';
 import type { AiRequest, AiResult } from '../../ai/ai.types';
@@ -7,6 +14,7 @@ import {
   MalformedChapterError,
 } from './luan-giai.errors';
 import { ThanCuGenerator } from './than-cu.generator';
+import { checkParagraphs } from './validate/check-paragraphs';
 
 const CO_BANG: NatalChart = castNatal({
   solarDate: new Date(1960, 4, 26),
@@ -20,14 +28,7 @@ const CHUA_SOAN: NatalChart = castNatal({
   gender: Gender.Nam,
 });
 
-const DAT = JSON.stringify({
-  doan1:
-    'Cung Phu Thê có **Liêm Trinh (H)** đi cùng **Tham Lang (H)**, cho thấy người bạn đời không dễ an phận. Có thêm **Thiên Y** đóng tại đây, người ấy thường ==có sức hút, giỏi giao tiếp và hợp duyên==, dễ được quý mến.',
-  doan2:
-    'Tuy nhiên, **Đại Hao, Kiếp Sát** cùng góp mặt nên đường tình cảm có lúc hao tán, tiêu tốn tâm sức và tiền bạc, cũng có giai đoạn chịu áp lực hoặc mất mát. Điều đáng chú ý là **Thiên Thọ** đóng tại đây chủ sự bền, giữ được lâu khi đã ổn định, vì vậy ==sóng gió thường nằm ở chặng đầu== hơn là ở cả chặng đường.',
-});
-
-const HONG = JSON.stringify({ doan1: 'Một câu thôi.', doan2: 'Cũng một câu thôi.' });
+const BAI = JSON.stringify({ doan1: 'Hai câu. Câu nữa.', doan2: 'Hai câu. Câu nữa.' });
 
 /** Rộng rãi để test hành vi chứ không test đồng hồ. */
 const BUDGET_MS = 60_000;
@@ -46,9 +47,17 @@ class AiGia extends AiClient {
   }
 }
 
+const kiem = checkParagraphs as jest.MockedFunction<typeof checkParagraphs>;
+const DAT_HET: string[] = [];
+const VI_PHAM = ['đoạn 2: 3 câu, cần đúng 2'];
+
 describe('ThanCuGenerator', () => {
+  beforeEach(() => kiem.mockReset());
+
   it('ghép bài từ khung cố định và hai đoạn mô hình viết', async () => {
-    const ket = await new ThanCuGenerator(new AiGia([DAT])).generate(CO_BANG, BUDGET_MS);
+    kiem.mockReturnValue(DAT_HET);
+
+    const ket = await new ThanCuGenerator(new AiGia([BAI])).generate(CO_BANG, BUDGET_MS);
     const article = ket?.article;
 
     expect(article?.title).toBe('Thân cư Phu Thê');
@@ -58,7 +67,8 @@ describe('ThanCuGenerator', () => {
   });
 
   it('sinh lại kèm danh sách lỗi khi bản đầu không qua bộ kiểm', async () => {
-    const ai = new AiGia([HONG, DAT]);
+    kiem.mockReturnValueOnce(VI_PHAM).mockReturnValue(DAT_HET);
+    const ai = new AiGia([BAI, BAI]);
 
     const ket = await new ThanCuGenerator(ai).generate(CO_BANG, BUDGET_MS);
 
@@ -68,7 +78,8 @@ describe('ThanCuGenerator', () => {
   });
 
   it('bỏ cuộc sau khi hết lượt và nêu rõ vi phạm còn lại', async () => {
-    const ai = new AiGia([HONG, HONG, HONG, HONG, HONG]);
+    kiem.mockReturnValue(VI_PHAM);
+    const ai = new AiGia([BAI, BAI, BAI, BAI, BAI]);
 
     await expect(new ThanCuGenerator(ai).generate(CO_BANG, BUDGET_MS)).rejects.toThrow(
       ChapterRejectedError,
@@ -77,14 +88,14 @@ describe('ThanCuGenerator', () => {
   });
 
   it('trả null khi cung an Thân vô chính diệu, không gọi mô hình', async () => {
-    const ai = new AiGia([DAT]);
+    const ai = new AiGia([BAI]);
 
     await expect(new ThanCuGenerator(ai).generate(CHUA_SOAN, BUDGET_MS)).resolves.toBeNull();
     expect(ai.requests).toHaveLength(0);
   });
 
   it('dừng trước khi gọi mô hình nếu ngân sách thời gian không đủ cho một lượt', async () => {
-    const ai = new AiGia([DAT]);
+    const ai = new AiGia([BAI]);
 
     await expect(new ThanCuGenerator(ai).generate(CO_BANG, 100)).rejects.toThrow(
       ChapterTimedOutError,

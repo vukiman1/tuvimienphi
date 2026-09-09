@@ -13,11 +13,11 @@ const MAX_HIGHLIGHT_WORDS = 12;
 export function checkForm(brief: ThanCuBrief, paragraphs: ThanCuParagraphs): string[] {
   const hopLe = new Set<string>([
     ...brief.chinhTinh.map((sao) => sao.ten),
-    ...brief.hungTinh,
-    ...brief.catTinh,
+    ...brief.hungTinh.map((sao) => sao.ten),
+    ...brief.catTinh.map((sao) => sao.ten),
   ]);
   const bacCua = new Map(brief.chinhTinh.map((sao) => [sao.ten as string, sao.bac]));
-  const laHung = new Set<string>(brief.hungTinh);
+  const laHung = new Set<string>(brief.hungTinh.map((sao) => sao.ten));
 
   return [paragraphs.doan1, paragraphs.doan2].flatMap((doan, chiSo) =>
     kiemMotDoan(doan, chiSo + 1, hopLe, bacCua, laHung),
