@@ -59,12 +59,13 @@ describe('buildThanCuBrief', () => {
     }
   });
 
-  it('trả null khi bảng chưa soạn tổ hợp chính tinh, dù phụ tinh có mệnh đề', () => {
-    const chuaSoan = castNatal({
-      solarDate: new Date(1985, 4, 20),
-      hour: 9,
+  it('trả null khi cung an Thân vô chính diệu, vì không có sao nào để dựng mệnh đề nền', () => {
+    const voChinhDieu = castNatal({
+      solarDate: new Date(1985, 0, 3),
+      hour: 21,
       gender: Gender.Nam,
     });
-    expect(buildThanCuBrief(chuaSoan)).toBeNull();
+    expect(voChinhDieu.cungs[voChinhDieu.thanIndex].isVoChinhDieu).toBe(true);
+    expect(buildThanCuBrief(voChinhDieu)).toBeNull();
   });
 });

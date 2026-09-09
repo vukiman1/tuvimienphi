@@ -13,10 +13,10 @@ const CO_BANG: NatalChart = castNatal({
   hour: 21,
   gender: Gender.Nam,
 });
-/** Thân cư Phu Thê nhưng chính tinh là Cự Môn — bảng chưa soạn tới. */
+/** Cung an Thân vô chính diệu — không có sao nào để dựng mệnh đề nền, nên không bao giờ ra bài. */
 const CHUA_SOAN: NatalChart = castNatal({
-  solarDate: new Date(1985, 4, 20),
-  hour: 9,
+  solarDate: new Date(1985, 0, 3),
+  hour: 21,
   gender: Gender.Nam,
 });
 
@@ -76,7 +76,7 @@ describe('ThanCuGenerator', () => {
     expect(ai.requests).toHaveLength(5);
   });
 
-  it('trả null khi bảng luận chưa soạn tới lá số, không gọi mô hình', async () => {
+  it('trả null khi cung an Thân vô chính diệu, không gọi mô hình', async () => {
     const ai = new AiGia([DAT]);
 
     await expect(new ThanCuGenerator(ai).generate(CHUA_SOAN, BUDGET_MS)).resolves.toBeNull();

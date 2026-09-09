@@ -4,8 +4,10 @@ import { CHI } from '../lich/lunar-calendar.js';
 import { isHungTinh } from '../sao-cat-hung.js';
 import type { ChinhTinhName, PhuTinhName, SaoName } from '../sao-names.js';
 import type { Rating } from '../sao-rating.js';
+import type { CellLuan } from './bang/cell-luan.js';
 import type { Gender } from '../van-han.js';
-import { CHINH_TINH_THAN_CU } from './bang/chinh-tinh-than-cu.js';
+import { CAP_DOI_THAN_CU } from './bang/cap-doi-than-cu.js';
+import { CHINH_TINH_THAN_CU } from './bang/than-cu/index.js';
 import { PHU_TINH_LUAN } from './bang/phu-tinh.js';
 import { Sac, type LuanDe } from './luan-de.js';
 import { theCungAt, type AnNgu, type TheCung } from './the-cung.js';
@@ -65,23 +67,37 @@ function draft(claim: LuanDe, factor: number): DraftClaim {
   };
 }
 
-function baseClaims(the: TheCung): DraftClaim[] {
-  const cell = CHINH_TINH_THAN_CU[toHopKey(the.chinhTinh)]?.[the.cung];
-  if (!cell) return [];
+function moRong(cell: CellLuan, bac: Rating | null): readonly LuanDe[] {
+  return [...cell.chung, ...(bac ? (cell.theoBac?.[bac] ?? []) : [])];
+}
 
+/**
+ * Ô riêng cho tổ hợp đôi được ưu tiên; không có thì ghép từ hai ô sao đơn.
+ *
+ * Ghép là XẤP XỈ, không phải đúng hoàn toàn: Sát Phá Tham hay Cơ Nguyệt Đồng Lương là cách cục có
+ * tên, luận theo tổ hợp chứ không luận cộng dồn. Nhưng ghép cho 83% lá số có bài đọc được, còn chờ
+ * viết đủ hai mươi bốn ô đôi thì 33% lá số không có gì — nên ghép trước, viết ô riêng đè lên sau.
+ */
+function baseClaims(the: TheCung): DraftClaim[] {
   const brightness = the.chinhTinh.reduce(
     (product, sao) => product * (BRIGHTNESS_FACTOR[sao.rating ?? 'B'] ?? 1),
     1,
   );
 
-  // Phần riêng theo bậc chỉ lấy khi cả cụm chính tinh cùng một bậc: hai sao lệch bậc thì mệnh đề
-  // viết cho một bậc không còn đúng cho ô đó nữa.
-  const bacChung = the.chinhTinh.every((sao) => sao.rating === the.chinhTinh[0]?.rating)
-    ? the.chinhTinh[0]?.rating
-    : null;
-  const theoBac = bacChung ? (cell.theoBac?.[bacChung] ?? []) : [];
+  const oDoi = CAP_DOI_THAN_CU[toHopKey(the.chinhTinh)]?.[the.cung];
+  if (oDoi) {
+    // Phần theo bậc chỉ lấy khi cả cụm cùng một bậc: hai sao lệch bậc thì mệnh đề viết cho một bậc
+    // không còn đúng cho ô đó nữa.
+    const bacChung = the.chinhTinh.every((sao) => sao.rating === the.chinhTinh[0]?.rating)
+      ? (the.chinhTinh[0]?.rating ?? null)
+      : null;
+    return moRong(oDoi, bacChung).map((claim) => draft(claim, brightness));
+  }
 
-  return [...cell.chung, ...theoBac].map((claim) => draft(claim, brightness));
+  return the.chinhTinh.flatMap((sao) => {
+    const cell = CHINH_TINH_THAN_CU[the.cung]?.[sao.name];
+    return cell ? moRong(cell, sao.rating).map((claim) => draft(claim, brightness)) : [];
+  });
 }
 
 function phuTinhClaims(names: readonly PhuTinhName[], factor: number): DraftClaim[] {

@@ -1,6 +1,7 @@
 import { anChinhTinh } from '../an-chinh-tinh.js';
 import { CUNG_NAMES } from '../dia-ban.js';
-import { CHINH_TINH_THAN_CU } from './bang/chinh-tinh-than-cu.js';
+import { CAP_DOI_THAN_CU } from './bang/cap-doi-than-cu.js';
+import { CHINH_TINH_THAN_CU } from './bang/than-cu/index.js';
 import { THAN_CU_CUNGS } from './build-than-cu-brief.js';
 import { TO_HOP_VO_CHINH_DIEU, toHopKey } from './to-hop.js';
 
@@ -24,28 +25,35 @@ function moiToHop(): Set<string> {
 describe('bảng mệnh đề nền cho chương Thân cư', () => {
   const hopLe = moiToHop();
 
-  it('không có khoá tổ hợp nào nằm ngoài những tổ hợp thực sự an được', () => {
-    const la = Object.keys(CHINH_TINH_THAN_CU).filter((khoa) => !hopLe.has(khoa));
+  it('chỉ soạn cho sáu cung Thân có thể an vào', () => {
+    expect(Object.keys(CHINH_TINH_THAN_CU).sort()).toEqual([...THAN_CU_CUNGS].sort());
+  });
+
+  it('không có khoá tổ hợp đôi nào nằm ngoài những tổ hợp thực sự an được', () => {
+    const la = Object.keys(CAP_DOI_THAN_CU).filter((khoa) => !hopLe.has(khoa));
     expect(la).toEqual([]);
   });
 
-  it('không có khoá cung nào nằm ngoài sáu cung Thân có thể an vào', () => {
-    const la = Object.entries(CHINH_TINH_THAN_CU).flatMap(([toHop, theoCung]) =>
-      Object.keys(theoCung ?? {})
-        .filter((cung) => !THAN_CU_CUNGS.includes(cung as never))
-        .map((cung) => `${toHop} @ ${cung}`),
-    );
-    expect(la).toEqual([]);
+  it('mọi ô đều có ít nhất một mệnh đề thuận và một mệnh đề nghịch để dựng nổi mạch bài', () => {
+    const thieu: string[] = [];
+    for (const [cung, theoSao] of Object.entries(CHINH_TINH_THAN_CU)) {
+      for (const [sao, cell] of Object.entries(theoSao ?? {})) {
+        const sac = new Set(cell.chung.map((menhDe) => menhDe.sac));
+        if (!sac.has('thuan' as never) || !sac.has('nghich' as never)) {
+          thieu.push(`${cung} · ${sao}`);
+        }
+      }
+    }
+    expect(thieu).toEqual([]);
   });
 
   it('báo mức phủ hiện tại để theo dõi tiến độ biên soạn', () => {
-    const can = hopLe.size * THAN_CU_CUNGS.length;
-    const co = Object.values(CHINH_TINH_THAN_CU).reduce(
-      (tong, theoCung) => tong + Object.keys(theoCung ?? {}).length,
+    const soO = Object.values(CHINH_TINH_THAN_CU).reduce(
+      (tong: number, theoSao) => tong + Object.keys(theoSao ?? {}).length,
       0,
     );
-    expect(can).toBeGreaterThan(0);
-    expect(co).toBeGreaterThan(0);
-    expect(co).toBeLessThanOrEqual(can);
+    // Mười bốn chính tinh × sáu cung Thân. Ô đôi ghép từ hai ô đơn nên không tính riêng ở đây.
+    expect(soO).toBeGreaterThan(0);
+    expect(soO).toBeLessThanOrEqual(14 * THAN_CU_CUNGS.length);
   });
 });

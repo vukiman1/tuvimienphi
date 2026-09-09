@@ -25,8 +25,8 @@ const CO_BANG: BirthInput = {
   hour: 'Hợi',
   gender: Gender.Male,
 };
-/** Thân cư Phu Thê nhưng chính tinh là Cự Môn — bảng chưa soạn tới. */
-const CHUA_SOAN: BirthInput = { ...CO_BANG, day: 20, month: 5, year: 1985, hour: 'Tị' };
+/** Cung an Thân vô chính diệu — không có sao nào để dựng mệnh đề nền. */
+const CHUA_SOAN: BirthInput = { ...CO_BANG, day: 3, month: 1, year: 1985 };
 
 const BAI = { title: 'Thân cư Phu Thê' } as LuanGiaiArticle;
 
@@ -84,7 +84,7 @@ describe('LuanGiaiService.request', () => {
     expect(quota.consume).not.toHaveBeenCalled();
   });
 
-  it('báo unavailable khi bảng chưa soạn tới lá số, không trừ suất cho việc chắc chắn không ra bài', async () => {
+  it('báo unavailable khi cung an Thân vô chính diệu, không trừ suất cho việc chắc chắn không ra bài', async () => {
     const { service, generator, quota } = dungService();
 
     const ket = await service.request('u1', CHUA_SOAN, CHAPTER_THAN_CU);
