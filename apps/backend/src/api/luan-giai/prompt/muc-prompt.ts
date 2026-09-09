@@ -13,7 +13,8 @@ Viết ĐÚNG 1 đoạn, ĐÚNG 2 câu, dựa hoàn toàn vào brief.
 
 TRUNG THÀNH VỚI BRIEF:
 A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của nó, nguyên văn.
-B. MỌI dữ kiện trong duKien[] phải được dẫn ra — mốc tuổi thì ghi đúng con số, tên trạng thái hay tên hoá thì gọi đúng tên.
+B. MỌI dữ kiện trong duKien[] phải được dẫn ra — mốc tuổi ghi đúng con số, tên cách hay tên hoá gọi
+   đúng tên. Nhưng DẪN vào câu văn chứ đừng chép nguyên cụm, và tuyệt đối không chép dấu hai chấm.
 C. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
 
 QUY TẮC HÌNH THỨC:

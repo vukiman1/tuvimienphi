@@ -5,6 +5,7 @@ export * from './cast-chart.js';
 export * from './from-birth-input.js';
 
 export * from './chi.js';
+export * from './chi-ngu-hanh.js';
 export * from './dia-ban.js';
 export * from './tuan-triet.js';
 export * from './can-luong.js';

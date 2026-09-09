@@ -1,8 +1,12 @@
 import type { NatalChart } from '../cast-chart.js';
+import { CHI_NGU_HANH, theSinhKhac } from '../chi-ngu-hanh.js';
 import { nhiHopIndex, tamHopIndexes, xungChieuIndex } from '../chi.js';
+import { CHINH_TINH_NGU_HANH } from '../sao-ngu-hanh-data.js';
 import { CHI } from '../lich/lunar-calendar.js';
 import { HOA_NAMES, type HoaName } from '../tu-hoa.js';
 import { MENH_THAN_LUAN, TheMenhThan } from './bang/menh-than.js';
+import { cachCucTai } from './bang/cach-cuc.js';
+import { SINH_KHAC_LUAN } from './bang/sinh-khac.js';
 import { AN_NGU_LUAN, TU_HOA_LUAN } from './bang/the-cuc.js';
 import { TRANG_SINH_LUAN } from './bang/trang-sinh.js';
 import { buildThanCuBrief, type ThanCuBrief } from './build-than-cu-brief.js';
@@ -31,6 +35,9 @@ export interface MucBrief extends ThanCuBrief {
 /** Dưới ngần này thì mục quá mỏng, thà không có còn hơn có một câu cụt. */
 const TOI_THIEU_MENH_DE = 2;
 
+/** Mục chỉ có hai câu. Quá ba mệnh đề là mô hình buộc phải liệt kê, đo được từ bài chính. */
+const TRAN_MENH_DE = 3;
+
 export function theMenhThan(menhIndex: number, thanIndex: number): TheMenhThan {
   if (menhIndex === thanIndex) return TheMenhThan.Trung;
   if (tamHopIndexes(menhIndex).includes(thanIndex)) return TheMenhThan.TamHop;
@@ -58,7 +65,7 @@ function thoiDiem(chart: NatalChart): { luan: LuanDe[]; duKien: string[] } {
   const trangSinh = chart.cungs[chart.thanIndex].trangSinh;
   const deTrangSinh = TRANG_SINH_LUAN[trangSinh];
   if (deTrangSinh) {
-    duKien.push(`vòng Tràng Sinh: ${trangSinh}`);
+    duKien.push(`vòng Tràng Sinh đang ở cung ${trangSinh}`);
     luan.push(deTrangSinh);
   }
 
@@ -75,6 +82,21 @@ function theCuc(chart: NatalChart): { luan: LuanDe[]; duKien: string[] } {
     luan.push(...AN_NGU_LUAN[the.anNgu]);
   }
 
+  for (const cach of cachCucTai(chart, chart.thanIndex)) {
+    duKien.push(`cách ${cach.ten}`);
+    luan.push(...cach.luan);
+  }
+
+  // Thế ngũ hành giữa sao và cung, độc lập với miếu vượng: sao miếu mà bị cung khắc thì mạnh mà
+  // không thoải mái, sao bình mà được cung sinh thì lại dễ thở.
+  // Không đưa thế sinh khắc vào `duKien`: nó là nhãn phân loại, không phải dữ kiện người đọc cần
+  // nghe nguyên văn. Đưa vào thì mô hình dán thẳng "Thiên Đồng với cung hành Mộc: sao sinh cung"
+  // vào giữa câu — đo được. Ý nghĩa đã nằm trong chính mệnh đề.
+  const hanhCung = CHI_NGU_HANH[the.chiIndex];
+  for (const sao of the.chinhTinh) {
+    luan.push(SINH_KHAC_LUAN[theSinhKhac(CHINH_TINH_NGU_HANH[sao.name], hanhCung)]);
+  }
+
   // Chỉ lấy hoá toạ thủ: hoá ở cung khác chiếu sang là chuyện của cung đó, không phải thế cục ở đây.
   const hoaTaiCho = the.phuTinh
     .filter((sao) => sao.the === TheChieu.ToaThu)
@@ -86,7 +108,12 @@ function theCuc(chart: NatalChart): { luan: LuanDe[]; duKien: string[] } {
     luan.push(TU_HOA_LUAN[hoa]);
   }
 
-  return { luan, duKien };
+  return { luan: cat(luan), duKien };
+}
+
+/** Giữ những mệnh đề nặng nhất; phần còn lại nhồi vào hai câu chỉ ra danh sách. */
+function cat(luan: readonly LuanDe[]): LuanDe[] {
+  return [...luan].sort((a, b) => b.trong - a.trong).slice(0, TRAN_MENH_DE);
 }
 
 /**
