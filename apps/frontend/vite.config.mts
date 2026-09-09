@@ -49,9 +49,7 @@ export default defineConfig(({ command, mode }) => {
       // Dev đọc thẳng TS source của package shared nên sửa engine là HMR chạy ngay; không có nó thì
       // trình duyệt vẫn nhận `dist` dựng lúc khởi động và mọi thay đổi im lặng trôi mất. Bản build
       // vẫn đi qua `dist` như cũ.
-      ...(command === 'serve'
-        ? { conditions: ['@org/source', ...defaultClientConditions] }
-        : {}),
+      ...(command === 'serve' ? { conditions: ['@org/source', ...defaultClientConditions] } : {}),
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
       },
