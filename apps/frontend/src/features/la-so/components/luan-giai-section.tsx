@@ -1,6 +1,8 @@
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { MEDIA } from '@/config/media';
 import type { BirthInput } from '@org/shared-contracts';
+import { luanGiaiQueries } from '@/features/la-so/luan-giai-queries';
 import type { LuanGiaiChapter } from '@/features/la-so/luan-giai-data';
 import { LuanGiaiChapterContent } from '@/features/la-so/components/luan-giai-chapter-content';
 import { LuanGiaiChapters } from '@/features/la-so/components/luan-giai-chapters';
@@ -67,8 +69,9 @@ export function LuanGiaiSection({
   // Mục lục và nội dung luôn khớp nhau: khoá lạ thì rơi về mục đầu chứ không để trống thân trang.
   const chapter = chapters.find((item) => item.order === activeChapter) ?? chapters[0];
 
-  // Giữ ở đây chứ không giữ trong thẻ: đổi sang mục khác rồi quay lại thì không phải bấm xem lần nữa.
-  const [requestedOrders, setRequestedOrders] = useState<readonly string[]>([]);
+  // Hỏi trạng thái cả sáu chương một lượt ở đây, vì mục lục và phần thân đều cần: mục lục để biết
+  // chương nào còn khoá, phần thân để mở thẳng chương đã có bài thay vì bắt bấm lại.
+  const { data: trangThai } = useQuery(luanGiaiQueries.statusMap(birth));
 
   return (
     <section
@@ -92,6 +95,7 @@ export function LuanGiaiSection({
           <LuanGiaiChapters
             activeOrder={activeChapter}
             chapters={chapters}
+            statuses={trangThai?.chapters}
             onSelect={onSelectChapter}
           />
         </div>
@@ -104,8 +108,7 @@ export function LuanGiaiSection({
             key={chapter.order}
             birth={birth}
             chapter={chapter}
-            isRequested={requestedOrders.includes(chapter.order)}
-            onRequest={() => setRequestedOrders((current) => [...current, chapter.order])}
+            status={trangThai?.chapters[chapter.order]}
           />
         </div>
 

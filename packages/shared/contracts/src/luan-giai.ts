@@ -41,3 +41,11 @@ export type LuanGiaiChapterResponse =
   | { readonly status: LuanGiaiChapterStatus.Ready; readonly article: LuanGiaiArticle }
   | { readonly status: LuanGiaiChapterStatus.Pending }
   | { readonly status: LuanGiaiChapterStatus.Unavailable };
+
+/**
+ * Trạng thái của cả sáu chương cho một lá số, hỏi một lượt khi mở trang. Mục lục cần biết chương
+ * nào đã có bài để mở thẳng, chương nào còn khoá — không có nó thì phải bấm từng chương mới biết.
+ */
+export interface LuanGiaiChapterStatusMap {
+  readonly chapters: Readonly<Record<string, LuanGiaiChapterStatus>>;
+}

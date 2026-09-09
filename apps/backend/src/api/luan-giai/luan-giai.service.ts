@@ -6,12 +6,13 @@ import {
   type BirthInput,
   type LuanGiaiArticle,
   type LuanGiaiChapterResponse,
+  type LuanGiaiChapterStatusMap,
 } from '@org/shared-contracts';
 import { buildThanCuBrief, chartFromBirthInput } from '@org/shared-tu-vi';
 import { Repository } from 'typeorm';
 import { ChapterQuotaService } from './chapter-quota.service';
 import { LuanGiaiChapterEntity } from './entities/luan-giai-chapter.entity';
-import { GENERATION_BUDGET_MS, SUPPORTED_CHAPTERS } from './luan-giai.constants';
+import { CHAPTER_ORDERS, GENERATION_BUDGET_MS, SUPPORTED_CHAPTERS } from './luan-giai.constants';
 import {
   ChapterGenerationFailedException,
   ChapterQuotaExceededException,
@@ -33,6 +34,34 @@ export class LuanGiaiService {
     private readonly quota: ChapterQuotaService,
     private readonly generator: ThanCuGenerator,
   ) {}
+
+  /**
+   * Trạng thái cả sáu chương, hỏi một lượt khi mở trang. Chỉ trả trạng thái chứ không trả bài: mục
+   * lục chỉ cần biết chương nào mở được, còn nội dung thì lấy khi người ta thật sự đọc chương đó.
+   */
+  async status(key: string): Promise<LuanGiaiChapterStatusMap> {
+    const daCo = new Set(
+      (
+        await this.repo.find({
+          where: { birthKey: key },
+          select: { chapterOrder: true },
+        })
+      ).map((row) => row.chapterOrder),
+    );
+
+    const chapters = Object.fromEntries(
+      CHAPTER_ORDERS.map((order) => [
+        order,
+        daCo.has(order)
+          ? LuanGiaiChapterStatus.Ready
+          : laChuongCoBang(order)
+            ? LuanGiaiChapterStatus.Pending
+            : LuanGiaiChapterStatus.Unavailable,
+      ]),
+    );
+
+    return { chapters };
+  }
 
   /** Đọc chương đã có. Không cần đăng nhập: bài gắn với lá số chứ không gắn với người xem. */
   async read(key: string, order: string): Promise<LuanGiaiChapterResponse> {

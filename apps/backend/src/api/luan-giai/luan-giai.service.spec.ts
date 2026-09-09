@@ -41,6 +41,7 @@ const dungBrief = buildThanCuBrief as jest.MockedFunction<typeof buildThanCuBrie
 
 interface Overrides {
   readonly row?: LuanGiaiChapterEntity | null;
+  readonly daCo?: readonly Pick<LuanGiaiChapterEntity, 'chapterOrder'>[];
   readonly conSuat?: boolean;
   readonly sinh?: jest.Mock;
 }
@@ -48,6 +49,7 @@ interface Overrides {
 function dungService(overrides?: Overrides) {
   const repo = {
     findOne: jest.fn().mockResolvedValue(overrides?.row ?? null),
+    find: jest.fn().mockResolvedValue(overrides?.daCo ?? []),
     upsert: jest.fn().mockResolvedValue(undefined),
   };
   const quota = {
@@ -144,5 +146,32 @@ describe('LuanGiaiService.request', () => {
       ChapterGenerationFailedException,
     );
     expect(quota.refund).toHaveBeenCalledWith('u1');
+  });
+});
+
+describe('LuanGiaiService.status', () => {
+  it('chương đã có bài thì mở được, chương có bảng mà chưa sinh thì còn khoá', async () => {
+    const { service } = dungService({ daCo: [{ chapterOrder: CHAPTER_THAN_CU }] });
+
+    const { chapters } = await service.status('1960-05-26-duong-h11-nam');
+
+    expect(chapters[CHAPTER_THAN_CU]).toBe(LuanGiaiChapterStatus.Ready);
+  });
+
+  it('chương chưa có bảng luận thì báo unavailable chứ không phải khoá chờ bấm', async () => {
+    const { service } = dungService();
+
+    const { chapters } = await service.status('1960-05-26-duong-h11-nam');
+
+    expect(chapters[CHAPTER_THAN_CU]).toBe(LuanGiaiChapterStatus.Pending);
+    expect(chapters['05']).toBe(LuanGiaiChapterStatus.Unavailable);
+  });
+
+  it('liệt kê đủ sáu chương để mục lục không bị thiếu ô', async () => {
+    const { service } = dungService();
+
+    const { chapters } = await service.status('1960-05-26-duong-h11-nam');
+
+    expect(Object.keys(chapters)).toHaveLength(6);
   });
 });

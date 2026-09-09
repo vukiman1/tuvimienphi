@@ -1,12 +1,25 @@
 import { queryOptions } from '@tanstack/react-query';
-import { birthKey, type BirthInput, type LuanGiaiChapterResponse } from '@org/shared-contracts';
+import {
+  birthKey,
+  type BirthInput,
+  type LuanGiaiChapterResponse,
+  type LuanGiaiChapterStatusMap,
+} from '@org/shared-contracts';
 import { httpRequest } from '@/lib/http-request';
 
-/**
- * Query này giữ bài đã đọc để đổi qua mục khác rồi quay lại không phải xin lần nữa. Nó không tự
- * chạy: `enabled` chỉ bật sau khi POST trả về, và chính POST nạp sẵn kết quả vào đây.
- */
+/** Nội dung một chương, chỉ nạp khi người ta thật sự mở chương đó. */
 export const luanGiaiQueries = {
+  /**
+   * Trạng thái cả sáu chương, hỏi ngay khi mở trang. Không có nó thì mục lục không biết chương nào
+   * đã có bài, và người dùng phải bấm từng chương mới biết chương đó có gì.
+   */
+  statusMap: (birth: BirthInput) =>
+    queryOptions({
+      queryKey: ['luan-giai', birthKey(birth)] as const,
+      queryFn: () => httpRequest.get<LuanGiaiChapterStatusMap>(`/luan-giai/${birthKey(birth)}`),
+      staleTime: Infinity,
+    }),
+
   chapter: (birth: BirthInput, order: string) =>
     queryOptions({
       queryKey: ['luan-giai', birthKey(birth), order],

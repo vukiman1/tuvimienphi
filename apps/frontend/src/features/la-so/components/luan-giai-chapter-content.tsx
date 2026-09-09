@@ -1,5 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { LuanGiaiChapterStatus, type BirthInput } from '@org/shared-contracts';
+import {
+  LuanGiaiChapterStatus,
+  type BirthInput,
+  type LuanGiaiChapterStatusMap,
+} from '@org/shared-contracts';
 import type { LuanGiaiChapter } from '@/features/la-so/luan-giai-data';
 import { luanGiaiQueries, requestChapter } from '@/features/la-so/luan-giai-queries';
 import { LuanGiaiArticleCard } from '@/features/la-so/components/luan-giai-article';
@@ -26,61 +30,57 @@ const CAC_BUOC = [
 interface LuanGiaiChapterContentProps {
   readonly birth: BirthInput;
   readonly chapter: LuanGiaiChapter;
-  readonly isRequested: boolean;
-  readonly onRequest: () => void;
+  /** Chưa biết thì để trống — lúc đó hiện khung chờ chứ đừng đoán là chưa có bài. */
+  readonly status?: LuanGiaiChapterStatus;
 }
 
-/** Bốn trạng thái của một mục: chưa xin → đang sinh → có bài, hoặc chưa biên soạn. */
-export function LuanGiaiChapterContent({
-  birth,
-  chapter,
-  isRequested,
-  onRequest,
-}: LuanGiaiChapterContentProps) {
+/**
+ * Chương đã sinh thì mở thẳng khi vào trang; chương chưa sinh thì khoá lại, bấm mới sinh. Bài lưu
+ * theo lá số nên lần thứ hai xem cùng lá số đó là đọc ngay, không gọi mô hình và không trừ suất.
+ */
+export function LuanGiaiChapterContent({ birth, chapter, status }: LuanGiaiChapterContentProps) {
   const queryClient = useQueryClient();
   const options = luanGiaiQueries.chapter(birth, chapter.order);
-  const { data } = useQuery({ ...options, enabled: isRequested });
+  const daCoBai = status === LuanGiaiChapterStatus.Ready;
+  const { data } = useQuery({ ...options, enabled: daCoBai });
 
   const xin = useMutation({
     mutationFn: () => requestChapter(birth, chapter.order),
     onSuccess: (response) => {
-      // Chỉ nhớ khi đã có bài. `unavailable` nghĩa là bảng luận chưa soạn tới lá số này — nhớ nó
-      // với staleTime vô hạn thì lúc bảng được bổ sung, người đang mở trang vẫn thấy "chưa biên
-      // soạn" cho tới khi tải lại, mà nút bấm lại cũng đã bị khoá.
       if (response.status !== LuanGiaiChapterStatus.Ready) return;
       queryClient.setQueryData(options.queryKey, response);
-      onRequest();
+      // Gỡ ổ khoá trên mục lục ngay tại chỗ, khỏi phải hỏi lại máy chủ một vòng nữa.
+      queryClient.setQueryData<LuanGiaiChapterStatusMap>(
+        luanGiaiQueries.statusMap(birth).queryKey,
+        (cu) =>
+          cu && {
+            chapters: { ...cu.chapters, [chapter.order]: LuanGiaiChapterStatus.Ready },
+          },
+      );
     },
   });
 
-  // Bài viết ra mất vài giây tới vài chục giây, nên chuyển sang khung chờ ngay khi bấm chứ không
-  // chỉ khoá nút lại — nút xám đứng im lâu như vậy trông như trang bị treo.
   if (xin.isPending) {
     return <LuanGiaiSkeletonCard steps={CAC_BUOC} />;
   }
 
-  // Lấy thẳng từ lần xin gần nhất chứ không qua cache: đổi mục rồi quay lại là hỏi lại từ đầu.
-  if (xin.data?.status === LuanGiaiChapterStatus.Unavailable) {
-    return <LuanGiaiPendingCard chapter={chapter} />;
-  }
-
-  if (!isRequested) {
-    return (
-      <LuanGiaiPromptCard
-        chapter={chapter}
-        error={xin.error ? errorMessage(xin.error, DEFAULT_ERROR_MESSAGE) : undefined}
-        onRequest={() => xin.mutate()}
-      />
-    );
-  }
-
-  if (!data || data.status === LuanGiaiChapterStatus.Pending) {
+  if (status === undefined || (daCoBai && !data)) {
     return <LuanGiaiSkeletonCard />;
   }
 
-  if (data.status === LuanGiaiChapterStatus.Unavailable) {
+  if (status === LuanGiaiChapterStatus.Unavailable) {
     return <LuanGiaiPendingCard chapter={chapter} />;
   }
 
-  return <LuanGiaiArticleCard article={data.article} order={chapter.order} />;
+  if (data?.status === LuanGiaiChapterStatus.Ready) {
+    return <LuanGiaiArticleCard article={data.article} order={chapter.order} />;
+  }
+
+  return (
+    <LuanGiaiPromptCard
+      chapter={chapter}
+      error={xin.error ? errorMessage(xin.error, DEFAULT_ERROR_MESSAGE) : undefined}
+      onRequest={() => xin.mutate()}
+    />
+  );
 }

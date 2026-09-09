@@ -2,6 +2,9 @@
 export const CHAPTER_THAN_CU = '01';
 export const SUPPORTED_CHAPTERS = [CHAPTER_THAN_CU] as const;
 
+/** Sáu chương của trang, kể cả chương chưa có bảng luận — mục lục vẫn phải liệt kê đủ. */
+export const CHAPTER_ORDERS = ['01', '02', '03', '04', '05', '06'] as const;
+
 /**
  * Mỗi lượt sinh là một lần gọi API mất tiền, và người dùng gõ ngày sinh bất kỳ cũng kích hoạt được.
  * Ba chương một ngày đủ cho một người xem kỹ lá số của mình mà không quét được nhiều lá số lạ.
