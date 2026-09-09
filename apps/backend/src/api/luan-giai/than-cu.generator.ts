@@ -1,52 +1,37 @@
 import { Injectable, Logger } from '@nestjs/common';
-import type { LuanGiaiArticle } from '@org/shared-contracts';
-import { buildThanCuBrief, type NatalChart } from '@org/shared-tu-vi';
+import type { LuanGiaiArticle, LuanGiaiSection } from '@org/shared-contracts';
+import {
+  buildMucBriefs,
+  buildThanCuBrief,
+  type MucBrief,
+  type NatalChart,
+} from '@org/shared-tu-vi';
 import { AiClient } from '../../ai/ai.client';
 import { assembleThanCuArticle } from './assemble-than-cu-article';
 import {
-  ChapterRejectedError,
-  ChapterTimedOutError,
-  MalformedChapterError,
-} from './luan-giai.errors';
-import { THAN_CU_SCHEMA, type ThanCuParagraphs } from './prompt/chapter-schema';
+  MUC_SCHEMA,
+  THAN_CU_SCHEMA,
+  type MucParagraph,
+  type ThanCuParagraphs,
+} from './prompt/chapter-schema';
+import { buildMucMessages, MUC_SYSTEM_PROMPT } from './prompt/muc-prompt';
 import { buildThanCuMessages, THAN_CU_SYSTEM_PROMPT } from './prompt/than-cu-prompt';
-import { checkParagraphs } from './validate/check-paragraphs';
-
-/**
- * Đo trên hai mươi lá số: trung bình 2,0 lượt, và ba lượt vẫn để lọt hai bài hỏng hẳn. Độ trễ ở đây
- * gần như không mất gì — người dùng chờ vài giây cho một bài luận giải là hợp lý, còn nhận 503 thì
- * không — nên nới trần lượt thay vì nới bộ kiểm.
- */
-const MAX_ATTEMPTS = 5;
-
-/**
- * Dưới ngần này thì đừng gọi thêm lượt nữa. Một lượt đạt mất 1,5–2,2 giây, nhưng có lần model trả
- * UNAVAILABLE sau 27 giây — đủ để một mình nó ăn hết trần của hàm serverless.
- */
-const MIN_ATTEMPT_MS = 4_000;
-
-function isParagraphs(value: unknown): value is ThanCuParagraphs {
-  if (typeof value !== 'object' || value === null) return false;
-  const record = value as Record<string, unknown>;
-  return typeof record.doan1 === 'string' && typeof record.doan2 === 'string';
-}
-
-function parseParagraphs(text: string): ThanCuParagraphs {
-  let raw: unknown;
-  try {
-    raw = JSON.parse(text);
-  } catch {
-    throw new MalformedChapterError(text);
-  }
-  if (!isParagraphs(raw)) throw new MalformedChapterError(text);
-  return { doan1: raw.doan1, doan2: raw.doan2 };
-}
+import { sinhVoiKiem } from './sinh-voi-kiem';
+import { baiChinh, baiMuc } from './validate/to-bai';
 
 export interface ThanCuResult {
   readonly article: LuanGiaiArticle;
-  /** Model nào viết ra bài và phải sinh lại mấy lần — lưu lại để theo dõi prompt xuống cấp. */
+  /** Model nào viết ra bài và tổng số lượt phải sinh lại — theo dõi để thấy prompt xuống cấp sớm. */
   readonly model: string;
   readonly attempts: number;
+}
+
+function parse<T>(text: string, coDu: (value: Record<string, unknown>) => boolean): T {
+  const raw: unknown = JSON.parse(text);
+  if (typeof raw !== 'object' || raw === null || !coDu(raw as Record<string, unknown>)) {
+    throw new Error('shape');
+  }
+  return raw as T;
 }
 
 @Injectable()
@@ -56,43 +41,78 @@ export class ThanCuGenerator {
   constructor(private readonly ai: AiClient) {}
 
   /**
-   * Trả `null` khi bảng luận chưa soạn tới lá số này — chờ thêm cũng không có bài, nên gọi bên phải
-   * phân biệt với trường hợp đang sinh.
+   * Trả `null` khi bảng luận chưa dựng nổi brief — bên gọi cần phân biệt với trường hợp đang sinh.
+   *
+   * Hai đoạn chính và từng mục con chạy SONG SONG: chúng độc lập nhau nên chờ tuần tự chỉ tổ nhân
+   * thời gian lên gấp bốn mà không được gì. Đoạn chính bắt buộc phải xong; mục con nào hỏng thì bỏ
+   * mục đó, vì bài thiếu một mục vẫn hơn là không có bài.
    */
   async generate(chart: NatalChart, budgetMs: number): Promise<ThanCuResult | null> {
     const brief = buildThanCuBrief(chart);
     if (!brief) return null;
 
-    const daThu: { paragraphs: ThanCuParagraphs; loi: readonly string[] }[] = [];
-    const deadline = Date.now() + budgetMs;
+    const mucBriefs = buildMucBriefs(chart);
 
-    for (let lan = 1; lan <= MAX_ATTEMPTS; lan += 1) {
-      const conLai = deadline - Date.now();
-      if (conLai < MIN_ATTEMPT_MS) {
-        throw new ChapterTimedOutError(lan - 1, daThu[daThu.length - 1]?.loi ?? []);
-      }
+    const [chinh, ...mucs] = await Promise.all([
+      sinhVoiKiem<ThanCuParagraphs>(
+        this.ai,
+        {
+          brief,
+          system: THAN_CU_SYSTEM_PROMPT,
+          schema: THAN_CU_SCHEMA,
+          messages: (daThu) =>
+            buildThanCuMessages(
+              brief,
+              daThu.map((lan) => ({ paragraphs: lan.paragraph, loi: lan.loi })),
+            ),
+          parse: (text) =>
+            parse<ThanCuParagraphs>(
+              text,
+              (o) => typeof o.doan1 === 'string' && typeof o.doan2 === 'string',
+            ),
+          toBai: baiChinh,
+        },
+        budgetMs,
+        (lan, model, loi) =>
+          this.logger.warn(`bài chính lần ${lan} bị chặn (${model}): ${loi.join('; ')}`),
+      ),
+      ...mucBriefs.map((mucBrief) => this.sinhMuc(mucBrief, budgetMs)),
+    ]);
 
-      const result = await this.ai.generate({
-        system: THAN_CU_SYSTEM_PROMPT,
-        messages: buildThanCuMessages(brief, daThu),
-        schema: THAN_CU_SCHEMA,
-        signal: AbortSignal.timeout(conLai),
-      });
-      const paragraphs = parseParagraphs(result.text);
-      const loi = checkParagraphs(brief, paragraphs, lan < MAX_ATTEMPTS);
+    const sections = mucs.filter((muc): muc is LuanGiaiSection => muc !== null);
+    const tongLuot = chinh.attempts;
 
-      if (loi.length === 0) {
-        return {
-          article: assembleThanCuArticle(brief, paragraphs),
-          model: result.model,
-          attempts: lan,
-        };
-      }
+    return {
+      article: assembleThanCuArticle(brief, chinh.value, sections),
+      model: chinh.model,
+      attempts: tongLuot,
+    };
+  }
 
-      this.logger.warn(`lần ${lan} bị bộ kiểm chặn (${result.model}): ${loi.join('; ')}`);
-      daThu.push({ paragraphs, loi });
+  private async sinhMuc(brief: MucBrief, budgetMs: number): Promise<LuanGiaiSection | null> {
+    try {
+      const ket = await sinhVoiKiem<MucParagraph>(
+        this.ai,
+        {
+          brief,
+          system: MUC_SYSTEM_PROMPT,
+          schema: MUC_SCHEMA,
+          messages: (daThu) => buildMucMessages(brief, daThu),
+          parse: (text) => parse<MucParagraph>(text, (o) => typeof o.doan === 'string'),
+          toBai: baiMuc,
+        },
+        budgetMs,
+      );
+      return {
+        slug: brief.muc,
+        title: brief.tieuDe,
+        sourceCung: brief.sourceCung,
+        paragraphs: [ket.value.doan],
+      };
+    } catch (error) {
+      // Bỏ mục hỏng chứ không kéo cả bài xuống: mục con là phần thêm, hai đoạn chính mới là bài.
+      this.logger.warn(`bỏ mục "${brief.tieuDe}": ${(error as Error).message.slice(0, 140)}`);
+      return null;
     }
-
-    throw new ChapterRejectedError(MAX_ATTEMPTS, daThu[daThu.length - 1].loi);
   }
 }

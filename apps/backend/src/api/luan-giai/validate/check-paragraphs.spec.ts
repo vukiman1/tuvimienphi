@@ -1,6 +1,7 @@
 import { Sac, TheChieu, type ThanCuBrief } from '@org/shared-tu-vi';
 import type { ThanCuParagraphs } from '../prompt/chapter-schema';
 import { checkParagraphs } from './check-paragraphs';
+import { baiChinh, baiMuc } from './to-bai';
 
 /**
  * Brief viết cố định chứ không suy từ một lá số thật: hợp đồng của bộ kiểm là `(brief, bài)`, nên
@@ -71,13 +72,17 @@ const DAT: ThanCuParagraphs = {
     'Tuy nhiên, **Đại Hao, Kiếp Sát** cùng góp mặt nên đường tình cảm có lúc hao tán, tiêu tốn tâm sức, cũng có giai đoạn chịu áp lực hoặc mất mát. Điều đáng chú ý là **Thiên Thọ** hội chiếu tới, chủ sự bền và giữ được lâu khi đã ổn định, vì vậy ==sóng gió thường nằm ở chặng đầu== hơn là ở cả chặng đường.',
 };
 
+/** Bài chính luôn là hai đoạn; gói lại cho gọn vì mọi ca dưới đây đều đi qua đúng hình dạng đó. */
+const kiem = (paragraphs: ThanCuParagraphs): string[] =>
+  checkParagraphs(BRIEF, baiChinh(paragraphs));
+
 describe('checkParagraphs', () => {
   it('cho qua bản viết đúng cả năm tầng', () => {
-    expect(checkParagraphs(BRIEF, DAT)).toEqual([]);
+    expect(kiem(DAT)).toEqual([]);
   });
 
   it('chặn sao có thật nhưng không có trong lá số', () => {
-    const loi = checkParagraphs(BRIEF, {
+    const loi = kiem({
       ...DAT,
       doan2: DAT.doan2.replace('**Đại Hao, Kiếp Sát**', '**Đại Hao, Kiếp Sát, Thiên Diêu**'),
     });
@@ -85,7 +90,7 @@ describe('checkParagraphs', () => {
   });
 
   it('chặn chính tinh nhắc mà thiếu bậc', () => {
-    const loi = checkParagraphs(BRIEF, {
+    const loi = kiem({
       ...DAT,
       doan1: DAT.doan1.replace('**Tham Lang (H)**', '**Tham Lang**'),
     });
@@ -93,7 +98,7 @@ describe('checkParagraphs', () => {
   });
 
   it('chặn phụ tinh cùng vai bị tách thành nhiều cặp', () => {
-    const loi = checkParagraphs(BRIEF, {
+    const loi = kiem({
       ...DAT,
       doan2: DAT.doan2.replace('**Đại Hao, Kiếp Sát**', '**Đại Hao** và **Kiếp Sát**'),
     });
@@ -101,12 +106,12 @@ describe('checkParagraphs', () => {
   });
 
   it('chặn đoạn viết thành ba câu', () => {
-    const loi = checkParagraphs(BRIEF, { ...DAT, doan2: `${DAT.doan2} Nhưng rồi cũng qua.` });
+    const loi = kiem({ ...DAT, doan2: `${DAT.doan2} Nhưng rồi cũng qua.` });
     expect(loi).toContain('đoạn 2: 3 câu, cần đúng 2');
   });
 
   it('chặn mệnh đề bất lợi bị viết nhạt đi cho dễ đọc', () => {
-    const loi = checkParagraphs(BRIEF, {
+    const loi = kiem({
       ...DAT,
       doan2:
         'Tuy nhiên, **Đại Hao, Kiếp Sát** cùng góp mặt nên đường tình cảm đôi khi cần thêm khéo léo. Điều đáng chú ý là **Thiên Thọ** hội chiếu tới, chủ sự bền và giữ được lâu khi đã ổn định, vì vậy ==sóng gió thường nằm ở chặng đầu== hơn là ở cả chặng đường.',
@@ -116,7 +121,7 @@ describe('checkParagraphs', () => {
   });
 
   it('chặn mệnh đề bị gán cho sao không sinh ra nó', () => {
-    const loi = checkParagraphs(BRIEF, {
+    const loi = kiem({
       ...DAT,
       doan2: DAT.doan2.replace('**Đại Hao, Kiếp Sát**', '**Kiếp Sát**'),
     });
@@ -124,7 +129,7 @@ describe('checkParagraphs', () => {
   });
 
   it('chặn thuật ngữ chỉ đúng ở cung Mệnh khi Thân không cư Mệnh', () => {
-    const loi = checkParagraphs(BRIEF, {
+    const loi = kiem({
       ...DAT,
       doan1: DAT.doan1.replace('Cung Phu Thê có', 'Thủ mệnh có'),
     });
@@ -132,7 +137,7 @@ describe('checkParagraphs', () => {
   });
 
   it('chặn lời hứa hẹn không có trong brief', () => {
-    const loi = checkParagraphs(BRIEF, {
+    const loi = kiem({
       ...DAT,
       doan2: DAT.doan2.replace('hơn là ở cả chặng đường.', 'và bạn sẽ vượt qua mọi khó khăn.'),
     });
@@ -140,7 +145,7 @@ describe('checkParagraphs', () => {
   });
 
   it('chỉ ra đúng lỗi khi hai dấu bị lồng vào nhau', () => {
-    const loi = checkParagraphs(BRIEF, {
+    const loi = kiem({
       ...DAT,
       doan1: DAT.doan1.replace(
         '==hợp duyên và được quý mến==',
@@ -154,8 +159,35 @@ describe('checkParagraphs', () => {
     expect(loi.join('\n')).not.toMatch(/không có trong brief/);
   });
 
+  it('chạy được y nguyên trên mục con một đoạn', () => {
+    // Mục con dùng lại phần lá số của brief chính, chỉ khác `luan` — nên bộ kiểm không phải biết
+    // nó là mục hay là bài.
+    const briefMuc: ThanCuBrief = {
+      ...BRIEF,
+      luan: [
+        {
+          y: 'cung này vào đại vận khoảng 33 đến 42 tuổi',
+          do: [],
+          sac: Sac.Thuan,
+          trong: 90,
+          tuKhoa: ['33', '42'],
+        },
+        { y: 'cung đang ở đoạn khởi', do: [], sac: Sac.Nghich, trong: 82, tuKhoa: ['đoạn khởi'] },
+      ],
+    };
+
+    const dat = checkParagraphs(
+      briefMuc,
+      baiMuc({
+        doan: 'Cung này vào đại vận khoảng 33 đến 42 tuổi, đó là quãng nó lên tiếng rõ nhất. Vòng Tràng Sinh cho thấy cung đang ở ==đoạn khởi==, việc gì bắt đầu lúc này cũng có đà.',
+      }),
+    );
+
+    expect(dat).toEqual([]);
+  });
+
   it('chặn việc nói sao chiếu tới là đang đóng tại cung', () => {
-    const loi = checkParagraphs(BRIEF, {
+    const loi = kiem({
       ...DAT,
       doan2: DAT.doan2.replace('**Thiên Thọ** hội chiếu tới, chủ', '**Thiên Thọ** toạ thủ, chủ'),
     });

@@ -1,5 +1,5 @@
 import type { ThanCuBrief } from '@org/shared-tu-vi';
-import type { ThanCuParagraphs } from '../prompt/chapter-schema';
+import type { BaiCanKiem } from './bai-can-kiem';
 import { boldGroups, countSentences, highlights, ratingOf, stripRating } from './parse-markup';
 
 const SENTENCES_PER_PARAGRAPH = 2;
@@ -10,7 +10,7 @@ const MAX_HIGHLIGHT_WORDS = 12;
  * Tầng một: hình thức và tên sao. Bắt được lỗi nguy hiểm nhất — mô hình gọi tên một sao có thật,
  * hợp cảnh, đúng vai trò trong câu, nhưng không có trong lá số. Đọc không ai phát hiện ra.
  */
-export function checkForm(brief: ThanCuBrief, paragraphs: ThanCuParagraphs): string[] {
+export function checkForm(brief: ThanCuBrief, bai: BaiCanKiem): string[] {
   const hopLe = new Set<string>([
     ...brief.chinhTinh.map((sao) => sao.ten),
     ...brief.hungTinh.map((sao) => sao.ten),
@@ -19,9 +19,7 @@ export function checkForm(brief: ThanCuBrief, paragraphs: ThanCuParagraphs): str
   const bacCua = new Map(brief.chinhTinh.map((sao) => [sao.ten as string, sao.bac]));
   const laHung = new Set<string>(brief.hungTinh.map((sao) => sao.ten));
 
-  return [paragraphs.doan1, paragraphs.doan2].flatMap((doan, chiSo) =>
-    kiemMotDoan(doan, chiSo + 1, hopLe, bacCua, laHung),
-  );
+  return bai.doan.flatMap((doan, chiSo) => kiemMotDoan(doan, chiSo + 1, hopLe, bacCua, laHung));
 }
 
 function kiemMotDoan(

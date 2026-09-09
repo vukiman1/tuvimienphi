@@ -14,3 +14,14 @@ export const THAN_CU_SCHEMA: AiSchema = {
   },
   required: ['doan1', 'doan2'],
 };
+
+/** Một mục con chỉ có một đoạn hai câu. */
+export interface MucParagraph {
+  readonly doan: string;
+}
+
+export const MUC_SCHEMA: AiSchema = {
+  type: 'object',
+  properties: { doan: { type: 'string', description: 'Đúng hai câu' } },
+  required: ['doan'],
+};

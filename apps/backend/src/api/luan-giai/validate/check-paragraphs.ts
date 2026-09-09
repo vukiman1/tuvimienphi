@@ -1,5 +1,5 @@
 import type { ThanCuBrief } from '@org/shared-tu-vi';
-import type { ThanCuParagraphs } from '../prompt/chapter-schema';
+import type { BaiCanKiem } from './bai-can-kiem';
 import { checkAttribution } from './check-attribution';
 import { checkContent } from './check-content';
 import { checkForbiddenPhrases, checkStyle } from './check-forbidden-phrases';
@@ -15,15 +15,15 @@ import { checkPosition } from './check-position';
  */
 export function checkParagraphs(
   brief: ThanCuBrief,
-  paragraphs: ThanCuParagraphs,
+  bai: BaiCanKiem,
   conLuotDeSinhLai = true,
 ): string[] {
   return [
-    ...checkForm(brief, paragraphs),
-    ...checkContent(brief, paragraphs),
-    ...checkAttribution(brief, paragraphs),
-    ...checkForbiddenPhrases(brief, paragraphs),
-    ...checkPosition(brief, paragraphs),
-    ...(conLuotDeSinhLai ? checkStyle(paragraphs) : []),
+    ...checkForm(brief, bai),
+    ...checkContent(brief, bai),
+    ...checkAttribution(brief, bai),
+    ...checkForbiddenPhrases(brief, bai),
+    ...checkPosition(brief, bai),
+    ...(conLuotDeSinhLai ? checkStyle(bai) : []),
   ];
 }

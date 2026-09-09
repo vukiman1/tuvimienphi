@@ -1,4 +1,4 @@
-import type { LuanGiaiArticle } from '@org/shared-contracts';
+import type { LuanGiaiArticle, LuanGiaiSection } from '@org/shared-contracts';
 import { Gender, type ThanCuBrief } from '@org/shared-tu-vi';
 import type { ThanCuParagraphs } from './prompt/chapter-schema';
 import {
@@ -17,6 +17,7 @@ const NHAN_GIOI_TINH: Record<Gender, string> = { [Gender.Nam]: 'Nam', [Gender.Nu
 export function assembleThanCuArticle(
   brief: ThanCuBrief,
   paragraphs: ThanCuParagraphs,
+  sections: readonly LuanGiaiSection[] = [],
 ): LuanGiaiArticle {
   const khung = KHUNG_THAN_CU[brief.cungThan as ThanCuCung];
   const tieuDe = `Thân cư ${brief.cungThan}`;
@@ -27,6 +28,7 @@ export function assembleThanCuArticle(
     quote: khung.quote,
     subheading: `${NHAN_GIOI_TINH[brief.gioiTinh]} tuổi ${brief.chiNamSinh} – ${tieuDe}`,
     paragraphs: [khung.moBai, paragraphs.doan1, paragraphs.doan2],
+    ...(sections.length > 0 ? { sections } : {}),
     summary: khung.summary,
     closingLabel: THAN_CU_CLOSING_LABEL,
     closing: khung.closing,

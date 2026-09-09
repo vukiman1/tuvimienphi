@@ -10,9 +10,16 @@ jest.mock('./validate/check-paragraphs', () => ({ checkParagraphs: jest.fn() }))
 jest.mock('@org/shared-tu-vi', () => ({
   ...jest.requireActual('@org/shared-tu-vi'),
   buildThanCuBrief: jest.fn(),
+  buildMucBriefs: jest.fn(),
 }));
 
-import { buildThanCuBrief, castNatal, Gender, type NatalChart } from '@org/shared-tu-vi';
+import {
+  buildMucBriefs,
+  buildThanCuBrief,
+  castNatal,
+  Gender,
+  type NatalChart,
+} from '@org/shared-tu-vi';
 import { AiClient } from '../../ai/ai.client';
 import type { AiRequest, AiResult } from '../../ai/ai.types';
 import {
@@ -50,6 +57,7 @@ class AiGia extends AiClient {
 
 const kiem = checkParagraphs as jest.MockedFunction<typeof checkParagraphs>;
 const dungBrief = buildThanCuBrief as jest.MockedFunction<typeof buildThanCuBrief>;
+const dungMuc = buildMucBriefs as jest.MockedFunction<typeof buildMucBriefs>;
 const BRIEF_THAT = jest.requireActual('@org/shared-tu-vi').buildThanCuBrief(CO_BANG);
 const DAT_HET: string[] = [];
 const VI_PHAM = ['đoạn 2: 3 câu, cần đúng 2'];
@@ -58,6 +66,9 @@ describe('ThanCuGenerator', () => {
   beforeEach(() => {
     kiem.mockReset();
     dungBrief.mockReset().mockReturnValue(BRIEF_THAT);
+    // Không sinh mục con trong nhóm test này: chúng chạy song song và dùng chung `AiGia`, nên sẽ
+    // rút mất hàng đợi của bài chính và làm sai số lượt đếm được.
+    dungMuc.mockReset().mockReturnValue([]);
   });
 
   it('ghép bài từ khung cố định và hai đoạn mô hình viết', async () => {

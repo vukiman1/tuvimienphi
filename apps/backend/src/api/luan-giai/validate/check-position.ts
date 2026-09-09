@@ -1,5 +1,5 @@
 import { TheChieu, type ThanCuBrief } from '@org/shared-tu-vi';
-import type { ThanCuParagraphs } from '../prompt/chapter-schema';
+import type { BaiCanKiem } from './bai-can-kiem';
 import { sentences } from './parse-markup';
 
 /** Cách nói khẳng định sao ĐỨNG TẠI cung. Chỉ đúng với sao toạ thủ. */
@@ -23,7 +23,7 @@ const NGON_TU_TOA_THU = [
  * Chỉ báo lỗi khi trong câu KHÔNG có sao toạ thủ nào: một câu vừa nhắc sao toạ thủ vừa nhắc sao
  * chiếu tới thì không biết cách nói đó gắn vào sao nào, và đoán bừa sẽ tạo báo động giả.
  */
-export function checkPosition(brief: ThanCuBrief, paragraphs: ThanCuParagraphs): string[] {
+export function checkPosition(brief: ThanCuBrief, bai: BaiCanKiem): string[] {
   const moiSao = [...brief.hungTinh, ...brief.catTinh];
   const chieuToi = moiSao.filter((sao) => sao.the !== TheChieu.ToaThu);
   // Cung vô chính diệu thì chính tinh trong brief là sao MƯỢN, không toạ thủ — chúng cũng phải bị
@@ -34,7 +34,7 @@ export function checkPosition(brief: ThanCuBrief, paragraphs: ThanCuParagraphs):
     ...moiSao.filter((sao) => sao.the === TheChieu.ToaThu).map((sao) => sao.ten),
   ];
 
-  return [paragraphs.doan1, paragraphs.doan2].flatMap((doan, chiSo) =>
+  return bai.doan.flatMap((doan, chiSo) =>
     sentences(doan).flatMap((cau) => {
       const thuong = cau.toLowerCase();
       if (!NGON_TU_TOA_THU.some((tu) => thuong.includes(tu))) return [];

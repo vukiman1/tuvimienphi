@@ -1,5 +1,5 @@
 import type { ThanCuBrief } from '@org/shared-tu-vi';
-import type { ThanCuParagraphs } from '../prompt/chapter-schema';
+import type { BaiCanKiem } from './bai-can-kiem';
 
 /**
  * Thuật ngữ chỉ đúng khi sao toạ thủ tại cung Mệnh. Chương này viết cho sáu cung an Thân, nên dùng
@@ -24,8 +24,8 @@ const VAN_HANH_CHINH = [
   'khi xét qua',
 ] as const;
 
-function tim(paragraphs: ThanCuParagraphs, cam: readonly string[]): string[] {
-  return [paragraphs.doan1, paragraphs.doan2].flatMap((doan, chiSo) => {
+function tim(bai: BaiCanKiem, cam: readonly string[]): string[] {
+  return bai.doan.flatMap((doan, chiSo) => {
     const thuong = doan.toLowerCase();
     return cam
       .filter((cum) => thuong.includes(cum))
@@ -40,8 +40,8 @@ function tim(paragraphs: ThanCuParagraphs, cam: readonly string[]): string[] {
  * Sinh ra từ một quan sát lặp lại bốn lần trong lúc dựng: luật nào chỉ nằm trong prompt mà không có
  * tầng kiểm nào gác thì mô hình bỏ qua.
  */
-export function checkForbiddenPhrases(brief: ThanCuBrief, paragraphs: ThanCuParagraphs): string[] {
-  return tim(paragraphs, [
+export function checkForbiddenPhrases(brief: ThanCuBrief, bai: BaiCanKiem): string[] {
+  return tim(bai, [
     ...(brief.cungThan === 'Mệnh' ? [] : CHI_DUNG_O_CUNG_MENH),
     ...HUA_HEN_VO_CAN_CU,
   ]);
@@ -51,6 +51,6 @@ export function checkForbiddenPhrases(brief: ThanCuBrief, paragraphs: ThanCuPara
  * Phần NÊN TRÁNH: lối văn hành chính. Đáng sinh lại để bài đọc xuôi hơn, nhưng không đáng để người
  * dùng nhận 503 — đo trên hai mươi lá số thì đúng chuyện đó đã xảy ra với hai bài.
  */
-export function checkStyle(paragraphs: ThanCuParagraphs): string[] {
-  return tim(paragraphs, VAN_HANH_CHINH);
+export function checkStyle(bai: BaiCanKiem): string[] {
+  return tim(bai, VAN_HANH_CHINH);
 }
