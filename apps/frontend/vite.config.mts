@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defaultClientConditions, defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { tanstackRouter } from '@tanstack/router-plugin/vite';
@@ -10,7 +10,7 @@ import { loadFrontendConfig } from './config/index.ts';
 const requireFromHere = createRequire(import.meta.url);
 const isAnalyze = process.env.ANALYZE === 'true';
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ command, mode }) => {
   const frontendConfig = loadFrontendConfig(mode, requireFromHere);
 
   return {
@@ -46,6 +46,12 @@ export default defineConfig(({ mode }) => {
         }),
     ],
     resolve: {
+      // Dev đọc thẳng TS source của package shared nên sửa engine là HMR chạy ngay; không có nó thì
+      // trình duyệt vẫn nhận `dist` dựng lúc khởi động và mọi thay đổi im lặng trôi mất. Bản build
+      // vẫn đi qua `dist` như cũ.
+      ...(command === 'serve'
+        ? { conditions: ['@org/source', ...defaultClientConditions] }
+        : {}),
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
       },
