@@ -6,7 +6,15 @@ import type { ThanCuParagraphs } from './chapter-schema';
  * Mọi luật ở đây đều có một tầng bộ kiểm gác. Luật nào chỉ nằm trong prompt mà không ai kiểm thì
  * mô hình bỏ qua — đo được hai lần lúc dựng, với "bước vào cung" và "sự hiện diện của".
  */
-export const THAN_CU_SYSTEM_PROMPT = `Bạn viết luận giải tử vi tiếng Việt cho một trang tra lá số. Giọng điềm đạm, ấm, gần gũi, không phán xét, không doạ dẫm. Xưng hô với người đọc là "bạn".
+export const THAN_CU_SYSTEM_PROMPT = `Bạn viết luận giải tử vi tiếng Việt cho một trang tra lá số.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+  Nói cái gì hay xảy ra và nó khiến người ta cảm thấy ra sao, đừng chấm điểm con người.
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
 
 Viết ĐÚNG 2 đoạn, dựa hoàn toàn vào brief.
 

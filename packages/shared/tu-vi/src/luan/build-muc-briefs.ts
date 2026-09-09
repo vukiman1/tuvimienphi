@@ -38,6 +38,15 @@ const TOI_THIEU_MENH_DE = 2;
 /** Mục chỉ có hai câu. Quá ba mệnh đề là mô hình buộc phải liệt kê, đo được từ bài chính. */
 const TRAN_MENH_DE = 3;
 
+/**
+ * Mười hai đại vận trải trọn một trăm hai mươi năm, nên cung rơi vào cuối vòng cho ra mốc kiểu
+ * "106–115 tuổi" — đúng phép tính mà vô nghĩa với người đọc. Quá ngưỡng này thì không nhắc mốc nữa.
+ */
+const TUOI_CON_DANG_NOI = 80;
+
+/** Thân chủ hậu vận, và cổ nhân lấy quãng này làm mốc nó bắt đầu lên tiếng. */
+const TUOI_HAU_VAN = 35;
+
 export function theMenhThan(menhIndex: number, thanIndex: number): TheMenhThan {
   if (menhIndex === thanIndex) return TheMenhThan.Trung;
   if (tamHopIndexes(menhIndex).includes(thanIndex)) return TheMenhThan.TamHop;
@@ -50,11 +59,22 @@ function thoiDiem(chart: NatalChart): { luan: LuanDe[]; duKien: string[] } {
   const luan: LuanDe[] = [];
   const duKien: string[] = [];
 
+  // Mệnh đề nền của mục: Thân chủ hậu vận. Luôn có, vì nó đúng với mọi lá số.
+  duKien.push(`Thân chủ hậu vận, rõ dần từ khoảng ${TUOI_HAU_VAN} tuổi`);
+  luan.push({
+    y: `cung an Thân nói về nửa sau cuộc đời, rõ dần từ khoảng ${TUOI_HAU_VAN} tuổi trở đi`,
+    do: [],
+    sac: Sac.Thuan,
+    trong: 88,
+    tuKhoa: [String(TUOI_HAU_VAN), 'nửa sau'],
+  });
+
+  // Mốc đại vận chỉ thêm khi còn nằm trong quãng đời người ta thật sự sống tới.
   const van = chart.daiVan.find((moc) => moc.chiIndex === chart.thanIndex);
-  if (van) {
+  if (van && van.startAge <= TUOI_CON_DANG_NOI) {
     duKien.push(`đại vận ${van.startAge}–${van.endAge} tuổi`);
     luan.push({
-      y: `cung này vào đại vận khoảng ${van.startAge} đến ${van.endAge} tuổi, đó là quãng nó lên tiếng rõ nhất`,
+      y: `riêng quãng ${van.startAge} đến ${van.endAge} tuổi là lúc cung này lên tiếng rõ nhất`,
       do: [],
       sac: Sac.Thuan,
       trong: 90,
