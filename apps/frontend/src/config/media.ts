@@ -12,6 +12,21 @@ function mediaUrl(path: string): string {
   return `${appConfig.media.baseUrl}${path}`;
 }
 
+/**
+ * One illustration per palace, reused by whichever chapter reads that palace. A palace with no
+ * artwork yet is simply absent: the article then lays its text across the full width.
+ *
+ * Phúc Đức and Thiên Di have no artwork of their own yet, so they borrow another palace's.
+ */
+const CUNG_ILLUSTRATIONS: Partial<Record<string, string>> = {
+  Mệnh: mediaUrl('/la-so/than-cu/menh.webp'),
+  'Phúc Đức': mediaUrl('/la-so/than-cu/dien-trach.webp'),
+  'Quan Lộc': mediaUrl('/la-so/than-cu/quan-loc.webp'),
+  'Thiên Di': mediaUrl('/la-so/than-cu/menh.webp'),
+  'Tài Bạch': mediaUrl('/la-so/than-cu/tai-bach.webp'),
+  'Phu Thê': mediaUrl('/la-so/than-cu/phu-the.webp'),
+};
+
 export const MEDIA = {
   navBar: {
     bagua: '/nav_bar/04_bagua.png',
@@ -41,6 +56,7 @@ export const MEDIA = {
     decorLeft: mediaUrl('/la-so/left.webp'),
     decorRight: mediaUrl('/la-so/right.webp'),
     illustrationCrane: mediaUrl('/la-so/crane-pine.webp'),
+    cungIllustrations: CUNG_ILLUSTRATIONS,
     seal: mediaUrl('/la-so/seal.webp'),
     sealSmall: mediaUrl('/la-so/seal-sm.webp'),
     cloudDivider: mediaUrl('/la-so/cloud-divider.webp'),

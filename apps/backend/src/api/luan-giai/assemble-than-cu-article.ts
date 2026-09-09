@@ -25,6 +25,7 @@ export function assembleThanCuArticle(
   return {
     eyebrow: THAN_CU_EYEBROW,
     title: tieuDe,
+    sourceCung: brief.cungThan,
     quote: khung.quote,
     subheading: `${NHAN_GIOI_TINH[brief.gioiTinh]} tuổi ${brief.chiNamSinh} – ${tieuDe}`,
     paragraphs: [khung.moBai, paragraphs.doan1, paragraphs.doan2],

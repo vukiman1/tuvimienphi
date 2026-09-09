@@ -5,6 +5,7 @@ import {
   type LuanGiaiChapterStatusMap,
 } from '@org/shared-contracts';
 import type { LuanGiaiChapter } from '@/features/la-so/luan-giai-data';
+import { articleMedia } from '@/features/la-so/luan-giai-media';
 import { luanGiaiQueries, requestChapter } from '@/features/la-so/luan-giai-queries';
 import { LuanGiaiArticleCard } from '@/features/la-so/components/luan-giai-article';
 import { LuanGiaiPendingCard } from '@/features/la-so/components/luan-giai-pending';
@@ -73,7 +74,12 @@ export function LuanGiaiChapterContent({ birth, chapter, status }: LuanGiaiChapt
   }
 
   if (data?.status === LuanGiaiChapterStatus.Ready) {
-    return <LuanGiaiArticleCard article={data.article} order={chapter.order} />;
+    return (
+      <LuanGiaiArticleCard
+        article={{ ...data.article, ...articleMedia(data.article) }}
+        order={chapter.order}
+      />
+    );
   }
 
   return (

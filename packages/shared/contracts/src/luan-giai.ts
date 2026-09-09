@@ -12,11 +12,13 @@ export interface LuanGiaiSection {
  * Một bài luận giải. `**đậm**` bọc tên sao, `==tô nền==` bọc cụm chốt ý — xem `RichText` ở frontend.
  *
  * `illustrationUrl` và `sealUrl` là chuyện trình bày nên API không trả về; frontend tự gắn theo
- * chương. Để optional ở đây để một kiểu dùng được cho cả hai phía.
+ * `sourceCung`. Để optional ở đây để một kiểu dùng được cho cả hai phía.
  */
 export interface LuanGiaiArticle {
   readonly eyebrow: string;
   readonly title: string;
+  /** Cung trên lá số mà bài này đọc từ đó. */
+  readonly sourceCung?: string;
   readonly quote: string;
   readonly subheading: string;
   readonly paragraphs: readonly string[];
