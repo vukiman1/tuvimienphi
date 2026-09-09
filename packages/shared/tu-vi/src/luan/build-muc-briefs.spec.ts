@@ -6,12 +6,46 @@ import { buildMucBriefs, MucKey, theMenhThan } from './build-muc-briefs.js';
 const CHART = castNatal({ solarDate: new Date(1960, 4, 26), hour: 21, gender: Gender.Nam });
 
 describe('buildMucBriefs', () => {
-  it('mục thời điểm dẫn được mốc tuổi đại vận của chính cung an Thân', () => {
-    const thoiDiem = buildMucBriefs(CHART).find((muc) => muc.muc === MucKey.ThoiDiem);
-    const van = CHART.daiVan.find((moc) => moc.chiIndex === CHART.thanIndex);
+  it('luôn nói quãng hậu vận, dù lá số nào', () => {
+    for (let thang = 1; thang <= 12; thang += 1) {
+      const chart = castNatal({
+        solarDate: new Date(1990, thang - 1, 12),
+        hour: 9,
+        gender: Gender.Nam,
+      });
+      const thoiDiem = buildMucBriefs(chart).find((muc) => muc.muc === MucKey.ThoiDiem);
 
-    expect(thoiDiem?.duKien.join(' ')).toContain(`${van?.startAge}`);
-    expect(thoiDiem?.luan.some((de) => de.tuKhoa.includes(String(van?.startAge)))).toBe(true);
+      expect(thoiDiem?.duKien.join(' ')).toContain('hậu vận');
+    }
+  });
+
+  it('chỉ nêu mốc đại vận khi nó còn nằm trong tuổi người ta sống tới', () => {
+    let coMoc = 0;
+    let boMoc = 0;
+
+    for (let thang = 1; thang <= 12; thang += 1) {
+      const chart = castNatal({
+        solarDate: new Date(1990, thang - 1, 12),
+        hour: 9,
+        gender: Gender.Nam,
+      });
+      const thoiDiem = buildMucBriefs(chart).find((muc) => muc.muc === MucKey.ThoiDiem);
+      const van = chart.daiVan.find((moc) => moc.chiIndex === chart.thanIndex);
+      const neuMoc = thoiDiem?.duKien.some((mot) => mot.includes('đại vận')) ?? false;
+
+      if (neuMoc) {
+        coMoc += 1;
+        expect(van?.startAge).toBeLessThanOrEqual(80);
+        expect(thoiDiem?.duKien.join(' ')).toContain(String(van?.startAge));
+      } else {
+        boMoc += 1;
+        expect(van?.startAge).toBeGreaterThan(80);
+      }
+    }
+
+    // Mười hai đại vận trải trọn một trăm hai mươi năm nên cả hai nhánh đều phải gặp trong tập thử.
+    expect(coMoc).toBeGreaterThan(0);
+    expect(boMoc).toBeGreaterThan(0);
   });
 
   it('bỏ hẳn mục không đủ mệnh đề thay vì trả về một mục cụt', () => {
