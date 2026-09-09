@@ -1,3 +1,10 @@
+// Sau khi bảng phủ 100% thì không còn lá số thật nào cho ra null, mà nhánh unavailable vẫn phải
+// giữ làm lưới an toàn khi bảng thay đổi — nên mock chỗ dựng brief để chạm tới nó.
+jest.mock('@org/shared-tu-vi', () => ({
+  ...jest.requireActual('@org/shared-tu-vi'),
+  buildThanCuBrief: jest.fn(),
+}));
+
 import {
   CalendarType,
   Gender,
@@ -5,6 +12,7 @@ import {
   type BirthInput,
   type LuanGiaiArticle,
 } from '@org/shared-contracts';
+import { buildThanCuBrief } from '@org/shared-tu-vi';
 import type { Repository } from 'typeorm';
 import type { ChapterQuotaService } from './chapter-quota.service';
 import type { LuanGiaiChapterEntity } from './entities/luan-giai-chapter.entity';
@@ -25,12 +33,11 @@ const CO_BANG: BirthInput = {
   hour: 'Hợi',
   gender: Gender.Male,
 };
-/** Cung an Thân vô chính diệu — không có sao nào để dựng mệnh đề nền. */
-const CHUA_SOAN: BirthInput = { ...CO_BANG, day: 3, month: 1, year: 1985 };
 
 const BAI = { title: 'Thân cư Phu Thê' } as LuanGiaiArticle;
 
 const KET: ThanCuResult = { article: BAI, model: 'gemini-gia', attempts: 1 };
+const dungBrief = buildThanCuBrief as jest.MockedFunction<typeof buildThanCuBrief>;
 
 interface Overrides {
   readonly row?: LuanGiaiChapterEntity | null;
@@ -62,6 +69,18 @@ function dungService(overrides?: Overrides) {
 }
 
 describe('LuanGiaiService.request', () => {
+  beforeEach(() => {
+    dungBrief
+      .mockReset()
+      .mockReturnValue(
+        jest
+          .requireActual('@org/shared-tu-vi')
+          .buildThanCuBrief(
+            jest.requireActual('@org/shared-tu-vi').chartFromBirthInput(CO_BANG).chart,
+          ),
+      );
+  });
+
   it('trả bài đã có mà không sinh lại cũng không trừ suất', async () => {
     const { service, generator, quota } = dungService({
       row: { article: BAI } as LuanGiaiChapterEntity,
@@ -84,10 +103,11 @@ describe('LuanGiaiService.request', () => {
     expect(quota.consume).not.toHaveBeenCalled();
   });
 
-  it('báo unavailable khi cung an Thân vô chính diệu, không trừ suất cho việc chắc chắn không ra bài', async () => {
+  it('báo unavailable khi không dựng nổi brief, không trừ suất cho việc chắc chắn không ra bài', async () => {
+    dungBrief.mockReturnValue(null);
     const { service, generator, quota } = dungService();
 
-    const ket = await service.request('u1', CHUA_SOAN, CHAPTER_THAN_CU);
+    const ket = await service.request('u1', CO_BANG, CHAPTER_THAN_CU);
 
     expect(ket).toEqual({ status: LuanGiaiChapterStatus.Unavailable });
     expect(quota.consume).not.toHaveBeenCalled();

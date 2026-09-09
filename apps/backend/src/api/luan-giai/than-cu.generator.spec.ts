@@ -5,7 +5,14 @@
  */
 jest.mock('./validate/check-paragraphs', () => ({ checkParagraphs: jest.fn() }));
 
-import { castNatal, Gender, type NatalChart } from '@org/shared-tu-vi';
+// `buildThanCuBrief` cũng mock: sau khi bảng phủ 100% thì không còn lá số thật nào cho ra null,
+// mà đường null vẫn phải giữ làm lưới an toàn khi bảng thay đổi.
+jest.mock('@org/shared-tu-vi', () => ({
+  ...jest.requireActual('@org/shared-tu-vi'),
+  buildThanCuBrief: jest.fn(),
+}));
+
+import { buildThanCuBrief, castNatal, Gender, type NatalChart } from '@org/shared-tu-vi';
 import { AiClient } from '../../ai/ai.client';
 import type { AiRequest, AiResult } from '../../ai/ai.types';
 import {
@@ -18,12 +25,6 @@ import { checkParagraphs } from './validate/check-paragraphs';
 
 const CO_BANG: NatalChart = castNatal({
   solarDate: new Date(1960, 4, 26),
-  hour: 21,
-  gender: Gender.Nam,
-});
-/** Cung an Thân vô chính diệu — không có sao nào để dựng mệnh đề nền, nên không bao giờ ra bài. */
-const CHUA_SOAN: NatalChart = castNatal({
-  solarDate: new Date(1985, 0, 3),
   hour: 21,
   gender: Gender.Nam,
 });
@@ -48,11 +49,16 @@ class AiGia extends AiClient {
 }
 
 const kiem = checkParagraphs as jest.MockedFunction<typeof checkParagraphs>;
+const dungBrief = buildThanCuBrief as jest.MockedFunction<typeof buildThanCuBrief>;
+const BRIEF_THAT = jest.requireActual('@org/shared-tu-vi').buildThanCuBrief(CO_BANG);
 const DAT_HET: string[] = [];
 const VI_PHAM = ['đoạn 2: 3 câu, cần đúng 2'];
 
 describe('ThanCuGenerator', () => {
-  beforeEach(() => kiem.mockReset());
+  beforeEach(() => {
+    kiem.mockReset();
+    dungBrief.mockReset().mockReturnValue(BRIEF_THAT);
+  });
 
   it('ghép bài từ khung cố định và hai đoạn mô hình viết', async () => {
     kiem.mockReturnValue(DAT_HET);
@@ -87,10 +93,11 @@ describe('ThanCuGenerator', () => {
     expect(ai.requests).toHaveLength(5);
   });
 
-  it('trả null khi cung an Thân vô chính diệu, không gọi mô hình', async () => {
+  it('trả null mà không gọi mô hình khi không dựng nổi brief', async () => {
+    dungBrief.mockReturnValue(null);
     const ai = new AiGia([BAI]);
 
-    await expect(new ThanCuGenerator(ai).generate(CHUA_SOAN, BUDGET_MS)).resolves.toBeNull();
+    await expect(new ThanCuGenerator(ai).generate(CO_BANG, BUDGET_MS)).resolves.toBeNull();
     expect(ai.requests).toHaveLength(0);
   });
 

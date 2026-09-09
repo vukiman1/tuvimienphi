@@ -26,8 +26,11 @@ const NGON_TU_TOA_THU = [
 export function checkPosition(brief: ThanCuBrief, paragraphs: ThanCuParagraphs): string[] {
   const moiSao = [...brief.hungTinh, ...brief.catTinh];
   const chieuToi = moiSao.filter((sao) => sao.the !== TheChieu.ToaThu);
+  // Cung vô chính diệu thì chính tinh trong brief là sao MƯỢN, không toạ thủ — chúng cũng phải bị
+  // chặn nếu bài nói là đóng tại cung.
+  const chinhTinhToaThu = brief.laVoChinhDieu ? [] : brief.chinhTinh.map((sao) => sao.ten);
   const toaThu = [
-    ...brief.chinhTinh.map((sao) => sao.ten),
+    ...chinhTinhToaThu,
     ...moiSao.filter((sao) => sao.the === TheChieu.ToaThu).map((sao) => sao.ten),
   ];
 
@@ -37,12 +40,24 @@ export function checkPosition(brief: ThanCuBrief, paragraphs: ThanCuParagraphs):
       if (!NGON_TU_TOA_THU.some((tu) => thuong.includes(tu))) return [];
       if (toaThu.some((ten) => thuong.includes(ten.toLowerCase()))) return [];
 
-      return chieuToi
-        .filter((sao) => thuong.includes(sao.ten.toLowerCase()))
-        .map(
-          (sao) =>
-            `đoạn ${chiSo + 1}: "${sao.ten}" ở thế ${sao.the}, không đứng tại cung — đừng nói là toạ thủ hay đóng tại đây`,
-        );
+      const saoMuon = brief.laVoChinhDieu
+        ? brief.chinhTinh
+            .filter((sao) => thuong.includes(sao.ten.toLowerCase()))
+            .map(
+              (sao) =>
+                `đoạn ${chiSo + 1}: "${sao.ten}" là sao mượn từ cung xung chiếu, không toạ thủ tại cung an Thân`,
+            )
+        : [];
+
+      return [
+        ...saoMuon,
+        ...chieuToi
+          .filter((sao) => thuong.includes(sao.ten.toLowerCase()))
+          .map(
+            (sao) =>
+              `đoạn ${chiSo + 1}: "${sao.ten}" ở thế ${sao.the}, không đứng tại cung — đừng nói là toạ thủ hay đóng tại đây`,
+          ),
+      ];
     }),
   );
 }

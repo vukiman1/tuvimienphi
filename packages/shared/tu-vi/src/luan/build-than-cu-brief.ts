@@ -9,6 +9,7 @@ import type { Gender } from '../van-han.js';
 import { CAP_DOI_THAN_CU } from './bang/cap-doi-than-cu.js';
 import { CHINH_TINH_THAN_CU } from './bang/than-cu/index.js';
 import { PHU_TINH_LUAN } from './bang/phu-tinh.js';
+import { MUON_FACTOR, VO_CHINH_DIEU } from './bang/vo-chinh-dieu.js';
 import { Sac, type LuanDe } from './luan-de.js';
 import { TheChieu, theCungAt, type AnNgu, type SaoTheoThe, type TheCung } from './the-cung.js';
 import { toHopKey } from './to-hop.js';
@@ -36,7 +37,8 @@ const THE_FACTOR: Record<TheChieu, number> = {
 };
 /** Tuần hay Triệt án ngữ làm nhẹ cả mặt tốt lẫn mặt xấu, nên hạ đều chứ không hạ riêng chiều nào. */
 const AN_NGU_FACTOR = 0.75;
-const HOA_KY_BONUS = 15;
+/** Hoá Kỵ cản chứ không xoá: hạ mặt thuận của sao xuống rồi thêm một mệnh đề nói về chính cái cản. */
+const HOA_KY_GIAM_THUAN = 0.55;
 const HOA_KHAC_BONUS = 10;
 
 /**
@@ -94,6 +96,16 @@ function moRong(cell: CellLuan, bac: Rating | null): readonly LuanDe[] {
  * viết đủ hai mươi bốn ô đôi thì 33% lá số không có gì — nên ghép trước, viết ô riêng đè lên sau.
  */
 function baseClaims(the: TheCung): DraftClaim[] {
+  // Cung trống thì mượn chính tinh của cung xung chiếu, và nói thêm về chính cái trống đó.
+  if (the.laVoChinhDieu) {
+    const muon = the.chinhTinhMuon.flatMap((sao) => {
+      const cell = CHINH_TINH_THAN_CU[the.cung]?.[sao.name];
+      const heSo = MUON_FACTOR * (BRIGHTNESS_FACTOR[sao.rating ?? 'B'] ?? 1);
+      return cell ? moRong(cell, sao.rating).map((claim) => draft(claim, heSo)) : [];
+    });
+    return [...VO_CHINH_DIEU.map((claim) => draft(claim, 1)), ...muon];
+  }
+
   const brightness = the.chinhTinh.reduce(
     (product, sao) => product * (BRIGHTNESS_FACTOR[sao.rating ?? 'B'] ?? 1),
     1,
@@ -125,19 +137,42 @@ function phuTinhClaims(phuTinh: readonly SaoTheoThe[]): DraftClaim[] {
   });
 }
 
-/** Hoá Kỵ lật hẳn chiều của mệnh đề nó bám vào; ba hoá còn lại chỉ nâng trọng số. */
-function applyTuHoa(claims: DraftClaim[], the: TheCung): void {
+/**
+ * Hoá Kỵ CẢN mặt tốt của sao chứ không xoá nó. Lật hẳn cực là thô, và có hậu quả đo được: sao mang
+ * Hoá Kỵ mà lại là chính tinh duy nhất thì cung không còn mệnh đề thuận nào, bài không dựng nổi
+ * mạch — 0,1% số lá số rơi vào đúng chỗ đó. Nên hạ trọng số mặt thuận rồi thêm một mệnh đề nói về
+ * chính cái cản, sát nghĩa hơn mà cũng không làm mất mạch bài.
+ *
+ * Ba hoá còn lại chỉ nâng trọng số.
+ */
+function applyTuHoa(claims: DraftClaim[], the: TheCung): DraftClaim[] {
+  const themVao: DraftClaim[] = [];
+
   for (const hoa of the.tuHoaTacDong) {
     for (const claim of claims) {
       if (!claim.do.includes(hoa.star)) continue;
-      if (hoa.hoa === 'Hóa Kỵ') {
-        claim.sac = Sac.Nghich;
-        claim.trong += HOA_KY_BONUS;
-      } else {
+
+      if (hoa.hoa !== 'Hóa Kỵ') {
         claim.trong += HOA_KHAC_BONUS;
+        continue;
+      }
+      if (claim.sac === Sac.Thuan) {
+        claim.trong = Math.round(claim.trong * HOA_KY_GIAM_THUAN);
       }
     }
+
+    if (hoa.hoa === 'Hóa Kỵ' && claims.some((claim) => claim.do.includes(hoa.star))) {
+      themVao.push({
+        y: 'phần thuận lợi bị vướng lại, muốn được việc thì cũng phải qua trắc trở',
+        do: [hoa.star],
+        sac: Sac.Nghich,
+        trong: 80,
+        tuKhoa: ['vướng lại', 'trắc trở'],
+      });
+    }
   }
+
+  return [...claims, ...themVao];
 }
 
 function mergeDuplicates(claims: DraftClaim[]): DraftClaim[] {
@@ -171,17 +206,20 @@ export function buildThanCuBrief(chart: NatalChart): ThanCuBrief | null {
   const the = theCungAt(chart, chart.thanIndex);
 
   const claims = [...baseClaims(the), ...phuTinhClaims(the.phuTinh)];
-  applyTuHoa(claims, the);
+  const sauTuHoa = applyTuHoa(claims, the);
   if (the.anNgu) {
-    for (const claim of claims) claim.trong = Math.round(claim.trong * AN_NGU_FACTOR);
+    for (const claim of sauTuHoa) claim.trong = Math.round(claim.trong * AN_NGU_FACTOR);
   }
-  const luan = cull(mergeDuplicates(claims));
+  const luan = cull(mergeDuplicates(sauTuHoa));
 
-  const chinhTinhNames = new Set<SaoName>(the.chinhTinh.map((sao) => sao.name));
+  const chinhTinhNames = new Set<SaoName>(
+    (the.laVoChinhDieu ? the.chinhTinhMuon : the.chinhTinh).map((sao) => sao.name),
+  );
 
   // Chính tinh là xương sống của bài: câu mở phải dẫn được tên nó kèm bậc. Chỉ có mệnh đề phụ tinh
   // thì bài gọi tên chính tinh mà không nói được gì về nó — rỗng ruột, thà bỏ trống.
-  const hasBase = luan.some((claim) => claim.do.some((sao) => chinhTinhNames.has(sao)));
+  const hasBase =
+    the.laVoChinhDieu || luan.some((claim) => claim.do.some((sao) => chinhTinhNames.has(sao)));
   const hasArc =
     luan.some((claim) => claim.sac === Sac.Thuan) && luan.some((claim) => claim.sac === Sac.Nghich);
   if (!hasBase || !hasArc) return null;
@@ -200,7 +238,10 @@ export function buildThanCuBrief(chart: NatalChart): ThanCuBrief | null {
     chi: CHI[the.chiIndex],
     gioiTinh: chart.gender,
     chiNamSinh: CHI[chart.pillars.year.chi],
-    chinhTinh: the.chinhTinh.map((sao) => ({ ten: sao.name, bac: sao.rating })),
+    chinhTinh: (the.laVoChinhDieu ? the.chinhTinhMuon : the.chinhTinh).map((sao) => ({
+      ten: sao.name,
+      bac: sao.rating,
+    })),
     laVoChinhDieu: the.laVoChinhDieu,
     hungTinh: phuTinhUsed.filter((sao) => isHungTinh(sao.ten)),
     catTinh: phuTinhUsed.filter((sao) => !isHungTinh(sao.ten)),

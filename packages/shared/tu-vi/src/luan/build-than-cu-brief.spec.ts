@@ -70,13 +70,24 @@ describe('buildThanCuBrief', () => {
     }
   });
 
-  it('trả null khi cung an Thân vô chính diệu, vì không có sao nào để dựng mệnh đề nền', () => {
-    const voChinhDieu = castNatal({
-      solarDate: new Date(1985, 0, 3),
-      hour: 21,
-      gender: Gender.Nam,
-    });
-    expect(voChinhDieu.cungs[voChinhDieu.thanIndex].isVoChinhDieu).toBe(true);
-    expect(buildThanCuBrief(voChinhDieu)).toBeNull();
+  it('cung an Thân vô chính diệu thì mượn chính tinh của cung xung chiếu', () => {
+    const chart = castNatal({ solarDate: new Date(1985, 0, 3), hour: 21, gender: Gender.Nam });
+    const than = chart.cungs[chart.thanIndex];
+    expect(than.isVoChinhDieu).toBe(true);
+
+    const brief = buildThanCuBrief(chart);
+
+    expect(brief?.laVoChinhDieu).toBe(true);
+    expect(brief?.chinhTinh.map((sao) => sao.ten)).toEqual(
+      than.chinhTinhMuon.map((sao) => sao.name),
+    );
+  });
+
+  it('cung trống vẫn có mệnh đề nói về chính cái trống đó', () => {
+    const chart = castNatal({ solarDate: new Date(1985, 0, 3), hour: 21, gender: Gender.Nam });
+
+    const luan = buildThanCuBrief(chart)?.luan ?? [];
+
+    expect(luan.some((de) => de.do.length === 0)).toBe(true);
   });
 });
