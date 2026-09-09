@@ -1,4 +1,4 @@
-import { CHI, getDayPillar, getHourCanChi } from '@/lib/lunar-calendar';
+import { CHI, getDayPillar, getHourCanChi } from '@org/shared-tu-vi';
 
 const CHI_RANGES = [
   '23h - 1h',

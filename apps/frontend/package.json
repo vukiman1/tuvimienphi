@@ -20,6 +20,7 @@
   "dependencies": {
     "@org/frontend-shared": "workspace:*",
     "@org/shared-contracts": "workspace:*",
+    "@org/shared-tu-vi": "workspace:*",
     "@sentry/react": "^10.73.0",
     "@tanstack/react-query": "^5.102.8",
     "@tanstack/react-query-devtools": "^5.102.8",

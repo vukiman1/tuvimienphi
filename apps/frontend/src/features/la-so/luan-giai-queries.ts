@@ -1,27 +1,34 @@
 import { queryOptions } from '@tanstack/react-query';
-import { MOCK_LUAN_GIAI, type LuanGiaiContent } from '@/features/la-so/luan-giai-data';
+import {
+  birthKey,
+  type BirthInput,
+  type LuanGiaiChapterResponse,
+  type LuanGiaiChapterStatusMap,
+} from '@org/shared-contracts';
+import { httpRequest } from '@/lib/http-request';
 
-/**
- * Nội dung từng mục nạp riêng khi người dùng bấm xem, không nạp sẵn cả sáu mục — phần lớn người vào
- * chỉ đọc một hai mục.
- *
- * Hiện `queryFn` trả dữ liệu mẫu sau một quãng chờ để dựng đúng các trạng thái giao diện. Khi có
- * backend thì chỉ thay thân hàm bằng `httpRequest.get`, phần còn lại giữ nguyên.
- */
-const MOCK_LATENCY_MS = 700;
-
-function fetchChapterContent(order: string): Promise<LuanGiaiContent | null> {
-  const chapter = MOCK_LUAN_GIAI.chapters.find((item) => item.order === order);
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(chapter?.content ?? null), MOCK_LATENCY_MS);
-  });
-}
-
+/** Nội dung một chương, chỉ nạp khi người ta thật sự mở chương đó. */
 export const luanGiaiQueries = {
-  chapter: (order: string) =>
+  /**
+   * Trạng thái cả sáu chương, hỏi ngay khi mở trang. Không có nó thì mục lục không biết chương nào
+   * đã có bài, và người dùng phải bấm từng chương mới biết chương đó có gì.
+   */
+  statusMap: (birth: BirthInput) =>
     queryOptions({
-      queryKey: ['luan-giai', order],
-      queryFn: () => fetchChapterContent(order),
+      queryKey: ['luan-giai', birthKey(birth)] as const,
+      queryFn: () => httpRequest.get<LuanGiaiChapterStatusMap>(`/luan-giai/${birthKey(birth)}`),
+      staleTime: Infinity,
+    }),
+
+  chapter: (birth: BirthInput, order: string) =>
+    queryOptions({
+      queryKey: ['luan-giai', birthKey(birth), order],
+      queryFn: () =>
+        httpRequest.get<LuanGiaiChapterResponse>(`/luan-giai/${birthKey(birth)}/${order}`),
       staleTime: Infinity,
     }),
 };
+
+export function requestChapter(birth: BirthInput, order: string): Promise<LuanGiaiChapterResponse> {
+  return httpRequest.post<LuanGiaiChapterResponse>(`/luan-giai/${order}`, birth);
+}

@@ -127,6 +127,7 @@
     }
   },
   "dependencies": {
+    "@google/genai": "^2.21.0",
     "@nestjs/common": "^11.1.28",
     "@nestjs/config": "^4.0.4",
     "@nestjs/core": "^11.1.27",
@@ -151,6 +152,7 @@
     "@org/backend-jwt": "workspace:*",
     "@org/backend-redis": "workspace:*",
     "@org/shared-contracts": "workspace:*",
+    "@org/shared-tu-vi": "workspace:*",
     "@react-email/components": "^1.0.12",
     "@react-email/render": "^2.1.0",
     "@sentry/nestjs": "^10.73.0",

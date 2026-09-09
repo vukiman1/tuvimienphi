@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Lock } from 'lucide-react';
+import { LuanGiaiChapterStatus } from '@org/shared-contracts';
 import type { LuanGiaiChapter } from '@/features/la-so/luan-giai-data';
 import { cn } from '@/lib/utils';
 import { ImagePlaceholder } from '@/features/la-so/components/image-placeholder';
@@ -7,6 +8,8 @@ import { ImagePlaceholder } from '@/features/la-so/components/image-placeholder'
 interface LuanGiaiChaptersProps {
   readonly chapters: readonly LuanGiaiChapter[];
   readonly activeOrder: string;
+  /** Chương nào đã có bài, chương nào còn khoá. Thiếu thì coi như chưa biết, không hiện dấu gì. */
+  readonly statuses?: Readonly<Record<string, LuanGiaiChapterStatus>>;
   readonly onSelect: (order: string) => void;
 }
 
@@ -23,7 +26,12 @@ const ARROW_CLASS =
 const EDGE_FADE_CLASS =
   'pointer-events-none absolute inset-y-[1px] z-10 w-16 transition-opacity duration-200';
 
-export function LuanGiaiChapters({ chapters, activeOrder, onSelect }: LuanGiaiChaptersProps) {
+export function LuanGiaiChapters({
+  chapters,
+  activeOrder,
+  statuses,
+  onSelect,
+}: LuanGiaiChaptersProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -64,34 +72,42 @@ export function LuanGiaiChapters({ chapters, activeOrder, onSelect }: LuanGiaiCh
         ref={trackRef}
         role="tablist"
       >
-        {chapters.map((chapter) => (
-          <button
-            key={chapter.order}
-            aria-selected={chapter.order === activeOrder}
-            className={cn(
-              'flex min-w-[174px] flex-1 snap-start items-center gap-[10px] rounded px-[10px] py-2 text-left transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#e2c186]',
-              chapter.order === activeOrder ? 'bg-[#8f2a1d]' : 'hover:bg-[#7a1f15]',
-            )}
-            onClick={() => onSelect(chapter.order)}
-            role="tab"
-            type="button"
-          >
-            <ImagePlaceholder
-              className="size-11 shrink-0"
-              label="Icon"
-              ratio="1 / 1"
-              src={chapter.iconUrl}
-            />
-            <span className="min-w-0">
-              <span className="block font-body text-[13px] leading-[17px] font-bold tracking-[0.08em] text-[#e2c186]">
-                {chapter.order}
+        {chapters.map((chapter) => {
+          const trangThai = statuses?.[chapter.order];
+          const chuaMo = trangThai === LuanGiaiChapterStatus.Pending;
+          const chuaSoan = trangThai === LuanGiaiChapterStatus.Unavailable;
+
+          return (
+            <button
+              key={chapter.order}
+              aria-selected={chapter.order === activeOrder}
+              className={cn(
+                'flex min-w-[174px] flex-1 snap-start items-center gap-[10px] rounded px-[10px] py-2 text-left transition-colors outline-none focus-visible:ring-2 focus-visible:ring-[#e2c186]',
+                chapter.order === activeOrder ? 'bg-[#8f2a1d]' : 'hover:bg-[#7a1f15]',
+                chuaSoan && 'opacity-55',
+              )}
+              onClick={() => onSelect(chapter.order)}
+              role="tab"
+              type="button"
+            >
+              <ImagePlaceholder
+                className="size-11 shrink-0"
+                label="Icon"
+                ratio="1 / 1"
+                src={chapter.iconUrl}
+              />
+              <span className="min-w-0">
+                <span className="flex items-center gap-[6px] font-body text-[13px] leading-[17px] font-bold tracking-[0.08em] text-[#e2c186]">
+                  {chapter.order}
+                  {chuaMo ? <Lock aria-label="Chưa mở" className="size-[11px]" /> : null}
+                </span>
+                <span className="block font-body text-[15px] leading-[21px] font-medium text-[#f8efdb]">
+                  {chapter.title}
+                </span>
               </span>
-              <span className="block font-body text-[15px] leading-[21px] font-medium text-[#f8efdb]">
-                {chapter.title}
-              </span>
-            </span>
-          </button>
-        ))}
+            </button>
+          );
+        })}
       </div>
 
       <span

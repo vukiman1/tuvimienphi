@@ -1,4 +1,4 @@
-import type { LunarDate } from '@/lib/lunar-calendar';
+import { type LunarDate } from '@org/shared-tu-vi';
 
 const CHI = ['Tý', 'Sửu', 'Dần', 'Mão', 'Thìn', 'Tị', 'Ngọ', 'Mùi', 'Thân', 'Dậu', 'Tuất', 'Hợi'];
 const CHI_RANGES = [

@@ -51,6 +51,9 @@ jwt:
 crypto:
   secretKey: SECRET_KEY
 
+ai:
+  geminiApiKey: GEMINI_API_KEY
+
 email:
   resendApiKey: RESEND_API_KEY
   from: EMAIL_FROM

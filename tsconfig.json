@@ -65,6 +65,9 @@
     },
     {
       "path": "./packages/shared/frontend"
+    },
+    {
+      "path": "./packages/shared/tu-vi"
     }
   ]
 }

@@ -7,7 +7,7 @@ import {
   centerAnchorLabel,
   sharedEdge,
 } from '@/features/la-so/board-layout';
-import { nhiHopIndex, tamHopIndexes, xungChieuIndex } from '@/lib/tu-vi/chi';
+import { nhiHopIndex, tamHopIndexes, xungChieuIndex } from '@org/shared-tu-vi';
 import { CHART_RULE_CLASS } from '@/features/la-so/chart-colors';
 import { CungCard } from '@/features/la-so/components/cung-card';
 import { ThienBan } from '@/features/la-so/components/thien-ban';

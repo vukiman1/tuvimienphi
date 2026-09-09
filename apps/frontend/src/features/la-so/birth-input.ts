@@ -8,7 +8,7 @@ import {
   MIN_BIRTH_YEAR,
   MONTHS_IN_YEAR,
 } from '@org/shared-contracts';
-import { convertLunarToSolar, convertSolarToLunar } from '@/lib/lunar-calendar';
+import { convertLunarToSolar, convertSolarToLunar } from '@org/shared-tu-vi';
 
 /** The birth details a chart is cast from — shared by the form that collects them and /la-so. */
 

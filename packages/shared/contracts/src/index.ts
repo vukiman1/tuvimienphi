@@ -193,3 +193,4 @@ export interface VanHanEntry {
 // Lá số
 export * from './birth-input.js';
 export * from './la-so-history.js';
+export * from './luan-giai.js';

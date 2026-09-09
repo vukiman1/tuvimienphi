@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Star, User } from 'lucide-react';
 import { MEDIA } from '@/config/media';
-import { getYearCanChi } from '@/lib/lunar-calendar';
+import { getYearCanChi } from '@org/shared-tu-vi';
 import { zodiacIconPath, type ZodiacChi } from '@/lib/zodiac-icons';
 import type {
   VanHanAspect,

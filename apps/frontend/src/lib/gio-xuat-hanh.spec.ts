@@ -1,4 +1,4 @@
-import { convertSolarToLunar } from './lunar-calendar';
+import { convertSolarToLunar } from '@org/shared-tu-vi';
 import { getGioXuatHanh } from './gio-xuat-hanh';
 
 describe('getGioXuatHanh', () => {

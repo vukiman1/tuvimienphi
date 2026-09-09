@@ -1,4 +1,4 @@
-import type { LuanGiaiArticle } from '@/features/la-so/luan-giai-data';
+import type { LuanGiaiArticle } from '@org/shared-contracts';
 import { ImagePlaceholder } from '@/features/la-so/components/image-placeholder';
 import { LuanGiaiAccordion } from '@/features/la-so/components/luan-giai-accordion';
 import { LuanGiaiCard, LuanGiaiCardHeader } from '@/features/la-so/components/luan-giai-card';

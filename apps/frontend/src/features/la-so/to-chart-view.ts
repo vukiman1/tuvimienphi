@@ -1,14 +1,19 @@
-import { CAN, CHI, convertLunarToSolar, type CanChiIndex } from '@/lib/lunar-calendar';
-import { castChart, type SaoView as EngineSao, type TuViChart } from '@/lib/tu-vi/cast-chart';
-import { cungNameAt } from '@/lib/tu-vi/dia-ban';
 import {
+  CAN,
+  type CanChiIndex,
+  chartFromBirthInput,
+  CHI,
   CHINH_TINH_NGU_HANH,
   CHINH_TINH_POLARITY,
+  type ChinhTinhName,
+  cungNameAt,
+  isHungTinh,
   PHU_TINH_NGU_HANH,
-} from '@/lib/tu-vi/sao-ngu-hanh-data';
-import type { ChinhTinhName, PhuTinhName } from '@/lib/tu-vi/sao-names';
-import { Gender as EngineGender } from '@/lib/tu-vi/van-han';
-import { BIRTH_HOURS, CalendarType, Gender, type BirthInput } from '@/features/la-so/birth-input';
+  type PhuTinhName,
+  type SaoView as EngineSao,
+  type TuViChart,
+} from '@org/shared-tu-vi';
+import type { BirthInput } from '@/features/la-so/birth-input';
 import type { ChartView, ChinhTinhView, CungView, SaoView } from '@/features/la-so/chart-types';
 
 /** Bắc cầu từ kết quả engine sang hình dạng giao diện đang vẽ. */
@@ -33,37 +38,6 @@ const CHI_ELEMENTS = [
  * Sao xấu đọc theo cột riêng bên phải trong ô cung. Danh sách này chỉ quyết định chỗ đứng và màu
  * chữ, không mang ý nghĩa luận giải.
  */
-const HUNG_TINH_NAMES = [
-  'Kình Dương',
-  'Đà La',
-  'Hỏa Tinh',
-  'Linh Tinh',
-  'Địa Không',
-  'Địa Kiếp',
-  'Thiên Hình',
-  'Thiên Diêu',
-  'Thiên Khốc',
-  'Thiên Hư',
-  'Đại Hao',
-  'Tiểu Hao',
-  'Bạch Hổ',
-  'Tang Môn',
-  'Điếu Khách',
-  'Tuế Phá',
-  'Kiếp Sát',
-  'Cô Thần',
-  'Quả Tú',
-  'Phá Toái',
-  'Thiên Thương',
-  'Thiên Sứ',
-  'Thiên Không',
-  'Hóa Kỵ',
-  'Bệnh Phù',
-  'Quan Phù',
-  'Phục Binh',
-] as const satisfies readonly PhuTinhName[];
-
-const HUNG_TINH: ReadonlySet<PhuTinhName> = new Set(HUNG_TINH_NAMES);
 
 function toSaoView(star: EngineSao<PhuTinhName>): SaoView {
   return {
@@ -119,8 +93,8 @@ function toCungViews(chart: TuViChart): readonly CungView[] {
       chinhTinh: cung.chinhTinh.map(toChinhTinhView),
       isVoChinhDieu: cung.isVoChinhDieu,
       chinhTinhMuon: cung.chinhTinhMuon.map(toChinhTinhView),
-      catTinh: phuTinh.filter((star) => !HUNG_TINH.has(star.name)).map(toSaoView),
-      hungTinh: phuTinh.filter((star) => HUNG_TINH.has(star.name)).map(toSaoView),
+      catTinh: phuTinh.filter((star) => !isHungTinh(star.name)).map(toSaoView),
+      hungTinh: phuTinh.filter((star) => isHungTinh(star.name)).map(toSaoView),
     };
   });
 }
@@ -129,33 +103,10 @@ export interface ChartViewInput extends BirthInput {
   readonly viewYear: number;
 }
 
-/**
- * Dựng lá số cho giao diện từ thông tin sinh người dùng nhập.
- *
- * Nhập lịch âm thì đổi sang dương trước: can chi NGÀY suy từ số ngày Julian của lịch dương, không
- * suy thẳng từ ngày âm được. Form chưa hỏi tháng nhuận nên hiểu là tháng thường.
- */
+/** Dựng lá số cho giao diện. Việc đổi lịch và an sao nằm ở `chartFromBirthInput` để backend đi
+ * đúng một đường với chỗ này — hai bên ra lá số khác nhau là đầu độc cache luận giải. */
 export function toChartView(input: ChartViewInput): ChartView {
-  const solarDate =
-    input.calendar === CalendarType.Lunar
-      ? convertLunarToSolar({
-          day: input.day,
-          month: input.month,
-          year: input.year,
-          isLeapMonth: false,
-        })
-      : new Date(input.year, input.month - 1, input.day);
-  const birthHour = BIRTH_HOURS.find((entry) => entry.key === input.hour);
-  if (!birthHour) {
-    throw new Error(`Giờ sinh không có trong bảng: ${input.hour}`);
-  }
-
-  const chart = castChart({
-    solarDate,
-    hour: birthHour.hour,
-    gender: input.gender === Gender.Male ? EngineGender.Nam : EngineGender.Nu,
-    viewYear: input.viewYear,
-  });
+  const { chart, solarDate, birthHour } = chartFromBirthInput(input, input.viewYear);
 
   return {
     meta: {

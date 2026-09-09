@@ -34,6 +34,9 @@
   ],
   "references": [
     {
+      "path": "../../packages/shared/tu-vi/tsconfig.lib.json"
+    },
+    {
       "path": "../../packages/shared/contracts/tsconfig.lib.json"
     },
     {
