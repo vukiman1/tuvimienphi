@@ -12,7 +12,7 @@ RUN npm install -g pnpm@${PNPM_VERSION}
 COPY . .
 
 RUN pnpm install --frozen-lockfile
-RUN pnpm nx run @org/backend:docker-build
+RUN pnpm nx run @org/backend:prune
 
 RUN awk '/^onlyBuiltDependencies:/{p=1;print;next} p&&/^[^ #]/{p=0} p' pnpm-workspace.yaml \
   > apps/backend/dist/pnpm-workspace.yaml

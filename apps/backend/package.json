@@ -100,12 +100,6 @@
           "command": "tsc -p apps/backend/tsconfig.migrations.json"
         }
       },
-      "docker-build": {
-        "dependsOn": [
-          "prune"
-        ],
-        "executor": "nx:noop"
-      },
       "migration-run": {
         "executor": "nx:run-commands",
         "options": {
