@@ -127,7 +127,7 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm nx run-many -t build
-      - run: pnpm nx run-many -t docker-build
+      - run: pnpm nx run-many -t prune
 
   migrate:
     name: migrate database

@@ -11,3 +11,8 @@ apps/backend/docker/data
 .docker-data
 *.log
 vite.config.*.timestamp*
+
+# Runtime secrets. The build never needs them, and COPY would bake them into a layer.
+**/.env
+**/.env.*
+!**/.env.example

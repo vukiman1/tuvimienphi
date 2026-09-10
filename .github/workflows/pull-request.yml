@@ -147,7 +147,83 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm nx run-many -t build
-      - run: pnpm nx run-many -t docker-build
+      - run: pnpm nx run-many -t prune
+
+  docker:
+    name: docker
+    runs-on: ubuntu-latest
+    # Postgres and Redis only need to accept a connection: the app boots with synchronize off, so
+    # readiness pings a connection rather than reading any table.
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: tuvimienphi
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+        ports:
+          - 5432:5432
+      redis:
+        image: redis:8-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+        ports:
+          - 6379:6379
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          filter: tree:0
+          fetch-depth: 0
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/backend/Dockerfile
+          load: true
+          tags: tuvimienphi-backend:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Building is not enough. Every dependency is external to the bundle, so a package missing
+      # from the pruned manifest only shows up when the process tries to require it.
+      - name: Boot the image and wait for readiness
+        run: |
+          docker run -d --name api --network host \
+            -e NODE_ENV=production \
+            -e PORT=3000 \
+            -e DB_HOST=127.0.0.1 \
+            -e DB_PORT=5432 \
+            -e DB_USERNAME=postgres \
+            -e DB_PASSWORD=password \
+            -e DB_NAME=tuvimienphi \
+            -e DB_TLS=false \
+            -e REDIS_HOST=127.0.0.1 \
+            -e REDIS_PORT=6379 \
+            -e REDIS_PASSWORD= \
+            -e JWT_SECRET=ci-only-secret-at-least-32-characters-long \
+            -e SECRET_KEY='ci-only-secret-key-32-characters!' \
+            -e SECRET_KEY_IV='ci-only-iv-16ch!' \
+            -e CAPTCHA_SECRET_KEY=ci-only-secret-at-least-32-characters-long \
+            -e QUEUE_BOARD_PASSWORD=ci \
+            -e EMAIL_FROM=noreply@example.com \
+            -e APP_URL=http://localhost:4200 \
+            -e CORS_ORIGINS=http://localhost:4200 \
+            tuvimienphi-backend:ci
+          curl --retry 30 --retry-delay 2 --retry-connrefused --retry-all-errors \
+               --fail --silent --show-error http://127.0.0.1:3000/health/readiness
+
+      - name: Show container logs on failure
+        if: failure()
+        run: docker logs api
 
   backend-e2e:
     name: backend-e2e

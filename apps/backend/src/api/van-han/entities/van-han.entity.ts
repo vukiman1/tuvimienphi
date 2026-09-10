@@ -1,6 +1,21 @@
 import { BaseEntity } from '@org/backend-base';
 import { Column, Entity, Unique } from 'typeorm';
-import { type VanHanAgeReading, type VanHanAspect } from '../van-han.constants';
+
+/** Hình dạng của hai cột jsonb bên dưới. */
+
+export interface VanHanAspect {
+  readonly aspect: string;
+  readonly rating: number;
+  readonly body: string;
+}
+
+export interface VanHanAgeReading {
+  readonly birthYear: number;
+  readonly canChi: string;
+  readonly menh: string;
+  readonly male: string;
+  readonly female: string;
+}
 
 @Entity('van_han')
 @Unique('UQ_van_han_order_year', ['zodiacOrder', 'year'])
