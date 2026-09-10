@@ -1,8 +1,3 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import './instrument';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
@@ -13,6 +8,9 @@ import { GLOBAL_PREFIX, configureApp } from './app/configure-app';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, { bufferLogs: true });
   configureApp(app);
+  // A container host stops the process with SIGTERM on every deploy. Without this the process dies
+  // where it stands: requests in flight are cut and the database and Redis pools never close.
+  app.enableShutdownHooks();
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
