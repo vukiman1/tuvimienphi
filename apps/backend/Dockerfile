@@ -1,3 +1,10 @@
+# Build from the workspace root, not from this directory:
+#   pnpm docker:backend:build
+# A pnpm workspace install needs the root lockfile, pnpm-workspace.yaml and every package manifest.
+# None of those live here, so `docker build apps/backend` copies none of them.
+
+# The Node image stopped bundling corepack in v25, so pnpm is installed explicitly.
+# Keep in sync with `packageManager` in the root package.json.
 ARG PNPM_VERSION=10.28.0
 
 FROM node:26-alpine AS builder
@@ -10,6 +17,11 @@ WORKDIR /workspace
 RUN npm install -g pnpm@${PNPM_VERSION}
 
 COPY . .
+
+RUN test -f pnpm-lock.yaml || { \
+      echo "ERROR: build context must be the workspace root — run: pnpm docker:backend:build" >&2; \
+      exit 1; \
+    }
 
 RUN pnpm install --frozen-lockfile
 RUN pnpm nx run @org/backend:prune
