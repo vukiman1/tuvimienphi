@@ -16,7 +16,7 @@ import { UserModule } from '../api/user/user.module';
 import { EmailModule } from '../email/email.module';
 import { HealthModule } from '../health/health.module';
 import { QueueModule } from '../api/queue/queue.module';
-import { ScraperLichDungSuModule } from '../api/scraper/lichdungsu/lichdungsu.module';
+import { VanHanModule } from '../api/van-han/van-han.module';
 import { AppController } from './app.controller';
 import { providers } from './app.provider';
 import { AppService } from './app.service';
@@ -54,7 +54,7 @@ import { queueBoardRootImports } from './queue-board-registration';
     RedisModule,
     HealthModule,
     QueueModule,
-    ScraperLichDungSuModule,
+    VanHanModule,
   ],
   controllers: [AppController],
   providers: [AppService, ...providers],

@@ -8,7 +8,7 @@ import { UserSessionEntity } from './src/api/auth/entities/user-session.entity';
 import { UserTotpEntity } from './src/api/auth/entities/user-totp.entity';
 import { UserRecoveryCodeEntity } from './src/api/auth/entities/user-recovery-code.entity';
 import { AuthIdentityEntity } from './src/api/auth/entities/auth-identity.entity';
-import { VanHanEntity } from './src/api/scraper/lichdungsu/van-han/entities/van-han.entity';
+import { VanHanEntity } from './src/api/van-han/entities/van-han.entity';
 
 interface DatabaseConfig {
   host: string;
