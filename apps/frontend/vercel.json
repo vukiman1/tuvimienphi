@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "vite",
-  "buildCommand": "pnpm nx build @org/frontend",
+  "buildCommand": "pnpm nx build @org/frontend && ( npx playwright install chromium && node tools/prerender.mjs || echo 'prerender skipped (browser unavailable) — serving SPA shell' )",
   "outputDirectory": "dist",
   "rewrites": [
     {

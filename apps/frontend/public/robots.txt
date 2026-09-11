@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Private / personalised areas — no value in the index
+Disallow: /dashboard
+Disallow: /la-so/detail
+Disallow: /login
+Disallow: /register
+
+Sitemap: https://xemtuvimienphi.top/sitemap.xml
