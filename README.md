@@ -225,32 +225,33 @@ sudo mkswap /swapfile && sudo swapon /swapfile
 echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 ```
 
-Then clone, and fill in the environment:
+Every service runs from a published image, so the box needs two files and no checkout:
 
 ```bash
-git clone --depth 1 https://github.com/vukiman1/tuvimienphi.git /opt/tuvimienphi
-cd /opt/tuvimienphi
-cp .env.prod.example .env && chmod 600 .env
+mkdir -p /opt/tuvimienphi && cd /opt/tuvimienphi
+curl -O https://raw.githubusercontent.com/vukiman1/tuvimienphi/dev/docker-compose.prod.yml
+curl -o .env https://raw.githubusercontent.com/vukiman1/tuvimienphi/dev/.env.prod.example
+chmod 600 .env
 ```
 
-`.env` sets `COMPOSE_FILE`, so no command below needs `-f` or `--env-file`:
+Fill `.env` in. It sets `COMPOSE_FILE`, so no command below needs `-f` or `--env-file`:
 
 ```bash
-docker compose pull backend
+docker compose pull
 docker compose up -d
 curl -s localhost:3000/health/readiness
 ```
 
-**Do not build on the VPS.** A workspace build peaks well above what 2 GB holds. Images come from
-[`publish-image.yml`](.github/workflows/publish-image.yml), which runs on every push to `dev` and can
-also be dispatched by hand. It pushes `latest` and a `sha-` tag to GHCR and prints both in its run
-summary.
+**Do not build on the VPS.** A workspace build peaks well above what 2 GB holds. Both images come
+from [`publish-image.yml`](.github/workflows/publish-image.yml), which runs on every push to `dev`
+and can also be dispatched by hand. It pushes `latest` and a `sha-` tag for each and prints them in
+its run summary.
 
 ### Updating
 
 ```bash
-git pull
-docker compose pull backend
+curl -O https://raw.githubusercontent.com/vukiman1/tuvimienphi/dev/docker-compose.prod.yml
+docker compose pull
 docker compose up -d
 ```
 

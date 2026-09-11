@@ -8,6 +8,7 @@ on:
     paths:
       - 'apps/backend/**'
       - 'packages/**'
+      - 'tools/docker/**'
       - 'package.json'
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
@@ -29,8 +30,20 @@ env:
 
 jobs:
   publish:
-    name: publish
+    name: publish ${{ matrix.name }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: backend
+            image: tuvimienphi-backend
+            context: .
+            file: apps/backend/Dockerfile
+          - name: pg-backup
+            image: tuvimienphi-pg-backup
+            context: tools/docker/pg-backup
+            file: tools/docker/pg-backup/Dockerfile
     steps:
       - uses: actions/checkout@v7
         with:
@@ -48,30 +61,28 @@ jobs:
       - id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository_owner }}/tuvimienphi-backend
+          images: ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}
           tags: |
             type=raw,value=latest
             type=sha
 
       - uses: docker/build-push-action@v6
         with:
-          context: .
-          file: apps/backend/Dockerfile
+          context: ${{ matrix.context }}
+          file: ${{ matrix.file }}
           platforms: linux/amd64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=${{ matrix.name }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.name }}
 
       - name: Report the published tags
         env:
           TAGS: ${{ steps.meta.outputs.tags }}
         run: |
           {
-            echo '### Published'
-            echo
-            echo 'Set one of these as `BACKEND_IMAGE` in `.env.prod` on the VPS:'
+            echo '### Published ${{ matrix.name }}'
             echo
             echo '```'
             echo "$TAGS"
