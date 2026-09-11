@@ -153,8 +153,7 @@ services:
 
   db-backup:
     profiles: ['backup']
-    build:
-      context: tools/docker/pg-backup
+    image: ${PG_BACKUP_IMAGE:-ghcr.io/vukiman1/tuvimienphi-pg-backup:latest}
     restart: unless-stopped
     logging: *logging
     environment:
