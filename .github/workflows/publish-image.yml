@@ -2,6 +2,19 @@ name: Publish Image
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - dev
+    paths:
+      - 'apps/backend/**'
+      - 'packages/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'tsconfig.base.json'
+      - 'nx.json'
+      - '.dockerignore'
+      - '.github/workflows/publish-image.yml'
 
 concurrency:
   group: publish-image
