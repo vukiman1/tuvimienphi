@@ -241,9 +241,10 @@ docker compose up -d
 curl -s localhost:3000/health/readiness
 ```
 
-**Do not build on the VPS.** A workspace build peaks well above what 2 GB holds. Images come from the
-manually dispatched [`publish-image.yml`](.github/workflows/publish-image.yml) workflow, which pushes
-`latest` and a `sha-` tag to GHCR and prints both in its run summary.
+**Do not build on the VPS.** A workspace build peaks well above what 2 GB holds. Images come from
+[`publish-image.yml`](.github/workflows/publish-image.yml), which runs on every push to `dev` and can
+also be dispatched by hand. It pushes `latest` and a `sha-` tag to GHCR and prints both in its run
+summary.
 
 ### Updating
 
@@ -296,12 +297,12 @@ enrolled account out permanently.
 
 ## 🤖 CI / CD
 
-| Workflow            | Trigger          | Jobs                                                                                                                           |
-| ------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `pull-request.yml`  | PR → `dev`       | check-branch-up-to-date, format, lint, typecheck, test, build, docker, backend-e2e, frontend-e2e, dashboard-e2e, security-scan |
-| `push-dev.yml`      | push → `dev`     | format, lint, typecheck, test, build, security-scan (skips e2e + branch check)                                                 |
-| `publish-image.yml` | manual dispatch  | publish — builds `apps/backend/Dockerfile` and pushes `latest` + `sha-` to GHCR                                                |
-| `pr-auto-label.yml` | PR opened/edited | derive `type/*` + `scope/*` labels from the PR title                                                                           |
+| Workflow            | Trigger              | Jobs                                                                                                                           |
+| ------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `pull-request.yml`  | PR → `dev`           | check-branch-up-to-date, format, lint, typecheck, test, build, docker, backend-e2e, frontend-e2e, dashboard-e2e, security-scan |
+| `push-dev.yml`      | push → `dev`         | format, lint, typecheck, test, build, security-scan (skips e2e + branch check)                                                 |
+| `publish-image.yml` | push → `dev`, manual | publish — builds `apps/backend/Dockerfile` and pushes `latest` + `sha-` to GHCR                                                |
+| `pr-auto-label.yml` | PR opened/edited     | derive `type/*` + `scope/*` labels from the PR title                                                                           |
 
 Nx Cloud remote cache is wired up (`nxCloudId` in `nx.json`).
 
