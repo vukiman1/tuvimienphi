@@ -74,3 +74,6 @@ apps/backend/docker/data
 apps/frontend/public/**/_src/
 
 vitest.config.*.timestamp*
+
+# Production compose secrets
+.env.prod
