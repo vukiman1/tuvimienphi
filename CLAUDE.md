@@ -22,6 +22,15 @@
 
 <!-- nx configuration end-->
 
+# Comments
+
+Do not write comments. Not in TypeScript, not in YAML, Dockerfiles, shell scripts, or env templates.
+No exceptions — this overrides the "rare exception" wording in the global rules, including the
+non-obvious "why" case that would normally earn one.
+
+Put the explanation in the commit body, the PR description, or a reply in chat. Kim An reads the code
+and asks when something is unclear.
+
 # Branching Model
 
 - **`main`** is the stable/release branch. **`dev`** is the integration branch where day-to-day work and dependency bumps land first. `main` lags behind `dev` and only receives merges when cutting a release.
