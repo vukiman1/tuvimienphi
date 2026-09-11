@@ -4,11 +4,34 @@ import tailwindcss from '@tailwindcss/vite';
 import { tanstackRouter } from '@tanstack/router-plugin/vite';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { createRequire } from 'node:module';
+import { writeFileSync } from 'node:fs';
 import { fileURLToPath, URL } from 'node:url';
+import type { Plugin } from 'vite';
 import { loadFrontendConfig } from './config/index.ts';
+import { getSeoRoutes } from './tools/seo-routes.mjs';
 
 const requireFromHere = createRequire(import.meta.url);
 const isAnalyze = process.env.ANALYZE === 'true';
+
+/**
+ * Emit `sitemap.xml` into the build output from the shared public-route list (see tools/seo-routes.mjs),
+ * so every build produces a sitemap that matches the shipped articles with no manual upkeep.
+ */
+function sitemapPlugin(siteUrl: string): Plugin {
+  return {
+    name: 'generate-sitemap',
+    apply: 'build',
+    closeBundle() {
+      const urls = getSeoRoutes()
+        .map((path) => `  <url>\n    <loc>${siteUrl}${path}</loc>\n  </url>`)
+        .join('\n');
+      const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
+      writeFileSync(fileURLToPath(new URL('./dist/sitemap.xml', import.meta.url)), xml);
+    },
+  };
+}
+
+const siteUrl = (process.env.VITE_SITE_URL ?? 'https://xemtuvimienphi.top').replace(/\/$/, '');
 
 export default defineConfig(({ command, mode }) => {
   const frontendConfig = loadFrontendConfig(mode, requireFromHere);
@@ -36,6 +59,7 @@ export default defineConfig(({ command, mode }) => {
       }),
       react(),
       tailwindcss(),
+      sitemapPlugin(siteUrl),
       isAnalyze &&
         visualizer({
           filename: './dist/stats.html',
