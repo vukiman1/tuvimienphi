@@ -199,13 +199,109 @@ docker build -f apps/backend/Dockerfile -t tuvimienphi-backend .
 docker build -f apps/frontend/Dockerfile -t tuvimienphi-frontend .
 ```
 
+## 🌐 Production (VPS)
+
+[`docker-compose.prod.yml`](docker-compose.prod.yml) runs the backend, Postgres and Redis on a single
+small VPS. It is a separate file from `docker-compose.yml`, which stays dev-only: different project
+name, memory limits sized for a 2 GB box, no secret has a default, and nothing is published past
+loopback.
+
+| Service       | Notes                                                                                               |
+| ------------- | --------------------------------------------------------------------------------------------------- |
+| `db`          | Postgres 17, tuned for its 384 MB limit, named volume                                               |
+| `redis`       | password + AOF persistence; `maxmemory` with `noeviction`, so BullMQ never has a queued job evicted |
+| `migrate`     | one-shot `typeorm migration:run`; `backend` will not start until it exits 0                         |
+| `backend`     | pulled from GHCR, loopback port only                                                                |
+| `cloudflared` | profile `tunnel` — public ingress without an inbound port                                           |
+| `db-backup`   | profile `backup` — periodic `pg_dump` to Cloudflare R2                                              |
+
+### First deploy
+
+A 2 GB VPS ships with no swap, and Postgres plus Node will not fit without it:
+
+```bash
+sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile
+sudo mkswap /swapfile && sudo swapon /swapfile
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+```
+
+Then clone, and fill in the environment:
+
+```bash
+git clone --depth 1 https://github.com/vukiman1/tuvimienphi.git /opt/tuvimienphi
+cd /opt/tuvimienphi
+cp .env.prod.example .env && chmod 600 .env
+```
+
+`.env` sets `COMPOSE_FILE`, so no command below needs `-f` or `--env-file`:
+
+```bash
+docker compose pull backend
+docker compose up -d
+curl -s localhost:3000/health/readiness
+```
+
+**Do not build on the VPS.** A workspace build peaks well above what 2 GB holds. Images come from the
+manually dispatched [`publish-image.yml`](.github/workflows/publish-image.yml) workflow, which pushes
+`latest` and a `sha-` tag to GHCR and prints both in its run summary.
+
+### Updating
+
+```bash
+git pull
+docker compose pull backend
+docker compose up -d
+```
+
+Compose recreates only the services whose configuration actually changed — editing Redis settings
+leaves the backend container untouched, and a new image recreates `migrate` and `backend` while
+Postgres and Redis keep running. Two things to keep straight:
+
+- `docker compose restart` re-runs the **existing** container. It ignores a new image entirely, so a
+  deploy done with `restart` silently ships the old build. Always `up -d`.
+- Naming a service (`up -d backend`) restricts the update to it. After changing anything else, run
+  plain `up -d` or the change will not be applied.
+
+A failed migration aborts the deploy and leaves the previous backend serving, which is the intent.
+Compose reports it as `service "migrate" didn't complete successfully`; the `dependency db failed to
+start` lines that follow are misleading — Postgres is fine.
+
+### Rollback
+
+Point `BACKEND_IMAGE` at a `sha-` tag from the workflow summary and redeploy:
+
+```bash
+sed -i 's|^BACKEND_IMAGE=.*|BACKEND_IMAGE=ghcr.io/vukiman1/tuvimienphi-backend:sha-1a2b3c4|' .env
+docker compose up -d
+```
+
+### Optional profiles
+
+```bash
+docker compose --profile tunnel up -d     # Cloudflare Tunnel
+docker compose --profile backup up -d     # pg_dump to R2 on an interval
+```
+
+The tunnel is remotely managed: `TUNNEL_TOKEN` is all the container needs, and the routing lives in
+Zero Trust › Networks › Tunnels › Public Hostname. Set **Type** to `HTTP` and **URL** to
+`backend:3000` — not `localhost:3000`, which inside the cloudflared container resolves to itself. The
+domain's nameservers must already be on Cloudflare.
+
+### Secrets
+
+Runtime secrets live only in `.env` on the server. They are not baked into the image, and no
+workflow needs them — `publish-image.yml` authenticates to GHCR with the automatic `GITHUB_TOKEN`.
+`SECRET_KEY` encrypts TOTP secrets at rest, so on a database with real users, changing it locks every
+enrolled account out permanently.
+
 ## 🤖 CI / CD
 
-| Workflow            | Trigger          | Jobs                                                                                                    |
-| ------------------- | ---------------- | ------------------------------------------------------------------------------------------------------- |
-| `pull-request.yml`  | PR → `dev`       | check-branch-up-to-date, format, lint, typecheck, test, build, backend-e2e, frontend-e2e, security-scan |
-| `push-dev.yml`      | push → `dev`     | format, lint, typecheck, test, build, security-scan, migrate (skips e2e + branch check)                 |
-| `pr-auto-label.yml` | PR opened/edited | derive `type/*` + `scope/*` labels from the PR title                                                    |
+| Workflow            | Trigger          | Jobs                                                                                                                           |
+| ------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `pull-request.yml`  | PR → `dev`       | check-branch-up-to-date, format, lint, typecheck, test, build, docker, backend-e2e, frontend-e2e, dashboard-e2e, security-scan |
+| `push-dev.yml`      | push → `dev`     | format, lint, typecheck, test, build, security-scan (skips e2e + branch check)                                                 |
+| `publish-image.yml` | manual dispatch  | publish — builds `apps/backend/Dockerfile` and pushes `latest` + `sha-` to GHCR                                                |
+| `pr-auto-label.yml` | PR opened/edited | derive `type/*` + `scope/*` labels from the PR title                                                                           |
 
 Nx Cloud remote cache is wired up (`nxCloudId` in `nx.json`).
 
