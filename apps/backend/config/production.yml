@@ -1,8 +1,6 @@
 app:
   nodeEnv: production
-  # The deployed frontend. Not a secret, so it lives here rather than costing an env var; the
-  # CORS_ORIGINS / APP_URL mappings still win, for when a custom domain arrives.
-  url: https://tuvimienphi-frontend.vercel.app
+  url: https://xemtuvimienphi.top
   trustProxy: 1
   logLevels:
     - error
@@ -19,6 +17,8 @@ redis:
 
 cors:
   origins:
+    - https://xemtuvimienphi.top
+    - https://www.xemtuvimienphi.top
     - https://tuvimienphi-frontend.vercel.app
 
 # The dashboard only makes sense next to a running worker, and BullMQ workers need a process that
