@@ -44,7 +44,7 @@ describe('SessionsCard', () => {
 
     renderCard();
 
-    expect(await screen.findByText('Hanoi, VN')).toBeTruthy();
+    expect(await screen.findAllByText('Hanoi, VN')).not.toHaveLength(0);
   });
 
   it('shows Unknown when the edge sent no location', async () => {
@@ -54,7 +54,7 @@ describe('SessionsCard', () => {
 
     renderCard();
 
-    expect(await screen.findByText('Unknown')).toBeTruthy();
+    expect(await screen.findAllByText('Không rõ')).not.toHaveLength(0);
   });
 
   it('cannot revoke the current session', async () => {
@@ -64,10 +64,8 @@ describe('SessionsCard', () => {
 
     renderCard();
 
-    const buttons = await screen.findAllByRole('button', { name: 'Revoke session' });
-    for (const button of buttons) {
-      expect(button.hasAttribute('disabled')).toBe(true);
-    }
+    await screen.findAllByText('Hanoi, VN');
+    expect(screen.queryByRole('button', { name: 'Đăng xuất' })).toBeNull();
   });
 
   it('asks for confirmation before signing out other devices', async () => {
@@ -75,10 +73,12 @@ describe('SessionsCard', () => {
     jest.mocked(authService.revokeOtherSessions).mockResolvedValue({ message: 'ok' } as never);
 
     renderCard();
-    fireEvent.click(await screen.findByRole('button', { name: 'Sign out other devices' }));
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'Đăng xuất khỏi tất cả thiết bị khác' }),
+    );
 
     expect(authService.revokeOtherSessions).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole('button', { name: 'Yes, sign them out' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Đồng ý' }));
 
     await waitFor(() => expect(authService.revokeOtherSessions).toHaveBeenCalled());
   });
@@ -90,7 +90,9 @@ describe('SessionsCard', () => {
 
     renderCard();
 
-    await screen.findByText('Hanoi, VN');
-    expect(screen.queryByRole('button', { name: 'Sign out other devices' })).toBeNull();
+    await screen.findAllByText('Hanoi, VN');
+    expect(
+      screen.queryByRole('button', { name: 'Đăng xuất khỏi tất cả thiết bị khác' }),
+    ).toBeNull();
   });
 });

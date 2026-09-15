@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Monitor, RefreshCw, Smartphone, Trash2 } from 'lucide-react';
+import { Monitor, RefreshCw, Smartphone, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { useConfirm } from '@/components/ui/confirm-dialog';
 import { notify } from '@/lib/toast';
 import { authService } from '@/services/auth-service';
 import type { UserLoginSession } from '@org/shared-contracts';
+import { cn } from '@/lib/utils';
 
 export function SessionsCard() {
   const queryClient = useQueryClient();
@@ -20,25 +21,26 @@ export function SessionsCard() {
   const revokeMutation = useMutation({
     mutationFn: (sessionId: string) => authService.revokeSession(sessionId),
     onSuccess: async () => {
-      notify.success('Session revoked.');
+      notify.success('Đã đăng xuất thiết bị.');
       await invalidate();
     },
-    onError: () => notify.error('Could not revoke that session.'),
+    onError: () => notify.error('Không thể đăng xuất thiết bị này.'),
   });
   const revokeOthersMutation = useMutation({
     mutationFn: () => authService.revokeOtherSessions(),
     onSuccess: async () => {
-      notify.success('Signed out of every other device.');
+      notify.success('Đã đăng xuất khỏi tất cả thiết bị khác.');
       await invalidate();
     },
-    onError: () => notify.error('Could not sign out the other devices.'),
+    onError: () => notify.error('Không thể đăng xuất các thiết bị khác.'),
   });
 
   const askThenRevokeOthers = async () => {
     const confirmed = await confirm({
-      title: 'Sign out other devices?',
-      description: 'Every device except this one will be signed out. This cannot be undone.',
-      confirmLabel: 'Yes, sign them out',
+      title: 'Đăng xuất thiết bị khác?',
+      description:
+        'Mọi thiết bị khác ngoại trừ thiết bị này sẽ bị đăng xuất. Hành động này không thể hoàn tác.',
+      confirmLabel: 'Đồng ý',
       destructive: true,
     });
     if (confirmed) {
@@ -50,86 +52,97 @@ export function SessionsCard() {
   const hasOtherSessions = sessions.some((session) => !session.isCurrent);
 
   return (
-    <Card className="gap-4 py-5">
-      <CardHeader className="gap-3 sm:flex sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <CardTitle>Login sessions</CardTitle>
-          <CardDescription>Devices that can currently access your account.</CardDescription>
-        </div>
-        <Button
-          aria-label="Refresh sessions"
-          disabled={sessionsQuery.isFetching}
-          onClick={() => sessionsQuery.refetch()}
-          size="icon-sm"
-          title="Refresh sessions"
-          type="button"
-          variant="outline"
-        >
-          <RefreshCw className={sessionsQuery.isFetching ? 'animate-spin' : undefined} />
-        </Button>
-      </CardHeader>
-      <CardContent>
-        {sessionsQuery.isLoading ? (
-          <p className="text-sm text-muted-foreground">Loading sessions...</p>
-        ) : sessionsQuery.isError ? (
-          <p className="text-sm font-medium text-destructive">Could not load login sessions.</p>
-        ) : sessions.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No active sessions found.</p>
-        ) : (
-          <>
-            <div className="hidden overflow-x-auto md:block">
-              <table className="w-full min-w-[820px] border-separate border-spacing-0 text-left text-sm">
-                <thead>
-                  <tr className="border-b text-muted-foreground">
-                    <th className="border-b pb-3 font-medium">Device</th>
-                    <th className="border-b pb-3 font-medium">Location</th>
-                    <th className="border-b pb-3 font-medium">IP address</th>
-                    <th className="border-b pb-3 font-medium">Last seen</th>
-                    <th className="border-b pb-3 font-medium">Expires</th>
-                    <th className="border-b pb-3 text-right font-medium">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sessions.map((session) => (
-                    <SessionRow
-                      key={session.id}
-                      isRevoking={
-                        revokeMutation.isPending && revokeMutation.variables === session.id
-                      }
-                      onRevoke={() => revokeMutation.mutate(session.id)}
-                      session={session}
-                    />
-                  ))}
-                </tbody>
-              </table>
+    <Card className="rounded-2xl border-none bg-white shadow-sm">
+      <CardContent className="p-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex items-start gap-4">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#f4ebe1]">
+              <Monitor className="size-5 text-[#904423]" />
             </div>
+            <div>
+              <h3 className="font-display text-lg font-semibold text-[#1a1412]">Phiên đăng nhập</h3>
+              <p className="mt-1 text-sm text-[#6b5a4e]">
+                Các thiết bị đang truy cập tài khoản của bạn.
+              </p>
+            </div>
+          </div>
+          <Button
+            aria-label="Refresh sessions"
+            disabled={sessionsQuery.isFetching}
+            onClick={() => sessionsQuery.refetch()}
+            variant="outline"
+            className="shrink-0 gap-2 border-[#e4d5c7] text-[#6b5a4e] hover:bg-[#f4ebe1]/50 hover:text-[#1a1412]"
+          >
+            <RefreshCw className={cn('size-4', sessionsQuery.isFetching && 'animate-spin')} />
+            Làm mới
+          </Button>
+        </div>
 
-            <ul className="divide-y md:hidden">
-              {sessions.map((session) => (
-                <SessionListItem
-                  key={session.id}
-                  isRevoking={revokeMutation.isPending && revokeMutation.variables === session.id}
-                  onRevoke={() => revokeMutation.mutate(session.id)}
-                  session={session}
-                />
-              ))}
-            </ul>
-
-            {hasOtherSessions && (
-              <div className="mt-4">
-                <Button
-                  disabled={revokeOthersMutation.isPending}
-                  onClick={askThenRevokeOthers}
-                  size="sm"
-                  type="button"
-                  variant="outline"
-                >
-                  Sign out other devices
-                </Button>
+        <div className="mt-6">
+          {sessionsQuery.isLoading ? (
+            <p className="text-sm text-[#6b5a4e]">Đang tải...</p>
+          ) : sessionsQuery.isError ? (
+            <p className="text-sm font-medium text-destructive">Không thể tải phiên đăng nhập.</p>
+          ) : sessions.length === 0 ? (
+            <p className="text-sm text-[#6b5a4e]">Không tìm thấy phiên hoạt động nào.</p>
+          ) : (
+            <>
+              <div className="hidden overflow-x-auto md:block">
+                <table className="w-full min-w-[820px] border-separate border-spacing-0 text-left text-sm">
+                  <thead>
+                    <tr className="bg-[#fcfaf8] text-[11px] font-bold tracking-wider text-[#904423]/70 uppercase">
+                      <th className="rounded-l-lg p-3 font-label">Thiết bị</th>
+                      <th className="p-3 font-label">Địa chỉ IP</th>
+                      <th className="p-3 font-label">Lần truy cập gần nhất</th>
+                      <th className="p-3 font-label">Hết hạn</th>
+                      <th className="rounded-r-lg p-3 font-label">Hành động</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {sessions.map((session) => (
+                      <SessionRow
+                        key={session.id}
+                        isRevoking={
+                          revokeMutation.isPending && revokeMutation.variables === session.id
+                        }
+                        onRevoke={() => revokeMutation.mutate(session.id)}
+                        session={session}
+                      />
+                    ))}
+                  </tbody>
+                </table>
               </div>
-            )}
-          </>
-        )}
+
+              <ul className="divide-y md:hidden">
+                {sessions.map((session) => (
+                  <SessionListItem
+                    key={session.id}
+                    isRevoking={revokeMutation.isPending && revokeMutation.variables === session.id}
+                    onRevoke={() => revokeMutation.mutate(session.id)}
+                    session={session}
+                  />
+                ))}
+              </ul>
+
+              {hasOtherSessions && (
+                <div className="mt-6 border-t border-[#e4d5c7]/40 pt-6">
+                  <Button
+                    disabled={revokeOthersMutation.isPending}
+                    onClick={askThenRevokeOthers}
+                    variant="outline"
+                    className="gap-2 border-[#e4d5c7] text-[#6b5a4e] hover:bg-[#f4ebe1]/50 hover:text-[#1a1412]"
+                  >
+                    <Monitor className="size-4" />
+                    Đăng xuất khỏi tất cả thiết bị khác
+                  </Button>
+                  <p className="mt-2 text-xs text-[#6b5a4e]">
+                    Bạn sẽ vẫn đăng nhập trên thiết bị hiện tại.
+                  </p>
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </CardContent>
     </Card>
   );
@@ -145,43 +158,67 @@ function SessionRow({ session, isRevoking, onRevoke }: SessionRowProps) {
   const Icon = session.deviceType === 'Mobile' ? Smartphone : Monitor;
 
   return (
-    <tr className="border-b last:border-b-0">
-      <td className="border-b py-3 pr-4 last:border-b-0">
-        <div className="flex items-start gap-3">
-          <span className="mt-0.5 flex size-8 items-center justify-center rounded-md bg-muted text-muted-foreground">
-            <Icon className="size-4" />
+    <tr className="border-b border-[#e4d5c7]/40 last:border-b-0">
+      <td className="border-b border-[#e4d5c7]/40 py-4 pr-4 last:border-b-0">
+        <div className="flex items-center gap-4">
+          <span className="flex size-10 items-center justify-center rounded-lg border border-[#e4d5c7]/60 bg-[#fcfaf8] text-[#6b5a4e]">
+            <Icon className="size-5" />
           </span>
           <div className="min-w-0">
-            <div className="flex flex-wrap items-center gap-2">
-              <p className="font-medium text-foreground">{sessionName(session)}</p>
+            <div className="flex items-center gap-2">
+              <p className="font-medium text-[#1a1412]">{sessionName(session)}</p>
               {session.isCurrent && (
-                <span className="rounded-md bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
-                  Current
+                <span className="rounded bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-600">
+                  Hiện tại
                 </span>
               )}
             </div>
-            <p className="mt-1 max-w-sm truncate text-xs text-muted-foreground">
+            <p className="mt-0.5 text-xs text-[#6b5a4e]">
               {session.userAgent ?? 'Unknown user agent'}
             </p>
           </div>
         </div>
       </td>
-      <td className="border-b py-3 pr-4 text-muted-foreground">{sessionLocation(session)}</td>
-      <td className="border-b py-3 pr-4 text-muted-foreground">{session.ipAddress ?? 'Unknown'}</td>
-      <td className="border-b py-3 pr-4 text-muted-foreground">{formatDate(session.lastSeenAt)}</td>
-      <td className="border-b py-3 pr-4 text-muted-foreground">{formatDate(session.expiresAt)}</td>
-      <td className="border-b py-3 text-right">
-        <Button
-          aria-label="Revoke session"
-          disabled={session.isCurrent || isRevoking}
-          onClick={onRevoke}
-          size="icon-sm"
-          title={session.isCurrent ? 'Use logout for the current session' : 'Revoke session'}
-          type="button"
-          variant="outline"
-        >
-          <Trash2 />
-        </Button>
+      <td className="border-b border-[#e4d5c7]/40 py-4 pr-4">
+        <div className="flex items-center gap-2">
+          {session.country === 'VN' || session.country === 'Vietnam' ? (
+            <span className="flex size-4 items-center justify-center overflow-hidden rounded-[2px] bg-[#da251d]">
+              <span className="text-[10px] text-[#ffcd00]">★</span>
+            </span>
+          ) : (
+            <span className="inline-block size-4 rounded-[2px] bg-muted" />
+          )}
+          <span className="text-sm font-medium text-[#6b5a4e]">
+            {session.ipAddress ?? 'Unknown'}
+          </span>
+        </div>
+        <p className="text-xs text-[#904423]/70">{sessionLocation(session)}</p>
+      </td>
+      <td className="border-b border-[#e4d5c7]/40 py-4 pr-4">
+        <p className="text-sm font-medium text-[#6b5a4e]">
+          {formatDateDateOnly(session.lastSeenAt)}
+        </p>
+        <p className="text-xs text-[#904423]/70">{formatDateTimeOnly(session.lastSeenAt)}</p>
+      </td>
+      <td className="border-b border-[#e4d5c7]/40 py-4 pr-4">
+        <p className="text-sm font-medium text-[#6b5a4e]">
+          {formatDateDateOnly(session.expiresAt)}
+        </p>
+        <p className="text-xs text-[#904423]/70">{formatDateTimeOnly(session.expiresAt)}</p>
+      </td>
+      <td className="border-b border-[#e4d5c7]/40 py-4">
+        {!session.isCurrent && (
+          <Button
+            aria-label="Đăng xuất"
+            disabled={isRevoking}
+            onClick={onRevoke}
+            variant="outline"
+            className="h-8 gap-1.5 border-red-200 bg-red-50 text-xs font-medium text-red-600 hover:bg-red-100 hover:text-red-700"
+          >
+            <LogOut className="size-3.5" />
+            Đăng xuất
+          </Button>
+        )}
       </td>
     </tr>
   );
@@ -191,68 +228,94 @@ function SessionListItem({ session, isRevoking, onRevoke }: SessionRowProps) {
   const Icon = session.deviceType === 'Mobile' ? Smartphone : Monitor;
 
   return (
-    <li className="flex items-start justify-between gap-3 py-3">
-      <div className="flex min-w-0 items-start gap-3">
-        <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
-          <Icon className="size-4" />
-        </span>
-        <div className="min-w-0 text-sm">
-          <div className="flex flex-wrap items-center gap-2">
-            <p className="font-medium text-foreground">{sessionName(session)}</p>
-            {session.isCurrent && (
-              <span className="rounded-md bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
-                Current
-              </span>
-            )}
+    <li className="flex flex-col gap-3 py-4">
+      <div className="flex min-w-0 items-start justify-between gap-3">
+        <div className="flex items-start gap-3">
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-[#e4d5c7]/60 bg-[#fcfaf8] text-[#6b5a4e]">
+            <Icon className="size-5" />
+          </span>
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="font-medium text-[#1a1412]">{sessionName(session)}</p>
+              {session.isCurrent && (
+                <span className="rounded bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-600">
+                  Hiện tại
+                </span>
+              )}
+            </div>
+            <p className="mt-1 text-xs text-[#6b5a4e]">{session.userAgent ?? 'Unknown'}</p>
+            <div className="mt-2 space-y-1">
+              <p className="text-xs text-[#6b5a4e]">
+                <span className="font-medium">IP:</span> {session.ipAddress ?? 'Unknown'}
+              </p>
+              <p className="text-xs text-[#6b5a4e]">
+                <span className="font-medium">Vị trí:</span> {sessionLocation(session)}
+              </p>
+              <p className="text-xs text-[#6b5a4e]">
+                <span className="font-medium">Gần nhất:</span> {formatDate(session.lastSeenAt)}
+              </p>
+            </div>
           </div>
-          <p className="mt-1 text-xs text-muted-foreground">
-            {sessionLocation(session)} · {session.ipAddress ?? 'Unknown'}
-          </p>
-          <p className="mt-1 text-xs text-muted-foreground">
-            Last seen: {formatDate(session.lastSeenAt)}
-          </p>
-          <p className="mt-0.5 text-xs text-muted-foreground">
-            Expires: {formatDate(session.expiresAt)}
-          </p>
         </div>
       </div>
-      <Button
-        aria-label="Revoke session"
-        disabled={session.isCurrent || isRevoking}
-        onClick={onRevoke}
-        size="icon-sm"
-        title={session.isCurrent ? 'Use logout for the current session' : 'Revoke session'}
-        type="button"
-        variant="outline"
-      >
-        <Trash2 />
-      </Button>
+      {!session.isCurrent && (
+        <Button
+          aria-label="Đăng xuất"
+          disabled={isRevoking}
+          onClick={onRevoke}
+          variant="outline"
+          className="w-full gap-2 border-red-200 bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700"
+        >
+          <LogOut className="size-4" />
+          Đăng xuất
+        </Button>
+      )}
     </li>
   );
-}
-
-function sessionLocation(session: UserLoginSession): string {
-  const parts = [session.city, session.country].filter(Boolean);
-  return parts.length > 0 ? parts.join(', ') : 'Unknown';
 }
 
 function sessionName(session: UserLoginSession): string {
   const parts = [session.browserName, session.osName].filter(Boolean);
   if (parts.length > 0) {
-    return parts.join(' on ');
+    return parts.join(' trên ');
   }
-  return session.deviceType ?? 'Unknown device';
+  return session.deviceType ?? 'Thiết bị không rõ';
+}
+
+function sessionLocation(session: UserLoginSession): string {
+  const parts = [session.city, session.country].filter(Boolean);
+  return parts.length > 0 ? parts.join(', ') : 'Không rõ';
+}
+
+function formatDateDateOnly(value: string | null): string {
+  if (!value) return 'Không bao giờ';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return 'Không rõ';
+
+  return new Intl.DateTimeFormat('vi-VN', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  }).format(date);
+}
+
+function formatDateTimeOnly(value: string | null): string {
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+
+  return new Intl.DateTimeFormat('vi-VN', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  }).format(date);
 }
 
 function formatDate(value: string | null): string {
-  if (!value) {
-    return 'Never';
-  }
+  if (!value) return 'Không bao giờ';
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) {
-    return 'Unknown';
-  }
-  return new Intl.DateTimeFormat(undefined, {
+  if (Number.isNaN(date.getTime())) return 'Không rõ';
+  return new Intl.DateTimeFormat('vi-VN', {
     dateStyle: 'medium',
     timeStyle: 'short',
   }).format(date);

@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SiteRouteImport } from './routes/_site'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as authLoginRouteImport } from './routes/(auth)/login'
 import { Route as authRegisterRouteImport } from './routes/(auth)/register'
 import { Route as SiteIndexRouteImport } from './routes/_site/index'
@@ -18,6 +19,7 @@ import { Route as SiteLaSoRouteImport } from './routes/_site/la-so'
 import { Route as SiteNgayTotRouteImport } from './routes/_site/ngay-tot'
 import { Route as SiteVanHanRouteImport } from './routes/_site/van-han'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as DashboardSessionsRouteImport } from './routes/dashboard/sessions'
 import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
 import { Route as SiteKienThucIndexRouteImport } from './routes/_site/kien-thuc.index'
 import { Route as SiteKienThucSlugRouteImport } from './routes/_site/kien-thuc.$slug'
@@ -26,6 +28,11 @@ import { Route as SiteLaSoDetailRouteImport } from './routes/_site/la-so.detail'
 
 const SiteRoute = SiteRouteImport.update({
   id: '/_site',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const authLoginRoute = authLoginRouteImport.update({
@@ -64,14 +71,19 @@ const SiteVanHanRoute = SiteVanHanRouteImport.update({
   getParentRoute: () => SiteRoute,
 } as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
-  id: '/dashboard/',
-  path: '/dashboard/',
-  getParentRoute: () => rootRouteImport,
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardSessionsRoute = DashboardSessionsRouteImport.update({
+  id: '/sessions',
+  path: '/sessions',
+  getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
-  id: '/dashboard/settings',
-  path: '/dashboard/settings',
-  getParentRoute: () => rootRouteImport,
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => DashboardRoute,
 } as any)
 const SiteKienThucIndexRoute = SiteKienThucIndexRouteImport.update({
   id: '/',
@@ -96,12 +108,14 @@ const SiteLaSoDetailRoute = SiteLaSoDetailRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof SiteIndexRoute
+  '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
   '/kien-thuc': typeof SiteKienThucRouteWithChildren
   '/la-so': typeof SiteLaSoRouteWithChildren
   '/ngay-tot': typeof SiteNgayTotRoute
   '/van-han': typeof SiteVanHanRoute
+  '/dashboard/sessions': typeof DashboardSessionsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/kien-thuc/$slug': typeof SiteKienThucSlugRoute
@@ -114,6 +128,7 @@ export interface FileRoutesByTo {
   '/register': typeof authRegisterRoute
   '/ngay-tot': typeof SiteNgayTotRoute
   '/van-han': typeof SiteVanHanRoute
+  '/dashboard/sessions': typeof DashboardSessionsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/': typeof SiteIndexRoute
   '/dashboard': typeof DashboardIndexRoute
@@ -125,12 +140,14 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_site': typeof SiteRouteWithChildren
+  '/dashboard': typeof DashboardRouteWithChildren
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/register': typeof authRegisterRoute
   '/_site/kien-thuc': typeof SiteKienThucRouteWithChildren
   '/_site/la-so': typeof SiteLaSoRouteWithChildren
   '/_site/ngay-tot': typeof SiteNgayTotRoute
   '/_site/van-han': typeof SiteVanHanRoute
+  '/dashboard/sessions': typeof DashboardSessionsRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
   '/_site/': typeof SiteIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
@@ -143,12 +160,14 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/dashboard'
     | '/login'
     | '/register'
     | '/kien-thuc'
     | '/la-so'
     | '/ngay-tot'
     | '/van-han'
+    | '/dashboard/sessions'
     | '/dashboard/settings'
     | '/dashboard/'
     | '/kien-thuc/$slug'
@@ -161,6 +180,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/ngay-tot'
     | '/van-han'
+    | '/dashboard/sessions'
     | '/dashboard/settings'
     | '/'
     | '/dashboard'
@@ -171,12 +191,14 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/_site'
+    | '/dashboard'
     | '/(auth)/login'
     | '/(auth)/register'
     | '/_site/kien-thuc'
     | '/_site/la-so'
     | '/_site/ngay-tot'
     | '/_site/van-han'
+    | '/dashboard/sessions'
     | '/dashboard/settings'
     | '/_site/'
     | '/dashboard/'
@@ -188,10 +210,9 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   SiteRoute: typeof SiteRouteWithChildren
+  DashboardRoute: typeof DashboardRouteWithChildren
   authLoginRoute: typeof authLoginRoute
   authRegisterRoute: typeof authRegisterRoute
-  DashboardSettingsRoute: typeof DashboardSettingsRoute
-  DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -201,6 +222,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof SiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(auth)/login': {
@@ -254,17 +282,24 @@ declare module '@tanstack/react-router' {
     }
     '/dashboard/': {
       id: '/dashboard/'
-      path: '/dashboard'
+      path: '/'
       fullPath: '/dashboard/'
       preLoaderRoute: typeof DashboardIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/sessions': {
+      id: '/dashboard/sessions'
+      path: '/sessions'
+      fullPath: '/dashboard/sessions'
+      preLoaderRoute: typeof DashboardSessionsRouteImport
+      parentRoute: typeof DashboardRoute
     }
     '/dashboard/settings': {
       id: '/dashboard/settings'
-      path: '/dashboard/settings'
+      path: '/settings'
       fullPath: '/dashboard/settings'
       preLoaderRoute: typeof DashboardSettingsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof DashboardRoute
     }
     '/_site/kien-thuc/': {
       id: '/_site/kien-thuc/'
@@ -343,12 +378,27 @@ const SiteRouteChildren: SiteRouteChildren = {
 
 const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
 
-const rootRouteChildren: RootRouteChildren = {
-  SiteRoute: SiteRouteWithChildren,
-  authLoginRoute: authLoginRoute,
-  authRegisterRoute: authRegisterRoute,
+interface DashboardRouteChildren {
+  DashboardSessionsRoute: typeof DashboardSessionsRoute
+  DashboardSettingsRoute: typeof DashboardSettingsRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardSessionsRoute: DashboardSessionsRoute,
   DashboardSettingsRoute: DashboardSettingsRoute,
   DashboardIndexRoute: DashboardIndexRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
+const rootRouteChildren: RootRouteChildren = {
+  SiteRoute: SiteRouteWithChildren,
+  DashboardRoute: DashboardRouteWithChildren,
+  authLoginRoute: authLoginRoute,
+  authRegisterRoute: authRegisterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
