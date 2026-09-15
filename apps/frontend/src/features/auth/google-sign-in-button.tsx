@@ -1,11 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { GoogleIcon } from '@/components/icons/google-icon';
-import { Button } from '@/components/ui/button';
 import { appConfig } from '@/config/app-config';
 import { ensureGoogleIdentity } from '@/lib/google-identity';
+import { AuthOptionButton } from './auth-option-button';
 
 /** Google clamps the rendered button to this width. */
 const MAX_BUTTON_WIDTH = 400;
+const LARGE_BUTTON_HEIGHT = 40;
+
+interface OverlaySize {
+  width: number;
+  height: number;
+}
 
 /**
  * Our own button, with Google's real one laid transparently over it.
@@ -18,8 +24,10 @@ const MAX_BUTTON_WIDTH = 400;
  */
 export function GoogleSignInButton() {
   const overlayRef = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(0);
+  const googleButtonRef = useRef<HTMLDivElement>(null);
+  const [overlaySize, setOverlaySize] = useState<OverlaySize | null>(null);
   const clientId = appConfig.google.clientId;
+  const renderWidth = overlaySize ? Math.min(Math.round(overlaySize.width), MAX_BUTTON_WIDTH) : 0;
 
   // renderButton takes a number, never a percentage, so the overlay has to be measured to cover
   // the visible button exactly. Anything narrower would leave a dead strip that swallows clicks.
@@ -30,7 +38,7 @@ export function GoogleSignInButton() {
     }
 
     const observer = new ResizeObserver(([entry]) => {
-      setWidth(Math.min(Math.round(entry.contentRect.width), MAX_BUTTON_WIDTH));
+      setOverlaySize({ width: entry.contentRect.width, height: entry.contentRect.height });
     });
     observer.observe(overlay);
 
@@ -38,8 +46,8 @@ export function GoogleSignInButton() {
   }, []);
 
   useEffect(() => {
-    const overlay = overlayRef.current;
-    if (!clientId || !overlay || width === 0) {
+    const googleButton = googleButtonRef.current;
+    if (!clientId || !googleButton || renderWidth === 0) {
       return;
     }
     let cancelled = false;
@@ -47,12 +55,12 @@ export function GoogleSignInButton() {
     // The credential callback is registered once by <GoogleOneTap />; this only draws the button.
     void ensureGoogleIdentity({ clientId, callback: () => undefined }).then((identity) => {
       if (!cancelled) {
-        identity.renderButton(overlay, {
+        identity.renderButton(googleButton, {
           type: 'standard',
           theme: 'outline',
           size: 'large',
           text: 'continue_with',
-          width,
+          width: renderWidth,
           locale: 'en',
         });
       }
@@ -61,21 +69,37 @@ export function GoogleSignInButton() {
     return () => {
       cancelled = true;
     };
-  }, [clientId, width]);
+  }, [clientId, renderWidth]);
 
   if (!clientId) {
     return null;
   }
 
   return (
-    <div className="relative">
-      <Button className="w-full" tabIndex={-1} type="button" variant="outline">
-        <GoogleIcon className="size-4" />
-        Continue with Google
-      </Button>
+    <div className="group relative">
+      <AuthOptionButton
+        className="group-hover:border-[#c9a15c]/70 group-hover:bg-white/90 group-has-focus-visible:border-ring group-has-focus-visible:ring-[3px] group-has-focus-visible:ring-ring/50"
+        icon={<GoogleIcon className="size-6" />}
+        label="Tiếp tục với Google"
+        tabIndex={-1}
+      />
 
       {/* Transparent, but on top: this is what receives the click. */}
-      <div className="absolute inset-0 overflow-hidden opacity-0" ref={overlayRef} />
+      <div className="absolute inset-0 cursor-pointer overflow-hidden opacity-0" ref={overlayRef}>
+        <div
+          className="origin-top-left"
+          ref={googleButtonRef}
+          style={
+            overlaySize && renderWidth > 0
+              ? { transform: coverScale(overlaySize, renderWidth) }
+              : undefined
+          }
+        />
+      </div>
     </div>
   );
+}
+
+function coverScale(overlaySize: OverlaySize, renderWidth: number): string {
+  return `scale(${overlaySize.width / renderWidth}, ${overlaySize.height / LARGE_BUTTON_HEIGHT})`;
 }

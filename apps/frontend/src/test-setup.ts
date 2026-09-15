@@ -16,13 +16,19 @@ Object.assign(globalThis, {
 // jsdom ships no ResizeObserver. A real one reports the size as soon as it starts observing, and
 // components that measure themselves stay inert until it does — so the stub has to do the same.
 const STUB_OBSERVED_WIDTH = 320;
+const STUB_OBSERVED_HEIGHT = 36;
 
 class ResizeObserverStub {
   constructor(private readonly callback: ResizeObserverCallback) {}
 
   observe(target: Element) {
     this.callback(
-      [{ target, contentRect: { width: STUB_OBSERVED_WIDTH } } as ResizeObserverEntry],
+      [
+        {
+          target,
+          contentRect: { width: STUB_OBSERVED_WIDTH, height: STUB_OBSERVED_HEIGHT },
+        } as ResizeObserverEntry,
+      ],
       this as unknown as ResizeObserver,
     );
   }

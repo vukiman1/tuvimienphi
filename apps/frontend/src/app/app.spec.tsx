@@ -32,13 +32,13 @@ describe('App', () => {
   });
 
   it('opens the sign-in modal without leaving the page', async () => {
-    const { findByLabelText, findByRole, findByText } = render(<App />);
+    const { findByLabelText, findByRole } = render(<App />);
 
     fireEvent.click(await findByRole('button', { name: /đăng nhập/i }));
-    fireEvent.click(await findByRole('button', { name: /continue with email/i }));
+    fireEvent.click(await findByRole('button', { name: /tiếp tục với email/i }));
 
     expect(await findByRole('dialog')).toBeTruthy();
-    expect(await findByText(/welcome back/i)).toBeTruthy();
+    expect(await findByRole('heading', { name: /đăng nhập bằng email/i })).toBeTruthy();
     expect(await findByLabelText('Email')).toBeTruthy();
     expect(await findByLabelText('Password')).toBeTruthy();
     expect(await findByRole('button', { name: /^sign in$/i })).toBeTruthy();
@@ -49,7 +49,7 @@ describe('App', () => {
     const { findByLabelText, findByRole, findByText } = render(<App />);
 
     fireEvent.click(await findByRole('button', { name: /đăng nhập/i }));
-    fireEvent.click(await findByRole('button', { name: /continue with email/i }));
+    fireEvent.click(await findByRole('button', { name: /tiếp tục với email/i }));
 
     const emailInput = await findByLabelText('Email');
     const passwordInput = await findByLabelText('Password');
@@ -66,12 +66,12 @@ describe('App', () => {
     const { findByLabelText, findByRole } = render(<App />);
 
     fireEvent.click(await findByRole('button', { name: /đăng nhập/i }));
-    fireEvent.click(await findByRole('button', { name: /create an account/i }));
+    fireEvent.click(await findByRole('button', { name: /đăng ký ngay/i }));
 
-    expect(await findByRole('heading', { name: /create your account/i })).toBeTruthy();
+    expect(await findByRole('heading', { name: /tạo tài khoản/i })).toBeTruthy();
 
     // Register opens on the same provider choice as sign-in; the fields are one step in.
-    fireEvent.click(await findByRole('button', { name: /continue with email/i }));
+    fireEvent.click(await findByRole('button', { name: /tiếp tục với email/i }));
     expect(await findByLabelText('Confirm password')).toBeTruthy();
   });
 });
