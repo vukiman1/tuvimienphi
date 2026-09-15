@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import type { User } from '@org/shared-contracts';
 import { authService } from '@/services/auth-service';
 import { useAuthStore } from '@/stores/auth-store';
 
@@ -10,16 +11,29 @@ export function bootstrapAuth(): Promise<void> {
   bootstrapPromise = (async () => {
     const { setUser, setInitializing } = useAuthStore.getState();
     try {
-      const result = await authService.getMe();
-      setUser(result.user);
-    } catch {
-      // No valid session — stay anonymous
+      setUser(await resolveSignedInUser());
+    } catch (error) {
+      console.warn('Could not restore the session; continuing signed out', error);
     } finally {
       setInitializing(false);
     }
   })();
 
   return bootstrapPromise;
+}
+
+async function resolveSignedInUser(): Promise<User | null> {
+  const status = await authService.getSessionStatus();
+  if (status.user || !status.canRefresh) {
+    return status.user;
+  }
+  await authService.refreshToken();
+  const { user } = await authService.getMe();
+  return user;
+}
+
+export function resetAuthBootstrapForTests(): void {
+  bootstrapPromise = null;
 }
 
 export function useAuthBootstrap() {

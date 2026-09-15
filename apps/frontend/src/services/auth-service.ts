@@ -13,6 +13,7 @@ import type {
   RefreshTokenResponse,
   RevokeOtherSessionsResponse,
   RevokeUserLoginSessionResponse,
+  SessionStatusResponse,
   RegisterPayload,
   RegisterResponse,
   TwoFactorEnabledResponse,
@@ -39,6 +40,9 @@ export const authService = {
   },
   getMe() {
     return httpRequest.get<MeResponse>('/auth/me');
+  },
+  getSessionStatus() {
+    return httpRequest.get<SessionStatusResponse>('/auth/session');
   },
   getSessions() {
     return httpRequest.get<UserLoginSessionsResponse>('/auth/sessions');

@@ -673,6 +673,49 @@ describe('AuthService', () => {
     });
   });
 
+  describe('sessionStatus', () => {
+    it('reports a first-time visitor as signed out with nothing to refresh', () => {
+      const status = service.sessionStatus(undefined, { cookies: {} } as Request);
+
+      expect(status).toEqual({ user: null, canRefresh: false });
+    });
+
+    it('tells a visitor whose access token lapsed that the session can be refreshed', () => {
+      crypto.decryptData.mockReturnValue(
+        JSON.stringify({ id: 'user-1', jti: 'jti-1', persistence: SessionPersistence.STANDARD }),
+      );
+
+      const status = service.sessionStatus(undefined, { cookies: { sub: 'encrypted' } } as Request);
+
+      expect(status).toEqual({ user: null, canRefresh: true });
+    });
+
+    it('treats a session cookie that does not decrypt as nothing to refresh', () => {
+      crypto.decryptData.mockImplementation(() => {
+        throw new Error('bad ciphertext');
+      });
+
+      const status = service.sessionStatus(undefined, { cookies: { sub: 'garbage' } } as Request);
+
+      expect(status.canRefresh).toBe(false);
+    });
+
+    it('returns the signed-in user', () => {
+      const status = service.sessionStatus(
+        {
+          email: 'a@b.c',
+          avatar: null,
+          balance: 0,
+          isEmailVerified: true,
+          password: null,
+        } as never,
+        { cookies: {} } as Request,
+      );
+
+      expect(status.user?.email).toBe('a@b.c');
+    });
+  });
+
   describe('refreshToken', () => {
     it('clears the cookies and rethrows when the session cookie is missing', async () => {
       const response = mockResponse();

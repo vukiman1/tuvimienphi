@@ -99,6 +99,11 @@ export interface MeResponse {
   user: User;
 }
 
+export interface SessionStatusResponse {
+  user: User | null;
+  canRefresh: boolean;
+}
+
 export interface RegisterPayload {
   displayName: string;
   email: string;
