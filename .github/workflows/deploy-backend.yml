@@ -1,0 +1,127 @@
+name: Deploy Backend
+
+on:
+  workflow_call:
+    inputs:
+      commit:
+        type: string
+        required: true
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: Commit on dev whose published image to deploy (full or short SHA)
+        type: string
+        required: true
+
+permissions:
+  contents: read
+  packages: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    environment: vps-sieu-toc-production
+    concurrency:
+      group: deploy-backend
+      cancel-in-progress: false
+    steps:
+      - name: Check the deploy settings
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_SSH_KNOWN_HOSTS: ${{ secrets.VPS_SSH_KNOWN_HOSTS }}
+        run: |
+          missing=()
+          for name in VPS_HOST VPS_USER VPS_SSH_KEY VPS_SSH_KNOWN_HOSTS; do
+            [ -n "${!name}" ] || missing+=("$name")
+          done
+          if [ "${#missing[@]}" -gt 0 ]; then
+            echo "::error::Set ${missing[*]} as secrets of the vps-sieu-toc-production environment"
+            exit 1
+          fi
+
+      - uses: actions/checkout@v7
+        with:
+          filter: tree:0
+          fetch-depth: 0
+
+      - name: Resolve the image to deploy
+        id: target
+        env:
+          REQUESTED_COMMIT: ${{ inputs.commit }}
+          IMAGE_REPOSITORY: ghcr.io/${{ github.repository_owner }}/tuvimienphi-backend
+        run: |
+          if ! commit="$(git rev-parse --verify --quiet "${REQUESTED_COMMIT}^{commit}")"; then
+            echo "::error::${REQUESTED_COMMIT} is not a commit in this repository"
+            exit 1
+          fi
+          if ! git merge-base --is-ancestor "$commit" origin/dev; then
+            echo "::error::${commit} is not on dev, so it has no published image"
+            exit 1
+          fi
+          {
+            echo "commit=${commit}"
+            echo "image=${IMAGE_REPOSITORY}:sha-${commit:0:7}"
+          } >> "$GITHUB_OUTPUT"
+
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check the image was published
+        env:
+          IMAGE: ${{ steps.target.outputs.image }}
+        run: |
+          if ! docker buildx imagetools inspect "$IMAGE" > /dev/null; then
+            echo "::error::${IMAGE} is not on GHCR; publish-image.yml has not built this commit"
+            exit 1
+          fi
+
+      - name: Configure SSH
+        env:
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_SSH_KNOWN_HOSTS: ${{ secrets.VPS_SSH_KNOWN_HOSTS }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$VPS_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$VPS_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: Deploy over SSH
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_SSH_PORT: ${{ vars.VPS_SSH_PORT || '22' }}
+          VPS_DEPLOY_PATH: ${{ vars.VPS_DEPLOY_PATH || '/opt/tuvimienphi' }}
+          IMAGE: ${{ steps.target.outputs.image }}
+          COMMIT: ${{ steps.target.outputs.commit }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          remote_command="bash -s -- $(printf '%q ' "$IMAGE" "$COMMIT" "$VPS_DEPLOY_PATH" "$REPOSITORY")"
+          ssh -i ~/.ssh/deploy_key -p "$VPS_SSH_PORT" \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            -o ConnectTimeout=20 \
+            -o ServerAliveInterval=30 \
+            "${VPS_USER}@${VPS_HOST}" "$remote_command" < tools/vps/deploy-backend.sh
+
+      - name: Report the deploy
+        env:
+          IMAGE: ${{ steps.target.outputs.image }}
+          COMMIT: ${{ steps.target.outputs.commit }}
+        run: |
+          {
+            echo '### Deployed backend'
+            echo
+            echo "- Image: \`${IMAGE}\`"
+            echo "- Commit: \`${COMMIT}\`"
+            echo
+            echo 'To roll back, run this workflow by hand with an earlier commit from dev.'
+          } >> "$GITHUB_STEP_SUMMARY"

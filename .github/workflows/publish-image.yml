@@ -9,6 +9,8 @@ on:
       - 'apps/backend/**'
       - 'packages/**'
       - 'tools/docker/**'
+      - 'tools/vps/**'
+      - 'docker-compose.prod.yml'
       - 'package.json'
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
@@ -16,6 +18,7 @@ on:
       - 'nx.json'
       - '.dockerignore'
       - '.github/workflows/publish-image.yml'
+      - '.github/workflows/deploy-backend.yml'
 
 concurrency:
   group: publish-image
@@ -88,3 +91,12 @@ jobs:
             echo "$TAGS"
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    name: deploy backend
+    needs: publish
+    if: github.ref == 'refs/heads/dev'
+    uses: ./.github/workflows/deploy-backend.yml
+    with:
+      commit: ${{ github.sha }}
+    secrets: inherit
