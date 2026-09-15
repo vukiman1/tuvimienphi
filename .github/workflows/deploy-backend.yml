@@ -9,9 +9,10 @@ on:
   workflow_dispatch:
     inputs:
       commit:
-        description: Commit on dev whose published image to deploy (full or short SHA)
+        description: Commit on dev to deploy (full or short SHA). Leave empty for the newest commit on dev that has a published image.
         type: string
-        required: true
+        required: false
+        default: ''
 
 permissions:
   contents: read
@@ -32,16 +33,21 @@ jobs:
       - name: Check the deploy settings
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
-          VPS_USER: ${{ secrets.VPS_USER }}
           VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
           VPS_SSH_KNOWN_HOSTS: ${{ secrets.VPS_SSH_KNOWN_HOSTS }}
+          VPS_USER: ${{ vars.VPS_USER }}
         run: |
-          missing=()
-          for name in VPS_HOST VPS_USER VPS_SSH_KEY VPS_SSH_KNOWN_HOSTS; do
-            [ -n "${!name}" ] || missing+=("$name")
+          missing_secrets=()
+          for name in VPS_HOST VPS_SSH_KEY VPS_SSH_KNOWN_HOSTS; do
+            [ -n "${!name}" ] || missing_secrets+=("$name")
           done
-          if [ "${#missing[@]}" -gt 0 ]; then
-            echo "::error::Set ${missing[*]} as secrets of the vps-sieu-toc-production environment"
+          if [ "${#missing_secrets[@]}" -gt 0 ]; then
+            echo "::error::Set ${missing_secrets[*]} as secrets of the vps-sieu-toc-production environment"
+          fi
+          if [ -z "$VPS_USER" ]; then
+            echo "::error::Set VPS_USER as a variable of the vps-sieu-toc-production environment"
+          fi
+          if [ "${#missing_secrets[@]}" -gt 0 ] || [ -z "$VPS_USER" ]; then
             exit 1
           fi
 
@@ -50,39 +56,57 @@ jobs:
           filter: tree:0
           fetch-depth: 0
 
-      - name: Resolve the image to deploy
-        id: target
-        env:
-          REQUESTED_COMMIT: ${{ inputs.commit }}
-          IMAGE_REPOSITORY: ghcr.io/${{ github.repository_owner }}/tuvimienphi-backend
-        run: |
-          if ! commit="$(git rev-parse --verify --quiet "${REQUESTED_COMMIT}^{commit}")"; then
-            echo "::error::${REQUESTED_COMMIT} is not a commit in this repository"
-            exit 1
-          fi
-          if ! git merge-base --is-ancestor "$commit" origin/dev; then
-            echo "::error::${commit} is not on dev, so it has no published image"
-            exit 1
-          fi
-          {
-            echo "commit=${commit}"
-            echo "image=${IMAGE_REPOSITORY}:sha-${commit:0:7}"
-          } >> "$GITHUB_OUTPUT"
-
       - uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Check the image was published
+      - name: Resolve the image to deploy
+        id: target
         env:
-          IMAGE: ${{ steps.target.outputs.image }}
+          REQUESTED_COMMIT: ${{ inputs.commit }}
+          IMAGE_REPOSITORY: ghcr.io/${{ github.repository_owner }}/tuvimienphi-backend
+          NEWEST_SEARCH_DEPTH: 30
         run: |
-          if ! docker buildx imagetools inspect "$IMAGE" > /dev/null; then
-            echo "::error::${IMAGE} is not on GHCR; publish-image.yml has not built this commit"
-            exit 1
+          image_for() {
+            echo "${IMAGE_REPOSITORY}:sha-${1:0:7}"
+          }
+          is_published() {
+            docker buildx imagetools inspect "$(image_for "$1")" > /dev/null 2>&1
+          }
+
+          if [ -n "$REQUESTED_COMMIT" ]; then
+            if ! commit="$(git rev-parse --verify --quiet "${REQUESTED_COMMIT}^{commit}")"; then
+              echo "::error::${REQUESTED_COMMIT} is not a commit in this repository"
+              exit 1
+            fi
+            if ! git merge-base --is-ancestor "$commit" origin/dev; then
+              echo "::error::${commit} is not on dev, so it has no published image"
+              exit 1
+            fi
+            if ! is_published "$commit"; then
+              echo "::error::$(image_for "$commit") is not on GHCR; publish-image.yml has not built this commit"
+              exit 1
+            fi
+          else
+            commit=''
+            for candidate in $(git rev-list --max-count="$NEWEST_SEARCH_DEPTH" origin/dev); do
+              if is_published "$candidate"; then
+                commit="$candidate"
+                break
+              fi
+            done
+            if [ -z "$commit" ]; then
+              echo "::error::None of the last ${NEWEST_SEARCH_DEPTH} commits on dev has a published image"
+              exit 1
+            fi
           fi
+
+          {
+            echo "commit=${commit}"
+            echo "image=$(image_for "$commit")"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Configure SSH
         env:
@@ -97,7 +121,7 @@ jobs:
       - name: Deploy over SSH
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
-          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_USER: ${{ vars.VPS_USER }}
           VPS_SSH_PORT: ${{ vars.VPS_SSH_PORT || '22' }}
           VPS_DEPLOY_PATH: ${{ vars.VPS_DEPLOY_PATH || '/opt/tuvimienphi' }}
           IMAGE: ${{ steps.target.outputs.image }}
