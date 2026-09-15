@@ -64,6 +64,13 @@ captcha:
 google:
   clientId: GOOGLE_CLIENT_ID
 
+storage:
+  endpoint: R2_ENDPOINT_URL
+  accessKeyId: R2_ACCESS_KEY_ID
+  secretAccessKey: R2_SECRET_ACCESS_KEY
+  mediaBucket: R2_MEDIA_BUCKET
+  mediaPublicUrl: R2_MEDIA_PUBLIC_URL
+
 queueBoard:
   enabled:
     __name: QUEUE_BOARD_ENABLED

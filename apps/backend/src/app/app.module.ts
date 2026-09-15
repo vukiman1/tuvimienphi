@@ -14,6 +14,7 @@ import { LaSoModule } from '../api/la-so/la-so.module';
 import { LuanGiaiModule } from '../api/luan-giai/luan-giai.module';
 import { UserModule } from '../api/user/user.module';
 import { EmailModule } from '../email/email.module';
+import { StorageModule } from '../storage/storage.module';
 import { HealthModule } from '../health/health.module';
 import { QueueModule } from '../api/queue/queue.module';
 import { VanHanModule } from '../api/van-han/van-han.module';
@@ -47,6 +48,7 @@ import { queueBoardRootImports } from './queue-board-registration';
     JwtModule,
     CryptoModule,
     EmailModule,
+    StorageModule,
     AuthModule,
     UserModule,
     LaSoModule,
