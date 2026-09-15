@@ -31,6 +31,11 @@ export const MEDIA = {
   navBar: {
     bagua: '/nav_bar/04_bagua.png',
   },
+  auth: {
+    panelTop: mediaUrl('/auth/panel-top.webp'),
+    panelMiddle: mediaUrl('/auth/panel-middle.webp'),
+    panelBottom: mediaUrl('/auth/panel-bottom.webp'),
+  },
   brand: {
     logo: mediaUrl('/brand/logo.png'),
     icon: mediaUrl('/brand/icon.png'),

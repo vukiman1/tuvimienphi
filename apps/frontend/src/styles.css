@@ -164,6 +164,17 @@
     }
   }
 
+  --animate-toast-countdown: toast-countdown linear forwards;
+
+  @keyframes toast-countdown {
+    from {
+      scale: 1 1;
+    }
+    to {
+      scale: 0 1;
+    }
+  }
+
   --animate-modal-in: modal-in 0.3s;
   --animate-modal-out: modal-out 0.15s;
   --animate-backdrop-in: backdrop-in 0.3s;

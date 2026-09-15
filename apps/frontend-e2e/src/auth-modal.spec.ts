@@ -7,10 +7,10 @@ test('opens the sign-in modal without leaving the page', async ({ page }) => {
   await page.getByRole('button', { name: /đăng nhập/i }).click();
 
   const dialog = page.getByRole('dialog');
-  await expect(dialog.getByRole('heading', { name: /welcome back/i })).toBeVisible();
+  await expect(dialog.getByRole('heading', { name: /chào mừng trở lại/i })).toBeVisible();
 
   // The modal opens on the choice of provider; the password fields are one step in.
-  await dialog.getByRole('button', { name: /continue with email/i }).click();
+  await dialog.getByRole('button', { name: /tiếp tục với email/i }).click();
   await expect(dialog.getByLabel('Email', { exact: true })).toBeVisible();
   // exact: the show/hide toggle is labelled 'Show password' and would match otherwise.
   await expect(dialog.getByLabel('Password', { exact: true })).toBeVisible();

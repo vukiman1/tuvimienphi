@@ -10,6 +10,7 @@ import { AuthService } from '../services/auth.service';
 import { UserEntity } from '../../user/entities/user.entity';
 import { LoginDto } from '../dto/login.dto';
 import { CaptchaGuard } from '../guards/captcha.guard';
+import { OptionalAuthGuard } from '../guards/optional-auth.guard';
 
 export const AuthBaseController = <Entity extends UserEntity>(
   userType: UserType,
@@ -40,6 +41,13 @@ export const AuthBaseController = <Entity extends UserEntity>(
     @ApiRefreshToken(userType)
     async refreshToken(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
       return this.authService.refreshToken(request, response);
+    }
+
+    @Get('session')
+    @HttpCode(200)
+    @UseGuards(OptionalAuthGuard(jwtStrategyKey))
+    session(@User() user: Entity | undefined, @Req() request: Request) {
+      return this.authService.sessionStatus(user, request);
     }
 
     @Get('me')

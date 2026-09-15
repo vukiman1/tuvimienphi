@@ -10,12 +10,20 @@ interface NotifyOptions {
 }
 
 function show(variant: ToastVariant, message: string, options?: NotifyOptions) {
+  const autoCloseMs = options?.autoClose ?? AUTO_CLOSE_MS;
   toast(
-    ({ closeToast }) => (
-      <ToastCard message={message} onClose={closeToast} title={options?.title} variant={variant} />
+    ({ closeToast, isPaused }) => (
+      <ToastCard
+        autoCloseMs={autoCloseMs}
+        isPaused={isPaused}
+        message={message}
+        onClose={closeToast}
+        title={options?.title}
+        variant={variant}
+      />
     ),
     {
-      autoClose: options?.autoClose ?? AUTO_CLOSE_MS,
+      autoClose: autoCloseMs,
       icon: false,
       closeButton: false,
       className: 'ec-toast',

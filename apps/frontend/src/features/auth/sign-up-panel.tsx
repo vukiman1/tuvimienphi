@@ -8,15 +8,18 @@ export function SignUpPanel() {
   return (
     <AuthMethodPanel
       copy={{
-        chooser: { title: 'Create your account', description: 'Choose how you want to sign up.' },
+        chooser: {
+          title: 'Tạo tài khoản',
+          description: 'Đăng ký miễn phí để bắt đầu hành trình khám phá Tử Vi',
+        },
         email: {
-          title: 'Sign up with email',
-          description: 'Free, and takes a moment.',
-          action: 'Continue with email',
+          title: 'Đăng ký bằng email',
+          description: 'Miễn phí, chỉ mất một lát.',
+          action: 'Tiếp tục với Email',
         },
         footer: {
-          question: 'Already have an account?',
-          action: 'Sign in',
+          question: 'Đã có tài khoản?',
+          action: 'Đăng nhập',
           onAction: () => open('login'),
         },
       }}

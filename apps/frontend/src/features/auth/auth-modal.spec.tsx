@@ -70,14 +70,14 @@ describe('AuthModal', () => {
     renderAt('/?auth=login');
 
     expect(await screen.findByRole('dialog')).toBeTruthy();
-    expect(await screen.findByRole('button', { name: /continue with email/i })).toBeTruthy();
+    expect(await screen.findByRole('button', { name: /tiếp tục với email/i })).toBeTruthy();
   });
 
   it('reaches the password form through the email option', async () => {
     renderAt('/?auth=login');
     await screen.findByRole('dialog');
 
-    fireEvent.click(screen.getByRole('button', { name: /continue with email/i }));
+    fireEvent.click(screen.getByRole('button', { name: /tiếp tục với email/i }));
 
     expect(await screen.findByLabelText('Email')).toBeTruthy();
     expect(screen.getByLabelText('Password')).toBeTruthy();
@@ -86,12 +86,12 @@ describe('AuthModal', () => {
   it('goes back to the provider choice from the password form', async () => {
     renderAt('/?auth=login');
     await screen.findByRole('dialog');
-    fireEvent.click(screen.getByRole('button', { name: /continue with email/i }));
+    fireEvent.click(screen.getByRole('button', { name: /tiếp tục với email/i }));
     await screen.findByLabelText('Email');
 
-    fireEvent.click(screen.getByRole('button', { name: /back to the other options/i }));
+    fireEvent.click(screen.getByRole('button', { name: /quay lại các lựa chọn khác/i }));
 
-    expect(await screen.findByRole('button', { name: /continue with email/i })).toBeTruthy();
+    expect(await screen.findByRole('button', { name: /tiếp tục với email/i })).toBeTruthy();
     expect(screen.queryByLabelText('Password')).toBeNull();
   });
 
@@ -117,7 +117,7 @@ describe('AuthModal', () => {
     jest.mocked(authService.login).mockResolvedValue({ user: { email: 'a@b.c' } } as never);
     const router = renderAt('/?auth=login&redirect=%2Fdashboard%2Fsettings');
     await screen.findByRole('dialog');
-    fireEvent.click(screen.getByRole('button', { name: /continue with email/i }));
+    fireEvent.click(screen.getByRole('button', { name: /tiếp tục với email/i }));
     await screen.findByLabelText('Email');
 
     fireEvent.click(screen.getByRole('button', { name: /^sign in$/i }));
@@ -129,7 +129,7 @@ describe('AuthModal', () => {
     jest.mocked(authService.login).mockResolvedValue({ user: { email: 'a@b.c' } } as never);
     const router = renderAt('/?auth=login');
     await screen.findByRole('dialog');
-    fireEvent.click(screen.getByRole('button', { name: /continue with email/i }));
+    fireEvent.click(screen.getByRole('button', { name: /tiếp tục với email/i }));
     await screen.findByLabelText('Email');
 
     fireEvent.click(screen.getByRole('button', { name: /^sign in$/i }));

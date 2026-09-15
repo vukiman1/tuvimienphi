@@ -99,6 +99,11 @@ export interface MeResponse {
   user: User;
 }
 
+export interface SessionStatusResponse {
+  user: User | null;
+  canRefresh: boolean;
+}
+
 export interface RegisterPayload {
   displayName: string;
   email: string;
@@ -194,3 +199,4 @@ export interface VanHanEntry {
 export * from './birth-input.js';
 export * from './la-so-history.js';
 export * from './luan-giai.js';
+export * from './avatar.js';

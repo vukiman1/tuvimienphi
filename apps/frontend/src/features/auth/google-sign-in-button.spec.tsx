@@ -30,7 +30,7 @@ describe('GoogleSignInButton', () => {
   it('shows our own label rather than whatever Google would draw', () => {
     render(<GoogleSignInButton />);
 
-    expect(screen.getByText('Continue with Google')).toBeTruthy();
+    expect(screen.getByText('Tiếp tục với Google')).toBeTruthy();
   });
 
   it('sizes the real button to match the visible one', async () => {
@@ -41,10 +41,38 @@ describe('GoogleSignInButton', () => {
     expect(mockRenderButton.mock.calls[0][1]).toMatchObject({ width: 320, locale: 'en' });
   });
 
+  it('stretches the real button over all of a visible button larger than Google will draw', async () => {
+    const originalResizeObserver = globalThis.ResizeObserver;
+    class WideResizeObserver {
+      constructor(private readonly callback: ResizeObserverCallback) {}
+      observe(target: Element) {
+        this.callback(
+          [{ target, contentRect: { width: 460, height: 50 } } as ResizeObserverEntry],
+          this as unknown as ResizeObserver,
+        );
+      }
+      disconnect() {
+        return undefined;
+      }
+    }
+    Object.assign(globalThis, { ResizeObserver: WideResizeObserver });
+
+    try {
+      render(<GoogleSignInButton />);
+
+      await waitFor(() => expect(mockRenderButton).toHaveBeenCalled());
+      const [target, options] = mockRenderButton.mock.calls[0];
+      expect(options).toMatchObject({ width: 400 });
+      expect((target as HTMLElement).style.transform).toBe('scale(1.15, 1.25)');
+    } finally {
+      Object.assign(globalThis, { ResizeObserver: originalResizeObserver });
+    }
+  });
+
   it('keeps the visible button out of the tab order, since the real one takes the click', () => {
     render(<GoogleSignInButton />);
 
-    expect(screen.getByRole('button', { name: /continue with google/i }).tabIndex).toBe(-1);
+    expect(screen.getByRole('button', { name: /tiếp tục với google/i }).tabIndex).toBe(-1);
   });
 
   it('renders nothing at all without a client id', () => {

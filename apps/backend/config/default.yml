@@ -55,6 +55,14 @@ captcha:
 google:
   clientId: ''
 
+storage:
+  endpoint: ''
+  region: auto
+  accessKeyId: ''
+  secretAccessKey: ''
+  mediaBucket: ''
+  mediaPublicUrl: ''
+
 queueBoard:
   enabled: true
   user: admin

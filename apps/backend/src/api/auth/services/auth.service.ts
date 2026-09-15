@@ -74,6 +74,13 @@ export class AuthService {
     };
   }
 
+  sessionStatus(user: UserEntity | undefined, request: Request) {
+    return {
+      user: user ? this.me(user).user : null,
+      canRefresh: this.sessionCookieService.hasSession(request),
+    };
+  }
+
   async login(user: UserEntity, response: Response, request: Request, rememberMe: boolean) {
     // Issuing a session before the code would make the code optional: a caller could skip the
     // prompt and use the cookie straight away.

@@ -25,7 +25,7 @@ function mockAccount(hasPassword: boolean, email = 'a@b.c') {
 }
 
 async function openChangeForm() {
-  fireEvent.click(await screen.findByRole('button', { name: 'Change password' }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Đổi mật khẩu' }));
   return screen.findByLabelText('Current password');
 }
 
@@ -35,7 +35,6 @@ async function fillAndSubmit() {
   fireEvent.change(screen.getByLabelText('Confirm new password'), {
     target: { value: 'Str0ngPass!' },
   });
-  // Radix marks the page behind the dialog aria-hidden, so this resolves to the submit button.
   fireEvent.click(screen.getByRole('button', { name: 'Change password' }));
 }
 
@@ -47,7 +46,7 @@ describe('SecurityCard', () => {
 
     renderCard();
 
-    expect(await screen.findByRole('button', { name: 'Change password' })).toBeTruthy();
+    expect(await screen.findByRole('button', { name: 'Đổi mật khẩu' })).toBeTruthy();
     expect(screen.queryByLabelText('Current password')).toBeNull();
   });
 
@@ -65,10 +64,8 @@ describe('SecurityCard', () => {
 
     renderCard();
 
-    expect(
-      await screen.findByRole('button', { name: 'Email me a link to set a password' }),
-    ).toBeTruthy();
-    expect(screen.queryByRole('button', { name: 'Change password' })).toBeNull();
+    expect(await screen.findByRole('button', { name: 'Đặt mật khẩu' })).toBeTruthy();
+    expect(screen.queryByRole('button', { name: 'Đổi mật khẩu' })).toBeNull();
   });
 
   it('sends the set-password email to the account address', async () => {
@@ -76,13 +73,11 @@ describe('SecurityCard', () => {
     jest.mocked(authService.forgotPassword).mockResolvedValue({ message: 'ok' } as never);
 
     renderCard();
-    fireEvent.click(
-      await screen.findByRole('button', { name: 'Email me a link to set a password' }),
-    );
+    fireEvent.click(await screen.findByRole('button', { name: 'Đặt mật khẩu' }));
 
     await waitFor(() => expect(authService.forgotPassword).toHaveBeenCalledWith('g@b.c'));
     await waitFor(() =>
-      expect(notify.success).toHaveBeenCalledWith('Check your inbox for the link.'),
+      expect(notify.success).toHaveBeenCalledWith('Kiểm tra email của bạn để lấy liên kết.'),
     );
   });
 

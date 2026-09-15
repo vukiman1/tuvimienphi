@@ -35,12 +35,20 @@ export class SessionCookieService {
   }
 
   read(request: Request): SessionCookiePayload {
-    const raw = request.cookies?.[CookieName.SESSION];
-    const payload = raw ? this.decode(raw) : null;
+    const payload = this.decodeFrom(request);
     if (!payload) {
       throw new UnauthorizedException();
     }
     return payload;
+  }
+
+  hasSession(request: Request): boolean {
+    return this.decodeFrom(request) !== null;
+  }
+
+  private decodeFrom(request: Request): SessionCookiePayload | null {
+    const raw = request.cookies?.[CookieName.SESSION];
+    return raw ? this.decode(raw) : null;
   }
 
   private encode(payload: SessionCookiePayload): string {

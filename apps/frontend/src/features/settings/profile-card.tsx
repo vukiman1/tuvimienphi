@@ -1,6 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { authService } from '@/services/auth-service';
+import { MEDIA } from '@/config/media';
+import { cn } from '@/lib/utils';
+import { ProfileAvatar } from './profile-avatar';
 
 export function ProfileCard() {
   const meQuery = useQuery({ queryKey: ['auth', 'me'], queryFn: () => authService.getMe() });
@@ -8,52 +11,67 @@ export function ProfileCard() {
 
   if (meQuery.isLoading) {
     return (
-      <Card className="py-5">
-        <CardContent className="text-sm text-muted-foreground">Loading profile...</CardContent>
+      <Card className="rounded-2xl border-none shadow-sm">
+        <CardContent className="p-6 text-sm text-muted-foreground">Đang tải...</CardContent>
       </Card>
     );
   }
 
   if (meQuery.isError || !user) {
     return (
-      <Card className="py-5">
-        <CardContent className="text-sm font-medium text-destructive">
-          Could not load your profile.
+      <Card className="rounded-2xl border-none shadow-sm">
+        <CardContent className="p-6 text-sm font-medium text-destructive">
+          Không thể tải thông tin hồ sơ.
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card className="gap-4 py-5">
-      <CardHeader>
-        <CardTitle>Profile</CardTitle>
-        <CardDescription>How this account signs in.</CardDescription>
-      </CardHeader>
-      <CardContent className="flex items-center gap-4">
-        {user.avatar ? (
-          <img alt={user.email} className="size-12 rounded-full object-cover" src={user.avatar} />
-        ) : (
-          <span className="flex size-12 items-center justify-center rounded-full bg-muted text-base font-extrabold text-muted-foreground">
-            {user.email.charAt(0).toUpperCase()}
-          </span>
-        )}
+    <Card className="relative overflow-hidden rounded-2xl border-none bg-white shadow-sm">
+      <div className="absolute right-0 top-0 h-full w-1/3 opacity-30 pointer-events-none">
+        <img
+          src={MEDIA.vanHan.decorCloud}
+          alt="Decor"
+          className="h-full w-full object-cover object-right"
+        />
+      </div>
 
-        <div className="min-w-0">
-          <p className="truncate font-medium text-foreground">{user.email}</p>
-          <div className="mt-2 flex flex-wrap gap-2 text-xs font-semibold">
-            <span className="rounded-md bg-muted px-2 py-0.5 text-muted-foreground">
-              {user.hasPassword ? 'Password sign-in enabled' : 'No password set'}
-            </span>
-            <span
-              className={
-                user.isEmailVerified
-                  ? 'rounded-md bg-primary/10 px-2 py-0.5 text-primary'
-                  : 'rounded-md bg-destructive/10 px-2 py-0.5 text-destructive'
-              }
-            >
-              {user.isEmailVerified ? 'Email verified' : 'Email not verified'}
-            </span>
+      <CardContent className="relative flex flex-col items-start gap-4 p-6 sm:flex-row sm:items-center z-10">
+        <div className="flex items-center gap-6">
+          <ProfileAvatar user={user} />
+
+          <div className="min-w-0">
+            <h2 className="font-display text-xl font-bold text-[#1a1412]">
+              {user.displayName || user.email}
+            </h2>
+            {user.displayName ? (
+              <p className="mt-0.5 text-sm font-medium text-[#6b5a4e]">{user.email}</p>
+            ) : null}
+
+            <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold">
+              {!user.hasPassword && (
+                <span className="inline-flex items-center rounded-full bg-[#f4ebe1] px-2.5 py-0.5 text-[#904423]">
+                  Chưa đặt mật khẩu
+                </span>
+              )}
+              <span
+                className={cn(
+                  'inline-flex items-center rounded-full px-2.5 py-0.5',
+                  user.isEmailVerified
+                    ? 'bg-emerald-50 text-emerald-600'
+                    : 'bg-amber-50 text-amber-600',
+                )}
+              >
+                <span
+                  className={cn(
+                    'mr-1.5 size-1.5 rounded-full',
+                    user.isEmailVerified ? 'bg-emerald-500' : 'bg-amber-500',
+                  )}
+                />
+                {user.isEmailVerified ? 'Email đã xác thực' : 'Email chưa xác thực'}
+              </span>
+            </div>
           </div>
         </div>
       </CardContent>

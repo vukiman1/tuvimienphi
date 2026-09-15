@@ -42,10 +42,10 @@ describe('TwoFactorCard', () => {
     renderCard();
 
     const button = (await screen.findByRole('button', {
-      name: 'Set up two-factor authentication',
+      name: 'Bật xác thực 2 bước',
     })) as HTMLButtonElement;
     expect(button.disabled).toBe(true);
-    expect(screen.getByText(/Set a password first/)).toBeTruthy();
+    expect(screen.getByText(/Vui lòng đặt mật khẩu trước/)).toBeTruthy();
   });
 
   it('offers to set it up when it is off', async () => {
@@ -55,9 +55,7 @@ describe('TwoFactorCard', () => {
 
     renderCard();
 
-    expect(
-      await screen.findByRole('button', { name: 'Set up two-factor authentication' }),
-    ).toBeTruthy();
+    expect(await screen.findByRole('button', { name: 'Bật xác thực 2 bước' })).toBeTruthy();
   });
 
   it('says so when the status cannot be loaded, instead of spinning forever', async () => {
@@ -66,7 +64,7 @@ describe('TwoFactorCard', () => {
     renderCard();
 
     expect(await screen.findByRole('alert')).toBeTruthy();
-    expect(screen.queryByText('Loading...')).toBeNull();
+    expect(screen.queryByText('Đang tải...')).toBeNull();
   });
 
   it('warns when recovery codes are nearly exhausted', async () => {
@@ -76,7 +74,7 @@ describe('TwoFactorCard', () => {
 
     renderCard();
 
-    expect(await screen.findByText(/Generate a new set before you run out/)).toBeTruthy();
+    expect(await screen.findByText(/Hãy tạo bộ mã mới trước khi hết/)).toBeTruthy();
   });
 
   it('will not turn off without asking for the password first', async () => {
@@ -85,7 +83,7 @@ describe('TwoFactorCard', () => {
       .mockResolvedValue({ enabled: true, unusedRecoveryCodes: 8 });
 
     renderCard();
-    fireEvent.click(await screen.findByRole('button', { name: 'Turn off' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Tắt' }));
 
     expect(await screen.findByLabelText('Current password')).toBeTruthy();
     expect(authService.disableTwoFactor).not.toHaveBeenCalled();
@@ -98,12 +96,10 @@ describe('TwoFactorCard', () => {
     jest.mocked(authService.disableTwoFactor).mockResolvedValue({ message: 'ok' });
 
     renderCard();
-    fireEvent.click(await screen.findByRole('button', { name: 'Turn off' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Tắt' }));
     fireEvent.change(await screen.findByLabelText('Current password'), {
       target: { value: 'hunter2' },
     });
-    // Radix marks the page behind the dialog aria-hidden, so this resolves to the dialog's button
-    // rather than the card's.
     fireEvent.click(screen.getByRole('button', { name: 'Turn off' }));
 
     await waitFor(() => expect(authService.disableTwoFactor).toHaveBeenCalledWith('hunter2'));
@@ -118,7 +114,7 @@ describe('TwoFactorCard', () => {
       .mockResolvedValue({ recoveryCodes: ['aaaa111122', 'bbbb333344'] });
 
     renderCard();
-    fireEvent.click(await screen.findByRole('button', { name: 'Generate new recovery codes' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Tạo mã phục hồi mới' }));
 
     expect(await screen.findByText('aaaa111122')).toBeTruthy();
     expect(await screen.findByText(/only time they are shown/i)).toBeTruthy();

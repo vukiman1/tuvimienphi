@@ -3,6 +3,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
+import { UserAvatarService } from './avatar/user-avatar.service';
 
 describe('UserController', () => {
   let controller: UserController;
@@ -13,6 +14,7 @@ describe('UserController', () => {
       providers: [
         UserService,
         { provide: getRepositoryToken(UserEntity), useValue: {} },
+        { provide: UserAvatarService, useValue: {} },
       ],
     }).compile();
 

@@ -113,6 +113,15 @@ interface GoogleConfig {
   clientId: string;
 }
 
+interface StorageConfig {
+  endpoint: string;
+  region: string;
+  accessKeyId: string;
+  secretAccessKey: string;
+  mediaBucket: string;
+  mediaPublicUrl: string;
+}
+
 interface QueueBoardConfig {
   enabled: boolean;
   user: string;
@@ -207,6 +216,14 @@ const backendConfigSchema = z.object({
   google: z.object({
     clientId: z.string().default(''),
   }),
+  storage: z.object({
+    endpoint: z.union([z.literal(''), z.url()]).default(''),
+    region: z.string().min(1),
+    accessKeyId: z.string().default(''),
+    secretAccessKey: z.string().default(''),
+    mediaBucket: z.string().default(''),
+    mediaPublicUrl: z.union([z.literal(''), z.url()]).default(''),
+  }),
   queueBoard: z.object({
     enabled: z.boolean().default(true),
     user: z.string().default('admin'),
@@ -251,6 +268,7 @@ export default () => {
     email: nodeConfig.get<EmailConfig>('email'),
     captcha: nodeConfig.get<CaptchaConfig>('captcha'),
     google: nodeConfig.get<GoogleConfig>('google'),
+    storage: nodeConfig.get<StorageConfig>('storage'),
     queueBoard: nodeConfig.get<QueueBoardConfig>('queueBoard'),
   });
 
@@ -267,6 +285,7 @@ export default () => {
     email,
     captcha,
     google,
+    storage,
     queueBoard,
   } = validated;
 
@@ -307,6 +326,7 @@ export default () => {
     email,
     captcha,
     google,
+    storage,
     queueBoard,
   };
 };

@@ -10,24 +10,27 @@ export function SignInPanel() {
 
   const emailStep = isRecoveringPassword
     ? {
-        title: 'Reset your password',
-        description: 'We will email you a link to set a new one.',
-        action: 'Continue with email',
+        title: 'Đặt lại mật khẩu',
+        description: 'Chúng tôi sẽ gửi email để bạn đặt mật khẩu mới.',
+        action: 'Tiếp tục với Email',
       }
     : {
-        title: 'Sign in with email',
-        description: 'Welcome back.',
-        action: 'Continue with email',
+        title: 'Đăng nhập bằng email',
+        description: 'Nhập email và mật khẩu của bạn.',
+        action: 'Tiếp tục với Email',
       };
 
   return (
     <AuthMethodPanel
       copy={{
-        chooser: { title: 'Welcome back', description: 'Choose how you want to sign in.' },
+        chooser: {
+          title: 'Chào mừng trở lại',
+          description: 'Đăng nhập để tiếp tục hành trình khám phá Tử Vi',
+        },
         email: emailStep,
         footer: {
-          question: 'New here?',
-          action: 'Create an account',
+          question: 'Chưa có tài khoản?',
+          action: 'Đăng ký ngay',
           onAction: () => open('register'),
         },
       }}
