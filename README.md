@@ -247,7 +247,24 @@ from [`publish-image.yml`](.github/workflows/publish-image.yml), which runs on e
 and can also be dispatched by hand. It pushes `latest` and a `sha-` tag for each and prints them in
 its run summary.
 
-### Updating
+### Deploying
+
+A push to `dev` that touches the backend deploys it. `publish-image.yml` builds both images, then
+calls [`deploy-backend.yml`](.github/workflows/deploy-backend.yml), which connects to the VPS over SSH
+and runs [`tools/vps/deploy-backend.sh`](tools/vps/deploy-backend.sh). The script:
+
+1. fetches `docker-compose.prod.yml` at the commit being deployed,
+2. pins `BACKEND_IMAGE` in `.env` to that commit's `sha-` tag,
+3. pulls the backend image, plus `db-backup` when the `backup` profile is on,
+4. runs `docker compose up -d` and waits up to three minutes for the backend healthcheck,
+5. removes this repository's images that no container uses any more.
+
+Postgres, Redis and cloudflared are never pulled, so a merge does not restart them. A deploy that
+does not turn healthy fails the workflow with the backend's last 100 log lines. Because `.env` holds
+a `sha-` tag rather than `latest`, a later `docker compose up -d` by hand keeps running what was
+deployed.
+
+By hand, which also pulls every other image:
 
 ```bash
 curl -O https://raw.githubusercontent.com/vukiman1/tuvimienphi/dev/docker-compose.prod.yml
@@ -270,12 +287,65 @@ start` lines that follow are misleading — Postgres is fine.
 
 ### Rollback
 
-Point `BACKEND_IMAGE` at a `sha-` tag from the workflow summary and redeploy:
+Run **Deploy Backend** from the Actions tab with an earlier commit from `dev`, or:
+
+```bash
+gh workflow run deploy-backend.yml -f commit=1a2b3c4
+```
+
+It refuses a commit that is not on `dev` or has no image on GHCR. Without GitHub, point
+`BACKEND_IMAGE` at a `sha-` tag from a publish run summary and redeploy on the server:
 
 ```bash
 sed -i 's|^BACKEND_IMAGE=.*|BACKEND_IMAGE=ghcr.io/vukiman1/tuvimienphi-backend:sha-1a2b3c4|' .env
 docker compose up -d
 ```
+
+### Deploy access
+
+The workflow logs in as a dedicated user that can run Docker and owns the deploy directory. On the
+VPS:
+
+```bash
+sudo adduser --disabled-password --gecos '' deploy
+sudo usermod -aG docker deploy
+sudo chown -R deploy:deploy /opt/tuvimienphi
+sudo install -d -m 700 -o deploy -g deploy /home/deploy/.ssh
+```
+
+Membership of the `docker` group is root-equivalent, so the key below is as sensitive as a root key.
+Create it on your own machine, along with the server's host keys:
+
+```bash
+ssh-keygen -t ed25519 -N '' -C tuvimienphi-deploy -f tuvimienphi-deploy
+ssh-keyscan -p 22 <host> > known_hosts
+```
+
+`deploy` has no password to log in with, so authorize the key from your usual session on the VPS,
+pasting the contents of `tuvimienphi-deploy.pub`:
+
+```bash
+echo '<contents of tuvimienphi-deploy.pub>' | sudo -u deploy tee -a /home/deploy/.ssh/authorized_keys
+sudo chmod 600 /home/deploy/.ssh/authorized_keys
+```
+
+Check the `known_hosts` fingerprints against `ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub` run
+on the server before trusting them. Then store everything in the `vps-sieu-toc-production`
+environment. It cannot be called `production`: Vercel already owns `Production`, and GitHub matches
+environment names regardless of case, so the two would share secrets and protection rules.
+
+```bash
+gh api -X PUT repos/vukiman1/tuvimienphi/environments/vps-sieu-toc-production
+gh secret set VPS_HOST --env vps-sieu-toc-production --body '<host>'
+gh secret set VPS_USER --env vps-sieu-toc-production --body deploy
+gh secret set VPS_SSH_KEY --env vps-sieu-toc-production < tuvimienphi-deploy
+gh secret set VPS_SSH_KNOWN_HOSTS --env vps-sieu-toc-production < known_hosts
+```
+
+Two optional environment variables cover a non-default setup: `VPS_SSH_PORT` (default `22`) and
+`VPS_DEPLOY_PATH` (default `/opt/tuvimienphi`). Set them with
+`gh variable set … --env vps-sieu-toc-production`.
+A deploy with any of the four secrets missing fails before it connects and names the ones to add.
 
 ### Optional profiles
 
@@ -292,18 +362,20 @@ domain's nameservers must already be on Cloudflare.
 ### Secrets
 
 Runtime secrets live only in `.env` on the server. They are not baked into the image, and no
-workflow needs them — `publish-image.yml` authenticates to GHCR with the automatic `GITHUB_TOKEN`.
+workflow needs them: GitHub holds only the SSH access in the `vps-sieu-toc-production` environment, and both
+workflows authenticate to GHCR with the automatic `GITHUB_TOKEN`.
 `SECRET_KEY` encrypts TOTP secrets at rest, so on a database with real users, changing it locks every
 enrolled account out permanently.
 
 ## 🤖 CI / CD
 
-| Workflow            | Trigger              | Jobs                                                                                                                           |
-| ------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `pull-request.yml`  | PR → `dev`           | check-branch-up-to-date, format, lint, typecheck, test, build, docker, backend-e2e, frontend-e2e, dashboard-e2e, security-scan |
-| `push-dev.yml`      | push → `dev`         | format, lint, typecheck, test, build, security-scan (skips e2e + branch check)                                                 |
-| `publish-image.yml` | push → `dev`, manual | publish — builds `apps/backend/Dockerfile` and pushes `latest` + `sha-` to GHCR                                                |
-| `pr-auto-label.yml` | PR opened/edited     | derive `type/*` + `scope/*` labels from the PR title                                                                           |
+| Workflow             | Trigger                   | Jobs                                                                                                                           |
+| -------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `pull-request.yml`   | PR → `dev`                | check-branch-up-to-date, format, lint, typecheck, test, build, docker, backend-e2e, frontend-e2e, dashboard-e2e, security-scan |
+| `push-dev.yml`       | push → `dev`              | format, lint, typecheck, test, build, security-scan (skips e2e + branch check)                                                 |
+| `publish-image.yml`  | push → `dev`, manual      | publish — builds the backend and pg-backup images and pushes `latest` + `sha-` to GHCR; then deploy backend (on `dev` only)    |
+| `deploy-backend.yml` | called by publish, manual | deploy — SSH to the VPS and roll the backend to a commit's image                                                               |
+| `pr-auto-label.yml`  | PR opened/edited          | derive `type/*` + `scope/*` labels from the PR title                                                                           |
 
 Nx Cloud remote cache is wired up (`nxCloudId` in `nx.json`).
 
