@@ -293,7 +293,9 @@ Run **Deploy Backend** from the Actions tab with an earlier commit from `dev`, o
 gh workflow run deploy-backend.yml -f commit=1a2b3c4
 ```
 
-It refuses a commit that is not on `dev` or has no image on GHCR. Without GitHub, point
+It refuses a commit that is not on `dev` or has no image on GHCR. Leaving the commit empty redeploys
+the newest commit on `dev` that has an image, skipping commits that never published one (a
+frontend-only change, say). Without GitHub, point
 `BACKEND_IMAGE` at a `sha-` tag from a publish run summary and redeploy on the server:
 
 ```bash
@@ -337,15 +339,18 @@ environment names regardless of case, so the two would share secrets and protect
 ```bash
 gh api -X PUT repos/vukiman1/tuvimienphi/environments/vps-sieu-toc-production
 gh secret set VPS_HOST --env vps-sieu-toc-production --body '<host>'
-gh secret set VPS_USER --env vps-sieu-toc-production --body deploy
 gh secret set VPS_SSH_KEY --env vps-sieu-toc-production < tuvimienphi-deploy
 gh secret set VPS_SSH_KNOWN_HOSTS --env vps-sieu-toc-production < known_hosts
+gh variable set VPS_USER --env vps-sieu-toc-production --body deploy
 ```
 
-Two optional environment variables cover a non-default setup: `VPS_SSH_PORT` (default `22`) and
-`VPS_DEPLOY_PATH` (default `/opt/tuvimienphi`). Set them with
-`gh variable set … --env vps-sieu-toc-production`.
-A deploy with any of the four secrets missing fails before it connects and names the ones to add.
+`VPS_USER` is a variable rather than a secret on purpose. GitHub masks every occurrence of a secret's
+value in the logs, and with the value `deploy` that turned step names and the script's output into
+`***`.
+
+Two more optional variables cover a non-default setup: `VPS_SSH_PORT` (default `22`) and
+`VPS_DEPLOY_PATH` (default `/opt/tuvimienphi`). A deploy with any required secret or `VPS_USER`
+missing fails before it connects and names what to add.
 
 ### Optional profiles
 
