@@ -346,6 +346,7 @@ describe('AuthService', () => {
         response,
         request,
         true,
+        'user',
       );
 
       expect(sessionService.createSession).toHaveBeenCalledWith(
@@ -377,7 +378,7 @@ describe('AuthService', () => {
       twoFactorService.isEnabled.mockResolvedValue(true);
       const response = mockResponse();
 
-      const result = await service.login(user, response, request, true);
+      const result = await service.login(user, response, request, true, 'user');
 
       expect(result).toEqual({ twoFactorRequired: true, challengeToken: 'challenge-1' });
       expect(sessionService.createSession).not.toHaveBeenCalled();
@@ -390,7 +391,7 @@ describe('AuthService', () => {
       userService.getOneOrFail.mockResolvedValue(user);
       const response = mockResponse();
 
-      await service.verifyTwoFactor('challenge-1', '123456', response, request);
+      await service.verifyTwoFactor('challenge-1', '123456', response, request, 'user');
 
       expect(sessionService.createSession).toHaveBeenCalled();
       expect(twoFactorChallenge.consume).toHaveBeenCalledWith('challenge-1');
@@ -403,7 +404,7 @@ describe('AuthService', () => {
       const response = mockResponse();
 
       await expect(
-        service.verifyTwoFactor('challenge-1', '000000', response, request),
+        service.verifyTwoFactor('challenge-1', '000000', response, request, 'user'),
       ).rejects.toBeInstanceOf(UnauthorizedException);
       expect(sessionService.createSession).not.toHaveBeenCalled();
       expect(twoFactorChallenge.consume).not.toHaveBeenCalled();
@@ -413,7 +414,7 @@ describe('AuthService', () => {
       twoFactorChallenge.peek.mockResolvedValue(null);
 
       await expect(
-        service.verifyTwoFactor('nope', '123456', mockResponse(), request),
+        service.verifyTwoFactor('nope', '123456', mockResponse(), request, 'user'),
       ).rejects.toBeInstanceOf(GoneException);
       expect(twoFactorService.consumeCode).not.toHaveBeenCalled();
     });
@@ -424,12 +425,12 @@ describe('AuthService', () => {
 
       twoFactorChallenge.recordFailure.mockResolvedValue(true);
       await expect(
-        service.verifyTwoFactor('c', '000000', mockResponse(), request),
+        service.verifyTwoFactor('c', '000000', mockResponse(), request, 'user'),
       ).rejects.toBeInstanceOf(UnauthorizedException);
 
       twoFactorChallenge.recordFailure.mockResolvedValue(false);
       await expect(
-        service.verifyTwoFactor('c', '000000', mockResponse(), request),
+        service.verifyTwoFactor('c', '000000', mockResponse(), request, 'user'),
       ).rejects.toBeInstanceOf(GoneException);
     });
 
@@ -438,7 +439,7 @@ describe('AuthService', () => {
       twoFactorService.consumeCode.mockResolvedValue(true);
       userService.getOneOrFail.mockResolvedValue(user);
 
-      await service.verifyTwoFactor('challenge-1', '123456', mockResponse(), request);
+      await service.verifyTwoFactor('challenge-1', '123456', mockResponse(), request, 'user');
 
       expect(sessionService.createSession).toHaveBeenCalledWith(
         'user-1',
@@ -459,6 +460,7 @@ describe('AuthService', () => {
           persistence: SessionPersistence.OAUTH,
           rememberMe: false,
           authProvider: AuthProvider.GOOGLE,
+          audience: 'user',
         },
       );
 
@@ -609,7 +611,12 @@ describe('AuthService', () => {
   describe('logout', () => {
     it('rejects when there is no authenticated session jti', async () => {
       await expect(
-        service.logout({ id: 'user-1' } as never, { headers: {} } as Request, mockResponse()),
+        service.logout(
+          { id: 'user-1' } as never,
+          { headers: {} } as Request,
+          mockResponse(),
+          'user',
+        ),
       ).rejects.toBeInstanceOf(UnauthorizedException);
     });
 
@@ -620,6 +627,7 @@ describe('AuthService', () => {
         { id: 'user-1' } as never,
         { sessionJti: 'jti-1' } as unknown as Request,
         response,
+        'user',
       );
 
       expect(sessionService.revokeSession).toHaveBeenCalledWith('user-1', 'jti-1');
@@ -675,7 +683,7 @@ describe('AuthService', () => {
 
   describe('sessionStatus', () => {
     it('reports a first-time visitor as signed out with nothing to refresh', () => {
-      const status = service.sessionStatus(undefined, { cookies: {} } as Request);
+      const status = service.sessionStatus(undefined, { cookies: {} } as Request, 'user');
 
       expect(status).toEqual({ user: null, canRefresh: false });
     });
@@ -685,7 +693,11 @@ describe('AuthService', () => {
         JSON.stringify({ id: 'user-1', jti: 'jti-1', persistence: SessionPersistence.STANDARD }),
       );
 
-      const status = service.sessionStatus(undefined, { cookies: { sub: 'encrypted' } } as Request);
+      const status = service.sessionStatus(
+        undefined,
+        { cookies: { sub: 'encrypted' } } as Request,
+        'user',
+      );
 
       expect(status).toEqual({ user: null, canRefresh: true });
     });
@@ -695,7 +707,11 @@ describe('AuthService', () => {
         throw new Error('bad ciphertext');
       });
 
-      const status = service.sessionStatus(undefined, { cookies: { sub: 'garbage' } } as Request);
+      const status = service.sessionStatus(
+        undefined,
+        { cookies: { sub: 'garbage' } } as Request,
+        'user',
+      );
 
       expect(status.canRefresh).toBe(false);
     });
@@ -710,6 +726,7 @@ describe('AuthService', () => {
           password: null,
         } as never,
         { cookies: {} } as Request,
+        'user',
       );
 
       expect(status.user?.email).toBe('a@b.c');
@@ -721,7 +738,7 @@ describe('AuthService', () => {
       const response = mockResponse();
 
       await expect(
-        service.refreshToken({ cookies: {} } as Request, response),
+        service.refreshToken({ cookies: {} } as Request, response, 'user'),
       ).rejects.toBeInstanceOf(UnauthorizedException);
       expect(response.clearCookie).toHaveBeenCalledTimes(2);
     });
@@ -738,7 +755,11 @@ describe('AuthService', () => {
         balance: 0,
       });
 
-      await service.refreshToken({ cookies: { sub: 'enc' } } as unknown as Request, response);
+      await service.refreshToken(
+        { cookies: { sub: 'enc' } } as unknown as Request,
+        response,
+        'user',
+      );
 
       expect(sessionService.rotateSession).toHaveBeenCalledWith(
         'user-1',

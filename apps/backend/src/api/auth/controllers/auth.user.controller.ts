@@ -118,7 +118,13 @@ export class AuthUserController extends AuthBaseController<UserEntity>(
     @Res({ passthrough: true }) response: Response,
     @Req() request: Request,
   ) {
-    return this.authService.verifyTwoFactor(body.challengeToken, body.code, response, request);
+    return this.authService.verifyTwoFactor(
+      body.challengeToken,
+      body.code,
+      response,
+      request,
+      'user',
+    );
   }
 
   @Post('2fa/recover')

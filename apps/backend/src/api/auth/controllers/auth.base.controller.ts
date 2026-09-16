@@ -32,7 +32,13 @@ export const AuthBaseController = <Entity extends UserEntity>(
       @Req() request: Request,
       @Res({ passthrough: true }) response: Response,
     ) {
-      return this.authService.login(userData, response, request, loginDto.rememberMe ?? false);
+      return this.authService.login(
+        userData,
+        response,
+        request,
+        loginDto.rememberMe ?? false,
+        userType,
+      );
     }
 
     @Post('refresh-token')
@@ -40,14 +46,14 @@ export const AuthBaseController = <Entity extends UserEntity>(
     @Throttle({ default: { limit: 5, ttl: 60_000 } })
     @ApiRefreshToken(userType)
     async refreshToken(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
-      return this.authService.refreshToken(request, response);
+      return this.authService.refreshToken(request, response, userType);
     }
 
     @Get('session')
     @HttpCode(200)
     @UseGuards(OptionalAuthGuard(jwtStrategyKey))
     session(@User() user: Entity | undefined, @Req() request: Request) {
-      return this.authService.sessionStatus(user, request);
+      return this.authService.sessionStatus(user, request, userType);
     }
 
     @Get('me')
@@ -65,7 +71,7 @@ export const AuthBaseController = <Entity extends UserEntity>(
       @Req() request: Request,
       @Res({ passthrough: true }) response: Response,
     ) {
-      return this.authService.logout(user, request, response);
+      return this.authService.logout(user, request, response, userType);
     }
 
     @Post('logout-all')
@@ -77,7 +83,7 @@ export const AuthBaseController = <Entity extends UserEntity>(
       @Req() request: Request,
       @Res({ passthrough: true }) response: Response,
     ) {
-      return this.authService.logoutAll(user, response, request);
+      return this.authService.logoutAll(user, response, request, userType);
     }
   }
 
