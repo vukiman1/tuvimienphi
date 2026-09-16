@@ -52,6 +52,8 @@ session:
   maxLifetime: SESSION_MAX_LIFETIME
   maxLifetimeRemember: SESSION_MAX_LIFETIME_REMEMBER
   maxLifetimeOauth: SESSION_MAX_LIFETIME_OAUTH
+  refreshTtlAdmin: SESSION_REFRESH_TTL_ADMIN
+  maxLifetimeAdmin: SESSION_MAX_LIFETIME_ADMIN
 
 crypto:
   secretKey: SECRET_KEY

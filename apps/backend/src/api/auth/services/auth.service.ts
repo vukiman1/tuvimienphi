@@ -150,7 +150,7 @@ export class AuthService {
     { persistence, rememberMe, authProvider, audience }: IssueSessionOptions,
   ) {
     const { id, email, avatar, balance } = user;
-    const session = await this.sessionService.createSession(id, persistence);
+    const session = await this.sessionService.createSession(id, audience, persistence);
     await this.userSessionService.createSession({
       userId: id,
       jti: session.jti,
@@ -309,7 +309,7 @@ export class AuthService {
     try {
       const { id, jti, persistence } = this.sessionCookieService.read(request, audience);
       const { email, avatar, balance } = await this.userService.getOneOrFail({ id });
-      const tokens = await this.sessionService.rotateSession(id, jti, persistence);
+      const tokens = await this.sessionService.rotateSession(id, jti, audience, persistence);
       await this.userSessionService.touchSession(id, jti, request, tokens.refreshTokenTtlMs);
 
       this.sessionCookieService.issue(response, { id, jti, persistence, audience }, tokens);

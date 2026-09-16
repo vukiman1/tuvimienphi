@@ -50,6 +50,8 @@ session:
   maxLifetime: ''
   maxLifetimeRemember: ''
   maxLifetimeOauth: ''
+  refreshTtlAdmin: 4h
+  maxLifetimeAdmin: 12h
 
 captcha:
   enabled: false

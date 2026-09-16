@@ -85,6 +85,8 @@ interface SessionConfig {
   maxLifetime: string;
   maxLifetimeRemember: string;
   maxLifetimeOauth: string;
+  refreshTtlAdmin: string;
+  maxLifetimeAdmin: string;
 }
 
 interface CryptoConfig {
@@ -198,6 +200,8 @@ const backendConfigSchema = z.object({
     maxLifetime: optionalDurationSchema,
     maxLifetimeRemember: optionalDurationSchema,
     maxLifetimeOauth: optionalDurationSchema,
+    refreshTtlAdmin: durationSchema,
+    maxLifetimeAdmin: durationSchema,
   }),
   crypto: z.object({
     secretKey: z.string().min(32),

@@ -351,6 +351,7 @@ describe('AuthService', () => {
 
       expect(sessionService.createSession).toHaveBeenCalledWith(
         'user-1',
+        'user',
         SessionPersistence.REMEMBER,
       );
       expect(userSessionService.createSession).toHaveBeenCalledWith(
@@ -443,6 +444,7 @@ describe('AuthService', () => {
 
       expect(sessionService.createSession).toHaveBeenCalledWith(
         'user-1',
+        'user',
         SessionPersistence.REMEMBER,
       );
     });
@@ -464,7 +466,11 @@ describe('AuthService', () => {
         },
       );
 
-      expect(sessionService.createSession).toHaveBeenCalledWith('user-1', SessionPersistence.OAUTH);
+      expect(sessionService.createSession).toHaveBeenCalledWith(
+        'user-1',
+        'user',
+        SessionPersistence.OAUTH,
+      );
       expect(userSessionService.createSession).toHaveBeenCalledWith(
         expect.objectContaining({ rememberMe: false, authProvider: AuthProvider.GOOGLE }),
       );
@@ -764,6 +770,7 @@ describe('AuthService', () => {
       expect(sessionService.rotateSession).toHaveBeenCalledWith(
         'user-1',
         'jti-1',
+        'user',
         SessionPersistence.REMEMBER,
       );
       expect(userSessionService.touchSession).toHaveBeenCalledWith(
