@@ -9,13 +9,8 @@ import {
 import type { BaiCanKiem } from './validate/bai-can-kiem';
 import { checkParagraphs } from './validate/check-paragraphs';
 
-/** Đo trên hai mươi lá số: trung bình 2,2 lượt, mà ba lượt vẫn để lọt. */
 export const MAX_ATTEMPTS = 5;
 
-/**
- * Dưới ngần này thì đừng gọi thêm lượt nữa. Một lượt đạt mất 1,5–2,2 giây, nhưng gói free có lúc
- * trả lời sau hơn hai mươi giây — đủ để một mình nó ăn hết trần của hàm serverless.
- */
 const MIN_ATTEMPT_MS = 4_000;
 
 export interface KetSinh<T> {
@@ -33,10 +28,6 @@ export interface CachSinh<T> {
   readonly toBai: (value: T) => BaiCanKiem;
 }
 
-/**
- * Một vòng sinh–kiểm–sinh lại, dùng chung cho hai đoạn chính và cho từng mục con. Tách ra vì cả hai
- * chạy y hệt nhau, chỉ khác prompt, khác hình dạng trả về và khác cách xếp đoạn cho bộ kiểm.
- */
 export async function sinhVoiKiem<T>(
   ai: AiClient,
   cach: CachSinh<T>,
