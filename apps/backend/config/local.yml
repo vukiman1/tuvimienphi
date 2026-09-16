@@ -1,9 +1,3 @@
-# Local development only. config-bootstrap.ts inlines just default.yml, production.yml and
-# custom-environment-variables.yml into the serverless bundle, so nothing here can ever reach
-# production — there the same keys come from environment variables.
-#
-# Committed on purpose: a fresh clone (and CI) needs these to boot. Edit freely for your machine.
-
 app:
   url: http://localhost:4200
 

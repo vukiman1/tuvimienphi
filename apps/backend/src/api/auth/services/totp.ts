@@ -1,13 +1,5 @@
 import { createHmac, randomBytes, timingSafeEqual } from 'crypto';
 
-/**
- * RFC 6238 (TOTP) over RFC 4648 base32, in the shape Google Authenticator expects: SHA-1, 30
- * second steps, six digits.
- *
- * Written out rather than taken from a library because every maintained option ships ESM only,
- * which breaks both the jest run and the bundled serverless function — the algorithm itself is
- * an HMAC and a truncation.
- */
 const BASE32_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
 const STEP_SECONDS = 30;
 const DIGITS = 6;
@@ -21,9 +13,6 @@ export function generateCode(secret: string, atMs: number = Date.now()): string 
   return codeForCounter(base32Decode(secret), Math.floor(atMs / 1000 / STEP_SECONDS));
 }
 
-/**
- * @param toleranceSeconds how far the client clock may drift either side of now.
- */
 export function verifyCode(
   secret: string,
   token: string,
@@ -63,7 +52,6 @@ function codeForCounter(key: Buffer, counter: number): string {
   message.writeBigUInt64BE(BigInt(Math.max(counter, 0)));
 
   const digest = createHmac('sha1', key).update(message).digest();
-  // Dynamic truncation: the low nibble of the last byte picks where the 31-bit value starts.
   const offset = digest[digest.length - 1] & 0x0f;
   const binary = digest.readUInt32BE(offset) & 0x7fffffff;
 

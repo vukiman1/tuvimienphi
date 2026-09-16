@@ -30,7 +30,6 @@ import { ThanCuGenerator } from './than-cu.generator';
 export class LuanGiaiService {
   private readonly logger = new Logger(LuanGiaiService.name);
 
-  /** Chương nào có generator thì chương đó mở được; chương còn lại chưa có bảng luận. */
   private readonly generators: Readonly<Record<string, ChapterGenerator>>;
 
   constructor(
@@ -43,10 +42,6 @@ export class LuanGiaiService {
     this.generators = { [CHAPTER_THAN_CU]: thanCu, [CHAPTER_MENH]: menh };
   }
 
-  /**
-   * Trạng thái cả sáu chương, hỏi một lượt khi mở trang. Chỉ trả trạng thái chứ không trả bài: mục
-   * lục chỉ cần biết chương nào mở được, còn nội dung thì lấy khi người ta thật sự đọc chương đó.
-   */
   async status(key: string): Promise<LuanGiaiChapterStatusMap> {
     const daCo = new Set(
       (
@@ -71,7 +66,6 @@ export class LuanGiaiService {
     return { chapters };
   }
 
-  /** Đọc chương đã có. Không cần đăng nhập: bài gắn với lá số chứ không gắn với người xem. */
   async read(key: string, order: string): Promise<LuanGiaiChapterResponse> {
     if (!this.generators[order]) return { status: LuanGiaiChapterStatus.Unavailable };
 
@@ -81,11 +75,6 @@ export class LuanGiaiService {
       : { status: LuanGiaiChapterStatus.Pending };
   }
 
-  /**
-   * Sinh ngay trong request rồi trả bài luôn. Đo thật thì một lượt mất 1,5–2,2 giây và ba lượt sinh
-   * lại mất 5,7 giây, còn cách trần 30 giây của hàm serverless khá xa; `GENERATION_BUDGET_MS` gác
-   * phần đuôi dài, vì đã gặp model trả UNAVAILABLE sau 27 giây.
-   */
   async request(
     userId: string,
     input: BirthInput,
@@ -99,14 +88,11 @@ export class LuanGiaiService {
     const daCo = await this.findArticle(key, order);
     if (daCo) return { status: LuanGiaiChapterStatus.Ready, article: daCo };
 
-    // Dựng brief là phép tính thuần, không gọi mô hình. Biết trước bảng chưa soạn tới lá số này thì
-    // đừng trừ suất của người dùng cho một việc chắc chắn không ra bài.
     const { chart } = chartFromBirthInput(input);
     if (!generator.coTheSinh(chart)) {
       return { status: LuanGiaiChapterStatus.Unavailable };
     }
 
-    // Trừ trước chứ không trừ sau: trừ sau thì mười request song song cùng lọt qua cửa.
     if (!(await this.quota.consume(userId))) {
       throw new ChapterQuotaExceededException();
     }
@@ -121,7 +107,6 @@ export class LuanGiaiService {
       await this.save(key, order, ket.article, ket.model, ket.attempts);
       return { status: LuanGiaiChapterStatus.Ready, article: ket.article };
     } catch (error) {
-      // Hỏng vì phía hệ thống thì hoàn suất lại; người dùng không nên trả giá cho lỗi của mình.
       await this.quota.refund(userId);
       this.logger.warn(`${key}:${order} sinh hỏng: ${(error as Error).message}`);
       throw new ChapterGenerationFailedException();
