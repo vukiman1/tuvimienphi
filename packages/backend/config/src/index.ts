@@ -82,6 +82,9 @@ interface SessionConfig {
   refreshTtl: string;
   refreshTtlRemember: string;
   refreshTtlOauth: string;
+  maxLifetime: string;
+  maxLifetimeRemember: string;
+  maxLifetimeOauth: string;
 }
 
 interface CryptoConfig {
@@ -141,6 +144,8 @@ const stringListSchema = z.preprocess(
 
 const durationSchema = z.string().regex(/^\d+(s|m|h|d)$/, 'Expected a duration like 15m, 1d, 60d');
 
+const optionalDurationSchema = z.union([durationSchema, z.literal('')]).default('');
+
 const backendConfigSchema = z.object({
   app: z.object({
     name: z.string().min(1),
@@ -190,6 +195,9 @@ const backendConfigSchema = z.object({
     refreshTtl: durationSchema,
     refreshTtlRemember: durationSchema,
     refreshTtlOauth: durationSchema,
+    maxLifetime: optionalDurationSchema,
+    maxLifetimeRemember: optionalDurationSchema,
+    maxLifetimeOauth: optionalDurationSchema,
   }),
   crypto: z.object({
     secretKey: z.string().min(32),

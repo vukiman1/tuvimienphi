@@ -8,11 +8,17 @@ import { SessionPersistence } from '../enums/session-persistence.enum';
 const ACCESS_TOKEN_KEY_PREFIX = 'AC_TOKEN';
 const REFRESH_TOKEN_KEY_PREFIX = 'RF_TOKEN';
 const SESSION_SET_KEY_PREFIX = 'SESSIONS';
+const SESSION_START_KEY_PREFIX = 'SESSION_START';
 const MAX_SESSIONS_CONFIG_KEY = 'session.maxSessionsPerUser';
 const REFRESH_TTL_CONFIG_KEYS: Record<SessionPersistence, string> = {
   [SessionPersistence.STANDARD]: 'session.refreshTtl',
   [SessionPersistence.REMEMBER]: 'session.refreshTtlRemember',
   [SessionPersistence.OAUTH]: 'session.refreshTtlOauth',
+};
+const MAX_LIFETIME_CONFIG_KEYS: Record<SessionPersistence, string> = {
+  [SessionPersistence.STANDARD]: 'session.maxLifetime',
+  [SessionPersistence.REMEMBER]: 'session.maxLifetimeRemember',
+  [SessionPersistence.OAUTH]: 'session.maxLifetimeOauth',
 };
 const MS_PER_SECOND = 1000;
 
@@ -56,6 +62,7 @@ export class SessionService {
   async createSession(userId: string, persistence: SessionPersistence): Promise<IssuedSession> {
     const jti = randomUUID();
     const tokens = await this.issueTokens(userId, jti, this.resolveRefreshTtlMs(persistence));
+    await this.markSessionStart(userId, jti, persistence);
     await this.enforceSessionLimit(userId);
     return { jti, ...tokens };
   }
@@ -65,6 +72,7 @@ export class SessionService {
     jti: string,
     persistence: SessionPersistence,
   ): Promise<SessionTokens> {
+    await this.assertWithinMaxLifetime(userId, jti, persistence);
     const storedRefreshToken = await this.redisService.get(this.refreshTokenKey(userId, jti));
     if (!storedRefreshToken) {
       throw new UnauthorizedException();
@@ -149,6 +157,41 @@ export class SessionService {
     return parseDurationToMs(this.configService.get<string>(key) ?? '');
   }
 
+  private resolveMaxLifetimeMs(persistence: SessionPersistence): number | null {
+    const value = this.configService.get<string>(MAX_LIFETIME_CONFIG_KEYS[persistence]);
+    return value ? parseDurationToMs(value) : null;
+  }
+
+  private async markSessionStart(
+    userId: string,
+    jti: string,
+    persistence: SessionPersistence,
+  ): Promise<void> {
+    const maxLifetimeMs = this.resolveMaxLifetimeMs(persistence);
+    if (maxLifetimeMs === null) {
+      return;
+    }
+    await this.redisService.set({
+      key: this.sessionStartKey(userId, jti),
+      value: String(Date.now()),
+      expired: toSeconds(maxLifetimeMs),
+    });
+  }
+
+  private async assertWithinMaxLifetime(
+    userId: string,
+    jti: string,
+    persistence: SessionPersistence,
+  ): Promise<void> {
+    if (this.resolveMaxLifetimeMs(persistence) === null) {
+      return;
+    }
+    const startedAt = await this.redisService.get(this.sessionStartKey(userId, jti));
+    if (!startedAt) {
+      throw new UnauthorizedException();
+    }
+  }
+
   private trackSession(userId: string, jti: string, refreshTokenTtlMs: number): Promise<number> {
     return this.redisService.eval(
       TRACK_SESSION_SCRIPT,
@@ -195,6 +238,10 @@ export class SessionService {
 
   private sessionSetKey(userId: string): string {
     return `${SESSION_SET_KEY_PREFIX}:{${userId}}`;
+  }
+
+  private sessionStartKey(userId: string, jti: string): string {
+    return `${SESSION_START_KEY_PREFIX}:{${userId}}:${jti}`;
   }
 }
 

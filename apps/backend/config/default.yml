@@ -47,6 +47,9 @@ session:
   refreshTtl: 1d
   refreshTtlRemember: 60d
   refreshTtlOauth: 30d
+  maxLifetime: ''
+  maxLifetimeRemember: ''
+  maxLifetimeOauth: ''
 
 captcha:
   enabled: false

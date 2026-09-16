@@ -10,6 +10,9 @@ const ACCESS_TTL_MS = 900_000;
 const DAY_MS = 86_400_000;
 const REMEMBER_TTL_MS = 60 * DAY_MS;
 const OAUTH_TTL_MS = 30 * DAY_MS;
+const MAX_LIFETIME = '12h';
+const MAX_LIFETIME_SECONDS = 12 * 3_600;
+const START_KEY = 'SESSION_START:{user-1}:jti-1';
 
 function sha256(value: string): string {
   return createHash('sha256').update(value).digest('hex');
@@ -19,6 +22,7 @@ describe('SessionService', () => {
   let jwt: jest.Mocked<JwtService>;
   let redis: jest.Mocked<RedisService>;
   let config: jest.Mocked<ConfigService>;
+  let configValues: Record<string, unknown>;
   let service: SessionService;
 
   beforeEach(() => {
@@ -39,14 +43,15 @@ describe('SessionService', () => {
       eval: jest.fn().mockResolvedValue(0),
     } as unknown as jest.Mocked<RedisService>;
 
+    configValues = {
+      'session.maxSessionsPerUser': 5,
+      'session.refreshTtl': '1d',
+      'session.refreshTtlRemember': '60d',
+      'session.refreshTtlOauth': '30d',
+    };
+
     config = {
-      get: jest.fn((key: string) => {
-        if (key === 'session.maxSessionsPerUser') return 5;
-        if (key === 'session.refreshTtl') return '1d';
-        if (key === 'session.refreshTtlRemember') return '60d';
-        if (key === 'session.refreshTtlOauth') return '30d';
-        return undefined;
-      }),
+      get: jest.fn((key: string) => configValues[key]),
     } as unknown as jest.Mocked<ConfigService>;
 
     service = new SessionService(jwt, redis, config);
@@ -118,6 +123,50 @@ describe('SessionService', () => {
       expect(jwt.verifyJwt).toHaveBeenCalledWith('stored-refresh');
       expect(tokens.accessToken).toBe('access-jwt');
       expect(tokens.refreshToken).toBe('refresh-jwt');
+    });
+  });
+
+  describe('max lifetime', () => {
+    it('records when the session started, expiring on its own at the max lifetime', async () => {
+      configValues['session.maxLifetime'] = MAX_LIFETIME;
+
+      await service.createSession('user-1', SessionPersistence.STANDARD);
+
+      expect(redis.set).toHaveBeenCalledWith(
+        expect.objectContaining({
+          key: expect.stringContaining('SESSION_START:{user-1}:'),
+          expired: MAX_LIFETIME_SECONDS,
+        }),
+      );
+    });
+
+    it('refuses to refresh once the session has outlived its max lifetime', async () => {
+      configValues['session.maxLifetime'] = MAX_LIFETIME;
+      redis.get.mockImplementation((key: string) =>
+        Promise.resolve(key === START_KEY ? null : 'stored-refresh'),
+      );
+
+      await expect(
+        service.rotateSession('user-1', 'jti-1', SessionPersistence.STANDARD),
+      ).rejects.toBeInstanceOf(UnauthorizedException);
+    });
+
+    it('never pushes the max lifetime back when refreshing', async () => {
+      configValues['session.maxLifetime'] = MAX_LIFETIME;
+      redis.get.mockResolvedValue('stored-refresh');
+
+      await service.rotateSession('user-1', 'jti-1', SessionPersistence.STANDARD);
+
+      expect(redis.set).not.toHaveBeenCalledWith(expect.objectContaining({ key: START_KEY }));
+    });
+
+    it('leaves the session alone when no max lifetime is configured', async () => {
+      redis.get.mockResolvedValue('stored-refresh');
+
+      const tokens = await service.rotateSession('user-1', 'jti-1', SessionPersistence.STANDARD);
+
+      expect(tokens.refreshToken).toBe('refresh-jwt');
+      expect(redis.get).not.toHaveBeenCalledWith(START_KEY);
     });
   });
 

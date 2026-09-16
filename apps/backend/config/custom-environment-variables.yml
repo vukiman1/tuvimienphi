@@ -48,6 +48,11 @@ cors:
 jwt:
   secret: JWT_SECRET
 
+session:
+  maxLifetime: SESSION_MAX_LIFETIME
+  maxLifetimeRemember: SESSION_MAX_LIFETIME_REMEMBER
+  maxLifetimeOauth: SESSION_MAX_LIFETIME_OAUTH
+
 crypto:
   secretKey: SECRET_KEY
 
