@@ -1,6 +1,6 @@
-import { ProfileCard } from '@/features/settings/profile-card';
-import { SecurityCard } from '@/features/settings/security-card';
-import { TwoFactorCard } from '@/features/settings/two-factor-card';
+import { ProfileCard } from '@/features/settings/components/profile-card';
+import { SecurityCard } from '@/features/settings/components/security-card';
+import { TwoFactorCard } from '@/features/settings/components/two-factor-card';
 
 export function DashboardSettingsPage() {
   return (

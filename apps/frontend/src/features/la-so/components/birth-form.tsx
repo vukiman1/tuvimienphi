@@ -3,21 +3,19 @@ import { useNavigate } from '@tanstack/react-router';
 import { Form } from '@/components/ui/form';
 import { FormError } from '@/components/ui/form-error';
 import { FormField } from '@/components/ui/form-field';
-import { SelectField, type SelectOption } from '@/components/ui/select-field';
+import { SelectField } from '@/components/ui/select-field';
 import { Button } from '@/components/ui/button';
 import { MEDIA } from '@/config/media';
 import { useFormWithSubmitError } from '@/lib/use-form-with-submit-error';
 import { cn } from '@/lib/utils';
-import {
-  BIRTH_HOURS,
-  DAYS_IN_LONGEST_MONTH,
-  GENDER_LABELS,
-  Gender,
-  MAX_BIRTH_YEAR,
-  MIN_BIRTH_YEAR,
-  MONTHS_IN_YEAR,
-} from '@/features/la-so/birth-input';
 import { CalendarToggle } from '@/features/la-so/components/calendar-toggle';
+import {
+  DAY_OPTIONS,
+  GENDER_OPTIONS,
+  HOUR_OPTIONS,
+  MONTH_OPTIONS,
+  YEAR_OPTIONS,
+} from '@/features/la-so/components/birth-form.constants';
 import {
   EMPTY_BIRTH_FORM,
   birthFieldSchemas,
@@ -50,29 +48,6 @@ const SUBMIT_PLATE_STYLE = {
  * hạ chữ xuống màu mờ, khỏi phải nhớ trạng thái bằng JS.
  */
 const SELECT_CLASS = `${FIELD_CLASS} appearance-none pr-8 [&:has(option[value='']:checked)]:text-[#7a6a55]`;
-
-function countingOptions(count: number, from: number): readonly SelectOption<string>[] {
-  return Array.from({ length: count }, (_, index) => {
-    const value = String(from + index);
-    return { value, label: value };
-  });
-}
-
-const DAY_OPTIONS = countingOptions(DAYS_IN_LONGEST_MONTH, 1);
-const MONTH_OPTIONS = countingOptions(MONTHS_IN_YEAR, 1);
-const YEAR_OPTIONS = countingOptions(MAX_BIRTH_YEAR - MIN_BIRTH_YEAR + 1, MIN_BIRTH_YEAR)
-  .slice()
-  .reverse();
-
-const GENDER_OPTIONS: readonly SelectOption<Gender | ''>[] = Object.values(Gender).map((value) => ({
-  value,
-  label: GENDER_LABELS[value],
-}));
-
-const HOUR_OPTIONS: readonly SelectOption<string>[] = BIRTH_HOURS.map((hour) => ({
-  value: hour.key,
-  label: `${hour.key} (${hour.range})`,
-}));
 
 function SelectChevron() {
   return (

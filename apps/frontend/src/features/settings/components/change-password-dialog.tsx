@@ -13,7 +13,7 @@ import {
   changePasswordFieldSchemas,
   changePasswordSchema,
   type ChangePasswordFormValues,
-} from './schemas';
+} from '../schemas';
 
 const EMPTY_FORM: ChangePasswordFormValues = {
   currentPassword: '',
