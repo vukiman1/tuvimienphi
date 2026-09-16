@@ -19,13 +19,13 @@ export function assembleThanCuArticle(
   paragraphs: ThanCuParagraphs,
   sections: readonly LuanGiaiSection[] = [],
 ): LuanGiaiArticle {
-  const khung = KHUNG_THAN_CU[brief.cungThan as ThanCuCung];
-  const tieuDe = `Thân cư ${brief.cungThan}`;
+  const khung = KHUNG_THAN_CU[brief.cung as ThanCuCung];
+  const tieuDe = `Thân cư ${brief.cung}`;
 
   return {
     eyebrow: THAN_CU_EYEBROW,
     title: tieuDe,
-    sourceCung: brief.cungThan,
+    sourceCung: brief.cung,
     quote: khung.quote,
     subheading: `${NHAN_GIOI_TINH[brief.gioiTinh]} tuổi ${brief.chiNamSinh} – ${tieuDe}`,
     paragraphs: [khung.moBai, paragraphs.doan1, paragraphs.doan2],

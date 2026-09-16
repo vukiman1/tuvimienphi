@@ -10,6 +10,7 @@ import { SINH_KHAC_LUAN } from './bang/sinh-khac.js';
 import { AN_NGU_LUAN, TU_HOA_LUAN } from './bang/the-cuc.js';
 import { TRANG_SINH_LUAN } from './bang/trang-sinh.js';
 import { buildThanCuBrief, type ThanCuBrief } from './build-than-cu-brief.js';
+import type { MucExtras } from './chapter-brief.js';
 import { Sac, type LuanDe } from './luan-de.js';
 import { TheChieu, theCungAt } from './the-cung.js';
 
@@ -23,14 +24,7 @@ export enum MucKey {
  * Một mục con của bài. Mang theo nguyên phần lá số của brief chính để năm tầng kiểm chạy được y
  * nguyên, chỉ khác `luan` và có thêm dữ kiện riêng.
  */
-export interface MucBrief extends ThanCuBrief {
-  readonly muc: MucKey;
-  readonly tieuDe: string;
-  /** Cung mà mục này đọc từ đó, hiện lên thẻ mục con — xem `LuanGiaiSection.sourceCung`. */
-  readonly sourceCung: string;
-  /** Dữ kiện cụ thể bài BẮT BUỘC phải dẫn, ví dụ mốc tuổi đại vận. */
-  readonly duKien: readonly string[];
-}
+export interface MucBrief extends ThanCuBrief, MucExtras<MucKey> {}
 
 /** Dưới ngần này thì mục quá mỏng, thà không có còn hơn có một câu cụt. */
 const TOI_THIEU_MENH_DE = 2;
@@ -147,7 +141,7 @@ export function buildMucBriefs(chart: NatalChart): readonly MucBrief[] {
   const goc = buildThanCuBrief(chart);
   if (!goc) return [];
 
-  const nguon = `${goc.cungThan} · ${CHI[chart.cungs[chart.thanIndex].chiIndex]}`;
+  const nguon = `${goc.cung} · ${CHI[chart.cungs[chart.thanIndex].chiIndex]}`;
   const menhThan = theMenhThan(chart.menhIndex, chart.thanIndex);
 
   const dinhNghia = [

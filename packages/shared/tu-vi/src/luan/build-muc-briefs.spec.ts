@@ -56,7 +56,7 @@ describe('buildMucBriefs', () => {
 
   it('mục nào cũng mang theo phần lá số để bộ kiểm chạy được y nguyên', () => {
     for (const muc of buildMucBriefs(CHART)) {
-      expect(muc.cungThan).toBe('Phu Thê');
+      expect(muc.cung).toBe('Phu Thê');
       expect(muc.chinhTinh.length).toBeGreaterThan(0);
       expect(muc.sourceCung).toContain('Phu Thê');
     }

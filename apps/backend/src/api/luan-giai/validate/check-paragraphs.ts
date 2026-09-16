@@ -1,4 +1,4 @@
-import type { ThanCuBrief } from '@org/shared-tu-vi';
+import type { ChapterBrief } from '@org/shared-tu-vi';
 import type { BaiCanKiem } from './bai-can-kiem';
 import { checkAttribution } from './check-attribution';
 import { checkContent } from './check-content';
@@ -14,7 +14,7 @@ import { checkPosition } from './check-position';
  * phần bắt buộc. Bài đọc hơi khô vẫn hơn là người dùng nhận 503.
  */
 export function checkParagraphs(
-  brief: ThanCuBrief,
+  brief: ChapterBrief,
   bai: BaiCanKiem,
   conLuotDeSinhLai = true,
 ): string[] {

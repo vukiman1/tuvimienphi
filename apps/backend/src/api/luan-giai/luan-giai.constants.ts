@@ -1,6 +1,6 @@
 /** Chương 01 là Thân cư. Năm chương còn lại chưa có bảng luận nên chưa nhận yêu cầu sinh. */
 export const CHAPTER_THAN_CU = '01';
-export const SUPPORTED_CHAPTERS = [CHAPTER_THAN_CU] as const;
+export const CHAPTER_MENH = '02';
 
 /** Sáu chương của trang, kể cả chương chưa có bảng luận — mục lục vẫn phải liệt kê đủ. */
 export const CHAPTER_ORDERS = ['01', '02', '03', '04', '05', '06'] as const;

@@ -1,4 +1,4 @@
-import type { ThanCuBrief } from '@org/shared-tu-vi';
+import type { ChapterBrief } from '@org/shared-tu-vi';
 import type { BaiCanKiem } from './bai-can-kiem';
 
 /**
@@ -40,11 +40,8 @@ function tim(bai: BaiCanKiem, cam: readonly string[]): string[] {
  * Sinh ra từ một quan sát lặp lại bốn lần trong lúc dựng: luật nào chỉ nằm trong prompt mà không có
  * tầng kiểm nào gác thì mô hình bỏ qua.
  */
-export function checkForbiddenPhrases(brief: ThanCuBrief, bai: BaiCanKiem): string[] {
-  return tim(bai, [
-    ...(brief.cungThan === 'Mệnh' ? [] : CHI_DUNG_O_CUNG_MENH),
-    ...HUA_HEN_VO_CAN_CU,
-  ]);
+export function checkForbiddenPhrases(brief: ChapterBrief, bai: BaiCanKiem): string[] {
+  return tim(bai, [...(brief.cung === 'Mệnh' ? [] : CHI_DUNG_O_CUNG_MENH), ...HUA_HEN_VO_CAN_CU]);
 }
 
 /**

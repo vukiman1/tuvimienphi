@@ -1,4 +1,4 @@
-import type { ThanCuBrief } from '@org/shared-tu-vi';
+import type { ChapterBrief } from '@org/shared-tu-vi';
 import type { AiClient } from '../../ai/ai.client';
 import type { AiMessage, AiSchema } from '../../ai/ai.types';
 import {
@@ -25,7 +25,7 @@ export interface KetSinh<T> {
 }
 
 export interface CachSinh<T> {
-  readonly brief: ThanCuBrief;
+  readonly brief: ChapterBrief;
   readonly system: string;
   readonly schema: AiSchema;
   readonly messages: (daThu: readonly { paragraph: T; loi: readonly string[] }[]) => AiMessage[];

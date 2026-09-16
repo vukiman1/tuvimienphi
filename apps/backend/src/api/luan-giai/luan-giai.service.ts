@@ -8,32 +8,40 @@ import {
   type LuanGiaiChapterResponse,
   type LuanGiaiChapterStatusMap,
 } from '@org/shared-contracts';
-import { buildThanCuBrief, chartFromBirthInput } from '@org/shared-tu-vi';
+import { chartFromBirthInput } from '@org/shared-tu-vi';
 import { Repository } from 'typeorm';
 import { ChapterQuotaService } from './chapter-quota.service';
 import { LuanGiaiChapterEntity } from './entities/luan-giai-chapter.entity';
-import { CHAPTER_ORDERS, GENERATION_BUDGET_MS, SUPPORTED_CHAPTERS } from './luan-giai.constants';
+import type { ChapterGenerator } from './chapter-generator';
+import { MenhGenerator } from './menh.generator';
+import {
+  CHAPTER_MENH,
+  CHAPTER_ORDERS,
+  CHAPTER_THAN_CU,
+  GENERATION_BUDGET_MS,
+} from './luan-giai.constants';
 import {
   ChapterGenerationFailedException,
   ChapterQuotaExceededException,
 } from './luan-giai.exceptions';
 import { ThanCuGenerator } from './than-cu.generator';
 
-/** Năm chương còn lại chưa có bảng luận nên sẽ không có bài, dù chờ bao lâu. */
-function laChuongCoBang(order: string): boolean {
-  return SUPPORTED_CHAPTERS.some((duocHoTro) => duocHoTro === order);
-}
-
 @Injectable()
 export class LuanGiaiService {
   private readonly logger = new Logger(LuanGiaiService.name);
+
+  /** Chương nào có generator thì chương đó mở được; chương còn lại chưa có bảng luận. */
+  private readonly generators: Readonly<Record<string, ChapterGenerator>>;
 
   constructor(
     @InjectRepository(LuanGiaiChapterEntity)
     private readonly repo: Repository<LuanGiaiChapterEntity>,
     private readonly quota: ChapterQuotaService,
-    private readonly generator: ThanCuGenerator,
-  ) {}
+    thanCu: ThanCuGenerator,
+    menh: MenhGenerator,
+  ) {
+    this.generators = { [CHAPTER_THAN_CU]: thanCu, [CHAPTER_MENH]: menh };
+  }
 
   /**
    * Trạng thái cả sáu chương, hỏi một lượt khi mở trang. Chỉ trả trạng thái chứ không trả bài: mục
@@ -54,7 +62,7 @@ export class LuanGiaiService {
         order,
         daCo.has(order)
           ? LuanGiaiChapterStatus.Ready
-          : laChuongCoBang(order)
+          : this.generators[order]
             ? LuanGiaiChapterStatus.Pending
             : LuanGiaiChapterStatus.Unavailable,
       ]),
@@ -65,7 +73,7 @@ export class LuanGiaiService {
 
   /** Đọc chương đã có. Không cần đăng nhập: bài gắn với lá số chứ không gắn với người xem. */
   async read(key: string, order: string): Promise<LuanGiaiChapterResponse> {
-    if (!laChuongCoBang(order)) return { status: LuanGiaiChapterStatus.Unavailable };
+    if (!this.generators[order]) return { status: LuanGiaiChapterStatus.Unavailable };
 
     const article = await this.findArticle(key, order);
     return article
@@ -83,7 +91,8 @@ export class LuanGiaiService {
     input: BirthInput,
     order: string,
   ): Promise<LuanGiaiChapterResponse> {
-    if (!laChuongCoBang(order)) return { status: LuanGiaiChapterStatus.Unavailable };
+    const generator = this.generators[order];
+    if (!generator) return { status: LuanGiaiChapterStatus.Unavailable };
 
     const key = birthKey(input);
 
@@ -93,7 +102,7 @@ export class LuanGiaiService {
     // Dựng brief là phép tính thuần, không gọi mô hình. Biết trước bảng chưa soạn tới lá số này thì
     // đừng trừ suất của người dùng cho một việc chắc chắn không ra bài.
     const { chart } = chartFromBirthInput(input);
-    if (!buildThanCuBrief(chart)) {
+    if (!generator.coTheSinh(chart)) {
       return { status: LuanGiaiChapterStatus.Unavailable };
     }
 
@@ -103,7 +112,7 @@ export class LuanGiaiService {
     }
 
     try {
-      const ket = await this.generator.generate(chart, GENERATION_BUDGET_MS);
+      const ket = await generator.generate(chart, GENERATION_BUDGET_MS);
       if (!ket) {
         await this.quota.refund(userId);
         return { status: LuanGiaiChapterStatus.Unavailable };

@@ -16,12 +16,14 @@ import { buildThanCuBrief } from '@org/shared-tu-vi';
 import type { Repository } from 'typeorm';
 import type { ChapterQuotaService } from './chapter-quota.service';
 import type { LuanGiaiChapterEntity } from './entities/luan-giai-chapter.entity';
-import { CHAPTER_THAN_CU } from './luan-giai.constants';
+import { CHAPTER_MENH, CHAPTER_THAN_CU } from './luan-giai.constants';
 import {
   ChapterGenerationFailedException,
   ChapterQuotaExceededException,
 } from './luan-giai.exceptions';
-import type { ThanCuGenerator, ThanCuResult } from './than-cu.generator';
+import type { ChapterResult } from './chapter-generator';
+import type { MenhGenerator } from './menh.generator';
+import type { ThanCuGenerator } from './than-cu.generator';
 import { LuanGiaiService } from './luan-giai.service';
 
 /** Thân cư Phu Thê, Liêm Trinh + Tham Lang — tổ hợp đã có trong bảng luận. */
@@ -36,7 +38,7 @@ const CO_BANG: BirthInput = {
 
 const BAI = { title: 'Thân cư Phu Thê' } as LuanGiaiArticle;
 
-const KET: ThanCuResult = { article: BAI, model: 'gemini-gia', attempts: 1 };
+const KET: ChapterResult = { article: BAI, model: 'gemini-gia', attempts: 1 };
 const dungBrief = buildThanCuBrief as jest.MockedFunction<typeof buildThanCuBrief>;
 
 interface Overrides {
@@ -44,6 +46,7 @@ interface Overrides {
   readonly daCo?: readonly Pick<LuanGiaiChapterEntity, 'chapterOrder'>[];
   readonly conSuat?: boolean;
   readonly sinh?: jest.Mock;
+  readonly coBang?: boolean;
 }
 
 function dungService(overrides?: Overrides) {
@@ -56,17 +59,26 @@ function dungService(overrides?: Overrides) {
     consume: jest.fn().mockResolvedValue(overrides?.conSuat ?? true),
     refund: jest.fn().mockResolvedValue(undefined),
   };
-  const generator = { generate: overrides?.sinh ?? jest.fn().mockResolvedValue(KET) };
+  const generator = {
+    coTheSinh: jest.fn().mockReturnValue(overrides?.coBang ?? true),
+    generate: overrides?.sinh ?? jest.fn().mockResolvedValue(KET),
+  };
+  const generatorMenh = {
+    coTheSinh: jest.fn().mockReturnValue(true),
+    generate: jest.fn().mockResolvedValue(KET),
+  };
 
   return {
     service: new LuanGiaiService(
       repo as unknown as Repository<LuanGiaiChapterEntity>,
       quota as unknown as ChapterQuotaService,
       generator as unknown as ThanCuGenerator,
+      generatorMenh as unknown as MenhGenerator,
     ),
     repo,
     quota,
     generator,
+    generatorMenh,
   };
 }
 
@@ -95,6 +107,16 @@ describe('LuanGiaiService.request', () => {
     expect(quota.consume).not.toHaveBeenCalled();
   });
 
+  it('sinh chương 02 bằng generator của chính chương đó', async () => {
+    const { service, generator, generatorMenh } = dungService();
+
+    const ket = await service.request('u1', CO_BANG, CHAPTER_MENH);
+
+    expect(ket).toEqual({ status: LuanGiaiChapterStatus.Ready, article: BAI });
+    expect(generatorMenh.generate).toHaveBeenCalledTimes(1);
+    expect(generator.generate).not.toHaveBeenCalled();
+  });
+
   it('báo unavailable cho chương chưa có bảng, không đụng tới database', async () => {
     const { service, repo, quota } = dungService();
 
@@ -106,8 +128,7 @@ describe('LuanGiaiService.request', () => {
   });
 
   it('báo unavailable khi không dựng nổi brief, không trừ suất cho việc chắc chắn không ra bài', async () => {
-    dungBrief.mockReturnValue(null);
-    const { service, generator, quota } = dungService();
+    const { service, generator, quota } = dungService({ coBang: false });
 
     const ket = await service.request('u1', CO_BANG, CHAPTER_THAN_CU);
 
