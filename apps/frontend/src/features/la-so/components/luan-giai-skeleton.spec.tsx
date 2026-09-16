@@ -1,32 +1,56 @@
 import { act, render, screen } from '@testing-library/react';
 import { LuanGiaiSkeletonCard } from './luan-giai-skeleton';
 
-const BUOC = ['Bước một', 'Bước hai', 'Bước ba'] as const;
+function tienThoiGian(giay: number): void {
+  act(() => jest.advanceTimersByTime(giay * 1_000));
+}
+
+function tienDo(): number {
+  return Number(screen.getByRole('progressbar').getAttribute('aria-valuenow'));
+}
 
 describe('LuanGiaiSkeletonCard', () => {
   beforeEach(() => jest.useFakeTimers());
   afterEach(() => jest.useRealTimers());
 
-  it('không kể bước nào khi chỉ đang đọc bài đã có', () => {
+  it('im lặng khi chỉ đang đọc bài đã có, vì việc đó xong trong tích tắc', () => {
     render(<LuanGiaiSkeletonCard />);
 
-    expect(screen.queryByText(/Bước/)).toBeNull();
+    expect(screen.queryByText(/Đang viết/)).toBeNull();
+    expect(screen.queryByRole('progressbar')).toBeNull();
   });
 
-  it('đi lần lượt qua từng bước trong lúc chờ', () => {
-    render(<LuanGiaiSkeletonCard steps={BUOC} />);
-    expect(screen.getByText('Bước một')).toBeTruthy();
+  it('nói rõ là đang viết và mất khoảng bao lâu', () => {
+    render(<LuanGiaiSkeletonCard isWriting />);
 
-    act(() => jest.advanceTimersByTime(1_200));
-    expect(screen.getByText('Bước hai')).toBeTruthy();
+    expect(screen.getByText(/Đang viết luận giải/)).toBeTruthy();
+    expect(screen.getByText(/10–20 giây/)).toBeTruthy();
   });
 
-  it('dừng ở bước cuối chứ không quay vòng về đầu', () => {
-    render(<LuanGiaiSkeletonCard steps={BUOC} />);
+  it('chạy tiến trình theo thời gian chờ', () => {
+    render(<LuanGiaiSkeletonCard isWriting />);
+    const batDau = tienDo();
 
-    act(() => jest.advanceTimersByTime(1_200 * 10));
+    tienThoiGian(5);
 
-    expect(screen.getByText('Bước ba')).toBeTruthy();
-    expect(screen.queryByText('Bước một')).toBeNull();
+    expect(tienDo()).toBeGreaterThan(batDau);
+  });
+
+  it('không bao giờ chạm 100%, vì máy chủ không báo tiến độ thật', () => {
+    render(<LuanGiaiSkeletonCard isWriting />);
+
+    tienThoiGian(600);
+
+    expect(tienDo()).toBeLessThanOrEqual(90);
+  });
+
+  it('chỉ đếm giây khi chờ đã lâu, để lần sinh nhanh không bị nhắc tới thời gian', () => {
+    render(<LuanGiaiSkeletonCard isWriting />);
+
+    tienThoiGian(5);
+    expect(screen.queryByText(/giây rồi/)).toBeNull();
+
+    tienThoiGian(7);
+    expect(screen.getByText(/12 giây rồi/)).toBeTruthy();
   });
 });

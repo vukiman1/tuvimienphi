@@ -164,6 +164,33 @@
     }
   }
 
+  --animate-block-in: block-in 380ms ease-out both;
+
+  @keyframes block-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  --animate-ink-sweep: ink-sweep 1.8s ease-in-out infinite;
+
+  @keyframes ink-sweep {
+    0% {
+      opacity: 0.55;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.55;
+    }
+  }
+
   --animate-toast-countdown: toast-countdown linear forwards;
 
   @keyframes toast-countdown {

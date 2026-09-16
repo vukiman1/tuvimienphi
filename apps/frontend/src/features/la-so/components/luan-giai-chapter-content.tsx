@@ -13,21 +13,6 @@ import { LuanGiaiPromptCard } from '@/features/la-so/components/luan-giai-prompt
 import { LuanGiaiSkeletonCard } from '@/features/la-so/components/luan-giai-skeleton';
 import { DEFAULT_ERROR_MESSAGE, errorMessage } from '@/lib/api-error';
 
-/**
- * Đúng năm bước máy chủ thực sự đi qua, theo đúng thứ tự. Nhịp hiện ra là ước lượng — máy chủ làm
- * xong mới trả một lần nên không có đường nào báo về đang ở bước nào.
- *
- * Hằng số ở tầng module để tham chiếu không đổi giữa các lần render, nếu không bộ đếm bước bị đặt
- * lại mỗi lần cha vẽ lại.
- */
-const CAC_BUOC = [
-  'Đang dựng lá số từ ngày giờ sinh',
-  'Đang đọc thế cung an Thân',
-  'Đang đối chiếu sao, bậc và thế hội chiếu',
-  'Đang viết luận giải',
-  'Đang soát lại bài viết',
-] as const;
-
 interface LuanGiaiChapterContentProps {
   readonly birth: BirthInput;
   readonly chapter: LuanGiaiChapter;
@@ -62,7 +47,7 @@ export function LuanGiaiChapterContent({ birth, chapter, status }: LuanGiaiChapt
   });
 
   if (xin.isPending) {
-    return <LuanGiaiSkeletonCard steps={CAC_BUOC} />;
+    return <LuanGiaiSkeletonCard isWriting />;
   }
 
   if (status === undefined || (daCoBai && !data)) {
@@ -77,6 +62,7 @@ export function LuanGiaiChapterContent({ birth, chapter, status }: LuanGiaiChapt
     return (
       <LuanGiaiArticleCard
         article={{ ...data.article, ...articleMedia(data.article) }}
+        isFresh={xin.isSuccess}
         order={chapter.order}
       />
     );
