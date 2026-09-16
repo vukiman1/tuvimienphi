@@ -1,79 +1,78 @@
 import { Injectable, Logger } from '@nestjs/common';
-import type { LuanGiaiArticle, LuanGiaiSection } from '@org/shared-contracts';
+import type { LuanGiaiSection } from '@org/shared-contracts';
 import {
-  buildMucBriefs,
-  buildThanCuBrief,
-  type MucBrief,
+  buildMenhBrief,
+  buildMenhMucBriefs,
+  type MenhMucBrief,
   type NatalChart,
 } from '@org/shared-tu-vi';
 import { AiClient } from '../../ai/ai.client';
-import { assembleThanCuArticle } from './assemble-than-cu-article';
+import { assembleMenhArticle } from './assemble-menh-article';
+import type { ChapterResult } from './chapter-generator';
 import {
   MUC_SCHEMA,
   THAN_CU_SCHEMA,
   type MucParagraph,
   type ThanCuParagraphs,
 } from './prompt/chapter-schema';
+import { buildMenhMessages, MENH_SYSTEM_PROMPT } from './prompt/menh-prompt';
 import { buildMucMessages, mucSystemPrompt } from './prompt/muc-prompt';
-import { buildThanCuMessages, THAN_CU_SYSTEM_PROMPT } from './prompt/than-cu-prompt';
 import { sinhVoiKiem } from './sinh-voi-kiem';
 import { baiChinh, baiMuc } from './validate/to-bai';
 
-export interface ThanCuResult {
-  readonly article: LuanGiaiArticle;
-  /** Model nào viết ra bài và tổng số lượt phải sinh lại — theo dõi để thấy prompt xuống cấp sớm. */
-  readonly model: string;
-  readonly attempts: number;
-}
-
-function parse<T>(text: string, coDu: (value: Record<string, unknown>) => boolean): T {
+function parseMuc(text: string): MucParagraph {
   const raw: unknown = JSON.parse(text);
-  if (typeof raw !== 'object' || raw === null || !coDu(raw as Record<string, unknown>)) {
+  if (typeof raw !== 'object' || raw === null || typeof (raw as MucParagraph).doan !== 'string') {
     throw new Error('shape');
   }
-  return raw as T;
+  return raw as MucParagraph;
+}
+
+function parse(text: string): ThanCuParagraphs {
+  const raw: unknown = JSON.parse(text);
+  if (
+    typeof raw !== 'object' ||
+    raw === null ||
+    typeof (raw as ThanCuParagraphs).doan1 !== 'string' ||
+    typeof (raw as ThanCuParagraphs).doan2 !== 'string'
+  ) {
+    throw new Error('shape');
+  }
+  return raw as ThanCuParagraphs;
 }
 
 @Injectable()
-export class ThanCuGenerator {
-  private readonly logger = new Logger(ThanCuGenerator.name);
+export class MenhGenerator {
+  private readonly logger = new Logger(MenhGenerator.name);
 
   constructor(private readonly ai: AiClient) {}
 
   coTheSinh(chart: NatalChart): boolean {
-    return buildThanCuBrief(chart) !== null;
+    return buildMenhBrief(chart) !== null;
   }
 
-  /**
-   * Trả `null` khi bảng luận chưa dựng nổi brief — bên gọi cần phân biệt với trường hợp đang sinh.
-   *
-   * Hai đoạn chính và từng mục con chạy SONG SONG: chúng độc lập nhau nên chờ tuần tự chỉ tổ nhân
-   * thời gian lên gấp bốn mà không được gì. Đoạn chính bắt buộc phải xong; mục con nào hỏng thì bỏ
-   * mục đó, vì bài thiếu một mục vẫn hơn là không có bài.
-   */
-  async generate(chart: NatalChart, budgetMs: number): Promise<ThanCuResult | null> {
-    const brief = buildThanCuBrief(chart);
+  /** Trả `null` khi bảng luận chưa dựng nổi brief — bên gọi phân biệt với trường hợp đang sinh. */
+  async generate(chart: NatalChart, budgetMs: number): Promise<ChapterResult | null> {
+    const brief = buildMenhBrief(chart);
     if (!brief) return null;
 
-    const mucBriefs = buildMucBriefs(chart);
+    const mucBriefs = buildMenhMucBriefs(chart);
 
+    // Bài chính và từng mục chạy SONG SONG: chúng độc lập nhau nên chờ tuần tự chỉ tổ nhân thời
+    // gian lên mà không được gì. Mục nào hỏng thì bỏ mục đó, bài thiếu một mục vẫn hơn không có bài.
     const [chinh, ...mucs] = await Promise.all([
       sinhVoiKiem<ThanCuParagraphs>(
         this.ai,
         {
           brief,
-          system: THAN_CU_SYSTEM_PROMPT,
+          system: MENH_SYSTEM_PROMPT,
           schema: THAN_CU_SCHEMA,
           messages: (daThu) =>
-            buildThanCuMessages(
+            buildMenhMessages(
               brief,
               daThu.map((lan) => ({ paragraphs: lan.paragraph, loi: lan.loi })),
             ),
-          parse: (text) =>
-            parse<ThanCuParagraphs>(
-              text,
-              (o) => typeof o.doan1 === 'string' && typeof o.doan2 === 'string',
-            ),
+          parse,
           toBai: baiChinh,
         },
         budgetMs,
@@ -84,16 +83,15 @@ export class ThanCuGenerator {
     ]);
 
     const sections = mucs.filter((muc): muc is LuanGiaiSection => muc !== null);
-    const tongLuot = chinh.attempts;
 
     return {
-      article: assembleThanCuArticle(brief, chinh.value, sections),
+      article: assembleMenhArticle(brief, chinh.value, sections),
       model: chinh.model,
-      attempts: tongLuot,
+      attempts: chinh.attempts,
     };
   }
 
-  private async sinhMuc(brief: MucBrief, budgetMs: number): Promise<LuanGiaiSection | null> {
+  private async sinhMuc(brief: MenhMucBrief, budgetMs: number): Promise<LuanGiaiSection | null> {
     try {
       const ket = await sinhVoiKiem<MucParagraph>(
         this.ai,
@@ -102,7 +100,7 @@ export class ThanCuGenerator {
           system: mucSystemPrompt(brief.cung),
           schema: MUC_SCHEMA,
           messages: (daThu) => buildMucMessages(brief, daThu),
-          parse: (text) => parse<MucParagraph>(text, (o) => typeof o.doan === 'string'),
+          parse: parseMuc,
           toBai: baiMuc,
         },
         budgetMs,

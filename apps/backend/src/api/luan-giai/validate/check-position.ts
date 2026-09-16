@@ -1,4 +1,4 @@
-import { TheChieu, type ThanCuBrief } from '@org/shared-tu-vi';
+import { TheChieu, type ChapterBrief } from '@org/shared-tu-vi';
 import type { BaiCanKiem } from './bai-can-kiem';
 import { sentences } from './parse-markup';
 
@@ -23,7 +23,7 @@ const NGON_TU_TOA_THU = [
  * Chỉ báo lỗi khi trong câu KHÔNG có sao toạ thủ nào: một câu vừa nhắc sao toạ thủ vừa nhắc sao
  * chiếu tới thì không biết cách nói đó gắn vào sao nào, và đoán bừa sẽ tạo báo động giả.
  */
-export function checkPosition(brief: ThanCuBrief, bai: BaiCanKiem): string[] {
+export function checkPosition(brief: ChapterBrief, bai: BaiCanKiem): string[] {
   const moiSao = [...brief.hungTinh, ...brief.catTinh];
   const chieuToi = moiSao.filter((sao) => sao.the !== TheChieu.ToaThu);
   // Cung vô chính diệu thì chính tinh trong brief là sao MƯỢN, không toạ thủ — chúng cũng phải bị

@@ -1,4 +1,4 @@
-import type { ThanCuBrief } from '@org/shared-tu-vi';
+import type { ChapterBrief } from '@org/shared-tu-vi';
 import type { BaiCanKiem } from './bai-can-kiem';
 import { sentences } from './parse-markup';
 
@@ -9,7 +9,7 @@ import { sentences } from './parse-markup';
  * gán cả hai cho một sao. Đo được lúc dựng: "đào hoa nên tình duyên dễ nhiều mối" vốn của Tham Lang
  * bị viết thành của Đà La, hai tầng trên đều cho qua.
  */
-export function checkAttribution(brief: ThanCuBrief, bai: BaiCanKiem): string[] {
+export function checkAttribution(brief: ChapterBrief, bai: BaiCanKiem): string[] {
   const cau = bai.doan.flatMap((doan) => sentences(doan)).map((mot) => mot.toLowerCase());
 
   return brief.luan.flatMap((menhDe) => {

@@ -2,16 +2,16 @@ import type { NatalChart } from '../cast-chart.js';
 import type { CungName } from '../dia-ban.js';
 import { CHI } from '../lich/lunar-calendar.js';
 import { isHungTinh } from '../sao-cat-hung.js';
-import type { ChinhTinhName, PhuTinhName, SaoName } from '../sao-names.js';
+import type { SaoName } from '../sao-names.js';
 import type { Rating } from '../sao-rating.js';
 import type { CellLuan } from './bang/cell-luan.js';
-import type { Gender } from '../van-han.js';
 import { CAP_DOI_THAN_CU } from './bang/cap-doi-than-cu.js';
 import { CHINH_TINH_THAN_CU } from './bang/than-cu/index.js';
 import { PHU_TINH_LUAN } from './bang/phu-tinh.js';
 import { MUON_FACTOR, VO_CHINH_DIEU } from './bang/vo-chinh-dieu.js';
+import type { ChapterBrief, SaoTrongBai } from './chapter-brief.js';
 import { Sac, type LuanDe } from './luan-de.js';
-import { TheChieu, theCungAt, type AnNgu, type SaoTheoThe, type TheCung } from './the-cung.js';
+import { TheChieu, theCungAt, type SaoTheoThe, type TheCung } from './the-cung.js';
 import { toHopKey } from './to-hop.js';
 
 /** Thân chỉ an vào sáu cung này, không bao giờ vào sáu cung còn lại. `than-cu.spec.ts` kiểm lại. */
@@ -47,23 +47,8 @@ const HOA_KHAC_BONUS = 10;
  */
 const LIMIT: Record<Sac, number> = { [Sac.Thuan]: 2, [Sac.Nghich]: 2, [Sac.HoaGiai]: 1 };
 
-export interface SaoTrongBai {
-  readonly ten: PhuTinhName;
-  readonly the: TheChieu;
-}
-
-export interface ThanCuBrief {
-  readonly cungThan: CungName;
-  readonly chi: string;
-  readonly gioiTinh: Gender;
-  readonly chiNamSinh: string;
-  readonly chinhTinh: readonly { readonly ten: ChinhTinhName; readonly bac: Rating | null }[];
-  readonly laVoChinhDieu: boolean;
-  /** Kèm thế chiếu để bài gọi đúng vị trí: chỉ sao toạ thủ mới được nói là đóng tại cung. */
-  readonly hungTinh: readonly SaoTrongBai[];
-  readonly catTinh: readonly SaoTrongBai[];
-  readonly anNgu: AnNgu;
-  readonly luan: readonly LuanDe[];
+export interface ThanCuBrief extends ChapterBrief {
+  readonly cung: CungName;
 }
 
 interface DraftClaim {
@@ -234,7 +219,7 @@ export function buildThanCuBrief(chart: NatalChart): ThanCuBrief | null {
   }
 
   return {
-    cungThan: the.cung,
+    cung: the.cung,
     chi: CHI[the.chiIndex],
     gioiTinh: chart.gender,
     chiNamSinh: CHI[chart.pillars.year.chi],

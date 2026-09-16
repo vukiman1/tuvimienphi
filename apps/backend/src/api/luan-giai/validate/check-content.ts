@@ -1,4 +1,4 @@
-import type { ThanCuBrief } from '@org/shared-tu-vi';
+import type { ChapterBrief } from '@org/shared-tu-vi';
 import type { BaiCanKiem } from './bai-can-kiem';
 
 /**
@@ -8,7 +8,7 @@ import type { BaiCanKiem } from './bai-can-kiem';
  * "hao tán, tiêu tốn tiền bạc", "chịu áp lực hoặc mất mát", "vướng chuyện ngoài luồng" bị viết gộp
  * thành "cần thêm sự khéo léo", mà tầng kiểm hình thức không thấy gì sai.
  */
-export function checkContent(brief: ThanCuBrief, bai: BaiCanKiem): string[] {
+export function checkContent(brief: ChapterBrief, bai: BaiCanKiem): string[] {
   const thuong = bai.doan.map((doan) => doan.toLowerCase());
 
   return brief.luan.flatMap((menhDe) => {

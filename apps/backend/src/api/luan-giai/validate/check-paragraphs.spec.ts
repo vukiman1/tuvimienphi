@@ -8,7 +8,7 @@ import { baiChinh, baiMuc } from './to-bai';
  * nó không được vỡ mỗi lần bảng luận đổi nội dung.
  */
 const BRIEF: ThanCuBrief = {
-  cungThan: 'Phu Thê',
+  cung: 'Phu Thê',
   chi: 'Tị',
   gioiTinh: 'nam' as ThanCuBrief['gioiTinh'],
   chiNamSinh: 'Tý',

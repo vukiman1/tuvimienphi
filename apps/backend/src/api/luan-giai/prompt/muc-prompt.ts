@@ -1,4 +1,4 @@
-import type { MucBrief } from '@org/shared-tu-vi';
+import type { ChapterMucBrief } from '@org/shared-tu-vi';
 import type { AiMessage } from '../../../ai/ai.types';
 import type { MucParagraph } from './chapter-schema';
 
@@ -7,7 +7,15 @@ import type { MucParagraph } from './chapter-schema';
  * một đoạn thay vì hai, và phải dẫn được các dữ kiện cụ thể trong `duKien` — mốc tuổi, tên trạng
  * thái, tên hoá — vì đó mới là thứ người đọc đối chiếu được với lá số của mình.
  */
-export const MUC_SYSTEM_PROMPT = `Bạn viết một mục ngắn trong bài luận giải tử vi tiếng Việt.
+function luatViTri(cung: string): string {
+  return cung === 'Mệnh'
+    ? '6. Sao đang xét ở cung Mệnh — gọi "thủ mệnh", "chiếu mệnh" là đúng khi sao đứng đúng thế đó.'
+    : `6. Sao đang xét ở cung ${cung}, KHÔNG phải cung Mệnh — đừng viết "thủ mệnh", "chiếu mệnh".`;
+}
+
+/** Prompt đổi theo cung mục đang đọc: cách gọi vị trí chỉ đúng với cung đó. */
+export function mucSystemPrompt(cung: string): string {
+  return `Bạn viết một mục ngắn trong bài luận giải tử vi tiếng Việt.
 
 GIỌNG — quan trọng ngang nội dung:
 · Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
@@ -32,11 +40,12 @@ QUY TẮC HÌNH THỨC:
 3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
 4. Phụ tinh gói theo vai: hung tinh vào MỘT cặp **, cát tinh vào MỘT cặp ** khác. Không kèm bậc.
 5. Không nhắc tên sao nào ngoài brief.
-6. Sao đang xét ở cung an Thân, KHÔNG phải cung Mệnh — đừng viết "thủ mệnh", "chiếu mệnh".
+${luatViTri(cung)}
 7. Chỉ sao có the="toạ thủ" mới được nói là đóng tại cung; sao ở thế khác thì viết "hội chiếu", "chiếu tới".`;
+}
 
 export function buildMucMessages(
-  brief: MucBrief,
+  brief: ChapterMucBrief,
   daThu: readonly { readonly paragraph: MucParagraph; readonly loi: readonly string[] }[],
 ): AiMessage[] {
   const messages: AiMessage[] = [{ role: 'user', text: JSON.stringify(brief, null, 2) }];

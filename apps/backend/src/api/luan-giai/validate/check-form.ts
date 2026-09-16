@@ -1,4 +1,4 @@
-import type { ThanCuBrief } from '@org/shared-tu-vi';
+import type { ChapterBrief } from '@org/shared-tu-vi';
 import type { BaiCanKiem } from './bai-can-kiem';
 import { boldGroups, countSentences, highlights, ratingOf, stripRating } from './parse-markup';
 
@@ -10,7 +10,7 @@ const MAX_HIGHLIGHT_WORDS = 12;
  * Tầng một: hình thức và tên sao. Bắt được lỗi nguy hiểm nhất — mô hình gọi tên một sao có thật,
  * hợp cảnh, đúng vai trò trong câu, nhưng không có trong lá số. Đọc không ai phát hiện ra.
  */
-export function checkForm(brief: ThanCuBrief, bai: BaiCanKiem): string[] {
+export function checkForm(brief: ChapterBrief, bai: BaiCanKiem): string[] {
   const hopLe = new Set<string>([
     ...brief.chinhTinh.map((sao) => sao.ten),
     ...brief.hungTinh.map((sao) => sao.ten),

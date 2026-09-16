@@ -22,7 +22,7 @@ describe('buildThanCuBrief', () => {
   it('đọc đúng thế cung an Thân', () => {
     const brief = buildThanCuBrief(LIEM_THAM);
     expect(brief).not.toBeNull();
-    expect(brief?.cungThan).toBe('Phu Thê');
+    expect(brief?.cung).toBe('Phu Thê');
     expect(brief?.chi).toBe('Tị');
     expect(brief?.chinhTinh).toEqual([
       { ten: 'Liêm Trinh', bac: 'H' },
