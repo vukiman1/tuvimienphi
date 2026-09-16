@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   GoneException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -17,7 +18,7 @@ import { AuthAuditService, AuthEvent } from './auth-audit.service';
 import { UserSessionService } from './user-session.service';
 import { SessionPersistence } from '../enums/session-persistence.enum';
 import { SessionRevokeReason } from '../enums/session-revoke-reason.enum';
-import { AuthProvider } from '@org/backend-enum';
+import { AuthProvider, Roles } from '@org/backend-enum';
 import { GoogleOneTapVerifier } from './social/google-one-tap.verifier';
 import { SocialAuthService } from './social/social-auth.service';
 import { TwoFactorService } from './two-factor.service';
@@ -447,6 +448,62 @@ describe('AuthService', () => {
         'user',
         SessionPersistence.REMEMBER,
       );
+    });
+  });
+
+  describe('admin console sign-in', () => {
+    const admin = { id: 'user-1', email: 'a@b.c', avatar: null, balance: 0, role: Roles.ADMIN };
+
+    it('refuses an account that is not an admin, however good the password', async () => {
+      twoFactorService.isEnabled.mockResolvedValue(true);
+
+      await expect(
+        service.login(
+          { ...admin, role: Roles.USER } as never,
+          mockResponse(),
+          request,
+          false,
+          'admin',
+        ),
+      ).rejects.toBeInstanceOf(ForbiddenException);
+      expect(sessionService.createSession).not.toHaveBeenCalled();
+    });
+
+    it('refuses an admin who has not enrolled in two-factor', async () => {
+      twoFactorService.isEnabled.mockResolvedValue(false);
+
+      await expect(
+        service.login(admin as never, mockResponse(), request, false, 'admin'),
+      ).rejects.toBeInstanceOf(ForbiddenException);
+      expect(sessionService.createSession).not.toHaveBeenCalled();
+    });
+
+    it('never issues a console session from the password alone', async () => {
+      twoFactorService.isEnabled.mockResolvedValue(true);
+
+      const result = await service.login(admin as never, mockResponse(), request, false, 'admin');
+
+      expect(result).toEqual({ twoFactorRequired: true, challengeToken: 'challenge-1' });
+      expect(sessionService.createSession).not.toHaveBeenCalled();
+    });
+
+    it('never lets a console sign-in become a remember-me session', async () => {
+      twoFactorService.isEnabled.mockResolvedValue(true);
+
+      await service.login(admin as never, mockResponse(), request, true, 'admin');
+
+      expect(twoFactorChallenge.issue).toHaveBeenCalledWith('user-1', false);
+    });
+
+    it('refuses to finish a public site challenge on the console', async () => {
+      twoFactorChallenge.peek.mockResolvedValue({ userId: 'user-1', rememberMe: false });
+      twoFactorService.consumeCode.mockResolvedValue(true);
+      userService.getOneOrFail.mockResolvedValue({ ...admin, role: Roles.USER });
+
+      await expect(
+        service.verifyTwoFactor('challenge-1', '123456', mockResponse(), request, 'admin'),
+      ).rejects.toBeInstanceOf(ForbiddenException);
+      expect(sessionService.createSession).not.toHaveBeenCalled();
     });
   });
 

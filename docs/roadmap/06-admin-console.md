@@ -94,13 +94,20 @@ Cả 5 query trong `apps/dashboard/src/features/admin/data/queries.ts` đều l�
 
 **Cách làm:**
 
-- `RolesGuard` + decorator `@Roles()`. Guard đọc vai **từ DB**, không từ token.
-- `AdminLocalStrategy` (`local_admin`): xác thực mật khẩu qua đúng đường của `UserLocalStrategy`, rồi từ chối nếu vai không phải `SUPER_ADMIN`/`ADMIN`, và **bắt buộc đã đăng ký TOTP** — chưa có thì 403, mời bật 2FA ở trang công khai trước.
-- `JwtAdminStrategy` (`jwt_admin`): như bản user nhưng đọc cookie admin.
-- `AuthAdminController` = `AuthBaseController('admin', StrategyKey.LOCAL.ADMIN)` tại `@Controller('/admin/auth')`. Ép `rememberMe = false`, **không có route Google** — nếu không, 60 ngày và 30 ngày sẽ vô hiệu hoá toàn bộ tính toán TTL ở mục 2.
-- Sửa `getRef()` trong `auth.swagger.ts`: hiện chỉ có nhánh `'user'`, thêm admin là vỡ.
+- `RolesGuard` + decorator `@RequireRoles()`. Guard đọc vai **từ DB**, không từ token, và **từ chối khi route không khai báo vai nào** — quên `@RequireRoles` thì thành 403 chứ không thành cửa mở.
+- `JwtAdminStrategy` (`jwt_admin`): đọc cookie console, và **từ chối luôn tài khoản không còn là admin**, nên thu hồi vai là mất quyền vào console ngay ở request kế tiếp chứ không phải đợi hết phiên.
+- `AuthAdminController` tại `@Controller('/admin/auth')`, có thêm route `2fa/verify` riêng cho audience admin.
+- Bỏ hẳn `getRef()` trong `auth.swagger.ts`. Nó là `switch` chỉ có nhánh `'user'` nên `getSchemaPath(undefined)` sẽ vỡ ngay khi nạp module admin; mà admin cũng là `UserEntity`, nên hàm này vốn không có việc gì để làm.
 
-**Acceptance:** user thường gọi `/api/admin/auth/login` → 401; admin chưa bật 2FA → 403; admin đủ điều kiện → nhận cookie admin với TTL 4h.
+> **Đi khác plan ban đầu:** **không** dựng `AdminLocalStrategy` / `local_admin`. Nhân đôi đường xác thực mật khẩu là nhân đôi cả phần cân bằng thời gian chống dò tài khoản và kiểm tra email đã xác minh — đúng thứ mà quyết định "chung ở tầng danh tính" muốn tránh. Console dùng chung `local_user`, còn cổng vào nằm ở `AuthService`:
+>
+> - `login` với audience `admin` đòi vai console **và** đã đăng ký TOTP (chưa có thì 403, mời bật 2FA ở trang công khai trước).
+> - `verifyTwoFactor` với audience `admin` kiểm tra vai **một lần nữa**. Thiếu bước này là một lỗ thật: mã thử thách phát ra từ trang công khai không mang audience, nên người không phải admin có thể hoàn tất nó ở endpoint console và nhận cookie admin mà chưa từng qua cổng.
+> - `rememberMe` bị ép `false` cho audience admin trước khi vào mã thử thách, nên nó không đi vòng qua claim để thành phiên 60 ngày.
+>
+> `StrategyKey.LOCAL.ADMIN` vì vậy vẫn chưa ai dùng — nên xoá khi có dịp dọn.
+
+**Acceptance:** user thường gọi `/api/admin/auth/login` → 403; admin chưa bật 2FA → 403; admin đủ điều kiện → luôn phải nhập mã, rồi nhận cookie admin với TTL 4h.
 
 ---
 

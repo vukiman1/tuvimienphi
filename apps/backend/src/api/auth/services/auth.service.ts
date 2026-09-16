@@ -2,6 +2,7 @@ import {
   BadRequestException,
   GoneException,
   ConflictException,
+  ForbiddenException,
   Injectable,
   Logger,
   UnauthorizedException,
@@ -20,6 +21,7 @@ import { AuthAuditService, AuthEvent } from './auth-audit.service';
 import { UserSessionService } from './user-session.service';
 import { SessionRevocationService } from './session-revocation.service';
 import { SessionCookieService } from './session-cookie.service';
+import { isConsoleRole } from '../console-roles';
 import { UserType } from '../interfaces/auth.interface';
 import { SessionRevokeReason } from '../enums/session-revoke-reason.enum';
 import { SessionPersistence } from '../enums/session-persistence.enum';
@@ -90,18 +92,30 @@ export class AuthService {
     rememberMe: boolean,
     audience: UserType,
   ) {
+    const twoFactorEnabled = await this.twoFactorService.isEnabled(user.id);
+    if (audience === 'admin') {
+      this.assertConsoleRole(user);
+      if (!twoFactorEnabled) {
+        throw new ForbiddenException(
+          'Enable two-factor authentication before signing in to the console',
+        );
+      }
+    }
+
+    const rememberSession = audience === 'user' && rememberMe;
+
     // Issuing a session before the code would make the code optional: a caller could skip the
     // prompt and use the cookie straight away.
-    if (await this.twoFactorService.isEnabled(user.id)) {
-      const challengeToken = await this.twoFactorChallengeService.issue(user.id, rememberMe);
+    if (twoFactorEnabled) {
+      const challengeToken = await this.twoFactorChallengeService.issue(user.id, rememberSession);
       this.auditService.record(AuthEvent.LOGIN_TWO_FACTOR_REQUIRED, { userId: user.id, request });
       return { twoFactorRequired: true as const, challengeToken };
     }
 
-    const persistence = rememberMe ? SessionPersistence.REMEMBER : SessionPersistence.STANDARD;
+    const persistence = rememberSession ? SessionPersistence.REMEMBER : SessionPersistence.STANDARD;
     return this.issueSession(user, response, request, {
       persistence,
-      rememberMe,
+      rememberMe: rememberSession,
       authProvider: AuthProvider.LOCAL,
       audience,
     });
@@ -135,12 +149,21 @@ export class AuthService {
 
     await this.twoFactorChallengeService.consume(challengeToken);
     const user = await this.userService.getOneOrFail({ id: claim.userId });
+    if (audience === 'admin') {
+      this.assertConsoleRole(user);
+    }
     return this.issueSession(user, response, request, {
       persistence: claim.rememberMe ? SessionPersistence.REMEMBER : SessionPersistence.STANDARD,
       rememberMe: claim.rememberMe,
       authProvider: AuthProvider.LOCAL,
       audience,
     });
+  }
+
+  private assertConsoleRole(user: UserEntity): void {
+    if (!isConsoleRole(user.role)) {
+      throw new ForbiddenException('This account cannot sign in to the console');
+    }
   }
 
   async issueSession(
