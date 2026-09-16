@@ -88,7 +88,7 @@ export function SessionsCard() {
           ) : (
             <>
               <div className="hidden overflow-x-auto md:block">
-                <table className="w-full min-w-[820px] border-separate border-spacing-0 text-left text-sm">
+                <table className="w-full min-w-[620px] border-separate border-spacing-0 text-left text-sm">
                   <thead>
                     <tr className="bg-[#fcfaf8] text-[11px] font-bold tracking-wider text-[#904423]/70 uppercase">
                       <th className="rounded-l-lg p-3 font-label">Thiết bị</th>
