@@ -19,6 +19,17 @@ Quy ước ưu tiên: 🔴 nên làm sớm (bảo mật) · 🟡 nên làm (ch�
 | 9   | Audit logging cho sự kiện auth               | 🟢      | Ops       | [04-infra-scaling.md](04-infra-scaling.md)                   |
 | 10  | CAPTCHA cho login                            | 🟢      | Hardening | [04-infra-scaling.md](04-infra-scaling.md)                   |
 
+## Admin console
+
+| #   | Việc                                    | Ưu tiên | Loại      | Chi tiết                                   |
+| --- | --------------------------------------- | ------- | --------- | ------------------------------------------ |
+| 1   | Hạn tuyệt đối cho phiên (`maxLifetime`) | 🔴      | Hardening | [06-admin-console.md](06-admin-console.md) |
+| 2   | Phiên tách theo audience (user / admin) | 🔴      | Hardening | [06-admin-console.md](06-admin-console.md) |
+| 3   | `RolesGuard` + đường đăng nhập admin    | 🔴      | Feature   | [06-admin-console.md](06-admin-console.md) |
+| 4   | Module `admin` và endpoint thật         | 🟡      | Feature   | [06-admin-console.md](06-admin-console.md) |
+| 5   | `POST /van-han` đang mở cho mọi user    | 🔴      | Fix       | [06-admin-console.md](06-admin-console.md) |
+| 6   | Console chưa có lớp bảo vệ nào          | 🔴      | Fix       | [06-admin-console.md](06-admin-console.md) |
+
 ## Lá số
 
 | #   | Việc                               | Ưu tiên | Loại     | Chi tiết                   |
