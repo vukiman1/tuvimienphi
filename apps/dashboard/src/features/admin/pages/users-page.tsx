@@ -196,7 +196,7 @@ function UserDetailDrawer({ user, onClose }: { user: AdminUser | null; onClose: 
     <Drawer
       open={!!user}
       onClose={onClose}
-      width={420}
+      size={420}
       title={
         user && (
           <div className="flex items-center gap-3">
