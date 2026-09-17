@@ -19,6 +19,7 @@ onlyBuiltDependencies:
   - 'unrs-resolver'
 
 overrides:
+  '@nestjs/common': '11.2.3'
   # jsdom asks for nwsapi ^2.2.16, so a lockfile refresh silently takes the newest release. 2.2.26
   # made its selector matching spin: the *ByRole queries in user-menu.spec.tsx burn CPU until the
   # test times out, turning a 5s suite into a 5-minute one. 2.2.27 is still affected and is the

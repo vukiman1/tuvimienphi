@@ -67,6 +67,9 @@ export class UserEntity extends BaseEntity {
   })
   role!: Roles;
 
+  @Column({ type: 'varchar', length: 20, default: 'active', name: 'status' })
+  status!: string;
+
   // OAuth-only users have no password; only hash a freshly assigned plaintext value.
   // An already hashed value (loaded then re-saved) starts with `$argon2` and is left as is.
   @BeforeInsert()

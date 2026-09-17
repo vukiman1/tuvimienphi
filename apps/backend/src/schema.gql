@@ -1,0 +1,205 @@
+type KpiStat {
+  key: String!
+  label: String!
+  value: Float!
+  deltaPct: Float!
+  trend: String!
+  spark: [Float!]!
+  format: String!
+}
+
+type TrafficPoint {
+  date: String!
+  views: Int!
+  users: Int!
+}
+
+type SourceSlice {
+  source: String!
+  visits: Int!
+  element: String!
+}
+
+type GenTypeSlice {
+  type: String!
+  count: Int!
+}
+
+type AdminOverview {
+  kpis: [KpiStat!]!
+  traffic: [TrafficPoint!]!
+  sources: [SourceSlice!]!
+  genByType: [GenTypeSlice!]!
+}
+
+type BirthInfo {
+  fullName: String!
+  gender: String!
+  birthDate: String!
+  birthHour: String!
+  calendar: String!
+}
+
+type GenRecord {
+  id: String!
+  kind: String!
+  createdAt: String!
+  input: BirthInfo!
+}
+
+type AdminUser {
+  id: String!
+  displayName: String!
+  email: String!
+  avatarSeed: String!
+  role: String!
+  status: String!
+  credits: Int!
+  genCount: Int!
+  createdAt: String!
+  lastActiveAt: String!
+  genHistory: [GenRecord!]!
+}
+
+type BlogPost {
+  id: String!
+  title: String!
+  slug: String!
+  category: String!
+  author: String!
+  status: String!
+  views: Int!
+  updatedAt: String!
+  publishedAt: String
+}
+
+type AdRedirect {
+  id: String!
+  label: String!
+  slug: String!
+  target: String!
+  clicks: Int!
+  active: Boolean!
+  createdAt: String!
+}
+
+type AdPopup {
+  id: String!
+  name: String!
+  trigger: String!
+  image: String!
+  target: String!
+  impressions: Int!
+  clicks: Int!
+  active: Boolean!
+}
+
+type AdsData {
+  redirects: [AdRedirect!]!
+  popups: [AdPopup!]!
+}
+
+type VanHanEntry {
+  id: String!
+  year: Int!
+  age: Int!
+  star: String!
+  rating: String!
+  summary: String!
+  updatedAt: String!
+  published: Boolean!
+}
+
+type Query {
+  adminOverview: AdminOverview!
+  adminUsers: [AdminUser!]!
+  blog: [BlogPost!]!
+  ads: AdsData!
+  adminVanHan: [VanHanEntry!]!
+}
+
+type Mutation {
+  banUser(id: String!): AdminUser!
+  createPost(input: CreatePostInput!): BlogPost!
+  updatePost(id: String!, input: UpdatePostInput!): BlogPost!
+  deletePost(id: String!): Boolean!
+  createAdRedirect(input: CreateAdRedirectInput!): AdRedirect!
+  updateAdRedirect(id: String!, input: UpdateAdRedirectInput!): AdRedirect!
+  toggleAdRedirectActive(id: String!): AdRedirect!
+  deleteAdRedirect(id: String!): Boolean!
+  createAdPopup(input: CreateAdPopupInput!): AdPopup!
+  updateAdPopup(id: String!, input: UpdateAdPopupInput!): AdPopup!
+  toggleAdPopupActive(id: String!): AdPopup!
+  deleteAdPopup(id: String!): Boolean!
+  createVanHanEntry(input: CreateVanHanEntryInput!): VanHanEntry!
+  updateVanHanEntry(id: String!, input: UpdateVanHanEntryInput!): VanHanEntry!
+  toggleVanHanPublished(id: String!): VanHanEntry!
+}
+
+input CreatePostInput {
+  title: String!
+  slug: String!
+  category: String!
+  author: String!
+  status: String!
+  views: Int
+  publishedAt: String
+}
+
+input UpdatePostInput {
+  title: String
+  slug: String
+  category: String
+  author: String
+  status: String
+  views: Int
+  publishedAt: String
+}
+
+input CreateAdRedirectInput {
+  label: String!
+  slug: String!
+  target: String!
+  active: Boolean
+}
+
+input UpdateAdRedirectInput {
+  label: String
+  slug: String
+  target: String
+  active: Boolean
+}
+
+input CreateAdPopupInput {
+  name: String!
+  trigger: String!
+  image: String!
+  target: String!
+  active: Boolean
+}
+
+input UpdateAdPopupInput {
+  name: String
+  trigger: String
+  image: String
+  target: String
+  active: Boolean
+}
+
+input CreateVanHanEntryInput {
+  year: Int!
+  age: Int!
+  star: String!
+  rating: String!
+  summary: String!
+  published: Boolean
+}
+
+input UpdateVanHanEntryInput {
+  year: Int
+  age: Int
+  star: String
+  rating: String
+  summary: String
+  published: Boolean
+}

@@ -9,6 +9,10 @@ import { UserTotpEntity } from './src/api/auth/entities/user-totp.entity';
 import { UserRecoveryCodeEntity } from './src/api/auth/entities/user-recovery-code.entity';
 import { AuthIdentityEntity } from './src/api/auth/entities/auth-identity.entity';
 import { VanHanEntity } from './src/api/van-han/entities/van-han.entity';
+import { BlogPostEntity } from './src/api/admin/entities/blog-post.entity';
+import { AdRedirectEntity } from './src/api/admin/entities/ad-redirect.entity';
+import { AdPopupEntity } from './src/api/admin/entities/ad-popup.entity';
+import { VanHanEntryEntity } from './src/api/admin/entities/van-han-entry.entity';
 
 interface DatabaseConfig {
   host: string;
@@ -67,6 +71,10 @@ export const options: DataSourceOptions = {
     UserRecoveryCodeEntity,
     AuthIdentityEntity,
     VanHanEntity,
+    BlogPostEntity,
+    AdRedirectEntity,
+    AdPopupEntity,
+    VanHanEntryEntity,
   ],
   migrationsTableName: 'migrations',
   migrations: [join(__dirname, `src/migrations/*.${migrationExtension}`)],
