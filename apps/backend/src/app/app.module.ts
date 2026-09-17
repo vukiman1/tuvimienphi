@@ -18,10 +18,12 @@ import { StorageModule } from '../storage/storage.module';
 import { HealthModule } from '../health/health.module';
 import { QueueModule } from '../api/queue/queue.module';
 import { VanHanModule } from '../api/van-han/van-han.module';
+import { AdminModule } from '../api/admin/admin.module';
 import { AppController } from './app.controller';
 import { providers } from './app.provider';
 import { AppService } from './app.service';
 import { bullRootImport } from './bull-root';
+import { graphqlRootImport } from './graphql-root';
 import { queueBoardRootImports } from './queue-board-registration';
 
 @Module({
@@ -43,6 +45,7 @@ import { queueBoardRootImports } from './queue-board-registration';
       },
     ]),
     bullRootImport(),
+    graphqlRootImport(),
     ...queueBoardRootImports(),
     DatabaseModule,
     JwtModule,
@@ -57,6 +60,7 @@ import { queueBoardRootImports } from './queue-board-registration';
     HealthModule,
     QueueModule,
     VanHanModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService, ...providers],

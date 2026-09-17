@@ -3,6 +3,7 @@ import { OverviewPage } from '@/features/admin/pages/overview-page';
 import { adminQueries } from '@/features/admin/data/queries';
 
 export const Route = createFileRoute('/')({
-  loader: ({ context }) => context.queryClient.ensureQueryData(adminQueries.overview()),
+  loader: ({ context }) =>
+    context.queryClient.ensureQueryData(adminQueries.overview()).catch(() => undefined),
   component: OverviewPage,
 });

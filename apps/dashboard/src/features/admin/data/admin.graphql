@@ -1,0 +1,209 @@
+fragment AdminUserFields on AdminUser {
+  id
+  displayName
+  email
+  avatarSeed
+  role
+  status
+  credits
+  genCount
+  createdAt
+  lastActiveAt
+  genHistory {
+    id
+    kind
+    createdAt
+    input {
+      fullName
+      gender
+      birthDate
+      birthHour
+      calendar
+    }
+  }
+}
+
+fragment BlogPostFields on BlogPost {
+  id
+  title
+  slug
+  category
+  author
+  status
+  views
+  updatedAt
+  publishedAt
+}
+
+fragment AdRedirectFields on AdRedirect {
+  id
+  label
+  slug
+  target
+  clicks
+  active
+  createdAt
+}
+
+fragment AdPopupFields on AdPopup {
+  id
+  name
+  trigger
+  image
+  target
+  impressions
+  clicks
+  active
+}
+
+fragment VanHanEntryFields on VanHanEntry {
+  id
+  year
+  age
+  star
+  rating
+  summary
+  updatedAt
+  published
+}
+
+query AdminOverview {
+  adminOverview {
+    kpis {
+      key
+      label
+      value
+      deltaPct
+      trend
+      spark
+      format
+    }
+    traffic {
+      date
+      views
+      users
+    }
+    sources {
+      source
+      visits
+      element
+    }
+    genByType {
+      type
+      count
+    }
+  }
+}
+
+query AdminUsers {
+  adminUsers {
+    ...AdminUserFields
+  }
+}
+
+query Blog {
+  blog {
+    ...BlogPostFields
+  }
+}
+
+query Ads {
+  ads {
+    redirects {
+      ...AdRedirectFields
+    }
+    popups {
+      ...AdPopupFields
+    }
+  }
+}
+
+query AdminVanHan {
+  adminVanHan {
+    ...VanHanEntryFields
+  }
+}
+
+mutation BanUser($id: String!) {
+  banUser(id: $id) {
+    ...AdminUserFields
+  }
+}
+
+mutation CreatePost($input: CreatePostInput!) {
+  createPost(input: $input) {
+    ...BlogPostFields
+  }
+}
+
+mutation UpdatePost($id: String!, $input: UpdatePostInput!) {
+  updatePost(id: $id, input: $input) {
+    ...BlogPostFields
+  }
+}
+
+mutation DeletePost($id: String!) {
+  deletePost(id: $id)
+}
+
+mutation CreateAdRedirect($input: CreateAdRedirectInput!) {
+  createAdRedirect(input: $input) {
+    ...AdRedirectFields
+  }
+}
+
+mutation UpdateAdRedirect($id: String!, $input: UpdateAdRedirectInput!) {
+  updateAdRedirect(id: $id, input: $input) {
+    ...AdRedirectFields
+  }
+}
+
+mutation ToggleAdRedirectActive($id: String!) {
+  toggleAdRedirectActive(id: $id) {
+    ...AdRedirectFields
+  }
+}
+
+mutation DeleteAdRedirect($id: String!) {
+  deleteAdRedirect(id: $id)
+}
+
+mutation CreateAdPopup($input: CreateAdPopupInput!) {
+  createAdPopup(input: $input) {
+    ...AdPopupFields
+  }
+}
+
+mutation UpdateAdPopup($id: String!, $input: UpdateAdPopupInput!) {
+  updateAdPopup(id: $id, input: $input) {
+    ...AdPopupFields
+  }
+}
+
+mutation ToggleAdPopupActive($id: String!) {
+  toggleAdPopupActive(id: $id) {
+    ...AdPopupFields
+  }
+}
+
+mutation DeleteAdPopup($id: String!) {
+  deleteAdPopup(id: $id)
+}
+
+mutation CreateVanHanEntry($input: CreateVanHanEntryInput!) {
+  createVanHanEntry(input: $input) {
+    ...VanHanEntryFields
+  }
+}
+
+mutation UpdateVanHanEntry($id: String!, $input: UpdateVanHanEntryInput!) {
+  updateVanHanEntry(id: $id, input: $input) {
+    ...VanHanEntryFields
+  }
+}
+
+mutation ToggleVanHanPublished($id: String!) {
+  toggleVanHanPublished(id: $id) {
+    ...VanHanEntryFields
+  }
+}

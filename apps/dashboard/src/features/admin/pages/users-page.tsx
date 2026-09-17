@@ -1,49 +1,33 @@
 import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Search, ScrollText, CalendarClock, MoreHorizontal, Ban, Eye } from 'lucide-react';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
+  App,
+  Avatar,
+  Button,
+  Card,
+  Col,
+  Drawer,
+  Dropdown,
+  Input,
+  Row,
+  Statistic,
   Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-} from '@/components/ui/sheet';
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from '@/components/ui/dropdown-menu';
-import { ConfirmDialog } from '@/components/ui/confirm-dialog';
-import { Skeleton } from '@/components/ui/skeleton';
+  Tag,
+  type MenuProps,
+  type TableColumnsType,
+} from 'antd';
 import { cn, formatDate, formatNumber, initials } from '@/lib/utils';
 import { PageHeader } from '../components/page-header';
-import { PaginationBar } from '../components/pagination-bar';
 import { EmptyState } from '../components/empty-state';
-import { usePagination } from '../components/use-pagination';
 import { adminQueries } from '../data/queries';
+import { useBanUser } from '../data/mutations';
 import type { AdminUser, GenChartKind, UserStatus } from '../data/types';
 
-const STATUS_META: Record<
-  UserStatus,
-  { label: string; variant: 'success' | 'neutral' | 'destructive' }
-> = {
-  active: { label: 'Hoạt động', variant: 'success' },
-  inactive: { label: 'Ngưng', variant: 'neutral' },
-  banned: { label: 'Bị khóa', variant: 'destructive' },
+const STATUS_META: Record<UserStatus, { label: string; color: string }> = {
+  active: { label: 'Hoạt động', color: 'green' },
+  inactive: { label: 'Ngưng', color: 'default' },
+  banned: { label: 'Bị khóa', color: 'red' },
 };
 
 const KIND_LABEL: Record<GenChartKind, string> = {
@@ -54,9 +38,10 @@ const KIND_LABEL: Record<GenChartKind, string> = {
 
 export function UsersPage() {
   const { data: users, isLoading } = useQuery(adminQueries.users());
+  const { modal, message } = App.useApp();
+  const banUser = useBanUser();
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState<AdminUser | null>(null);
-  const [banTarget, setBanTarget] = useState<AdminUser | null>(null);
 
   const filtered = useMemo(() => {
     if (!users) return [];
@@ -67,7 +52,108 @@ export function UsersPage() {
     );
   }, [users, query]);
 
-  const pager = usePagination(filtered, 8);
+  const confirmBan = (user: AdminUser) => {
+    modal.confirm({
+      title: 'Khoá tài khoản?',
+      okText: 'Khoá tài khoản',
+      okButtonProps: { danger: true },
+      cancelText: 'Huỷ',
+      content: (
+        <span>
+          Tài khoản <span className="font-medium text-foreground">{user.displayName}</span> sẽ bị
+          khoá và không thể đăng nhập. Bạn có chắc chắn?
+        </span>
+      ),
+      onOk: async () => {
+        try {
+          await banUser.mutateAsync(user.id);
+          message.success('Đã khoá tài khoản.');
+        } catch {
+          message.error('Không thể khoá tài khoản.');
+        }
+      },
+    });
+  };
+
+  const rowMenu = (user: AdminUser): MenuProps['items'] => [
+    {
+      key: 'view',
+      label: 'Xem chi tiết',
+      icon: <Eye className="size-4" />,
+      onClick: () => setSelected(user),
+    },
+    {
+      key: 'ban',
+      label: 'Khoá tài khoản',
+      icon: <Ban className="size-4" />,
+      danger: true,
+      onClick: () => confirmBan(user),
+    },
+  ];
+
+  const columns: TableColumnsType<AdminUser> = [
+    {
+      title: 'Người dùng',
+      dataIndex: 'displayName',
+      render: (_, user) => (
+        <div className="flex items-center gap-3">
+          <Avatar size={32} style={{ background: 'var(--primary)' }}>
+            {initials(user.displayName)}
+          </Avatar>
+          <div className="min-w-0">
+            <p className="truncate font-medium">{user.displayName}</p>
+            <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      render: (status: UserStatus) => (
+        <Tag color={STATUS_META[status].color}>{STATUS_META[status].label}</Tag>
+      ),
+    },
+    {
+      title: 'Số dư',
+      dataIndex: 'credits',
+      align: 'right',
+      render: (credits: number) => <span className="tabular-nums">{formatNumber(credits)}</span>,
+    },
+    {
+      title: 'Lá số',
+      dataIndex: 'genCount',
+      align: 'right',
+      render: (genCount: number) => <span className="tabular-nums">{formatNumber(genCount)}</span>,
+    },
+    {
+      title: 'Hoạt động gần nhất',
+      dataIndex: 'lastActiveAt',
+      render: (lastActiveAt: string) => (
+        <span className="text-sm text-muted-foreground">{formatDate(lastActiveAt)}</span>
+      ),
+    },
+    {
+      title: '',
+      key: 'actions',
+      align: 'right',
+      render: (_, user) => (
+        <div className="flex items-center justify-end gap-1">
+          <Button size="small" onClick={() => setSelected(user)}>
+            Chi tiết
+          </Button>
+          <Dropdown menu={{ items: rowMenu(user) }} trigger={['click']} placement="bottomRight">
+            <Button
+              type="text"
+              size="small"
+              aria-label="Thao tác"
+              icon={<MoreHorizontal className="size-4" />}
+            />
+          </Dropdown>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <div>
@@ -78,178 +164,103 @@ export function UsersPage() {
         subtitle="Thông tin tài khoản, số dư và lịch sử lập lá số."
       />
 
-      <Card className="animate-rise gap-0 overflow-hidden py-0">
-        <div className="flex items-center justify-between gap-3 border-b p-4">
-          <div className="relative w-full max-w-xs">
-            <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Tìm theo tên hoặc email…"
-              className="pl-9"
-            />
+      <Card
+        variant="borderless"
+        className="animate-rise"
+        styles={{ body: { padding: 0 } }}
+        title={
+          <div className="flex items-center justify-between gap-3">
+            <div className="relative w-full max-w-xs">
+              <Search className="pointer-events-none absolute top-1/2 left-3 z-10 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Tìm theo tên hoặc email…"
+                className="pl-9"
+                variant="borderless"
+              />
+            </div>
+            <p className="hidden text-sm font-normal text-muted-foreground sm:block">
+              {formatNumber(filtered.length)} người dùng
+            </p>
           </div>
-          <p className="hidden text-sm text-muted-foreground sm:block">
-            {formatNumber(filtered.length)} người dùng
-          </p>
-        </div>
-
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Người dùng</TableHead>
-              <TableHead>Trạng thái</TableHead>
-              <TableHead className="text-right">Số dư</TableHead>
-              <TableHead className="text-right">Lá số</TableHead>
-              <TableHead>Hoạt động gần nhất</TableHead>
-              <TableHead />
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {isLoading
-              ? Array.from({ length: 8 }).map((_, i) => (
-                  <TableRow key={i}>
-                    <TableCell colSpan={6}>
-                      <Skeleton className="h-8 w-full" />
-                    </TableCell>
-                  </TableRow>
-                ))
-              : pager.pageItems.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar className="size-8">
-                          <AvatarFallback>{initials(user.displayName)}</AvatarFallback>
-                        </Avatar>
-                        <div className="min-w-0">
-                          <p className="truncate font-medium">{user.displayName}</p>
-                          <p className="truncate text-xs text-muted-foreground">{user.email}</p>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={STATUS_META[user.status].variant}>
-                        {STATUS_META[user.status].label}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="tabular-nums text-right">
-                      {formatNumber(user.credits)}
-                    </TableCell>
-                    <TableCell className="tabular-nums text-right">
-                      {formatNumber(user.genCount)}
-                    </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      {formatDate(user.lastActiveAt)}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center justify-end gap-1">
-                        <Button variant="outline" size="sm" onClick={() => setSelected(user)}>
-                          Chi tiết
-                        </Button>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon-sm" aria-label="Thao tác">
-                              <MoreHorizontal />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem onClick={() => setSelected(user)}>
-                              <Eye /> Xem chi tiết
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              variant="destructive"
-                              onClick={() => setBanTarget(user)}
-                            >
-                              <Ban /> Khoá tài khoản
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-          </TableBody>
-        </Table>
-        {!isLoading && (
-          <PaginationBar
-            page={pager.page}
-            totalPages={pager.totalPages}
-            rangeStart={pager.rangeStart}
-            rangeEnd={pager.rangeEnd}
-            totalItems={pager.totalItems}
-            onPage={pager.setPage}
-            unit="người dùng"
-          />
-        )}
+        }
+      >
+        <Table<AdminUser>
+          rowKey="id"
+          columns={columns}
+          dataSource={filtered}
+          loading={isLoading}
+          pagination={{ pageSize: 8, hideOnSinglePage: true }}
+        />
       </Card>
 
-      <UserDetailSheet user={selected} onClose={() => setSelected(null)} />
-
-      <ConfirmDialog
-        open={!!banTarget}
-        onOpenChange={(open) => !open && setBanTarget(null)}
-        title="Khoá tài khoản?"
-        description={
-          <>
-            Tài khoản <span className="font-medium text-foreground">{banTarget?.displayName}</span>{' '}
-            sẽ bị khoá và không thể đăng nhập. Bạn có chắc chắn?
-          </>
-        }
-        confirmLabel="Khoá tài khoản"
-        destructive
-        onConfirm={() => setBanTarget(null)}
-      />
+      <UserDetailDrawer user={selected} onClose={() => setSelected(null)} />
     </div>
   );
 }
 
-function UserDetailSheet({ user, onClose }: { user: AdminUser | null; onClose: () => void }) {
+function UserDetailDrawer({ user, onClose }: { user: AdminUser | null; onClose: () => void }) {
   return (
-    <Sheet open={!!user} onOpenChange={(open) => !open && onClose()}>
-      <SheetContent>
-        {user && (
-          <>
-            <SheetHeader>
-              <div className="flex items-center gap-3">
-                <Avatar className="size-11">
-                  <AvatarFallback>{initials(user.displayName)}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <SheetTitle>{user.displayName}</SheetTitle>
-                  <SheetDescription>{user.email}</SheetDescription>
-                </div>
-              </div>
-            </SheetHeader>
-
-            <div className="grid grid-cols-3 gap-3">
-              <Stat label="Số dư" value={formatNumber(user.credits)} />
-              <Stat label="Lá số" value={formatNumber(user.genCount)} />
-              <Stat label="Tham gia" value={formatDate(user.createdAt)} />
+    <Drawer
+      open={!!user}
+      onClose={onClose}
+      size={420}
+      title={
+        user && (
+          <div className="flex items-center gap-3">
+            <Avatar size={44} style={{ background: 'var(--primary)' }}>
+              {initials(user.displayName)}
+            </Avatar>
+            <div>
+              <p className="text-lg font-semibold text-foreground">{user.displayName}</p>
+              <p className="text-sm text-muted-foreground">{user.email}</p>
             </div>
+          </div>
+        )
+      }
+    >
+      {user && (
+        <>
+          <Row gutter={12}>
+            <Col span={8}>
+              <Stat label="Số dư" value={formatNumber(user.credits)} />
+            </Col>
+            <Col span={8}>
+              <Stat label="Lá số" value={formatNumber(user.genCount)} />
+            </Col>
+            <Col span={8}>
+              <Stat label="Tham gia" value={formatDate(user.createdAt)} />
+            </Col>
+          </Row>
 
-            <div className="min-h-0 flex-1 overflow-y-auto">
-              <p className="mb-2 flex items-center gap-2 text-sm font-medium">
-                <ScrollText className="size-4 text-primary" />
-                Lịch sử lập lá số
-              </p>
-              <ul className="space-y-2">
-                {user.genHistory.length === 0 && (
-                  <li>
-                    <EmptyState title="Chưa lập lá số nào">
-                      Người dùng này chưa tạo bản luận giải.
-                    </EmptyState>
-                  </li>
-                )}
-                {user.genHistory.map((rec) => (
-                  <li key={rec.id} className="rounded-lg border bg-card p-3">
-                    <div className="flex items-center justify-between">
-                      <Badge variant="outline">{KIND_LABEL[rec.kind]}</Badge>
+          <div className="mt-4">
+            <p className="mb-2 flex items-center gap-2 text-sm font-medium">
+              <ScrollText className="size-4 text-primary" />
+              Lịch sử lập lá số
+            </p>
+            <ul className="space-y-2">
+              {user.genHistory.length === 0 && (
+                <li>
+                  <EmptyState title="Chưa lập lá số nào">
+                    Người dùng này chưa tạo bản luận giải.
+                  </EmptyState>
+                </li>
+              )}
+              {user.genHistory.map((rec) => (
+                <li key={rec.id}>
+                  <Card
+                    variant="borderless"
+                    size="small"
+                    title={<Tag bordered>{KIND_LABEL[rec.kind]}</Tag>}
+                    extra={
                       <span className="flex items-center gap-1 text-xs text-muted-foreground">
                         <CalendarClock className="size-3" />
                         {formatDate(rec.createdAt)}
                       </span>
-                    </div>
-                    <dl className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 text-sm">
+                    }
+                  >
+                    <dl className="grid grid-cols-2 gap-x-3 gap-y-1 text-sm">
                       <Field label="Họ tên" value={rec.input.fullName} />
                       <Field label="Giới tính" value={rec.input.gender === 'nam' ? 'Nam' : 'Nữ'} />
                       <Field label="Ngày sinh" value={formatDate(rec.input.birthDate)} />
@@ -259,23 +270,22 @@ function UserDetailSheet({ user, onClose }: { user: AdminUser | null; onClose: (
                         value={rec.input.calendar === 'duong' ? 'Dương lịch' : 'Âm lịch'}
                       />
                     </dl>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </>
-        )}
-      </SheetContent>
-    </Sheet>
+                  </Card>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
+      )}
+    </Drawer>
   );
 }
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border bg-card p-3 text-center">
-      <p className="tabular-nums text-lg font-semibold">{value}</p>
-      <p className="text-xs text-muted-foreground">{label}</p>
-    </div>
+    <Card variant="borderless" size="small" className="text-center">
+      <Statistic title={label} value={value} valueStyle={{ fontSize: 18, fontWeight: 600 }} />
+    </Card>
   );
 }
 

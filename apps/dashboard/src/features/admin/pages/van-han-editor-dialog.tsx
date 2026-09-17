@@ -1,26 +1,16 @@
+import { useEffect } from 'react';
 import { Sparkles } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
-  DialogDescription,
-  DialogClose,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Switch } from '@/components/ui/switch';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import type { VanHanEntry } from '../data/types';
+import { App, Button, Form, Input, InputNumber, Modal, Select, Switch } from 'antd';
+import { useCreateVanHanEntry, useUpdateVanHanEntry } from '../data/mutations';
+import type { VanHanEntry, VanHanRating } from '../data/types';
+
+interface VanHanFormValues {
+  age: number;
+  star: string;
+  rating: VanHanRating;
+  published: boolean;
+  summary: string;
+}
 
 export function VanHanEditorDialog({
   open,
@@ -32,90 +22,117 @@ export function VanHanEditorDialog({
   entry: VanHanEntry | null;
 }) {
   const editing = !!entry;
+  const { message } = App.useApp();
+  const [form] = Form.useForm<VanHanFormValues>();
+  const createEntry = useCreateVanHanEntry();
+  const updateEntry = useUpdateVanHanEntry();
+
+  useEffect(() => {
+    if (open) {
+      form.setFieldsValue({
+        age: entry?.age ?? 18,
+        star: entry?.star ?? '',
+        rating: entry?.rating ?? 'binh',
+        published: entry?.published ?? true,
+        summary: entry?.summary ?? '',
+      });
+    }
+  }, [open, entry, form]);
+
+  const submitting = createEntry.isPending || updateEntry.isPending;
+
+  const onFinish = async (values: VanHanFormValues) => {
+    try {
+      if (editing && entry) {
+        await updateEntry.mutateAsync({
+          id: entry.id,
+          input: {
+            age: values.age,
+            star: values.star,
+            rating: values.rating,
+            published: values.published,
+            summary: values.summary,
+          },
+        });
+        message.success('Đã lưu thay đổi.');
+      } else {
+        await createEntry.mutateAsync({
+          age: values.age,
+          star: values.star,
+          rating: values.rating,
+          published: values.published,
+          summary: values.summary,
+          year: 2026,
+        });
+        message.success('Đã thêm dòng vận hạn.');
+      }
+      onOpenChange(false);
+    } catch {
+      message.error('Có lỗi xảy ra, vui lòng thử lại.');
+    }
+  };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-xl">
-        <DialogHeader>
-          <DialogTitle>{editing ? 'Sửa dòng vận hạn' : 'Thêm dòng vận hạn'}</DialogTitle>
-          <DialogDescription>
-            Luận giải sao chiếu mệnh theo tuổi cho năm Bính Ngọ 2026.
-          </DialogDescription>
-        </DialogHeader>
+    <Modal
+      open={open}
+      onCancel={() => onOpenChange(false)}
+      title={editing ? 'Sửa dòng vận hạn' : 'Thêm dòng vận hạn'}
+      footer={null}
+      destroyOnHidden
+      width={576}
+      classNames={{ container: 'glass' }}
+    >
+      <p className="mb-4 text-sm text-muted-foreground">
+        Luận giải sao chiếu mệnh theo tuổi cho năm Bính Ngọ 2026.
+      </p>
+      <Form form={form} layout="vertical" onFinish={onFinish} requiredMark={false}>
+        <div className="grid grid-cols-3 gap-4">
+          <Form.Item name="age" label="Tuổi" rules={[{ required: true, message: 'Nhập tuổi.' }]}>
+            <InputNumber min={1} inputMode="numeric" className="w-full" />
+          </Form.Item>
+          <Form.Item
+            name="star"
+            label="Sao chiếu mệnh"
+            className="col-span-2"
+            rules={[{ required: true, message: 'Nhập sao chiếu mệnh.' }]}
+          >
+            <Input placeholder="Ví dụ: Thái Dương" />
+          </Form.Item>
+        </div>
 
-        <form
-          className="grid gap-4"
-          onSubmit={(e) => {
-            e.preventDefault();
-            onOpenChange(false);
-          }}
-        >
-          <div className="grid grid-cols-3 gap-4">
-            <div className="grid gap-1.5">
-              <Label htmlFor="vh-age">Tuổi</Label>
-              <Input
-                id="vh-age"
-                type="number"
-                inputMode="numeric"
-                min={1}
-                defaultValue={entry?.age ?? 18}
-                required
-              />
-            </div>
-            <div className="col-span-2 grid gap-1.5">
-              <Label htmlFor="vh-star">Sao chiếu mệnh</Label>
-              <Input
-                id="vh-star"
-                defaultValue={entry?.star ?? ''}
-                placeholder="Ví dụ: Thái Dương"
-                required
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="grid gap-1.5">
-              <Label>Mức</Label>
-              <Select defaultValue={entry?.rating ?? 'binh'}>
-                <SelectTrigger className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="cat">Cát</SelectItem>
-                  <SelectItem value="binh">Bình</SelectItem>
-                  <SelectItem value="hung">Hung</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex items-end justify-between gap-2 rounded-md border border-input px-3 py-2">
-              <Label htmlFor="vh-pub" className="mb-0">
-                Xuất bản
-              </Label>
-              <Switch id="vh-pub" defaultChecked={entry?.published ?? true} />
-            </div>
-          </div>
-
-          <div className="grid gap-1.5">
-            <Label htmlFor="vh-summary">Luận giải</Label>
-            <Textarea
-              id="vh-summary"
-              defaultValue={entry?.summary ?? ''}
-              placeholder="Nội dung luận giải cho tuổi này…"
+        <div className="grid grid-cols-2 items-end gap-4">
+          <Form.Item name="rating" label="Mức">
+            <Select
+              options={[
+                { value: 'cat', label: 'Cát' },
+                { value: 'binh', label: 'Bình' },
+                { value: 'hung', label: 'Hung' },
+              ]}
             />
-          </div>
+          </Form.Item>
+          <Form.Item name="published" label="Xuất bản" valuePropName="checked">
+            <Switch />
+          </Form.Item>
+        </div>
 
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button type="button" variant="ghost">
-                Huỷ
-              </Button>
-            </DialogClose>
-            <Button type="submit">
-              <Sparkles /> {editing ? 'Lưu thay đổi' : 'Thêm dòng'}
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+        <Form.Item name="summary" label="Luận giải">
+          <Input.TextArea placeholder="Nội dung luận giải cho tuổi này…" rows={3} />
+        </Form.Item>
+
+        <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+          <Button type="text" onClick={() => onOpenChange(false)}>
+            Huỷ
+          </Button>
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={submitting}
+            icon={<Sparkles className="size-4" />}
+          >
+            {editing ? 'Lưu thay đổi' : 'Thêm dòng'}
+          </Button>
+        </div>
+      </Form>
+    </Modal>
   );
 }

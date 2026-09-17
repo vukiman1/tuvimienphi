@@ -10,4 +10,5 @@ app:
 cors:
   origins:
     - http://localhost:4200
+    - http://localhost:4300
     - https://tuvimienphi-frontend.vercel.app

@@ -1,23 +1,24 @@
 import { useState, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Plus, ExternalLink, MousePointerClick, Eye, Link2 } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import {
+  App,
+  Button,
+  Card,
+  Col,
+  Row,
+  Skeleton,
+  Statistic,
+  Switch,
   Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { Skeleton } from '@/components/ui/skeleton';
+  Tabs,
+  Tag,
+  type TableColumnsType,
+} from 'antd';
 import { formatNumber } from '@/lib/utils';
 import { PageHeader } from '../components/page-header';
 import { adminQueries } from '../data/queries';
+import { useToggleAdPopupActive, useToggleAdRedirectActive } from '../data/mutations';
 import { AdEditorDialog } from './ad-editor-dialog';
 import type { AdPopup, AdRedirect, PopupTrigger } from '../data/types';
 
@@ -46,37 +47,48 @@ export function AdsPage() {
         subtitle="Liên kết chuyển hướng và popup hiển thị trên trang."
       />
 
-      <Tabs defaultValue="redirects">
-        <div className="mb-4 flex items-center justify-between">
-          <TabsList>
-            <TabsTrigger value="redirects">
-              <Link2 /> Liên kết
-            </TabsTrigger>
-            <TabsTrigger value="popups">
-              <Eye /> Popup
-            </TabsTrigger>
-          </TabsList>
-          <Button onClick={() => setEditorOpen(true)}>
-            <Plus /> Thêm mới
+      <Tabs
+        defaultActiveKey="redirects"
+        tabBarExtraContent={
+          <Button
+            type="primary"
+            icon={<Plus className="size-4" />}
+            onClick={() => setEditorOpen(true)}
+          >
+            Thêm mới
           </Button>
-        </div>
-
-        <TabsContent value="redirects">
-          {isLoading || !data ? (
-            <Skeleton className="h-64 w-full rounded-xl" />
-          ) : (
-            <RedirectsTable redirects={data.redirects} />
-          )}
-        </TabsContent>
-
-        <TabsContent value="popups">
-          {isLoading || !data ? (
-            <Skeleton className="h-64 w-full rounded-xl" />
-          ) : (
-            <PopupsGrid popups={data.popups} ctr={ctr} triggerLabel={TRIGGER_LABEL} />
-          )}
-        </TabsContent>
-      </Tabs>
+        }
+        items={[
+          {
+            key: 'redirects',
+            label: (
+              <span className="inline-flex items-center gap-1.5">
+                <Link2 className="size-4" /> Liên kết
+              </span>
+            ),
+            children:
+              isLoading || !data ? (
+                <Skeleton.Node active style={{ width: '100%', height: 256 }} />
+              ) : (
+                <RedirectsTable redirects={data.redirects} />
+              ),
+          },
+          {
+            key: 'popups',
+            label: (
+              <span className="inline-flex items-center gap-1.5">
+                <Eye className="size-4" /> Popup
+              </span>
+            ),
+            children:
+              isLoading || !data ? (
+                <Skeleton.Node active style={{ width: '100%', height: 256 }} />
+              ) : (
+                <PopupsGrid popups={data.popups} ctr={ctr} triggerLabel={TRIGGER_LABEL} />
+              ),
+          },
+        ]}
+      />
 
       <AdEditorDialog open={editorOpen} onOpenChange={setEditorOpen} />
     </div>
@@ -84,48 +96,64 @@ export function AdsPage() {
 }
 
 function RedirectsTable({ redirects }: { redirects: AdRedirect[] }) {
+  const { message } = App.useApp();
+  const toggle = useToggleAdRedirectActive();
+
+  const onToggle = async (id: string) => {
+    try {
+      await toggle.mutateAsync(id);
+    } catch {
+      message.error('Không thể cập nhật trạng thái.');
+    }
+  };
+
+  const columns: TableColumnsType<AdRedirect> = [
+    {
+      title: 'Chiến dịch',
+      dataIndex: 'label',
+      render: (label: string) => <span className="font-medium">{label}</span>,
+    },
+    {
+      title: 'Đường dẫn',
+      dataIndex: 'slug',
+      render: (slug: string) => (
+        <code className="rounded bg-muted px-1.5 py-0.5 text-xs text-primary">{slug}</code>
+      ),
+    },
+    {
+      title: 'Đích đến',
+      dataIndex: 'target',
+      render: (target: string) => (
+        <a
+          href={target}
+          target="_blank"
+          rel="noreferrer"
+          className="flex max-w-[220px] items-center gap-1 truncate text-sm text-muted-foreground hover:text-foreground"
+        >
+          <span className="truncate">{target}</span>
+          <ExternalLink className="size-3 shrink-0" />
+        </a>
+      ),
+    },
+    {
+      title: 'Lượt nhấp',
+      dataIndex: 'clicks',
+      align: 'right',
+      render: (clicks: number) => <span className="tabular-nums">{formatNumber(clicks)}</span>,
+    },
+    {
+      title: 'Kích hoạt',
+      dataIndex: 'active',
+      align: 'center',
+      render: (active: boolean, row) => (
+        <Switch checked={active} onChange={() => onToggle(row.id)} />
+      ),
+    },
+  ];
+
   return (
-    <Card className="gap-0 overflow-hidden py-0">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Chiến dịch</TableHead>
-            <TableHead>Đường dẫn</TableHead>
-            <TableHead>Đích đến</TableHead>
-            <TableHead className="text-right">Lượt nhấp</TableHead>
-            <TableHead className="text-center">Kích hoạt</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {redirects.map((r) => (
-            <TableRow key={r.id}>
-              <TableCell className="font-medium">{r.label}</TableCell>
-              <TableCell>
-                <code className="rounded bg-muted px-1.5 py-0.5 text-xs text-primary">
-                  {r.slug}
-                </code>
-              </TableCell>
-              <TableCell className="max-w-[220px]">
-                <a
-                  href={r.target}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-1 truncate text-sm text-muted-foreground hover:text-foreground"
-                >
-                  <span className="truncate">{r.target}</span>
-                  <ExternalLink className="size-3 shrink-0" />
-                </a>
-              </TableCell>
-              <TableCell className="tabular-nums text-right">{formatNumber(r.clicks)}</TableCell>
-              <TableCell className="text-center">
-                <div className="flex items-center justify-center">
-                  <Switch defaultChecked={r.active} />
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+    <Card variant="borderless" styles={{ body: { padding: 0 } }}>
+      <Table<AdRedirect> rowKey="id" columns={columns} dataSource={redirects} pagination={false} />
     </Card>
   );
 }
@@ -139,54 +167,74 @@ function PopupsGrid({
   ctr: (c: number, i: number) => string;
   triggerLabel: Record<PopupTrigger, string>;
 }) {
+  const { message } = App.useApp();
+  const toggle = useToggleAdPopupActive();
+
+  const onToggle = async (id: string) => {
+    try {
+      await toggle.mutateAsync(id);
+    } catch {
+      message.error('Không thể cập nhật trạng thái.');
+    }
+  };
+
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+    <Row gutter={[16, 16]}>
       {popups.map((p) => (
-        <Card key={p.id} className="gap-4">
-          <CardHeader>
-            <div className="flex items-start justify-between gap-2">
+        <Col key={p.id} xs={24} md={12} xl={8}>
+          <Card
+            variant="borderless"
+            title={
               <div>
-                <CardTitle className="font-display text-base">{p.name}</CardTitle>
-                <CardDescription>{triggerLabel[p.trigger]}</CardDescription>
+                <p className="font-display text-base font-semibold">{p.name}</p>
+                <p className="text-sm font-normal text-muted-foreground">
+                  {triggerLabel[p.trigger]}
+                </p>
               </div>
-              <Badge variant={p.active ? 'success' : 'neutral'}>
+            }
+            extra={
+              <Tag color={p.active ? 'green' : 'default'}>
                 {p.active ? 'Đang chạy' : 'Tạm dừng'}
-              </Badge>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="grid grid-cols-3 gap-2 text-center">
-              <Metric
-                icon={<Eye className="size-3.5" />}
-                label="Hiển thị"
-                value={formatNumber(p.impressions)}
-              />
-              <Metric
-                icon={<MousePointerClick className="size-3.5" />}
-                label="Nhấp"
-                value={formatNumber(p.clicks)}
-              />
-              <Metric label="CTR" value={ctrFn(p.clicks, p.impressions)} />
-            </div>
-            <div className="flex items-center justify-between border-t pt-3">
+              </Tag>
+            }
+          >
+            <Row gutter={8} className="text-center">
+              <Col span={8}>
+                <Metric
+                  icon={<Eye className="size-3.5" />}
+                  label="Hiển thị"
+                  value={formatNumber(p.impressions)}
+                />
+              </Col>
+              <Col span={8}>
+                <Metric
+                  icon={<MousePointerClick className="size-3.5" />}
+                  label="Nhấp"
+                  value={formatNumber(p.clicks)}
+                />
+              </Col>
+              <Col span={8}>
+                <Metric label="CTR" value={ctrFn(p.clicks, p.impressions)} />
+              </Col>
+            </Row>
+            <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
               <span className="truncate text-xs text-muted-foreground">→ {p.target}</span>
-              <Switch defaultChecked={p.active} />
+              <Switch checked={p.active} onChange={() => onToggle(p.id)} />
             </div>
-          </CardContent>
-        </Card>
+          </Card>
+        </Col>
       ))}
-    </div>
+    </Row>
   );
 }
 
 function Metric({ icon, label, value }: { icon?: ReactNode; label: string; value: string }) {
   return (
-    <div className="rounded-lg bg-muted/60 p-2">
-      <p className="tabular-nums flex items-center justify-center gap-1 text-sm font-semibold">
-        {icon}
-        {value}
-      </p>
-      <p className="mt-0.5 text-[11px] text-muted-foreground">{label}</p>
-    </div>
+    <Statistic
+      title={label}
+      value={value}
+      prefix={icon}
+      valueStyle={{ fontSize: 14, fontWeight: 600 }}
+    />
   );
 }

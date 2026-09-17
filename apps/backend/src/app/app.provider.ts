@@ -9,7 +9,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
-import { ThrottlerGuard } from '@nestjs/throttler';
+import { GqlThrottlerGuard } from '../graphql/gql-throttler.guard';
 
 const exceptionFactory = (errors: ValidationError[]) => {
   throw new BadRequestException(
@@ -37,7 +37,7 @@ const validationErrors = (err: ValidationError) => {
 export const providers: Provider[] = [
   {
     provide: APP_GUARD,
-    useClass: ThrottlerGuard,
+    useClass: GqlThrottlerGuard,
   },
   {
     provide: APP_FILTER,

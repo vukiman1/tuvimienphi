@@ -1,42 +1,18 @@
 import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Plus, Search, Pencil, Eye } from 'lucide-react';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Button, Card, Input, Select, Table, Tag, type TableColumnsType } from 'antd';
 import { formatDate, formatNumber } from '@/lib/utils';
 import { PageHeader } from '../components/page-header';
-import { PaginationBar } from '../components/pagination-bar';
-import { usePagination } from '../components/use-pagination';
 import { adminQueries } from '../data/queries';
 import { PostEditorDialog } from './post-editor-dialog';
 import { PostViewDialog } from './post-view-dialog';
 import type { BlogPost, PostStatus } from '../data/types';
 
-const STATUS_META: Record<
-  PostStatus,
-  { label: string; variant: 'success' | 'neutral' | 'warning' }
-> = {
-  published: { label: 'Đã đăng', variant: 'success' },
-  draft: { label: 'Nháp', variant: 'neutral' },
-  scheduled: { label: 'Hẹn giờ', variant: 'warning' },
+const STATUS_META: Record<PostStatus, { label: string; color: string }> = {
+  published: { label: 'Đã đăng', color: 'green' },
+  draft: { label: 'Nháp', color: 'default' },
+  scheduled: { label: 'Hẹn giờ', color: 'gold' },
 };
 
 export function BlogPage() {
@@ -71,7 +47,64 @@ export function BlogPage() {
     );
   }, [posts, query, status]);
 
-  const pager = usePagination(filtered, 8);
+  const columns: TableColumnsType<BlogPost> = [
+    {
+      title: 'Tiêu đề',
+      dataIndex: 'title',
+      render: (_, post) => (
+        <div className="max-w-sm">
+          <p className="truncate font-medium">{post.title}</p>
+          <p className="truncate text-xs text-muted-foreground">/{post.slug}</p>
+        </div>
+      ),
+    },
+    {
+      title: 'Chuyên mục',
+      dataIndex: 'category',
+      render: (category: string) => <Tag bordered>{category}</Tag>,
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      render: (s: PostStatus) => <Tag color={STATUS_META[s].color}>{STATUS_META[s].label}</Tag>,
+    },
+    {
+      title: 'Lượt xem',
+      dataIndex: 'views',
+      align: 'right',
+      render: (views: number) => <span className="tabular-nums">{formatNumber(views)}</span>,
+    },
+    {
+      title: 'Cập nhật',
+      dataIndex: 'updatedAt',
+      render: (updatedAt: string) => (
+        <span className="text-sm text-muted-foreground">{formatDate(updatedAt)}</span>
+      ),
+    },
+    {
+      title: '',
+      key: 'actions',
+      align: 'right',
+      render: (_, post) => (
+        <div className="flex justify-end gap-1">
+          <Button
+            type="text"
+            size="small"
+            aria-label="Xem"
+            icon={<Eye className="size-4" />}
+            onClick={() => openView(post)}
+          />
+          <Button
+            type="text"
+            size="small"
+            aria-label="Sửa"
+            icon={<Pencil className="size-4" />}
+            onClick={() => openEdit(post)}
+          />
+        </div>
+      ),
+    },
+  ];
 
   return (
     <div>
@@ -81,114 +114,52 @@ export function BlogPage() {
         title="Quản lý bài viết"
         subtitle="Nội dung blog về tử vi, phong thủy và vận hạn."
         actions={
-          <Button onClick={openNew}>
-            <Plus /> Viết bài mới
+          <Button type="primary" icon={<Plus className="size-4" />} onClick={openNew}>
+            Viết bài mới
           </Button>
         }
       />
 
-      <Card className="animate-rise gap-0 overflow-hidden py-0">
-        <div className="flex flex-wrap items-center gap-3 border-b p-4">
-          <div className="relative w-full max-w-xs">
-            <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Tìm tiêu đề, chuyên mục…"
-              className="pl-9"
+      <Card
+        variant="borderless"
+        className="animate-rise"
+        styles={{ body: { padding: 0 } }}
+        title={
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="relative w-full max-w-xs">
+              <Search className="pointer-events-none absolute top-1/2 left-3 z-10 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Tìm tiêu đề, chuyên mục…"
+                className="pl-9"
+                variant="borderless"
+              />
+            </div>
+            <Select
+              value={status}
+              onChange={(v) => setStatus(v)}
+              style={{ width: 160 }}
+              options={[
+                { value: 'all', label: 'Mọi trạng thái' },
+                { value: 'published', label: 'Đã đăng' },
+                { value: 'draft', label: 'Nháp' },
+                { value: 'scheduled', label: 'Hẹn giờ' },
+              ]}
             />
+            <p className="ml-auto hidden text-sm font-normal text-muted-foreground sm:block">
+              {formatNumber(filtered.length)} bài viết
+            </p>
           </div>
-          <Select value={status} onValueChange={(v) => setStatus(v as PostStatus | 'all')}>
-            <SelectTrigger className="w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Mọi trạng thái</SelectItem>
-              <SelectItem value="published">Đã đăng</SelectItem>
-              <SelectItem value="draft">Nháp</SelectItem>
-              <SelectItem value="scheduled">Hẹn giờ</SelectItem>
-            </SelectContent>
-          </Select>
-          <p className="ml-auto hidden text-sm text-muted-foreground sm:block">
-            {formatNumber(filtered.length)} bài viết
-          </p>
-        </div>
-
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Tiêu đề</TableHead>
-              <TableHead>Chuyên mục</TableHead>
-              <TableHead>Trạng thái</TableHead>
-              <TableHead className="text-right">Lượt xem</TableHead>
-              <TableHead>Cập nhật</TableHead>
-              <TableHead />
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {isLoading
-              ? Array.from({ length: 8 }).map((_, i) => (
-                  <TableRow key={i}>
-                    <TableCell colSpan={6}>
-                      <Skeleton className="h-8 w-full" />
-                    </TableCell>
-                  </TableRow>
-                ))
-              : pager.pageItems.map((post) => (
-                  <TableRow key={post.id}>
-                    <TableCell className="max-w-sm">
-                      <p className="truncate font-medium">{post.title}</p>
-                      <p className="truncate text-xs text-muted-foreground">/{post.slug}</p>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{post.category}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={STATUS_META[post.status].variant}>
-                        {STATUS_META[post.status].label}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="tabular-nums text-right">
-                      {formatNumber(post.views)}
-                    </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      {formatDate(post.updatedAt)}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex justify-end gap-1">
-                        <Button
-                          variant="ghost"
-                          size="icon-sm"
-                          aria-label="Xem"
-                          onClick={() => openView(post)}
-                        >
-                          <Eye />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon-sm"
-                          aria-label="Sửa"
-                          onClick={() => openEdit(post)}
-                        >
-                          <Pencil />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-          </TableBody>
-        </Table>
-        {!isLoading && (
-          <PaginationBar
-            page={pager.page}
-            totalPages={pager.totalPages}
-            rangeStart={pager.rangeStart}
-            rangeEnd={pager.rangeEnd}
-            totalItems={pager.totalItems}
-            onPage={pager.setPage}
-            unit="bài viết"
-          />
-        )}
+        }
+      >
+        <Table<BlogPost>
+          rowKey="id"
+          columns={columns}
+          dataSource={filtered}
+          loading={isLoading}
+          pagination={{ pageSize: 8, hideOnSinglePage: true }}
+        />
       </Card>
 
       <PostEditorDialog open={editorOpen} onOpenChange={setEditorOpen} post={editingPost} />

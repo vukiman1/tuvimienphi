@@ -1,23 +1,29 @@
 import { queryOptions } from '@tanstack/react-query';
+import { graphqlClient } from '@/lib/graphql-client';
 import {
-  adPopups,
-  adRedirects,
-  adminUsers,
-  blogPosts,
-  genByType,
-  kpiStats,
-  trafficSeries,
-  trafficSources,
-  vanHanEntries,
-} from './mock';
+  AdminOverviewDocument,
+  AdminUsersDocument,
+  AdminVanHanDocument,
+  AdsDocument,
+  BlogDocument,
+} from '@/lib/graphql/generated';
+import type {
+  AdPopup,
+  AdRedirect,
+  AdminUser,
+  BlogPost,
+  GenTypeSlice,
+  KpiStat,
+  SourceSlice,
+  TrafficPoint,
+  VanHanEntry,
+} from './types';
 
-/**
- * Mock-backed query layer. Each resolver returns local data after a short delay to mimic network
- * latency (so loading states are exercised). Replace the bodies with `httpRequest.get(...)` calls
- * when the admin API lands — the query keys and return types stay the same.
- */
-function resolve<T>(data: T, delay = 320): Promise<T> {
-  return new Promise((res) => setTimeout(() => res(data), delay));
+export interface OverviewData {
+  kpis: KpiStat[];
+  traffic: TrafficPoint[];
+  sources: SourceSlice[];
+  genByType: GenTypeSlice[];
 }
 
 export const adminQueries = {
@@ -25,35 +31,35 @@ export const adminQueries = {
     queryOptions({
       queryKey: ['admin', 'overview'],
       queryFn: () =>
-        resolve({
-          kpis: kpiStats,
-          traffic: trafficSeries,
-          sources: trafficSources,
-          genByType,
-        }),
+        graphqlClient.request(AdminOverviewDocument).then((r) => r.adminOverview as OverviewData),
     }),
 
   users: () =>
     queryOptions({
       queryKey: ['admin', 'users'],
-      queryFn: () => resolve(adminUsers),
+      queryFn: () =>
+        graphqlClient.request(AdminUsersDocument).then((r) => r.adminUsers as AdminUser[]),
     }),
 
   blog: () =>
     queryOptions({
       queryKey: ['admin', 'blog'],
-      queryFn: () => resolve(blogPosts),
+      queryFn: () => graphqlClient.request(BlogDocument).then((r) => r.blog as BlogPost[]),
     }),
 
   ads: () =>
     queryOptions({
       queryKey: ['admin', 'ads'],
-      queryFn: () => resolve({ redirects: adRedirects, popups: adPopups }),
+      queryFn: () =>
+        graphqlClient
+          .request(AdsDocument)
+          .then((r) => r.ads as { redirects: AdRedirect[]; popups: AdPopup[] }),
     }),
 
   vanHan: () =>
     queryOptions({
       queryKey: ['admin', 'van-han'],
-      queryFn: () => resolve(vanHanEntries),
+      queryFn: () =>
+        graphqlClient.request(AdminVanHanDocument).then((r) => r.adminVanHan as VanHanEntry[]),
     }),
 };
