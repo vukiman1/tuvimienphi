@@ -3,7 +3,7 @@ const { join } = require('path');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const RUNTIME_EXTERNALS =
-  /^(@sentry|@opentelemetry)\/|^google-auth-library(\/|$)|^(require-in-the-middle|import-in-the-middle)$|^@apollo\/(subgraph|gateway)(\/|$)|^@as-integrations\/fastify(\/|$)|^ts-morph(\/|$)/;
+  /^(@sentry|@opentelemetry)\/|^google-auth-library(\/|$)|^(require-in-the-middle|import-in-the-middle)$|^@apollo\/|^@as-integrations\/fastify(\/|$)|^ts-morph(\/|$)|^graphql(\/|$)/;
 
 module.exports = (_env, argv) => {
   const isProduction = argv.mode === 'production';
