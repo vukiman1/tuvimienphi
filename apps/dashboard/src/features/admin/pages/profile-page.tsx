@@ -1,6 +1,18 @@
 import { useState, type ReactNode } from 'react';
 import { BadgeCheck, Mail, ShieldCheck, KeyRound, Moon, LogOut } from 'lucide-react';
-import { Avatar, Button, Divider, Form, Input, Switch, Tag } from 'antd';
+import {
+  Avatar,
+  Button,
+  Card,
+  Col,
+  Descriptions,
+  Divider,
+  Form,
+  Input,
+  Row,
+  Switch,
+  Tag,
+} from 'antd';
 import { useAuthStore, selectUser } from '@/stores/auth-store';
 import { dayCanChi } from '@/lib/can-chi';
 import { initials } from '@/lib/utils';
@@ -20,53 +32,63 @@ export function ProfilePage() {
         subtitle="Thông tin và bảo mật tài khoản quản trị."
       />
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        <div className="glass animate-rise flex flex-col items-center rounded-xl py-8 text-center">
-          <Avatar
-            size={96}
-            className="glow-ring"
-            style={{ background: 'var(--primary)', fontSize: 24 }}
-          >
-            {initials(user?.displayName)}
-          </Avatar>
-          <h2 className="mt-4 font-display text-2xl font-semibold text-glow">
-            {user?.displayName ?? 'Quản trị viên'}
-          </h2>
-          <div className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
-            <Mail className="size-3.5" /> {user?.email}
-          </div>
-          <div className="mt-3 flex items-center gap-2">
-            <Tag color="gold">{user?.role ?? 'ADMIN'}</Tag>
-            {user?.isEmailVerified && (
-              <Tag color="green" icon={<BadgeCheck className="size-3" />}>
-                Đã xác thực
-              </Tag>
-            )}
-          </div>
-
-          <Divider className="my-6" />
-
-          <div className="grid w-full grid-cols-2 gap-3 px-6">
-            <div className="rounded-lg border border-border bg-card/40 p-3">
-              <p className="font-seal text-lg text-primary">Ngày {canChi}</p>
-              <p className="mt-0.5 text-[11px] text-muted-foreground">Can chi hôm nay</p>
+      <Row gutter={[16, 16]}>
+        <Col xs={24} lg={8}>
+          <Card variant="borderless" className="animate-rise text-center">
+            <div className="flex flex-col items-center">
+              <Avatar
+                size={96}
+                className="glow-ring"
+                style={{ background: 'var(--primary)', fontSize: 24 }}
+              >
+                {initials(user?.displayName)}
+              </Avatar>
+              <h2 className="mt-4 font-display text-2xl font-semibold text-glow">
+                {user?.displayName ?? 'Quản trị viên'}
+              </h2>
+              <div className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
+                <Mail className="size-3.5" /> {user?.email}
+              </div>
+              <div className="mt-3 flex items-center gap-2">
+                <Tag color="gold">{user?.role ?? 'ADMIN'}</Tag>
+                {user?.isEmailVerified && (
+                  <Tag color="green" icon={<BadgeCheck className="size-3" />}>
+                    Đã xác thực
+                  </Tag>
+                )}
+              </div>
             </div>
-            <div className="rounded-lg border border-border bg-card/40 p-3">
-              <p className="font-seal text-lg text-primary">Hỏa</p>
-              <p className="mt-0.5 text-[11px] text-muted-foreground">Bản mệnh · Bính Ngọ</p>
-            </div>
-          </div>
-        </div>
 
-        <div className="grid gap-4 lg:col-span-2">
-          <PersonalInfoCard
-            displayName={user?.displayName ?? ''}
-            email={user?.email ?? ''}
-            role={user?.role ?? 'ADMIN'}
-          />
-          <SecurityCard />
-        </div>
-      </div>
+            <Divider className="my-6" />
+
+            <Row gutter={12}>
+              <Col span={12}>
+                <Card variant="borderless" size="small">
+                  <p className="font-seal text-lg text-primary">Ngày {canChi}</p>
+                  <p className="mt-0.5 text-[11px] text-muted-foreground">Can chi hôm nay</p>
+                </Card>
+              </Col>
+              <Col span={12}>
+                <Card variant="borderless" size="small">
+                  <p className="font-seal text-lg text-primary">Hỏa</p>
+                  <p className="mt-0.5 text-[11px] text-muted-foreground">Bản mệnh · Bính Ngọ</p>
+                </Card>
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+
+        <Col xs={24} lg={16}>
+          <div className="grid gap-4">
+            <PersonalInfoCard
+              displayName={user?.displayName ?? ''}
+              email={user?.email ?? ''}
+              role={user?.role ?? 'ADMIN'}
+            />
+            <SecurityCard />
+          </div>
+        </Col>
+      </Row>
     </div>
   );
 }
@@ -92,14 +114,32 @@ function PersonalInfoCard({
   const onFinish = () => setSaved(true);
 
   return (
-    <div className="glass animate-rise rounded-xl p-6" style={{ animationDelay: '90ms' }}>
-      <h3 className="font-display text-lg font-semibold">Thông tin cá nhân</h3>
-      <p className="mt-1 text-sm text-muted-foreground">Tên hiển thị công khai và liên hệ.</p>
+    <Card
+      variant="borderless"
+      className="animate-rise"
+      style={{ animationDelay: '90ms' }}
+      title="Thông tin cá nhân"
+    >
+      <p className="text-sm text-muted-foreground">Tên hiển thị công khai và liên hệ.</p>
+
+      <Descriptions
+        bordered
+        size="small"
+        className="mt-4"
+        column={{ xs: 1, sm: 2 }}
+        items={[
+          { key: 'displayName', label: 'Tên hiển thị', children: displayName || '—' },
+          { key: 'email', label: 'Email', children: email || '—' },
+          { key: 'role', label: 'Vai trò', children: <Tag color="gold">{role}</Tag> },
+          { key: 'title', label: 'Chức danh', children: 'Thầy tử vi' },
+        ]}
+      />
+
+      <Divider className="my-6" />
 
       <Form<PersonalInfoValues>
         layout="vertical"
         requiredMark={false}
-        className="mt-4"
         initialValues={{ displayName, email, role, title: 'Thầy tử vi' }}
         onValuesChange={() => setSaved(false)}
         onFinish={onFinish}
@@ -129,57 +169,61 @@ function PersonalInfoCard({
           )}
         </div>
       </Form>
-    </div>
+    </Card>
   );
 }
 
 function SecurityCard() {
   const { theme } = useTheme();
   return (
-    <div className="glass animate-rise rounded-xl p-6" style={{ animationDelay: '180ms' }}>
-      <h3 className="font-display text-lg font-semibold">Bảo mật</h3>
-      <p className="mt-1 text-sm text-muted-foreground">
+    <Card
+      variant="borderless"
+      className="animate-rise"
+      style={{ animationDelay: '180ms' }}
+      title="Bảo mật"
+    >
+      <p className="text-sm text-muted-foreground">
         Mật khẩu, xác thực hai lớp và phiên đăng nhập.
       </p>
 
       <div className="mt-4 space-y-4">
-        <Row
+        <SettingRow
           icon={<KeyRound className="size-4 text-primary" />}
           title="Mật khẩu"
           desc="Đổi lần cuối 3 tháng trước"
         >
           <Button size="small">Đổi mật khẩu</Button>
-        </Row>
+        </SettingRow>
         <Divider className="my-0" />
-        <Row
+        <SettingRow
           icon={<ShieldCheck className="size-4 text-primary" />}
           title="Xác thực hai lớp (2FA)"
           desc="Bảo vệ tài khoản bằng mã OTP"
         >
           <Switch defaultChecked />
-        </Row>
+        </SettingRow>
         <Divider className="my-0" />
-        <Row
+        <SettingRow
           icon={<Moon className="size-4 text-primary" />}
           title="Giao diện"
           desc="Đổi sáng/tối ở góc phải thanh trên"
         >
           <Tag>{theme === 'dark' ? 'Trời đêm' : 'Ban ngày'}</Tag>
-        </Row>
+        </SettingRow>
         <Divider className="my-0" />
-        <Row
+        <SettingRow
           icon={<LogOut className="size-4 text-destructive" />}
           title="Đăng xuất mọi thiết bị"
           desc="Kết thúc tất cả phiên đang mở"
         >
           <Button size="small">Đăng xuất</Button>
-        </Row>
+        </SettingRow>
       </div>
-    </div>
+    </Card>
   );
 }
 
-function Row({
+function SettingRow({
   icon,
   title,
   desc,

@@ -5,9 +5,13 @@ import {
   App,
   Avatar,
   Button,
+  Card,
+  Col,
   Drawer,
   Dropdown,
   Input,
+  Row,
+  Statistic,
   Table,
   Tag,
   type MenuProps,
@@ -160,23 +164,28 @@ export function UsersPage() {
         subtitle="Thông tin tài khoản, số dư và lịch sử lập lá số."
       />
 
-      <div className="glass animate-rise overflow-hidden rounded-xl">
-        <div className="flex items-center justify-between gap-3 border-b border-border p-4">
-          <div className="relative w-full max-w-xs">
-            <Search className="pointer-events-none absolute top-1/2 left-3 z-10 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Tìm theo tên hoặc email…"
-              className="pl-9"
-              variant="borderless"
-            />
+      <Card
+        variant="borderless"
+        className="animate-rise"
+        styles={{ body: { padding: 0 } }}
+        title={
+          <div className="flex items-center justify-between gap-3">
+            <div className="relative w-full max-w-xs">
+              <Search className="pointer-events-none absolute top-1/2 left-3 z-10 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Tìm theo tên hoặc email…"
+                className="pl-9"
+                variant="borderless"
+              />
+            </div>
+            <p className="hidden text-sm font-normal text-muted-foreground sm:block">
+              {formatNumber(filtered.length)} người dùng
+            </p>
           </div>
-          <p className="hidden text-sm text-muted-foreground sm:block">
-            {formatNumber(filtered.length)} người dùng
-          </p>
-        </div>
-
+        }
+      >
         <Table<AdminUser>
           rowKey="id"
           columns={columns}
@@ -184,7 +193,7 @@ export function UsersPage() {
           loading={isLoading}
           pagination={{ pageSize: 8, hideOnSinglePage: true }}
         />
-      </div>
+      </Card>
 
       <UserDetailDrawer user={selected} onClose={() => setSelected(null)} />
     </div>
@@ -213,11 +222,17 @@ function UserDetailDrawer({ user, onClose }: { user: AdminUser | null; onClose: 
     >
       {user && (
         <>
-          <div className="grid grid-cols-3 gap-3">
-            <Stat label="Số dư" value={formatNumber(user.credits)} />
-            <Stat label="Lá số" value={formatNumber(user.genCount)} />
-            <Stat label="Tham gia" value={formatDate(user.createdAt)} />
-          </div>
+          <Row gutter={12}>
+            <Col span={8}>
+              <Stat label="Số dư" value={formatNumber(user.credits)} />
+            </Col>
+            <Col span={8}>
+              <Stat label="Lá số" value={formatNumber(user.genCount)} />
+            </Col>
+            <Col span={8}>
+              <Stat label="Tham gia" value={formatDate(user.createdAt)} />
+            </Col>
+          </Row>
 
           <div className="mt-4">
             <p className="mb-2 flex items-center gap-2 text-sm font-medium">
@@ -233,24 +248,29 @@ function UserDetailDrawer({ user, onClose }: { user: AdminUser | null; onClose: 
                 </li>
               )}
               {user.genHistory.map((rec) => (
-                <li key={rec.id} className="rounded-lg border border-border bg-card p-3">
-                  <div className="flex items-center justify-between">
-                    <Tag bordered>{KIND_LABEL[rec.kind]}</Tag>
-                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                      <CalendarClock className="size-3" />
-                      {formatDate(rec.createdAt)}
-                    </span>
-                  </div>
-                  <dl className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 text-sm">
-                    <Field label="Họ tên" value={rec.input.fullName} />
-                    <Field label="Giới tính" value={rec.input.gender === 'nam' ? 'Nam' : 'Nữ'} />
-                    <Field label="Ngày sinh" value={formatDate(rec.input.birthDate)} />
-                    <Field label="Giờ sinh" value={rec.input.birthHour} />
-                    <Field
-                      label="Lịch"
-                      value={rec.input.calendar === 'duong' ? 'Dương lịch' : 'Âm lịch'}
-                    />
-                  </dl>
+                <li key={rec.id}>
+                  <Card
+                    variant="borderless"
+                    size="small"
+                    title={<Tag bordered>{KIND_LABEL[rec.kind]}</Tag>}
+                    extra={
+                      <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <CalendarClock className="size-3" />
+                        {formatDate(rec.createdAt)}
+                      </span>
+                    }
+                  >
+                    <dl className="grid grid-cols-2 gap-x-3 gap-y-1 text-sm">
+                      <Field label="Họ tên" value={rec.input.fullName} />
+                      <Field label="Giới tính" value={rec.input.gender === 'nam' ? 'Nam' : 'Nữ'} />
+                      <Field label="Ngày sinh" value={formatDate(rec.input.birthDate)} />
+                      <Field label="Giờ sinh" value={rec.input.birthHour} />
+                      <Field
+                        label="Lịch"
+                        value={rec.input.calendar === 'duong' ? 'Dương lịch' : 'Âm lịch'}
+                      />
+                    </dl>
+                  </Card>
                 </li>
               ))}
             </ul>
@@ -263,10 +283,9 @@ function UserDetailDrawer({ user, onClose }: { user: AdminUser | null; onClose: 
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-border bg-card p-3 text-center">
-      <p className="tabular-nums text-lg font-semibold">{value}</p>
-      <p className="text-xs text-muted-foreground">{label}</p>
-    </div>
+    <Card variant="borderless" size="small" className="text-center">
+      <Statistic title={label} value={value} valueStyle={{ fontSize: 18, fontWeight: 600 }} />
+    </Card>
   );
 }
 

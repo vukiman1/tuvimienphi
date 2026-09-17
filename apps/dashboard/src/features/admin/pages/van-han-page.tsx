@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Plus, Pencil } from 'lucide-react';
-import { App, Button, Select, Switch, Table, Tag, type TableColumnsType } from 'antd';
+import { App, Button, Card, Select, Switch, Table, Tag, type TableColumnsType } from 'antd';
 import { formatDate, formatNumber } from '@/lib/utils';
 import { PageHeader } from '../components/page-header';
 import { adminQueries } from '../data/queries';
@@ -119,24 +119,28 @@ export function VanHanPage() {
         <Stat label="Can chi" value="Bính Ngọ" seal />
       </div>
 
-      <div className="glass overflow-hidden rounded-xl">
-        <div className="flex items-center justify-between gap-3 border-b border-border p-4">
-          <Select
-            value={rating}
-            onChange={(v) => setRating(v)}
-            style={{ width: 160 }}
-            options={[
-              { value: 'all', label: 'Mọi mức' },
-              { value: 'cat', label: 'Cát' },
-              { value: 'binh', label: 'Bình' },
-              { value: 'hung', label: 'Hung' },
-            ]}
-          />
-          <p className="hidden text-sm text-muted-foreground sm:block">
-            {formatNumber(filtered.length)} dòng
-          </p>
-        </div>
-
+      <Card
+        variant="borderless"
+        styles={{ body: { padding: 0 } }}
+        title={
+          <div className="flex items-center justify-between gap-3">
+            <Select
+              value={rating}
+              onChange={(v) => setRating(v)}
+              style={{ width: 160 }}
+              options={[
+                { value: 'all', label: 'Mọi mức' },
+                { value: 'cat', label: 'Cát' },
+                { value: 'binh', label: 'Bình' },
+                { value: 'hung', label: 'Hung' },
+              ]}
+            />
+            <p className="hidden text-sm font-normal text-muted-foreground sm:block">
+              {formatNumber(filtered.length)} dòng
+            </p>
+          </div>
+        }
+      >
         <Table<VanHanEntry>
           rowKey="id"
           columns={columns}
@@ -144,7 +148,7 @@ export function VanHanPage() {
           loading={isLoading}
           pagination={{ pageSize: 8, hideOnSinglePage: true }}
         />
-      </div>
+      </Card>
 
       <VanHanEditorDialog open={editorOpen} onOpenChange={setEditorOpen} entry={editingEntry} />
     </div>

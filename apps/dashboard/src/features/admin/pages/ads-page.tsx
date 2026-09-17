@@ -1,7 +1,20 @@
 import { useState, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Plus, ExternalLink, MousePointerClick, Eye, Link2 } from 'lucide-react';
-import { App, Button, Skeleton, Switch, Table, Tabs, Tag, type TableColumnsType } from 'antd';
+import {
+  App,
+  Button,
+  Card,
+  Col,
+  Row,
+  Skeleton,
+  Statistic,
+  Switch,
+  Table,
+  Tabs,
+  Tag,
+  type TableColumnsType,
+} from 'antd';
 import { formatNumber } from '@/lib/utils';
 import { PageHeader } from '../components/page-header';
 import { adminQueries } from '../data/queries';
@@ -139,9 +152,9 @@ function RedirectsTable({ redirects }: { redirects: AdRedirect[] }) {
   ];
 
   return (
-    <div className="glass overflow-hidden rounded-xl">
+    <Card variant="borderless" styles={{ body: { padding: 0 } }}>
       <Table<AdRedirect> rowKey="id" columns={columns} dataSource={redirects} pagination={false} />
-    </div>
+    </Card>
   );
 }
 
@@ -166,49 +179,62 @@ function PopupsGrid({
   };
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+    <Row gutter={[16, 16]}>
       {popups.map((p) => (
-        <div key={p.id} className="glass flex flex-col gap-4 rounded-xl p-6">
-          <div className="flex items-start justify-between gap-2">
-            <div>
-              <p className="font-display text-base font-semibold">{p.name}</p>
-              <p className="text-sm text-muted-foreground">{triggerLabel[p.trigger]}</p>
-            </div>
-            <Tag color={p.active ? 'green' : 'default'}>{p.active ? 'Đang chạy' : 'Tạm dừng'}</Tag>
-          </div>
-          <div className="space-y-3">
-            <div className="grid grid-cols-3 gap-2 text-center">
-              <Metric
-                icon={<Eye className="size-3.5" />}
-                label="Hiển thị"
-                value={formatNumber(p.impressions)}
-              />
-              <Metric
-                icon={<MousePointerClick className="size-3.5" />}
-                label="Nhấp"
-                value={formatNumber(p.clicks)}
-              />
-              <Metric label="CTR" value={ctrFn(p.clicks, p.impressions)} />
-            </div>
-            <div className="flex items-center justify-between border-t border-border pt-3">
+        <Col key={p.id} xs={24} md={12} xl={8}>
+          <Card
+            variant="borderless"
+            title={
+              <div>
+                <p className="font-display text-base font-semibold">{p.name}</p>
+                <p className="text-sm font-normal text-muted-foreground">
+                  {triggerLabel[p.trigger]}
+                </p>
+              </div>
+            }
+            extra={
+              <Tag color={p.active ? 'green' : 'default'}>
+                {p.active ? 'Đang chạy' : 'Tạm dừng'}
+              </Tag>
+            }
+          >
+            <Row gutter={8} className="text-center">
+              <Col span={8}>
+                <Metric
+                  icon={<Eye className="size-3.5" />}
+                  label="Hiển thị"
+                  value={formatNumber(p.impressions)}
+                />
+              </Col>
+              <Col span={8}>
+                <Metric
+                  icon={<MousePointerClick className="size-3.5" />}
+                  label="Nhấp"
+                  value={formatNumber(p.clicks)}
+                />
+              </Col>
+              <Col span={8}>
+                <Metric label="CTR" value={ctrFn(p.clicks, p.impressions)} />
+              </Col>
+            </Row>
+            <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
               <span className="truncate text-xs text-muted-foreground">→ {p.target}</span>
               <Switch checked={p.active} onChange={() => onToggle(p.id)} />
             </div>
-          </div>
-        </div>
+          </Card>
+        </Col>
       ))}
-    </div>
+    </Row>
   );
 }
 
 function Metric({ icon, label, value }: { icon?: ReactNode; label: string; value: string }) {
   return (
-    <div className="rounded-lg bg-muted/60 p-2">
-      <p className="tabular-nums flex items-center justify-center gap-1 text-sm font-semibold">
-        {icon}
-        {value}
-      </p>
-      <p className="mt-0.5 text-[11px] text-muted-foreground">{label}</p>
-    </div>
+    <Statistic
+      title={label}
+      value={value}
+      prefix={icon}
+      valueStyle={{ fontSize: 14, fontWeight: 600 }}
+    />
   );
 }

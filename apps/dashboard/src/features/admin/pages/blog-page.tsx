@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Plus, Search, Pencil, Eye } from 'lucide-react';
-import { Button, Input, Select, Table, Tag, type TableColumnsType } from 'antd';
+import { Button, Card, Input, Select, Table, Tag, type TableColumnsType } from 'antd';
 import { formatDate, formatNumber } from '@/lib/utils';
 import { PageHeader } from '../components/page-header';
 import { adminQueries } from '../data/queries';
@@ -120,34 +120,39 @@ export function BlogPage() {
         }
       />
 
-      <div className="glass animate-rise overflow-hidden rounded-xl">
-        <div className="flex flex-wrap items-center gap-3 border-b border-border p-4">
-          <div className="relative w-full max-w-xs">
-            <Search className="pointer-events-none absolute top-1/2 left-3 z-10 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Tìm tiêu đề, chuyên mục…"
-              className="pl-9"
-              variant="borderless"
+      <Card
+        variant="borderless"
+        className="animate-rise"
+        styles={{ body: { padding: 0 } }}
+        title={
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="relative w-full max-w-xs">
+              <Search className="pointer-events-none absolute top-1/2 left-3 z-10 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Tìm tiêu đề, chuyên mục…"
+                className="pl-9"
+                variant="borderless"
+              />
+            </div>
+            <Select
+              value={status}
+              onChange={(v) => setStatus(v)}
+              style={{ width: 160 }}
+              options={[
+                { value: 'all', label: 'Mọi trạng thái' },
+                { value: 'published', label: 'Đã đăng' },
+                { value: 'draft', label: 'Nháp' },
+                { value: 'scheduled', label: 'Hẹn giờ' },
+              ]}
             />
+            <p className="ml-auto hidden text-sm font-normal text-muted-foreground sm:block">
+              {formatNumber(filtered.length)} bài viết
+            </p>
           </div>
-          <Select
-            value={status}
-            onChange={(v) => setStatus(v)}
-            style={{ width: 160 }}
-            options={[
-              { value: 'all', label: 'Mọi trạng thái' },
-              { value: 'published', label: 'Đã đăng' },
-              { value: 'draft', label: 'Nháp' },
-              { value: 'scheduled', label: 'Hẹn giờ' },
-            ]}
-          />
-          <p className="ml-auto hidden text-sm text-muted-foreground sm:block">
-            {formatNumber(filtered.length)} bài viết
-          </p>
-        </div>
-
+        }
+      >
         <Table<BlogPost>
           rowKey="id"
           columns={columns}
@@ -155,7 +160,7 @@ export function BlogPage() {
           loading={isLoading}
           pagination={{ pageSize: 8, hideOnSinglePage: true }}
         />
-      </div>
+      </Card>
 
       <PostEditorDialog open={editorOpen} onOpenChange={setEditorOpen} post={editingPost} />
       <PostViewDialog
