@@ -6,12 +6,16 @@ import {
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Roles } from '@org/backend-enum';
+import { isAdminDevBypass } from './admin-dev-bypass';
 
 const ADMIN_ROLES = new Set<Roles>([Roles.ADMIN, Roles.SUPER_ADMIN]);
 
 @Injectable()
 export class AdminRoleGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
+    if (isAdminDevBypass()) {
+      return true;
+    }
     const req = GqlExecutionContext.create(context).getContext().req;
     const role = req?.user?.role as Roles | undefined;
     if (!role || !ADMIN_ROLES.has(role)) {
