@@ -1,45 +1,24 @@
 import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Plus, Pencil } from 'lucide-react';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Skeleton } from '@/components/ui/skeleton';
+import { App, Button, Select, Switch, Table, Tag, type TableColumnsType } from 'antd';
 import { formatDate, formatNumber } from '@/lib/utils';
 import { PageHeader } from '../components/page-header';
-import { PaginationBar } from '../components/pagination-bar';
-import { usePagination } from '../components/use-pagination';
 import { adminQueries } from '../data/queries';
+import { useToggleVanHanPublished } from '../data/mutations';
 import { VanHanEditorDialog } from './van-han-editor-dialog';
 import type { VanHanEntry, VanHanRating } from '../data/types';
 
-const RATING_META: Record<
-  VanHanRating,
-  { label: string; variant: 'success' | 'neutral' | 'destructive' }
-> = {
-  cat: { label: 'Cát', variant: 'success' },
-  binh: { label: 'Bình', variant: 'neutral' },
-  hung: { label: 'Hung', variant: 'destructive' },
+const RATING_META: Record<VanHanRating, { label: string; color: string }> = {
+  cat: { label: 'Cát', color: 'green' },
+  binh: { label: 'Bình', color: 'default' },
+  hung: { label: 'Hung', color: 'red' },
 };
 
 export function VanHanPage() {
   const { data: entries, isLoading } = useQuery(adminQueries.vanHan());
+  const { message } = App.useApp();
+  const togglePublished = useToggleVanHanPublished();
   const [rating, setRating] = useState<VanHanRating | 'all'>('all');
   const [editorOpen, setEditorOpen] = useState(false);
   const [editingEntry, setEditingEntry] = useState<VanHanEntry | null>(null);
@@ -58,8 +37,66 @@ export function VanHanPage() {
     return rating === 'all' ? entries : entries.filter((e) => e.rating === rating);
   }, [entries, rating]);
 
-  const pager = usePagination(filtered, 8);
   const publishedCount = entries?.filter((e) => e.published).length ?? 0;
+
+  const onTogglePublished = async (id: string) => {
+    try {
+      await togglePublished.mutateAsync(id);
+    } catch {
+      message.error('Không thể cập nhật trạng thái xuất bản.');
+    }
+  };
+
+  const columns: TableColumnsType<VanHanEntry> = [
+    {
+      title: 'Tuổi',
+      dataIndex: 'age',
+      align: 'right',
+      render: (age: number) => <span className="tabular-nums font-medium">{age}</span>,
+    },
+    { title: 'Sao chiếu mệnh', dataIndex: 'star' },
+    {
+      title: 'Mức',
+      dataIndex: 'rating',
+      render: (r: VanHanRating) => <Tag color={RATING_META[r].color}>{RATING_META[r].label}</Tag>,
+    },
+    {
+      title: 'Luận giải',
+      dataIndex: 'summary',
+      render: (summary: string) => (
+        <p className="max-w-sm truncate text-sm text-muted-foreground">{summary}</p>
+      ),
+    },
+    {
+      title: 'Cập nhật',
+      dataIndex: 'updatedAt',
+      render: (updatedAt: string) => (
+        <span className="text-sm text-muted-foreground">{formatDate(updatedAt)}</span>
+      ),
+    },
+    {
+      title: 'Xuất bản',
+      dataIndex: 'published',
+      align: 'center',
+      render: (published: boolean, row) => (
+        <Switch checked={published} onChange={() => onTogglePublished(row.id)} />
+      ),
+    },
+    {
+      title: '',
+      key: 'actions',
+      align: 'right',
+      render: (_, entry) => (
+        <Button
+          type="text"
+          size="small"
+          aria-label="Sửa"
+          icon={<Pencil className="size-4" />}
+          onClick={() => openEdit(entry)}
+        />
+      ),
+    },
+  ];
 
   return (
     <div>
@@ -69,8 +106,8 @@ export function VanHanPage() {
         title="Dữ liệu vận hạn"
         subtitle="Sao chiếu mệnh và luận giải theo tuổi cho năm Bính Ngọ 2026."
         actions={
-          <Button onClick={openNew}>
-            <Plus /> Thêm dòng
+          <Button type="primary" icon={<Plus className="size-4" />} onClick={openNew}>
+            Thêm dòng
           </Button>
         }
       />
@@ -82,93 +119,32 @@ export function VanHanPage() {
         <Stat label="Can chi" value="Bính Ngọ" seal />
       </div>
 
-      <Card className="gap-0 overflow-hidden py-0">
-        <div className="flex items-center justify-between gap-3 border-b p-4">
-          <Select value={rating} onValueChange={(v) => setRating(v as VanHanRating | 'all')}>
-            <SelectTrigger className="w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Mọi mức</SelectItem>
-              <SelectItem value="cat">Cát</SelectItem>
-              <SelectItem value="binh">Bình</SelectItem>
-              <SelectItem value="hung">Hung</SelectItem>
-            </SelectContent>
-          </Select>
+      <div className="glass overflow-hidden rounded-xl">
+        <div className="flex items-center justify-between gap-3 border-b border-border p-4">
+          <Select
+            value={rating}
+            onChange={(v) => setRating(v)}
+            style={{ width: 160 }}
+            options={[
+              { value: 'all', label: 'Mọi mức' },
+              { value: 'cat', label: 'Cát' },
+              { value: 'binh', label: 'Bình' },
+              { value: 'hung', label: 'Hung' },
+            ]}
+          />
           <p className="hidden text-sm text-muted-foreground sm:block">
             {formatNumber(filtered.length)} dòng
           </p>
         </div>
 
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="text-right">Tuổi</TableHead>
-              <TableHead>Sao chiếu mệnh</TableHead>
-              <TableHead>Mức</TableHead>
-              <TableHead>Luận giải</TableHead>
-              <TableHead>Cập nhật</TableHead>
-              <TableHead className="text-center">Xuất bản</TableHead>
-              <TableHead />
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {isLoading
-              ? Array.from({ length: 8 }).map((_, i) => (
-                  <TableRow key={i}>
-                    <TableCell colSpan={7}>
-                      <Skeleton className="h-8 w-full" />
-                    </TableCell>
-                  </TableRow>
-                ))
-              : pager.pageItems.map((entry) => (
-                  <TableRow key={entry.id}>
-                    <TableCell className="tabular-nums text-right font-medium">
-                      {entry.age}
-                    </TableCell>
-                    <TableCell>{entry.star}</TableCell>
-                    <TableCell>
-                      <Badge variant={RATING_META[entry.rating].variant}>
-                        {RATING_META[entry.rating].label}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="max-w-sm">
-                      <p className="truncate text-sm text-muted-foreground">{entry.summary}</p>
-                    </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      {formatDate(entry.updatedAt)}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      <div className="flex items-center justify-center">
-                        <Switch defaultChecked={entry.published} />
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button
-                        variant="ghost"
-                        size="icon-sm"
-                        aria-label="Sửa"
-                        onClick={() => openEdit(entry)}
-                      >
-                        <Pencil />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-          </TableBody>
-        </Table>
-        {!isLoading && (
-          <PaginationBar
-            page={pager.page}
-            totalPages={pager.totalPages}
-            rangeStart={pager.rangeStart}
-            rangeEnd={pager.rangeEnd}
-            totalItems={pager.totalItems}
-            onPage={pager.setPage}
-            unit="dòng"
-          />
-        )}
-      </Card>
+        <Table<VanHanEntry>
+          rowKey="id"
+          columns={columns}
+          dataSource={filtered}
+          loading={isLoading}
+          pagination={{ pageSize: 8, hideOnSinglePage: true }}
+        />
+      </div>
 
       <VanHanEditorDialog open={editorOpen} onOpenChange={setEditorOpen} entry={editingEntry} />
     </div>

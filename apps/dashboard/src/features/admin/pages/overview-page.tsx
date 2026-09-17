@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from 'antd';
 import { cn, formatCompact, formatNumber } from '@/lib/utils';
 import { PageHeader } from '../components/page-header';
 import { TrafficChart, SourcesDonut, ELEMENT_VARS } from '../components/charts';
@@ -206,12 +206,12 @@ function OverviewSkeleton() {
       <PageHeader seal="觀" hanReading="Tổng Quan" title="Tổng quan" />
       <div className="grid grid-cols-1 gap-10 border-b border-border pb-10 lg:grid-cols-12">
         <div className="space-y-4 lg:col-span-5">
-          <Skeleton className="h-4 w-32" />
-          <Skeleton className="h-16 w-56" />
-          <Skeleton className="h-14 w-full" />
+          <Skeleton.Input active size="small" style={{ width: 128 }} />
+          <Skeleton.Input active size="large" block />
+          <Skeleton active paragraph={{ rows: 2 }} title={false} />
         </div>
         <div className="lg:col-span-7">
-          <Skeleton className="h-[280px] w-full" />
+          <Skeleton.Node active style={{ width: '100%', height: 280 }} />
         </div>
       </div>
     </div>

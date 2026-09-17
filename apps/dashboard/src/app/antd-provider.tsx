@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { ConfigProvider, theme as antdTheme } from 'antd';
+import { App, ConfigProvider, theme as antdTheme } from 'antd';
 import viVN from 'antd/locale/vi_VN';
 import { useTheme } from '../features/admin/layout/use-theme';
 
@@ -19,7 +19,7 @@ export function AntdProvider({ children }: { children: ReactNode }) {
         },
       }}
     >
-      {children}
+      <App>{children}</App>
     </ConfigProvider>
   );
 }

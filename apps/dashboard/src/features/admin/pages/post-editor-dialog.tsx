@@ -1,27 +1,29 @@
+import { useEffect } from 'react';
 import { Sparkles } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
-  DialogDescription,
-  DialogClose,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { App, Button, Form, Input, Modal, Select } from 'antd';
+import { useCreatePost, useUpdatePost } from '../data/mutations';
 import type { BlogPost } from '../data/types';
 
 const CATEGORIES = ['Tử vi', 'Phong thủy', 'Vận hạn', 'Xem ngày', 'Kiến thức'];
+
+interface PostFormValues {
+  title: string;
+  category: string;
+  status: string;
+  excerpt?: string;
+}
+
+function slugify(input: string): string {
+  return input
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd')
+    .replace(/Đ/g, 'D')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
 
 export function PostEditorDialog({
   open,
@@ -33,85 +35,107 @@ export function PostEditorDialog({
   post: BlogPost | null;
 }) {
   const editing = !!post;
+  const { message } = App.useApp();
+  const [form] = Form.useForm<PostFormValues>();
+  const createPost = useCreatePost();
+  const updatePost = useUpdatePost();
+
+  useEffect(() => {
+    if (open) {
+      form.setFieldsValue({
+        title: post?.title ?? '',
+        category: post?.category ?? CATEGORIES[0],
+        status: post?.status ?? 'draft',
+        excerpt: '',
+      });
+    }
+  }, [open, post, form]);
+
+  const submitting = createPost.isPending || updatePost.isPending;
+
+  const onFinish = async (values: PostFormValues) => {
+    try {
+      if (editing && post) {
+        await updatePost.mutateAsync({
+          id: post.id,
+          input: {
+            title: values.title,
+            category: values.category,
+            status: values.status,
+          },
+        });
+        message.success('Đã lưu thay đổi.');
+      } else {
+        await createPost.mutateAsync({
+          title: values.title,
+          slug: slugify(values.title),
+          category: values.category,
+          status: values.status,
+          author: 'Quản trị viên',
+        });
+        message.success('Đã tạo bài viết.');
+      }
+      onOpenChange(false);
+    } catch {
+      message.error('Có lỗi xảy ra, vui lòng thử lại.');
+    }
+  };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      {/* Radix unmounts content on close, so fields reset from these defaults on each open. */}
-      <DialogContent className="max-w-xl">
-        <DialogHeader>
-          <DialogTitle>{editing ? 'Sửa bài viết' : 'Viết bài mới'}</DialogTitle>
-          <DialogDescription>
-            {editing
-              ? 'Cập nhật nội dung và trạng thái bài viết.'
-              : 'Tạo một bài viết mới cho blog.'}
-          </DialogDescription>
-        </DialogHeader>
-
-        <form
-          className="grid gap-4"
-          onSubmit={(e) => {
-            e.preventDefault();
-            onOpenChange(false);
-          }}
+    <Modal
+      open={open}
+      onCancel={() => onOpenChange(false)}
+      title={editing ? 'Sửa bài viết' : 'Viết bài mới'}
+      footer={null}
+      destroyOnHidden
+      width={576}
+      classNames={{ container: 'glass' }}
+    >
+      <p className="mb-4 text-sm text-muted-foreground">
+        {editing ? 'Cập nhật nội dung và trạng thái bài viết.' : 'Tạo một bài viết mới cho blog.'}
+      </p>
+      <Form form={form} layout="vertical" onFinish={onFinish} requiredMark={false}>
+        <Form.Item
+          name="title"
+          label="Tiêu đề"
+          rules={[{ required: true, message: 'Vui lòng nhập tiêu đề.' }]}
         >
-          <div className="grid gap-1.5">
-            <Label htmlFor="post-title">Tiêu đề</Label>
-            <Input
-              id="post-title"
-              defaultValue={post?.title ?? ''}
-              placeholder="Ví dụ: Luận giải cung Mệnh…"
-              required
+          <Input placeholder="Ví dụ: Luận giải cung Mệnh…" />
+        </Form.Item>
+
+        <div className="grid grid-cols-2 gap-4">
+          <Form.Item name="category" label="Chuyên mục">
+            <Select options={CATEGORIES.map((c) => ({ value: c, label: c }))} />
+          </Form.Item>
+          <Form.Item name="status" label="Trạng thái">
+            <Select
+              options={[
+                { value: 'draft', label: 'Nháp' },
+                { value: 'scheduled', label: 'Hẹn giờ' },
+                { value: 'published', label: 'Đã đăng' },
+              ]}
             />
-          </div>
+          </Form.Item>
+        </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="grid gap-1.5">
-              <Label>Chuyên mục</Label>
-              <Select defaultValue={post?.category ?? CATEGORIES[0]}>
-                <SelectTrigger className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {CATEGORIES.map((c) => (
-                    <SelectItem key={c} value={c}>
-                      {c}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid gap-1.5">
-              <Label>Trạng thái</Label>
-              <Select defaultValue={post?.status ?? 'draft'}>
-                <SelectTrigger className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="draft">Nháp</SelectItem>
-                  <SelectItem value="scheduled">Hẹn giờ</SelectItem>
-                  <SelectItem value="published">Đã đăng</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+        <Form.Item name="excerpt" label="Tóm tắt">
+          <Input.TextArea placeholder="Đoạn mô tả ngắn hiển thị ở danh sách…" rows={3} />
+        </Form.Item>
 
-          <div className="grid gap-1.5">
-            <Label htmlFor="post-excerpt">Tóm tắt</Label>
-            <Textarea id="post-excerpt" placeholder="Đoạn mô tả ngắn hiển thị ở danh sách…" />
-          </div>
-
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button type="button" variant="ghost">
-                Huỷ
-              </Button>
-            </DialogClose>
-            <Button type="submit">
-              <Sparkles /> {editing ? 'Lưu thay đổi' : 'Tạo bài viết'}
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+        <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+          <Button type="text" onClick={() => onOpenChange(false)}>
+            Huỷ
+          </Button>
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={submitting}
+            icon={<Sparkles className="size-4" />}
+          >
+            {editing ? 'Lưu thay đổi' : 'Tạo bài viết'}
+          </Button>
+        </div>
+      </Form>
+    </Modal>
   );
 }

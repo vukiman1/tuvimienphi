@@ -1,17 +1,13 @@
 import { Sparkles } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
-  DialogDescription,
-  DialogClose,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
+import { App, Button, Form, Input, Modal, Switch } from 'antd';
+import { useCreateAdRedirect } from '../data/mutations';
+
+interface AdFormValues {
+  label: string;
+  slug: string;
+  target: string;
+  active: boolean;
+}
 
 export function AdEditorDialog({
   open,
@@ -20,58 +16,96 @@ export function AdEditorDialog({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
+  const { message } = App.useApp();
+  const [form] = Form.useForm<AdFormValues>();
+  const createRedirect = useCreateAdRedirect();
+
+  const onFinish = async (values: AdFormValues) => {
+    try {
+      await createRedirect.mutateAsync({
+        label: values.label,
+        slug: values.slug,
+        target: values.target,
+        active: values.active,
+      });
+      message.success('Đã tạo liên kết.');
+      onOpenChange(false);
+    } catch {
+      message.error('Không thể tạo liên kết.');
+    }
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-xl">
-        <DialogHeader>
-          <DialogTitle>Thêm liên kết chuyển hướng</DialogTitle>
-          <DialogDescription>
-            Tạo một đường dẫn rút gọn đo lường lượt nhấp, chuyển tới trang đích.
-          </DialogDescription>
-        </DialogHeader>
-
-        <form
-          className="grid gap-4"
-          onSubmit={(e) => {
-            e.preventDefault();
-            onOpenChange(false);
-          }}
+    <Modal
+      open={open}
+      onCancel={() => onOpenChange(false)}
+      title="Thêm liên kết chuyển hướng"
+      footer={null}
+      destroyOnHidden
+      width={576}
+      classNames={{ container: 'glass' }}
+    >
+      <p className="mb-4 text-sm text-muted-foreground">
+        Tạo một đường dẫn rút gọn đo lường lượt nhấp, chuyển tới trang đích.
+      </p>
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={onFinish}
+        requiredMark={false}
+        initialValues={{ active: true }}
+      >
+        <Form.Item
+          name="label"
+          label="Tên chiến dịch"
+          rules={[{ required: true, message: 'Vui lòng nhập tên chiến dịch.' }]}
         >
-          <div className="grid gap-1.5">
-            <Label htmlFor="ad-label">Tên chiến dịch</Label>
-            <Input id="ad-label" placeholder="Ví dụ: Ưu đãi luận giải chuyên sâu" required />
-          </div>
+          <Input placeholder="Ví dụ: Ưu đãi luận giải chuyên sâu" />
+        </Form.Item>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="grid gap-1.5">
-              <Label htmlFor="ad-slug">Đường dẫn</Label>
-              <Input id="ad-slug" placeholder="/go/uu-dai" required />
-            </div>
-            <div className="flex items-end justify-between gap-2 rounded-md border border-input px-3 py-2">
-              <Label htmlFor="ad-active" className="mb-0">
-                Kích hoạt
-              </Label>
-              <Switch id="ad-active" defaultChecked />
-            </div>
-          </div>
+        <div className="grid grid-cols-2 items-end gap-4">
+          <Form.Item
+            name="slug"
+            label="Đường dẫn"
+            rules={[{ required: true, message: 'Vui lòng nhập đường dẫn.' }]}
+          >
+            <Input placeholder="/go/uu-dai" />
+          </Form.Item>
+          <Form.Item
+            name="active"
+            label="Kích hoạt"
+            valuePropName="checked"
+            className="flex items-center"
+          >
+            <Switch />
+          </Form.Item>
+        </div>
 
-          <div className="grid gap-1.5">
-            <Label htmlFor="ad-target">Đích đến (URL)</Label>
-            <Input id="ad-target" type="url" placeholder="https://…" required />
-          </div>
+        <Form.Item
+          name="target"
+          label="Đích đến (URL)"
+          rules={[
+            { required: true, message: 'Vui lòng nhập URL đích.' },
+            { type: 'url', message: 'URL không hợp lệ.' },
+          ]}
+        >
+          <Input type="url" placeholder="https://…" />
+        </Form.Item>
 
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button type="button" variant="ghost">
-                Huỷ
-              </Button>
-            </DialogClose>
-            <Button type="submit">
-              <Sparkles /> Tạo liên kết
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+        <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+          <Button type="text" onClick={() => onOpenChange(false)}>
+            Huỷ
+          </Button>
+          <Button
+            type="primary"
+            htmlType="submit"
+            loading={createRedirect.isPending}
+            icon={<Sparkles className="size-4" />}
+          >
+            Tạo liên kết
+          </Button>
+        </div>
+      </Form>
+    </Modal>
   );
 }
