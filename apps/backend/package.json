@@ -122,6 +122,7 @@
   },
   "dependencies": {
     "@apollo/server": "^5.5.1",
+    "@as-integrations/express5": "^1.1.2",
     "@aws-sdk/client-s3": "^3.1132.0",
     "@bull-board/api": "^9.8.0",
     "@bull-board/express": "^9.8.0",

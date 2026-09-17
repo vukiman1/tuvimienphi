@@ -3,7 +3,7 @@ const { join } = require('path');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const RUNTIME_EXTERNALS =
-  /^(@sentry|@opentelemetry)\/|^google-auth-library(\/|$)|^(require-in-the-middle|import-in-the-middle)$/;
+  /^(@sentry|@opentelemetry)\/|^google-auth-library(\/|$)|^(require-in-the-middle|import-in-the-middle)$|^@apollo\/(subgraph|gateway)(\/|$)|^@as-integrations\/fastify(\/|$)|^ts-morph(\/|$)/;
 
 module.exports = (_env, argv) => {
   const isProduction = argv.mode === 'production';
@@ -18,7 +18,10 @@ module.exports = (_env, argv) => {
       ({ request }, callback) =>
         RUNTIME_EXTERNALS.test(request) ? callback(null, `commonjs ${request}`) : callback(),
     ],
-    ignoreWarnings: [{ module: /standardwebhooks/, message: /Failed to parse source map/ }],
+    ignoreWarnings: [
+      { module: /standardwebhooks/, message: /Failed to parse source map/ },
+      { module: /graphql-playground-html/, message: /Failed to parse source map/ },
+    ],
     output: {
       path: join(__dirname, 'dist'),
       clean: true,
