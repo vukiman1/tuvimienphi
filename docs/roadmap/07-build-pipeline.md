@@ -27,31 +27,25 @@ của máy dev.
 
 ---
 
-## 2. 🟡 Hành lý serverless
+## 2. ✅ Hành lý serverless — đã dọn ở #90
 
-**Vấn đề:** webpack vẫn sinh ra một bundle serverless mà **không ai deploy**:
+`chore(backend): remove Vercel deployment (#90)` đã xoá `apps/backend/vercel.json`,
+`apps/backend/api/index.js`, `apps/backend/src/serverless.ts` và `additionalEntryPoints` trong
+webpack. Build giờ chỉ sinh `main.js`.
 
-```js
-// apps/backend/webpack.config.js
-additionalEntryPoints: [{ entryName: 'serverless', entryPath: './src/serverless.ts' }],
-```
+**Nhưng #90 bỏ sót một chỗ**, và nó làm gãy trang công khai: `apps/frontend/vercel.json` vẫn rewrite
+`/api/*` về `https://tuvimienphi-backend.vercel.app`, host đã chết. Vá ở #97.
 
-Kèm theo: `apps/backend/api/index.js` (entry cho Vercel function), `apps/backend/src/serverless.ts`,
-`apps/backend/vercel.json`, và đoạn `config-bootstrap.ts` nội suy config "để bundle serverless tự mang
-cấu hình của nó".
+**Còn lại hai thứ, không phải việc của repo:**
 
-**Đã kiểm — không còn gì nối vào:**
-
-- `.github/workflows/` không tham chiếu `vercel` hay `serverless`.
-- `apps/backend/Dockerfile` chạy `CMD ["node", "main.js"]`, không đụng `serverless.js`.
-
-**Hệ quả:** mỗi lần build tốn thêm thời gian cho một entry point chết, và người đọc mới sẽ tưởng dự án
-vẫn deploy lên Vercel.
-
-**Cách làm:** bỏ `additionalEntryPoints`, xoá `api/index.js`, `src/serverless.ts`, `vercel.json`, rồi
-xem lại phần nội suy config trong `config-bootstrap.ts` xem còn lý do tồn tại không.
-
-> ⚠️ Xoá `vercel.json` là quyết định "không quay lại Vercel nữa". Xác nhận trước khi làm.
+- **Project `tuvimienphi-backend` vẫn tồn tại trong dashboard Vercel** — xoá file trong repo không gỡ
+  được một project đã kết nối, nên nó vẫn build preview mỗi PR. Phải xoá trong dashboard. Coi như mọi
+  secret còn cấu hình ở đó đã lộ; riêng `SECRET_KEY` thì **không xoay được** nếu đã có ai đăng ký TOTP,
+  vì nó mã hoá TOTP secret khi lưu.
+- **`GENERATION_BUDGET_MS` vẫn căn theo trần 30 giây của Vercel function.** Xem
+  `luan-giai.constants.ts` và `luan-giai.service.ts`. Trên VPS không còn trần đó, nên đây là ràng buộc
+  tự đặt mà không ai cần — nới ra thì lượt sinh luận giải có thêm thời gian thử lại. Là quyết định sản
+  phẩm, không phải dọn dẹp.
 
 ---
 
