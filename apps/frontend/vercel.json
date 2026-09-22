@@ -6,7 +6,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://tuvimienphi-backend.vercel.app/api/$1"
+      "destination": "https://api.xemtuvimienphi.top/api/$1"
     },
     {
       "source": "/(.*)",
