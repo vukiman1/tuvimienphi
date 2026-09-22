@@ -27,8 +27,25 @@ Quy ước ưu tiên: 🔴 nên làm sớm (bảo mật) · 🟡 nên làm (ch�
 | 2   | Phiên tách theo audience (user / admin) | 🔴      | Hardening | [06-admin-console.md](06-admin-console.md) |
 | 3   | `RolesGuard` + đường đăng nhập admin    | 🔴      | Feature   | [06-admin-console.md](06-admin-console.md) |
 | 4   | Module `admin` và endpoint thật         | 🟡      | Feature   | [06-admin-console.md](06-admin-console.md) |
+| 4b  | Cái bẫy của app hai transport           | 🔴      | Hardening | [06-admin-console.md](06-admin-console.md) |
+| 4c  | Phân trang REST — quyết sau GraphQL     | 🟡      | Refactor  | [06-admin-console.md](06-admin-console.md) |
 | 5   | `POST /van-han` đang mở cho mọi user    | 🔴      | Fix       | [06-admin-console.md](06-admin-console.md) |
 | 6   | Console chưa có lớp bảo vệ nào          | 🔴      | Fix       | [06-admin-console.md](06-admin-console.md) |
+
+## REST contract
+
+| #   | Việc                                        | Ưu tiên | Loại      | Chi tiết                                   |
+| --- | ------------------------------------------- | ------- | --------- | ------------------------------------------ |
+| 1   | Bỏ `exceptionFactory` tuỳ biến cho validate | 🟡      | Refactor  | [08-rest-contract.md](08-rest-contract.md) |
+| 2   | REST còn rò chi tiết Postgres ra client     | 🟡      | Hardening | [08-rest-contract.md](08-rest-contract.md) |
+
+## Build & tooling
+
+| #   | Việc                                          | Ưu tiên | Loại     | Chi tiết                                     |
+| --- | --------------------------------------------- | ------- | -------- | -------------------------------------------- |
+| 1   | `pnpm dev` build hai lần (một lần production) | 🟡      | Fix      | [07-build-pipeline.md](07-build-pipeline.md) |
+| 2   | Dọn hành lý serverless (Vercel)               | 🟡      | Refactor | [07-build-pipeline.md](07-build-pipeline.md) |
+| 3   | Watch + restart cho dev                       | 🟢      | Tooling  | [07-build-pipeline.md](07-build-pipeline.md) |
 
 ## Lá số
 

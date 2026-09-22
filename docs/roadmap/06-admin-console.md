@@ -133,7 +133,69 @@ Cả 5 query trong `apps/dashboard/src/features/admin/data/queries.ts` đều l�
 
 > ⚠️ Dashboard đang tải trọn danh sách rồi lọc/phân trang ở client (`usePagination(filtered, 8)`), và query **không nhận tham số nào**. Với dữ liệu thật là vỡ — phải sửa cùng lúc với endpoint.
 
+> ⚠️ **Thiếu index cho truy vấn con.** `GET users` dùng hai subquery tương quan chạy **mỗi dòng**: `COUNT(*) FROM la_so_history` và `MAX(session.last_seen_at)`. Bảng `user_sessions` chỉ có index `(user_id, revoked_at)` và `(user_id, expires_at)` — **không có** `(user_id, last_seen_at)`. Với `limit: 100` là 200 truy vấn con mỗi request. Cần đo rồi thêm index trước khi bảng `users` lớn.
+
+> ⚠️ **`extensions.code` của GraphQL lúc là số lúc là chuỗi.** Lỗi ứng dụng trả số (`exception.getStatus()` → `401`), lỗi truy vấn trả chuỗi (`'GRAPHQL_VALIDATION_FAILED'`). Client phải xử lý hai kiểu. Nên thống nhất một kiểu trước khi dashboard bắt đầu đọc mã lỗi.
+
 **Tuỳ chọn:** migration thêm cột trạng thái vào `users` cho nút khoá tài khoản — kèm việc chặn ở đăng nhập **và** ở `rotateSession`, nếu không khoá xong người ta vẫn dùng tiếp đến hết phiên.
+
+---
+
+## 4b. 🔴 Cái bẫy của app hai transport
+
+Module `admin` phục vụ qua GraphQL, phần còn lại qua REST. Mọi thứ đăng ký **global** trong app này đều ngầm giả định có HTTP request, và dưới một resolver thì `switchToHttp()` **không báo lỗi** — nó trả về nhầm thứ:
+
+```js
+switchToHttp() {
+  return Object.assign(this, {
+    getRequest: () => this.getArgByIndex(0),
+    getResponse: () => this.getArgByIndex(1),
+  });
+}
+```
+
+Với HTTP, `args = [req, res, next]`. Với GraphQL, `args = [root, args, context, info]` — nên `getResponse()` trả về **object tham số của truy vấn**. Không có `undefined` để nhận ra sớm; code chạy tiếp rồi mới nổ ở chỗ khác.
+
+Hậu quả nếu quên, theo từng thứ:
+
+| Thứ global                     | Hỏng thế nào                                                                                        |
+| ------------------------------ | --------------------------------------------------------------------------------------------------- |
+| `RolesGuard`                   | Đọc user từ HTTP request → **mọi resolver bị 403**                                                  |
+| `ResponseTransformInterceptor` | Bọc kết quả vào envelope REST, đọc `response.statusCode`                                            |
+| Hai exception filter           | Gọi `response.status().json()` → lỗi trong resolver nổ trong chính đường xử lý lỗi, che mất lỗi gốc |
+| `ThrottlerGuard`               | Đếm theo IP không tìm thấy → endpoint GraphQL **không bị giới hạn tốc độ**                          |
+
+**Luật cho người sửa sau:** bất kỳ thứ gì đăng ký ở `APP_GUARD` / `APP_INTERCEPTOR` / `APP_FILTER` đều phải hoặc dùng `isHttpContext()` từ `@org/backend-helpers` để tự đứng ngoài, hoặc lấy request qua `requestFromContext()` ở `apps/backend/src/app/`. Đừng viết tay `getType() === 'http'` — một tên hàm thì grep ra được, một biểu thức rải rác thì không.
+
+> ⚠️ **Lỗ rò sẵn có ở REST, chưa vá:** `TypeormExceptionFilter` đưa `exception.detail` của Postgres vào response cho mã `23505`, và `exception.message` cho mọi lỗi khác. Chuỗi `detail` trông như `Key (email)=(someone@example.com) already exists.` — tức REST đang trả email thật và tên ràng buộc ra ngoài. Nhánh GraphQL đã được bịt (ném `ConflictException` / `InternalServerErrorException` chung chung, log lỗi thật ở máy chủ), nhánh REST thì **giữ nguyên hành vi cũ** vì sửa nó là đổi hợp đồng API hiện có. Nên vá, nhưng là việc riêng.
+
+---
+
+## 4c. 🟡 Phân trang REST — quyết sau khi xong GraphQL
+
+**Phát hiện:** toàn bộ tầng phân trang là **code chết từ đầu đến cuối**, không phải bộ khung chờ dùng.
+
+| Mắt xích                                       | Thực tế                                                        |
+| ---------------------------------------------- | -------------------------------------------------------------- |
+| `getManyAndCount()`                            | Xuất hiện đúng 1 lần, trong `BaseService.getAllWithPagination` |
+| `getAllWithPagination`                         | Không ai gọi                                                   |
+| Nhánh `isPagination` trong interceptor         | Chưa từng chạy, vì không endpoint nào trả tuple                |
+| `httpRequest.getPaginated` / `unwrapPaginated` | Có định nghĩa ở frontend, không ai gọi                         |
+| `PaginationDto` / `PaginationToQuery`          | Chỉ `GET /api/admin/users` dùng                                |
+
+**Vì sao không để nguyên:** [response-transform.interceptor.ts](../../packages/backend/interceptors/src/response-transform.interceptor.ts) **đoán** "đây là kết quả phân trang" theo hình dạng `[mảng, số]`. Endpoint nào trả về tuple như vậy vì lý do khác cũng bị bọc thành envelope phân trang, âm thầm, không cảnh báo. Kèm ba lỗi vụn trong `getMetadata`: đọc lại `req.query` nên `?page=2&page=3` cho `page: NaN`; `?limit=0` cho `totalPages: Infinity`; và giá trị mặc định `10` bị lặp ở hai file.
+
+**Vì sao chưa dùng `nestjs-typeorm-paginate`:** bản 4.1.0 khai peer `typeorm: ^0.3.0`, repo đang chạy **typeorm 1.1.1**. Thư viện mà công việc chính là gọi vào ruột TypeORM thì lệch major là rủi ro thật, không phải cảnh báo hình thức.
+
+**Ba lựa chọn:**
+
+1. **Xoá** `getAllWithPagination`, `getQueryBuilder`, nhánh `isPagination`/`getMetadata`, `getPaginated`/`unwrapPaginated`. Giữ `PaginationDto`. Ít code nhất, hết hẳn chuyện đoán hình dạng.
+2. **Thiết kế lại tường minh**: class `Paginated<T>` (`items`, `total`, `page`, `limit`) ở `@org/backend-interfaces`; interceptor nhận diện bằng `instanceof` chứ không đoán; metadata lấy từ chính object thay vì đọc lại query.
+3. **Lấy thư viện** — để dành tới khi TypeORM 1.x được hỗ trợ và có ≥3 endpoint phân trang thật.
+
+**Điều kiện để chốt:** làm xong GraphQL rồi mới quyết, vì bước 4 **xoá `AdminUsersController` REST**. Nếu module admin đi GraphQL hoàn toàn thì `Paginated<T>` lại không có người dùng nào — đúng cái tình trạng đã làm tầng này mục ruỗng. Câu hỏi phải trả lời trước: **REST còn endpoint nào sẽ phân trang thật không** (lịch sử lá số, danh sách bài viết… ở frontend công khai). Có thì chọn (2), không thì chọn (1).
+
+> ⚠️ Đừng trộn việc này vào PR admin console. Nó đụng `backend-interfaces`, `backend-base`, `backend-interceptors` và `apps/frontend` — không liên quan gì tới console.
 
 ---
 
