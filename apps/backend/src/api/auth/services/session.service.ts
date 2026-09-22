@@ -160,7 +160,7 @@ export class SessionService {
     audience: UserType,
     refreshTokenTtlMs: number,
   ): Promise<SessionTokens> {
-    const payload = { id: userId, jti };
+    const payload = { id: userId, jti, aud: audience };
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signJwt(payload),
       this.jwtService.signJwt(payload, refreshTokenTtlMs),

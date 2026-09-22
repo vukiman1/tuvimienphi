@@ -1,17 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PaginationToQuery } from '@org/backend-base';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { LaSoHistoryEntity } from '../../la-so/entities/la-so-history.entity';
 import { UserSessionEntity } from '../../auth/entities/user-session.entity';
 import { UserEntity } from '../../user/entities/user.entity';
 import { AdminUserSummary, toAdminUserSummary } from './admin-user.mapper';
-import { ListUsersDto } from './dto/list-users.dto';
+import { ListUsersArgs } from './dto/list-users.args';
 
 export interface AdminUserListResult {
   users: AdminUserSummary[];
   total: number;
 }
+
+const DEFAULT_PAGE = 1;
+const DEFAULT_PAGE_SIZE = 20;
 
 const GEN_COUNT_ALIAS = 'genCount';
 const LAST_ACTIVE_AT_ALIAS = 'lastActiveAt';
@@ -33,8 +35,9 @@ export class AdminUsersService {
     private readonly userRepo: Repository<UserEntity>,
   ) {}
 
-  async list(query: ListUsersDto): Promise<AdminUserListResult> {
-    const { skip, take } = PaginationToQuery(query);
+  async list(query: ListUsersArgs): Promise<AdminUserListResult> {
+    const take = query.limit ?? DEFAULT_PAGE_SIZE;
+    const skip = ((query.page ?? DEFAULT_PAGE) - 1) * take;
 
     const total = await this.searchable(query.search).getCount();
     const { entities, raw } = await this.searchable(query.search)
@@ -56,6 +59,7 @@ export class AdminUsersService {
         LAST_ACTIVE_AT_ALIAS,
       )
       .orderBy('user.createdAt', 'DESC')
+      .addOrderBy('user.id', 'DESC')
       .skip(skip)
       .take(take)
       .getRawAndEntities<Record<string, unknown>>();

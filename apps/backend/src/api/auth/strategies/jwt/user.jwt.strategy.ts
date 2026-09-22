@@ -10,6 +10,7 @@ import { createJwtCookieStrategy } from './create-jwt-cookie-strategy';
 export class JwtUserStrategy extends createJwtCookieStrategy(
   StrategyKey.JWT.USER,
   CookieName.ACCESS_TOKEN,
+  'user',
 ) {
   constructor(
     userService: UserService,

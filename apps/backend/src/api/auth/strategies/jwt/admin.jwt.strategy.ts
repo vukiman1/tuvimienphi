@@ -14,6 +14,7 @@ import { createJwtCookieStrategy } from './create-jwt-cookie-strategy';
 export class JwtAdminStrategy extends createJwtCookieStrategy(
   StrategyKey.JWT.ADMIN,
   CookieName.ADMIN_ACCESS_TOKEN,
+  'admin',
 ) {
   constructor(
     userService: UserService,

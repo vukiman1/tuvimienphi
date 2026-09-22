@@ -29,7 +29,7 @@ describe('JwtAdminStrategy', () => {
   it('checks the console access token against the allowlist', async () => {
     const request = requestWith({ admin_access_token: 'console-token' });
 
-    const user = await strategy.validate(request, { id: 'user-1', jti: 'jti-1' });
+    const user = await strategy.validate(request, { id: 'user-1', jti: 'jti-1', aud: 'admin' });
 
     expect(sessionService.isAccessTokenActive).toHaveBeenCalledWith(
       'user-1',
@@ -43,9 +43,27 @@ describe('JwtAdminStrategy', () => {
   it('never falls back to the public site cookie', async () => {
     const request = requestWith({ access_token: 'public-token' });
 
-    await strategy.validate(request, { id: 'user-1', jti: 'jti-1' }).catch(() => undefined);
+    await strategy
+      .validate(request, { id: 'user-1', jti: 'jti-1', aud: 'admin' })
+      .catch(() => undefined);
 
     expect(sessionService.isAccessTokenActive).toHaveBeenCalledWith('user-1', 'jti-1', '');
+  });
+
+  it('refuses a token minted for the public site, even pasted into the console cookie', async () => {
+    const request = requestWith({ admin_access_token: 'public-token' });
+
+    await expect(
+      strategy.validate(request, { id: 'user-1', jti: 'jti-1', aud: 'user' }),
+    ).rejects.toBeInstanceOf(UnauthorizedException);
+  });
+
+  it('refuses a token minted before audiences existed', async () => {
+    const request = requestWith({ admin_access_token: 'legacy-token' });
+
+    await expect(strategy.validate(request, { id: 'user-1', jti: 'jti-1' })).rejects.toBeInstanceOf(
+      UnauthorizedException,
+    );
   });
 
   it('refuses a console session whose account is no longer an admin', async () => {
@@ -55,6 +73,7 @@ describe('JwtAdminStrategy', () => {
       strategy.validate(requestWith({ admin_access_token: 'console-token' }), {
         id: 'user-1',
         jti: 'jti-1',
+        aud: 'admin',
       }),
     ).rejects.toBeInstanceOf(UnauthorizedException);
   });
@@ -65,6 +84,7 @@ describe('JwtAdminStrategy', () => {
     const user = await strategy.validate(requestWith({ admin_access_token: 'console-token' }), {
       id: 'user-1',
       jti: 'jti-1',
+      aud: 'admin',
     });
 
     expect(user).toEqual({ id: 'user-1', role: Roles.SUPER_ADMIN });

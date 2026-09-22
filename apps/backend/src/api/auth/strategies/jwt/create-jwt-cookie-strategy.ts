@@ -8,6 +8,7 @@ import { Strategy } from 'passport-jwt';
 import { UserEntity } from '../../../user/entities/user.entity';
 import { UserService } from '../../../user/user.service';
 import { SessionService } from '../../services/session.service';
+import { UserType } from '../../interfaces/auth.interface';
 
 function getJwtSecret(configService: ConfigService): string {
   const secret = configService.get<string>('jwt.secret');
@@ -17,7 +18,15 @@ function getJwtSecret(configService: ConfigService): string {
   return secret;
 }
 
-export function createJwtCookieStrategy(strategyKey: string, cookieName: CookieName) {
+function audienceOf(payload: JwtPayload): UserType {
+  return payload.aud === 'admin' ? 'admin' : 'user';
+}
+
+export function createJwtCookieStrategy(
+  strategyKey: string,
+  cookieName: CookieName,
+  audience: UserType,
+) {
   class JwtCookieStrategy extends PassportStrategy(Strategy, strategyKey) {
     constructor(
       public readonly userService: UserService,
@@ -34,6 +43,9 @@ export function createJwtCookieStrategy(strategyKey: string, cookieName: CookieN
 
     async validate(req: Request, payload: JwtPayload): Promise<UserEntity> {
       const { id, jti } = payload;
+      if (audienceOf(payload) !== audience) {
+        throw new UnauthorizedException();
+      }
       const accessToken = req?.cookies?.[cookieName] ?? '';
       const isActive = await this.sessionService.isAccessTokenActive(id, jti, accessToken);
       if (!isActive) {
