@@ -2,6 +2,7 @@ import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@
 import { Reflector } from '@nestjs/core';
 import { MetadataKey } from '@org/backend-constants';
 import { Roles } from '@org/backend-enum';
+import { requestFromContext } from '../../../transport/transport-context';
 
 interface RequestWithUser {
   user?: { role?: Roles };
@@ -20,7 +21,7 @@ export class RolesGuard implements CanActivate {
       throw new ForbiddenException();
     }
 
-    const { user } = context.switchToHttp().getRequest<RequestWithUser>();
+    const user = (requestFromContext(context) as RequestWithUser | undefined)?.user;
     if (!user?.role || !allowedRoles.includes(user.role)) {
       throw new ForbiddenException();
     }

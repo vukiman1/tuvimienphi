@@ -6,9 +6,22 @@ import { RequireRoles } from '../decorators/require-roles.decorator';
 
 function contextFor(user: unknown): ExecutionContext {
   return {
+    getType: () => 'http',
     switchToHttp: () => ({ getRequest: () => ({ user }) }),
     getHandler: () => () => undefined,
     getClass: () => class {},
+  } as unknown as ExecutionContext;
+}
+
+function resolverContextFor(user: unknown): ExecutionContext {
+  const args = [undefined, {}, { req: { user } }, {}];
+  return {
+    getType: () => 'graphql',
+    getArgs: () => args,
+    getArgByIndex: (index: number) => args[index],
+    getClass: () => class Resolver {},
+    getHandler: () => () => undefined,
+    switchToHttp: () => ({ getRequest: () => undefined }),
   } as unknown as ExecutionContext;
 }
 
@@ -46,12 +59,25 @@ describe('RolesGuard', () => {
     );
   });
 
+  it('gates a resolver the same way it gates a route', () => {
+    const guard = guardRequiring([Roles.ADMIN]);
+
+    expect(guard.canActivate(resolverContextFor({ role: Roles.ADMIN }))).toBe(true);
+  });
+
+  it('refuses a resolver call that carries no authenticated user', () => {
+    const guard = guardRequiring([Roles.ADMIN]);
+
+    expect(() => guard.canActivate(resolverContextFor(undefined))).toThrow(ForbiddenException);
+  });
+
   it('reads the roles that @RequireRoles put on the controller', () => {
     @RequireRoles(Roles.SUPER_ADMIN, Roles.ADMIN)
     class ConsoleController {}
 
     const guard = new RolesGuard(new Reflector());
     const context = {
+      getType: () => 'http',
       switchToHttp: () => ({ getRequest: () => ({ user: { role: Roles.ADMIN } }) }),
       getHandler: () => () => undefined,
       getClass: () => ConsoleController,

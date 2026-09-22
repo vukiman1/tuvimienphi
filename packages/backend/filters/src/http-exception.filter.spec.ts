@@ -5,7 +5,18 @@ function dungHost() {
   const json = jest.fn();
   const status = jest.fn().mockReturnValue({ json });
   const host = {
+    getType: () => 'http',
     switchToHttp: () => ({ getResponse: () => ({ status }) }),
+  } as unknown as ArgumentsHost;
+  return { host, status, json };
+}
+
+function hostGraphql() {
+  const json = jest.fn();
+  const status = jest.fn().mockReturnValue({ json });
+  const host = {
+    getType: () => 'graphql',
+    switchToHttp: () => ({ getResponse: () => undefined }),
   } as unknown as ArgumentsHost;
   return { host, status, json };
 }
@@ -39,5 +50,13 @@ describe('HttpExceptionFilter', () => {
       success: false,
       errors: { message: 'Hết lượt hôm nay.' },
     });
+  });
+
+  it('ném lại khi không phải HTTP, để GraphQL tự định dạng lỗi của nó', () => {
+    const { host, json } = hostGraphql();
+    const exception = new HttpException('Không có quyền.', HttpStatus.FORBIDDEN);
+
+    expect(() => new HttpExceptionFilter().catch(exception, host)).toThrow(exception);
+    expect(json).not.toHaveBeenCalled();
   });
 });

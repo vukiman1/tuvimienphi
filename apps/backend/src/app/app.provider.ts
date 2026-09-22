@@ -1,6 +1,7 @@
 import { SentryGlobalFilter } from '@sentry/nestjs/setup';
 import { HttpExceptionFilter, TypeormExceptionFilter } from '@org/backend-filters';
 import { ResponseTransformInterceptor } from '@org/backend-interceptors';
+import { GqlAwareThrottlerGuard } from '../transport/gql-aware-throttler.guard';
 import {
   BadRequestException,
   ClassSerializerInterceptor,
@@ -9,7 +10,6 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
-import { ThrottlerGuard } from '@nestjs/throttler';
 
 const exceptionFactory = (errors: ValidationError[]) => {
   throw new BadRequestException(
@@ -37,7 +37,7 @@ const validationErrors = (err: ValidationError) => {
 export const providers: Provider[] = [
   {
     provide: APP_GUARD,
-    useClass: ThrottlerGuard,
+    useClass: GqlAwareThrottlerGuard,
   },
   {
     provide: APP_FILTER,

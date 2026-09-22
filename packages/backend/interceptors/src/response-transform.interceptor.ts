@@ -1,19 +1,16 @@
 import { FormatResponse } from '@org/backend-interfaces';
-import {
-  CallHandler,
-  ExecutionContext,
-  Injectable,
-  NestInterceptor,
-} from '@nestjs/common';
+import { isHttpContext } from '@org/backend-helpers';
+import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Observable, map } from 'rxjs';
 
 @Injectable()
 export class ResponseTransformInterceptor implements NestInterceptor {
-  intercept(
-    context: ExecutionContext,
-    next: CallHandler,
-  ): Observable<FormatResponse> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<FormatResponse> {
+    if (!isHttpContext(context)) {
+      return next.handle() as Observable<FormatResponse>;
+    }
+
     const http = context.switchToHttp();
     const response = http.getResponse<Response>();
     const request = http.getRequest<Request>();
