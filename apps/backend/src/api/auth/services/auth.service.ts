@@ -2,6 +2,7 @@ import {
   BadRequestException,
   GoneException,
   ConflictException,
+  ForbiddenException,
   Injectable,
   Logger,
   UnauthorizedException,
@@ -20,6 +21,8 @@ import { AuthAuditService, AuthEvent } from './auth-audit.service';
 import { UserSessionService } from './user-session.service';
 import { SessionRevocationService } from './session-revocation.service';
 import { SessionCookieService } from './session-cookie.service';
+import { isConsoleRole } from '../console-roles';
+import { UserType } from '../interfaces/auth.interface';
 import { SessionRevokeReason } from '../enums/session-revoke-reason.enum';
 import { SessionPersistence } from '../enums/session-persistence.enum';
 import { AuthProvider } from '@org/backend-enum';
@@ -38,6 +41,7 @@ interface IssueSessionOptions {
   persistence: SessionPersistence;
   rememberMe: boolean;
   authProvider: AuthProvider;
+  audience: UserType;
 }
 
 @Injectable()
@@ -74,27 +78,46 @@ export class AuthService {
     };
   }
 
-  sessionStatus(user: UserEntity | undefined, request: Request) {
+  sessionStatus(user: UserEntity | undefined, request: Request, audience: UserType) {
     return {
       user: user ? this.me(user).user : null,
-      canRefresh: this.sessionCookieService.hasSession(request),
+      canRefresh: this.sessionCookieService.hasSession(request, audience),
     };
   }
 
-  async login(user: UserEntity, response: Response, request: Request, rememberMe: boolean) {
+  async login(
+    user: UserEntity,
+    response: Response,
+    request: Request,
+    rememberMe: boolean,
+    audience: UserType,
+  ) {
+    const twoFactorEnabled = await this.twoFactorService.isEnabled(user.id);
+    if (audience === 'admin') {
+      this.assertConsoleRole(user);
+      if (!twoFactorEnabled) {
+        throw new ForbiddenException(
+          'Enable two-factor authentication before signing in to the console',
+        );
+      }
+    }
+
+    const rememberSession = audience === 'user' && rememberMe;
+
     // Issuing a session before the code would make the code optional: a caller could skip the
     // prompt and use the cookie straight away.
-    if (await this.twoFactorService.isEnabled(user.id)) {
-      const challengeToken = await this.twoFactorChallengeService.issue(user.id, rememberMe);
+    if (twoFactorEnabled) {
+      const challengeToken = await this.twoFactorChallengeService.issue(user.id, rememberSession);
       this.auditService.record(AuthEvent.LOGIN_TWO_FACTOR_REQUIRED, { userId: user.id, request });
       return { twoFactorRequired: true as const, challengeToken };
     }
 
-    const persistence = rememberMe ? SessionPersistence.REMEMBER : SessionPersistence.STANDARD;
+    const persistence = rememberSession ? SessionPersistence.REMEMBER : SessionPersistence.STANDARD;
     return this.issueSession(user, response, request, {
       persistence,
-      rememberMe,
+      rememberMe: rememberSession,
       authProvider: AuthProvider.LOCAL,
+      audience,
     });
   }
 
@@ -103,6 +126,7 @@ export class AuthService {
     code: string,
     response: Response,
     request: Request,
+    audience: UserType,
   ) {
     const claim = await this.twoFactorChallengeService.peek(challengeToken);
     if (!claim) {
@@ -125,21 +149,31 @@ export class AuthService {
 
     await this.twoFactorChallengeService.consume(challengeToken);
     const user = await this.userService.getOneOrFail({ id: claim.userId });
+    if (audience === 'admin') {
+      this.assertConsoleRole(user);
+    }
     return this.issueSession(user, response, request, {
       persistence: claim.rememberMe ? SessionPersistence.REMEMBER : SessionPersistence.STANDARD,
       rememberMe: claim.rememberMe,
       authProvider: AuthProvider.LOCAL,
+      audience,
     });
+  }
+
+  private assertConsoleRole(user: UserEntity): void {
+    if (!isConsoleRole(user.role)) {
+      throw new ForbiddenException('This account cannot sign in to the console');
+    }
   }
 
   async issueSession(
     user: UserEntity,
     response: Response,
     request: Request,
-    { persistence, rememberMe, authProvider }: IssueSessionOptions,
+    { persistence, rememberMe, authProvider, audience }: IssueSessionOptions,
   ) {
     const { id, email, avatar, balance } = user;
-    const session = await this.sessionService.createSession(id, persistence);
+    const session = await this.sessionService.createSession(id, audience, persistence);
     await this.userSessionService.createSession({
       userId: id,
       jti: session.jti,
@@ -149,7 +183,11 @@ export class AuthService {
       request,
     });
 
-    this.sessionCookieService.issue(response, { id, jti: session.jti, persistence }, session);
+    this.sessionCookieService.issue(
+      response,
+      { id, jti: session.jti, persistence, audience },
+      session,
+    );
     this.auditService.record(AuthEvent.LOGIN_SUCCEEDED, {
       userId: id,
       email,
@@ -169,6 +207,7 @@ export class AuthService {
       persistence: SessionPersistence.OAUTH,
       rememberMe: false,
       authProvider: AuthProvider.GOOGLE,
+      audience: 'user',
     });
   }
 
@@ -268,10 +307,10 @@ export class AuthService {
     return { message: 'Password changed successfully' };
   }
 
-  async logout(user: UserEntity, request: Request, response: Response) {
+  async logout(user: UserEntity, request: Request, response: Response, audience: UserType) {
     const jti = requireSessionJti(request);
     await this.sessionRevocationService.revokeOne(user.id, jti, SessionRevokeReason.LOGOUT);
-    this.sessionCookieService.clear(response);
+    this.sessionCookieService.clear(response, audience);
     this.auditService.record(AuthEvent.LOGOUT, { userId: user.id, jti, request });
 
     return {
@@ -279,9 +318,9 @@ export class AuthService {
     };
   }
 
-  async logoutAll(user: UserEntity, response: Response, request: Request) {
+  async logoutAll(user: UserEntity, response: Response, request: Request, audience: UserType) {
     await this.sessionRevocationService.revokeAll(user.id, SessionRevokeReason.LOGOUT_ALL);
-    this.sessionCookieService.clear(response);
+    this.sessionCookieService.clear(response, audience);
     this.auditService.record(AuthEvent.LOGOUT_ALL, { userId: user.id, request });
 
     return {
@@ -289,14 +328,14 @@ export class AuthService {
     };
   }
 
-  async refreshToken(request: Request, response: Response) {
+  async refreshToken(request: Request, response: Response, audience: UserType) {
     try {
-      const { id, jti, persistence } = this.sessionCookieService.read(request);
+      const { id, jti, persistence } = this.sessionCookieService.read(request, audience);
       const { email, avatar, balance } = await this.userService.getOneOrFail({ id });
-      const tokens = await this.sessionService.rotateSession(id, jti, persistence);
+      const tokens = await this.sessionService.rotateSession(id, jti, audience, persistence);
       await this.userSessionService.touchSession(id, jti, request, tokens.refreshTokenTtlMs);
 
-      this.sessionCookieService.issue(response, { id, jti, persistence }, tokens);
+      this.sessionCookieService.issue(response, { id, jti, persistence, audience }, tokens);
       this.auditService.record(AuthEvent.TOKEN_REFRESHED, { userId: id, jti, request });
 
       return {
@@ -305,7 +344,7 @@ export class AuthService {
     } catch (error) {
       // A failed refresh means the session is gone — drop the stale cookies so the
       // browser stops sending them instead of waiting for them to expire.
-      this.sessionCookieService.clear(response);
+      this.sessionCookieService.clear(response, audience);
       throw error;
     }
   }

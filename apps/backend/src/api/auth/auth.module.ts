@@ -8,7 +8,9 @@ import { SessionRevocationService } from './services/session-revocation.service'
 import { SessionCookieService } from './services/session-cookie.service';
 import { GeoIpService } from './services/geo-ip.service';
 import { CaptchaService } from './services/captcha.service';
+import { AuthAdminController } from './controllers/auth.admin.controller';
 import { AuthUserController } from './controllers/auth.user.controller';
+import { JwtAdminStrategy } from './strategies/jwt/admin.jwt.strategy';
 import { JwtUserStrategy } from './strategies/jwt/user.jwt.strategy';
 import { UserModule } from '../user/user.module';
 import { UserLocalStrategy } from './strategies/local/user.local.strategy';
@@ -36,7 +38,7 @@ import { SocialAuthService } from './services/social/social-auth.service';
       UserRecoveryCodeEntity,
     ]),
   ],
-  controllers: [AuthUserController],
+  controllers: [AuthUserController, AuthAdminController],
   providers: [
     AuthService,
     SessionService,
@@ -47,6 +49,7 @@ import { SocialAuthService } from './services/social/social-auth.service';
     GeoIpService,
     CaptchaService,
     JwtUserStrategy,
+    JwtAdminStrategy,
     UserLocalStrategy,
     GoogleOneTapVerifier,
     SocialAuthService,

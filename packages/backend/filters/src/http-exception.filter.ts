@@ -1,4 +1,5 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common';
+import { isHttpContext } from '@org/backend-helpers';
 import { Response } from 'express';
 
 /**
@@ -16,6 +17,10 @@ function messageOf(payload: string | object): string | undefined {
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
+    if (!isHttpContext(host)) {
+      throw exception;
+    }
+
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 

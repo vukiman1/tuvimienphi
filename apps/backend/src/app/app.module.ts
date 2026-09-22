@@ -9,6 +9,7 @@ import { JwtModule } from '@org/backend-jwt';
 import configuration from '@org/backend-config';
 import { RedisModule } from '@org/backend-redis';
 import { join } from 'path';
+import { AdminModule } from '../api/admin/admin.module';
 import { AuthModule } from '../api/auth/auth.module';
 import { LaSoModule } from '../api/la-so/la-so.module';
 import { LuanGiaiModule } from '../api/luan-giai/luan-giai.module';
@@ -50,6 +51,7 @@ import { queueBoardRootImports } from './queue-board-registration';
     EmailModule,
     StorageModule,
     AuthModule,
+    AdminModule,
     UserModule,
     LaSoModule,
     LuanGiaiModule,

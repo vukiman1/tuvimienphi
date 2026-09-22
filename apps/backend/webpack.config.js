@@ -5,6 +5,9 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const RUNTIME_EXTERNALS =
   /^(@sentry|@opentelemetry)\/|^google-auth-library(\/|$)|^(require-in-the-middle|import-in-the-middle)$/;
 
+const UNUSED_GRAPHQL_FEATURES =
+  /^@apollo\/(gateway|subgraph)(\/|$)|^@as-integrations\/fastify$|^ts-morph$/;
+
 module.exports = (_env, argv) => {
   const isProduction = argv.mode === 'production';
 
@@ -16,7 +19,9 @@ module.exports = (_env, argv) => {
         express: 'commonjs express',
       },
       ({ request }, callback) =>
-        RUNTIME_EXTERNALS.test(request) ? callback(null, `commonjs ${request}`) : callback(),
+        RUNTIME_EXTERNALS.test(request) || UNUSED_GRAPHQL_FEATURES.test(request)
+          ? callback(null, `commonjs ${request}`)
+          : callback(),
     ],
     ignoreWarnings: [{ module: /standardwebhooks/, message: /Failed to parse source map/ }],
     output: {

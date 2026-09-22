@@ -40,6 +40,29 @@ describe('JwtUserStrategy', () => {
     expect(user).toEqual({ id: 'user-1' });
   });
 
+  it('refuses a console token pasted into the public site cookie', async () => {
+    sessionService.isAccessTokenActive.mockResolvedValue(true);
+
+    await expect(
+      strategy.validate(requestWithToken('console-token'), {
+        id: 'user-1',
+        jti: 'jti-1',
+        aud: 'admin',
+      }),
+    ).rejects.toBeInstanceOf(UnauthorizedException);
+  });
+
+  it('still accepts a token minted before audiences existed', async () => {
+    sessionService.isAccessTokenActive.mockResolvedValue(true);
+
+    const user = await strategy.validate(requestWithToken('legacy-token'), {
+      id: 'user-1',
+      jti: 'jti-1',
+    });
+
+    expect(user).toEqual({ id: 'user-1' });
+  });
+
   it('rejects when the token is no longer active (revoked)', async () => {
     sessionService.isAccessTokenActive.mockResolvedValue(false);
 

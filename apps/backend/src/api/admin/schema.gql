@@ -1,0 +1,32 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AdminUser {
+  avatar: String
+  balance: Int!
+  createdAt: String!
+  displayName: String
+  email: String!
+  genCount: Int!
+  id: ID!
+  isEmailVerified: Boolean!
+  lastActiveAt: String
+  role: Role!
+}
+
+type AdminUserPage {
+  total: Int!
+  users: [AdminUser!]!
+}
+
+type Query {
+  users(limit: Int, page: Int, search: String): AdminUserPage!
+}
+
+enum Role {
+  ADMIN
+  SELLER
+  SUPER_ADMIN
+  USER
+}

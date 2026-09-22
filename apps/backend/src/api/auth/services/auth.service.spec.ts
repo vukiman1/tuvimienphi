@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   GoneException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -17,7 +18,7 @@ import { AuthAuditService, AuthEvent } from './auth-audit.service';
 import { UserSessionService } from './user-session.service';
 import { SessionPersistence } from '../enums/session-persistence.enum';
 import { SessionRevokeReason } from '../enums/session-revoke-reason.enum';
-import { AuthProvider } from '@org/backend-enum';
+import { AuthProvider, Roles } from '@org/backend-enum';
 import { GoogleOneTapVerifier } from './social/google-one-tap.verifier';
 import { SocialAuthService } from './social/social-auth.service';
 import { TwoFactorService } from './two-factor.service';
@@ -346,10 +347,12 @@ describe('AuthService', () => {
         response,
         request,
         true,
+        'user',
       );
 
       expect(sessionService.createSession).toHaveBeenCalledWith(
         'user-1',
+        'user',
         SessionPersistence.REMEMBER,
       );
       expect(userSessionService.createSession).toHaveBeenCalledWith(
@@ -377,7 +380,7 @@ describe('AuthService', () => {
       twoFactorService.isEnabled.mockResolvedValue(true);
       const response = mockResponse();
 
-      const result = await service.login(user, response, request, true);
+      const result = await service.login(user, response, request, true, 'user');
 
       expect(result).toEqual({ twoFactorRequired: true, challengeToken: 'challenge-1' });
       expect(sessionService.createSession).not.toHaveBeenCalled();
@@ -390,7 +393,7 @@ describe('AuthService', () => {
       userService.getOneOrFail.mockResolvedValue(user);
       const response = mockResponse();
 
-      await service.verifyTwoFactor('challenge-1', '123456', response, request);
+      await service.verifyTwoFactor('challenge-1', '123456', response, request, 'user');
 
       expect(sessionService.createSession).toHaveBeenCalled();
       expect(twoFactorChallenge.consume).toHaveBeenCalledWith('challenge-1');
@@ -403,7 +406,7 @@ describe('AuthService', () => {
       const response = mockResponse();
 
       await expect(
-        service.verifyTwoFactor('challenge-1', '000000', response, request),
+        service.verifyTwoFactor('challenge-1', '000000', response, request, 'user'),
       ).rejects.toBeInstanceOf(UnauthorizedException);
       expect(sessionService.createSession).not.toHaveBeenCalled();
       expect(twoFactorChallenge.consume).not.toHaveBeenCalled();
@@ -413,7 +416,7 @@ describe('AuthService', () => {
       twoFactorChallenge.peek.mockResolvedValue(null);
 
       await expect(
-        service.verifyTwoFactor('nope', '123456', mockResponse(), request),
+        service.verifyTwoFactor('nope', '123456', mockResponse(), request, 'user'),
       ).rejects.toBeInstanceOf(GoneException);
       expect(twoFactorService.consumeCode).not.toHaveBeenCalled();
     });
@@ -424,12 +427,12 @@ describe('AuthService', () => {
 
       twoFactorChallenge.recordFailure.mockResolvedValue(true);
       await expect(
-        service.verifyTwoFactor('c', '000000', mockResponse(), request),
+        service.verifyTwoFactor('c', '000000', mockResponse(), request, 'user'),
       ).rejects.toBeInstanceOf(UnauthorizedException);
 
       twoFactorChallenge.recordFailure.mockResolvedValue(false);
       await expect(
-        service.verifyTwoFactor('c', '000000', mockResponse(), request),
+        service.verifyTwoFactor('c', '000000', mockResponse(), request, 'user'),
       ).rejects.toBeInstanceOf(GoneException);
     });
 
@@ -438,12 +441,69 @@ describe('AuthService', () => {
       twoFactorService.consumeCode.mockResolvedValue(true);
       userService.getOneOrFail.mockResolvedValue(user);
 
-      await service.verifyTwoFactor('challenge-1', '123456', mockResponse(), request);
+      await service.verifyTwoFactor('challenge-1', '123456', mockResponse(), request, 'user');
 
       expect(sessionService.createSession).toHaveBeenCalledWith(
         'user-1',
+        'user',
         SessionPersistence.REMEMBER,
       );
+    });
+  });
+
+  describe('admin console sign-in', () => {
+    const admin = { id: 'user-1', email: 'a@b.c', avatar: null, balance: 0, role: Roles.ADMIN };
+
+    it('refuses an account that is not an admin, however good the password', async () => {
+      twoFactorService.isEnabled.mockResolvedValue(true);
+
+      await expect(
+        service.login(
+          { ...admin, role: Roles.USER } as never,
+          mockResponse(),
+          request,
+          false,
+          'admin',
+        ),
+      ).rejects.toBeInstanceOf(ForbiddenException);
+      expect(sessionService.createSession).not.toHaveBeenCalled();
+    });
+
+    it('refuses an admin who has not enrolled in two-factor', async () => {
+      twoFactorService.isEnabled.mockResolvedValue(false);
+
+      await expect(
+        service.login(admin as never, mockResponse(), request, false, 'admin'),
+      ).rejects.toBeInstanceOf(ForbiddenException);
+      expect(sessionService.createSession).not.toHaveBeenCalled();
+    });
+
+    it('never issues a console session from the password alone', async () => {
+      twoFactorService.isEnabled.mockResolvedValue(true);
+
+      const result = await service.login(admin as never, mockResponse(), request, false, 'admin');
+
+      expect(result).toEqual({ twoFactorRequired: true, challengeToken: 'challenge-1' });
+      expect(sessionService.createSession).not.toHaveBeenCalled();
+    });
+
+    it('never lets a console sign-in become a remember-me session', async () => {
+      twoFactorService.isEnabled.mockResolvedValue(true);
+
+      await service.login(admin as never, mockResponse(), request, true, 'admin');
+
+      expect(twoFactorChallenge.issue).toHaveBeenCalledWith('user-1', false);
+    });
+
+    it('refuses to finish a public site challenge on the console', async () => {
+      twoFactorChallenge.peek.mockResolvedValue({ userId: 'user-1', rememberMe: false });
+      twoFactorService.consumeCode.mockResolvedValue(true);
+      userService.getOneOrFail.mockResolvedValue({ ...admin, role: Roles.USER });
+
+      await expect(
+        service.verifyTwoFactor('challenge-1', '123456', mockResponse(), request, 'admin'),
+      ).rejects.toBeInstanceOf(ForbiddenException);
+      expect(sessionService.createSession).not.toHaveBeenCalled();
     });
   });
 
@@ -459,10 +519,15 @@ describe('AuthService', () => {
           persistence: SessionPersistence.OAUTH,
           rememberMe: false,
           authProvider: AuthProvider.GOOGLE,
+          audience: 'user',
         },
       );
 
-      expect(sessionService.createSession).toHaveBeenCalledWith('user-1', SessionPersistence.OAUTH);
+      expect(sessionService.createSession).toHaveBeenCalledWith(
+        'user-1',
+        'user',
+        SessionPersistence.OAUTH,
+      );
       expect(userSessionService.createSession).toHaveBeenCalledWith(
         expect.objectContaining({ rememberMe: false, authProvider: AuthProvider.GOOGLE }),
       );
@@ -609,7 +674,12 @@ describe('AuthService', () => {
   describe('logout', () => {
     it('rejects when there is no authenticated session jti', async () => {
       await expect(
-        service.logout({ id: 'user-1' } as never, { headers: {} } as Request, mockResponse()),
+        service.logout(
+          { id: 'user-1' } as never,
+          { headers: {} } as Request,
+          mockResponse(),
+          'user',
+        ),
       ).rejects.toBeInstanceOf(UnauthorizedException);
     });
 
@@ -620,6 +690,7 @@ describe('AuthService', () => {
         { id: 'user-1' } as never,
         { sessionJti: 'jti-1' } as unknown as Request,
         response,
+        'user',
       );
 
       expect(sessionService.revokeSession).toHaveBeenCalledWith('user-1', 'jti-1');
@@ -675,7 +746,7 @@ describe('AuthService', () => {
 
   describe('sessionStatus', () => {
     it('reports a first-time visitor as signed out with nothing to refresh', () => {
-      const status = service.sessionStatus(undefined, { cookies: {} } as Request);
+      const status = service.sessionStatus(undefined, { cookies: {} } as Request, 'user');
 
       expect(status).toEqual({ user: null, canRefresh: false });
     });
@@ -685,7 +756,11 @@ describe('AuthService', () => {
         JSON.stringify({ id: 'user-1', jti: 'jti-1', persistence: SessionPersistence.STANDARD }),
       );
 
-      const status = service.sessionStatus(undefined, { cookies: { sub: 'encrypted' } } as Request);
+      const status = service.sessionStatus(
+        undefined,
+        { cookies: { sub: 'encrypted' } } as Request,
+        'user',
+      );
 
       expect(status).toEqual({ user: null, canRefresh: true });
     });
@@ -695,7 +770,11 @@ describe('AuthService', () => {
         throw new Error('bad ciphertext');
       });
 
-      const status = service.sessionStatus(undefined, { cookies: { sub: 'garbage' } } as Request);
+      const status = service.sessionStatus(
+        undefined,
+        { cookies: { sub: 'garbage' } } as Request,
+        'user',
+      );
 
       expect(status.canRefresh).toBe(false);
     });
@@ -710,6 +789,7 @@ describe('AuthService', () => {
           password: null,
         } as never,
         { cookies: {} } as Request,
+        'user',
       );
 
       expect(status.user?.email).toBe('a@b.c');
@@ -721,7 +801,7 @@ describe('AuthService', () => {
       const response = mockResponse();
 
       await expect(
-        service.refreshToken({ cookies: {} } as Request, response),
+        service.refreshToken({ cookies: {} } as Request, response, 'user'),
       ).rejects.toBeInstanceOf(UnauthorizedException);
       expect(response.clearCookie).toHaveBeenCalledTimes(2);
     });
@@ -738,11 +818,16 @@ describe('AuthService', () => {
         balance: 0,
       });
 
-      await service.refreshToken({ cookies: { sub: 'enc' } } as unknown as Request, response);
+      await service.refreshToken(
+        { cookies: { sub: 'enc' } } as unknown as Request,
+        response,
+        'user',
+      );
 
       expect(sessionService.rotateSession).toHaveBeenCalledWith(
         'user-1',
         'jti-1',
+        'user',
         SessionPersistence.REMEMBER,
       );
       expect(userSessionService.touchSession).toHaveBeenCalledWith(
