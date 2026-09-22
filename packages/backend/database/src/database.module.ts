@@ -9,9 +9,6 @@ import * as pg from 'pg';
       inject: [ConfigService],
       useFactory: (configService: ConfigService): TypeOrmModuleOptions => ({
         type: 'postgres',
-        // Handing the driver over explicitly: TypeORM otherwise requires 'pg' by name from its own
-        // location, which breaks anywhere the dependency tree is not hoisted — a bundled
-        // serverless function, for one.
         driver: pg,
         host: configService.get<string>('database.host'),
         port: configService.get<number>('database.port'),
@@ -21,7 +18,6 @@ import * as pg from 'pg';
         autoLoadEntities: true,
         migrationsTableName: 'migrations',
         synchronize: false,
-        // managed Postgres (Neon, Supabase, RDS) refuses plaintext connections
         ssl: configService.get<boolean>('database.tls') ? { rejectUnauthorized: false } : false,
       }),
     }),

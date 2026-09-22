@@ -16,22 +16,22 @@ describe('GeoIpService', () => {
     expect(service.locate(requestWith({}))).toEqual({ country: null, city: null });
   });
 
-  it('reads country and city from the Vercel headers', () => {
-    const request = requestWith({ 'x-vercel-ip-country': 'VN', 'x-vercel-ip-city': 'Hanoi' });
+  it('reads country and city from the Cloudflare headers', () => {
+    const request = requestWith({ 'cf-ipcountry': 'VN', 'cf-ipcity': 'Hanoi' });
     expect(service.locate(request)).toEqual({ country: 'VN', city: 'Hanoi' });
   });
 
   it('decodes a percent-encoded city name', () => {
-    const request = requestWith({ 'x-vercel-ip-city': 'Ho%20Chi%20Minh%20City' });
+    const request = requestWith({ 'cf-ipcity': 'Ho%20Chi%20Minh%20City' });
     expect(service.locate(request).city).toBe('Ho Chi Minh City');
   });
 
-  it('falls back to the Cloudflare country header', () => {
+  it('reads the Cloudflare country header by itself', () => {
     expect(service.locate(requestWith({ 'cf-ipcountry': 'SG' })).country).toBe('SG');
   });
 
   it('maps a blank header to null', () => {
-    const request = requestWith({ 'x-vercel-ip-country': 'US', 'x-vercel-ip-city': '   ' });
+    const request = requestWith({ 'cf-ipcountry': 'US', 'cf-ipcity': '   ' });
     expect(service.locate(request)).toEqual({ country: 'US', city: null });
   });
 });

@@ -2,7 +2,7 @@ import { useRef, type ChangeEvent } from 'react';
 import { Camera, Loader2 } from 'lucide-react';
 import type { User } from '@org/shared-contracts';
 import { Button } from '@/components/ui/button';
-import { ACCEPTED_AVATAR_TYPES, useAvatarUpload } from './use-avatar-upload';
+import { ACCEPTED_AVATAR_TYPES, useAvatarUpload } from '../use-avatar-upload';
 
 interface ProfileAvatarProps {
   user: User;
