@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "types": ["jest", "node"],
     "outDir": "out-tsc/@org/backend-e2e",
     "esModuleInterop": true,
     "noUnusedLocals": false,
