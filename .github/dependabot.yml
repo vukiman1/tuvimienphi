@@ -40,6 +40,14 @@ updates:
       bull-board:
         patterns:
           - '@bull-board/*'
+      # playwright (dependencies, dùng cho prerender) và @playwright/test (devDependencies) phải cùng
+      # version. Lệch nhau thì runner và thư viện test là hai bản khác nhau: Playwright báo "did not
+      # expect test() to be called here" rồi "No tests found". Không nhóm thì hai nhóm
+      # production/development xé đôi cặp này. Xem PR #93 và #98.
+      playwright:
+        patterns:
+          - 'playwright'
+          - '@playwright/test'
       production-minor-patch:
         dependency-type: 'production'
         update-types:
