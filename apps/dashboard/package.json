@@ -9,18 +9,14 @@
     ]
   },
   "dependencies": {
+    "@ant-design/icons": "^6.3.4",
     "@org/frontend-shared": "workspace:*",
     "@org/shared-contracts": "workspace:*",
     "@tanstack/react-query": "^5.102.8",
     "@tanstack/react-query-devtools": "^5.102.8",
     "@tanstack/react-router": "^1.170.32",
+    "antd": "^6.6.5",
     "axios": "^1.20.0",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "lucide-react": "^1.40.0",
-    "radix-ui": "^1.6.7",
-    "recharts": "^3.10.1",
-    "tailwind-merge": "^3.6.0",
     "zod": "^4.5.4",
     "zustand": "^5.0.15"
   }

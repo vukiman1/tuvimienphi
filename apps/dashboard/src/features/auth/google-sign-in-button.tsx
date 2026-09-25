@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { Alert } from 'antd';
 import { env } from '@/config/env';
 import { errorMessage } from '@/lib/api-error';
 import { loadGoogleIdentity } from '@/lib/google-identity';
@@ -55,8 +56,8 @@ export function GoogleSignInButton({ onCredential, onUnavailable }: GoogleSignIn
   }, [clientId, onCredential, onUnavailable]);
 
   if (!clientId) {
-    return <p className="text-sm text-destructive">{MISSING_CLIENT_ID}</p>;
+    return <Alert type="error" showIcon message={MISSING_CLIENT_ID} />;
   }
 
-  return <div className="flex justify-center" ref={containerRef} />;
+  return <div ref={containerRef} />;
 }
