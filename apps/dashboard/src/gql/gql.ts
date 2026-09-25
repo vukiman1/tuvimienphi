@@ -1,6 +1,8 @@
 /* eslint-disable */
 import * as types from './graphql';
 
+
+
 /**
  * Map of all GraphQL operations in the project.
  *
@@ -13,19 +15,17 @@ import * as types from './graphql';
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-  '\n  query AdminUsers($page: Int, $limit: Int, $search: String) {\n    users(page: $page, limit: $limit, search: $search) {\n      total\n      users {\n        id\n        email\n        displayName\n        avatar\n        role\n        isEmailVerified\n        balance\n        createdAt\n        genCount\n        lastActiveAt\n      }\n    }\n  }\n': typeof types.AdminUsersDocument;
+    "\n  query AdminUsers($page: Int, $limit: Int, $search: String) {\n    users(page: $page, limit: $limit, search: $search) {\n      total\n      users {\n        id\n        email\n        displayName\n        avatar\n        role\n        isEmailVerified\n        balance\n        createdAt\n        genCount\n        lastActiveAt\n      }\n    }\n  }\n": typeof types.AdminUsersDocument,
 };
 const documents: Documents = {
-  '\n  query AdminUsers($page: Int, $limit: Int, $search: String) {\n    users(page: $page, limit: $limit, search: $search) {\n      total\n      users {\n        id\n        email\n        displayName\n        avatar\n        role\n        isEmailVerified\n        balance\n        createdAt\n        genCount\n        lastActiveAt\n      }\n    }\n  }\n':
-    types.AdminUsersDocument,
+    "\n  query AdminUsers($page: Int, $limit: Int, $search: String) {\n    users(page: $page, limit: $limit, search: $search) {\n      total\n      users {\n        id\n        email\n        displayName\n        avatar\n        role\n        isEmailVerified\n        balance\n        createdAt\n        genCount\n        lastActiveAt\n      }\n    }\n  }\n": types.AdminUsersDocument,
 };
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(
-  source: '\n  query AdminUsers($page: Int, $limit: Int, $search: String) {\n    users(page: $page, limit: $limit, search: $search) {\n      total\n      users {\n        id\n        email\n        displayName\n        avatar\n        role\n        isEmailVerified\n        balance\n        createdAt\n        genCount\n        lastActiveAt\n      }\n    }\n  }\n',
-): typeof import('./graphql').AdminUsersDocument;
+export function graphql(source: "\n  query AdminUsers($page: Int, $limit: Int, $search: String) {\n    users(page: $page, limit: $limit, search: $search) {\n      total\n      users {\n        id\n        email\n        displayName\n        avatar\n        role\n        isEmailVerified\n        balance\n        createdAt\n        genCount\n        lastActiveAt\n      }\n    }\n  }\n"): typeof import('./graphql').AdminUsersDocument;
+
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
