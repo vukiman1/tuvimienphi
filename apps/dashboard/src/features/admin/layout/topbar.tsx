@@ -1,6 +1,9 @@
 import { Moon, Sun } from 'lucide-react';
 import { useNavigate } from '@tanstack/react-router';
 import { useAuthStore, selectUser } from '@/stores/auth-store';
+import { resetAuthBootstrap } from '@/features/auth/bootstrap';
+import { LOGIN_PATH } from '@/features/auth/route-guards';
+import { authService } from '@/services/auth-service';
 import { dayCanChi } from '@/lib/can-chi';
 import { initials } from '@/lib/utils';
 import { useTheme } from './use-theme';
@@ -17,9 +20,20 @@ import {
 
 export function Topbar() {
   const user = useAuthStore(selectUser);
+  const setUser = useAuthStore((state) => state.setUser);
   const canChi = dayCanChi(new Date());
   const { theme, toggle } = useTheme();
   const navigate = useNavigate();
+
+  const signOut = async () => {
+    try {
+      await authService.logout();
+    } finally {
+      resetAuthBootstrap();
+      setUser(null);
+      await navigate({ to: LOGIN_PATH });
+    }
+  };
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-background/30 px-6 backdrop-blur-xl">
@@ -49,16 +63,18 @@ export function Topbar() {
                 <AvatarFallback>{initials(user?.displayName)}</AvatarFallback>
               </Avatar>
               <span className="hidden text-left leading-tight sm:block">
-                <span className="block text-sm font-medium">{user?.displayName ?? 'Quản trị'}</span>
+                <span className="block text-sm font-medium">
+                  {user?.displayName ?? user?.email}
+                </span>
                 <span className="block text-[11px] tracking-wide text-muted-foreground">
-                  {user?.role ?? '—'}
+                  {user?.role}
                 </span>
               </span>
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel>
-              <p className="text-sm font-medium">{user?.displayName ?? 'Quản trị viên'}</p>
+              <p className="text-sm font-medium">{user?.displayName ?? user?.email}</p>
               <p className="text-xs font-normal text-muted-foreground">{user?.email}</p>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
@@ -67,7 +83,9 @@ export function Topbar() {
               Cài đặt
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive">Đăng xuất</DropdownMenuItem>
+            <DropdownMenuItem variant="destructive" onClick={() => void signOut()}>
+              Đăng xuất
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
