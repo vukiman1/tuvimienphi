@@ -1,29 +1,20 @@
-import { Moon, Sun } from 'lucide-react';
 import { useNavigate } from '@tanstack/react-router';
-import { useAuthStore, selectUser } from '@/stores/auth-store';
+import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import { Avatar, Dropdown, Flex, Layout, Typography } from 'antd';
 import { resetAuthBootstrap } from '@/features/auth/bootstrap';
 import { LOGIN_PATH } from '@/features/auth/route-guards';
 import { authService } from '@/services/auth-service';
-import { dayCanChi } from '@/lib/can-chi';
-import { initials } from '@/lib/utils';
-import { useTheme } from './use-theme';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-} from '@/components/ui/dropdown-menu';
+import { selectUser, useAuthStore } from '@/stores/auth-store';
+
+enum UserMenuKey {
+  Profile = 'profile',
+  SignOut = 'sign-out',
+}
 
 export function Topbar() {
+  const navigate = useNavigate();
   const user = useAuthStore(selectUser);
   const setUser = useAuthStore((state) => state.setUser);
-  const canChi = dayCanChi(new Date());
-  const { theme, toggle } = useTheme();
-  const navigate = useNavigate();
 
   const signOut = async () => {
     try {
@@ -36,59 +27,37 @@ export function Topbar() {
   };
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-background/30 px-6 backdrop-blur-xl">
-      {/* Can-chi ngày — the sexagenary day pillar, a familiar sight to anyone reading tử vi. */}
-      <div className="flex items-center gap-2 text-sm">
-        <Moon className="size-4 text-primary" />
-        <span className="text-muted-foreground">Hôm nay</span>
-        <span className="font-seal text-base leading-none text-primary">Ngày {canChi}</span>
-      </div>
-
-      <div className="ml-auto flex items-center gap-1.5">
-        <Button
-          variant="ghost"
-          size="icon"
-          aria-label={theme === 'dark' ? 'Chuyển sang ban ngày' : 'Chuyển sang ban đêm'}
-          onClick={toggle}
+    <Layout.Header style={{ background: 'transparent', paddingInline: 24 }}>
+      <Flex align="center" justify="end" style={{ height: '100%' }}>
+        <Dropdown
+          trigger={['click']}
+          menu={{
+            items: [
+              { key: UserMenuKey.Profile, icon: <UserOutlined />, label: 'Hồ sơ' },
+              { type: 'divider' },
+              {
+                key: UserMenuKey.SignOut,
+                icon: <LogoutOutlined />,
+                label: 'Đăng xuất',
+                danger: true,
+              },
+            ],
+            onClick: ({ key }) => {
+              if (key === UserMenuKey.Profile) {
+                void navigate({ to: '/profile' });
+              }
+              if (key === UserMenuKey.SignOut) {
+                void signOut();
+              }
+            },
+          }}
         >
-          {theme === 'dark' ? <Sun className="size-[18px]" /> : <Moon className="size-[18px]" />}
-        </Button>
-
-        <div className="mx-1 h-6 w-px bg-border" />
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button className="flex items-center gap-2 rounded-full p-1 pr-2.5 transition-colors hover:bg-accent/60">
-              <Avatar className="glow-ring size-8">
-                <AvatarFallback>{initials(user?.displayName)}</AvatarFallback>
-              </Avatar>
-              <span className="hidden text-left leading-tight sm:block">
-                <span className="block text-sm font-medium">
-                  {user?.displayName ?? user?.email}
-                </span>
-                <span className="block text-[11px] tracking-wide text-muted-foreground">
-                  {user?.role}
-                </span>
-              </span>
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>
-              <p className="text-sm font-medium">{user?.displayName ?? user?.email}</p>
-              <p className="text-xs font-normal text-muted-foreground">{user?.email}</p>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => navigate({ to: '/profile' })}>Hồ sơ</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => navigate({ to: '/profile' })}>
-              Cài đặt
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive" onClick={() => void signOut()}>
-              Đăng xuất
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-    </header>
+          <Flex align="center" gap={8} style={{ cursor: 'pointer' }}>
+            <Avatar src={user?.avatar ?? undefined} icon={<UserOutlined />} />
+            <Typography.Text>{user?.displayName ?? user?.email}</Typography.Text>
+          </Flex>
+        </Dropdown>
+      </Flex>
+    </Layout.Header>
   );
 }

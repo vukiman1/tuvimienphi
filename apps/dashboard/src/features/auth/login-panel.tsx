@@ -1,12 +1,13 @@
 import { useCallback, useState } from 'react';
 import { useNavigate } from '@tanstack/react-router';
-import { Moon } from 'lucide-react';
+import { Alert, Card, Flex, Spin, Typography } from 'antd';
 import { errorMessage } from '@/lib/api-error';
 import { authService } from '@/services/auth-service';
 import { resetAuthBootstrap } from './bootstrap';
 import { GoogleSignInButton } from './google-sign-in-button';
 import { ensureSession, hasConsoleAccess } from './route-guards';
 
+const CARD_WIDTH = 360;
 const NOT_AN_ADMIN = 'Tài khoản Google này không có quyền vào bảng điều khiển.';
 const SIGN_IN_FAILED = 'Không đăng nhập được.';
 
@@ -41,25 +42,29 @@ export function LoginPanel() {
   const onUnavailable = useCallback((message: string) => setError(message), []);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="w-full max-w-sm space-y-6 rounded-xl border border-border bg-card p-8 shadow-sm">
-        <div className="flex items-center gap-2">
-          <Moon className="size-5 text-primary" />
-          <h1 className="font-seal text-lg leading-none text-primary">Bảng điều khiển</h1>
-        </div>
+    <Flex align="center" justify="center" style={{ minHeight: '100vh' }}>
+      <Card style={{ width: CARD_WIDTH }}>
+        <Flex vertical gap={20}>
+          <Flex vertical gap={4}>
+            <Typography.Title level={4} style={{ margin: 0 }}>
+              Bảng điều khiển
+            </Typography.Title>
+            <Typography.Text type="secondary">
+              Đăng nhập bằng tài khoản Google đã được cấp quyền quản trị.
+            </Typography.Text>
+          </Flex>
 
-        <p className="text-sm text-muted-foreground">
-          Đăng nhập bằng tài khoản Google đã được cấp quyền quản trị.
-        </p>
+          {isSubmitting ? (
+            <Flex justify="center">
+              <Spin />
+            </Flex>
+          ) : (
+            <GoogleSignInButton onCredential={onCredential} onUnavailable={onUnavailable} />
+          )}
 
-        {isSubmitting ? (
-          <p className="text-sm text-muted-foreground">Đang đăng nhập…</p>
-        ) : (
-          <GoogleSignInButton onCredential={onCredential} onUnavailable={onUnavailable} />
-        )}
-
-        {error ? <p className="text-sm text-destructive">{error}</p> : null}
-      </div>
-    </div>
+          {error ? <Alert type="error" showIcon message={error} /> : null}
+        </Flex>
+      </Card>
+    </Flex>
   );
 }
