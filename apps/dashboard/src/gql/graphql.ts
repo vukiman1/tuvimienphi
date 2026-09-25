@@ -2,10 +2,13 @@
 /** Internal type. DO NOT USE DIRECTLY. */
 type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 /** Internal type. DO NOT USE DIRECTLY. */
-export type Incremental<T> =
-  T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 import { DocumentTypeDecoration } from '@graphql-typed-document-node/core';
-export type Role = 'ADMIN' | 'SELLER' | 'SUPER_ADMIN' | 'USER';
+export type Role =
+  | 'ADMIN'
+  | 'SELLER'
+  | 'SUPER_ADMIN'
+  | 'USER';
 
 export type AdminUsersQueryVariables = Exact<{
   page?: number | null | undefined;
@@ -13,23 +16,8 @@ export type AdminUsersQueryVariables = Exact<{
   search?: string | null | undefined;
 }>;
 
-export type AdminUsersQuery = {
-  users: {
-    total: number;
-    users: Array<{
-      id: string;
-      email: string;
-      displayName: string | null;
-      avatar: string | null;
-      role: Role;
-      isEmailVerified: boolean;
-      balance: number;
-      createdAt: string;
-      genCount: number;
-      lastActiveAt: string | null;
-    }>;
-  };
-};
+
+export type AdminUsersQuery = { users: { total: number, users: Array<{ id: string, email: string, displayName: string | null, avatar: string | null, role: Role, isEmailVerified: boolean, balance: number, createdAt: string, genCount: number, lastActiveAt: string | null }> } };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String

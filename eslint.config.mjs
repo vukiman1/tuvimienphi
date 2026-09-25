@@ -11,6 +11,7 @@ export default [
       '**/vite.config.*.timestamp*',
       '**/test-output',
       '**/vitest.config.*.timestamp*',
+      '**/src/gql/**',
     ],
   },
   {

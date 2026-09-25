@@ -6,7 +6,26 @@
     "tags": [
       "scope:frontend",
       "type:app"
-    ]
+    ],
+    "targets": {
+      "codegen": {
+        "command": "graphql-codegen --config codegen.ts",
+        "options": {
+          "cwd": "apps/dashboard"
+        },
+        "cache": true,
+        "inputs": [
+          "{workspaceRoot}/apps/backend/src/api/admin/schema.gql",
+          "{projectRoot}/codegen.ts",
+          "{projectRoot}/src/**/*.ts",
+          "{projectRoot}/src/**/*.tsx",
+          "!{projectRoot}/src/gql/**"
+        ],
+        "outputs": [
+          "{projectRoot}/src/gql"
+        ]
+      }
+    }
   },
   "dependencies": {
     "@ant-design/icons": "^6.3.4",
