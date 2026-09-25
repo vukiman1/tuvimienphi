@@ -60,6 +60,31 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm nx format:check
 
+  codegen:
+    name: codegen
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          filter: tree:0
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: 'pnpm'
+          cache-dependency-path: pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm nx run @org/dashboard:codegen --skip-nx-cache
+
+      - name: Fail when src/gql does not match the documents
+        run: git diff --exit-code -- apps/dashboard/src/gql
+
   lint:
     name: lint
     runs-on: ubuntu-latest
