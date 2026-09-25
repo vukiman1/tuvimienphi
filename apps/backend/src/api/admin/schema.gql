@@ -34,6 +34,12 @@ type AdminUserPage {
   users: [AdminUser!]!
 }
 
+enum AdminUserSortField {
+  BALANCE
+  CREATED_AT
+  EMAIL
+}
+
 type DailyCount {
   count: Int!
   date: String!
@@ -53,7 +59,7 @@ type PeriodMetric {
 type Query {
   activeUsersSeries(from: String, to: String): [DailyCount!]!
   overview(from: String, to: String): AdminOverview!
-  users(limit: Int, page: Int, search: String): AdminUserPage!
+  users(balanceMax: Int, balanceMin: Int, isEmailVerified: Boolean, joinedFrom: String, joinedTo: String, limit: Int, page: Int, roles: [Role!], search: String, sortBy: AdminUserSortField, sortDirection: SortDirection): AdminUserPage!
 }
 
 enum Role {
@@ -61,4 +67,9 @@ enum Role {
   SELLER
   SUPER_ADMIN
   USER
+}
+
+enum SortDirection {
+  ASC
+  DESC
 }

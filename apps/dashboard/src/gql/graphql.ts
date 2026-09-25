@@ -4,11 +4,20 @@ type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 /** Internal type. DO NOT USE DIRECTLY. */
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 import { DocumentTypeDecoration } from '@graphql-typed-document-node/core';
+export type AdminUserSortField =
+  | 'BALANCE'
+  | 'CREATED_AT'
+  | 'EMAIL';
+
 export type Role =
   | 'ADMIN'
   | 'SELLER'
   | 'SUPER_ADMIN'
   | 'USER';
+
+export type SortDirection =
+  | 'ASC'
+  | 'DESC';
 
 export type ActiveUsersSeriesQueryVariables = Exact<{
   from?: string | null | undefined;
@@ -32,6 +41,14 @@ export type AdminUsersQueryVariables = Exact<{
   page?: number | null | undefined;
   limit?: number | null | undefined;
   search?: string | null | undefined;
+  roles?: Array<Role> | Role | null | undefined;
+  isEmailVerified?: boolean | null | undefined;
+  joinedFrom?: string | null | undefined;
+  joinedTo?: string | null | undefined;
+  balanceMin?: number | null | undefined;
+  balanceMax?: number | null | undefined;
+  sortBy?: AdminUserSortField | null | undefined;
+  sortDirection?: SortDirection | null | undefined;
 }>;
 
 
@@ -109,8 +126,20 @@ export const AdminOverviewDocument = new TypedDocumentString(`
   }
 }`) as unknown as TypedDocumentString<AdminOverviewQuery, AdminOverviewQueryVariables>;
 export const AdminUsersDocument = new TypedDocumentString(`
-    query AdminUsers($page: Int, $limit: Int, $search: String) {
-  users(page: $page, limit: $limit, search: $search) {
+    query AdminUsers($page: Int, $limit: Int, $search: String, $roles: [Role!], $isEmailVerified: Boolean, $joinedFrom: String, $joinedTo: String, $balanceMin: Int, $balanceMax: Int, $sortBy: AdminUserSortField, $sortDirection: SortDirection) {
+  users(
+    page: $page
+    limit: $limit
+    search: $search
+    roles: $roles
+    isEmailVerified: $isEmailVerified
+    joinedFrom: $joinedFrom
+    joinedTo: $joinedTo
+    balanceMin: $balanceMin
+    balanceMax: $balanceMax
+    sortBy: $sortBy
+    sortDirection: $sortDirection
+  ) {
     total
     users {
       id
