@@ -32,13 +32,13 @@
     "@ant-design/icons": "^6.3.4",
     "@org/frontend-shared": "workspace:*",
     "@org/shared-contracts": "workspace:*",
-    "@tanstack/react-query": "^5.102.8",
-    "@tanstack/react-query-devtools": "^5.102.8",
-    "@tanstack/react-router": "^1.170.32",
+    "@tanstack/react-query": "^5.103.2",
+    "@tanstack/react-query-devtools": "^5.103.2",
+    "@tanstack/react-router": "^1.170.38",
     "antd": "^6.6.5",
     "axios": "^1.20.0",
     "dayjs": "^1.11.23",
-    "zod": "^4.5.4",
+    "zod": "^4.6.5",
     "zustand": "^5.0.15"
   }
 }
