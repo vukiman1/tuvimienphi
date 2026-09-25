@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdsRouteImport } from './routes/ads'
 import { Route as BlogRouteImport } from './routes/blog'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as UsersRouteImport } from './routes/users'
 import { Route as VanHanRouteImport } from './routes/van-han'
@@ -29,6 +30,11 @@ const AdsRoute = AdsRouteImport.update({
 const BlogRoute = BlogRouteImport.update({
   id: '/blog',
   path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -51,6 +57,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ads': typeof AdsRoute
   '/blog': typeof BlogRoute
+  '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/users': typeof UsersRoute
   '/van-han': typeof VanHanRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ads': typeof AdsRoute
   '/blog': typeof BlogRoute
+  '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/users': typeof UsersRoute
   '/van-han': typeof VanHanRoute
@@ -68,22 +76,33 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/ads': typeof AdsRoute
   '/blog': typeof BlogRoute
+  '/login': typeof LoginRoute
   '/profile': typeof ProfileRoute
   '/users': typeof UsersRoute
   '/van-han': typeof VanHanRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/ads' | '/blog' | '/profile' | '/users' | '/van-han'
+  fullPaths:
+    '/' | '/ads' | '/blog' | '/login' | '/profile' | '/users' | '/van-han'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/ads' | '/blog' | '/profile' | '/users' | '/van-han'
-  id: '__root__' | '/' | '/ads' | '/blog' | '/profile' | '/users' | '/van-han'
+  to: '/' | '/ads' | '/blog' | '/login' | '/profile' | '/users' | '/van-han'
+  id:
+    | '__root__'
+    | '/'
+    | '/ads'
+    | '/blog'
+    | '/login'
+    | '/profile'
+    | '/users'
+    | '/van-han'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdsRoute: typeof AdsRoute
   BlogRoute: typeof BlogRoute
+  LoginRoute: typeof LoginRoute
   ProfileRoute: typeof ProfileRoute
   UsersRoute: typeof UsersRoute
   VanHanRoute: typeof VanHanRoute
@@ -110,6 +129,13 @@ declare module '@tanstack/react-router' {
       path: '/blog'
       fullPath: '/blog'
       preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -140,6 +166,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdsRoute: AdsRoute,
   BlogRoute: BlogRoute,
+  LoginRoute: LoginRoute,
   ProfileRoute: ProfileRoute,
   UsersRoute: UsersRoute,
   VanHanRoute: VanHanRoute,

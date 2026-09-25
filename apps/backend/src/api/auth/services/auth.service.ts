@@ -200,14 +200,22 @@ export class AuthService {
     };
   }
 
-  async loginWithGoogle(credential: string, response: Response, request: Request) {
+  async loginWithGoogle(
+    credential: string,
+    response: Response,
+    request: Request,
+    audience: UserType = 'user',
+  ) {
     const identity = await this.googleOneTapVerifier.verify(credential);
     const user = await this.socialAuthService.findOrLinkIdentity(identity);
+    if (audience === 'admin') {
+      this.assertConsoleRole(user);
+    }
     return this.issueSession(user, response, request, {
       persistence: SessionPersistence.OAUTH,
       rememberMe: false,
       authProvider: AuthProvider.GOOGLE,
-      audience: 'user',
+      audience,
     });
   }
 

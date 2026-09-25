@@ -581,6 +581,56 @@ describe('AuthService', () => {
       expect(response.cookie).not.toHaveBeenCalled();
     });
 
+    it('issues an admin session for a console role', async () => {
+      const response = mockResponse();
+      verifier.verify.mockResolvedValue({
+        provider: AuthProvider.GOOGLE,
+        providerAccountId: 'sub-1',
+        email: 'boss@example.com',
+        emailVerified: true,
+      });
+      socialAuthService.findOrLinkIdentity.mockResolvedValue({
+        id: 'user-1',
+        email: 'boss@example.com',
+        avatar: null,
+        balance: 0,
+        role: Roles.SUPER_ADMIN,
+      });
+      const issueSpy = jest.spyOn(service, 'issueSession');
+
+      await service.loginWithGoogle('cred', response, request, 'admin');
+
+      expect(issueSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ id: 'user-1' }),
+        response,
+        request,
+        expect.objectContaining({ audience: 'admin' }),
+      );
+    });
+
+    it('refuses an admin session for an account without a console role', async () => {
+      const response = mockResponse();
+      verifier.verify.mockResolvedValue({
+        provider: AuthProvider.GOOGLE,
+        providerAccountId: 'sub-2',
+        email: 'jane@example.com',
+        emailVerified: true,
+      });
+      socialAuthService.findOrLinkIdentity.mockResolvedValue({
+        id: 'user-2',
+        email: 'jane@example.com',
+        avatar: null,
+        balance: 0,
+        role: Roles.USER,
+      });
+
+      await expect(
+        service.loginWithGoogle('cred', response, request, 'admin'),
+      ).rejects.toBeInstanceOf(ForbiddenException);
+
+      expect(response.cookie).not.toHaveBeenCalled();
+    });
+
     it('issues no session when the identity cannot be linked', async () => {
       const response = mockResponse();
       verifier.verify.mockResolvedValue({
