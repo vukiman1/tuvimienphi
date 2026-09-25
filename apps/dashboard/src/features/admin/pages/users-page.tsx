@@ -114,7 +114,7 @@ export function UsersPage() {
         />
       </Flex>
 
-      {isError ? <Alert type="error" showIcon message={errorMessage(error, LOAD_FAILED)} /> : null}
+      {isError ? <Alert type="error" showIcon title={errorMessage(error, LOAD_FAILED)} /> : null}
 
       <Table<AdminUserRow>
         rowKey="id"

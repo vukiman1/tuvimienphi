@@ -3,9 +3,15 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { tanstackRouter } from '@tanstack/router-plugin/vite';
 import { fileURLToPath, URL } from 'node:url';
+import { createRequire } from 'node:module';
+
+const { version } = createRequire(import.meta.url)('./package.json');
 
 export default defineConfig(() => ({
   root: import.meta.dirname,
+  define: {
+    __APP_VERSION__: JSON.stringify(version),
+  },
   cacheDir: '../../node_modules/.vite/apps/dashboard',
   server: {
     port: 4300,
@@ -42,6 +48,7 @@ export default defineConfig(() => ({
         // Keep heavy, rarely-changing vendors in their own long-cacheable chunks.
         manualChunks(id) {
           if (!id.includes('node_modules')) return undefined;
+          if (id.includes('@ant-design/charts') || id.includes('@antv')) return 'charts';
           if (id.includes('antd') || id.includes('@ant-design') || id.includes('rc-'))
             return 'antd';
           if (id.includes('react-dom') || id.includes('/react/') || id.includes('scheduler'))

@@ -8,4 +8,5 @@ export const env = {
   appName: import.meta.env.VITE_APP_NAME ?? 'Tử Vi · Bảng điều khiển',
   isDev: import.meta.env.DEV,
   googleClientId: import.meta.env.VITE_GOOGLE_CLIENT_ID ?? '',
+  appVersion: __APP_VERSION__,
 };

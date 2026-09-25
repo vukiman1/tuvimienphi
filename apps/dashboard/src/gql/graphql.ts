@@ -10,6 +10,24 @@ export type Role =
   | 'SUPER_ADMIN'
   | 'USER';
 
+export type ActiveUsersSeriesQueryVariables = Exact<{
+  from?: string | null | undefined;
+  to?: string | null | undefined;
+}>;
+
+
+export type ActiveUsersSeriesQuery = { activeUsersSeries: Array<{ date: string, count: number }> };
+
+export type MetricFieldsFragment = { value: number, previous: number, series: Array<{ date: string, count: number }> };
+
+export type AdminOverviewQueryVariables = Exact<{
+  from?: string | null | undefined;
+  to?: string | null | undefined;
+}>;
+
+
+export type AdminOverviewQuery = { overview: { from: string, to: string, totalUsers: number, googleUsers: number, passwordUsers: number, savedCharts: number, activeUsers: { value: number, previous: number, series: Array<{ date: string, count: number }> }, logins: { value: number, previous: number, series: Array<{ date: string, count: number }> }, newUsers: { value: number, previous: number, series: Array<{ date: string, count: number }> }, newCharts: { value: number, previous: number, series: Array<{ date: string, count: number }> }, devices: Array<{ label: string, count: number }> } };
+
 export type AdminUsersQueryVariables = Exact<{
   page?: number | null | undefined;
   limit?: number | null | undefined;
@@ -37,7 +55,59 @@ export class TypedDocumentString<TResult, TVariables>
     return this.value;
   }
 }
-
+export const MetricFieldsFragmentDoc = new TypedDocumentString(`
+    fragment MetricFields on PeriodMetric {
+  value
+  previous
+  series {
+    date
+    count
+  }
+}
+    `, {"fragmentName":"MetricFields"}) as unknown as TypedDocumentString<MetricFieldsFragment, unknown>;
+export const ActiveUsersSeriesDocument = new TypedDocumentString(`
+    query ActiveUsersSeries($from: String, $to: String) {
+  activeUsersSeries(from: $from, to: $to) {
+    date
+    count
+  }
+}
+    `) as unknown as TypedDocumentString<ActiveUsersSeriesQuery, ActiveUsersSeriesQueryVariables>;
+export const AdminOverviewDocument = new TypedDocumentString(`
+    query AdminOverview($from: String, $to: String) {
+  overview(from: $from, to: $to) {
+    from
+    to
+    totalUsers
+    googleUsers
+    passwordUsers
+    savedCharts
+    activeUsers {
+      ...MetricFields
+    }
+    logins {
+      ...MetricFields
+    }
+    newUsers {
+      ...MetricFields
+    }
+    newCharts {
+      ...MetricFields
+    }
+    devices {
+      label
+      count
+    }
+  }
+}
+    fragment MetricFields on PeriodMetric {
+  value
+  previous
+  series {
+    date
+    count
+  }
+}`) as unknown as TypedDocumentString<AdminOverviewQuery, AdminOverviewQueryVariables>;
 export const AdminUsersDocument = new TypedDocumentString(`
     query AdminUsers($page: Int, $limit: Int, $search: String) {
   users(page: $page, limit: $limit, search: $search) {
