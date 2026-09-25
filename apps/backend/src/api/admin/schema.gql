@@ -2,6 +2,20 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type AdminOverview {
+  activeUsers: PeriodMetric!
+  devices: [LabelledCount!]!
+  from: String!
+  googleUsers: Int!
+  logins: PeriodMetric!
+  newCharts: PeriodMetric!
+  newUsers: PeriodMetric!
+  passwordUsers: Int!
+  savedCharts: Int!
+  to: String!
+  totalUsers: Int!
+}
+
 type AdminUser {
   avatar: String
   balance: Int!
@@ -20,8 +34,32 @@ type AdminUserPage {
   users: [AdminUser!]!
 }
 
+enum AdminUserSortField {
+  BALANCE
+  CREATED_AT
+  EMAIL
+}
+
+type DailyCount {
+  count: Int!
+  date: String!
+}
+
+type LabelledCount {
+  count: Int!
+  label: String!
+}
+
+type PeriodMetric {
+  previous: Int!
+  series: [DailyCount!]!
+  value: Int!
+}
+
 type Query {
-  users(limit: Int, page: Int, search: String): AdminUserPage!
+  activeUsersSeries(from: String, to: String): [DailyCount!]!
+  overview(from: String, to: String): AdminOverview!
+  users(balanceMax: Int, balanceMin: Int, isEmailVerified: Boolean, joinedFrom: String, joinedTo: String, limit: Int, page: Int, roles: [Role!], search: String, sortBy: AdminUserSortField, sortDirection: SortDirection): AdminUserPage!
 }
 
 enum Role {
@@ -29,4 +67,9 @@ enum Role {
   SELLER
   SUPER_ADMIN
   USER
+}
+
+enum SortDirection {
+  ASC
+  DESC
 }

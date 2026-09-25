@@ -28,6 +28,7 @@
     }
   },
   "dependencies": {
+    "@ant-design/charts": "^2.6.7",
     "@ant-design/icons": "^6.3.4",
     "@org/frontend-shared": "workspace:*",
     "@org/shared-contracts": "workspace:*",
@@ -36,6 +37,7 @@
     "@tanstack/react-router": "^1.170.32",
     "antd": "^6.6.5",
     "axios": "^1.20.0",
+    "dayjs": "^1.11.23",
     "zod": "^4.5.4",
     "zustand": "^5.0.15"
   }

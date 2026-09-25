@@ -5,6 +5,6 @@ test('keeps a visitor without a session out of the console', async ({ page }) =>
 
   await expect(page).toHaveTitle(/Tử Vi/);
   await expect(page).toHaveURL(/\/admin\/login$/);
-  await expect(page.getByRole('heading', { name: 'Bảng điều khiển' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Tổng quan' })).toHaveCount(0);
 });
