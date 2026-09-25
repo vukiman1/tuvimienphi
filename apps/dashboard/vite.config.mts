@@ -1,7 +1,6 @@
 /// <reference types='vitest' />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import tailwindcss from '@tailwindcss/vite';
 import { tanstackRouter } from '@tanstack/router-plugin/vite';
 import { fileURLToPath, URL } from 'node:url';
 
@@ -21,11 +20,10 @@ export default defineConfig(() => ({
   },
   plugins: [
     // Router plugin must run before the React plugin so the generated route tree is transformed too.
-    // autoCodeSplitting splits each route's component (and its deps, e.g. recharts) into its own
-    // lazy chunk, so the initial load only ships the shell + the landing route.
+    // autoCodeSplitting splits each route's component into its own lazy chunk, so the initial load
+    // only ships the shell + the landing route.
     tanstackRouter({ target: 'react', autoCodeSplitting: true }),
     react(),
-    tailwindcss(),
   ],
   resolve: {
     alias: {
@@ -44,7 +42,8 @@ export default defineConfig(() => ({
         // Keep heavy, rarely-changing vendors in their own long-cacheable chunks.
         manualChunks(id) {
           if (!id.includes('node_modules')) return undefined;
-          if (id.includes('recharts') || id.includes('d3-')) return 'recharts';
+          if (id.includes('antd') || id.includes('@ant-design') || id.includes('rc-'))
+            return 'antd';
           if (id.includes('react-dom') || id.includes('/react/') || id.includes('scheduler'))
             return 'react';
           if (id.includes('@tanstack')) return 'tanstack';
