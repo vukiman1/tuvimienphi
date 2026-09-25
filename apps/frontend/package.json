@@ -21,12 +21,12 @@
     "@org/frontend-shared": "workspace:*",
     "@org/shared-contracts": "workspace:*",
     "@org/shared-tu-vi": "workspace:*",
-    "@sentry/react": "^10.73.0",
-    "@tanstack/react-query": "^5.102.8",
-    "@tanstack/react-query-devtools": "^5.102.8",
+    "@sentry/react": "^10.75.2",
+    "@tanstack/react-query": "^5.103.2",
+    "@tanstack/react-query-devtools": "^5.103.2",
     "radix-ui": "^1.6.7",
     "react-toastify": "^11.1.0",
-    "zod": "^4.5.4"
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "rollup-plugin-visualizer": "^7.1.1"
