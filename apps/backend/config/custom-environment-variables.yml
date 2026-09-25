@@ -47,6 +47,7 @@ cors:
 
 jwt:
   secret: JWT_SECRET
+  accessTokenExpiresIn: JWT_ACCESS_TOKEN_EXPIRES_IN
 
 session:
   maxLifetime: SESSION_MAX_LIFETIME
