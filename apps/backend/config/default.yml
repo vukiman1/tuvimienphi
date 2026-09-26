@@ -60,6 +60,9 @@ captcha:
 google:
   clientId: ''
 
+admin:
+  bootstrapEmails: []
+
 storage:
   endpoint: ''
   region: auto

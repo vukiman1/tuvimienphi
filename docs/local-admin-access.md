@@ -12,10 +12,56 @@ Console **chỉ đăng nhập bằng Google**: `http://localhost:4300/admin/logi
 
 Google account phải có `role` là `ADMIN` hoặc `SUPER_ADMIN`; sai role thì endpoint trả 403 và không phát cookie nào.
 
+### Seed admin đầu tiên
+
+DB mới tinh chưa có tài khoản nào mang console role, nên đăng nhập lần đầu bị 403. Migration `SeedBootstrapAdmin1786800000000` lo việc này: đọc `ADMIN_BOOTSTRAP_EMAILS` rồi cấp `SUPER_ADMIN` cho từng email.
+
+```bash
+# apps/backend/.env.local (gitignored), phân tách bằng dấu phẩy
+ADMIN_BOOTSTRAP_EMAILS=email-google-cua-ban@gmail.com,dong-nghiep@gmail.com
+```
+
+```bash
+pnpm db:migration:run
+```
+
+Trên VPS không phải làm gì thêm: service `migrate` trong `docker-compose.prod.yml` chạy mỗi lần deploy và đã nhận `ADMIN_BOOTSTRAP_EMAILS` qua `*backend-env`, nên chỉ cần set biến trong `.env.prod`.
+
+Email được trim và hạ về chữ thường. Migration xử lý cả ba tình huống trong một câu `INSERT ... ON CONFLICT`:
+
+| Trạng thái trong DB         | Kết quả                                                                                                                                                                           |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| chưa có                     | tạo row `SUPER_ADMIN`, `is_email_verified = true`, không mật khẩu — lần đăng nhập Google đầu tiên gắn identity vào đúng row này (`linkToExistingUser`), không tạo tài khoản trùng |
+| đang là `USER`/`SELLER`     | nâng lên `SUPER_ADMIN`                                                                                                                                                            |
+| đã là `ADMIN`/`SUPER_ADMIN` | không đụng tới — chỉ nâng, không bao giờ hạ role                                                                                                                                  |
+
+> **Biến rỗng thì migration ném lỗi, không im lặng bỏ qua.** Đây là chủ ý: nếu chỉ `return` thì tên migration vẫn được ghi vào bảng `migrations`, và set biến sau đó sẽ không có tác dụng vì migration không chạy lại nữa. Ném lỗi thì transaction rollback, bảng `migrations` không ghi gì, deploy fail rõ ràng — set biến rồi chạy lại là xong.
+
+Backend e2e tự set `ADMIN_BOOTSTRAP_EMAILS=e2e-admin@tuvi.local` trong `global-setup.ts`, nên CI không cần biến này.
+
+Biến được khai báo trong `config/default.yml` và `config/custom-environment-variables.yml` như mọi biến khác, nên `config().admin.bootstrapEmails` có sẵn và đã qua validate nếu sau này cần đọc lúc chạy. Bản thân migration vẫn đọc thẳng `process.env`: nó chạy qua typeorm CLI ngoài Nest, nạp cả config loader vào sẽ kéo theo ràng buộc `JWT_SECRET` và `SECRET_KEY` không liên quan gì tới việc seed.
+
+### Thêm hoặc đổi admin về sau
+
+Migration chỉ chạy một lần, nên admin thứ hai trở đi cấp bằng SQL:
+
+```bash
+docker exec tuvimienphi-db psql -U postgres -d tuvimienphi -c \
+  "insert into users (email, is_email_verified, role)
+   values ('<email google>', true, 'SUPER_ADMIN')
+   on conflict (email) do update set role = 'SUPER_ADMIN';"
+```
+
+Trên VPS đổi `docker exec tuvimienphi-db` thành `docker compose exec db` và dùng `-U "$POSTGRES_USER" -d "$POSTGRES_DB"`.
+
+### Thu hồi quyền
+
 ```bash
 docker exec tuvimienphi-db psql -U postgres -d tuvimienphi \
-  -c "update users set role='SUPER_ADMIN' where email='<email google cua ban>';"
+  -c "update users set role='USER' where email='<email>';"
 ```
+
+### Client ID cho dashboard
 
 `apps/dashboard/.env.local` (gitignored) cần client ID, lấy cùng giá trị với `apps/frontend/.env`:
 

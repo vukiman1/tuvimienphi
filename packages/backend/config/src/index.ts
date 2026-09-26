@@ -118,6 +118,10 @@ interface GoogleConfig {
   clientId: string;
 }
 
+interface AdminConfig {
+  bootstrapEmails: string[] | string;
+}
+
 interface StorageConfig {
   endpoint: string;
   region: string;
@@ -142,6 +146,10 @@ const stringListSchema = z.preprocess(
           .filter(Boolean)
       : value,
   z.array(z.string().min(1)),
+);
+
+const emailListSchema = stringListSchema.transform((emails) =>
+  emails.map((email) => email.toLowerCase()),
 );
 
 const durationSchema = z.string().regex(/^\d+(s|m|h|d)$/, 'Expected a duration like 15m, 1d, 60d');
@@ -228,6 +236,9 @@ const backendConfigSchema = z.object({
   google: z.object({
     clientId: z.string().default(''),
   }),
+  admin: z.object({
+    bootstrapEmails: emailListSchema,
+  }),
   storage: z.object({
     endpoint: z.union([z.literal(''), z.url()]).default(''),
     region: z.string().min(1),
@@ -280,6 +291,7 @@ export default () => {
     email: nodeConfig.get<EmailConfig>('email'),
     captcha: nodeConfig.get<CaptchaConfig>('captcha'),
     google: nodeConfig.get<GoogleConfig>('google'),
+    admin: nodeConfig.get<AdminConfig>('admin'),
     storage: nodeConfig.get<StorageConfig>('storage'),
     queueBoard: nodeConfig.get<QueueBoardConfig>('queueBoard'),
   });
@@ -297,6 +309,7 @@ export default () => {
     email,
     captcha,
     google,
+    admin,
     storage,
     queueBoard,
   } = validated;
@@ -338,6 +351,7 @@ export default () => {
     email,
     captcha,
     google,
+    admin,
     storage,
     queueBoard,
   };
