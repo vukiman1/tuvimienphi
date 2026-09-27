@@ -24,15 +24,15 @@
   },
   "dependencies": {
     "@org/shared-contracts": "workspace:*",
-    "@tanstack/react-query": "^5.102.8",
+    "@tanstack/react-query": "^5.103.2",
     "clsx": "^2.1.1",
-    "tailwind-merge": "^3.6.0",
+    "tailwind-merge": "^3.7.0",
     "tslib": "^2.3.0"
   },
   "peerDependencies": {
-    "react": "^19.2.7"
+    "react": "^19.3.0"
   },
   "devDependencies": {
-    "react": "^19.2.7"
+    "react": "^19.3.0"
   }
 }
