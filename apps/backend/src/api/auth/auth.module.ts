@@ -13,6 +13,7 @@ import { AuthUserController } from './controllers/auth.user.controller';
 import { JwtAdminStrategy } from './strategies/jwt/admin.jwt.strategy';
 import { JwtUserStrategy } from './strategies/jwt/user.jwt.strategy';
 import { UserModule } from '../user/user.module';
+import { ActivityModule } from '../activity/activity.module';
 import { UserLocalStrategy } from './strategies/local/user.local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { UserSessionEntity } from './entities/user-session.entity';
@@ -31,6 +32,7 @@ import { SocialAuthService } from './services/social/social-auth.service';
   imports: [
     UserModule,
     PassportModule,
+    ActivityModule,
     TypeOrmModule.forFeature([
       UserSessionEntity,
       AuthIdentityEntity,

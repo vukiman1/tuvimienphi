@@ -2,6 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { In } from 'typeorm';
 import { CalendarType, Gender, type BirthInput } from '@org/shared-contracts';
+import { ActivityLogService } from '../activity/activity-log.service';
+import { LaSoEvent } from './la-so-event';
 import { LaSoHistoryEntity } from './entities/la-so-history.entity';
 import { HISTORY_LIMIT, LaSoHistoryService } from './la-so-history.service';
 
@@ -40,6 +42,7 @@ describe('LaSoHistoryService', () => {
     findOne: jest.Mock;
     delete: jest.Mock;
   };
+  let activity: { record: jest.Mock };
 
   beforeEach(async () => {
     repo = {
@@ -48,11 +51,13 @@ describe('LaSoHistoryService', () => {
       findOne: jest.fn().mockResolvedValue(row()),
       delete: jest.fn().mockResolvedValue({ affected: 1 }),
     };
+    activity = { record: jest.fn() };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         LaSoHistoryService,
         { provide: getRepositoryToken(LaSoHistoryEntity), useValue: repo },
+        { provide: ActivityLogService, useValue: activity },
       ],
     }).compile();
 
@@ -185,6 +190,23 @@ describe('LaSoHistoryService', () => {
         userId: USER_ID,
         birthKey: '1995-03-12-duong-h6-nam',
       });
+    });
+  });
+
+  describe('activity', () => {
+    it('records a chart view so the console can show who looked at what', async () => {
+      await service.record(USER_ID, INPUT);
+
+      expect(activity.record).toHaveBeenCalledWith(
+        LaSoEvent.VIEWED,
+        expect.objectContaining({ userId: USER_ID }),
+      );
+    });
+
+    it('stays quiet when the client replays its local history, which would otherwise flood the feed', async () => {
+      await service.sync(USER_ID, [{ ...INPUT, viewedAt: '2026-01-01T00:00:00.000Z' }]);
+
+      expect(activity.record).not.toHaveBeenCalled();
     });
   });
 });
