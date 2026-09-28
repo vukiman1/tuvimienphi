@@ -15,6 +15,7 @@ import { Alert, Card, Col, DatePicker, Flex, Row, Segmented, Skeleton, Typograph
 import dayjs, { type Dayjs } from 'dayjs';
 import { errorMessage } from '@/lib/api-error';
 import { selectUser, useAuthStore } from '@/stores/auth-store';
+import { RecentActivityCard } from '../components/recent-activity-card';
 import { CHART_LINE_COLOR, STAT_ACCENT } from '../components/stat-accent';
 import { StatTile } from '../components/stat-tile';
 import { activeUsersSeriesQuery } from '../data/active-users-series.query';
@@ -86,7 +87,7 @@ export function OverviewPage() {
       title: 'Tổng người dùng',
       value: overview?.totalUsers,
       icon: <UserOutlined />,
-      accent: STAT_ACCENT.blue,
+      accent: STAT_ACCENT.neutral,
     },
     {
       title: 'Lá số đã lưu',
@@ -104,7 +105,7 @@ export function OverviewPage() {
       title: 'Tài khoản mật khẩu',
       value: overview?.passwordUsers,
       icon: <LockOutlined />,
-      accent: STAT_ACCENT.amber,
+      accent: STAT_ACCENT.neutral,
     },
   ];
 
@@ -217,6 +218,8 @@ export function OverviewPage() {
           </Card>
         </Col>
       </Row>
+
+      <RecentActivityCard />
 
       <Alert
         type="info"

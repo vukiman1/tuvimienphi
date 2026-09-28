@@ -18,7 +18,12 @@ export function Sidebar() {
       theme="light"
       breakpoint="lg"
       collapsedWidth={0}
-      style={{ position: 'relative', overflow: 'hidden' }}
+      style={{
+        position: 'sticky',
+        top: 0,
+        height: '100vh',
+        overflow: 'hidden',
+      }}
       styles={{ body: { display: 'flex', flexDirection: 'column', height: '100%' } }}
     >
       <div

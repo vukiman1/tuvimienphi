@@ -54,6 +54,14 @@ export type AdminUsersQueryVariables = Exact<{
 
 export type AdminUsersQuery = { users: { total: number, users: Array<{ id: string, email: string, displayName: string | null, avatar: string | null, role: Role, isEmailVerified: boolean, balance: number, createdAt: string, genCount: number, lastActiveAt: string | null }> } };
 
+export type RecentActivityQueryVariables = Exact<{
+  page?: number | null | undefined;
+  limit?: number | null | undefined;
+}>;
+
+
+export type RecentActivityQuery = { recentActivity: { total: number, entries: Array<{ id: string, occurredAt: string, event: string, userId: string | null, actorEmail: string | null, actorName: string | null }> } };
+
 export class TypedDocumentString<TResult, TVariables>
   extends String
   implements DocumentTypeDecoration<TResult, TVariables>
@@ -156,3 +164,18 @@ export const AdminUsersDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<AdminUsersQuery, AdminUsersQueryVariables>;
+export const RecentActivityDocument = new TypedDocumentString(`
+    query RecentActivity($page: Int, $limit: Int) {
+  recentActivity(page: $page, limit: $limit) {
+    total
+    entries {
+      id
+      occurredAt
+      event
+      userId
+      actorEmail
+      actorName
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<RecentActivityQuery, RecentActivityQueryVariables>;

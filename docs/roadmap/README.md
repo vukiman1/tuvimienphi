@@ -16,21 +16,22 @@ Quy ước ưu tiên: 🔴 nên làm sớm (bảo mật) · 🟡 nên làm (ch�
 | 6   | Change password endpoint (+ hash khi update) | 🟢      | Feature   | [02-auth-account-lifecycle.md](02-auth-account-lifecycle.md) |
 | 7   | Unit test SessionService / CryptoService     | 🟡      | Test      | [03-auth-tests.md](03-auth-tests.md)                         |
 | 8   | Redis cluster: hash-tag cho session keys     | 🟢      | Scaling   | [04-infra-scaling.md](04-infra-scaling.md)                   |
-| 9   | Audit logging cho sự kiện auth               | 🟢      | Ops       | [04-infra-scaling.md](04-infra-scaling.md)                   |
+| 9   | ~~Audit logging cho sự kiện auth~~ — đã có   | ✅      | Ops       | [10-activity-log.md](10-activity-log.md)                     |
 | 10  | CAPTCHA cho login                            | 🟢      | Hardening | [04-infra-scaling.md](04-infra-scaling.md)                   |
 
 ## Admin console
 
-| #   | Việc                                    | Ưu tiên | Loại      | Chi tiết                                   |
-| --- | --------------------------------------- | ------- | --------- | ------------------------------------------ |
-| 1   | Hạn tuyệt đối cho phiên (`maxLifetime`) | 🔴      | Hardening | [06-admin-console.md](06-admin-console.md) |
-| 2   | Phiên tách theo audience (user / admin) | 🔴      | Hardening | [06-admin-console.md](06-admin-console.md) |
-| 3   | `RolesGuard` + đường đăng nhập admin    | 🔴      | Feature   | [06-admin-console.md](06-admin-console.md) |
-| 4   | Module `admin` và endpoint thật         | 🟡      | Feature   | [06-admin-console.md](06-admin-console.md) |
-| 4b  | Cái bẫy của app hai transport           | 🔴      | Hardening | [06-admin-console.md](06-admin-console.md) |
-| 4c  | Phân trang REST — quyết sau GraphQL     | 🟡      | Refactor  | [06-admin-console.md](06-admin-console.md) |
-| 5   | `POST /van-han` đang mở cho mọi user    | 🔴      | Fix       | [06-admin-console.md](06-admin-console.md) |
-| 6   | Console chưa có lớp bảo vệ nào          | 🔴      | Fix       | [06-admin-console.md](06-admin-console.md) |
+| #   | Việc                                     | Ưu tiên | Loại      | Chi tiết                                   |
+| --- | ---------------------------------------- | ------- | --------- | ------------------------------------------ |
+| 1   | Hạn tuyệt đối cho phiên (`maxLifetime`)  | 🔴      | Hardening | [06-admin-console.md](06-admin-console.md) |
+| 2   | Phiên tách theo audience (user / admin)  | 🔴      | Hardening | [06-admin-console.md](06-admin-console.md) |
+| 3   | `RolesGuard` + đường đăng nhập admin     | 🔴      | Feature   | [06-admin-console.md](06-admin-console.md) |
+| 4   | Module `admin` và endpoint thật          | 🟡      | Feature   | [06-admin-console.md](06-admin-console.md) |
+| 4b  | Cái bẫy của app hai transport            | 🔴      | Hardening | [06-admin-console.md](06-admin-console.md) |
+| 4c  | Phân trang REST — quyết sau GraphQL      | 🟡      | Refactor  | [06-admin-console.md](06-admin-console.md) |
+| 5   | `POST /van-han` đang mở cho mọi user     | 🔴      | Fix       | [06-admin-console.md](06-admin-console.md) |
+| 6   | Console chưa có lớp bảo vệ nào           | 🔴      | Fix       | [06-admin-console.md](06-admin-console.md) |
+| 7   | ~~Nhật ký hoạt động query được~~ — đã có | ✅      | Feature   | [10-activity-log.md](10-activity-log.md)   |
 
 ## REST contract
 
