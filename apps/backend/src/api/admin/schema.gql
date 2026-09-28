@@ -2,6 +2,21 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type ActivityEntry {
+  actorEmail: String
+  actorName: String
+  event: String!
+  id: ID!
+  ipAddress: String
+  occurredAt: String!
+  userId: ID
+}
+
+type ActivityPage {
+  entries: [ActivityEntry!]!
+  total: Int!
+}
+
 type AdminOverview {
   activeUsers: PeriodMetric!
   devices: [LabelledCount!]!
@@ -59,6 +74,7 @@ type PeriodMetric {
 type Query {
   activeUsersSeries(from: String, to: String): [DailyCount!]!
   overview(from: String, to: String): AdminOverview!
+  recentActivity(limit: Int, page: Int): ActivityPage!
   users(balanceMax: Int, balanceMin: Int, isEmailVerified: Boolean, joinedFrom: String, joinedTo: String, limit: Int, page: Int, roles: [Role!], search: String, sortBy: AdminUserSortField, sortDirection: SortDirection): AdminUserPage!
 }
 
