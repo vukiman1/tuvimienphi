@@ -40,7 +40,10 @@ fi
 
 echo "==> pulling ${services_to_pull[*]} and starting"
 docker compose pull --quiet "${services_to_pull[@]}"
-docker compose up -d
+if ! docker compose up -d; then
+  docker compose logs --tail 50 migrate >&2
+  fail "compose could not bring the stack up; the migrate logs above say why"
+fi
 
 container="$(docker compose ps -q backend)"
 [ -n "$container" ] || fail "compose did not start a backend container"
