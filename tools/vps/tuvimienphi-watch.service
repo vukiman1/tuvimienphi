@@ -1,0 +1,9 @@
+[Unit]
+Description=Check the tuvimienphi containers and report state changes to Telegram
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/tuvimienphi
+ExecStart=/opt/tuvimienphi/tools/vps/watch-containers.sh /opt/tuvimienphi

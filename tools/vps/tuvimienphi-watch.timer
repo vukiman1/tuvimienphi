@@ -1,0 +1,11 @@
+[Unit]
+Description=Check the tuvimienphi containers every five minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+AccuracySec=30s
+Unit=tuvimienphi-watch.service
+
+[Install]
+WantedBy=timers.target

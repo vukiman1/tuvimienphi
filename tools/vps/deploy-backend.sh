@@ -9,6 +9,7 @@ readonly COMPOSE_FILE_NAME='docker-compose.prod.yml'
 readonly READINESS_TIMEOUT_SECONDS=180
 readonly READINESS_POLL_SECONDS=3
 readonly SOURCE_LABEL='org.opencontainers.image.source'
+readonly MONITORING_SCRIPTS=(tools/notify-telegram.sh tools/vps/watch-containers.sh)
 
 fail() {
   echo "deploy failed: $*" >&2
@@ -18,11 +19,26 @@ fail() {
 cd "$DEPLOY_PATH" || fail "no deploy directory at $DEPLOY_PATH"
 [ -f .env ] || fail "$DEPLOY_PATH/.env is missing; copy .env.prod.example and fill it in first"
 
+raw_url() {
+  printf 'https://raw.githubusercontent.com/%s/%s/%s' "$REPOSITORY" "$COMMIT" "$1"
+}
+
 echo "==> fetching $COMPOSE_FILE_NAME at $COMMIT"
 curl --fail --silent --show-error --location \
   --output "${COMPOSE_FILE_NAME}.next" \
-  "https://raw.githubusercontent.com/${REPOSITORY}/${COMMIT}/${COMPOSE_FILE_NAME}"
+  "$(raw_url "$COMPOSE_FILE_NAME")"
 mv "${COMPOSE_FILE_NAME}.next" "$COMPOSE_FILE_NAME"
+
+for script in "${MONITORING_SCRIPTS[@]}"; do
+  mkdir -p "$(dirname "$script")"
+  if curl --fail --silent --show-error --location --output "${script}.next" "$(raw_url "$script")"; then
+    mv "${script}.next" "$script"
+    chmod +x "$script"
+  else
+    rm -f "${script}.next"
+    echo "==> $script is not in $COMMIT, leaving whatever is on disk" >&2
+  fi
+done
 
 echo "==> pinning BACKEND_IMAGE to $IMAGE"
 pinned_env="$(awk -v image="$IMAGE" '
