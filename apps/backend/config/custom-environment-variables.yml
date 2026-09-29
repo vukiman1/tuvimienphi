@@ -88,3 +88,6 @@ queueBoard:
     __format: boolean
   user: QUEUE_BOARD_USER
   password: QUEUE_BOARD_PASSWORD
+
+queue:
+  role: QUEUE_ROLE

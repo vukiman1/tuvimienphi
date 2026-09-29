@@ -137,6 +137,16 @@ interface QueueBoardConfig {
   password: string;
 }
 
+export enum QueueRole {
+  PRODUCER = 'producer',
+  CONSUMER = 'consumer',
+  BOTH = 'both',
+}
+
+interface QueueConfig {
+  role: QueueRole;
+}
+
 const stringListSchema = z.preprocess(
   (value) =>
     typeof value === 'string'
@@ -252,6 +262,9 @@ const backendConfigSchema = z.object({
     user: z.string().default('admin'),
     password: z.string().default(''),
   }),
+  queue: z.object({
+    role: z.enum(QueueRole).default(QueueRole.BOTH),
+  }),
 });
 
 function resolveBackendRoot() {
@@ -294,6 +307,7 @@ export default () => {
     admin: nodeConfig.get<AdminConfig>('admin'),
     storage: nodeConfig.get<StorageConfig>('storage'),
     queueBoard: nodeConfig.get<QueueBoardConfig>('queueBoard'),
+    queue: nodeConfig.get<QueueConfig>('queue'),
   });
 
   const {
@@ -312,6 +326,7 @@ export default () => {
     admin,
     storage,
     queueBoard,
+    queue,
   } = validated;
 
   return {
@@ -354,5 +369,6 @@ export default () => {
     admin,
     storage,
     queueBoard,
+    queue,
   };
 };

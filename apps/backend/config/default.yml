@@ -75,3 +75,6 @@ queueBoard:
   enabled: true
   user: admin
   password: ''
+
+queue:
+  role: both
