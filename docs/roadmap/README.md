@@ -42,11 +42,12 @@ Quy ước ưu tiên: 🔴 nên làm sớm (bảo mật) · 🟡 nên làm (ch�
 
 ## Build & tooling
 
-| #   | Việc                                          | Ưu tiên | Loại     | Chi tiết                                     |
-| --- | --------------------------------------------- | ------- | -------- | -------------------------------------------- |
-| 1   | `pnpm dev` build hai lần (một lần production) | 🟡      | Fix      | [07-build-pipeline.md](07-build-pipeline.md) |
-| 2   | Xoá project Vercel + nới trần luận giải       | 🟡      | Refactor | [07-build-pipeline.md](07-build-pipeline.md) |
-| 3   | Watch + restart cho dev                       | 🟢      | Tooling  | [07-build-pipeline.md](07-build-pipeline.md) |
+| #   | Việc                                          | Ưu tiên | Loại     | Chi tiết                                                 |
+| --- | --------------------------------------------- | ------- | -------- | -------------------------------------------------------- |
+| 1   | `pnpm dev` build hai lần (một lần production) | 🟡      | Fix      | [07-build-pipeline.md](07-build-pipeline.md)             |
+| 2   | Xoá project Vercel + nới trần luận giải       | 🟡      | Refactor | [07-build-pipeline.md](07-build-pipeline.md)             |
+| 3   | Watch + restart cho dev                       | 🟢      | Tooling  | [07-build-pipeline.md](07-build-pipeline.md)             |
+| 4   | Thông báo deploy + theo dõi container         | 🟡      | Ops      | [12-deploy-notifications.md](12-deploy-notifications.md) |
 
 ## Lá số
 
