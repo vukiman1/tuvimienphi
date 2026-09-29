@@ -25,7 +25,7 @@ ADMIN_BOOTSTRAP_EMAILS=email-google-cua-ban@gmail.com,dong-nghiep@gmail.com
 pnpm db:migration:run
 ```
 
-Trên VPS không phải làm gì thêm: service `migrate` trong `docker-compose.prod.yml` chạy mỗi lần deploy và đã nhận `ADMIN_BOOTSTRAP_EMAILS` qua `*backend-env`, nên chỉ cần set biến trong `.env.prod`.
+Trên VPS biến nằm trong `/opt/tuvimienphi/.env` — chính file mà `deploy-backend.sh` bắt buộc phải có. Service `migrate` trong `docker-compose.prod.yml` nhận biến qua `*backend-env` và chạy mỗi lần deploy, nên set một lần là xong. Để trống thì `migrate` fail, và `backend` có `depends_on: service_completed_successfully` nên container sẽ không bao giờ được tạo — triệu chứng là `docker ps` không thấy backend chứ không phải backend chạy rồi lỗi.
 
 Email được trim và hạ về chữ thường. Migration xử lý cả ba tình huống trong một câu `INSERT ... ON CONFLICT`:
 
