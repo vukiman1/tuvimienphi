@@ -58,21 +58,30 @@ echo "==> pulling ${services_to_pull[*]} and starting"
 docker compose pull --quiet "${services_to_pull[@]}"
 docker compose up -d
 
-container="$(docker compose ps -q backend)"
-[ -n "$container" ] || fail "compose did not start a backend container"
+verify_service() {
+  local service="$1"
+  local container deadline running_image
 
-echo "==> waiting for the backend to report healthy"
-deadline=$((SECONDS + READINESS_TIMEOUT_SECONDS))
-until [ "$(docker inspect -f '{{.State.Health.Status}}' "$container")" = healthy ]; do
-  if ((SECONDS >= deadline)); then
-    docker compose logs --tail 100 backend >&2
-    fail "backend was not healthy after ${READINESS_TIMEOUT_SECONDS}s"
-  fi
-  sleep "$READINESS_POLL_SECONDS"
+  container="$(docker compose ps -q "$service")"
+  [ -n "$container" ] || fail "compose did not start a $service container"
+
+  echo "==> waiting for $service to report healthy"
+  deadline=$((SECONDS + READINESS_TIMEOUT_SECONDS))
+  until [ "$(docker inspect -f '{{.State.Health.Status}}' "$container")" = healthy ]; do
+    if ((SECONDS >= deadline)); then
+      docker compose logs --tail 100 "$service" >&2
+      fail "$service was not healthy after ${READINESS_TIMEOUT_SECONDS}s"
+    fi
+    sleep "$READINESS_POLL_SECONDS"
+  done
+
+  running_image="$(docker inspect -f '{{.Config.Image}}' "$container")"
+  [ "$running_image" = "$IMAGE" ] || fail "$service is running $running_image instead of $IMAGE"
+}
+
+for service in backend worker; do
+  verify_service "$service"
 done
-
-running_image="$(docker inspect -f '{{.Config.Image}}' "$container")"
-[ "$running_image" = "$IMAGE" ] || fail "backend is running $running_image instead of $IMAGE"
 
 source_repository="$(docker image inspect -f "{{index .Config.Labels \"${SOURCE_LABEL}\"}}" "$IMAGE")"
 if [ -n "$source_repository" ]; then
