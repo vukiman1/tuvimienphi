@@ -55,6 +55,68 @@ enum AdminUserSortField {
   EMAIL
 }
 
+type AdminVanHanAge {
+  birthYear: Int!
+  canChi: String!
+  female: String!
+  male: String!
+  menh: String!
+}
+
+type AdminVanHanAspect {
+  aspect: String!
+  body: String!
+  rating: Int!
+}
+
+type AdminVanHanBirthYear {
+  age: Int!
+  birthYear: Int!
+  canChi: String!
+  menh: String!
+}
+
+type AdminVanHanEditor {
+  birthYearOptions: [AdminVanHanBirthYear!]!
+  canChi: String!
+  previousEntry: AdminVanHanEntry
+  publishedAt: String
+  slot: AdminVanHanSlot!
+  year: Int!
+}
+
+type AdminVanHanEntry {
+  bornYears: [Int!]!
+  id: ID!
+  luanGiai: [AdminVanHanAspect!]!
+  luuNien: String!
+  sourceUrl: String!
+  title: String!
+  tungTuoi: [AdminVanHanAge!]!
+  updatedAt: String!
+}
+
+type AdminVanHanSlot {
+  entry: AdminVanHanEntry
+  missing: [VanHanMissingPart!]!
+  year: Int!
+  zodiac: String!
+  zodiacOrder: Int!
+}
+
+type AdminVanHanYear {
+  canChi: String!
+  publishedAt: String
+  slots: [AdminVanHanSlot!]!
+  year: Int!
+}
+
+type AdminVanHanYearSummary {
+  entryCount: Int!
+  publishedAt: String
+  year: Int!
+}
+
 type DailyCount {
   count: Int!
   date: String!
@@ -63,6 +125,12 @@ type DailyCount {
 type LabelledCount {
   count: Int!
   label: String!
+}
+
+type Mutation {
+  publishVanHanYear(year: Int!): AdminVanHanYear!
+  saveVanHanEntry(input: SaveVanHanEntryInput!): AdminVanHanSlot!
+  unpublishVanHanYear(year: Int!): AdminVanHanYear!
 }
 
 type PeriodMetric {
@@ -76,6 +144,9 @@ type Query {
   overview(from: String, to: String): AdminOverview!
   recentActivity(limit: Int, page: Int): ActivityPage!
   users(balanceMax: Int, balanceMin: Int, isEmailVerified: Boolean, joinedFrom: String, joinedTo: String, limit: Int, page: Int, roles: [Role!], search: String, sortBy: AdminUserSortField, sortDirection: SortDirection): AdminUserPage!
+  vanHanEditor(year: Int!, zodiacOrder: Int!): AdminVanHanEditor!
+  vanHanYear(year: Int!): AdminVanHanYear!
+  vanHanYears: [AdminVanHanYearSummary!]!
 }
 
 enum Role {
@@ -85,7 +156,34 @@ enum Role {
   USER
 }
 
+input SaveVanHanEntryInput {
+  luanGiai: [VanHanAspectInput!]!
+  luuNien: String!
+  sourceUrl: String
+  tungTuoi: [VanHanAgeInput!]!
+  year: Int!
+  zodiacOrder: Int!
+}
+
 enum SortDirection {
   ASC
   DESC
+}
+
+input VanHanAgeInput {
+  birthYear: Int!
+  female: String!
+  male: String!
+}
+
+input VanHanAspectInput {
+  aspect: String!
+  body: String!
+  rating: Int!
+}
+
+enum VanHanMissingPart {
+  LUAN_GIAI
+  LUU_NIEN
+  TUNG_TUOI
 }
