@@ -24,6 +24,11 @@ describe('AI settings console API, without a console session', () => {
       'trying a key before it is saved',
       'mutation { testAiProvider(input: { provider: OPENAI, apiKey: "sk-not-a-real-key-0001", models: ["gpt-x"] }) { status } }',
     ],
+    ['reading usage', '{ aiUsage(from: "2026-10-01", to: "2026-10-07") { day calls } }'],
+    [
+      'setting a monthly budget',
+      'mutation { setAiProviderBudget(provider: OPENAI, monthlyBudgetUsd: 10) { provider } }',
+    ],
     [
       'listing models with a typed key',
       '{ aiProviderModels(provider: OPENAI, apiKey: "sk-not-a-real-key-0001") }',

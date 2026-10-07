@@ -7,14 +7,18 @@ import { readableReason } from '../../../ai/ai-error-reason';
 import { AiHealthService } from '../../../ai/ai-health.service';
 import { AiProviderClients } from '../../../ai/ai-provider-clients';
 import { AiSettingsService } from '../../../ai/ai-settings.service';
+import { AiUsageService } from '../../../ai/ai-usage.service';
 import { RequireRoles } from '../../auth/decorators/require-roles.decorator';
 import { GqlAuthGuard } from '../../auth/guards/gql-auth.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { toAdminAiProbe, toAdminAiProvider, toAdminAiSettings } from './admin-ai.mapper';
-import { AdminAiHealth, AdminAiProvider, AdminAiSettings } from './admin-ai.type';
+import { AdminAiHealth, AdminAiProvider, AdminAiSettings, AdminAiUsageDay } from './admin-ai.type';
 import { ActiveAiProviderArgs, AiProviderArgs, AiProviderModelsArgs } from './dto/ai-provider.args';
+import { AiUsageArgs } from './dto/ai-usage.args';
 import { SaveAiProviderInput } from './dto/save-ai-provider.input';
+import { SetAiProviderBudgetArgs } from './dto/set-ai-provider-budget.args';
 import { TestAiProviderInput } from './dto/test-ai-provider.input';
+import { assertUsageRange } from './usage-range';
 
 const PROVIDER_CALLS_PER_MINUTE = 12;
 const MINUTE_MS = 60_000;
@@ -27,6 +31,7 @@ export class AdminAiResolver {
     private readonly settings: AiSettingsService,
     private readonly health: AiHealthService,
     private readonly providers: AiProviderClients,
+    private readonly usage: AiUsageService,
   ) {}
 
   @Query(() => AdminAiSettings, { name: 'aiSettings' })
@@ -45,6 +50,19 @@ export class AdminAiResolver {
         `${provider} would not list its models: ${readableReason(error)}`,
       );
     }
+  }
+
+  @Query(() => [AdminAiUsageDay], { name: 'aiUsage' })
+  async aiUsage(@Args() { from, to }: AiUsageArgs): Promise<AdminAiUsageDay[]> {
+    assertUsageRange(from, to);
+    return this.usage.daily(from, to);
+  }
+
+  @Mutation(() => AdminAiProvider, { name: 'setAiProviderBudget' })
+  async setAiProviderBudget(
+    @Args() { provider, monthlyBudgetUsd }: SetAiProviderBudgetArgs,
+  ): Promise<AdminAiProvider> {
+    return toAdminAiProvider(await this.settings.setBudget(provider, monthlyBudgetUsd ?? null));
   }
 
   @Mutation(() => AdminAiProvider, { name: 'saveAiProvider' })

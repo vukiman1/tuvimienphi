@@ -31,6 +31,7 @@ type AdminAiProvider {
   health: AdminAiHealth
   isActive: Boolean!
   models: [String!]!
+  monthlyBudgetUsd: Float
   provider: AiProvider!
   updatedAt: String
 }
@@ -38,6 +39,19 @@ type AdminAiProvider {
 type AdminAiSettings {
   providers: [AdminAiProvider!]!
   source: AiSource!
+}
+
+type AdminAiUsageDay {
+  calls: Int!
+  costUsd: Float
+  day: String!
+  failedCalls: Int!
+  inputTokens: Float!
+  model: String!
+  outputTokens: Float!
+  provider: AiProvider!
+  purpose: AiUsagePurpose!
+  quotaHits: Int!
 }
 
 type AdminOverview {
@@ -157,6 +171,11 @@ enum AiSource {
   NONE
 }
 
+enum AiUsagePurpose {
+  CHECK
+  GENERATION
+}
+
 type DailyCount {
   count: Int!
   date: String!
@@ -174,6 +193,7 @@ type Mutation {
   saveAiProvider(input: SaveAiProviderInput!): AdminAiProvider!
   saveVanHanEntry(input: SaveVanHanEntryInput!): AdminVanHanSlot!
   setActiveAiProvider(provider: AiProvider): AdminAiSettings!
+  setAiProviderBudget(monthlyBudgetUsd: Float, provider: AiProvider!): AdminAiProvider!
   testAiProvider(input: TestAiProviderInput!): AdminAiHealth!
   unpublishVanHanYear(year: Int!): AdminVanHanYear!
 }
@@ -188,6 +208,7 @@ type Query {
   activeUsersSeries(from: String, to: String): [DailyCount!]!
   aiProviderModels(apiKey: String, provider: AiProvider!): [String!]!
   aiSettings: AdminAiSettings!
+  aiUsage(from: String!, to: String!): [AdminAiUsageDay!]!
   overview(from: String, to: String): AdminOverview!
   recentActivity(limit: Int, page: Int): ActivityPage!
   users(balanceMax: Int, balanceMin: Int, isEmailVerified: Boolean, joinedFrom: String, joinedTo: String, limit: Int, page: Int, roles: [Role!], search: String, sortBy: AdminUserSortField, sortDirection: SortDirection): AdminUserPage!

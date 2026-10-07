@@ -15,6 +15,7 @@ function row(overrides: Partial<AiProviderEntity> = {}): AiProviderEntity {
     healthLatencyMs: null,
     healthModel: null,
     healthError: null,
+    monthlyBudgetUsd: null,
     updatedAt: new Date('2026-10-08T03:00:00.000Z'),
     ...overrides,
   });
@@ -42,6 +43,7 @@ describe('toAdminAiProvider', () => {
       models: [],
       isActive: false,
       health: null,
+      monthlyBudgetUsd: null,
       updatedAt: null,
     });
   });
@@ -63,6 +65,12 @@ describe('toAdminAiProvider', () => {
       model: 'claude-opus-5-5',
       error: null,
     });
+  });
+});
+
+describe('toAdminAiProvider budget', () => {
+  it('carries the monthly budget when one is set', () => {
+    expect(toAdminAiProvider(row({ monthlyBudgetUsd: 12.5 })).monthlyBudgetUsd).toBe(12.5);
   });
 });
 

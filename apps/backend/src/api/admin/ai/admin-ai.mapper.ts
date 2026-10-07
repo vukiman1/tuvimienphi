@@ -17,6 +17,7 @@ export function toAdminAiProvider(row: AiProviderEntity): AdminAiProvider {
     models: [...row.models],
     isActive: row.isActive,
     health: toAdminAiHealth(row),
+    monthlyBudgetUsd: row.monthlyBudgetUsd,
     updatedAt: row.updatedAt ? row.updatedAt.toISOString() : null,
   };
 }
