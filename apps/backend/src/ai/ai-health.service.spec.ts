@@ -3,7 +3,10 @@ import { AiHealthService, MAX_HEALTH_ERROR_LENGTH } from './ai-health.service';
 import { AiProvider, type AiProviderClient } from './ai-provider';
 import { AiProviderClients } from './ai-provider-clients';
 import { AiSettingsService, type AiHealthOutcome } from './ai-settings.service';
+import { AiUsagePurpose } from './ai-usage-purpose.enum';
+import { AiUsageService } from './ai-usage.service';
 import { AiUnavailableError } from './ai.errors';
+import type { AiResult } from './ai.types';
 import { AiHealthStatus, AiProviderEntity } from './entities/ai-provider.entity';
 
 const CREDENTIALS = { apiKey: 'sk-key', models: ['fast', 'slow'] };
@@ -18,11 +21,17 @@ function setup(generate: AiProviderClient['generate']) {
     }),
   };
   const providers = { of: () => ({ generate, listModels: jest.fn() }) };
+  const usage = {
+    track: jest.fn(
+      (_provider: AiProvider, _purpose: AiUsagePurpose, work: () => Promise<AiResult>) => work(),
+    ),
+  };
   const service = new AiHealthService(
     settings as unknown as AiSettingsService,
     providers as unknown as AiProviderClients,
+    usage as unknown as AiUsageService,
   );
-  return { service, settings, recorded };
+  return { service, settings, recorded, usage };
 }
 
 describe('AiHealthService.check', () => {
@@ -139,5 +148,20 @@ describe('AiHealthService.probe', () => {
 
     expect(outcome.status).toBe(AiHealthStatus.FAILED);
     expect(outcome.error).toContain('draft: 404 unknown model');
+  });
+
+  it('counts the call as a check, so the health bar shows up in the usage report', async () => {
+    const generate = jest
+      .fn()
+      .mockResolvedValue({ text: '{"ok":true}', model: 'draft', outputTokens: 4 });
+    const { service, usage } = setup(generate);
+
+    await service.probe(AiProvider.OPENAI, { apiKey: 'k', models: ['draft'] });
+
+    expect(usage.track).toHaveBeenCalledWith(
+      AiProvider.OPENAI,
+      AiUsagePurpose.CHECK,
+      expect.any(Function),
+    );
   });
 });

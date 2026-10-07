@@ -29,7 +29,7 @@ function completion(message: Record<string, unknown>, finishReason = 'stop') {
     choices: [
       { finish_reason: finishReason, message: { refusal: null, content: null, ...message } },
     ],
-    usage: { completion_tokens: 17 },
+    usage: { prompt_tokens: 280, completion_tokens: 17 },
   };
 }
 
@@ -88,7 +88,13 @@ describe('OpenAiProvider.generate', () => {
 
     await expect(
       new OpenAiProvider().generate(REQUEST, { apiKey: 'k', models: ['gpt-fast'] }),
-    ).resolves.toEqual({ text: '{"doan":"Hai câu."}', model: 'gpt-fast', outputTokens: 17 });
+    ).resolves.toEqual({
+      text: '{"doan":"Hai câu."}',
+      model: 'gpt-fast',
+      inputTokens: 280,
+      outputTokens: 17,
+      failedAttempts: [],
+    });
   });
 
   it('moves to the next model when the first one refuses', async () => {

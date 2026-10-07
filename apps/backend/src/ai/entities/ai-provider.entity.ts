@@ -40,6 +40,19 @@ export class AiProviderEntity {
   @Column({ type: 'text', name: 'health_error', nullable: true })
   healthError!: string | null;
 
+  @Column({
+    type: 'numeric',
+    precision: 10,
+    scale: 2,
+    name: 'monthly_budget_usd',
+    nullable: true,
+    transformer: {
+      to: (value: number | null) => value,
+      from: (value: string | null) => (value === null ? null : Number(value)),
+    },
+  })
+  monthlyBudgetUsd!: number | null;
+
   @Column({ type: 'timestamptz', name: 'updated_at', nullable: true })
   updatedAt!: Date | null;
 }

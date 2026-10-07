@@ -130,6 +130,15 @@ export class AiSettingsService {
     this.cached = null;
   }
 
+  async setBudget(
+    provider: AiProvider,
+    monthlyBudgetUsd: number | null,
+  ): Promise<AiProviderEntity> {
+    const row = await this.find(provider);
+    row.monthlyBudgetUsd = monthlyBudgetUsd;
+    return this.repo.save(row);
+  }
+
   async recordHealth(provider: AiProvider, outcome: AiHealthOutcome): Promise<AiProviderEntity> {
     const row = await this.find(provider);
     row.healthStatus = outcome.status;
@@ -206,6 +215,7 @@ function blank(provider: AiProvider): AiProviderEntity {
     healthLatencyMs: null,
     healthModel: null,
     healthError: null,
+    monthlyBudgetUsd: null,
     updatedAt: null,
   });
 }

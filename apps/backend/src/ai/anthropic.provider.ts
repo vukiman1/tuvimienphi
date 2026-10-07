@@ -23,7 +23,7 @@ export class AnthropicProvider implements AiProviderClient {
   async generate(request: AiRequest, { apiKey, models }: AiCredentials): Promise<AiResult> {
     const client = new Anthropic({ apiKey });
 
-    const { result, model } = await tryModels(
+    const { result, model, failedAttempts } = await tryModels(
       models,
       async (candidate) => {
         const response = await client.messages.create(
@@ -49,12 +49,16 @@ export class AnthropicProvider implements AiProviderClient {
         if (!text) {
           throw new Error('response carried no text');
         }
-        return { text, outputTokens: response.usage.output_tokens };
+        return {
+          text,
+          inputTokens: response.usage.input_tokens,
+          outputTokens: response.usage.output_tokens,
+        };
       },
       () => request.signal?.aborted ?? false,
     );
 
-    return { text: result.text, model, outputTokens: result.outputTokens };
+    return { ...result, model, failedAttempts };
   }
 
   async listModels(apiKey: string): Promise<string[]> {

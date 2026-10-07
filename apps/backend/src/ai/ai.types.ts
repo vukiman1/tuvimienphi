@@ -1,3 +1,5 @@
+import type { ModelAttempt } from './ai.errors';
+
 export interface AiMessage {
   readonly role: 'user' | 'model';
   readonly text: string;
@@ -25,5 +27,7 @@ export interface AiResult {
   readonly text: string;
   /** Model nào thực sự trả lời — danh sách có fallback nên không đoán trước được. */
   readonly model: string;
+  readonly inputTokens: number;
   readonly outputTokens: number;
+  readonly failedAttempts: readonly ModelAttempt[];
 }

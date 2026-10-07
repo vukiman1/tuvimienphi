@@ -256,6 +256,35 @@ describe('AiSettingsService.clearKey', () => {
   });
 });
 
+describe('AiSettingsService.setBudget', () => {
+  it('keeps a monthly budget for a provider without touching its key, models or save time', async () => {
+    const { service } = setup();
+    const saved = await service.save(AiProvider.OPENAI, {
+      apiKey: 'sk-openai-key-AAAA',
+      models: ['gpt-a'],
+    });
+
+    const budgeted = await service.setBudget(AiProvider.OPENAI, 12.5);
+
+    expect(budgeted.monthlyBudgetUsd).toBe(12.5);
+    expect(budgeted.models).toEqual(['gpt-a']);
+    expect(budgeted.updatedAt).toEqual(saved.updatedAt);
+    await expect(service.apiKeyOf(AiProvider.OPENAI)).resolves.toBe('sk-openai-key-AAAA');
+  });
+
+  it('takes a budget for a provider that has no key yet, and removes it again', async () => {
+    const { service } = setup();
+
+    await service.setBudget(AiProvider.ANTHROPIC, 5);
+    const [, , anthropic] = await service.list();
+    expect(anthropic.monthlyBudgetUsd).toBe(5);
+    expect(anthropic.apiKey).toBeNull();
+
+    const cleared = await service.setBudget(AiProvider.ANTHROPIC, null);
+    expect(cleared.monthlyBudgetUsd).toBeNull();
+  });
+});
+
 describe('AiSettingsService.list', () => {
   it('always shows all three providers, configured or not', async () => {
     const { service } = setup();

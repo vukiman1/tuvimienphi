@@ -32,7 +32,7 @@ function reply(overrides: Record<string, unknown> = {}) {
       { type: 'thinking', thinking: '' },
       { type: 'text', text: '{"doan":"Hai câu."}' },
     ],
-    usage: { output_tokens: 21 },
+    usage: { input_tokens: 340, output_tokens: 21 },
     ...overrides,
   };
 }
@@ -91,7 +91,13 @@ describe('AnthropicProvider.generate', () => {
 
     await expect(
       new AnthropicProvider().generate(REQUEST, { apiKey: 'k', models: ['claude-opus-5-5'] }),
-    ).resolves.toEqual({ text: '{"doan":"Hai câu."}', model: 'claude-opus-5-5', outputTokens: 21 });
+    ).resolves.toEqual({
+      text: '{"doan":"Hai câu."}',
+      model: 'claude-opus-5-5',
+      inputTokens: 340,
+      outputTokens: 21,
+      failedAttempts: [],
+    });
   });
 
   it('moves to the next model when the first one declines', async () => {

@@ -13,13 +13,17 @@ export async function tryModels<T>(
   call: (model: string) => Promise<T>,
   /** Hết ngân sách thời gian thì dừng hẳn: thử model kế tiếp cũng chỉ hỏng ngay lập tức. */
   shouldStop?: () => boolean,
-): Promise<{ readonly result: T; readonly model: string }> {
+): Promise<{
+  readonly result: T;
+  readonly model: string;
+  readonly failedAttempts: readonly ModelAttempt[];
+}> {
   const attempts: ModelAttempt[] = [];
 
   for (const model of models) {
     if (shouldStop?.()) break;
     try {
-      return { result: await call(model), model };
+      return { result: await call(model), model, failedAttempts: attempts };
     } catch (error) {
       attempts.push({ model, reason: readableReason(error) });
     }

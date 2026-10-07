@@ -21,7 +21,7 @@ export class GeminiProvider implements AiProviderClient {
   async generate(request: AiRequest, { apiKey, models }: AiCredentials): Promise<AiResult> {
     const genai = new GoogleGenAI({ apiKey });
 
-    const { result, model } = await tryModels(
+    const { result, model, failedAttempts } = await tryModels(
       models,
       async (candidate) => {
         const response = await genai.models.generateContent({
@@ -43,12 +43,17 @@ export class GeminiProvider implements AiProviderClient {
         if (!text) {
           throw new Error('response carried no text');
         }
-        return { text, outputTokens: response.usageMetadata?.candidatesTokenCount ?? 0 };
+        const usage = response.usageMetadata;
+        return {
+          text,
+          inputTokens: usage?.promptTokenCount ?? 0,
+          outputTokens: (usage?.candidatesTokenCount ?? 0) + (usage?.thoughtsTokenCount ?? 0),
+        };
       },
       () => request.signal?.aborted ?? false,
     );
 
-    return { text: result.text, model, outputTokens: result.outputTokens };
+    return { ...result, model, failedAttempts };
   }
 
   async listModels(apiKey: string): Promise<string[]> {

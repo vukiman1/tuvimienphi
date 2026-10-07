@@ -5,7 +5,11 @@ describe('tryModels', () => {
   it('trả kết quả của model đầu tiên nhận lời gọi', async () => {
     const goi = jest.fn().mockResolvedValue('xong');
 
-    await expect(tryModels(['a', 'b'], goi)).resolves.toEqual({ result: 'xong', model: 'a' });
+    await expect(tryModels(['a', 'b'], goi)).resolves.toEqual({
+      result: 'xong',
+      model: 'a',
+      failedAttempts: [],
+    });
     expect(goi).toHaveBeenCalledTimes(1);
   });
 
@@ -15,7 +19,11 @@ describe('tryModels', () => {
       .mockRejectedValueOnce(new Error('UNAVAILABLE'))
       .mockResolvedValueOnce('xong');
 
-    await expect(tryModels(['a', 'b'], goi)).resolves.toEqual({ result: 'xong', model: 'b' });
+    await expect(tryModels(['a', 'b'], goi)).resolves.toEqual({
+      result: 'xong',
+      model: 'b',
+      failedAttempts: [{ model: 'a', reason: 'UNAVAILABLE' }],
+    });
   });
 
   it('ném lỗi kèm lý do của từng model khi không model nào nhận', async () => {

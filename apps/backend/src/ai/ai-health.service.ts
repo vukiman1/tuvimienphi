@@ -3,6 +3,8 @@ import { AiProvider, type AiCredentials } from './ai-provider';
 import { AiProviderClients } from './ai-provider-clients';
 import { AiSettingsService, type AiHealthOutcome } from './ai-settings.service';
 import { readableReason } from './ai-error-reason';
+import { AiUsagePurpose } from './ai-usage-purpose.enum';
+import { AiUsageService } from './ai-usage.service';
 import { AiUnavailableError } from './ai.errors';
 import type { AiRequest } from './ai.types';
 import { AiHealthStatus, AiProviderEntity } from './entities/ai-provider.entity';
@@ -25,6 +27,7 @@ export class AiHealthService {
   constructor(
     private readonly settings: AiSettingsService,
     private readonly providers: AiProviderClients,
+    private readonly usage: AiUsageService,
   ) {}
 
   async check(provider: AiProvider): Promise<AiProviderEntity> {
@@ -36,9 +39,11 @@ export class AiHealthService {
     const startedAt = Date.now();
 
     try {
-      const result = await this.providers
-        .of(provider)
-        .generate({ ...PROBE, signal: AbortSignal.timeout(HEALTH_TIMEOUT_MS) }, credentials);
+      const result = await this.usage.track(provider, AiUsagePurpose.CHECK, () =>
+        this.providers
+          .of(provider)
+          .generate({ ...PROBE, signal: AbortSignal.timeout(HEALTH_TIMEOUT_MS) }, credentials),
+      );
       JSON.parse(result.text);
 
       return {

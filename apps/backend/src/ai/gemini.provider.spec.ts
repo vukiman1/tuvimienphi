@@ -41,7 +41,7 @@ describe('GeminiProvider.generate', () => {
   it('calls Gemini with the key it was handed, not one read at start-up', async () => {
     mockGenerateContent.mockResolvedValue({
       text: '{"doan":"Hai câu."}',
-      usageMetadata: { candidatesTokenCount: 12 },
+      usageMetadata: { promptTokenCount: 310, candidatesTokenCount: 12, thoughtsTokenCount: 30 },
     });
     const signal = AbortSignal.timeout(5_000);
 
@@ -65,7 +65,13 @@ describe('GeminiProvider.generate', () => {
         abortSignal: signal,
       },
     });
-    expect(result).toEqual({ text: '{"doan":"Hai câu."}', model: 'flash-lite', outputTokens: 12 });
+    expect(result).toEqual({
+      text: '{"doan":"Hai câu."}',
+      model: 'flash-lite',
+      inputTokens: 310,
+      outputTokens: 42,
+      failedAttempts: [],
+    });
   });
 
   it('tries the models in the order the console lists them', async () => {
