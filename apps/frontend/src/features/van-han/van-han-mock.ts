@@ -13,7 +13,7 @@ import {
  * giải dùng câu mẫu chèn tên tuổi để mỗi con giáp có nội dung riêng, rõ ràng là nội dung demo.
  */
 
-const REFERENCE_YEAR = 2026;
+export const VAN_HAN_MOCK_YEAR = 2026;
 const BIRTH_YEAR_COUNT = 5;
 const MIN_RATING = 1;
 const MAX_RATING = 5;
@@ -166,7 +166,7 @@ function menhOfYear(year: number): string {
 
 /** 5 năm sinh gần nhất của con giáp (tính đến trước năm tham chiếu). */
 function birthYearsForChi(chiIndex: number): number[] {
-  let latest = REFERENCE_YEAR - 1;
+  let latest = VAN_HAN_MOCK_YEAR - 1;
   while ((((latest - 4) % 12) + 12) % 12 !== chiIndex) {
     latest -= 1;
   }
@@ -174,9 +174,9 @@ function birthYearsForChi(chiIndex: number): number[] {
 }
 
 function buildOverview(chi: ZodiacChi, index: number): string[] {
-  const refCanChi = getYearCanChi(REFERENCE_YEAR);
+  const refCanChi = getYearCanChi(VAN_HAN_MOCK_YEAR);
   return [
-    `Người tuổi ${chi} bước vào năm ${REFERENCE_YEAR} ${refCanChi} với vận trình ${pick(OVERVIEW_TONE, index)}, vừa có quý nhân nâng đỡ, vừa phải đối diện không ít thử thách đòi hỏi sự bền bỉ.`,
+    `Người tuổi ${chi} bước vào năm ${VAN_HAN_MOCK_YEAR} ${refCanChi} với vận trình ${pick(OVERVIEW_TONE, index)}, vừa có quý nhân nâng đỡ, vừa phải đối diện không ít thử thách đòi hỏi sự bền bỉ.`,
     `Năm nay, tuổi ${chi} nên chú trọng ${pick(OVERVIEW_FOCUS, index)}; giữ thế chủ động nhưng thận trọng, các quyết định lớn cần cân nhắc kỹ và lắng nghe người có kinh nghiệm.`,
     `Biết tiết chế cảm xúc, lập kế hoạch dài hạn và duy trì thái độ ôn hòa sẽ giúp tuổi ${chi} hóa giải khó khăn, nắm bắt cơ hội và giữ vững thành quả trong năm.`,
   ];
@@ -197,7 +197,7 @@ function buildAspects(chi: ZodiacChi, index: number): VanHanAspect[] {
 }
 
 function buildBirthYear(year: number, index: number): VanHanBirthYearFortune {
-  const age = REFERENCE_YEAR - year;
+  const age = VAN_HAN_MOCK_YEAR - year;
   return {
     birthYear: year,
     canChi: getYearCanChi(year),
