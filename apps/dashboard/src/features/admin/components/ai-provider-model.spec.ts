@@ -115,7 +115,7 @@ describe('friendlyFailure', () => {
     ['claude-opus-5-5: 400 Your credit balance is too low', 'hết tiền'],
     ['gpt-9: 404 The model `gpt-9` does not exist', 'Model không tồn tại'],
     ['gemini-3.8-flash: UNAVAILABLE The model is overloaded', 'đang quá tải'],
-    ['gemini-3.8-flash: This operation was aborted', 'trả lời quá chậm'],
+    ['gemini-3.8-flash: This operation was aborted', 'không trả lời trong thời gian chờ'],
     ['claude-opus-5-5: model refused: cyber', 'từ chối'],
   ])('reads "%s" as a sentence an admin can act on', (error, expected) => {
     expect(friendlyFailure(error)).toContain(expected);

@@ -60,7 +60,7 @@ const FAILURE_PATTERNS: readonly FailurePattern[] = [
   },
   {
     matches: /timeout|timed out|aborted/i,
-    says: 'Model trả lời quá chậm. Luận giải cần câu trả lời nhanh, hãy đặt một model nhanh hơn lên đầu.',
+    says: 'Model không trả lời trong thời gian chờ, thường là do nhà cung cấp đang quá tải. Thử lại sau, hoặc đặt một model khác lên đầu.',
   },
   { matches: /refused/i, says: 'Model từ chối trả lời yêu cầu thử.' },
 ];
