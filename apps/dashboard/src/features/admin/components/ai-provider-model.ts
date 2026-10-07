@@ -1,5 +1,5 @@
 import type { AiProvider, AiSource } from '@/gql/graphql';
-import { formatDateTime } from '@/lib/format-date-time';
+import { formatDateTime, formatTime } from '@/lib/format-date-time';
 import type { AiHealthView, AiProviderView, AiSettingsView } from '../data/admin-ai.query';
 import { catalogModel, defaultModels } from './ai-model-catalog';
 
@@ -14,6 +14,8 @@ export const MIN_API_KEY_LENGTH = 10;
 export const MAX_API_KEY_LENGTH = 400;
 
 const MODEL_ID = /^[A-Za-z0-9][A-Za-z0-9._:/-]{0,59}$/;
+const MILLISECONDS_PER_SECOND = 1000;
+const secondsFormatter = new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 1 });
 
 export interface SourceNotice {
   readonly type: 'success' | 'warning' | 'error';
@@ -26,10 +28,17 @@ export interface ProviderStatus {
   readonly text: string;
 }
 
-export interface AiProviderFormValues {
-  apiKey: string;
-  models: string[];
+export interface AiProviderDraft {
+  readonly apiKey: string;
+  readonly models: readonly string[];
 }
+
+export interface AiProviderChange {
+  readonly apiKey: string | null;
+  readonly models: string[];
+}
+
+export type CheckResult = { readonly health: AiHealthView } | { readonly failure: string };
 
 interface FailurePattern {
   readonly matches: RegExp;
@@ -55,8 +64,8 @@ const FAILURE_PATTERNS: readonly FailurePattern[] = [
     says: 'Model không tồn tại, hoặc khoá này không dùng được model đó.',
   },
   {
-    matches: /\b(503|529)\b|unavailable|overloaded/i,
-    says: 'Nhà cung cấp đang quá tải, thử lại sau ít phút.',
+    matches: /\b(503|529)\b|unavailable|overloaded|high demand|try again later/i,
+    says: 'Model này đang quá tải ở phía nhà cung cấp. Thử lại sau ít phút, hoặc chọn model khác.',
   },
   {
     matches: /timeout|timed out|aborted/i,
@@ -99,13 +108,12 @@ export function sourceNotice({ source, providers }: AiSettingsView): SourceNotic
       type: 'warning',
       title: 'Trang web đang dùng khoá Gemini trong biến môi trường',
       description:
-        'Chưa nhà cung cấp nào được chọn ở đây. Chọn một nhà cung cấp bên dưới thì console quyết định, không cần sửa biến môi trường nữa.',
+        'Chưa có AI nào được lưu ở đây. Chọn loại AI, dán khoá rồi bấm Lưu thì console quyết định, không cần sửa biến môi trường nữa.',
     }),
     NONE: () => ({
       type: 'error',
       title: 'Chưa có AI nào dùng được',
-      description:
-        'Luận giải sẽ báo hệ thống bận cho tới khi một nhà cung cấp bên dưới có khoá và được chọn dùng.',
+      description: 'Luận giải sẽ báo hệ thống bận cho tới khi một AI bên dưới có khoá và được lưu.',
     }),
   };
   return notices[source]();
@@ -136,14 +144,28 @@ export function friendlyFailure(error: string | null): string {
   );
 }
 
+export function formatLatency(latencyMs: number): string {
+  return latencyMs < MILLISECONDS_PER_SECOND
+    ? `${latencyMs} ms`
+    : `${secondsFormatter.format(latencyMs / MILLISECONDS_PER_SECOND)} giây`;
+}
+
+export function answeredBy(provider: AiProvider, health: AiHealthView): string {
+  const speed =
+    health.latencyMs === null ? 'đã trả lời' : `trả lời sau ${formatLatency(health.latencyMs)}`;
+  return health.model ? `${modelName(provider, health.model)} ${speed}` : `Model ${speed}`;
+}
+
 export function healthSummary(provider: AiProvider, health: AiHealthView): string {
   const when = `Kiểm tra lúc ${formatDateTime(health.checkedAt)}.`;
-  if (health.status !== 'OK') {
-    return when;
-  }
-  const model = health.model ? ` bằng ${modelName(provider, health.model)}` : '';
-  const speed = health.latencyMs === null ? 'Đã trả lời' : `Trả lời sau ${health.latencyMs} ms`;
-  return `${speed}${model}. ${when}`;
+  return health.status === 'OK' ? `${answeredBy(provider, health)}. ${when}` : when;
+}
+
+export function sampleLabel(provider: AiProvider, health: AiHealthView): string {
+  const when = formatTime(health.checkedAt);
+  return health.status === 'OK'
+    ? `${when} · ${answeredBy(provider, health)}`
+    : `${when} · ${friendlyFailure(health.error)}`;
 }
 
 export function isKnownHealthy(provider: Pick<AiProviderView, 'health'>): boolean {
@@ -154,21 +176,60 @@ export function canBeUsed(provider: Pick<AiProviderView, 'hasApiKey' | 'models'>
   return provider.hasApiKey && provider.models.length > 0;
 }
 
+export function startingProvider({ providers }: Pick<AiSettingsView, 'providers'>): AiProvider {
+  const active = providers.find((provider) => provider.isActive);
+  if (active) {
+    return active.provider;
+  }
+  const [latest] = providers
+    .filter((provider) => provider.hasApiKey)
+    .sort((a, b) => (b.updatedAt ?? '').localeCompare(a.updatedAt ?? ''));
+  return latest?.provider ?? 'GEMINI';
+}
+
 export function startingModels(provider: Pick<AiProviderView, 'provider' | 'models'>): string[] {
   return provider.models.length > 0 ? [...provider.models] : defaultModels(provider.provider);
 }
 
-export function hasUnsavedChanges(
-  provider: Pick<AiProviderView, 'models'>,
-  values: AiProviderFormValues,
-): boolean {
-  return (
-    values.apiKey.trim() !== '' || JSON.stringify(values.models) !== JSON.stringify(provider.models)
-  );
+export function cleanApiKey(typed: string): string {
+  return typed.replace(/\s+/g, '');
 }
 
-export function keyPlaceholder(provider: Pick<AiProviderView, 'hasApiKey' | 'apiKeyHint'>): string {
-  return provider.hasApiKey
-    ? `Đang lưu khoá kết thúc bằng ${provider.apiKeyHint ?? '…'}. Để trống nếu giữ nguyên`
-    : 'Dán khoá API';
+export function keyProblem(apiKey: string): string | null {
+  if (apiKey.length < MIN_API_KEY_LENGTH) {
+    return 'Khoá quá ngắn.';
+  }
+  return apiKey.length > MAX_API_KEY_LENGTH ? 'Khoá quá dài.' : null;
+}
+
+export function hasUsableKey(
+  provider: Pick<AiProviderView, 'hasApiKey'>,
+  draft: Pick<AiProviderDraft, 'apiKey'>,
+): boolean {
+  return draft.apiKey === '' ? provider.hasApiKey : keyProblem(draft.apiKey) === null;
+}
+
+export function hasUnsavedChanges(
+  provider: Pick<AiProviderView, 'models'>,
+  draft: AiProviderDraft,
+): boolean {
+  return draft.apiKey !== '' || JSON.stringify(draft.models) !== JSON.stringify(provider.models);
+}
+
+export function canBeTried(
+  provider: Pick<AiProviderView, 'hasApiKey'>,
+  draft: AiProviderDraft,
+): boolean {
+  return hasUsableKey(provider, draft) && draft.models.length > 0;
+}
+
+export function canBeSaved(
+  provider: Pick<AiProviderView, 'hasApiKey' | 'models' | 'isActive'>,
+  draft: AiProviderDraft,
+): boolean {
+  return canBeTried(provider, draft) && (hasUnsavedChanges(provider, draft) || !provider.isActive);
+}
+
+export function toChange(draft: AiProviderDraft): AiProviderChange {
+  return { apiKey: draft.apiKey || null, models: [...draft.models] };
 }

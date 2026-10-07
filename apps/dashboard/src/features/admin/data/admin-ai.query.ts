@@ -4,6 +4,7 @@ import type {
   AiProviderFieldsFragment,
   AiSettingsQuery,
   SaveAiProviderInput,
+  TestAiProviderInput,
 } from '@/gql/graphql';
 import { graphqlRequest } from '@/lib/graphql-request';
 import {
@@ -13,6 +14,7 @@ import {
   clearAiProviderKeyDocument,
   saveAiProviderDocument,
   setActiveAiProviderDocument,
+  testAiProviderDocument,
 } from './admin-ai.document';
 
 export type AiSettingsView = AiSettingsQuery['aiSettings'];
@@ -37,6 +39,14 @@ export function aiProviderModelsQuery(provider: AiProvider, apiKeyHint: string |
     staleTime: MODEL_LIST_STALE_MS,
     retry: false,
   });
+}
+
+export function listAiProviderModels(provider: AiProvider, apiKey: string | null) {
+  return graphqlRequest(aiProviderModelsDocument, { provider, apiKey });
+}
+
+export function testAiProvider(input: TestAiProviderInput) {
+  return graphqlRequest(testAiProviderDocument, { input });
 }
 
 export function saveAiProvider(input: SaveAiProviderInput) {

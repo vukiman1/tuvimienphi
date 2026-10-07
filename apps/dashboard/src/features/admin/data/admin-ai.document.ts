@@ -30,8 +30,8 @@ export const aiSettingsDocument = graphql(`
 `);
 
 export const aiProviderModelsDocument = graphql(`
-  query AiProviderModels($provider: AiProvider!) {
-    aiProviderModels(provider: $provider)
+  query AiProviderModels($provider: AiProvider!, $apiKey: String) {
+    aiProviderModels(provider: $provider, apiKey: $apiKey)
   }
 `);
 
@@ -63,6 +63,18 @@ export const checkAiProviderDocument = graphql(`
   mutation CheckAiProvider($provider: AiProvider!) {
     checkAiProvider(provider: $provider) {
       ...AiProviderFields
+    }
+  }
+`);
+
+export const testAiProviderDocument = graphql(`
+  mutation TestAiProvider($input: TestAiProviderInput!) {
+    testAiProvider(input: $input) {
+      status
+      checkedAt
+      latencyMs
+      model
+      error
     }
   }
 `);

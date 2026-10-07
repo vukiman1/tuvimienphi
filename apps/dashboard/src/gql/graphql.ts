@@ -48,6 +48,12 @@ export type SortDirection =
   | 'ASC'
   | 'DESC';
 
+export type TestAiProviderInput = {
+  apiKey?: string | null | undefined;
+  models: Array<string>;
+  provider: AiProvider;
+};
+
 export type VanHanAgeInput = {
   birthYear: number;
   female: string;
@@ -82,6 +88,7 @@ export type AiSettingsQuery = { aiSettings: { source: AiSource, providers: Array
 
 export type AiProviderModelsQueryVariables = Exact<{
   provider: AiProvider;
+  apiKey?: string | null | undefined;
 }>;
 
 
@@ -114,6 +121,13 @@ export type CheckAiProviderMutationVariables = Exact<{
 
 
 export type CheckAiProviderMutation = { checkAiProvider: { provider: AiProvider, hasApiKey: boolean, apiKeyHint: string | null, models: Array<string>, isActive: boolean, updatedAt: string | null, health: { status: AiHealthStatus, checkedAt: string, latencyMs: number | null, model: string | null, error: string | null } | null } };
+
+export type TestAiProviderMutationVariables = Exact<{
+  input: TestAiProviderInput;
+}>;
+
+
+export type TestAiProviderMutation = { testAiProvider: { status: AiHealthStatus, checkedAt: string, latencyMs: number | null, model: string | null, error: string | null } };
 
 export type MetricFieldsFragment = { value: number, previous: number, series: Array<{ date: string, count: number }> };
 
@@ -289,8 +303,8 @@ export const AiSettingsDocument = new TypedDocumentString(`
   }
 }`) as unknown as TypedDocumentString<AiSettingsQuery, AiSettingsQueryVariables>;
 export const AiProviderModelsDocument = new TypedDocumentString(`
-    query AiProviderModels($provider: AiProvider!) {
-  aiProviderModels(provider: $provider)
+    query AiProviderModels($provider: AiProvider!, $apiKey: String) {
+  aiProviderModels(provider: $provider, apiKey: $apiKey)
 }
     `) as unknown as TypedDocumentString<AiProviderModelsQuery, AiProviderModelsQueryVariables>;
 export const SaveAiProviderDocument = new TypedDocumentString(`
@@ -349,6 +363,17 @@ export const CheckAiProviderDocument = new TypedDocumentString(`
     error
   }
 }`) as unknown as TypedDocumentString<CheckAiProviderMutation, CheckAiProviderMutationVariables>;
+export const TestAiProviderDocument = new TypedDocumentString(`
+    mutation TestAiProvider($input: TestAiProviderInput!) {
+  testAiProvider(input: $input) {
+    status
+    checkedAt
+    latencyMs
+    model
+    error
+  }
+}
+    `) as unknown as TypedDocumentString<TestAiProviderMutation, TestAiProviderMutationVariables>;
 export const AdminOverviewDocument = new TypedDocumentString(`
     query AdminOverview($from: String, $to: String) {
   overview(from: $from, to: $to) {
