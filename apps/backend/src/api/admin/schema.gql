@@ -17,6 +17,29 @@ type ActivityPage {
   total: Int!
 }
 
+type AdminAiHealth {
+  checkedAt: String!
+  error: String
+  latencyMs: Int
+  model: String
+  status: AiHealthStatus!
+}
+
+type AdminAiProvider {
+  apiKeyHint: String
+  hasApiKey: Boolean!
+  health: AdminAiHealth
+  isActive: Boolean!
+  models: [String!]!
+  provider: AiProvider!
+  updatedAt: String
+}
+
+type AdminAiSettings {
+  providers: [AdminAiProvider!]!
+  source: AiSource!
+}
+
 type AdminOverview {
   activeUsers: PeriodMetric!
   devices: [LabelledCount!]!
@@ -117,6 +140,23 @@ type AdminVanHanYearSummary {
   year: Int!
 }
 
+enum AiHealthStatus {
+  FAILED
+  OK
+}
+
+enum AiProvider {
+  ANTHROPIC
+  GEMINI
+  OPENAI
+}
+
+enum AiSource {
+  CONSOLE
+  ENVIRONMENT
+  NONE
+}
+
 type DailyCount {
   count: Int!
   date: String!
@@ -128,8 +168,12 @@ type LabelledCount {
 }
 
 type Mutation {
+  checkAiProvider(provider: AiProvider!): AdminAiProvider!
+  clearAiProviderKey(provider: AiProvider!): AdminAiSettings!
   publishVanHanYear(year: Int!): AdminVanHanYear!
+  saveAiProvider(input: SaveAiProviderInput!): AdminAiProvider!
   saveVanHanEntry(input: SaveVanHanEntryInput!): AdminVanHanSlot!
+  setActiveAiProvider(provider: AiProvider): AdminAiSettings!
   unpublishVanHanYear(year: Int!): AdminVanHanYear!
 }
 
@@ -141,6 +185,8 @@ type PeriodMetric {
 
 type Query {
   activeUsersSeries(from: String, to: String): [DailyCount!]!
+  aiProviderModels(provider: AiProvider!): [String!]!
+  aiSettings: AdminAiSettings!
   overview(from: String, to: String): AdminOverview!
   recentActivity(limit: Int, page: Int): ActivityPage!
   users(balanceMax: Int, balanceMin: Int, isEmailVerified: Boolean, joinedFrom: String, joinedTo: String, limit: Int, page: Int, roles: [Role!], search: String, sortBy: AdminUserSortField, sortDirection: SortDirection): AdminUserPage!
@@ -154,6 +200,12 @@ enum Role {
   SELLER
   SUPER_ADMIN
   USER
+}
+
+input SaveAiProviderInput {
+  apiKey: String
+  models: [String!]!
+  provider: AiProvider!
 }
 
 input SaveVanHanEntryInput {
