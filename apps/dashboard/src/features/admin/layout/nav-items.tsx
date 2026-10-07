@@ -4,6 +4,7 @@ import {
   DashboardOutlined,
   FileTextOutlined,
   NotificationOutlined,
+  RobotOutlined,
   TeamOutlined,
 } from '@ant-design/icons';
 import type { FileRoutesByTo } from '@/routeTree.gen';
@@ -22,6 +23,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
   { to: '/blog', label: 'Bài viết', icon: <FileTextOutlined /> },
   { to: '/ads', label: 'Quảng cáo', icon: <NotificationOutlined /> },
   { to: '/van-han', label: 'Vận hạn', icon: <CompassOutlined /> },
+  { to: '/ai', label: 'AI', icon: <RobotOutlined /> },
 ];
 
 export function isNavPath(value: string): value is NavPath {

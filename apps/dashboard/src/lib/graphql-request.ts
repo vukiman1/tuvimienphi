@@ -5,6 +5,7 @@ const GRAPHQL_PATH = '/admin/graphql';
 const REFRESH_PATH = '/admin/auth/refresh-token';
 const EMPTY_RESPONSE = 'Máy chủ trả về một phản hồi GraphQL rỗng.';
 const UNAUTHORIZED = 401;
+const FORBIDDEN = 403;
 const BAD_REQUEST = 400;
 const UNEXPLAINED_BAD_REQUEST = 'Bad Request Exception';
 
@@ -80,6 +81,10 @@ export async function graphqlRequest<TResult, TVariables>(
 
 export function isSessionExpired(caught: unknown): boolean {
   return caught instanceof GraphqlError && hasCode(caught.failures, UNAUTHORIZED);
+}
+
+export function isForbidden(caught: unknown): boolean {
+  return caught instanceof GraphqlError && hasCode(caught.failures, FORBIDDEN);
 }
 
 export function rejectionReason(caught: unknown): string | null {

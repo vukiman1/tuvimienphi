@@ -9,11 +9,31 @@ export type AdminUserSortField =
   | 'CREATED_AT'
   | 'EMAIL';
 
+export type AiHealthStatus =
+  | 'FAILED'
+  | 'OK';
+
+export type AiProvider =
+  | 'ANTHROPIC'
+  | 'GEMINI'
+  | 'OPENAI';
+
+export type AiSource =
+  | 'CONSOLE'
+  | 'ENVIRONMENT'
+  | 'NONE';
+
 export type Role =
   | 'ADMIN'
   | 'SELLER'
   | 'SUPER_ADMIN'
   | 'USER';
+
+export type SaveAiProviderInput = {
+  apiKey?: string | null | undefined;
+  models: Array<string>;
+  provider: AiProvider;
+};
 
 export type SaveVanHanEntryInput = {
   luanGiai: Array<VanHanAspectInput>;
@@ -52,6 +72,48 @@ export type ActiveUsersSeriesQueryVariables = Exact<{
 
 
 export type ActiveUsersSeriesQuery = { activeUsersSeries: Array<{ date: string, count: number }> };
+
+export type AiProviderFieldsFragment = { provider: AiProvider, hasApiKey: boolean, apiKeyHint: string | null, models: Array<string>, isActive: boolean, updatedAt: string | null, health: { status: AiHealthStatus, checkedAt: string, latencyMs: number | null, model: string | null, error: string | null } | null };
+
+export type AiSettingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AiSettingsQuery = { aiSettings: { source: AiSource, providers: Array<{ provider: AiProvider, hasApiKey: boolean, apiKeyHint: string | null, models: Array<string>, isActive: boolean, updatedAt: string | null, health: { status: AiHealthStatus, checkedAt: string, latencyMs: number | null, model: string | null, error: string | null } | null }> } };
+
+export type AiProviderModelsQueryVariables = Exact<{
+  provider: AiProvider;
+}>;
+
+
+export type AiProviderModelsQuery = { aiProviderModels: Array<string> };
+
+export type SaveAiProviderMutationVariables = Exact<{
+  input: SaveAiProviderInput;
+}>;
+
+
+export type SaveAiProviderMutation = { saveAiProvider: { provider: AiProvider, hasApiKey: boolean, apiKeyHint: string | null, models: Array<string>, isActive: boolean, updatedAt: string | null, health: { status: AiHealthStatus, checkedAt: string, latencyMs: number | null, model: string | null, error: string | null } | null } };
+
+export type ClearAiProviderKeyMutationVariables = Exact<{
+  provider: AiProvider;
+}>;
+
+
+export type ClearAiProviderKeyMutation = { clearAiProviderKey: { source: AiSource } };
+
+export type SetActiveAiProviderMutationVariables = Exact<{
+  provider?: AiProvider | null | undefined;
+}>;
+
+
+export type SetActiveAiProviderMutation = { setActiveAiProvider: { source: AiSource } };
+
+export type CheckAiProviderMutationVariables = Exact<{
+  provider: AiProvider;
+}>;
+
+
+export type CheckAiProviderMutation = { checkAiProvider: { provider: AiProvider, hasApiKey: boolean, apiKeyHint: string | null, models: Array<string>, isActive: boolean, updatedAt: string | null, health: { status: AiHealthStatus, checkedAt: string, latencyMs: number | null, model: string | null, error: string | null } | null } };
 
 export type MetricFieldsFragment = { value: number, previous: number, series: Array<{ date: string, count: number }> };
 
@@ -149,6 +211,23 @@ export class TypedDocumentString<TResult, TVariables>
     return this.value;
   }
 }
+export const AiProviderFieldsFragmentDoc = new TypedDocumentString(`
+    fragment AiProviderFields on AdminAiProvider {
+  provider
+  hasApiKey
+  apiKeyHint
+  models
+  isActive
+  updatedAt
+  health {
+    status
+    checkedAt
+    latencyMs
+    model
+    error
+  }
+}
+    `, {"fragmentName":"AiProviderFields"}) as unknown as TypedDocumentString<AiProviderFieldsFragment, unknown>;
 export const MetricFieldsFragmentDoc = new TypedDocumentString(`
     fragment MetricFields on PeriodMetric {
   value
@@ -185,6 +264,91 @@ export const ActiveUsersSeriesDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<ActiveUsersSeriesQuery, ActiveUsersSeriesQueryVariables>;
+export const AiSettingsDocument = new TypedDocumentString(`
+    query AiSettings {
+  aiSettings {
+    source
+    providers {
+      ...AiProviderFields
+    }
+  }
+}
+    fragment AiProviderFields on AdminAiProvider {
+  provider
+  hasApiKey
+  apiKeyHint
+  models
+  isActive
+  updatedAt
+  health {
+    status
+    checkedAt
+    latencyMs
+    model
+    error
+  }
+}`) as unknown as TypedDocumentString<AiSettingsQuery, AiSettingsQueryVariables>;
+export const AiProviderModelsDocument = new TypedDocumentString(`
+    query AiProviderModels($provider: AiProvider!) {
+  aiProviderModels(provider: $provider)
+}
+    `) as unknown as TypedDocumentString<AiProviderModelsQuery, AiProviderModelsQueryVariables>;
+export const SaveAiProviderDocument = new TypedDocumentString(`
+    mutation SaveAiProvider($input: SaveAiProviderInput!) {
+  saveAiProvider(input: $input) {
+    ...AiProviderFields
+  }
+}
+    fragment AiProviderFields on AdminAiProvider {
+  provider
+  hasApiKey
+  apiKeyHint
+  models
+  isActive
+  updatedAt
+  health {
+    status
+    checkedAt
+    latencyMs
+    model
+    error
+  }
+}`) as unknown as TypedDocumentString<SaveAiProviderMutation, SaveAiProviderMutationVariables>;
+export const ClearAiProviderKeyDocument = new TypedDocumentString(`
+    mutation ClearAiProviderKey($provider: AiProvider!) {
+  clearAiProviderKey(provider: $provider) {
+    source
+  }
+}
+    `) as unknown as TypedDocumentString<ClearAiProviderKeyMutation, ClearAiProviderKeyMutationVariables>;
+export const SetActiveAiProviderDocument = new TypedDocumentString(`
+    mutation SetActiveAiProvider($provider: AiProvider) {
+  setActiveAiProvider(provider: $provider) {
+    source
+  }
+}
+    `) as unknown as TypedDocumentString<SetActiveAiProviderMutation, SetActiveAiProviderMutationVariables>;
+export const CheckAiProviderDocument = new TypedDocumentString(`
+    mutation CheckAiProvider($provider: AiProvider!) {
+  checkAiProvider(provider: $provider) {
+    ...AiProviderFields
+  }
+}
+    fragment AiProviderFields on AdminAiProvider {
+  provider
+  hasApiKey
+  apiKeyHint
+  models
+  isActive
+  updatedAt
+  health {
+    status
+    checkedAt
+    latencyMs
+    model
+    error
+  }
+}`) as unknown as TypedDocumentString<CheckAiProviderMutation, CheckAiProviderMutationVariables>;
 export const AdminOverviewDocument = new TypedDocumentString(`
     query AdminOverview($from: String, $to: String) {
   overview(from: $from, to: $to) {
