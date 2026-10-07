@@ -5,6 +5,7 @@
   "outputDirectory": "dist",
   "redirects": [{ "source": "/", "destination": "/admin", "permanent": false }],
   "rewrites": [
+    { "source": "/api/(.*)", "destination": "https://api.xemtuvimienphi.top/api/$1" },
     { "source": "/admin", "destination": "/index.html" },
     { "source": "/admin/(.*)", "destination": "/index.html" }
   ],
