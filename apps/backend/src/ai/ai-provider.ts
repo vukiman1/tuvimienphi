@@ -1,12 +1,6 @@
 import type { AiRequest, AiResult } from './ai.types';
 
-export enum AiProvider {
-  GEMINI = 'GEMINI',
-  OPENAI = 'OPENAI',
-  ANTHROPIC = 'ANTHROPIC',
-}
-
-export const AI_PROVIDERS = Object.values(AiProvider);
+export { AI_PROVIDERS, AiProvider } from './ai-provider.enum';
 
 export interface AiCredentials {
   readonly apiKey: string;
