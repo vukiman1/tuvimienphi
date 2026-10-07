@@ -1,6 +1,7 @@
 import type { AiProvider, AiSource } from '@/gql/graphql';
 import { formatDateTime } from '@/lib/format-date-time';
 import type { AiHealthView, AiProviderView, AiSettingsView } from '../data/admin-ai.query';
+import { catalogModel, defaultModels } from './ai-model-catalog';
 
 export const AI_PROVIDER_LABEL = {
   GEMINI: 'Gemini',
@@ -20,13 +21,58 @@ export interface SourceNotice {
   readonly description: string;
 }
 
+export interface ProviderStatus {
+  readonly color: 'green' | 'blue' | 'red' | 'gold' | 'default';
+  readonly text: string;
+}
+
 export interface AiProviderFormValues {
   apiKey: string;
   models: string[];
 }
 
+interface FailurePattern {
+  readonly matches: RegExp;
+  readonly says: string;
+}
+
+const FAILURE_PATTERNS: readonly FailurePattern[] = [
+  {
+    matches: /\b401\b|api key not valid|invalid.{0,20}api key|incorrect api key|authentication/i,
+    says: 'Khoá API không đúng hoặc đã bị thu hồi.',
+  },
+  {
+    matches: /billing|insufficient|credit balance|payment/i,
+    says: 'Tài khoản hết tiền hoặc chưa bật thanh toán.',
+  },
+  {
+    matches: /\b429\b|quota|rate.?limit|resource_exhausted/i,
+    says: 'Hết hạn mức hoặc đang bị giới hạn tốc độ.',
+  },
+  { matches: /\b403\b|permission/i, says: 'Khoá này không có quyền dùng model đã chọn.' },
+  {
+    matches: /\b404\b|not.?found|does not exist|unknown model/i,
+    says: 'Model không tồn tại, hoặc khoá này không dùng được model đó.',
+  },
+  {
+    matches: /\b(503|529)\b|unavailable|overloaded/i,
+    says: 'Nhà cung cấp đang quá tải, thử lại sau ít phút.',
+  },
+  {
+    matches: /timeout|timed out|aborted/i,
+    says: 'Model trả lời quá chậm. Luận giải cần câu trả lời nhanh, hãy đặt một model nhanh hơn lên đầu.',
+  },
+  { matches: /refused/i, says: 'Model từ chối trả lời yêu cầu thử.' },
+];
+
+const UNEXPLAINED_FAILURE = 'Gọi thử không thành công.';
+
 export function isModelId(value: string): boolean {
   return MODEL_ID.test(value);
+}
+
+export function modelName(provider: AiProvider, id: string): string {
+  return catalogModel(provider, id)?.name ?? id;
 }
 
 export function sourceNotice({ source, providers }: AiSettingsView): SourceNotice {
@@ -34,7 +80,9 @@ export function sourceNotice({ source, providers }: AiSettingsView): SourceNotic
     CONSOLE: () => {
       const active = providers.find((provider) => provider.isActive);
       const name = active ? AI_PROVIDER_LABEL[active.provider] : 'nhà cung cấp đã chọn';
-      const [primary, ...fallbacks] = active?.models ?? [];
+      const [primary, ...fallbacks] = (active?.models ?? []).map((id) =>
+        active ? modelName(active.provider, id) : id,
+      );
       const models =
         fallbacks.length > 0
           ? `Model chính ${primary}, dự phòng ${fallbacks.join(', ')}.`
@@ -55,21 +103,47 @@ export function sourceNotice({ source, providers }: AiSettingsView): SourceNotic
     }),
     NONE: () => ({
       type: 'error',
-      title: 'Chưa có cấu hình AI nào dùng được',
+      title: 'Chưa có AI nào dùng được',
       description:
-        'Luận giải sẽ báo hệ thống bận cho tới khi một nhà cung cấp bên dưới có khoá, có model và được chọn dùng.',
+        'Luận giải sẽ báo hệ thống bận cho tới khi một nhà cung cấp bên dưới có khoá và được chọn dùng.',
     }),
   };
   return notices[source]();
 }
 
-export function healthSummary(health: AiHealthView): string {
-  const when = `kiểm tra lúc ${formatDateTime(health.checkedAt)}`;
-  if (health.status === 'OK') {
-    const parts = [health.model, health.latencyMs === null ? null : `${health.latencyMs} ms`, when];
-    return parts.filter(Boolean).join(' · ');
+export function providerStatus(provider: AiProviderView): ProviderStatus {
+  if (provider.isActive) {
+    return { color: 'green', text: 'Đang dùng cho trang web' };
   }
-  return [health.error ?? 'Không rõ lý do', when].join(' · ');
+  if (!provider.hasApiKey) {
+    return { color: 'default', text: 'Chưa có khoá' };
+  }
+  if (provider.health?.status === 'OK') {
+    return { color: 'blue', text: 'Sẵn sàng' };
+  }
+  if (provider.health?.status === 'FAILED') {
+    return { color: 'red', text: 'Đang lỗi' };
+  }
+  return { color: 'gold', text: 'Chưa kiểm tra' };
+}
+
+export function friendlyFailure(error: string | null): string {
+  if (!error) {
+    return UNEXPLAINED_FAILURE;
+  }
+  return (
+    FAILURE_PATTERNS.find((pattern) => pattern.matches.test(error))?.says ?? UNEXPLAINED_FAILURE
+  );
+}
+
+export function healthSummary(provider: AiProvider, health: AiHealthView): string {
+  const when = `Kiểm tra lúc ${formatDateTime(health.checkedAt)}.`;
+  if (health.status !== 'OK') {
+    return when;
+  }
+  const model = health.model ? ` bằng ${modelName(provider, health.model)}` : '';
+  const speed = health.latencyMs === null ? 'Đã trả lời' : `Trả lời sau ${health.latencyMs} ms`;
+  return `${speed}${model}. ${when}`;
 }
 
 export function isKnownHealthy(provider: Pick<AiProviderView, 'health'>): boolean {
@@ -78,6 +152,10 @@ export function isKnownHealthy(provider: Pick<AiProviderView, 'health'>): boolea
 
 export function canBeUsed(provider: Pick<AiProviderView, 'hasApiKey' | 'models'>): boolean {
   return provider.hasApiKey && provider.models.length > 0;
+}
+
+export function startingModels(provider: Pick<AiProviderView, 'provider' | 'models'>): string[] {
+  return provider.models.length > 0 ? [...provider.models] : defaultModels(provider.provider);
 }
 
 export function hasUnsavedChanges(

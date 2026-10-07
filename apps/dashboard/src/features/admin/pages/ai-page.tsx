@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Alert, App, Button, Flex, Skeleton, Typography } from 'antd';
+import { Alert, App, Button, Col, Flex, Row, Skeleton, Typography } from 'antd';
 import type { AiProvider } from '@/gql/graphql';
 import { isForbidden, rejectionReason } from '@/lib/graphql-request';
 import {
@@ -8,6 +8,7 @@ import {
   type AiProviderAction,
   type AiProviderChange,
 } from '../components/ai-provider-card';
+import { AI_CATALOG_CHECKED_ON } from '../components/ai-model-catalog';
 import { AI_PROVIDER_LABEL, canBeUsed, sourceNotice } from '../components/ai-provider-model';
 import {
   aiProviderModelsQuery,
@@ -21,7 +22,12 @@ import {
 
 const LOAD_FAILED = 'Không tải được cấu hình AI.';
 const FORBIDDEN = 'Chỉ quản trị viên cấp cao (SUPER_ADMIN) mới quản lý được khoá AI.';
-const MODELS_UNAVAILABLE = 'Không lấy được danh sách model, bạn vẫn có thể gõ mã model.';
+const MODELS_UNAVAILABLE =
+  'Chưa lấy được danh sách model từ nhà cung cấp; model gợi ý vẫn chọn được.';
+const INTRO =
+  'Trang web dùng một AI để viết luận giải. Dán khoá, giữ model gợi ý hoặc chọn model khác, rồi bấm Dùng cho trang web.';
+const CARD_COLUMN = { xs: 24, xl: 8 } as const;
+const CARD_GUTTER = 16;
 
 type Busy = Partial<Record<AiProvider, AiProviderAction>>;
 
@@ -94,9 +100,12 @@ export function AiPage() {
   return (
     <Flex vertical gap={16}>
       <Flex align="center" justify="space-between" gap={16} wrap>
-        <Typography.Title level={3} style={{ margin: 0 }}>
-          AI
-        </Typography.Title>
+        <Flex vertical gap={4}>
+          <Typography.Title level={3} style={{ margin: 0 }}>
+            AI
+          </Typography.Title>
+          <Typography.Text type="secondary">{INTRO}</Typography.Text>
+        </Flex>
         <Button
           disabled={checkable.length === 0}
           onClick={() => void Promise.all(checkable.map(({ provider }) => check(provider)))}
@@ -113,18 +122,28 @@ export function AiPage() {
         <Alert type={notice.type} showIcon title={notice.title} description={notice.description} />
       ) : null}
 
-      {settings?.providers.map((provider) => (
-        <AiProviderSection
-          key={`${provider.provider}-${provider.updatedAt ?? 'unsaved'}`}
-          provider={provider}
-          busy={busy[provider.provider] ?? null}
-          onSave={(change) => void save(provider.provider, change)}
-          onCheck={() => void check(provider.provider)}
-          onActivate={() => void activate(provider.provider, provider.provider)}
-          onDeactivate={() => void activate(null, provider.provider)}
-          onClearKey={() => void clear(provider.provider)}
-        />
-      ))}
+      <Row gutter={[CARD_GUTTER, CARD_GUTTER]}>
+        {settings?.providers.map((provider) => (
+          <Col key={`${provider.provider}-${provider.updatedAt ?? 'unsaved'}`} {...CARD_COLUMN}>
+            <AiProviderSection
+              provider={provider}
+              busy={busy[provider.provider] ?? null}
+              onSave={(change) => void save(provider.provider, change)}
+              onCheck={() => void check(provider.provider)}
+              onActivate={() => void activate(provider.provider, provider.provider)}
+              onDeactivate={() => void activate(null, provider.provider)}
+              onClearKey={() => void clear(provider.provider)}
+            />
+          </Col>
+        ))}
+      </Row>
+
+      {settings ? (
+        <Typography.Text type="secondary">
+          Model gợi ý lấy từ tài liệu chính thức của ba nhà cung cấp ngày {AI_CATALOG_CHECKED_ON}.
+          Khi có model mới, gõ thẳng mã model vào ô Model.
+        </Typography.Text>
+      ) : null}
     </Flex>
   );
 }
@@ -148,15 +167,10 @@ function AiProviderSection({ provider, ...cardProps }: AiProviderSectionProps) {
   return (
     <AiProviderCard
       provider={provider}
-      modelOptions={models.data?.aiProviderModels ?? []}
-      modelOptionsError={models.isError ? modelListFailure(models.error) : null}
+      liveModels={models.data?.aiProviderModels ?? []}
+      liveModelsError={models.isError ? MODELS_UNAVAILABLE : null}
       isLoadingModels={models.isFetching}
       {...cardProps}
     />
   );
-}
-
-function modelListFailure(error: unknown): string {
-  const reason = rejectionReason(error);
-  return reason ? `${MODELS_UNAVAILABLE} (${reason})` : MODELS_UNAVAILABLE;
 }
