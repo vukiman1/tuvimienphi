@@ -60,7 +60,7 @@ describe('ApiKeyField', () => {
 
     expect(field().value).toBe('AIza••••••••O2Ow');
     expect(document.body.textContent).not.toContain('very-secret');
-    expect(screen.getByText('Chưa lưu')).toBeTruthy();
+    expect(screen.getByText('Khoá mới, chưa lưu.')).toBeTruthy();
   });
 
   it('drops the spaces and line breaks a paste drags along', () => {

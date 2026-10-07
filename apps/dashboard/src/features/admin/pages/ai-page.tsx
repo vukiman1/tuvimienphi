@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Alert, App, Card, Flex, Skeleton, Typography } from 'antd';
+import { Alert, App, Flex, Skeleton, Typography } from 'antd';
 import type { AiProvider } from '@/gql/graphql';
 import { isForbidden, rejectionReason } from '@/lib/graphql-request';
 import { AI_CATALOG_CHECKED_ON } from '../components/ai-model-catalog';
@@ -30,7 +30,6 @@ const FORBIDDEN = 'Chỉ quản trị viên cấp cao (SUPER_ADMIN) mới quản
 const NO_RESULT = 'Máy chủ không trả về kết quả gọi thử.';
 const INTRO =
   'Trang web dùng một AI để viết luận giải. Chọn loại AI, dán khoá, chọn model rồi bấm Lưu.';
-const PAGE_WIDTH = 760;
 
 export function AiPage() {
   const queryClient = useQueryClient();
@@ -110,7 +109,7 @@ export function AiPage() {
     });
 
   return (
-    <Flex vertical gap={16} style={{ maxWidth: PAGE_WIDTH }}>
+    <Flex vertical gap={16}>
       <Flex vertical gap={4}>
         <Typography.Title level={3} style={{ margin: 0 }}>
           AI
@@ -127,8 +126,10 @@ export function AiPage() {
       ) : null}
 
       {settings && view ? (
-        <Card>
-          <Flex vertical gap={20}>
+        <AiProviderSection
+          key={`${view.provider}-${view.updatedAt ?? 'unsaved'}`}
+          provider={view}
+          picker={
             <Field label="Loại AI">
               <AiProviderSelect
                 providers={settings.providers}
@@ -136,23 +137,19 @@ export function AiPage() {
                 onChange={setChosen}
               />
             </Field>
-            <AiProviderSection
-              key={`${view.provider}-${view.updatedAt ?? 'unsaved'}`}
-              provider={view}
-              busy={busy}
-              onListModels={async (apiKey) =>
-                (await listAiProviderModels(view.provider, apiKey)).aiProviderModels
-              }
-              onTest={async (change) =>
-                (await testAiProvider({ provider: view.provider, ...change })).testAiProvider
-              }
-              onCheck={() => check(view.provider)}
-              onSave={(change) => save(view.provider, change)}
-              onStopUsing={() => void stopUsing(view.provider)}
-              onClearKey={() => void clearKey(view.provider)}
-            />
-          </Flex>
-        </Card>
+          }
+          busy={busy}
+          onListModels={async (apiKey) =>
+            (await listAiProviderModels(view.provider, apiKey)).aiProviderModels
+          }
+          onTest={async (change) =>
+            (await testAiProvider({ provider: view.provider, ...change })).testAiProvider
+          }
+          onCheck={() => check(view.provider)}
+          onSave={(change) => save(view.provider, change)}
+          onStopUsing={() => void stopUsing(view.provider)}
+          onClearKey={() => void clearKey(view.provider)}
+        />
       ) : null}
 
       {settings ? (

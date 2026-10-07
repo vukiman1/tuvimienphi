@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { CheckCircleFilled, CloseCircleFilled, KeyOutlined } from '@ant-design/icons';
-import { Button, Flex, Input, Space, Tag, Tooltip, Typography, theme } from 'antd';
+import { Button, Flex, Input, Space, Tooltip, Typography, theme } from 'antd';
 import { cleanApiKey, friendlyFailure, keyProblem } from './ai-provider-model';
 import { keyPreview, maskApiKey } from './mask-api-key';
 
@@ -9,6 +9,8 @@ export type KeyCheck =
   | { readonly status: 'CHECKING' }
   | { readonly status: 'OK'; readonly modelCount: number }
   | { readonly status: 'FAILED'; readonly reason: string };
+
+const UNSAVED_KEY = 'Khoá mới, chưa lưu.';
 
 interface ApiKeyFieldProps {
   readonly label: string;
@@ -51,12 +53,9 @@ export function ApiKeyField({
             prefix={<KeyOutlined />}
             value={keyPreview(value === '' ? savedHint : maskApiKey(value))}
             suffix={
-              <Flex align="center" gap={4}>
-                {value === '' ? null : <Tag color="gold">Chưa lưu</Tag>}
-                <Button type="link" size="small" onClick={() => setIsEditing(true)}>
-                  Đổi khoá
-                </Button>
-              </Flex>
+              <Button type="link" size="small" onClick={() => setIsEditing(true)}>
+                Đổi khoá
+              </Button>
             }
           />
           {checkButton}
@@ -79,6 +78,9 @@ export function ApiKeyField({
         </Space.Compact>
       )}
       {problem ? <Typography.Text type="danger">{problem}</Typography.Text> : null}
+      {isShowingPreview && value !== '' ? (
+        <Typography.Text type="warning">{UNSAVED_KEY}</Typography.Text>
+      ) : null}
       <KeyCheckLine label={label} check={check} />
     </Flex>
   );
