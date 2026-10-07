@@ -94,6 +94,7 @@ describe('OpenAiProvider.generate', () => {
       inputTokens: 280,
       outputTokens: 17,
       failedAttempts: [],
+      latencyMs: expect.any(Number),
     });
   });
 

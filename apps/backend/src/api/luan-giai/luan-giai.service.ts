@@ -10,6 +10,7 @@ import {
 } from '@org/shared-contracts';
 import { chartFromBirthInput } from '@org/shared-tu-vi';
 import { Repository } from 'typeorm';
+import { runWithAiCallContext } from '../../ai/ai-call-context';
 import { ChapterQuotaService } from './chapter-quota.service';
 import { LuanGiaiChapterEntity } from './entities/luan-giai-chapter.entity';
 import type { ChapterGenerator } from './chapter-generator';
@@ -98,7 +99,9 @@ export class LuanGiaiService {
     }
 
     try {
-      const ket = await generator.generate(chart, GENERATION_BUDGET_MS);
+      const ket = await runWithAiCallContext({ userId, label: `luan-giai:${order}` }, () =>
+        generator.generate(chart, GENERATION_BUDGET_MS),
+      );
       if (!ket) {
         await this.quota.refund(userId);
         return { status: LuanGiaiChapterStatus.Unavailable };

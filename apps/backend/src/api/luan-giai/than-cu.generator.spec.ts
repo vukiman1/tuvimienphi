@@ -57,6 +57,7 @@ class AiGia extends AiClient {
       inputTokens: 0,
       outputTokens: 0,
       failedAttempts: [],
+      latencyMs: 0,
     });
   }
 }

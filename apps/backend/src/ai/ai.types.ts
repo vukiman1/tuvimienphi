@@ -30,4 +30,5 @@ export interface AiResult {
   readonly inputTokens: number;
   readonly outputTokens: number;
   readonly failedAttempts: readonly ModelAttempt[];
+  readonly latencyMs: number;
 }

@@ -19,7 +19,7 @@ export class OpenAiProvider implements AiProviderClient {
   async generate(request: AiRequest, { apiKey, models }: AiCredentials): Promise<AiResult> {
     const client = new OpenAI({ apiKey });
 
-    const { result, model, failedAttempts } = await tryModels(
+    const { result, model, failedAttempts, latencyMs } = await tryModels(
       models,
       async (candidate) => {
         const completion = await client.chat.completions.create(
@@ -61,7 +61,7 @@ export class OpenAiProvider implements AiProviderClient {
       () => request.signal?.aborted ?? false,
     );
 
-    return { ...result, model, failedAttempts };
+    return { ...result, model, failedAttempts, latencyMs };
   }
 
   async listModels(apiKey: string): Promise<string[]> {

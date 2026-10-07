@@ -21,7 +21,7 @@ export class GeminiProvider implements AiProviderClient {
   async generate(request: AiRequest, { apiKey, models }: AiCredentials): Promise<AiResult> {
     const genai = new GoogleGenAI({ apiKey });
 
-    const { result, model, failedAttempts } = await tryModels(
+    const { result, model, failedAttempts, latencyMs } = await tryModels(
       models,
       async (candidate) => {
         const response = await genai.models.generateContent({
@@ -53,7 +53,7 @@ export class GeminiProvider implements AiProviderClient {
       () => request.signal?.aborted ?? false,
     );
 
-    return { ...result, model, failedAttempts };
+    return { ...result, model, failedAttempts, latencyMs };
   }
 
   async listModels(apiKey: string): Promise<string[]> {

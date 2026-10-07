@@ -97,6 +97,7 @@ describe('AnthropicProvider.generate', () => {
       inputTokens: 340,
       outputTokens: 21,
       failedAttempts: [],
+      latencyMs: expect.any(Number),
     });
   });
 

@@ -23,7 +23,7 @@ export class AnthropicProvider implements AiProviderClient {
   async generate(request: AiRequest, { apiKey, models }: AiCredentials): Promise<AiResult> {
     const client = new Anthropic({ apiKey });
 
-    const { result, model, failedAttempts } = await tryModels(
+    const { result, model, failedAttempts, latencyMs } = await tryModels(
       models,
       async (candidate) => {
         const response = await client.messages.create(
@@ -58,7 +58,7 @@ export class AnthropicProvider implements AiProviderClient {
       () => request.signal?.aborted ?? false,
     );
 
-    return { ...result, model, failedAttempts };
+    return { ...result, model, failedAttempts, latencyMs };
   }
 
   async listModels(apiKey: string): Promise<string[]> {

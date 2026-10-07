@@ -1,6 +1,7 @@
 export interface ModelAttempt {
   readonly model: string;
   readonly reason: string;
+  readonly latencyMs?: number;
 }
 
 export class AiNotConfiguredError extends Error {

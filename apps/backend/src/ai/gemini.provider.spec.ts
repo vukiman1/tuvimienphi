@@ -71,6 +71,7 @@ describe('GeminiProvider.generate', () => {
       inputTokens: 310,
       outputTokens: 42,
       failedAttempts: [],
+      latencyMs: expect.any(Number),
     });
   });
 

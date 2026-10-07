@@ -3,6 +3,7 @@ import { applyConnectionUrls } from '@org/backend-config';
 import dotenv from 'dotenv';
 import { existsSync } from 'fs';
 import { join } from 'path';
+import { AiCallEntity } from './src/ai/entities/ai-call.entity';
 import { AiProviderEntity } from './src/ai/entities/ai-provider.entity';
 import { AiUsageDailyEntity } from './src/ai/entities/ai-usage-daily.entity';
 import { UserEntity } from './src/api/user/entities/user.entity';
@@ -73,6 +74,7 @@ export const options: DataSourceOptions = {
     VanHanPublishedYearEntity,
     AiProviderEntity,
     AiUsageDailyEntity,
+    AiCallEntity,
   ],
   migrationsTableName: 'migrations',
   migrations: [join(__dirname, `src/migrations/*.${migrationExtension}`)],

@@ -9,6 +9,7 @@ describe('tryModels', () => {
       result: 'xong',
       model: 'a',
       failedAttempts: [],
+      latencyMs: expect.any(Number),
     });
     expect(goi).toHaveBeenCalledTimes(1);
   });
@@ -22,7 +23,8 @@ describe('tryModels', () => {
     await expect(tryModels(['a', 'b'], goi)).resolves.toEqual({
       result: 'xong',
       model: 'b',
-      failedAttempts: [{ model: 'a', reason: 'UNAVAILABLE' }],
+      failedAttempts: [{ model: 'a', reason: 'UNAVAILABLE', latencyMs: expect.any(Number) }],
+      latencyMs: expect.any(Number),
     });
   });
 
@@ -36,8 +38,8 @@ describe('tryModels', () => {
 
     expect(loi).toBeInstanceOf(AiUnavailableError);
     expect((loi as AiUnavailableError).attempts).toEqual([
-      { model: 'a', reason: 'RESOURCE_EXHAUSTED' },
-      { model: 'b', reason: 'UNAVAILABLE' },
+      { model: 'a', reason: 'RESOURCE_EXHAUSTED', latencyMs: expect.any(Number) },
+      { model: 'b', reason: 'UNAVAILABLE', latencyMs: expect.any(Number) },
     ]);
   });
 

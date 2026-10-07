@@ -17,15 +17,18 @@ export async function tryModels<T>(
   readonly result: T;
   readonly model: string;
   readonly failedAttempts: readonly ModelAttempt[];
+  readonly latencyMs: number;
 }> {
   const attempts: ModelAttempt[] = [];
 
   for (const model of models) {
     if (shouldStop?.()) break;
+    const startedAt = Date.now();
     try {
-      return { result: await call(model), model, failedAttempts: attempts };
+      const result = await call(model);
+      return { result, model, failedAttempts: attempts, latencyMs: Date.now() - startedAt };
     } catch (error) {
-      attempts.push({ model, reason: readableReason(error) });
+      attempts.push({ model, reason: readableReason(error), latencyMs: Date.now() - startedAt });
     }
   }
 

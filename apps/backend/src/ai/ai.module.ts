@@ -7,6 +7,7 @@ import { AiSettingsService } from './ai-settings.service';
 import { AiUsageService } from './ai-usage.service';
 import { AiClient } from './ai.client';
 import { AnthropicProvider } from './anthropic.provider';
+import { AiCallEntity } from './entities/ai-call.entity';
 import { AiProviderEntity } from './entities/ai-provider.entity';
 import { AiUsageDailyEntity } from './entities/ai-usage-daily.entity';
 import { GeminiProvider } from './gemini.provider';
@@ -14,7 +15,10 @@ import { OpenAiProvider } from './openai.provider';
 import { RoutingAiClient } from './routing-ai.client';
 
 @Module({
-  imports: [ConfigModule, TypeOrmModule.forFeature([AiProviderEntity, AiUsageDailyEntity])],
+  imports: [
+    ConfigModule,
+    TypeOrmModule.forFeature([AiProviderEntity, AiUsageDailyEntity, AiCallEntity]),
+  ],
   providers: [
     GeminiProvider,
     OpenAiProvider,

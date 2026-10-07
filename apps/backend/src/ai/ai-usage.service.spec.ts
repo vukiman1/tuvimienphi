@@ -1,9 +1,19 @@
 import type { Repository } from 'typeorm';
 import { AiProvider } from './ai-provider';
 import { AiUsagePurpose } from './ai-usage-purpose.enum';
-import { AiUsageService, isQuotaRefusal, reportingDay } from './ai-usage.service';
+import { runWithAiCallContext } from './ai-call-context';
+import { AiCallStatus } from './ai-call-status.enum';
+import {
+  AiUsageService,
+  CALL_RETENTION_DAYS,
+  isQuotaRefusal,
+  reportingDay,
+  toAiCall,
+  type AiCallRow,
+} from './ai-usage.service';
 import { AiUnavailableError } from './ai.errors';
 import type { AiResult } from './ai.types';
+import { AiCallEntity } from './entities/ai-call.entity';
 import { AiUsageDailyEntity } from './entities/ai-usage-daily.entity';
 
 function setup(rows: Partial<AiUsageDailyEntity>[] = []) {
@@ -11,8 +21,19 @@ function setup(rows: Partial<AiUsageDailyEntity>[] = []) {
     query: jest.fn().mockResolvedValue(undefined),
     find: jest.fn().mockResolvedValue(rows),
   };
-  const service = new AiUsageService(repo as unknown as Repository<AiUsageDailyEntity>);
-  return { service, repo };
+  const callRepo = {
+    insert: jest.fn().mockResolvedValue(undefined),
+    delete: jest.fn().mockResolvedValue(undefined),
+  };
+  const service = new AiUsageService(
+    repo as unknown as Repository<AiUsageDailyEntity>,
+    callRepo as unknown as Repository<AiCallEntity>,
+  );
+  return { service, repo, callRepo };
+}
+
+function logged(callRepo: { insert: jest.Mock }): Partial<AiCallEntity>[] {
+  return callRepo.insert.mock.calls.map(([row]) => row as Partial<AiCallEntity>);
 }
 
 function answer(overrides: Partial<AiResult> = {}): AiResult {
@@ -22,6 +43,7 @@ function answer(overrides: Partial<AiResult> = {}): AiResult {
     inputTokens: 900,
     outputTokens: 120,
     failedAttempts: [],
+    latencyMs: 1800,
     ...overrides,
   };
 }
@@ -124,6 +146,129 @@ describe('AiUsageService.track', () => {
   });
 });
 
+describe('AiUsageService call log', () => {
+  it('keeps one line per call, with what it was for and who asked', async () => {
+    const { service, callRepo } = setup();
+
+    await runWithAiCallContext({ userId: 'user-1', label: 'luan-giai:2' }, () =>
+      service.track(AiProvider.OPENAI, AiUsagePurpose.GENERATION, async () => answer()),
+    );
+
+    expect(logged(callRepo)).toEqual([
+      expect.objectContaining({
+        provider: AiProvider.OPENAI,
+        model: 'gpt-6.1-sol',
+        purpose: AiUsagePurpose.GENERATION,
+        status: AiCallStatus.OK,
+        inputTokens: 900,
+        outputTokens: 120,
+        latencyMs: 1800,
+        error: null,
+        label: 'luan-giai:2',
+        userId: 'user-1',
+      }),
+    ]);
+  });
+
+  it('logs a model that failed with why, even when the next one answered', async () => {
+    const { service, callRepo } = setup();
+    const result = answer({
+      model: 'gemini-3.8-flash',
+      failedAttempts: [
+        { model: 'gemini-3.5-flash-lite', reason: '429 RESOURCE_EXHAUSTED', latencyMs: 240 },
+      ],
+    });
+
+    await service.track(AiProvider.GEMINI, AiUsagePurpose.GENERATION, async () => result);
+
+    expect(logged(callRepo)).toEqual([
+      expect.objectContaining({
+        model: 'gemini-3.5-flash-lite',
+        status: AiCallStatus.FAILED,
+        isQuotaHit: true,
+        latencyMs: 240,
+        error: '429 RESOURCE_EXHAUSTED',
+        userId: null,
+        label: null,
+      }),
+      expect.objectContaining({ model: 'gemini-3.8-flash', status: AiCallStatus.OK }),
+    ]);
+  });
+
+  it('cuts a long provider message down to what the column holds', async () => {
+    const { service, callRepo } = setup();
+    const failure = new AiUnavailableError([{ model: 'm', reason: 'x'.repeat(900) }]);
+
+    await service
+      .track(AiProvider.OPENAI, AiUsagePurpose.CHECK, async () => {
+        throw failure;
+      })
+      .catch(() => undefined);
+
+    expect(logged(callRepo)[0].error).toHaveLength(300);
+  });
+
+  it('drops lines older than the retention window, but not on every call', async () => {
+    const { service, callRepo } = setup();
+    const entry = {
+      provider: AiProvider.OPENAI,
+      model: 'gpt-6.1-sol',
+      purpose: AiUsagePurpose.CHECK,
+      isFailure: false,
+      isQuotaHit: false,
+      inputTokens: 1,
+      outputTokens: 1,
+      latencyMs: 1,
+      error: null,
+    };
+    const first = new Date('2026-10-08T00:00:00.000Z');
+
+    await service.record([entry], {}, first);
+    await service.record([entry], {}, new Date(first.getTime() + 60_000));
+
+    expect(callRepo.delete).toHaveBeenCalledTimes(1);
+    const cutoff = callRepo.delete.mock.calls[0][0].createdAt.value as Date;
+    expect(first.getTime() - cutoff.getTime()).toBe(CALL_RETENTION_DAYS * 86_400_000);
+
+    await service.record([entry], {}, new Date(first.getTime() + 7 * 60 * 60 * 1000));
+    expect(callRepo.delete).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe('toAiCall', () => {
+  const row: AiCallRow = {
+    id: 'call-1',
+    created_at: new Date('2026-10-08T03:00:00.000Z'),
+    day: '2026-10-08',
+    provider: AiProvider.OPENAI,
+    model: 'gpt-6.1-sol',
+    purpose: AiUsagePurpose.GENERATION,
+    status: AiCallStatus.OK,
+    is_quota_hit: false,
+    input_tokens: 55,
+    output_tokens: 11,
+    latency_ms: 4757,
+    error: null,
+    label: 'luan-giai:2',
+    user_email: 'reader@example.com',
+  };
+
+  it('prices one call from its own tokens', () => {
+    expect(toAiCall(row)).toMatchObject({
+      id: 'call-1',
+      costUsd: 0.00022,
+      label: 'luan-giai:2',
+      userEmail: 'reader@example.com',
+    });
+  });
+
+  it('puts no price on a call that failed', () => {
+    expect(
+      toAiCall({ ...row, status: AiCallStatus.FAILED, input_tokens: 0, output_tokens: 0 }).costUsd,
+    ).toBeNull();
+  });
+});
+
 describe('AiUsageService.record', () => {
   it('files a call under the day it happened in Việt Nam', async () => {
     const { service, repo } = setup();
@@ -138,8 +283,11 @@ describe('AiUsageService.record', () => {
           isQuotaHit: false,
           inputTokens: 1,
           outputTokens: 1,
+          latencyMs: 900,
+          error: null,
         },
       ],
+      {},
       new Date('2026-10-07T17:30:00.000Z'),
     );
 
