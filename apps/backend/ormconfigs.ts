@@ -9,6 +9,7 @@ import { UserTotpEntity } from './src/api/auth/entities/user-totp.entity';
 import { UserRecoveryCodeEntity } from './src/api/auth/entities/user-recovery-code.entity';
 import { AuthIdentityEntity } from './src/api/auth/entities/auth-identity.entity';
 import { VanHanEntity } from './src/api/van-han/entities/van-han.entity';
+import { VanHanPublishedYearEntity } from './src/api/van-han/entities/van-han-published-year.entity';
 
 interface DatabaseConfig {
   host: string;
@@ -67,6 +68,7 @@ export const options: DataSourceOptions = {
     UserRecoveryCodeEntity,
     AuthIdentityEntity,
     VanHanEntity,
+    VanHanPublishedYearEntity,
   ],
   migrationsTableName: 'migrations',
   migrations: [join(__dirname, `src/migrations/*.${migrationExtension}`)],

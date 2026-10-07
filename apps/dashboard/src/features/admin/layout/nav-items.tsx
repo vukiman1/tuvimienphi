@@ -27,3 +27,10 @@ export const NAV_ITEMS: readonly NavItem[] = [
 export function isNavPath(value: string): value is NavPath {
   return NAV_ITEMS.some((item) => item.to === value);
 }
+
+export function activeNavPath(pathname: string): NavPath | null {
+  const active = NAV_ITEMS.find(
+    ({ to }) => pathname === to || (to !== '/' && pathname.startsWith(`${to}/`)),
+  );
+  return active?.to ?? null;
+}

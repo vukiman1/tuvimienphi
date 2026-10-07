@@ -170,6 +170,19 @@ export interface UserCredit {
 }
 
 // Vận hạn
+export const VAN_HAN_ASPECTS = ['Tài Vận', 'Sức Khoẻ', 'Sự Nghiệp', 'Tình Duyên'] as const;
+
+export type VanHanAspectLabel = (typeof VAN_HAN_ASPECTS)[number];
+
+export const VAN_HAN_MAX_RATING = 5;
+
+export const VAN_HAN_TEXT_LIMITS = {
+  luuNien: 10_000,
+  aspectBody: 5_000,
+  ageReading: 2_000,
+  sourceUrl: 500,
+} as const;
+
 export interface VanHanAspectData {
   aspect: string;
   rating: number;
@@ -193,6 +206,11 @@ export interface VanHanEntry {
   luuNien: string;
   luanGiai: VanHanAspectData[];
   tungTuoi: VanHanAgeData[];
+}
+
+export interface VanHanCurrent {
+  year: number;
+  entries: VanHanEntry[];
 }
 
 // Lá số

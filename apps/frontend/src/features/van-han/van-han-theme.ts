@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import type { VanHanAspectLabel } from '@org/shared-contracts';
 import { vanHanCoinUrl, vanHanHeroUrl } from '@/config/media';
 import { ZODIAC_CHI, type ZodiacChi } from '@/lib/zodiac-icons';
 
@@ -111,7 +112,7 @@ export const ASPECT_THEMES = {
     label: 'text-[#b64c58]',
     bullet: 'text-[#b64c58]',
   },
-} as const;
+} as const satisfies Record<VanHanAspectLabel, { coin: string; label: string; bullet: string }>;
 
 /** Tông màu theo nhãn mục luận giải; nhãn lạ (sai chính tả/dấu) fallback 'Tài Vận' và
  * cảnh báo ở môi trường DEV để phát hiện lệch dữ liệu backend lúc QA, không phải khi production. */

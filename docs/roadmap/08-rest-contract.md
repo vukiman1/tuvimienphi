@@ -15,8 +15,8 @@ phẳng khoá theo tên trường. Nghe hợp lý, nhưng ba điểm hỏng:
 
 1. **Mất đường dẫn ở DTO lồng nhau.** Hàm `validationErrors()` đệ quy rồi trả `{ [err.property]: ... }`
    với tên trường **con**, nên lỗi ở `luanGiai[0].body` về với khoá `"body"`. Hai object lồng nhau trùng
-   tên trường sẽ **đè lên nhau** trong `reduce`, im lặng. `save-van-han.dto.ts` có hai chỗ
-   `@ValidateNested({ each: true })` dùng tới.
+   tên trường sẽ **đè lên nhau** trong `reduce`, im lặng. `save-van-han-entry.input.ts` (mutation
+   `saveVanHanEntry`) có hai chỗ `@ValidateNested({ each: true })` dùng tới.
 2. **Chỉ báo một lỗi mỗi trường** (`Object.values(constraints)[0]`) và **chỉ nhánh con đầu tiên**
    (`children[0]`).
 3. **Thông báo hiện lên là tuỳ hứng.** `extractMessage` ở
@@ -50,8 +50,8 @@ parse vẫn chạy, chỉ là gán lỗi cho một trường tên `"Mật"`, im 
 lỗi từng ô thì phải ghi quy ước này xuống hoặc đổi sang hình dạng `[{ field, message }]`.
 
 **Acceptance:** gửi body sai vào `POST /api/auth/register` → người dùng thấy một thông báo validate thật
-(không phải `"Bad Request"`); gửi mảng lồng nhau sai nhiều phần tử vào `POST /api/van-han` → mỗi phần tử
-sai được báo riêng kèm chỉ số, không đè lên nhau.
+(không phải `"Bad Request"`); gửi mảng lồng nhau sai nhiều phần tử vào mutation `saveVanHanEntry` → mỗi
+phần tử sai được báo riêng kèm chỉ số, không đè lên nhau.
 
 ---
 
