@@ -2,9 +2,9 @@ import { MAX_MASK_LENGTH, maskApiKey } from './mask-api-key';
 
 describe('maskApiKey', () => {
   it('keeps a few characters from each end of a real key and nothing in between', () => {
-    const masked = maskApiKey('AIzaSyD-very-secret-middle-part-of-the-key-O2Ow');
+    const masked = maskApiKey('AIzaSyD-very-secret-middle-part-of-the-key-Xk7Q');
 
-    expect(masked).toBe('AIza…O2Ow');
+    expect(masked).toBe('AIza…Xk7Q');
     expect(masked).not.toContain('secret');
   });
 

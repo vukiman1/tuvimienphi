@@ -4,7 +4,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { ApiKeyField, type KeyCheck } from './api-key-field';
 
 const LABEL = 'Khoá API Gemini';
-const TYPED = 'AIzaSyD-very-secret-middle-part-O2Ow';
+const TYPED = 'AIzaSyD-very-secret-middle-part-Xk7Q';
 
 interface HarnessProps {
   readonly savedHint: string | null;
@@ -39,9 +39,9 @@ function typeAndLeave(value: string): void {
 
 describe('ApiKeyField', () => {
   it('shows a stored key by its two ends and nothing in between', () => {
-    render(<Harness savedHint="AIza…O2Ow" />);
+    render(<Harness savedHint="AIza…Xk7Q" />);
 
-    expect(field().value).toBe('AIza••••••••O2Ow');
+    expect(field().value).toBe('AIza••••••••Xk7Q');
     expect(field().readOnly).toBe(true);
   });
 
@@ -58,7 +58,7 @@ describe('ApiKeyField', () => {
 
     typeAndLeave(TYPED);
 
-    expect(field().value).toBe('AIza••••••••O2Ow');
+    expect(field().value).toBe('AIza••••••••Xk7Q');
     expect(document.body.textContent).not.toContain('very-secret');
     expect(screen.getByText('Khoá mới, chưa lưu.')).toBeTruthy();
   });
@@ -83,19 +83,19 @@ describe('ApiKeyField', () => {
   });
 
   it('opens a stored key for replacing and goes back to it when nothing is typed', () => {
-    render(<Harness savedHint="AIza…O2Ow" />);
+    render(<Harness savedHint="AIza…Xk7Q" />);
 
     fireEvent.click(screen.getByRole('button', { name: 'Đổi khoá' }));
     expect(field().type).toBe('password');
     expect(field().value).toBe('');
 
     fireEvent.blur(field());
-    expect(field().value).toBe('AIza••••••••O2Ow');
+    expect(field().value).toBe('AIza••••••••Xk7Q');
   });
 
   it('checks the key from the button beside it', () => {
     const onCheck = vi.fn();
-    render(<Harness savedHint="AIza…O2Ow" onCheck={onCheck} />);
+    render(<Harness savedHint="AIza…Xk7Q" onCheck={onCheck} />);
 
     fireEvent.click(screen.getByRole('button', { name: 'Kiểm tra' }));
 
@@ -103,7 +103,7 @@ describe('ApiKeyField', () => {
   });
 
   it('says how many models a working key opens', () => {
-    render(<Harness savedHint="AIza…O2Ow" check={{ status: 'OK', modelCount: 23 }} />);
+    render(<Harness savedHint="AIza…Xk7Q" check={{ status: 'OK', modelCount: 23 }} />);
 
     expect(screen.getByText(/Khoá dùng được, 23 model sẵn sàng\./)).toBeTruthy();
   });
@@ -111,7 +111,7 @@ describe('ApiKeyField', () => {
   it('puts a refused key in plain words', () => {
     render(
       <Harness
-        savedHint="AIza…O2Ow"
+        savedHint="AIza…Xk7Q"
         check={{ status: 'FAILED', reason: 'GEMINI would not list its models: API key not valid' }}
       />,
     );
