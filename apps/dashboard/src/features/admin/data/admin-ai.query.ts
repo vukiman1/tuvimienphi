@@ -1,5 +1,7 @@
 import { queryOptions } from '@tanstack/react-query';
 import type {
+  AiCallsQuery,
+  AiCallsQueryVariables,
   AiProvider,
   AiProviderFieldsFragment,
   AiSettingsQuery,
@@ -9,6 +11,7 @@ import type {
 } from '@/gql/graphql';
 import { graphqlRequest } from '@/lib/graphql-request';
 import {
+  aiCallsDocument,
   aiProviderModelsDocument,
   aiSettingsDocument,
   aiUsageDocument,
@@ -24,6 +27,7 @@ export type AiSettingsView = AiSettingsQuery['aiSettings'];
 export type AiProviderView = AiProviderFieldsFragment;
 export type AiHealthView = NonNullable<AiProviderView['health']>;
 export type AiUsageDayView = AiUsageQuery['aiUsage'][number];
+export type AiCallView = AiCallsQuery['aiCalls']['items'][number];
 
 export const AI_QUERY_KEY = ['admin', 'ai'] as const;
 
@@ -53,6 +57,13 @@ export function aiUsageQuery(from: string, to: string) {
     queryKey: [...AI_USAGE_QUERY_KEY, from, to],
     queryFn: () => graphqlRequest(aiUsageDocument, { from, to }),
     refetchInterval: USAGE_REFRESH_MS,
+  });
+}
+
+export function aiCallsQuery(variables: AiCallsQueryVariables) {
+  return queryOptions({
+    queryKey: [...AI_USAGE_QUERY_KEY, 'calls', variables],
+    queryFn: () => graphqlRequest(aiCallsDocument, variables),
   });
 }
 

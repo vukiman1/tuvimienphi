@@ -3,12 +3,21 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Alert, App, Flex, Skeleton, Typography } from 'antd';
 import type { AiProvider } from '@/gql/graphql';
 import { isForbidden, rejectionReason } from '@/lib/graphql-request';
+import { AiCallDrawer } from '../components/ai-call-drawer';
+import { CALLS_PAGE_SIZE } from '../components/ai-call-model';
 import { AI_CATALOG_CHECKED_ON } from '../components/ai-model-catalog';
 import { AiUsageCard } from '../components/ai-usage-card';
-import { fetchRange, reportingDay } from '../components/ai-usage-model';
+import {
+  USAGE_PURPOSE_LABEL,
+  fetchRange,
+  reportingDay,
+  type DayRange,
+  type UsageRow,
+} from '../components/ai-usage-model';
 import { AiProviderForm, Field, type AiProviderAction } from '../components/ai-provider-form';
 import {
   AI_PROVIDER_LABEL,
+  modelName,
   sourceNotice,
   startingProvider,
   type AiProviderChange,
@@ -16,6 +25,7 @@ import {
 import { AiProviderSelect } from '../components/ai-provider-select';
 import {
   AI_USAGE_QUERY_KEY,
+  aiCallsQuery,
   aiProviderModelsQuery,
   aiSettingsQuery,
   aiUsageQuery,
@@ -35,6 +45,15 @@ const FORBIDDEN = 'Chỉ quản trị viên cấp cao (SUPER_ADMIN) mới quản
 const NO_RESULT = 'Máy chủ không trả về kết quả gọi thử.';
 const USAGE_FAILED = 'Không tải được số liệu mức dùng.';
 const BUDGET_FAILED = 'Không lưu được hạn mức.';
+const CALLS_FAILED = 'Không tải được chi tiết lượt gọi.';
+const CALL_RETENTION_DAYS = 90;
+
+interface CallDrill {
+  readonly row: UsageRow;
+  readonly range: DayRange;
+  readonly periodLabel: string;
+  readonly page: number;
+}
 const INTRO =
   'Trang web dùng một AI để viết luận giải. Chọn loại AI, dán khoá, chọn model rồi bấm Lưu.';
 
@@ -47,6 +66,19 @@ export function AiPage() {
   const [today] = useState(() => reportingDay(new Date()));
   const usageRange = fetchRange(today);
   const usage = useQuery(aiUsageQuery(usageRange.from, usageRange.to));
+  const [drill, setDrill] = useState<CallDrill | null>(null);
+  const calls = useQuery({
+    ...aiCallsQuery({
+      from: drill?.range.from ?? today,
+      to: drill?.range.to ?? today,
+      provider: drill?.row.provider ?? 'GEMINI',
+      model: drill?.row.model ?? '',
+      purpose: drill?.row.purpose ?? 'GENERATION',
+      page: drill?.page ?? 1,
+      limit: CALLS_PAGE_SIZE,
+    }),
+    enabled: drill !== null,
+  });
   const settingsQuery = aiSettingsQuery();
   const { data, isPending, isError, error } = useQuery(settingsQuery);
   const settings = data?.aiSettings;
@@ -205,8 +237,28 @@ export function AiPage() {
           loadError={usage.isError ? USAGE_FAILED : null}
           savingBudgetFor={savingBudgetFor}
           onSetBudget={(provider, value) => void setBudget(provider, value)}
+          onOpenCalls={(row, range, periodLabel) => setDrill({ row, range, periodLabel, page: 1 })}
         />
       ) : null}
+
+      <AiCallDrawer
+        isOpen={drill !== null}
+        title={
+          drill
+            ? `${modelName(drill.row.provider, drill.row.model)} · ${USAGE_PURPOSE_LABEL[drill.row.purpose]}`
+            : ''
+        }
+        subtitle={drill ? `${AI_PROVIDER_LABEL[drill.row.provider]} · ${drill.periodLabel}` : ''}
+        calls={calls.data?.aiCalls.items ?? []}
+        total={calls.data?.aiCalls.total ?? 0}
+        expectedTotal={drill?.row.calls ?? 0}
+        page={drill?.page ?? 1}
+        isLoading={drill !== null && calls.isPending}
+        loadError={calls.isError ? CALLS_FAILED : null}
+        retentionDays={CALL_RETENTION_DAYS}
+        onPageChange={(page) => setDrill((current) => (current ? { ...current, page } : current))}
+        onClose={() => setDrill(null)}
+      />
 
       {settings ? (
         <Typography.Text type="secondary">

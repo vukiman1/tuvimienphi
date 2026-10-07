@@ -105,3 +105,40 @@ export const setAiProviderBudgetDocument = graphql(`
     }
   }
 `);
+
+export const aiCallsDocument = graphql(`
+  query AiCalls(
+    $from: String!
+    $to: String!
+    $provider: AiProvider!
+    $model: String!
+    $purpose: AiUsagePurpose!
+    $page: Int
+    $limit: Int
+  ) {
+    aiCalls(
+      from: $from
+      to: $to
+      provider: $provider
+      model: $model
+      purpose: $purpose
+      page: $page
+      limit: $limit
+    ) {
+      total
+      items {
+        id
+        at
+        status
+        isQuotaHit
+        inputTokens
+        outputTokens
+        latencyMs
+        costUsd
+        error
+        label
+        userEmail
+      }
+    }
+  }
+`);

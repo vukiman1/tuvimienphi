@@ -3,6 +3,7 @@ import type { AiUsageDayView } from '../data/admin-ai.query';
 import {
   budgetStatus,
   fetchRange,
+  formatCallCost,
   formatUsd,
   monthSpend,
   monthStart,
@@ -162,5 +163,12 @@ describe('formatUsd', () => {
     expect(formatUsd(0)).toBe('$0.00');
     expect(formatUsd(0.0042)).toBe('$0.0042');
     expect(formatUsd(0.25)).toBe('$0.25');
+  });
+});
+
+describe('formatCallCost', () => {
+  it('keeps the same number of digits down a column of single calls', () => {
+    expect(formatCallCost(0.0274)).toBe('$0.02740');
+    expect(formatCallCost(0.00022)).toBe('$0.00022');
   });
 });

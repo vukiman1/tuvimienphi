@@ -59,6 +59,7 @@ const THIRTY_DAYS = 30;
 const PERCENT = 100;
 const NEAR_BUDGET_PERCENT = 80;
 const SMALL_AMOUNT_USD = 1;
+const CALL_COST_DECIMALS = 5;
 
 const dayFormatter = new Intl.DateTimeFormat('en-CA', {
   timeZone: REPORTING_TIME_ZONE,
@@ -77,6 +78,13 @@ const smallUsdFormatter = new Intl.NumberFormat('en-US', {
   currency: 'USD',
   minimumFractionDigits: 2,
   maximumFractionDigits: 4,
+});
+
+const callCostFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: CALL_COST_DECIMALS,
+  maximumFractionDigits: CALL_COST_DECIMALS,
 });
 
 export function reportingDay(at: Date): string {
@@ -184,6 +192,10 @@ export function budgetStatus(spentUsd: number, budgetUsd: number | null): Budget
     return { percent, level: 'OVER' };
   }
   return { percent, level: percent >= NEAR_BUDGET_PERCENT ? 'NEAR' : 'OK' };
+}
+
+export function formatCallCost(value: number): string {
+  return callCostFormatter.format(value);
 }
 
 export function formatUsd(value: number): string {

@@ -9,6 +9,10 @@ export type AdminUserSortField =
   | 'CREATED_AT'
   | 'EMAIL';
 
+export type AiCallStatus =
+  | 'FAILED'
+  | 'OK';
+
 export type AiHealthStatus =
   | 'FAILED'
   | 'OK';
@@ -148,6 +152,19 @@ export type SetAiProviderBudgetMutationVariables = Exact<{
 
 
 export type SetAiProviderBudgetMutation = { setAiProviderBudget: { provider: AiProvider, monthlyBudgetUsd: number | null } };
+
+export type AiCallsQueryVariables = Exact<{
+  from: string;
+  to: string;
+  provider: AiProvider;
+  model: string;
+  purpose: AiUsagePurpose;
+  page?: number | null | undefined;
+  limit?: number | null | undefined;
+}>;
+
+
+export type AiCallsQuery = { aiCalls: { total: number, items: Array<{ id: string, at: string, status: AiCallStatus, isQuotaHit: boolean, inputTokens: number, outputTokens: number, latencyMs: number | null, costUsd: number | null, error: string | null, label: string | null, userEmail: string | null }> } };
 
 export type MetricFieldsFragment = { value: number, previous: number, series: Array<{ date: string, count: number }> };
 
@@ -422,6 +439,34 @@ export const SetAiProviderBudgetDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<SetAiProviderBudgetMutation, SetAiProviderBudgetMutationVariables>;
+export const AiCallsDocument = new TypedDocumentString(`
+    query AiCalls($from: String!, $to: String!, $provider: AiProvider!, $model: String!, $purpose: AiUsagePurpose!, $page: Int, $limit: Int) {
+  aiCalls(
+    from: $from
+    to: $to
+    provider: $provider
+    model: $model
+    purpose: $purpose
+    page: $page
+    limit: $limit
+  ) {
+    total
+    items {
+      id
+      at
+      status
+      isQuotaHit
+      inputTokens
+      outputTokens
+      latencyMs
+      costUsd
+      error
+      label
+      userEmail
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<AiCallsQuery, AiCallsQueryVariables>;
 export const AdminOverviewDocument = new TypedDocumentString(`
     query AdminOverview($from: String, $to: String) {
   overview(from: $from, to: $to) {

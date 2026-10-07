@@ -31,6 +31,7 @@ import {
   usageRows,
   usageTotals,
   type BudgetLevel,
+  type DayRange,
   type UsagePeriod,
   type UsageRow,
   type UsageTotals,
@@ -45,6 +46,7 @@ interface AiUsageCardProps {
   readonly loadError: string | null;
   readonly savingBudgetFor: AiProvider | null;
   readonly onSetBudget: (provider: AiProvider, monthlyBudgetUsd: number | null) => void;
+  readonly onOpenCalls: (row: UsageRow, range: DayRange, periodLabel: string) => void;
 }
 
 const MIN_BUDGET_USD = 0.01;
@@ -57,6 +59,7 @@ const BUDGET_BAR_MIN_WIDTH = 160;
 const BUDGET_INPUT_WIDTH = 150;
 const NO_PRICE = 'Chưa có giá';
 const EMPTY = 'Chưa có lượt gọi nào trong khoảng này.';
+const ROW_HINT = 'Bấm vào một dòng để xem từng lượt gọi và chi phí của từng lượt.';
 
 const BUDGET_COLOR = {
   OK: 'normal',
@@ -72,7 +75,7 @@ const COLUMNS: ColumnsType<UsageRow> = [
       <Flex align="center" gap={8}>
         {AI_PROVIDER_ICON[row.provider]}
         <Flex vertical>
-          <Typography.Text strong>{modelName(row.provider, row.model)}</Typography.Text>
+          <Typography.Link strong>{modelName(row.provider, row.model)}</Typography.Link>
           <Typography.Text type="secondary">{AI_PROVIDER_LABEL[row.provider]}</Typography.Text>
         </Flex>
       </Flex>
@@ -139,9 +142,11 @@ export function AiUsageCard({
   loadError,
   savingBudgetFor,
   onSetBudget,
+  onOpenCalls,
 }: AiUsageCardProps) {
   const [period, setPeriod] = useState<UsagePeriod>('TODAY');
-  const rows = usageRows(days, periodRange(period, today));
+  const range = periodRange(period, today);
+  const rows = usageRows(days, range);
   const totals = usageTotals(rows);
   const spend = monthSpend(days, today);
   const budgeted = providers.filter(
@@ -191,7 +196,12 @@ export function AiUsageCard({
           pagination={false}
           scroll={{ x: 'max-content' }}
           locale={{ emptyText: EMPTY }}
+          onRow={(row) => ({
+            onClick: () => onOpenCalls(row, range, USAGE_PERIOD_LABEL[period]),
+            style: { cursor: 'pointer' },
+          })}
         />
+        <Typography.Text type="secondary">{ROW_HINT}</Typography.Text>
 
         <Typography.Text type="secondary">
           Chi phí là ước tính: số token nhà cung cấp báo về nhân với giá công khai ngày{' '}
