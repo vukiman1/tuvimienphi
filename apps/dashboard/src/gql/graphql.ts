@@ -15,9 +15,35 @@ export type Role =
   | 'SUPER_ADMIN'
   | 'USER';
 
+export type SaveVanHanEntryInput = {
+  luanGiai: Array<VanHanAspectInput>;
+  luuNien: string;
+  sourceUrl?: string | null | undefined;
+  tungTuoi: Array<VanHanAgeInput>;
+  year: number;
+  zodiacOrder: number;
+};
+
 export type SortDirection =
   | 'ASC'
   | 'DESC';
+
+export type VanHanAgeInput = {
+  birthYear: number;
+  female: string;
+  male: string;
+};
+
+export type VanHanAspectInput = {
+  aspect: string;
+  body: string;
+  rating: number;
+};
+
+export type VanHanMissingPart =
+  | 'LUAN_GIAI'
+  | 'LUU_NIEN'
+  | 'TUNG_TUOI';
 
 export type ActiveUsersSeriesQueryVariables = Exact<{
   from?: string | null | undefined;
@@ -53,6 +79,49 @@ export type AdminUsersQueryVariables = Exact<{
 
 
 export type AdminUsersQuery = { users: { total: number, users: Array<{ id: string, email: string, displayName: string | null, avatar: string | null, role: Role, isEmailVerified: boolean, balance: number, createdAt: string, genCount: number, lastActiveAt: string | null }> } };
+
+export type VanHanYearsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type VanHanYearsQuery = { vanHanYears: Array<{ year: number, publishedAt: string | null, entryCount: number }> };
+
+export type VanHanYearQueryVariables = Exact<{
+  year: number;
+}>;
+
+
+export type VanHanYearQuery = { vanHanYear: { year: number, canChi: string, publishedAt: string | null, slots: Array<{ zodiacOrder: number, zodiac: string, missing: Array<VanHanMissingPart>, entry: { id: string, updatedAt: string } | null }> } };
+
+export type VanHanEntryFieldsFragment = { id: string, luuNien: string, sourceUrl: string, updatedAt: string, luanGiai: Array<{ aspect: string, rating: number, body: string }>, tungTuoi: Array<{ birthYear: number, male: string, female: string }> };
+
+export type VanHanEditorQueryVariables = Exact<{
+  year: number;
+  zodiacOrder: number;
+}>;
+
+
+export type VanHanEditorQuery = { vanHanEditor: { year: number, canChi: string, publishedAt: string | null, slot: { zodiacOrder: number, zodiac: string, entry: { id: string, luuNien: string, sourceUrl: string, updatedAt: string, luanGiai: Array<{ aspect: string, rating: number, body: string }>, tungTuoi: Array<{ birthYear: number, male: string, female: string }> } | null }, previousEntry: { id: string, luuNien: string, sourceUrl: string, updatedAt: string, luanGiai: Array<{ aspect: string, rating: number, body: string }>, tungTuoi: Array<{ birthYear: number, male: string, female: string }> } | null, birthYearOptions: Array<{ birthYear: number, canChi: string, menh: string, age: number }> } };
+
+export type SaveVanHanEntryMutationVariables = Exact<{
+  input: SaveVanHanEntryInput;
+}>;
+
+
+export type SaveVanHanEntryMutation = { saveVanHanEntry: { zodiacOrder: number, missing: Array<VanHanMissingPart>, entry: { id: string, updatedAt: string } | null } };
+
+export type PublishVanHanYearMutationVariables = Exact<{
+  year: number;
+}>;
+
+
+export type PublishVanHanYearMutation = { publishVanHanYear: { year: number, publishedAt: string | null } };
+
+export type UnpublishVanHanYearMutationVariables = Exact<{
+  year: number;
+}>;
+
+
+export type UnpublishVanHanYearMutation = { unpublishVanHanYear: { year: number, publishedAt: string | null } };
 
 export type RecentActivityQueryVariables = Exact<{
   page?: number | null | undefined;
@@ -90,6 +159,24 @@ export const MetricFieldsFragmentDoc = new TypedDocumentString(`
   }
 }
     `, {"fragmentName":"MetricFields"}) as unknown as TypedDocumentString<MetricFieldsFragment, unknown>;
+export const VanHanEntryFieldsFragmentDoc = new TypedDocumentString(`
+    fragment VanHanEntryFields on AdminVanHanEntry {
+  id
+  luuNien
+  sourceUrl
+  updatedAt
+  luanGiai {
+    aspect
+    rating
+    body
+  }
+  tungTuoi {
+    birthYear
+    male
+    female
+  }
+}
+    `, {"fragmentName":"VanHanEntryFields"}) as unknown as TypedDocumentString<VanHanEntryFieldsFragment, unknown>;
 export const ActiveUsersSeriesDocument = new TypedDocumentString(`
     query ActiveUsersSeries($from: String, $to: String) {
   activeUsersSeries(from: $from, to: $to) {
@@ -164,6 +251,101 @@ export const AdminUsersDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<AdminUsersQuery, AdminUsersQueryVariables>;
+export const VanHanYearsDocument = new TypedDocumentString(`
+    query VanHanYears {
+  vanHanYears {
+    year
+    publishedAt
+    entryCount
+  }
+}
+    `) as unknown as TypedDocumentString<VanHanYearsQuery, VanHanYearsQueryVariables>;
+export const VanHanYearDocument = new TypedDocumentString(`
+    query VanHanYear($year: Int!) {
+  vanHanYear(year: $year) {
+    year
+    canChi
+    publishedAt
+    slots {
+      zodiacOrder
+      zodiac
+      missing
+      entry {
+        id
+        updatedAt
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<VanHanYearQuery, VanHanYearQueryVariables>;
+export const VanHanEditorDocument = new TypedDocumentString(`
+    query VanHanEditor($year: Int!, $zodiacOrder: Int!) {
+  vanHanEditor(year: $year, zodiacOrder: $zodiacOrder) {
+    year
+    canChi
+    publishedAt
+    slot {
+      zodiacOrder
+      zodiac
+      entry {
+        ...VanHanEntryFields
+      }
+    }
+    previousEntry {
+      ...VanHanEntryFields
+    }
+    birthYearOptions {
+      birthYear
+      canChi
+      menh
+      age
+    }
+  }
+}
+    fragment VanHanEntryFields on AdminVanHanEntry {
+  id
+  luuNien
+  sourceUrl
+  updatedAt
+  luanGiai {
+    aspect
+    rating
+    body
+  }
+  tungTuoi {
+    birthYear
+    male
+    female
+  }
+}`) as unknown as TypedDocumentString<VanHanEditorQuery, VanHanEditorQueryVariables>;
+export const SaveVanHanEntryDocument = new TypedDocumentString(`
+    mutation SaveVanHanEntry($input: SaveVanHanEntryInput!) {
+  saveVanHanEntry(input: $input) {
+    zodiacOrder
+    missing
+    entry {
+      id
+      updatedAt
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<SaveVanHanEntryMutation, SaveVanHanEntryMutationVariables>;
+export const PublishVanHanYearDocument = new TypedDocumentString(`
+    mutation PublishVanHanYear($year: Int!) {
+  publishVanHanYear(year: $year) {
+    year
+    publishedAt
+  }
+}
+    `) as unknown as TypedDocumentString<PublishVanHanYearMutation, PublishVanHanYearMutationVariables>;
+export const UnpublishVanHanYearDocument = new TypedDocumentString(`
+    mutation UnpublishVanHanYear($year: Int!) {
+  unpublishVanHanYear(year: $year) {
+    year
+    publishedAt
+  }
+}
+    `) as unknown as TypedDocumentString<UnpublishVanHanYearMutation, UnpublishVanHanYearMutationVariables>;
 export const RecentActivityDocument = new TypedDocumentString(`
     query RecentActivity($page: Int, $limit: Int) {
   recentActivity(page: $page, limit: $limit) {

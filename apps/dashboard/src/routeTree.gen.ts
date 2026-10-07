@@ -16,6 +16,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as UsersRouteImport } from './routes/users'
 import { Route as VanHanRouteImport } from './routes/van-han'
+import { Route as VanHanYearZodiacOrderRouteImport } from './routes/van-han_.$year.$zodiacOrder'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,6 +53,11 @@ const VanHanRoute = VanHanRouteImport.update({
   path: '/van-han',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VanHanYearZodiacOrderRoute = VanHanYearZodiacOrderRouteImport.update({
+  id: '/van-han_/$year/$zodiacOrder',
+  path: '/van-han/$year/$zodiacOrder',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/users': typeof UsersRoute
   '/van-han': typeof VanHanRoute
+  '/van-han/$year/$zodiacOrder': typeof VanHanYearZodiacOrderRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,6 +77,7 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/users': typeof UsersRoute
   '/van-han': typeof VanHanRoute
+  '/van-han/$year/$zodiacOrder': typeof VanHanYearZodiacOrderRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,13 +88,29 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/users': typeof UsersRoute
   '/van-han': typeof VanHanRoute
+  '/van-han_/$year/$zodiacOrder': typeof VanHanYearZodiacOrderRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/ads' | '/blog' | '/login' | '/profile' | '/users' | '/van-han'
+    | '/'
+    | '/ads'
+    | '/blog'
+    | '/login'
+    | '/profile'
+    | '/users'
+    | '/van-han'
+    | '/van-han/$year/$zodiacOrder'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/ads' | '/blog' | '/login' | '/profile' | '/users' | '/van-han'
+  to:
+    | '/'
+    | '/ads'
+    | '/blog'
+    | '/login'
+    | '/profile'
+    | '/users'
+    | '/van-han'
+    | '/van-han/$year/$zodiacOrder'
   id:
     | '__root__'
     | '/'
@@ -96,6 +120,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/users'
     | '/van-han'
+    | '/van-han_/$year/$zodiacOrder'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -106,6 +131,7 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   UsersRoute: typeof UsersRoute
   VanHanRoute: typeof VanHanRoute
+  VanHanYearZodiacOrderRoute: typeof VanHanYearZodiacOrderRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -159,6 +185,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VanHanRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/van-han_/$year/$zodiacOrder': {
+      id: '/van-han_/$year/$zodiacOrder'
+      path: '/van-han/$year/$zodiacOrder'
+      fullPath: '/van-han/$year/$zodiacOrder'
+      preLoaderRoute: typeof VanHanYearZodiacOrderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -170,6 +203,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   UsersRoute: UsersRoute,
   VanHanRoute: VanHanRoute,
+  VanHanYearZodiacOrderRoute: VanHanYearZodiacOrderRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
