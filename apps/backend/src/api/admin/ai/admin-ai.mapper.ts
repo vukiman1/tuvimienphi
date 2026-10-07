@@ -1,6 +1,13 @@
 import type { AiHealthOutcome, AiSource } from '../../../ai/ai-settings.service';
+import type { AiCall, AiCallPage } from '../../../ai/ai-usage.service';
 import type { AiProviderEntity } from '../../../ai/entities/ai-provider.entity';
-import type { AdminAiHealth, AdminAiProvider, AdminAiSettings } from './admin-ai.type';
+import type {
+  AdminAiCall,
+  AdminAiCallPage,
+  AdminAiHealth,
+  AdminAiProvider,
+  AdminAiSettings,
+} from './admin-ai.type';
 
 export function toAdminAiSettings(
   source: AiSource,
@@ -43,4 +50,12 @@ function toAdminAiHealth(row: AiProviderEntity): AdminAiHealth | null {
     model: row.healthModel,
     error: row.healthError,
   };
+}
+
+export function toAdminAiCallPage(page: AiCallPage): AdminAiCallPage {
+  return { items: page.items.map(toAdminAiCall), total: page.total };
+}
+
+function toAdminAiCall({ at, ...call }: AiCall): AdminAiCall {
+  return { ...call, at: at.toISOString() };
 }

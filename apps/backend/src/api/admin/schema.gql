@@ -17,6 +17,28 @@ type ActivityPage {
   total: Int!
 }
 
+type AdminAiCall {
+  at: String!
+  costUsd: Float
+  error: String
+  id: ID!
+  inputTokens: Int!
+  isQuotaHit: Boolean!
+  label: String
+  latencyMs: Int
+  model: String!
+  outputTokens: Int!
+  provider: AiProvider!
+  purpose: AiUsagePurpose!
+  status: AiCallStatus!
+  userEmail: String
+}
+
+type AdminAiCallPage {
+  items: [AdminAiCall!]!
+  total: Int!
+}
+
 type AdminAiHealth {
   checkedAt: String!
   error: String
@@ -154,6 +176,11 @@ type AdminVanHanYearSummary {
   year: Int!
 }
 
+enum AiCallStatus {
+  FAILED
+  OK
+}
+
 enum AiHealthStatus {
   FAILED
   OK
@@ -206,6 +233,7 @@ type PeriodMetric {
 
 type Query {
   activeUsersSeries(from: String, to: String): [DailyCount!]!
+  aiCalls(from: String!, limit: Int, model: String!, page: Int, provider: AiProvider!, purpose: AiUsagePurpose!, to: String!): AdminAiCallPage!
   aiProviderModels(apiKey: String, provider: AiProvider!): [String!]!
   aiSettings: AdminAiSettings!
   aiUsage(from: String!, to: String!): [AdminAiUsageDay!]!

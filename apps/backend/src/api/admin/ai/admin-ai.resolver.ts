@@ -11,9 +11,21 @@ import { AiUsageService } from '../../../ai/ai-usage.service';
 import { RequireRoles } from '../../auth/decorators/require-roles.decorator';
 import { GqlAuthGuard } from '../../auth/guards/gql-auth.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
-import { toAdminAiProbe, toAdminAiProvider, toAdminAiSettings } from './admin-ai.mapper';
-import { AdminAiHealth, AdminAiProvider, AdminAiSettings, AdminAiUsageDay } from './admin-ai.type';
+import {
+  toAdminAiCallPage,
+  toAdminAiProbe,
+  toAdminAiProvider,
+  toAdminAiSettings,
+} from './admin-ai.mapper';
+import {
+  AdminAiCallPage,
+  AdminAiHealth,
+  AdminAiProvider,
+  AdminAiSettings,
+  AdminAiUsageDay,
+} from './admin-ai.type';
 import { ActiveAiProviderArgs, AiProviderArgs, AiProviderModelsArgs } from './dto/ai-provider.args';
+import { AiCallsArgs, DEFAULT_CALLS_PAGE_SIZE } from './dto/ai-calls.args';
 import { AiUsageArgs } from './dto/ai-usage.args';
 import { SaveAiProviderInput } from './dto/save-ai-provider.input';
 import { SetAiProviderBudgetArgs } from './dto/set-ai-provider-budget.args';
@@ -56,6 +68,20 @@ export class AdminAiResolver {
   async aiUsage(@Args() { from, to }: AiUsageArgs): Promise<AdminAiUsageDay[]> {
     assertUsageRange(from, to);
     return this.usage.daily(from, to);
+  }
+
+  @Query(() => AdminAiCallPage, { name: 'aiCalls' })
+  async aiCalls(
+    @Args() { from, to, provider, model, purpose, page, limit }: AiCallsArgs,
+  ): Promise<AdminAiCallPage> {
+    assertUsageRange(from, to);
+    return toAdminAiCallPage(
+      await this.usage.calls(
+        { from, to, provider, model, purpose },
+        page ?? 1,
+        limit ?? DEFAULT_CALLS_PAGE_SIZE,
+      ),
+    );
   }
 
   @Mutation(() => AdminAiProvider, { name: 'setAiProviderBudget' })

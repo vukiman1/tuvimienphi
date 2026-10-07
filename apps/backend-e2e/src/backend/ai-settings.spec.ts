@@ -26,6 +26,10 @@ describe('AI settings console API, without a console session', () => {
     ],
     ['reading usage', '{ aiUsage(from: "2026-10-01", to: "2026-10-07") { day calls } }'],
     [
+      'reading single calls',
+      '{ aiCalls(from: "2026-10-01", to: "2026-10-07", provider: OPENAI, model: "gpt-x", purpose: GENERATION) { total } }',
+    ],
+    [
       'setting a monthly budget',
       'mutation { setAiProviderBudget(provider: OPENAI, monthlyBudgetUsd: 10) { provider } }',
     ],
