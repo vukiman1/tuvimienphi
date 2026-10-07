@@ -45,13 +45,13 @@ Console (GraphQL, `/api/admin/graphql`), tất cả yêu cầu `SUPER_ADMIN`:
 
 ## Dùng thế nào
 
-1. Console → **AI**. Dải thông báo trên cùng cho biết trang web đang lấy khoá từ đâu.
+1. Console → **AI**. Dải thông báo trên cùng cho biết trang web đang lấy khoá từ đâu. Bên dưới là hai cột: **Cấu hình** bên trái, **Kiểm tra** bên phải (màn hẹp thì xếp chồng).
 2. Chọn **Loại AI**. Trang mở sẵn ở AI đang dùng; danh sách ghi rõ AI nào đang dùng, AI nào chưa có khoá.
 3. Dán **khoá API**. Rời ô là khoá thu lại còn vài ký tự hai đầu (`AIza••••••••O2Ow`). Nút **Kiểm tra** cạnh ô hỏi nhà cung cấp xem khoá có được nhận không và nạp thêm các model khoá đó dùng được.
 4. Chọn **Model** từ danh sách. Model gợi ý đã được chọn sẵn.
 5. **Kiểm tra model** gọi thử đúng khoá và model đang hiện trên form, kể cả khi chưa lưu.
 6. **Lưu**. Console gọi thử trước; trả lời được thì lưu và trang web chuyển sang AI này. Không trả lời được thì giữ lại và nói lý do bằng lời thường.
-7. Thanh theo dõi bên dưới tự gọi thử cấu hình đã lưu mỗi phút khi trang đang mở, mỗi ô là một lần gọi.
+7. Thanh theo dõi ở cột Kiểm tra tự gọi thử cấu hình đã lưu mỗi phút khi trang đang mở, mỗi ô là một lần gọi.
 8. **Ngừng dùng** đưa trang web về khoá trong env. **Xoá khoá** gỡ hẳn khỏi DB.
 
 ## Model gợi ý
@@ -74,13 +74,13 @@ Model treo thì **không** chuyển sang model dự phòng: `tryModels` chỉ đ
 
 ## Cần biết
 
-| Việc                                           | Ghi chú                                                                                                                                                                                                                                                                 |
-| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Đường thành công chưa được kiểm bằng khoá thật | Lúc viết không có khoá của cả ba nhà cung cấp. Khoá sai trả đúng lỗi xác thực của từng bên; một khoá Gemini thật đã qua bước xác thực nhưng hết giờ ở `gemini-3.8-flash`. Một câu trả lời thành công mới chỉ được kiểm bằng test giả lập SDK                            |
-| Ngân sách 22 giây của luận giải                | Model suy luận chậm có thể hết giờ trước khi trả lời. Chọn model nhanh làm model chính và xem con số ms ở lần kiểm tra                                                                                                                                                  |
-| Không ai mở trang thì không ai kiểm tra        | Thanh theo dõi chạy trong trình duyệt. Muốn canh cả khi đóng trang thì thêm job theo [11-worker-and-cron.md](11-worker-and-cron.md) và báo qua kênh của [12-deploy-notifications.md](12-deploy-notifications.md)                                                        |
-| Mở trang là tốn token                          | Mỗi phút một lời gọi nhỏ (`ping`, trả `{"ok": true}`) tới model đầu danh sách. Tắt công tắc cạnh thanh theo dõi nếu không cần                                                                                                                                           |
-| Sentry có thể giữ body request                 | Khi một request lỗi, Sentry có thể đính kèm body, mà body của `saveAiProvider`, `testAiProvider` và `aiProviderModels` có thể chứa khoá. Phía mình chưa có `beforeSend` nào che trường `apiKey`; hiện chỉ trông vào bộ lọc dữ liệu nhạy cảm của Sentry, chưa kiểm chứng |
-| Đổi `SECRET_KEY` là mất khoá đã lưu            | Khoá không giải mã được sẽ bị coi như chưa có, log ghi rõ, và phải nhập lại                                                                                                                                                                                             |
-| Nhiều tiến trình backend                       | Cache nằm trong từng tiến trình, nên tiến trình khác thấy thay đổi chậm tối đa 30 giây                                                                                                                                                                                  |
-| Nhật ký thao tác                               | Lưu, xoá khoá và đổi nhà cung cấp chưa ghi vào `activity_log`                                                                                                                                                                                                           |
+| Việc                                    | Ghi chú                                                                                                                                                                                                                                                                                             |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Đường thành công mới kiểm với OpenAI    | Ngày 07/10/2026 một khoá OpenAI thật lưu từ trang này đã qua lần gọi thử với `gpt-6.1-sol`, trả lời sau khoảng 2,3 giây. Gemini: khoá thật qua bước xác thực nhưng `gemini-3.8-flash` đang quá tải. Claude: mới kiểm lỗi xác thực với API thật, còn câu trả lời thành công chỉ qua test giả lập SDK |
+| Ngân sách 22 giây của luận giải         | Model suy luận chậm có thể hết giờ trước khi trả lời. Chọn model nhanh làm model chính và xem con số ms ở lần kiểm tra                                                                                                                                                                              |
+| Không ai mở trang thì không ai kiểm tra | Thanh theo dõi chạy trong trình duyệt. Muốn canh cả khi đóng trang thì thêm job theo [11-worker-and-cron.md](11-worker-and-cron.md) và báo qua kênh của [12-deploy-notifications.md](12-deploy-notifications.md)                                                                                    |
+| Mở trang là tốn token                   | Mỗi phút một lời gọi nhỏ (`ping`, trả `{"ok": true}`) tới model đầu danh sách. Tắt công tắc cạnh thanh theo dõi nếu không cần                                                                                                                                                                       |
+| Sentry có thể giữ body request          | Khi một request lỗi, Sentry có thể đính kèm body, mà body của `saveAiProvider`, `testAiProvider` và `aiProviderModels` có thể chứa khoá. Phía mình chưa có `beforeSend` nào che trường `apiKey`; hiện chỉ trông vào bộ lọc dữ liệu nhạy cảm của Sentry, chưa kiểm chứng                             |
+| Đổi `SECRET_KEY` là mất khoá đã lưu     | Khoá không giải mã được sẽ bị coi như chưa có, log ghi rõ, và phải nhập lại                                                                                                                                                                                                                         |
+| Nhiều tiến trình backend                | Cache nằm trong từng tiến trình, nên tiến trình khác thấy thay đổi chậm tối đa 30 giây                                                                                                                                                                                                              |
+| Nhật ký thao tác                        | Lưu, xoá khoá và đổi nhà cung cấp chưa ghi vào `activity_log`                                                                                                                                                                                                                                       |
