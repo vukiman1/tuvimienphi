@@ -1,4 +1,4 @@
-import type { AiSource } from '../../../ai/ai-settings.service';
+import type { AiHealthOutcome, AiSource } from '../../../ai/ai-settings.service';
 import type { AiProviderEntity } from '../../../ai/entities/ai-provider.entity';
 import type { AdminAiHealth, AdminAiProvider, AdminAiSettings } from './admin-ai.type';
 
@@ -18,6 +18,16 @@ export function toAdminAiProvider(row: AiProviderEntity): AdminAiProvider {
     isActive: row.isActive,
     health: toAdminAiHealth(row),
     updatedAt: row.updatedAt ? row.updatedAt.toISOString() : null,
+  };
+}
+
+export function toAdminAiProbe(outcome: AiHealthOutcome, checkedAt: Date): AdminAiHealth {
+  return {
+    status: outcome.status,
+    checkedAt: checkedAt.toISOString(),
+    latencyMs: outcome.latencyMs,
+    model: outcome.model,
+    error: outcome.error,
   };
 }
 

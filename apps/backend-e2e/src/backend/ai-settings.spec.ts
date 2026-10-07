@@ -20,6 +20,14 @@ describe('AI settings console API, without a console session', () => {
       'mutation { setActiveAiProvider(provider: OPENAI) { source } }',
     ],
     ['running a health check', 'mutation { checkAiProvider(provider: OPENAI) { provider } }'],
+    [
+      'trying a key before it is saved',
+      'mutation { testAiProvider(input: { provider: OPENAI, apiKey: "sk-not-a-real-key-0001", models: ["gpt-x"] }) { status } }',
+    ],
+    [
+      'listing models with a typed key',
+      '{ aiProviderModels(provider: OPENAI, apiKey: "sk-not-a-real-key-0001") }',
+    ],
   ])('refuses %s', async (_action, query) => {
     const res = await graphql(query);
 

@@ -1,13 +1,13 @@
 import { AiProvider } from '../../../ai/ai-provider';
 import { AiSource } from '../../../ai/ai-settings.service';
 import { AiHealthStatus, AiProviderEntity } from '../../../ai/entities/ai-provider.entity';
-import { toAdminAiProvider, toAdminAiSettings } from './admin-ai.mapper';
+import { toAdminAiProbe, toAdminAiProvider, toAdminAiSettings } from './admin-ai.mapper';
 
 function row(overrides: Partial<AiProviderEntity> = {}): AiProviderEntity {
   return Object.assign(new AiProviderEntity(), {
     provider: AiProvider.ANTHROPIC,
     apiKey: 'sealed:sk-ant-secret-9Zx1',
-    apiKeyHint: '9Zx1',
+    apiKeyHint: 'sk-a…9Zx1',
     models: ['claude-opus-5-5'],
     isActive: true,
     healthStatus: null,
@@ -21,13 +21,13 @@ function row(overrides: Partial<AiProviderEntity> = {}): AiProviderEntity {
 }
 
 describe('toAdminAiProvider', () => {
-  it('never carries the key, sealed or not, only whether one exists and its last characters', () => {
+  it('never carries the key, sealed or not, only whether one exists and its two ends', () => {
     const mapped = toAdminAiProvider(row());
 
     expect(JSON.stringify(mapped)).not.toContain('sk-ant-secret');
     expect(JSON.stringify(mapped)).not.toContain('sealed:');
     expect(mapped.hasApiKey).toBe(true);
-    expect(mapped.apiKeyHint).toBe('9Zx1');
+    expect(mapped.apiKeyHint).toBe('sk-a…9Zx1');
   });
 
   it('shows a provider nobody has set up as having no key and no health', () => {
@@ -62,6 +62,23 @@ describe('toAdminAiProvider', () => {
       latencyMs: 840,
       model: 'claude-opus-5-5',
       error: null,
+    });
+  });
+});
+
+describe('toAdminAiProbe', () => {
+  it('stamps the outcome of a one-off check with when it ran', () => {
+    const probe = toAdminAiProbe(
+      { status: AiHealthStatus.FAILED, latencyMs: 20_004, model: null, error: 'aborted' },
+      new Date('2026-10-08T05:00:00.000Z'),
+    );
+
+    expect(probe).toEqual({
+      status: AiHealthStatus.FAILED,
+      checkedAt: '2026-10-08T05:00:00.000Z',
+      latencyMs: 20_004,
+      model: null,
+      error: 'aborted',
     });
   });
 });

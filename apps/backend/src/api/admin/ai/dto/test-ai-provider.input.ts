@@ -1,10 +1,10 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsEnum } from 'class-validator';
+import { ArrayMinSize, IsEnum } from 'class-validator';
 import { AiProvider } from '../../../../ai/ai-provider';
 import { IsModelIds, IsOptionalApiKey } from './ai-input.validators';
 
 @InputType()
-export class SaveAiProviderInput {
+export class TestAiProviderInput {
   @Field(() => AiProvider)
   @IsEnum(AiProvider)
   provider!: AiProvider;
@@ -15,5 +15,6 @@ export class SaveAiProviderInput {
 
   @Field(() => [String])
   @IsModelIds()
+  @ArrayMinSize(1)
   models!: string[];
 }

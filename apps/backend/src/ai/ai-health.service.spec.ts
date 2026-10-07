@@ -107,3 +107,37 @@ describe('AiHealthService.check', () => {
     expect(settings.recordHealth).not.toHaveBeenCalled();
   });
 });
+
+describe('AiHealthService.probe', () => {
+  it('tries credentials nobody has saved yet and leaves the stored health alone', async () => {
+    const generate = jest
+      .fn()
+      .mockResolvedValue({ text: '{"ok":true}', model: 'draft', outputTokens: 4 });
+    const { service, settings } = setup(generate);
+    const typed = { apiKey: 'sk-typed-not-saved', models: ['draft'] };
+
+    const outcome = await service.probe(AiProvider.OPENAI, typed);
+
+    expect(generate.mock.calls[0][1]).toEqual(typed);
+    expect(outcome).toEqual({
+      status: AiHealthStatus.OK,
+      latencyMs: expect.any(Number),
+      model: 'draft',
+      error: null,
+    });
+    expect(settings.credentialsOf).not.toHaveBeenCalled();
+    expect(settings.recordHealth).not.toHaveBeenCalled();
+  });
+
+  it('answers with the failure instead of throwing', async () => {
+    const generate = jest
+      .fn()
+      .mockRejectedValue(new AiUnavailableError([{ model: 'draft', reason: '404 unknown model' }]));
+    const { service } = setup(generate);
+
+    const outcome = await service.probe(AiProvider.GEMINI, { apiKey: 'k', models: ['draft'] });
+
+    expect(outcome.status).toBe(AiHealthStatus.FAILED);
+    expect(outcome.error).toContain('draft: 404 unknown model');
+  });
+});

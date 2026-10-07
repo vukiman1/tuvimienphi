@@ -16,7 +16,7 @@ export class AiProviderEntity {
   @Column({ type: 'text', name: 'api_key', nullable: true })
   apiKey!: string | null;
 
-  @Column({ type: 'varchar', length: 8, name: 'api_key_hint', nullable: true })
+  @Column({ type: 'varchar', length: 16, name: 'api_key_hint', nullable: true })
   apiKeyHint!: string | null;
 
   @Column({ type: 'jsonb', name: 'models', default: () => "'[]'" })

@@ -5,6 +5,7 @@ import { CryptoService } from '@org/backend-crypto';
 import { Repository } from 'typeorm';
 import { AI_PROVIDERS, AiProvider, type AiCredentials } from './ai-provider';
 import { AiHealthStatus, AiProviderEntity } from './entities/ai-provider.entity';
+import { maskApiKey } from './mask-api-key';
 
 export enum AiSource {
   CONSOLE = 'CONSOLE',
@@ -31,7 +32,6 @@ export interface AiHealthOutcome {
 }
 
 const ACTIVE_CACHE_MS = 30_000;
-const HINT_LENGTH = 4;
 
 @Injectable()
 export class AiSettingsService {
@@ -99,7 +99,7 @@ export class AiSettingsService {
 
     if (change.apiKey) {
       row.apiKey = this.crypto.encryptData(change.apiKey);
-      row.apiKeyHint = change.apiKey.slice(-HINT_LENGTH);
+      row.apiKeyHint = maskApiKey(change.apiKey);
     }
     row.models = models;
     return this.store(clearHealth(row));

@@ -65,16 +65,18 @@ function setup(env: { geminiApiKey?: string; models?: string[] } = {}, canDecryp
 }
 
 describe('AiSettingsService.save', () => {
-  it('stores the key sealed and keeps only its last four characters readable', async () => {
+  it('stores the key sealed and keeps only a few characters from each end readable', async () => {
     const { service, repo } = setup();
 
     const saved = await service.save(AiProvider.ANTHROPIC, {
-      apiKey: 'sk-ant-secret-9Zx1',
+      apiKey: 'sk-ant-api03-secret-middle-9Zx1',
       models: ['claude-opus-5-5'],
     });
 
-    expect(repo.rows.get(AiProvider.ANTHROPIC)?.apiKey).toBe(`${SEALED}sk-ant-secret-9Zx1`);
-    expect(saved.apiKeyHint).toBe('9Zx1');
+    expect(repo.rows.get(AiProvider.ANTHROPIC)?.apiKey).toBe(
+      `${SEALED}sk-ant-api03-secret-middle-9Zx1`,
+    );
+    expect(saved.apiKeyHint).toBe('sk-a…9Zx1');
     expect(saved.models).toEqual(['claude-opus-5-5']);
   });
 
@@ -84,7 +86,7 @@ describe('AiSettingsService.save', () => {
 
     const saved = await service.save(AiProvider.OPENAI, { models: ['gpt-b', 'gpt-a'] });
 
-    expect(saved.apiKeyHint).toBe('AAAA');
+    expect(saved.apiKeyHint).toBe('…AAAA');
     expect(saved.models).toEqual(['gpt-b', 'gpt-a']);
     await expect(service.apiKeyOf(AiProvider.OPENAI)).resolves.toBe('sk-openai-key-AAAA');
   });
