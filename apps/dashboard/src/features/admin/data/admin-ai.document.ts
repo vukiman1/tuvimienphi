@@ -7,6 +7,7 @@ export const aiProviderFieldsFragment = graphql(`
     apiKeyHint
     models
     isActive
+    monthlyBudgetUsd
     updatedAt
     health {
       status
@@ -75,6 +76,32 @@ export const testAiProviderDocument = graphql(`
       latencyMs
       model
       error
+    }
+  }
+`);
+
+export const aiUsageDocument = graphql(`
+  query AiUsage($from: String!, $to: String!) {
+    aiUsage(from: $from, to: $to) {
+      day
+      provider
+      model
+      purpose
+      calls
+      failedCalls
+      quotaHits
+      inputTokens
+      outputTokens
+      costUsd
+    }
+  }
+`);
+
+export const setAiProviderBudgetDocument = graphql(`
+  mutation SetAiProviderBudget($provider: AiProvider!, $monthlyBudgetUsd: Float) {
+    setAiProviderBudget(provider: $provider, monthlyBudgetUsd: $monthlyBudgetUsd) {
+      provider
+      monthlyBudgetUsd
     }
   }
 `);

@@ -23,6 +23,10 @@ export type AiSource =
   | 'ENVIRONMENT'
   | 'NONE';
 
+export type AiUsagePurpose =
+  | 'CHECK'
+  | 'GENERATION';
+
 export type Role =
   | 'ADMIN'
   | 'SELLER'
@@ -79,12 +83,12 @@ export type ActiveUsersSeriesQueryVariables = Exact<{
 
 export type ActiveUsersSeriesQuery = { activeUsersSeries: Array<{ date: string, count: number }> };
 
-export type AiProviderFieldsFragment = { provider: AiProvider, hasApiKey: boolean, apiKeyHint: string | null, models: Array<string>, isActive: boolean, updatedAt: string | null, health: { status: AiHealthStatus, checkedAt: string, latencyMs: number | null, model: string | null, error: string | null } | null };
+export type AiProviderFieldsFragment = { provider: AiProvider, hasApiKey: boolean, apiKeyHint: string | null, models: Array<string>, isActive: boolean, monthlyBudgetUsd: number | null, updatedAt: string | null, health: { status: AiHealthStatus, checkedAt: string, latencyMs: number | null, model: string | null, error: string | null } | null };
 
 export type AiSettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AiSettingsQuery = { aiSettings: { source: AiSource, providers: Array<{ provider: AiProvider, hasApiKey: boolean, apiKeyHint: string | null, models: Array<string>, isActive: boolean, updatedAt: string | null, health: { status: AiHealthStatus, checkedAt: string, latencyMs: number | null, model: string | null, error: string | null } | null }> } };
+export type AiSettingsQuery = { aiSettings: { source: AiSource, providers: Array<{ provider: AiProvider, hasApiKey: boolean, apiKeyHint: string | null, models: Array<string>, isActive: boolean, monthlyBudgetUsd: number | null, updatedAt: string | null, health: { status: AiHealthStatus, checkedAt: string, latencyMs: number | null, model: string | null, error: string | null } | null }> } };
 
 export type AiProviderModelsQueryVariables = Exact<{
   provider: AiProvider;
@@ -99,7 +103,7 @@ export type SaveAiProviderMutationVariables = Exact<{
 }>;
 
 
-export type SaveAiProviderMutation = { saveAiProvider: { provider: AiProvider, hasApiKey: boolean, apiKeyHint: string | null, models: Array<string>, isActive: boolean, updatedAt: string | null, health: { status: AiHealthStatus, checkedAt: string, latencyMs: number | null, model: string | null, error: string | null } | null } };
+export type SaveAiProviderMutation = { saveAiProvider: { provider: AiProvider, hasApiKey: boolean, apiKeyHint: string | null, models: Array<string>, isActive: boolean, monthlyBudgetUsd: number | null, updatedAt: string | null, health: { status: AiHealthStatus, checkedAt: string, latencyMs: number | null, model: string | null, error: string | null } | null } };
 
 export type ClearAiProviderKeyMutationVariables = Exact<{
   provider: AiProvider;
@@ -120,7 +124,7 @@ export type CheckAiProviderMutationVariables = Exact<{
 }>;
 
 
-export type CheckAiProviderMutation = { checkAiProvider: { provider: AiProvider, hasApiKey: boolean, apiKeyHint: string | null, models: Array<string>, isActive: boolean, updatedAt: string | null, health: { status: AiHealthStatus, checkedAt: string, latencyMs: number | null, model: string | null, error: string | null } | null } };
+export type CheckAiProviderMutation = { checkAiProvider: { provider: AiProvider, hasApiKey: boolean, apiKeyHint: string | null, models: Array<string>, isActive: boolean, monthlyBudgetUsd: number | null, updatedAt: string | null, health: { status: AiHealthStatus, checkedAt: string, latencyMs: number | null, model: string | null, error: string | null } | null } };
 
 export type TestAiProviderMutationVariables = Exact<{
   input: TestAiProviderInput;
@@ -128,6 +132,22 @@ export type TestAiProviderMutationVariables = Exact<{
 
 
 export type TestAiProviderMutation = { testAiProvider: { status: AiHealthStatus, checkedAt: string, latencyMs: number | null, model: string | null, error: string | null } };
+
+export type AiUsageQueryVariables = Exact<{
+  from: string;
+  to: string;
+}>;
+
+
+export type AiUsageQuery = { aiUsage: Array<{ day: string, provider: AiProvider, model: string, purpose: AiUsagePurpose, calls: number, failedCalls: number, quotaHits: number, inputTokens: number, outputTokens: number, costUsd: number | null }> };
+
+export type SetAiProviderBudgetMutationVariables = Exact<{
+  provider: AiProvider;
+  monthlyBudgetUsd?: number | null | undefined;
+}>;
+
+
+export type SetAiProviderBudgetMutation = { setAiProviderBudget: { provider: AiProvider, monthlyBudgetUsd: number | null } };
 
 export type MetricFieldsFragment = { value: number, previous: number, series: Array<{ date: string, count: number }> };
 
@@ -232,6 +252,7 @@ export const AiProviderFieldsFragmentDoc = new TypedDocumentString(`
   apiKeyHint
   models
   isActive
+  monthlyBudgetUsd
   updatedAt
   health {
     status
@@ -293,6 +314,7 @@ export const AiSettingsDocument = new TypedDocumentString(`
   apiKeyHint
   models
   isActive
+  monthlyBudgetUsd
   updatedAt
   health {
     status
@@ -319,6 +341,7 @@ export const SaveAiProviderDocument = new TypedDocumentString(`
   apiKeyHint
   models
   isActive
+  monthlyBudgetUsd
   updatedAt
   health {
     status
@@ -354,6 +377,7 @@ export const CheckAiProviderDocument = new TypedDocumentString(`
   apiKeyHint
   models
   isActive
+  monthlyBudgetUsd
   updatedAt
   health {
     status
@@ -374,6 +398,30 @@ export const TestAiProviderDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<TestAiProviderMutation, TestAiProviderMutationVariables>;
+export const AiUsageDocument = new TypedDocumentString(`
+    query AiUsage($from: String!, $to: String!) {
+  aiUsage(from: $from, to: $to) {
+    day
+    provider
+    model
+    purpose
+    calls
+    failedCalls
+    quotaHits
+    inputTokens
+    outputTokens
+    costUsd
+  }
+}
+    `) as unknown as TypedDocumentString<AiUsageQuery, AiUsageQueryVariables>;
+export const SetAiProviderBudgetDocument = new TypedDocumentString(`
+    mutation SetAiProviderBudget($provider: AiProvider!, $monthlyBudgetUsd: Float) {
+  setAiProviderBudget(provider: $provider, monthlyBudgetUsd: $monthlyBudgetUsd) {
+    provider
+    monthlyBudgetUsd
+  }
+}
+    `) as unknown as TypedDocumentString<SetAiProviderBudgetMutation, SetAiProviderBudgetMutationVariables>;
 export const AdminOverviewDocument = new TypedDocumentString(`
     query AdminOverview($from: String, $to: String) {
   overview(from: $from, to: $to) {

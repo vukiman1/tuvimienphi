@@ -3,6 +3,7 @@ import type {
   AiProvider,
   AiProviderFieldsFragment,
   AiSettingsQuery,
+  AiUsageQuery,
   SaveAiProviderInput,
   TestAiProviderInput,
 } from '@/gql/graphql';
@@ -10,20 +11,26 @@ import { graphqlRequest } from '@/lib/graphql-request';
 import {
   aiProviderModelsDocument,
   aiSettingsDocument,
+  aiUsageDocument,
   checkAiProviderDocument,
   clearAiProviderKeyDocument,
   saveAiProviderDocument,
   setActiveAiProviderDocument,
+  setAiProviderBudgetDocument,
   testAiProviderDocument,
 } from './admin-ai.document';
 
 export type AiSettingsView = AiSettingsQuery['aiSettings'];
 export type AiProviderView = AiProviderFieldsFragment;
 export type AiHealthView = NonNullable<AiProviderView['health']>;
+export type AiUsageDayView = AiUsageQuery['aiUsage'][number];
 
 export const AI_QUERY_KEY = ['admin', 'ai'] as const;
 
 const MODEL_LIST_STALE_MS = 5 * 60_000;
+const USAGE_REFRESH_MS = 60_000;
+
+export const AI_USAGE_QUERY_KEY = [...AI_QUERY_KEY, 'usage'] as const;
 
 export function aiSettingsQuery() {
   return queryOptions({
@@ -39,6 +46,18 @@ export function aiProviderModelsQuery(provider: AiProvider, apiKeyHint: string |
     staleTime: MODEL_LIST_STALE_MS,
     retry: false,
   });
+}
+
+export function aiUsageQuery(from: string, to: string) {
+  return queryOptions({
+    queryKey: [...AI_USAGE_QUERY_KEY, from, to],
+    queryFn: () => graphqlRequest(aiUsageDocument, { from, to }),
+    refetchInterval: USAGE_REFRESH_MS,
+  });
+}
+
+export function setAiProviderBudget(provider: AiProvider, monthlyBudgetUsd: number | null) {
+  return graphqlRequest(setAiProviderBudgetDocument, { provider, monthlyBudgetUsd });
 }
 
 export function listAiProviderModels(provider: AiProvider, apiKey: string | null) {

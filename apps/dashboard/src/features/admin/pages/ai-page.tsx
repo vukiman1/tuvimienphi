@@ -4,6 +4,8 @@ import { Alert, App, Flex, Skeleton, Typography } from 'antd';
 import type { AiProvider } from '@/gql/graphql';
 import { isForbidden, rejectionReason } from '@/lib/graphql-request';
 import { AI_CATALOG_CHECKED_ON } from '../components/ai-model-catalog';
+import { AiUsageCard } from '../components/ai-usage-card';
+import { fetchRange, reportingDay } from '../components/ai-usage-model';
 import { AiProviderForm, Field, type AiProviderAction } from '../components/ai-provider-form';
 import {
   AI_PROVIDER_LABEL,
@@ -13,13 +15,16 @@ import {
 } from '../components/ai-provider-model';
 import { AiProviderSelect } from '../components/ai-provider-select';
 import {
+  AI_USAGE_QUERY_KEY,
   aiProviderModelsQuery,
   aiSettingsQuery,
+  aiUsageQuery,
   checkAiProvider,
   clearAiProviderKey,
   listAiProviderModels,
   saveAiProvider,
   setActiveAiProvider,
+  setAiProviderBudget,
   testAiProvider,
   type AiHealthView,
   type AiProviderView,
@@ -28,6 +33,8 @@ import {
 const LOAD_FAILED = 'Không tải được cấu hình AI.';
 const FORBIDDEN = 'Chỉ quản trị viên cấp cao (SUPER_ADMIN) mới quản lý được khoá AI.';
 const NO_RESULT = 'Máy chủ không trả về kết quả gọi thử.';
+const USAGE_FAILED = 'Không tải được số liệu mức dùng.';
+const BUDGET_FAILED = 'Không lưu được hạn mức.';
 const INTRO =
   'Trang web dùng một AI để viết luận giải. Chọn loại AI, dán khoá, chọn model rồi bấm Lưu.';
 
@@ -36,6 +43,10 @@ export function AiPage() {
   const { message } = App.useApp();
   const [chosen, setChosen] = useState<AiProvider | null>(null);
   const [busy, setBusy] = useState<AiProviderAction | null>(null);
+  const [savingBudgetFor, setSavingBudgetFor] = useState<AiProvider | null>(null);
+  const [today] = useState(() => reportingDay(new Date()));
+  const usageRange = fetchRange(today);
+  const usage = useQuery(aiUsageQuery(usageRange.from, usageRange.to));
   const settingsQuery = aiSettingsQuery();
   const { data, isPending, isError, error } = useQuery(settingsQuery);
   const settings = data?.aiSettings;
@@ -44,6 +55,22 @@ export function AiPage() {
   const notice = settings ? sourceNotice(settings) : null;
 
   const refresh = () => queryClient.invalidateQueries({ queryKey: settingsQuery.queryKey });
+  const refreshUsage = () => queryClient.invalidateQueries({ queryKey: AI_USAGE_QUERY_KEY });
+
+  const patchProvider = (provider: AiProvider, change: Partial<AiProviderView>): void => {
+    queryClient.setQueryData(settingsQuery.queryKey, (current) =>
+      current
+        ? {
+            aiSettings: {
+              ...current.aiSettings,
+              providers: current.aiSettings.providers.map((row) =>
+                row.provider === provider ? { ...row, ...change } : row,
+              ),
+            },
+          }
+        : current,
+    );
+  };
 
   const save = async (provider: AiProvider, change: AiProviderChange): Promise<void> => {
     try {
@@ -60,24 +87,42 @@ export function AiPage() {
   };
 
   const check = async (provider: AiProvider): Promise<AiHealthView> => {
-    const { checkAiProvider: checked } = await checkAiProvider(provider);
-    const health = checked.health ?? null;
-    if (!health) {
-      throw new Error(NO_RESULT);
+    try {
+      const { checkAiProvider: checked } = await checkAiProvider(provider);
+      const health = checked.health ?? null;
+      if (!health) {
+        throw new Error(NO_RESULT);
+      }
+      patchProvider(provider, { health });
+      return health;
+    } finally {
+      void refreshUsage();
     }
-    queryClient.setQueryData(settingsQuery.queryKey, (current) =>
-      current
-        ? {
-            aiSettings: {
-              ...current.aiSettings,
-              providers: current.aiSettings.providers.map((row) =>
-                row.provider === provider ? { ...row, health } : row,
-              ),
-            },
-          }
-        : current,
-    );
-    return health;
+  };
+
+  const test = async (provider: AiProvider, change: AiProviderChange): Promise<AiHealthView> => {
+    try {
+      return (await testAiProvider({ provider, ...change })).testAiProvider;
+    } finally {
+      void refreshUsage();
+    }
+  };
+
+  const setBudget = async (provider: AiProvider, monthlyBudgetUsd: number | null) => {
+    setSavingBudgetFor(provider);
+    try {
+      const { setAiProviderBudget: saved } = await setAiProviderBudget(provider, monthlyBudgetUsd);
+      patchProvider(provider, { monthlyBudgetUsd: saved.monthlyBudgetUsd ?? null });
+      void message.success(
+        monthlyBudgetUsd === null
+          ? `Đã bỏ hạn mức của ${AI_PROVIDER_LABEL[provider]}.`
+          : `Đã lưu hạn mức của ${AI_PROVIDER_LABEL[provider]}.`,
+      );
+    } catch (caught) {
+      void message.error(rejectionReason(caught) ?? BUDGET_FAILED);
+    } finally {
+      setSavingBudgetFor(null);
+    }
   };
 
   const act = async (
@@ -142,13 +187,24 @@ export function AiPage() {
           onListModels={async (apiKey) =>
             (await listAiProviderModels(view.provider, apiKey)).aiProviderModels
           }
-          onTest={async (change) =>
-            (await testAiProvider({ provider: view.provider, ...change })).testAiProvider
-          }
+          onTest={(change) => test(view.provider, change)}
           onCheck={() => check(view.provider)}
           onSave={(change) => save(view.provider, change)}
           onStopUsing={() => void stopUsing(view.provider)}
           onClearKey={() => void clearKey(view.provider)}
+        />
+      ) : null}
+
+      {settings ? (
+        <AiUsageCard
+          providers={settings.providers}
+          days={usage.data?.aiUsage ?? []}
+          today={today}
+          pricesCheckedOn={AI_CATALOG_CHECKED_ON}
+          isLoading={usage.isPending}
+          loadError={usage.isError ? USAGE_FAILED : null}
+          savingBudgetFor={savingBudgetFor}
+          onSetBudget={(provider, value) => void setBudget(provider, value)}
         />
       ) : null}
 

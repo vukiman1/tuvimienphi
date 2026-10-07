@@ -29,6 +29,7 @@ function provider(overrides: Partial<AiProviderView> = {}): AiProviderView {
     apiKeyHint: 'sk-a…9Zx1',
     models: ['claude-opus-5-5'],
     isActive: false,
+    monthlyBudgetUsd: null,
     updatedAt: '2026-10-08T03:00:00.000Z',
     health: healthy(),
     ...overrides,
