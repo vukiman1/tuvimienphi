@@ -1,8 +1,5 @@
+import { readableReason } from './ai-error-reason';
 import { AiUnavailableError, type ModelAttempt } from './ai.errors';
-
-function reasonOf(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
-}
 
 /**
  * Gọi lần lượt từng model cho tới khi có model trả kết quả.
@@ -24,7 +21,7 @@ export async function tryModels<T>(
     try {
       return { result: await call(model), model };
     } catch (error) {
-      attempts.push({ model, reason: reasonOf(error) });
+      attempts.push({ model, reason: readableReason(error) });
     }
   }
 

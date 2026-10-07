@@ -5,7 +5,7 @@ export interface ModelAttempt {
 
 export class AiNotConfiguredError extends Error {
   constructor() {
-    super('GEMINI_API_KEY is empty, so no chapter can be generated');
+    super('no AI provider is in use and GEMINI_API_KEY is empty, so nothing can be generated');
     this.name = 'AiNotConfiguredError';
   }
 }
