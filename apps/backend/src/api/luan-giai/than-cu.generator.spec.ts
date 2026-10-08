@@ -51,7 +51,14 @@ class AiGia extends AiClient {
   generate(request: AiRequest): Promise<AiResult> {
     this.requests.push(request);
     const text = this.hangDoi.shift() ?? '';
-    return Promise.resolve({ text, model: 'gia', outputTokens: 0 });
+    return Promise.resolve({
+      text,
+      model: 'gia',
+      inputTokens: 0,
+      outputTokens: 0,
+      failedAttempts: [],
+      latencyMs: 0,
+    });
   }
 }
 

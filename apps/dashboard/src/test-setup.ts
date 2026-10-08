@@ -1,3 +1,6 @@
+import { afterAll, vi } from 'vitest';
+
+const SETTLE_MS = 50;
 const noop = (): void => undefined;
 
 globalThis.ResizeObserver ??= class {
@@ -15,4 +18,11 @@ window.matchMedia ??= (query: string): MediaQueryList => ({
   addEventListener: noop,
   removeEventListener: noop,
   dispatchEvent: () => false,
+});
+
+afterAll(async () => {
+  vi.useRealTimers();
+  await new Promise<void>((resolve) => {
+    setTimeout(resolve, SETTLE_MS);
+  });
 });

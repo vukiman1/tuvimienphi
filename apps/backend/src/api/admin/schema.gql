@@ -17,6 +17,65 @@ type ActivityPage {
   total: Int!
 }
 
+type AdminAiCall {
+  at: String!
+  costUsd: Float
+  error: String
+  id: ID!
+  inputTokens: Int!
+  isQuotaHit: Boolean!
+  label: String
+  latencyMs: Int
+  model: String!
+  outputTokens: Int!
+  provider: AiProvider!
+  purpose: AiUsagePurpose!
+  status: AiCallStatus!
+  userEmail: String
+}
+
+type AdminAiCallPage {
+  items: [AdminAiCall!]!
+  total: Int!
+}
+
+type AdminAiHealth {
+  checkedAt: String!
+  error: String
+  latencyMs: Int
+  model: String
+  status: AiHealthStatus!
+}
+
+type AdminAiProvider {
+  apiKeyHint: String
+  hasApiKey: Boolean!
+  health: AdminAiHealth
+  isActive: Boolean!
+  models: [String!]!
+  monthlyBudgetUsd: Float
+  provider: AiProvider!
+  updatedAt: String
+}
+
+type AdminAiSettings {
+  providers: [AdminAiProvider!]!
+  source: AiSource!
+}
+
+type AdminAiUsageDay {
+  calls: Int!
+  costUsd: Float
+  day: String!
+  failedCalls: Int!
+  inputTokens: Float!
+  model: String!
+  outputTokens: Float!
+  provider: AiProvider!
+  purpose: AiUsagePurpose!
+  quotaHits: Int!
+}
+
 type AdminOverview {
   activeUsers: PeriodMetric!
   devices: [LabelledCount!]!
@@ -117,6 +176,33 @@ type AdminVanHanYearSummary {
   year: Int!
 }
 
+enum AiCallStatus {
+  FAILED
+  OK
+}
+
+enum AiHealthStatus {
+  FAILED
+  OK
+}
+
+enum AiProvider {
+  ANTHROPIC
+  GEMINI
+  OPENAI
+}
+
+enum AiSource {
+  CONSOLE
+  ENVIRONMENT
+  NONE
+}
+
+enum AiUsagePurpose {
+  CHECK
+  GENERATION
+}
+
 type DailyCount {
   count: Int!
   date: String!
@@ -128,8 +214,14 @@ type LabelledCount {
 }
 
 type Mutation {
+  checkAiProvider(provider: AiProvider!): AdminAiProvider!
+  clearAiProviderKey(provider: AiProvider!): AdminAiSettings!
   publishVanHanYear(year: Int!): AdminVanHanYear!
+  saveAiProvider(input: SaveAiProviderInput!): AdminAiProvider!
   saveVanHanEntry(input: SaveVanHanEntryInput!): AdminVanHanSlot!
+  setActiveAiProvider(provider: AiProvider): AdminAiSettings!
+  setAiProviderBudget(monthlyBudgetUsd: Float, provider: AiProvider!): AdminAiProvider!
+  testAiProvider(input: TestAiProviderInput!): AdminAiHealth!
   unpublishVanHanYear(year: Int!): AdminVanHanYear!
 }
 
@@ -141,6 +233,10 @@ type PeriodMetric {
 
 type Query {
   activeUsersSeries(from: String, to: String): [DailyCount!]!
+  aiCalls(from: String!, limit: Int, model: String!, page: Int, provider: AiProvider!, purpose: AiUsagePurpose!, to: String!): AdminAiCallPage!
+  aiProviderModels(apiKey: String, provider: AiProvider!): [String!]!
+  aiSettings: AdminAiSettings!
+  aiUsage(from: String!, to: String!): [AdminAiUsageDay!]!
   overview(from: String, to: String): AdminOverview!
   recentActivity(limit: Int, page: Int): ActivityPage!
   users(balanceMax: Int, balanceMin: Int, isEmailVerified: Boolean, joinedFrom: String, joinedTo: String, limit: Int, page: Int, roles: [Role!], search: String, sortBy: AdminUserSortField, sortDirection: SortDirection): AdminUserPage!
@@ -156,6 +252,12 @@ enum Role {
   USER
 }
 
+input SaveAiProviderInput {
+  apiKey: String
+  models: [String!]!
+  provider: AiProvider!
+}
+
 input SaveVanHanEntryInput {
   luanGiai: [VanHanAspectInput!]!
   luuNien: String!
@@ -168,6 +270,12 @@ input SaveVanHanEntryInput {
 enum SortDirection {
   ASC
   DESC
+}
+
+input TestAiProviderInput {
+  apiKey: String
+  models: [String!]!
+  provider: AiProvider!
 }
 
 input VanHanAgeInput {

@@ -14,6 +14,7 @@ import {
 } from '@org/shared-contracts';
 import { buildThanCuBrief } from '@org/shared-tu-vi';
 import type { Repository } from 'typeorm';
+import { currentAiCallContext, type AiCallContext } from '../../ai/ai-call-context';
 import type { ChapterQuotaService } from './chapter-quota.service';
 import type { LuanGiaiChapterEntity } from './entities/luan-giai-chapter.entity';
 import { CHAPTER_MENH, CHAPTER_THAN_CU } from './luan-giai.constants';
@@ -156,6 +157,21 @@ describe('LuanGiaiService.request', () => {
       expect.objectContaining({ birthKey: '1960-05-26-duong-h11-nam', chapterOrder: '01' }),
       ['birthKey', 'chapterOrder'],
     );
+  });
+
+  it('sinh trong ngữ cảnh của người yêu cầu, để từng lượt gọi AI ghi được ai gọi và cho chương nào', async () => {
+    let nguCanh: AiCallContext = {};
+    const sinh = jest.fn(async () => {
+      await Promise.resolve();
+      nguCanh = currentAiCallContext();
+      return KET;
+    });
+    const { service } = dungService({ sinh });
+
+    await service.request('user-1', CO_BANG, CHAPTER_THAN_CU);
+
+    expect(nguCanh).toEqual({ userId: 'user-1', label: `luan-giai:${CHAPTER_THAN_CU}` });
+    expect(currentAiCallContext()).toEqual({});
   });
 
   it('hoàn suất khi lượt sinh hỏng vì phía hệ thống', async () => {

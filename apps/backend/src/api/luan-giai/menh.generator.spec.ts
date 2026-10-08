@@ -31,7 +31,14 @@ class AiGia extends AiClient {
   generate(request: AiRequest): Promise<AiResult> {
     this.requests.push(request);
     const text = this.hangDoi.shift() ?? '';
-    return Promise.resolve({ text, model: 'gia', outputTokens: 0 });
+    return Promise.resolve({
+      text,
+      model: 'gia',
+      inputTokens: 0,
+      outputTokens: 0,
+      failedAttempts: [],
+      latencyMs: 0,
+    });
   }
 }
 
@@ -43,7 +50,14 @@ class AiTheoSchema extends AiClient {
     this.requests.push(request);
     const laBaiChinh = 'doan1' in (request.schema.properties ?? {});
     const text = laBaiChinh ? BAI : JSON.stringify({ doan: 'Một câu. Câu nữa.' });
-    return Promise.resolve({ text, model: 'gia', outputTokens: 0 });
+    return Promise.resolve({
+      text,
+      model: 'gia',
+      inputTokens: 0,
+      outputTokens: 0,
+      failedAttempts: [],
+      latencyMs: 0,
+    });
   }
 }
 

@@ -16,6 +16,17 @@ import * as types from './graphql';
  */
 type Documents = {
     "\n  query ActiveUsersSeries($from: String, $to: String) {\n    activeUsersSeries(from: $from, to: $to) {\n      date\n      count\n    }\n  }\n": typeof types.ActiveUsersSeriesDocument,
+    "\n  fragment AiProviderFields on AdminAiProvider {\n    provider\n    hasApiKey\n    apiKeyHint\n    models\n    isActive\n    monthlyBudgetUsd\n    updatedAt\n    health {\n      status\n      checkedAt\n      latencyMs\n      model\n      error\n    }\n  }\n": typeof types.AiProviderFieldsFragmentDoc,
+    "\n  query AiSettings {\n    aiSettings {\n      source\n      providers {\n        ...AiProviderFields\n      }\n    }\n  }\n": typeof types.AiSettingsDocument,
+    "\n  query AiProviderModels($provider: AiProvider!, $apiKey: String) {\n    aiProviderModels(provider: $provider, apiKey: $apiKey)\n  }\n": typeof types.AiProviderModelsDocument,
+    "\n  mutation SaveAiProvider($input: SaveAiProviderInput!) {\n    saveAiProvider(input: $input) {\n      ...AiProviderFields\n    }\n  }\n": typeof types.SaveAiProviderDocument,
+    "\n  mutation ClearAiProviderKey($provider: AiProvider!) {\n    clearAiProviderKey(provider: $provider) {\n      source\n    }\n  }\n": typeof types.ClearAiProviderKeyDocument,
+    "\n  mutation SetActiveAiProvider($provider: AiProvider) {\n    setActiveAiProvider(provider: $provider) {\n      source\n    }\n  }\n": typeof types.SetActiveAiProviderDocument,
+    "\n  mutation CheckAiProvider($provider: AiProvider!) {\n    checkAiProvider(provider: $provider) {\n      ...AiProviderFields\n    }\n  }\n": typeof types.CheckAiProviderDocument,
+    "\n  mutation TestAiProvider($input: TestAiProviderInput!) {\n    testAiProvider(input: $input) {\n      status\n      checkedAt\n      latencyMs\n      model\n      error\n    }\n  }\n": typeof types.TestAiProviderDocument,
+    "\n  query AiUsage($from: String!, $to: String!) {\n    aiUsage(from: $from, to: $to) {\n      day\n      provider\n      model\n      purpose\n      calls\n      failedCalls\n      quotaHits\n      inputTokens\n      outputTokens\n      costUsd\n    }\n  }\n": typeof types.AiUsageDocument,
+    "\n  mutation SetAiProviderBudget($provider: AiProvider!, $monthlyBudgetUsd: Float) {\n    setAiProviderBudget(provider: $provider, monthlyBudgetUsd: $monthlyBudgetUsd) {\n      provider\n      monthlyBudgetUsd\n    }\n  }\n": typeof types.SetAiProviderBudgetDocument,
+    "\n  query AiCalls(\n    $from: String!\n    $to: String!\n    $provider: AiProvider!\n    $model: String!\n    $purpose: AiUsagePurpose!\n    $page: Int\n    $limit: Int\n  ) {\n    aiCalls(\n      from: $from\n      to: $to\n      provider: $provider\n      model: $model\n      purpose: $purpose\n      page: $page\n      limit: $limit\n    ) {\n      total\n      items {\n        id\n        at\n        status\n        isQuotaHit\n        inputTokens\n        outputTokens\n        latencyMs\n        costUsd\n        error\n        label\n        userEmail\n      }\n    }\n  }\n": typeof types.AiCallsDocument,
     "\n  fragment MetricFields on PeriodMetric {\n    value\n    previous\n    series {\n      date\n      count\n    }\n  }\n": typeof types.MetricFieldsFragmentDoc,
     "\n  query AdminOverview($from: String, $to: String) {\n    overview(from: $from, to: $to) {\n      from\n      to\n      totalUsers\n      googleUsers\n      passwordUsers\n      savedCharts\n      activeUsers {\n        ...MetricFields\n      }\n      logins {\n        ...MetricFields\n      }\n      newUsers {\n        ...MetricFields\n      }\n      newCharts {\n        ...MetricFields\n      }\n      devices {\n        label\n        count\n      }\n    }\n  }\n": typeof types.AdminOverviewDocument,
     "\n  query AdminUsers(\n    $page: Int\n    $limit: Int\n    $search: String\n    $roles: [Role!]\n    $isEmailVerified: Boolean\n    $joinedFrom: String\n    $joinedTo: String\n    $balanceMin: Int\n    $balanceMax: Int\n    $sortBy: AdminUserSortField\n    $sortDirection: SortDirection\n  ) {\n    users(\n      page: $page\n      limit: $limit\n      search: $search\n      roles: $roles\n      isEmailVerified: $isEmailVerified\n      joinedFrom: $joinedFrom\n      joinedTo: $joinedTo\n      balanceMin: $balanceMin\n      balanceMax: $balanceMax\n      sortBy: $sortBy\n      sortDirection: $sortDirection\n    ) {\n      total\n      users {\n        id\n        email\n        displayName\n        avatar\n        role\n        isEmailVerified\n        balance\n        createdAt\n        genCount\n        lastActiveAt\n      }\n    }\n  }\n": typeof types.AdminUsersDocument,
@@ -30,6 +41,17 @@ type Documents = {
 };
 const documents: Documents = {
     "\n  query ActiveUsersSeries($from: String, $to: String) {\n    activeUsersSeries(from: $from, to: $to) {\n      date\n      count\n    }\n  }\n": types.ActiveUsersSeriesDocument,
+    "\n  fragment AiProviderFields on AdminAiProvider {\n    provider\n    hasApiKey\n    apiKeyHint\n    models\n    isActive\n    monthlyBudgetUsd\n    updatedAt\n    health {\n      status\n      checkedAt\n      latencyMs\n      model\n      error\n    }\n  }\n": types.AiProviderFieldsFragmentDoc,
+    "\n  query AiSettings {\n    aiSettings {\n      source\n      providers {\n        ...AiProviderFields\n      }\n    }\n  }\n": types.AiSettingsDocument,
+    "\n  query AiProviderModels($provider: AiProvider!, $apiKey: String) {\n    aiProviderModels(provider: $provider, apiKey: $apiKey)\n  }\n": types.AiProviderModelsDocument,
+    "\n  mutation SaveAiProvider($input: SaveAiProviderInput!) {\n    saveAiProvider(input: $input) {\n      ...AiProviderFields\n    }\n  }\n": types.SaveAiProviderDocument,
+    "\n  mutation ClearAiProviderKey($provider: AiProvider!) {\n    clearAiProviderKey(provider: $provider) {\n      source\n    }\n  }\n": types.ClearAiProviderKeyDocument,
+    "\n  mutation SetActiveAiProvider($provider: AiProvider) {\n    setActiveAiProvider(provider: $provider) {\n      source\n    }\n  }\n": types.SetActiveAiProviderDocument,
+    "\n  mutation CheckAiProvider($provider: AiProvider!) {\n    checkAiProvider(provider: $provider) {\n      ...AiProviderFields\n    }\n  }\n": types.CheckAiProviderDocument,
+    "\n  mutation TestAiProvider($input: TestAiProviderInput!) {\n    testAiProvider(input: $input) {\n      status\n      checkedAt\n      latencyMs\n      model\n      error\n    }\n  }\n": types.TestAiProviderDocument,
+    "\n  query AiUsage($from: String!, $to: String!) {\n    aiUsage(from: $from, to: $to) {\n      day\n      provider\n      model\n      purpose\n      calls\n      failedCalls\n      quotaHits\n      inputTokens\n      outputTokens\n      costUsd\n    }\n  }\n": types.AiUsageDocument,
+    "\n  mutation SetAiProviderBudget($provider: AiProvider!, $monthlyBudgetUsd: Float) {\n    setAiProviderBudget(provider: $provider, monthlyBudgetUsd: $monthlyBudgetUsd) {\n      provider\n      monthlyBudgetUsd\n    }\n  }\n": types.SetAiProviderBudgetDocument,
+    "\n  query AiCalls(\n    $from: String!\n    $to: String!\n    $provider: AiProvider!\n    $model: String!\n    $purpose: AiUsagePurpose!\n    $page: Int\n    $limit: Int\n  ) {\n    aiCalls(\n      from: $from\n      to: $to\n      provider: $provider\n      model: $model\n      purpose: $purpose\n      page: $page\n      limit: $limit\n    ) {\n      total\n      items {\n        id\n        at\n        status\n        isQuotaHit\n        inputTokens\n        outputTokens\n        latencyMs\n        costUsd\n        error\n        label\n        userEmail\n      }\n    }\n  }\n": types.AiCallsDocument,
     "\n  fragment MetricFields on PeriodMetric {\n    value\n    previous\n    series {\n      date\n      count\n    }\n  }\n": types.MetricFieldsFragmentDoc,
     "\n  query AdminOverview($from: String, $to: String) {\n    overview(from: $from, to: $to) {\n      from\n      to\n      totalUsers\n      googleUsers\n      passwordUsers\n      savedCharts\n      activeUsers {\n        ...MetricFields\n      }\n      logins {\n        ...MetricFields\n      }\n      newUsers {\n        ...MetricFields\n      }\n      newCharts {\n        ...MetricFields\n      }\n      devices {\n        label\n        count\n      }\n    }\n  }\n": types.AdminOverviewDocument,
     "\n  query AdminUsers(\n    $page: Int\n    $limit: Int\n    $search: String\n    $roles: [Role!]\n    $isEmailVerified: Boolean\n    $joinedFrom: String\n    $joinedTo: String\n    $balanceMin: Int\n    $balanceMax: Int\n    $sortBy: AdminUserSortField\n    $sortDirection: SortDirection\n  ) {\n    users(\n      page: $page\n      limit: $limit\n      search: $search\n      roles: $roles\n      isEmailVerified: $isEmailVerified\n      joinedFrom: $joinedFrom\n      joinedTo: $joinedTo\n      balanceMin: $balanceMin\n      balanceMax: $balanceMax\n      sortBy: $sortBy\n      sortDirection: $sortDirection\n    ) {\n      total\n      users {\n        id\n        email\n        displayName\n        avatar\n        role\n        isEmailVerified\n        balance\n        createdAt\n        genCount\n        lastActiveAt\n      }\n    }\n  }\n": types.AdminUsersDocument,
@@ -47,6 +69,50 @@ const documents: Documents = {
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query ActiveUsersSeries($from: String, $to: String) {\n    activeUsersSeries(from: $from, to: $to) {\n      date\n      count\n    }\n  }\n"): typeof import('./graphql').ActiveUsersSeriesDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  fragment AiProviderFields on AdminAiProvider {\n    provider\n    hasApiKey\n    apiKeyHint\n    models\n    isActive\n    monthlyBudgetUsd\n    updatedAt\n    health {\n      status\n      checkedAt\n      latencyMs\n      model\n      error\n    }\n  }\n"): typeof import('./graphql').AiProviderFieldsFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query AiSettings {\n    aiSettings {\n      source\n      providers {\n        ...AiProviderFields\n      }\n    }\n  }\n"): typeof import('./graphql').AiSettingsDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query AiProviderModels($provider: AiProvider!, $apiKey: String) {\n    aiProviderModels(provider: $provider, apiKey: $apiKey)\n  }\n"): typeof import('./graphql').AiProviderModelsDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation SaveAiProvider($input: SaveAiProviderInput!) {\n    saveAiProvider(input: $input) {\n      ...AiProviderFields\n    }\n  }\n"): typeof import('./graphql').SaveAiProviderDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation ClearAiProviderKey($provider: AiProvider!) {\n    clearAiProviderKey(provider: $provider) {\n      source\n    }\n  }\n"): typeof import('./graphql').ClearAiProviderKeyDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation SetActiveAiProvider($provider: AiProvider) {\n    setActiveAiProvider(provider: $provider) {\n      source\n    }\n  }\n"): typeof import('./graphql').SetActiveAiProviderDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation CheckAiProvider($provider: AiProvider!) {\n    checkAiProvider(provider: $provider) {\n      ...AiProviderFields\n    }\n  }\n"): typeof import('./graphql').CheckAiProviderDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation TestAiProvider($input: TestAiProviderInput!) {\n    testAiProvider(input: $input) {\n      status\n      checkedAt\n      latencyMs\n      model\n      error\n    }\n  }\n"): typeof import('./graphql').TestAiProviderDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query AiUsage($from: String!, $to: String!) {\n    aiUsage(from: $from, to: $to) {\n      day\n      provider\n      model\n      purpose\n      calls\n      failedCalls\n      quotaHits\n      inputTokens\n      outputTokens\n      costUsd\n    }\n  }\n"): typeof import('./graphql').AiUsageDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation SetAiProviderBudget($provider: AiProvider!, $monthlyBudgetUsd: Float) {\n    setAiProviderBudget(provider: $provider, monthlyBudgetUsd: $monthlyBudgetUsd) {\n      provider\n      monthlyBudgetUsd\n    }\n  }\n"): typeof import('./graphql').SetAiProviderBudgetDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query AiCalls(\n    $from: String!\n    $to: String!\n    $provider: AiProvider!\n    $model: String!\n    $purpose: AiUsagePurpose!\n    $page: Int\n    $limit: Int\n  ) {\n    aiCalls(\n      from: $from\n      to: $to\n      provider: $provider\n      model: $model\n      purpose: $purpose\n      page: $page\n      limit: $limit\n    ) {\n      total\n      items {\n        id\n        at\n        status\n        isQuotaHit\n        inputTokens\n        outputTokens\n        latencyMs\n        costUsd\n        error\n        label\n        userEmail\n      }\n    }\n  }\n"): typeof import('./graphql').AiCallsDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -1,41 +1,28 @@
 import { GoogleGenAI } from '@google/genai';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AiClient } from './ai.client';
-import { AiNotConfiguredError } from './ai.errors';
+import type { AiCredentials, AiProviderClient } from './ai-provider';
 import type { AiRequest, AiResult } from './ai.types';
 import { tryModels } from './try-models';
 
 const DEFAULT_TEMPERATURE = 0.7;
 const JSON_MIME_TYPE = 'application/json';
+const MODEL_NAME_PREFIX = /^models\//;
+const GENERATE_ACTION = 'generateContent';
 
 @Injectable()
-export class GeminiClient extends AiClient {
-  private readonly logger = new Logger(GeminiClient.name);
-  private readonly genai: GoogleGenAI | null;
-  private readonly models: readonly string[];
+export class GeminiProvider implements AiProviderClient {
   private readonly temperature: number;
 
   constructor(configService: ConfigService) {
-    super();
-    const apiKey = configService.get<string>('ai.geminiApiKey');
-    this.models = configService.get<string[]>('ai.models') ?? [];
     this.temperature = configService.get<number>('ai.temperature') ?? DEFAULT_TEMPERATURE;
-    this.genai = apiKey ? new GoogleGenAI({ apiKey }) : null;
-
-    if (!this.genai) {
-      this.logger.warn('GEMINI_API_KEY is empty — chapter generation will fail closed');
-    }
   }
 
-  async generate(request: AiRequest): Promise<AiResult> {
-    const genai = this.genai;
-    if (!genai) {
-      throw new AiNotConfiguredError();
-    }
+  async generate(request: AiRequest, { apiKey, models }: AiCredentials): Promise<AiResult> {
+    const genai = new GoogleGenAI({ apiKey });
 
-    const { result, model } = await tryModels(
-      this.models,
+    const { result, model, failedAttempts, latencyMs } = await tryModels(
+      models,
       async (candidate) => {
         const response = await genai.models.generateContent({
           model: candidate,
@@ -56,11 +43,27 @@ export class GeminiClient extends AiClient {
         if (!text) {
           throw new Error('response carried no text');
         }
-        return { text, outputTokens: response.usageMetadata?.candidatesTokenCount ?? 0 };
+        const usage = response.usageMetadata;
+        return {
+          text,
+          inputTokens: usage?.promptTokenCount ?? 0,
+          outputTokens: (usage?.candidatesTokenCount ?? 0) + (usage?.thoughtsTokenCount ?? 0),
+        };
       },
       () => request.signal?.aborted ?? false,
     );
 
-    return { text: result.text, model, outputTokens: result.outputTokens };
+    return { ...result, model, failedAttempts, latencyMs };
+  }
+
+  async listModels(apiKey: string): Promise<string[]> {
+    const genai = new GoogleGenAI({ apiKey });
+    const ids: string[] = [];
+    for await (const model of await genai.models.list()) {
+      if (model.name && model.supportedActions?.includes(GENERATE_ACTION)) {
+        ids.push(model.name.replace(MODEL_NAME_PREFIX, ''));
+      }
+    }
+    return ids.sort();
   }
 }
