@@ -55,12 +55,7 @@ Nếu commit đang deploy chưa có hai file đó (rollback về bản cũ) thì
 
 Tạo bot bằng tài khoản Zalo cá nhân, không cần OA riêng: trong Zalo tìm OA **Zalo Bot Manager** → "Tạo bot". Token được gửi về qua tin nhắn; tạo lại token ở `https://zalo.me/s/botcreator/` nếu nó bị lộ.
 
-Thêm hai dòng vào `/opt/tuvimienphi/.env`:
-
-```bash
-ZALO_BOT_TOKEN=<token tu Zalo Bot Manager>
-ZALO_CHAT_ID=<chat id>
-```
+Token và chat id nằm trong `prod.enc.env` (xem `docs/prod-env.md`), nên cả hai kênh đọc cùng một chỗ: job deploy đọc từ file vừa giải mã, watcher đọc `.env` mà deploy ghi ra. Đổi phòng chat hay token là một lần `sops edit`.
 
 Lấy `chat id`: `getUpdates` chỉ trả tin đến **trong lúc** nó đang chờ, Zalo không giữ tin cũ. Chạy lệnh dưới rồi nhắn cho bot một câu trong vòng 30 giây; `chat id` nằm ở `result.message.chat.id`. Muốn cả nhóm cùng nhận thì thêm bot vào nhóm và nhắn trong nhóm.
 
@@ -73,8 +68,13 @@ Mỗi tin tối đa 2000 ký tự; `notify-zalo.sh` cắt phần thừa.
 
 Systemd chỉ phải cài một lần:
 
+Deploy chỉ tải script, không tải unit file, nên chép unit từ repo trên máy mình:
+
 ```bash
-sudo cp /opt/tuvimienphi/tools/vps/tuvimienphi-watch.{service,timer} /etc/systemd/system/
+for unit in tuvimienphi-watch.service tuvimienphi-watch.timer; do
+  ssh root@<vps> "cat > /etc/systemd/system/$unit" < "tools/vps/$unit"
+done
+ssh root@<vps>
 sudo systemctl daemon-reload
 sudo systemctl enable --now tuvimienphi-watch.timer
 systemctl list-timers tuvimienphi-watch.timer
@@ -87,9 +87,7 @@ sudo systemctl start tuvimienphi-watch.service
 journalctl -u tuvimienphi-watch.service -n 20
 ```
 
-Lần đầu sẽ nhận một tin Zalo liệt kê trạng thái mọi container.
-
-Hai secret cùng tên cũng phải thêm vào GitHub environment `vps-sieu-toc-production` cho kênh 1.
+Lần đầu sẽ nhận một tin Zalo liệt kê trạng thái mọi container. Nếu lần đầu chạy lúc chưa có token thì tin đó mất; xoá `/opt/tuvimienphi/.watch-state` để nó gửi lại.
 
 ## Còn hở
 

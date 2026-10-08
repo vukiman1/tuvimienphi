@@ -10,6 +10,8 @@ readonly READINESS_TIMEOUT_SECONDS=180
 readonly READINESS_POLL_SECONDS=3
 readonly SOURCE_LABEL='org.opencontainers.image.source'
 readonly MONITORING_SCRIPTS=(tools/notify-zalo.sh tools/vps/watch-containers.sh)
+readonly LIVE_ENV_FILE='.env'
+readonly NEXT_ENV_FILE='.env.next'
 
 fail() {
   echo "deploy failed: $*" >&2
@@ -17,7 +19,15 @@ fail() {
 }
 
 cd "$DEPLOY_PATH" || fail "no deploy directory at $DEPLOY_PATH"
-[ -f .env ] || fail "$DEPLOY_PATH/.env is missing; copy .env.prod.example and fill it in first"
+
+if [ -f "$NEXT_ENV_FILE" ]; then
+  env_file="$NEXT_ENV_FILE"
+  trap 'rm -f "$NEXT_ENV_FILE"' EXIT
+  echo "==> using the env uploaded for this deploy"
+else
+  env_file="$LIVE_ENV_FILE"
+  [ -f "$env_file" ] || fail "$DEPLOY_PATH/$env_file is missing; commit prod.enc.env or copy .env.prod.example and fill it in"
+fi
 
 raw_url() {
   printf 'https://raw.githubusercontent.com/%s/%s/%s' "$REPOSITORY" "$COMMIT" "$1"
@@ -40,26 +50,29 @@ for script in "${MONITORING_SCRIPTS[@]}"; do
   fi
 done
 
-active_services="$(docker compose config --services)"
+active_services="$(docker compose --env-file "$env_file" config --services)"
 services_to_pull=(backend)
 if grep -qx db-backup <<< "$active_services"; then
   services_to_pull+=(db-backup)
 fi
 
 echo "==> pulling ${services_to_pull[*]}"
-BACKEND_IMAGE="$IMAGE" docker compose pull --quiet "${services_to_pull[@]}"
+BACKEND_IMAGE="$IMAGE" docker compose --env-file "$env_file" pull --quiet "${services_to_pull[@]}"
 
 echo "==> running migrations with $IMAGE"
-BACKEND_IMAGE="$IMAGE" docker compose run --rm -T migrate < /dev/null \
-  || fail "migrations failed; the running backend and worker were left on their current image"
+BACKEND_IMAGE="$IMAGE" docker compose --env-file "$env_file" run --rm -T migrate < /dev/null \
+  || fail "migrations failed; the running backend and worker were left on their current image and env"
 
 echo "==> pinning BACKEND_IMAGE to $IMAGE"
 pinned_env="$(awk -v image="$IMAGE" '
   /^BACKEND_IMAGE=/ { print "BACKEND_IMAGE=" image; pinned = 1; next }
   { print }
   END { if (!pinned) print "BACKEND_IMAGE=" image }
-' .env)"
-printf '%s\n' "$pinned_env" > .env
+' "$env_file")"
+printf '%s\n' "$pinned_env" > "$env_file"
+if [ "$env_file" != "$LIVE_ENV_FILE" ]; then
+  mv "$env_file" "$LIVE_ENV_FILE"
+fi
 
 echo "==> starting"
 docker compose up -d || fail "compose could not bring the stack up"
