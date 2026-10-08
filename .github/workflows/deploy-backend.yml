@@ -153,21 +153,25 @@ jobs:
             exit 0
           fi
 
+          markdown_escape() {
+            sed -e 's/[][\\*_~`{}]/\\&/g'
+          }
+
           if [ "$STATUS" = success ]; then
-            headline='Deploy backend thanh cong'
+            headline='✅ {green}Deploy backend thành công{/green}'
           else
-            headline="Deploy backend that bai ($STATUS)"
+            headline="🚫 {red}Deploy backend thất bại ($STATUS){/red}"
           fi
 
           subject="$(git log -1 --format=%s "$COMMIT" 2>/dev/null || true)"
 
           {
-            printf '%s\n' "$headline"
-            printf 'commit: %s %s\n' "${COMMIT:0:7}" "$subject"
-            printf 'image: %s\n' "${IMAGE:-khong xac dinh}"
-            printf 'boi: %s\n' "$ACTOR"
-            printf 'run: %s\n' "$RUN_URL"
-          } | bash tools/notify-zalo.sh
+            printf '**%s**\n' "$headline"
+            printf -- '- 📦 commit: %s %s\n' "${COMMIT:0:7}" "$(markdown_escape <<< "$subject")"
+            printf -- '- 🐳 image: %s\n' "$(markdown_escape <<< "${IMAGE:-không xác định}")"
+            printf -- '- 👤 bởi: %s\n' "$(markdown_escape <<< "$ACTOR")"
+            printf -- '- 🔗 %s\n' "$RUN_URL"
+          } | bash tools/notify-zalo.sh --markdown
 
       - name: Report the deploy
         env:
