@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { VanHanDetail, VanHanDetailLoader } from '@/features/van-han/components/van-han-detail';
+import {
+  VanHanDetail,
+  VanHanDetailEmpty,
+  VanHanDetailLoader,
+} from '@/features/van-han/components/van-han-detail';
 import { ZodiacPicker } from '@/features/van-han/components/zodiac-picker';
 import { resolveVanHanView } from '@/features/van-han/van-han-view';
 import { getYearCanChi } from '@org/shared-tu-vi';
@@ -23,7 +27,7 @@ export function VanHanPage() {
   const [isSwitching, setIsSwitching] = useState(true);
 
   const { data: current, isPending } = useQuery(vanHanQueries.current());
-  const { year, fortune, isIllustrative } = resolveVanHanView(current, selectedChi);
+  const view = resolveVanHanView(current, selectedChi);
 
   // Bật skeleton ngay khi người dùng chọn tuổi khác; effect bên dưới lo việc tắt.
   const handleSelectChi = (chi: ZodiacChi) => {
@@ -44,22 +48,21 @@ export function VanHanPage() {
     <main className="mx-auto w-full max-w-5xl px-4 py-8 font-body md:px-6">
       <h1 className="font-display text-3xl font-bold text-foreground">Vận Hạn</h1>
       <p className="mt-1 text-sm text-muted-foreground">
-        Chọn con giáp để xem sao chiếu mệnh và vận hạn năm {getYearCanChi(year)} {year} theo tuổi.
+        {current
+          ? `Chọn con giáp để xem sao chiếu mệnh và vận hạn năm ${getYearCanChi(current.year)} ${current.year} theo tuổi.`
+          : 'Chọn con giáp để xem sao chiếu mệnh và vận hạn trong năm theo tuổi.'}
       </p>
 
       <div className="mt-6 flex flex-col gap-4">
         <ZodiacPicker onSelect={handleSelectChi} selectedChi={selectedChi} />
         {isSwitching || isPending ? (
           <VanHanDetailLoader />
-        ) : (
+        ) : view ? (
           <div key={selectedChi}>
-            <VanHanDetail
-              chi={selectedChi}
-              currentYear={year}
-              fortune={fortune}
-              isIllustrative={isIllustrative}
-            />
+            <VanHanDetail chi={selectedChi} currentYear={view.year} fortune={view.fortune} />
           </div>
+        ) : (
+          <VanHanDetailEmpty chi={selectedChi} />
         )}
       </div>
     </main>
