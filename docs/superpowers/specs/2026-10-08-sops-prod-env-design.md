@@ -25,12 +25,29 @@ encrypted in the repo, every change goes through a PR, and merging it deploys th
 | Applying a change | A push to `dev` touching `.env.prod.sops` triggers `deploy-backend.yml` with the newest published image |
 | Secret version    | Always `origin/dev:.env.prod.sops`, never the copy in the deployed image's commit                       |
 | `BACKEND_IMAGE`   | Not in the encrypted file; the deploy script keeps pinning it                                           |
+| Source of truth   | Every value lives in exactly one place, split into the two layers of §4.0                               |
 
 ## 4. Files and keys
+
+### 4.0 Two layers
+
+| Layer                 | Holds                                                                                                                                                                                          | Lives in                                     |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| 0 — bootstrap         | Only what is needed to reach production and open layer 1: `VPS_SSH_KEY`, `VPS_HOST`, `VPS_SSH_KNOWN_HOSTS`, `SOPS_AGE_KEY`, plus the `VPS_USER` / `VPS_SSH_PORT` / `VPS_DEPLOY_PATH` variables | `vps-sieu-toc-production` GitHub environment |
+| 1 — production config | Everything else, including `ZALO_BOT_TOKEN` and `ZALO_CHAT_ID`                                                                                                                                 | `.env.prod.sops`                             |
+
+Rule: a value belongs in GitHub only if it is needed to decrypt or reach `.env.prod.sops`.
+Every consumer reads layer 1 from the same decrypted file:
+
+- The deploy job decrypts once, early, and uses that file for the upload and for the Zalo deploy message.
+- `watch-containers.sh` on the VPS reads `.env`, which is the file the deploy wrote.
+
+Changing the Zalo chat, a token or any other value is one edit in `.env.prod.sops`.
 
 ### 4.1 `.env.prod.sops`
 
 Dotenv format, committed at the repo root. Holds every key of `.env.prod.example` except `BACKEND_IMAGE`.
+`.env.prod.example` gains `ZALO_BOT_TOKEN` and `ZALO_CHAT_ID`, so the key check in §5.2 protects them too.
 
 ### 4.2 `.sops.yaml`
 
@@ -97,6 +114,24 @@ the previous image with the new env, the second deploys the new image. Both end 
 
 `SOPS_AGE_KEY` missing while `.env.prod.sops` exists is an error, not a warning: deploying with stale env silently is worse than a red run.
 
+### 5.3 Deploy notification
+
+The "Tell Zalo how the deploy went" step reads `ZALO_BOT_TOKEN` / `ZALO_CHAT_ID` from the decrypted
+file instead of `secrets.*`. Decryption therefore runs as the first step after checkout, so the
+message can still be sent when a later step (image resolution, SSH, migrations) fails.
+
+If decryption itself fails there is nothing to read the token from. That failure is reported by
+GitHub's own failed-workflow notification (Settings → Notifications → Actions), not by a second
+copy of the token in GitHub secrets, which would break the one-place rule.
+
+Before `.env.prod.sops` exists (§9 step 1) the step finds no token and only logs a warning, as today.
+
+### 5.4 Layer-0 guard
+
+A CI check fails if any workflow references a secret outside layer 0, so a config value cannot
+drift back into GitHub secrets unnoticed. It scans `.github/workflows/*.yml` for `secrets.<NAME>`
+references against an allowlist (layer 0 plus `GITHUB_TOKEN`).
+
 ## 6. VPS script (`tools/vps/deploy-backend.sh`)
 
 The script picks its env file:
@@ -131,6 +166,7 @@ New section in `docs/roadmap/12-deploy-notifications.md` (or a new `docs/prod-en
 - `deploy-backend.sh` against a stub `docker`, four cases: with or without `.env.next` × migrate passes or fails. Assert which env file compose saw, whether `.env` was replaced, and that `.env.next` is gone afterwards.
 - Key check: a decrypted file missing one key fails, one with an extra key passes.
 - sops round trip with throwaway age keys and the real `.sops.yaml`: encrypt, check which values stay plaintext, decrypt with each recipient key.
+- Layer-0 guard: a workflow referencing `secrets.ZALO_BOT_TOKEN` fails the check.
 - After rollout: a PR that only changes a non-secret value deploys without an image build and the Zalo deploy message arrives.
 
 ## 9. Rollout
@@ -138,7 +174,8 @@ New section in `docs/roadmap/12-deploy-notifications.md` (or a new `docs/prod-en
 1. Merge the code. `.env.prod.sops` does not exist yet, so deploys behave as today.
 2. Kim An installs `sops` + `age`, generates the personal and CI keys, commits `.sops.yaml` with both public keys, and adds `SOPS_AGE_KEY` to the GitHub environment.
 3. One last SSH: copy `/opt/tuvimienphi/.env`, drop `BACKEND_IMAGE`, encrypt it as `.env.prod.sops`, open a PR. Merging it triggers a deploy, which must come up healthy with no change in behaviour.
-4. From then on, env changes are PRs. The new Zalo bot token is the first real one.
+4. From then on, env changes are PRs. The new Zalo bot token goes in this way, never as a GitHub secret.
+5. Remove any `ZALO_*` secrets from the GitHub environment if they were ever added.
 
 ## 10. Open questions
 
