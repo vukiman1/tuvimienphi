@@ -1,6 +1,6 @@
 # Thông báo deploy và theo dõi container
 
-Hai kênh độc lập gửi về Telegram. Dựng sau một sự cố backend chết ba ngày mà không ai biết: CI đã đỏ, chỉ là không ai nhìn.
+Hai kênh độc lập gửi về Zalo qua Zalo Bot Platform (`tools/notify-zalo.sh`). Dựng sau một sự cố backend chết ba ngày mà không ai biết: CI đã đỏ, chỉ là không ai nhìn.
 
 ---
 
@@ -20,7 +20,7 @@ Bước cuối của `.github/workflows/deploy-backend.yml`, `if: always()` nên
 
 **Báo cả thành công lẫn thất bại.** Deploy chỉ chạy khi merge vào `dev` nên lưu lượng rất thấp, không thành nhiễu. Quan trọng hơn: có tin báo thành công thì "im lặng" mới thực sự có nghĩa — không lẫn giữa "không sao" và "bộ báo hỏng".
 
-Bước này `continue-on-error: true`, để Telegram chết không làm một lần deploy thành công hiện màu đỏ. Đổi lại bộ báo hỏng sẽ khó thấy — kênh 2 là lưới đỡ cho chuyện đó.
+Bước này `continue-on-error: true`, để Zalo chết không làm một lần deploy thành công hiện màu đỏ. Đổi lại bộ báo hỏng sẽ khó thấy — kênh 2 là lưới đỡ cho chuyện đó.
 
 Thiếu secret thì workflow ghi một dòng `::warning::` chứ không đỏ.
 
@@ -47,20 +47,29 @@ Lần chạy đầu tiên gửi một tin xác nhận đã bắt đầu theo dõ
 
 ## Script tự cập nhật theo deploy
 
-`deploy-backend.sh` tải `tools/notify-telegram.sh` và `tools/vps/watch-containers.sh` từ đúng commit đang deploy, cùng cơ chế nó vốn dùng cho `docker-compose.prod.yml`. Nên hai script không bao giờ lệch phiên bản với code — một bộ theo dõi cũ âm thầm là loại hỏng tệ nhất.
+`deploy-backend.sh` tải `tools/notify-zalo.sh` và `tools/vps/watch-containers.sh` từ đúng commit đang deploy, cùng cơ chế nó vốn dùng cho `docker-compose.prod.yml`. Nên hai script không bao giờ lệch phiên bản với code — một bộ theo dõi cũ âm thầm là loại hỏng tệ nhất.
 
 Nếu commit đang deploy chưa có hai file đó (rollback về bản cũ) thì deploy **vẫn chạy bình thường** và giữ nguyên bản đang có trên đĩa. Một bản theo dõi hơi cũ vẫn tốt hơn một lần rollback bị chặn.
 
 ## Cài trên VPS
 
+Tạo bot bằng tài khoản Zalo cá nhân, không cần OA riêng: trong Zalo tìm OA **Zalo Bot Manager** → "Tạo bot". Token được gửi về qua tin nhắn; tạo lại token ở `https://zalo.me/s/botcreator/` nếu nó bị lộ.
+
 Thêm hai dòng vào `/opt/tuvimienphi/.env`:
 
 ```bash
-TELEGRAM_BOT_TOKEN=<token tu @BotFather>
-TELEGRAM_CHAT_ID=<chat id>
+ZALO_BOT_TOKEN=<token tu Zalo Bot Manager>
+ZALO_CHAT_ID=<chat id>
 ```
 
-Lấy `chat id` bằng cách nhắn cho bot một câu rồi mở `https://api.telegram.org/bot<TOKEN>/getUpdates`.
+Lấy `chat id`: `getUpdates` chỉ trả tin đến **trong lúc** nó đang chờ, Zalo không giữ tin cũ. Chạy lệnh dưới rồi nhắn cho bot một câu trong vòng 30 giây; `chat id` nằm ở `result.message.chat.id`. Muốn cả nhóm cùng nhận thì thêm bot vào nhóm và nhắn trong nhóm.
+
+```bash
+curl -s -X POST "https://bot-api.zaloplatforms.com/bot<TOKEN>/getUpdates" \
+  -H 'Content-Type: application/json' -d '{"timeout":30}'
+```
+
+Mỗi tin tối đa 2000 ký tự; `notify-zalo.sh` cắt phần thừa.
 
 Systemd chỉ phải cài một lần:
 
@@ -78,7 +87,7 @@ sudo systemctl start tuvimienphi-watch.service
 journalctl -u tuvimienphi-watch.service -n 20
 ```
 
-Lần đầu sẽ nhận một tin Telegram liệt kê trạng thái mọi container.
+Lần đầu sẽ nhận một tin Zalo liệt kê trạng thái mọi container.
 
 Hai secret cùng tên cũng phải thêm vào GitHub environment `vps-sieu-toc-production` cho kênh 1.
 

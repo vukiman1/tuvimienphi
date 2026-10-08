@@ -136,20 +136,20 @@ jobs:
             -o ServerAliveInterval=30 \
             "${VPS_USER}@${VPS_HOST}" "$remote_command" < tools/vps/deploy-backend.sh
 
-      - name: Tell Telegram how the deploy went
+      - name: Tell Zalo how the deploy went
         if: always()
         continue-on-error: true
         env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          ZALO_BOT_TOKEN: ${{ secrets.ZALO_BOT_TOKEN }}
+          ZALO_CHAT_ID: ${{ secrets.ZALO_CHAT_ID }}
           STATUS: ${{ job.status }}
           IMAGE: ${{ steps.target.outputs.image }}
           COMMIT: ${{ steps.target.outputs.commit }}
           ACTOR: ${{ github.actor }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
-            echo "::warning::Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID on the vps-sieu-toc-production environment to get deploy notifications"
+          if [ -z "$ZALO_BOT_TOKEN" ] || [ -z "$ZALO_CHAT_ID" ]; then
+            echo "::warning::Set ZALO_BOT_TOKEN and ZALO_CHAT_ID on the vps-sieu-toc-production environment to get deploy notifications"
             exit 0
           fi
 
@@ -167,7 +167,7 @@ jobs:
             printf 'image: %s\n' "${IMAGE:-khong xac dinh}"
             printf 'boi: %s\n' "$ACTOR"
             printf 'run: %s\n' "$RUN_URL"
-          } | bash tools/notify-telegram.sh
+          } | bash tools/notify-zalo.sh
 
       - name: Report the deploy
         env:

@@ -5,7 +5,7 @@ readonly DEPLOY_PATH="${1:-/opt/tuvimienphi}"
 readonly COMPOSE_FILE_NAME='docker-compose.prod.yml'
 readonly STATE_FILE="${DEPLOY_PATH}/.watch-state"
 readonly WATCHED_SERVICES=(backend worker db redis)
-readonly NOTIFIER="${DEPLOY_PATH}/tools/notify-telegram.sh"
+readonly NOTIFIER="${DEPLOY_PATH}/tools/notify-zalo.sh"
 
 fail() {
   echo "watch-containers: $1" >&2
@@ -24,9 +24,9 @@ read_env_value() {
   sed -n "s/^${key}=//p" .env | tail -1
 }
 
-TELEGRAM_BOT_TOKEN="${TELEGRAM_BOT_TOKEN:-$(read_env_value TELEGRAM_BOT_TOKEN)}"
-TELEGRAM_CHAT_ID="${TELEGRAM_CHAT_ID:-$(read_env_value TELEGRAM_CHAT_ID)}"
-export TELEGRAM_BOT_TOKEN TELEGRAM_CHAT_ID
+ZALO_BOT_TOKEN="${ZALO_BOT_TOKEN:-$(read_env_value ZALO_BOT_TOKEN)}"
+ZALO_CHAT_ID="${ZALO_CHAT_ID:-$(read_env_value ZALO_CHAT_ID)}"
+export ZALO_BOT_TOKEN ZALO_CHAT_ID
 
 defined_services="$(docker compose config --services)"
 

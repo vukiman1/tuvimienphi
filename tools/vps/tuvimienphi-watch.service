@@ -1,5 +1,5 @@
 [Unit]
-Description=Check the tuvimienphi containers and report state changes to Telegram
+Description=Check the tuvimienphi containers and report state changes to Zalo
 After=docker.service
 Requires=docker.service
 
