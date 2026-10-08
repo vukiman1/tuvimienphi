@@ -1,5 +1,4 @@
 import type { VanHanCurrent, VanHanEntry } from '@org/shared-contracts';
-import { VAN_HAN_FORTUNE_BY_CHI, VAN_HAN_MOCK_YEAR } from './van-han-mock';
 import { orderOfChi, resolveVanHanView } from './van-han-view';
 
 function entry(zodiacOrder: number, luuNien: string): VanHanEntry {
@@ -40,28 +39,20 @@ describe('resolveVanHanView', () => {
   it('shows the published reading of the chosen zodiac, under the year it was published for', () => {
     const view = resolveVanHanView(PUBLISHED, 'Ngọ');
 
-    expect(view.year).toBe(2027);
-    expect(view.isIllustrative).toBe(false);
-    expect(view.fortune.overview).toEqual(['Năm Đinh Mùi nhiều thuận lợi.']);
-    expect(view.fortune.aspects[0].points).toEqual(['Tài lộc hanh thông.', 'Nên tích luỹ.']);
+    expect(view?.year).toBe(2027);
+    expect(view?.fortune.overview).toEqual(['Năm Đinh Mùi nhiều thuận lợi.']);
+    expect(view?.fortune.aspects[0].points).toEqual(['Tài lộc hanh thông.', 'Nên tích luỹ.']);
   });
 
-  it('falls back to the illustrative reading, and says so, while no year is published', () => {
-    const view = resolveVanHanView(null, 'Ngọ');
-
-    expect(view.isIllustrative).toBe(true);
-    expect(view.fortune).toBe(VAN_HAN_FORTUNE_BY_CHI['Ngọ']);
-    expect(view.year).toBe(VAN_HAN_MOCK_YEAR);
+  it('has nothing to show while no year is published', () => {
+    expect(resolveVanHanView(null, 'Ngọ')).toBeNull();
   });
 
   it('treats a request that failed the same as nothing published', () => {
-    expect(resolveVanHanView(undefined, 'Tý').isIllustrative).toBe(true);
+    expect(resolveVanHanView(undefined, 'Tý')).toBeNull();
   });
 
-  it('flags a zodiac the published year does not cover instead of passing the sample off as real', () => {
-    const view = resolveVanHanView(PUBLISHED, 'Mùi');
-
-    expect(view.year).toBe(2027);
-    expect(view.isIllustrative).toBe(true);
+  it('has nothing to show for a zodiac the published year does not cover', () => {
+    expect(resolveVanHanView(PUBLISHED, 'Mùi')).toBeNull();
   });
 });

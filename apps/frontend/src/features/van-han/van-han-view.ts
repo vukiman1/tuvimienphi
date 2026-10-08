@@ -1,13 +1,10 @@
 import type { VanHanCurrent } from '@org/shared-contracts';
 import { ZODIAC_CHI, type ZodiacChi } from '@/lib/zodiac-icons';
-import { toVanHanFortune } from './map-van-han';
-import type { VanHanFortune } from './placeholder-data';
-import { VAN_HAN_FORTUNE_BY_CHI, VAN_HAN_MOCK_YEAR } from './van-han-mock';
+import { toVanHanFortune, type VanHanFortune } from './map-van-han';
 
 export interface VanHanView {
   readonly year: number;
   readonly fortune: VanHanFortune;
-  readonly isIllustrative: boolean;
 }
 
 export function orderOfChi(chi: ZodiacChi): number {
@@ -17,12 +14,11 @@ export function orderOfChi(chi: ZodiacChi): number {
 export function resolveVanHanView(
   current: VanHanCurrent | null | undefined,
   chi: ZodiacChi,
-): VanHanView {
+): VanHanView | null {
   const entry = current?.entries.find((item) => item.zodiacOrder === orderOfChi(chi));
+  if (!current || !entry) {
+    return null;
+  }
 
-  return {
-    year: current?.year ?? VAN_HAN_MOCK_YEAR,
-    fortune: entry ? toVanHanFortune(entry) : VAN_HAN_FORTUNE_BY_CHI[chi],
-    isIllustrative: !entry,
-  };
+  return { year: current.year, fortune: toVanHanFortune(entry) };
 }
