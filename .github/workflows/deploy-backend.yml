@@ -1,6 +1,11 @@
 name: Deploy Backend
 
 on:
+  push:
+    branches:
+      - dev
+    paths:
+      - 'prod.enc.env'
   workflow_call:
     inputs:
       commit:
@@ -20,6 +25,9 @@ permissions:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  SOPS_VERSION: v3.13.3
+  SOPS_LINUX_AMD64_SHA256: e5bec3346a873ae91d871550f3e698c1aad962aff462a080e40f25fde17fef6b
+  PROD_ENV_SOURCE: origin/dev:prod.enc.env
 
 jobs:
   deploy:
@@ -55,6 +63,44 @@ jobs:
         with:
           filter: tree:0
           fetch-depth: 0
+
+      - name: Decrypt the production env
+        id: prod_env
+        env:
+          SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
+        run: |
+          rendered="${RUNNER_TEMP}/prod.env"
+
+          if ! git cat-file -e "$PROD_ENV_SOURCE" 2>/dev/null; then
+            echo "::notice::${PROD_ENV_SOURCE} does not exist yet; the VPS keeps its current .env"
+            echo 'present=false' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [ -z "$SOPS_AGE_KEY" ]; then
+            echo "::error::Set SOPS_AGE_KEY on the vps-sieu-toc-production environment; ${PROD_ENV_SOURCE} cannot be decrypted without it"
+            exit 1
+          fi
+
+          sops_bin="${RUNNER_TEMP}/sops"
+          curl --fail --silent --show-error --location --output "$sops_bin" \
+            "https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux.amd64"
+          echo "${SOPS_LINUX_AMD64_SHA256}  ${sops_bin}" | sha256sum --check --status
+          chmod +x "$sops_bin"
+
+          umask 077
+          git show "$PROD_ENV_SOURCE" \
+            | "$sops_bin" decrypt --input-type dotenv --output-type dotenv /dev/stdin > "$rendered"
+
+          {
+            echo 'present=true'
+            echo "path=${rendered}"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Check the production env declares every key
+        if: steps.prod_env.outputs.present == 'true'
+        env:
+          RENDERED_ENV: ${{ steps.prod_env.outputs.path }}
+        run: bash tools/ci/check-prod-env-keys.sh .env.prod.example "$RENDERED_ENV"
 
       - uses: docker/login-action@v4
         with:
@@ -118,6 +164,22 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           printf '%s\n' "$VPS_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
 
+      - name: Upload the production env
+        if: steps.prod_env.outputs.present == 'true'
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ vars.VPS_USER }}
+          VPS_SSH_PORT: ${{ vars.VPS_SSH_PORT || '22' }}
+          VPS_DEPLOY_PATH: ${{ vars.VPS_DEPLOY_PATH || '/opt/tuvimienphi' }}
+          RENDERED_ENV: ${{ steps.prod_env.outputs.path }}
+        run: |
+          remote_command="umask 077 && cat > $(printf '%q' "${VPS_DEPLOY_PATH}/.env.next")"
+          ssh -i ~/.ssh/deploy_key -p "$VPS_SSH_PORT" \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            -o ConnectTimeout=20 \
+            "${VPS_USER}@${VPS_HOST}" "$remote_command" < "$RENDERED_ENV"
+
       - name: Deploy over SSH
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
@@ -140,16 +202,23 @@ jobs:
         if: always()
         continue-on-error: true
         env:
-          ZALO_BOT_TOKEN: ${{ secrets.ZALO_BOT_TOKEN }}
-          ZALO_CHAT_ID: ${{ secrets.ZALO_CHAT_ID }}
+          RENDERED_ENV: ${{ steps.prod_env.outputs.path }}
           STATUS: ${{ job.status }}
           IMAGE: ${{ steps.target.outputs.image }}
           COMMIT: ${{ steps.target.outputs.commit }}
           ACTOR: ${{ github.actor }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
+          prod_env_value() {
+            [ -n "$RENDERED_ENV" ] && [ -f "$RENDERED_ENV" ] || return 0
+            sed -n "s/^$1=//p" "$RENDERED_ENV" | tail -1
+          }
+          ZALO_BOT_TOKEN="$(prod_env_value ZALO_BOT_TOKEN)"
+          ZALO_CHAT_ID="$(prod_env_value ZALO_CHAT_ID)"
+          export ZALO_BOT_TOKEN ZALO_CHAT_ID
+
           if [ -z "$ZALO_BOT_TOKEN" ] || [ -z "$ZALO_CHAT_ID" ]; then
-            echo "::warning::Set ZALO_BOT_TOKEN and ZALO_CHAT_ID on the vps-sieu-toc-production environment to get deploy notifications"
+            echo "::warning::Set ZALO_BOT_TOKEN and ZALO_CHAT_ID in prod.enc.env to get deploy notifications"
             exit 0
           fi
 
@@ -168,6 +237,12 @@ jobs:
             printf 'boi: %s\n' "$ACTOR"
             printf 'run: %s\n' "$RUN_URL"
           } | bash tools/notify-zalo.sh
+
+      - name: Remove the decrypted env
+        if: always()
+        env:
+          RENDERED_ENV: ${{ steps.prod_env.outputs.path }}
+        run: '[ -z "$RENDERED_ENV" ] || rm -f "$RENDERED_ENV"'
 
       - name: Report the deploy
         env:
