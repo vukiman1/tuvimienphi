@@ -6,6 +6,16 @@ readonly MAX_MESSAGE_CHARS=2000
 
 export LC_ALL=C.UTF-8
 
+parse_mode=''
+case "${1:-}" in
+  '') ;;
+  --markdown) parse_mode='markdown' ;;
+  *)
+    echo "usage: $0 [--markdown] < message" >&2
+    exit 2
+    ;;
+esac
+
 token="${ZALO_BOT_TOKEN:-}"
 chat="${ZALO_CHAT_ID:-}"
 
@@ -32,7 +42,11 @@ json_string() {
   printf '"%s"' "$value"
 }
 
-payload="{\"chat_id\":$(json_string "$chat"),\"text\":$(json_string "$message")}"
+payload="{\"chat_id\":$(json_string "$chat"),\"text\":$(json_string "$message")"
+if [ -n "$parse_mode" ]; then
+  payload+=",\"parse_mode\":$(json_string "$parse_mode")"
+fi
+payload+='}'
 
 response="$(curl --silent --show-error --fail-with-body --max-time 20 \
   --header 'Content-Type: application/json' \
