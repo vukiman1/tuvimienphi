@@ -94,7 +94,7 @@
         "executor": "nx:run-commands",
         "outputs": [
           "{workspaceRoot}/apps/backend/dist/ormconfigs.js",
-          "{workspaceRoot}/apps/backend/dist/src/migrations"
+          "{workspaceRoot}/apps/backend/dist/src"
         ],
         "options": {
           "command": "tsc -p apps/backend/tsconfig.migrations.json"
