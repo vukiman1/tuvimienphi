@@ -58,9 +58,27 @@ previous_field() {
   sed -n "s/^${service} //p" "$STATE_FILE" | tail -1 | cut -d' ' -f"$field"
 }
 
-changes=()
-next_state=()
+styled_line() {
+  local icon="$1" color="$2" text="$3"
+  printf -- '- %s {%s}*%s*{/%s}\n' "$icon" "$color" "$text" "$color"
+}
+
+service_line() {
+  local text="$1" state="$2" restarted="$3"
+
+  if [ "$state" != healthy ] && [ "$state" != running ] && [ "$state" != starting ]; then
+    styled_line '🚫' red "$text"
+  elif [ "$restarted" = true ] || [ "$state" = starting ]; then
+    styled_line '⚠️' orange "$text"
+  else
+    styled_line '✅' green "$text"
+  fi
+}
+
+change_count=0
 problem_count=0
+lines=()
+next_state=()
 
 for service in "${WATCHED_SERVICES[@]}"; do
   grep -qx "$service" <<< "$defined_services" || continue
@@ -72,16 +90,20 @@ for service in "${WATCHED_SERVICES[@]}"; do
 
   was_state="$(previous_field "$service" 1)"
   was_restarts="$(previous_field "$service" 2)"
+  text="$service: $state"
+  restarted=false
 
-  if [ -z "$was_state" ]; then
-    continue
-  fi
-  if [ "$state" != "$was_state" ]; then
-    changes+=("$service: $was_state -> $state")
+  if [ -n "$was_state" ] && [ "$state" != "$was_state" ]; then
+    text="$service: $was_state → $state"
+    change_count=$((change_count + 1))
   elif [ -n "$was_restarts" ] && [ "$restarts" -gt "$was_restarts" ]; then
-    changes+=("$service: khoi dong lai ($was_restarts -> $restarts lan), hien $state")
+    text="$service: khởi động lại ($was_restarts → $restarts lần), hiện $state"
+    restarted=true
+    change_count=$((change_count + 1))
     problem_count=$((problem_count + 1))
   fi
+
+  lines+=("$(service_line "$text" "$state" "$restarted")")
 done
 
 first_run=false
@@ -90,22 +112,16 @@ first_run=false
 printf '%s\n' "${next_state[@]}" > "$STATE_FILE"
 
 if [ "$first_run" = true ]; then
-  {
-    printf 'Bat dau theo doi container tren VPS\n'
-    printf '%s\n' "${next_state[@]}"
-  } | "$NOTIFIER"
+  headline='👀 Bắt đầu theo dõi container trên VPS'
+elif [ "$change_count" -eq 0 ]; then
   exit 0
-fi
-
-if [ "${#changes[@]}" -eq 0 ]; then
-  exit 0
+elif [ "$problem_count" -gt 0 ]; then
+  headline='🔴 Container trên VPS có vấn đề'
+else
+  headline='🟢 Container trên VPS đã trở lại bình thường'
 fi
 
 {
-  if [ "$problem_count" -gt 0 ]; then
-    printf 'Container tren VPS co van de\n'
-  else
-    printf 'Container tren VPS da tro lai binh thuong\n'
-  fi
-  printf '%s\n' "${changes[@]}"
-} | "$NOTIFIER"
+  printf '**%s**\n' "$headline"
+  printf '%s\n' "${lines[@]}"
+} | "$NOTIFIER" --markdown
