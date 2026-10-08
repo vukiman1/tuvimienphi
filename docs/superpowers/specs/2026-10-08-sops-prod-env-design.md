@@ -18,14 +18,14 @@ encrypted in the repo, every change goes through a PR, and merging it deploys th
 
 ## 3. Locked decisions
 
-| Decision          | Choice                                                                                                  |
-| ----------------- | ------------------------------------------------------------------------------------------------------- |
-| Tool              | SOPS with age keys                                                                                      |
-| Who decrypts      | CI (the deploy job). The VPS gets plaintext `.env` over SSH and holds no key                            |
-| Applying a change | A push to `dev` touching `.env.prod.sops` triggers `deploy-backend.yml` with the newest published image |
-| Secret version    | Always `origin/dev:.env.prod.sops`, never the copy in the deployed image's commit                       |
-| `BACKEND_IMAGE`   | Not in the encrypted file; the deploy script keeps pinning it                                           |
-| Source of truth   | Every value lives in exactly one place, split into the two layers of §4.0                               |
+| Decision          | Choice                                                                                                |
+| ----------------- | ----------------------------------------------------------------------------------------------------- |
+| Tool              | SOPS with age keys                                                                                    |
+| Who decrypts      | CI (the deploy job). The VPS gets plaintext `.env` over SSH and holds no key                          |
+| Applying a change | A push to `dev` touching `prod.enc.env` triggers `deploy-backend.yml` with the newest published image |
+| Secret version    | Always `origin/dev:prod.enc.env`, never the copy in the deployed image's commit                       |
+| `BACKEND_IMAGE`   | Not in the encrypted file; the deploy script keeps pinning it                                         |
+| Source of truth   | Every value lives in exactly one place, split into the two layers of §4.0                             |
 
 ## 4. Files and keys
 
@@ -34,17 +34,19 @@ encrypted in the repo, every change goes through a PR, and merging it deploys th
 | Layer                 | Holds                                                                                                                                                                                          | Lives in                                     |
 | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
 | 0 — bootstrap         | Only what is needed to reach production and open layer 1: `VPS_SSH_KEY`, `VPS_HOST`, `VPS_SSH_KNOWN_HOSTS`, `SOPS_AGE_KEY`, plus the `VPS_USER` / `VPS_SSH_PORT` / `VPS_DEPLOY_PATH` variables | `vps-sieu-toc-production` GitHub environment |
-| 1 — production config | Everything else, including `ZALO_BOT_TOKEN` and `ZALO_CHAT_ID`                                                                                                                                 | `.env.prod.sops`                             |
+| 1 — production config | Everything else, including `ZALO_BOT_TOKEN` and `ZALO_CHAT_ID`                                                                                                                                 | `prod.enc.env`                               |
 
-Rule: a value belongs in GitHub only if it is needed to decrypt or reach `.env.prod.sops`.
+Rule: a value belongs in GitHub only if it is needed to decrypt or reach `prod.enc.env`.
 Every consumer reads layer 1 from the same decrypted file:
 
 - The deploy job decrypts once, early, and uses that file for the upload and for the Zalo deploy message.
 - `watch-containers.sh` on the VPS reads `.env`, which is the file the deploy wrote.
 
-Changing the Zalo chat, a token or any other value is one edit in `.env.prod.sops`.
+Changing the Zalo chat, a token or any other value is one edit in `prod.enc.env`.
 
-### 4.1 `.env.prod.sops`
+### 4.1 `prod.enc.env`
+
+Named `*.enc.env` so sops detects the dotenv format from the extension; `input_type` is not read from `.sops.yaml` creation rules.
 
 Dotenv format, committed at the repo root. Holds every key of `.env.prod.example` except `BACKEND_IMAGE`.
 `.env.prod.example` gains `ZALO_BOT_TOKEN` and `ZALO_CHAT_ID`, so the key check in §5.2 protects them too.
@@ -53,9 +55,7 @@ Dotenv format, committed at the repo root. Holds every key of `.env.prod.example
 
 ```yaml
 creation_rules:
-  - path_regex: ^\.env\.prod\.sops$
-    input_type: dotenv
-    output_type: dotenv
+  - path_regex: ^prod\.enc\.env$
     age: >-
       <age public key: Kim An>,
       <age public key: CI>
@@ -68,10 +68,10 @@ does not, every value is encrypted and only the key names stay readable.
 
 ### 4.3 Keys
 
-| Key      | Where the private half lives                                                     | Used by                   |
-| -------- | -------------------------------------------------------------------------------- | ------------------------- |
-| Personal | `~/.config/sops/age/keys.txt` on Kim An's machine + a copy in a password manager | `sops edit` on the laptop |
-| CI       | `SOPS_AGE_KEY` secret of the `vps-sieu-toc-production` GitHub environment        | The deploy job only       |
+| Key      | Where the private half lives                                                                                                              | Used by                   |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| Personal | `~/Library/Application Support/sops/age/keys.txt` on Kim An's Mac (`~/.config/sops/age/keys.txt` on Linux) + a copy in a password manager | `sops edit` on the laptop |
+| CI       | `SOPS_AGE_KEY` secret of the `vps-sieu-toc-production` GitHub environment                                                                 | The deploy job only       |
 
 Two recipients so the CI key can be replaced (`sops updatekeys`) without touching the personal
 one. Losing both private halves makes the file unrecoverable; the password-manager copy is the backup.
@@ -79,7 +79,7 @@ one. Losing both private halves makes the file unrecoverable; the password-manag
 ### 4.4 Editing
 
 ```bash
-sops edit .env.prod.sops   # opens the decrypted file in $EDITOR, re-encrypts on save
+sops edit prod.enc.env   # opens the decrypted file in $EDITOR, re-encrypts on save
 ```
 
 Then a normal PR into `dev`.
@@ -92,14 +92,14 @@ Then a normal PR into `dev`.
 on:
   push:
     branches: [dev]
-    paths: ['.env.prod.sops']
+    paths: ['prod.enc.env']
 ```
 
 `inputs.commit` is empty on a push, so the existing "newest commit on dev with a published image"
 resolution picks the image. A secret-only change therefore redeploys the running code with new env
 and never rebuilds an image.
 
-A PR that changes both backend code and `.env.prod.sops` starts this workflow and `Publish Image`.
+A PR that changes both backend code and `prod.enc.env` starts this workflow and `Publish Image`.
 The existing `deploy-backend` concurrency group runs them one after the other: the first may deploy
 the previous image with the new env, the second deploys the new image. Both end on the new env.
 
@@ -107,12 +107,12 @@ the previous image with the new env, the second deploys the new image. Both end 
 
 1. **Install sops**: download the pinned release binary, check its sha256, put it on `PATH`.
 2. **Render the env**:
-   - If `origin/dev:.env.prod.sops` does not exist, set an output `has_env=false` and skip steps 3 and 4. Deploys then behave exactly as today. This lets the code merge before the encrypted file exists.
-   - Otherwise decrypt `git show origin/dev:.env.prod.sops` with `SOPS_AGE_KEY` into a `0600` file under `$RUNNER_TEMP`.
+   - If `origin/dev:prod.enc.env` does not exist, set an output `has_env=false` and skip steps 3 and 4. Deploys then behave exactly as today. This lets the code merge before the encrypted file exists.
+   - Otherwise decrypt `git show origin/dev:prod.enc.env` with `SOPS_AGE_KEY` into a `0600` file under `$RUNNER_TEMP`.
 3. **Check the keys**: every key in `.env.prod.example` except `BACKEND_IMAGE` must be present in the decrypted file. A missing key fails the job before anything reaches the VPS, so deleting a line by mistake cannot strip a variable from production. Extra keys are allowed.
 4. **Upload**: `ssh … "umask 077 && cat > '<deploy path>/.env.next'" < rendered-env`. The plaintext only travels on stdin, never in arguments or logs. The runner file is deleted in an `always()` step.
 
-`SOPS_AGE_KEY` missing while `.env.prod.sops` exists is an error, not a warning: deploying with stale env silently is worse than a red run.
+`SOPS_AGE_KEY` missing while `prod.enc.env` exists is an error, not a warning: deploying with stale env silently is worse than a red run.
 
 ### 5.3 Deploy notification
 
@@ -124,7 +124,7 @@ If decryption itself fails there is nothing to read the token from. That failure
 GitHub's own failed-workflow notification (Settings → Notifications → Actions), not by a second
 copy of the token in GitHub secrets, which would break the one-place rule.
 
-Before `.env.prod.sops` exists (§9 step 1) the step finds no token and only logs a warning, as today.
+Before `prod.enc.env` exists (§9 step 1) the step finds no token and only logs a warning, as today.
 
 ### 5.4 Layer-0 guard
 
@@ -171,9 +171,9 @@ New section in `docs/roadmap/12-deploy-notifications.md` (or a new `docs/prod-en
 
 ## 9. Rollout
 
-1. Merge the code. `.env.prod.sops` does not exist yet, so deploys behave as today.
+1. Merge the code. `prod.enc.env` does not exist yet, so deploys behave as today.
 2. Kim An installs `sops` + `age`, generates the personal and CI keys, commits `.sops.yaml` with both public keys, and adds `SOPS_AGE_KEY` to the GitHub environment.
-3. One last SSH: copy `/opt/tuvimienphi/.env`, drop `BACKEND_IMAGE`, encrypt it as `.env.prod.sops`, open a PR. Merging it triggers a deploy, which must come up healthy with no change in behaviour.
+3. One last SSH: copy `/opt/tuvimienphi/.env`, drop `BACKEND_IMAGE`, encrypt it as `prod.enc.env`, open a PR. Merging it triggers a deploy, which must come up healthy with no change in behaviour.
 4. From then on, env changes are PRs. The new Zalo bot token goes in this way, never as a GitHub secret.
 5. Remove any `ZALO_*` secrets from the GitHub environment if they were ever added.
 
