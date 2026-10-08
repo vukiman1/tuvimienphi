@@ -40,6 +40,19 @@ for script in "${MONITORING_SCRIPTS[@]}"; do
   fi
 done
 
+active_services="$(docker compose config --services)"
+services_to_pull=(backend)
+if grep -qx db-backup <<< "$active_services"; then
+  services_to_pull+=(db-backup)
+fi
+
+echo "==> pulling ${services_to_pull[*]}"
+BACKEND_IMAGE="$IMAGE" docker compose pull --quiet "${services_to_pull[@]}"
+
+echo "==> running migrations with $IMAGE"
+BACKEND_IMAGE="$IMAGE" docker compose run --rm -T migrate < /dev/null \
+  || fail "migrations failed; the running backend and worker were left on their current image"
+
 echo "==> pinning BACKEND_IMAGE to $IMAGE"
 pinned_env="$(awk -v image="$IMAGE" '
   /^BACKEND_IMAGE=/ { print "BACKEND_IMAGE=" image; pinned = 1; next }
@@ -48,18 +61,8 @@ pinned_env="$(awk -v image="$IMAGE" '
 ' .env)"
 printf '%s\n' "$pinned_env" > .env
 
-active_services="$(docker compose config --services)"
-services_to_pull=(backend)
-if grep -qx db-backup <<< "$active_services"; then
-  services_to_pull+=(db-backup)
-fi
-
-echo "==> pulling ${services_to_pull[*]} and starting"
-docker compose pull --quiet "${services_to_pull[@]}"
-if ! docker compose up -d; then
-  docker compose logs --tail 50 migrate >&2
-  fail "compose could not bring the stack up; the migrate logs above say why"
-fi
+echo "==> starting"
+docker compose up -d || fail "compose could not bring the stack up"
 
 verify_service() {
   local service="$1"
