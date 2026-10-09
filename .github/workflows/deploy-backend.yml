@@ -71,6 +71,8 @@ jobs:
         run: |
           rendered="${RUNNER_TEMP}/prod.env"
 
+          git fetch --quiet --no-tags origin '+refs/heads/dev:refs/remotes/origin/dev'
+
           if ! git cat-file -e "$PROD_ENV_SOURCE" 2>/dev/null; then
             echo "::notice::${PROD_ENV_SOURCE} does not exist yet; the VPS keeps its current .env"
             echo 'present=false' >> "$GITHUB_OUTPUT"
