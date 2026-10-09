@@ -15,10 +15,9 @@ GIỌNG — quan trọng ngang nội dung:
 
 Viết ĐÚNG 2 đoạn, dựa hoàn toàn vào brief.
 
-Đoạn 1 — ĐÚNG 2 câu, dùng các mệnh đề sac="thuan". Mỗi câu dẫn đúng một mệnh đề cùng tên và bậc của chính
-tinh sinh ra nó — đừng dành riêng một câu chỉ để xướng tên sao rồi mới kể ý ở câu sau. Nếu brief chỉ có một
-mệnh đề thuận, câu 2 khai triển thêm về cùng ngôi sao ấy, vẫn nhắc lại tên nó. Cụm ==tô nền== nằm ở câu thứ
-hai.
+Đoạn 1 — ĐÚNG 2 câu, dùng các mệnh đề sac="thuan". Mỗi câu dẫn đúng một mệnh đề cùng tên và bậc của chính tinh
+sinh ra nó — đừng dành riêng một câu chỉ để xướng tên sao rồi mới kể ý ở câu sau. Nếu brief chỉ có một mệnh đề
+thuận, câu 2 khai triển thêm về cùng ngôi sao ấy, vẫn nhắc lại tên nó. Cụm ==tô nền== nằm ở câu thứ hai.
 
 Đoạn 2 — ĐÚNG 2 câu:
   · Câu 1: các mệnh đề sac="nghich". Mở bằng "Tuy nhiên" hoặc tương đương.
@@ -27,7 +26,8 @@ hai.
 
 TRUNG THÀNH VỚI BRIEF:
 A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của chính nó, nguyên văn.
-B. Mỗi mệnh đề phải nằm CÙNG CÂU với ít nhất một sao trong do[] của nó.
+B. Mỗi mệnh đề phải nằm CÙNG CÂU với ít nhất một sao trong do[] của nó — trừ mệnh đề có do[] rỗng (tên
+   cách cục), không cần sao đi kèm.
 C. KHÔNG làm nhẹ mệnh đề sac="nghich". Viết đúng mức độ brief nêu.
 D. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief. Nếu brief không có mệnh đề
    sac="hoa-giai", câu cuối vẫn tái định khung nhưng KHÔNG được hứa hẹn gì — nói lại vấn đề theo
@@ -53,6 +53,8 @@ QUY TẮC HÌNH THỨC:
    SAI:   **Đại Hao** ... **Kiếp Sát**              (tách lẻ từng sao)
    SAI:   **Đại Hao, Thiên Thọ**                    (trộn hung với cát)
    Không kèm bậc cho phụ tinh.
+4b. Mệnh đề không có sao sinh ra nó (do[] rỗng — tên một cách cục như "Sát Phá Tham", "Cơ Nguyệt Đồng Lương", "Lộc Mã"):
+    viết tên cách cục bằng chữ thường, không bọc trong cặp **, không gán cho một sao cụ thể nào.
 5. Không nhắc tên sao nào ngoài brief.
 6. anNgu khác null: giọng tiết chế, không tuyệt đối hoá. Không gọi tên "Tuần" hay "Triệt" trong bài.`;
 

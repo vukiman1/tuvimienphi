@@ -14,14 +14,14 @@ export const PHU_TINH_QUAN_LOC: Readonly<Partial<Record<PhuTinhName, LuanDe>>> =
     do: ['Kiếp Sát'],
     sac: Sac.Nghich,
     trong: 60,
-    tuKhoa: ['biến cố bất ngờ', 'mất đi thành quả'],
+    tuKhoa: ['biến cố bất ngờ', 'mất đi phần thành quả'],
   },
   'Thiên Diêu': {
     y: 'dễ sa đà vào việc ngoài lề, phân tán sức tập trung khỏi việc chính',
     do: ['Thiên Diêu'],
     sac: Sac.Nghich,
     trong: 60,
-    tuKhoa: ['sa đà việc ngoài lề', 'phân tán'],
+    tuKhoa: ['sa đà vào việc ngoài lề', 'phân tán'],
   },
   'Đà La': {
     y: 'trắc trở kéo dài, việc gì cũng chậm và dây dưa',
@@ -168,6 +168,6 @@ export const PHU_TINH_QUAN_LOC: Readonly<Partial<Record<PhuTinhName, LuanDe>>> =
     do: ['Thiên Hỉ'],
     sac: Sac.HoaGiai,
     trong: 45,
-    tuKhoa: ['tin vui', 'hòa hợp'],
+    tuKhoa: ['tin vui', 'hoà hợp'],
   },
 };

@@ -1,5 +1,5 @@
 import { castNatal } from '../cast-chart.js';
-import { CHINH_TINH_NAMES } from '../sao-names.js';
+import { CHINH_TINH_NAMES, type SaoName } from '../sao-names.js';
 import { Gender } from '../van-han.js';
 import { CHINH_TINH_QUAN_LOC } from './bang/quan-loc/chinh-tinh-quan-loc.js';
 import { buildCongDanhBrief } from './build-cong-danh-brief.js';
@@ -40,6 +40,24 @@ describe('bảng luận cung Quan Lộc', () => {
 
   it('dựng được bài cho mọi lá số quét qua', () => {
     const thieu = quetLaSo().filter((chart) => buildCongDanhBrief(chart) === null);
+
+    expect(thieu).toHaveLength(0);
+  });
+
+  it('luan cuối vẫn giữ ít nhất một mệnh đề quy về chính tinh ở mỗi chiều thuận/nghịch', () => {
+    const thieu = quetLaSo()
+      .map((chart) => buildCongDanhBrief(chart))
+      .filter((brief): brief is NonNullable<typeof brief> => brief !== null)
+      .filter((brief) => {
+        const tenChinhTinh = new Set<SaoName>(brief.chinhTinh.map((sao) => sao.ten));
+        const coThuan = brief.luan.some(
+          (de) => de.sac === Sac.Thuan && de.do.some((sao) => tenChinhTinh.has(sao)),
+        );
+        const coNghich = brief.luan.some(
+          (de) => de.sac === Sac.Nghich && de.do.some((sao) => tenChinhTinh.has(sao)),
+        );
+        return !coThuan || !coNghich;
+      });
 
     expect(thieu).toHaveLength(0);
   });

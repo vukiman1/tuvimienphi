@@ -75,6 +75,26 @@ function cull(claims: DraftClaim[]): DraftClaim[] {
   );
 }
 
+function gopCachCuc(
+  baseClaims: readonly DraftClaim[],
+  cachCucClaims: readonly DraftClaim[],
+  tenChinhTinh: ReadonlySet<SaoName>,
+): DraftClaim[] {
+  return Object.values(Sac).flatMap((sac) => {
+    const chinhTinhCuaSac = baseClaims
+      .filter((claim) => claim.sac === sac && claim.do.some((sao) => tenChinhTinh.has(sao)))
+      .sort((a, b) => b.trong - a.trong);
+    const giuLai = chinhTinhCuaSac[0];
+
+    const conLai = [...baseClaims, ...cachCucClaims]
+      .filter((claim) => claim.sac === sac && claim !== giuLai)
+      .sort((a, b) => b.trong - a.trong)
+      .slice(0, LIMIT[sac] - (giuLai ? 1 : 0));
+
+    return giuLai ? [giuLai, ...conLai] : conLai;
+  });
+}
+
 function phuTinhClaims(phuTinh: readonly SaoTheoThe[]): DraftClaim[] {
   return phuTinh.flatMap((sao) => {
     const claim = PHU_TINH_QUAN_LOC[sao.name];
@@ -157,7 +177,7 @@ export function buildCongDanhBrief(chart: NatalChart): CongDanhBrief | null {
   const cachCucClaims = cachCucTai(chart, quanLocIndex).flatMap((cach) =>
     cach.luan.map((claim) => draft(claim, the.anNgu ? AN_NGU_FACTOR : 1)),
   );
-  const luan = cull([...baseClaims, ...cachCucClaims]);
+  const luan = gopCachCuc(baseClaims, cachCucClaims, tenChinhTinh);
 
   const daDung = new Set(luan.flatMap((claim) => claim.do));
   const phuTinhTrongBai = the.phuTinh
