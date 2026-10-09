@@ -12,10 +12,12 @@ import { chartFromBirthInput } from '@org/shared-tu-vi';
 import { Repository } from 'typeorm';
 import { runWithAiCallContext } from '../../ai/ai-call-context';
 import { ChapterQuotaService } from './chapter-quota.service';
+import { CongDanhGenerator } from './cong-danh.generator';
 import { LuanGiaiChapterEntity } from './entities/luan-giai-chapter.entity';
 import type { ChapterGenerator } from './chapter-generator';
 import { MenhGenerator } from './menh.generator';
 import {
+  CHAPTER_CONG_DANH,
   CHAPTER_MENH,
   CHAPTER_ORDERS,
   CHAPTER_THAN_CU,
@@ -39,8 +41,13 @@ export class LuanGiaiService {
     private readonly quota: ChapterQuotaService,
     thanCu: ThanCuGenerator,
     menh: MenhGenerator,
+    congDanh: CongDanhGenerator,
   ) {
-    this.generators = { [CHAPTER_THAN_CU]: thanCu, [CHAPTER_MENH]: menh };
+    this.generators = {
+      [CHAPTER_THAN_CU]: thanCu,
+      [CHAPTER_MENH]: menh,
+      [CHAPTER_CONG_DANH]: congDanh,
+    };
   }
 
   async status(key: string): Promise<LuanGiaiChapterStatusMap> {
