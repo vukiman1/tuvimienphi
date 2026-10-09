@@ -42,7 +42,7 @@ describe('buildCongDanhBrief', () => {
     const thuanDau = brief?.luan.find((de) => de.sac === Sac.Thuan);
 
     expect(brief?.anNgu).toBe('Tuần');
-    expect(thuanDau?.trong).toBe(77);
+    expect(thuanDau?.trong).toBe(84);
   });
 
   it('mang theo dữ kiện lá số mà bộ kiểm cần để đối chiếu bài', () => {

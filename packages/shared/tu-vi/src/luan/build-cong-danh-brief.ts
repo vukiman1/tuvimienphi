@@ -10,7 +10,7 @@ import type { CellLuan } from './bang/cell-luan.js';
 import { PHU_TINH_QUAN_LOC } from './bang/quan-loc/phu-tinh-quan-loc.js';
 import type { ChapterBrief } from './chapter-brief.js';
 import { Sac, type LuanDe } from './luan-de.js';
-import { TheChieu, theCungAt, type SaoTheoThe } from './the-cung.js';
+import { TheChieu, theCungAt, type SaoTheoThe, type TheCung } from './the-cung.js';
 
 const BRIGHTNESS_FACTOR: Record<Rating, number> = { M: 1.2, V: 1.1, Đ: 1.0, B: 0.9, H: 0.8 };
 const THE_FACTOR: Record<TheChieu, number> = {
@@ -83,6 +83,39 @@ function phuTinhClaims(phuTinh: readonly SaoTheoThe[]): DraftClaim[] {
   });
 }
 
+const HOA_KY_GIAM_THUAN = 0.55;
+const HOA_KHAC_BONUS = 10;
+
+function applyTuHoa(claims: DraftClaim[], the: TheCung): DraftClaim[] {
+  const themVao: DraftClaim[] = [];
+
+  for (const hoa of the.tuHoaTacDong) {
+    for (const claim of claims) {
+      if (!claim.do.includes(hoa.star)) continue;
+
+      if (hoa.hoa !== 'Hóa Kỵ') {
+        claim.trong += HOA_KHAC_BONUS;
+        continue;
+      }
+      if (claim.sac === Sac.Thuan) {
+        claim.trong = Math.round(claim.trong * HOA_KY_GIAM_THUAN);
+      }
+    }
+
+    if (hoa.hoa === 'Hóa Kỵ' && claims.some((claim) => claim.do.includes(hoa.star))) {
+      themVao.push({
+        y: 'phần thuận lợi bị vướng lại, muốn được việc thì cũng phải qua trắc trở',
+        do: [hoa.star],
+        sac: Sac.Nghich,
+        trong: 80,
+        tuKhoa: ['vướng lại', 'trắc trở'],
+      });
+    }
+  }
+
+  return [...claims, ...themVao];
+}
+
 export function buildCongDanhBrief(chart: NatalChart): CongDanhBrief | null {
   const quanLocIndex = quanLocIndexOf(chart);
   const the = theCungAt(chart, quanLocIndex);
@@ -95,15 +128,18 @@ export function buildCongDanhBrief(chart: NatalChart): CongDanhBrief | null {
     ...chinhTinhCua(chart.cungs[tamHopB].chinhTinh, TheChieu.TamHop),
   ];
 
-  const claims = [
-    ...chinhTinh.flatMap((sao) => {
-      const cell = CHINH_TINH_QUAN_LOC[sao.ten];
-      if (!cell) return [];
-      const factor = THE_FACTOR[sao.the] * (BRIGHTNESS_FACTOR[sao.bac ?? 'B'] ?? 1);
-      return moRong(cell, sao.bac).map((claim) => draft(claim, factor));
-    }),
-    ...phuTinhClaims(the.phuTinh),
-  ];
+  const claims = applyTuHoa(
+    [
+      ...chinhTinh.flatMap((sao) => {
+        const cell = CHINH_TINH_QUAN_LOC[sao.ten];
+        if (!cell) return [];
+        const factor = THE_FACTOR[sao.the] * (BRIGHTNESS_FACTOR[sao.bac ?? 'B'] ?? 1);
+        return moRong(cell, sao.bac).map((claim) => draft(claim, factor));
+      }),
+      ...phuTinhClaims(the.phuTinh),
+    ],
+    the,
+  );
 
   if (the.anNgu) {
     for (const claim of claims) claim.trong = Math.round(claim.trong * AN_NGU_FACTOR);
