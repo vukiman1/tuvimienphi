@@ -1,6 +1,7 @@
 import type { CongDanhBrief } from '@org/shared-tu-vi';
 import type { AiMessage } from '../../../ai/ai.types';
 import type { ThanCuParagraphs } from './chapter-schema';
+import { serializeBriefForPrompt } from './serialize-brief';
 
 export const CONG_DANH_SYSTEM_PROMPT = `Bạn viết luận giải tử vi tiếng Việt cho một trang tra lá số.
 
@@ -56,7 +57,7 @@ export function buildCongDanhMessages(
   brief: CongDanhBrief,
   daThu: readonly { readonly paragraphs: ThanCuParagraphs; readonly loi: readonly string[] }[],
 ): AiMessage[] {
-  const messages: AiMessage[] = [{ role: 'user', text: JSON.stringify(brief, null, 2) }];
+  const messages: AiMessage[] = [{ role: 'user', text: serializeBriefForPrompt(brief) }];
 
   for (const lan of daThu) {
     messages.push({ role: 'model', text: JSON.stringify(lan.paragraphs) });

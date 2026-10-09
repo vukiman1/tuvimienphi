@@ -1,6 +1,7 @@
 import type { ThanCuBrief } from '@org/shared-tu-vi';
 import type { AiMessage } from '../../../ai/ai.types';
 import type { ThanCuParagraphs } from './chapter-schema';
+import { serializeBriefForPrompt } from './serialize-brief';
 
 /**
  * Mọi luật ở đây đều có một tầng bộ kiểm gác. Luật nào chỉ nằm trong prompt mà không ai kiểm thì
@@ -60,7 +61,7 @@ export function buildThanCuMessages(
   brief: ThanCuBrief,
   daThu: readonly { readonly paragraphs: ThanCuParagraphs; readonly loi: readonly string[] }[],
 ): AiMessage[] {
-  const messages: AiMessage[] = [{ role: 'user', text: JSON.stringify(brief, null, 2) }];
+  const messages: AiMessage[] = [{ role: 'user', text: serializeBriefForPrompt(brief) }];
 
   for (const lan of daThu) {
     messages.push({ role: 'model', text: JSON.stringify(lan.paragraphs) });

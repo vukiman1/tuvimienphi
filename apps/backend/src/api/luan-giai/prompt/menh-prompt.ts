@@ -1,6 +1,7 @@
 import type { MenhBrief } from '@org/shared-tu-vi';
 import type { AiMessage } from '../../../ai/ai.types';
 import type { ThanCuParagraphs } from './chapter-schema';
+import { serializeBriefForPrompt } from './serialize-brief';
 
 /**
  * Cùng bộ luật với chương Thân cư, khác ở ba điều E, F, G: chương này luận cung Mệnh và đọc cả tam
@@ -61,7 +62,7 @@ export function buildMenhMessages(
   brief: MenhBrief,
   daThu: readonly { readonly paragraphs: ThanCuParagraphs; readonly loi: readonly string[] }[],
 ): AiMessage[] {
-  const messages: AiMessage[] = [{ role: 'user', text: JSON.stringify(brief, null, 2) }];
+  const messages: AiMessage[] = [{ role: 'user', text: serializeBriefForPrompt(brief) }];
 
   for (const lan of daThu) {
     messages.push({ role: 'model', text: JSON.stringify(lan.paragraphs) });
