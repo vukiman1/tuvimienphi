@@ -7,7 +7,7 @@ import type { ChinhTinhName, SaoName } from '../sao-names.js';
 import type { Rating } from '../sao-rating.js';
 import { CHINH_TINH_QUAN_LOC } from './bang/quan-loc/chinh-tinh-quan-loc.js';
 import type { CellLuan } from './bang/cell-luan.js';
-import { PHU_TINH_LUAN } from './bang/phu-tinh.js';
+import { PHU_TINH_QUAN_LOC } from './bang/quan-loc/phu-tinh-quan-loc.js';
 import type { ChapterBrief } from './chapter-brief.js';
 import { Sac, type LuanDe } from './luan-de.js';
 import { TheChieu, theCungAt, type SaoTheoThe } from './the-cung.js';
@@ -76,7 +76,7 @@ function cull(claims: DraftClaim[]): DraftClaim[] {
 
 function phuTinhClaims(phuTinh: readonly SaoTheoThe[]): DraftClaim[] {
   return phuTinh.flatMap((sao) => {
-    const claim = PHU_TINH_LUAN[sao.name];
+    const claim = PHU_TINH_QUAN_LOC[sao.name];
     if (!claim) return [];
     const factor = THE_FACTOR[sao.the] * (sao.bienAnNgu ? AN_NGU_FACTOR : 1);
     return [draft(claim, factor)];

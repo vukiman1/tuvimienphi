@@ -50,3 +50,19 @@ describe('buildCongDanhMucBriefs', () => {
     }
   });
 });
+
+describe('buildCongDanhMucBriefs — không còn lẫn nội dung tình duyên', () => {
+  it('Đại Hao ở "Điểm cần giữ" đọc về công việc, không phải chuyện tình cảm', () => {
+    const chart = castNatal({ solarDate: new Date(1990, 5, 15), hour: 10, gender: Gender.Nam });
+
+    const mucBriefs = buildCongDanhMucBriefs(chart);
+    const diemCanGiu = mucBriefs.find((muc) => muc.muc === 'diem-can-giu');
+
+    expect(
+      diemCanGiu?.luan.some((de) =>
+        de.y.includes('hao tổn nhiều công sức và tiền bạc cho công việc'),
+      ),
+    ).toBe(true);
+    expect(diemCanGiu?.luan.some((de) => de.y.includes('vì chuyện tình cảm'))).toBe(false);
+  });
+});

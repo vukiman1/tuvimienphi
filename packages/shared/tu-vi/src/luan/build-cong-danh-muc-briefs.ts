@@ -1,7 +1,7 @@
 import type { NatalChart } from '../cast-chart.js';
 import { isHungTinh } from '../sao-cat-hung.js';
 import type { PhuTinhName } from '../sao-names.js';
-import { PHU_TINH_LUAN } from './bang/phu-tinh.js';
+import { PHU_TINH_QUAN_LOC } from './bang/quan-loc/phu-tinh-quan-loc.js';
 import { buildCongDanhBrief, quanLocIndexOf, type CongDanhBrief } from './build-cong-danh-brief.js';
 import type { MucExtras } from './chapter-brief.js';
 import { type LuanDe } from './luan-de.js';
@@ -25,7 +25,7 @@ function phuTinhTheoVai(chart: NatalChart, muonHung: boolean): LuanDe[] {
   const the = theCungAt(chart, quanLocIndexOf(chart));
   const luan = the.phuTinh
     .filter((sao) => isHungTinh(sao.name) === muonHung)
-    .map((sao) => PHU_TINH_LUAN[sao.name])
+    .map((sao) => PHU_TINH_QUAN_LOC[sao.name])
     .filter((claim): claim is LuanDe => claim !== undefined);
 
   return catBot(luan);
