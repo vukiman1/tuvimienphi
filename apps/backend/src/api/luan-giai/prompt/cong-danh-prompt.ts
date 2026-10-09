@@ -15,7 +15,10 @@ GIỌNG — quan trọng ngang nội dung:
 
 Viết ĐÚNG 2 đoạn, dựa hoàn toàn vào brief.
 
-Đoạn 1 — ĐÚNG 2 câu, dùng các mệnh đề sac="thuan". Câu 1 dẫn tên chính tinh kèm bậc. Câu 2 khai triển và mang cụm ==tô nền==.
+Đoạn 1 — ĐÚNG 2 câu, dùng các mệnh đề sac="thuan". Mỗi câu dẫn đúng một mệnh đề cùng tên và bậc của chính
+tinh sinh ra nó — đừng dành riêng một câu chỉ để xướng tên sao rồi mới kể ý ở câu sau. Nếu brief chỉ có một
+mệnh đề thuận, câu 2 khai triển thêm về cùng ngôi sao ấy, vẫn nhắc lại tên nó. Cụm ==tô nền== nằm ở câu thứ
+hai.
 
 Đoạn 2 — ĐÚNG 2 câu:
   · Câu 1: các mệnh đề sac="nghich". Mở bằng "Tuy nhiên" hoặc tương đương.
