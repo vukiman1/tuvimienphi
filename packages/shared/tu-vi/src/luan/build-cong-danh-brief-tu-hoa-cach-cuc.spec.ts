@@ -27,3 +27,15 @@ describe('buildCongDanhBrief — Tứ Hoá tại Quan Lộc', () => {
     expect(thuanThaiDuong?.trong).toBe(78);
   });
 });
+
+describe('buildCongDanhBrief — cách cục tam hợp', () => {
+  it('gọi tên cách cục khi nhóm chính tinh tam hợp đủ ngưỡng', () => {
+    const chart = castNatal({ solarDate: new Date(1950, 6, 15), hour: 13, gender: Gender.Nam });
+
+    const brief = buildCongDanhBrief(chart);
+
+    expect(
+      brief?.luan.some((de) => de.tuKhoa.includes('Cơ Nguyệt Đồng Lương') && de.do.length === 0),
+    ).toBe(true);
+  });
+});

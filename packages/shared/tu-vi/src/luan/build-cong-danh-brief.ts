@@ -5,6 +5,7 @@ import { CHI } from '../lich/lunar-calendar.js';
 import { isHungTinh } from '../sao-cat-hung.js';
 import type { ChinhTinhName, SaoName } from '../sao-names.js';
 import type { Rating } from '../sao-rating.js';
+import { cachCucTai } from './bang/cach-cuc.js';
 import { CHINH_TINH_QUAN_LOC } from './bang/quan-loc/chinh-tinh-quan-loc.js';
 import type { CellLuan } from './bang/cell-luan.js';
 import { PHU_TINH_QUAN_LOC } from './bang/quan-loc/phu-tinh-quan-loc.js';
@@ -128,7 +129,7 @@ export function buildCongDanhBrief(chart: NatalChart): CongDanhBrief | null {
     ...chinhTinhCua(chart.cungs[tamHopB].chinhTinh, TheChieu.TamHop),
   ];
 
-  const claims = applyTuHoa(
+  const baseClaims = applyTuHoa(
     [
       ...chinhTinh.flatMap((sao) => {
         const cell = CHINH_TINH_QUAN_LOC[sao.ten];
@@ -142,16 +143,21 @@ export function buildCongDanhBrief(chart: NatalChart): CongDanhBrief | null {
   );
 
   if (the.anNgu) {
-    for (const claim of claims) claim.trong = Math.round(claim.trong * AN_NGU_FACTOR);
+    for (const claim of baseClaims) claim.trong = Math.round(claim.trong * AN_NGU_FACTOR);
   }
 
-  const luan = cull(claims);
-
+  const coTheXayNen = cull(baseClaims);
   const tenChinhTinh = new Set<SaoName>(chinhTinh.map((sao) => sao.ten));
-  const coNen = luan.some((claim) => claim.do.some((sao) => tenChinhTinh.has(sao)));
+  const coNen = coTheXayNen.some((claim) => claim.do.some((sao) => tenChinhTinh.has(sao)));
   const coMach =
-    luan.some((claim) => claim.sac === Sac.Thuan) && luan.some((claim) => claim.sac === Sac.Nghich);
+    coTheXayNen.some((claim) => claim.sac === Sac.Thuan) &&
+    coTheXayNen.some((claim) => claim.sac === Sac.Nghich);
   if (!coNen || !coMach) return null;
+
+  const cachCucClaims = cachCucTai(chart, quanLocIndex).flatMap((cach) =>
+    cach.luan.map((claim) => draft(claim, the.anNgu ? AN_NGU_FACTOR : 1)),
+  );
+  const luan = cull([...baseClaims, ...cachCucClaims]);
 
   const daDung = new Set(luan.flatMap((claim) => claim.do));
   const phuTinhTrongBai = the.phuTinh
