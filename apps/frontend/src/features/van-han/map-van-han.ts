@@ -1,5 +1,25 @@
 import type { VanHanEntry } from '@org/shared-contracts';
-import type { VanHanFortune } from './placeholder-data';
+
+export interface VanHanAspect {
+  readonly label: string;
+  readonly rating: number;
+  readonly points: readonly string[];
+}
+
+export interface VanHanBirthYearFortune {
+  readonly birthYear: number;
+  readonly canChi: string;
+  readonly menh: string;
+  readonly male: string;
+  readonly female: string;
+}
+
+export interface VanHanFortune {
+  readonly birthYears: readonly number[];
+  readonly overview: readonly string[];
+  readonly aspects: readonly VanHanAspect[];
+  readonly byBirthYear: readonly VanHanBirthYearFortune[];
+}
 
 function splitSentences(text: string): string[] {
   return (text ?? '')

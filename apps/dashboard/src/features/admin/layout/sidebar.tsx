@@ -1,6 +1,6 @@
 import { useNavigate, useRouterState } from '@tanstack/react-router';
 import { Flex, Layout, Menu, Typography } from 'antd';
-import { NAV_ITEMS, isNavPath } from './nav-items';
+import { NAV_ITEMS, activeNavPath, isNavPath } from './nav-items';
 import { SidebarAccount } from './sidebar-account';
 
 const SIDER_WIDTH = 224;
@@ -11,6 +11,7 @@ const BACKDROP_FADE = 'linear-gradient(to bottom, transparent 0%, black 45%)';
 export function Sidebar() {
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const activePath = activeNavPath(pathname);
 
   return (
     <Layout.Sider
@@ -18,7 +19,12 @@ export function Sidebar() {
       theme="light"
       breakpoint="lg"
       collapsedWidth={0}
-      style={{ position: 'relative', overflow: 'hidden' }}
+      style={{
+        position: 'sticky',
+        top: 0,
+        height: '100vh',
+        overflow: 'hidden',
+      }}
       styles={{ body: { display: 'flex', flexDirection: 'column', height: '100%' } }}
     >
       <div
@@ -47,7 +53,7 @@ export function Sidebar() {
       <Menu
         style={{ position: 'relative', flex: 1, background: 'transparent' }}
         mode="inline"
-        selectedKeys={[pathname]}
+        selectedKeys={activePath ? [activePath] : []}
         items={NAV_ITEMS.map(({ to, label, icon }) => ({ key: to, label, icon }))}
         onClick={({ key }) => {
           if (isNavPath(key)) {

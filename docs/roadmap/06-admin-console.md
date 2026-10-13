@@ -33,13 +33,13 @@ Hạn tuyệt đối là thứ duy nhất chặn được chuyện đó mà khô
 
 Cả 5 query trong `apps/dashboard/src/features/admin/data/queries.ts` đều là `setTimeout(320ms)` trên hằng số. Không có một lời gọi mạng nào trong app. **Không có một `useMutation` nào** — mọi nút ghi đều là trang trí (submit của ba dialog soạn thảo chỉ `preventDefault()` rồi đóng; công tắc bật/tắt là `<Switch defaultChecked>` không handler; "Khoá tài khoản" chỉ đóng dialog).
 
-| Trang      | Dữ liệu thật?                                                                             |
-| ---------- | ----------------------------------------------------------------------------------------- |
-| Người dùng | ✅ `users` + `la_so_history` + `user_sessions.lastSeenAt`                                 |
-| Vận hạn    | ⚠️ Có bảng `van_han` nhưng **khác mô hình** (xem dưới)                                    |
-| Tổng quan  | ⚠️ Chỉ vài số đếm là thật; lượt xem / nguồn truy cập / tỉ lệ chuyển đổi **không có bảng** |
-| Blog       | ❌ Không có bảng, không có module, không có controller                                    |
-| Quảng cáo  | ❌ Không lưu redirect, popup, click, impression ở đâu cả                                  |
+| Trang      | Dữ liệu thật?                                                                                 |
+| ---------- | --------------------------------------------------------------------------------------------- |
+| Người dùng | ✅ `users` + `la_so_history` + `user_sessions.lastSeenAt`                                     |
+| Vận hạn    | ✅ Soạn và xuất bản theo bảng `van_han` thật — [13-van-han-console.md](13-van-han-console.md) |
+| Tổng quan  | ⚠️ Chỉ vài số đếm là thật; lượt xem / nguồn truy cập / tỉ lệ chuyển đổi **không có bảng**     |
+| Blog       | ❌ Không có bảng, không có module, không có controller                                        |
+| Quảng cáo  | ❌ Không lưu redirect, popup, click, impression ở đâu cả                                      |
 
 **Xung đột mô hình vận hạn:** dashboard khoá theo **tuổi** với một `star`, enum `cát|bình|hung`, một `summary`, cờ `published`. Bảng `van_han` thật khoá theo `(zodiacOrder, year)`, có `luanGiai` là jsonb các khía cạnh với `rating` kiểu **số**, `tungTuoi` theo năm sinh, `bornYears`, `luuNien`. Không có `star`, không có `published`, không có dòng theo tuổi. Phải thiết kế lại trang theo bảng thật, **không** viết API chiều theo mock.
 
@@ -199,11 +199,11 @@ Hậu quả nếu quên, theo từng thứ:
 
 ---
 
-## 5. 🔴 `POST /api/van-han` đang hở
+## 5. ✅ `POST /api/van-han` đang hở — đã đóng
 
 **Vấn đề:** [van-han.controller.ts](../../apps/backend/src/api/van-han/van-han.controller.ts) chỉ chặn bằng `AuthGuard(StrategyKey.JWT.USER)` → **bất kỳ ai đăng nhập** cũng ghi được nội dung vận hạn.
 
-**Cách làm:** chuyển sang guard admin (phụ thuộc mục 3).
+**Đã làm:** xoá hẳn route. Đường ghi duy nhất là các mutation sau guard admin của console — xem [13-van-han-console.md](13-van-han-console.md).
 
 ---
 

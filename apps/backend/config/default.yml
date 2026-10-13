@@ -60,6 +60,9 @@ captcha:
 google:
   clientId: ''
 
+admin:
+  bootstrapEmails: []
+
 storage:
   endpoint: ''
   region: auto
@@ -72,3 +75,6 @@ queueBoard:
   enabled: true
   user: admin
   password: ''
+
+queue:
+  role: both

@@ -1,18 +1,18 @@
 import { queryOptions } from '@tanstack/react-query';
 import { httpRequest } from '@/lib/http-request';
-import type { VanHanEntry } from '@org/shared-contracts';
+import type { VanHanCurrent } from '@org/shared-contracts';
 
 export const vanHanService = {
-  listByYear(year: number) {
-    return httpRequest.get<VanHanEntry[]>('/van-han', { params: { year } });
+  current() {
+    return httpRequest.get<VanHanCurrent | null>('/van-han/current');
   },
 };
 
 export const vanHanQueries = {
-  byYear: (year: number) =>
+  current: () =>
     queryOptions({
-      queryKey: ['van-han', year],
-      queryFn: () => vanHanService.listByYear(year),
+      queryKey: ['van-han', 'current'],
+      queryFn: () => vanHanService.current(),
       staleTime: Infinity,
     }),
 };

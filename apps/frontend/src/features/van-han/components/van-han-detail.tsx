@@ -7,7 +7,7 @@ import type {
   VanHanAspect,
   VanHanBirthYearFortune,
   VanHanFortune,
-} from '@/features/van-han/placeholder-data';
+} from '@/features/van-han/map-van-han';
 import {
   aspectTheme,
   ELEMENT_THEMES,
@@ -324,15 +324,18 @@ export function VanHanDetail({ chi, currentYear, fortune }: VanHanDetailProps) {
           ))}
         </div>
       </section>
+    </div>
+  );
+}
 
-      <div className="mt-2 flex items-center justify-center gap-3 rounded-xl border border-[#e2d3a6] bg-[#fdfbf4]/60 px-4 py-3">
-        <span className="text-lg text-[#d9a441]">❖</span>
-        <p className="text-center text-xs text-muted-foreground">
-          Nội dung đang là dữ liệu minh họa cho tuổi {chi} — luận giải theo từng con giáp sẽ được
-          cập nhật.
-        </p>
-        <span className="text-lg text-[#d9a441]">❖</span>
-      </div>
+export function VanHanDetailEmpty({ chi }: { readonly chi: ZodiacChi }) {
+  return (
+    <div className="flex min-h-[240px] flex-col items-center justify-center gap-3 rounded-2xl border border-[#e2d3a6] bg-[#fdfbf4]/60 px-4 py-12">
+      <span className="text-lg text-[#d9a441]">❖</span>
+      <p className="font-display text-lg font-bold text-[#a8332a]">Tuổi {chi}</p>
+      <p className="text-center text-sm text-muted-foreground">
+        Vận hạn của tuổi {chi} chưa được cập nhật. Vui lòng quay lại sau.
+      </p>
     </div>
   );
 }

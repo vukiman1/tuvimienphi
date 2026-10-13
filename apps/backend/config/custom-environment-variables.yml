@@ -72,6 +72,9 @@ captcha:
 google:
   clientId: GOOGLE_CLIENT_ID
 
+admin:
+  bootstrapEmails: ADMIN_BOOTSTRAP_EMAILS
+
 storage:
   endpoint: R2_ENDPOINT_URL
   accessKeyId: R2_ACCESS_KEY_ID
@@ -85,3 +88,6 @@ queueBoard:
     __format: boolean
   user: QUEUE_BOARD_USER
   password: QUEUE_BOARD_PASSWORD
+
+queue:
+  role: QUEUE_ROLE

@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RedisModule } from '@org/backend-redis';
 import { AiModule } from '../../ai/ai.module';
 import { ChapterQuotaService } from './chapter-quota.service';
+import { CongDanhGenerator } from './cong-danh.generator';
 import { LuanGiaiChapterEntity } from './entities/luan-giai-chapter.entity';
 import { LuanGiaiController } from './luan-giai.controller';
 import { LuanGiaiService } from './luan-giai.service';
@@ -17,7 +18,13 @@ import { ThanCuGenerator } from './than-cu.generator';
 @Module({
   imports: [TypeOrmModule.forFeature([LuanGiaiChapterEntity]), RedisModule, AiModule],
   controllers: [LuanGiaiController],
-  providers: [LuanGiaiService, ChapterQuotaService, ThanCuGenerator, MenhGenerator],
+  providers: [
+    LuanGiaiService,
+    ChapterQuotaService,
+    ThanCuGenerator,
+    MenhGenerator,
+    CongDanhGenerator,
+  ],
   exports: [LuanGiaiService],
 })
 export class LuanGiaiModule {}

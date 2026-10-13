@@ -28,8 +28,10 @@ module.exports = {
     '^.+\\.m?[tj]s$': ['@swc/jest', swcJestConfig],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'mjs', 'html'],
-  // node-config v5 and @nestjs/jwt v12 ship ESM that Jest has to transpile before CJS specs load it.
-  transformIgnorePatterns: ['node_modules/.pnpm/(?!(config@|@nestjs\\+jwt@))'],
+  // node-config v5, @nestjs/jwt v12 and @nestjs/bullmq v12 ship ESM that Jest has to transpile before CJS specs load it.
+  transformIgnorePatterns: [
+    'node_modules/.pnpm/(?!(config@|@nestjs\\+jwt@|@nestjs\\+bullmq@|@nestjs\\+bull-shared@))',
+  ],
   testPathIgnorePatterns: ['/node_modules/', '<rootDir>/dist/'],
   coverageDirectory: 'test-output/jest/coverage',
 };

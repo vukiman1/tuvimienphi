@@ -1,7 +1,7 @@
 import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
 import { Queue } from 'bullmq';
-import { JOBS_QUEUE, type JobData } from './queue.constants';
+import { JOBS_QUEUE, SCHEDULER_TIMEZONE, type JobData } from './queue.constants';
 
 const RETRY_ATTEMPTS = 3;
 const BACKOFF_DELAY_MS = 2_000;
@@ -28,7 +28,7 @@ export class QueueService {
   scheduleHourly() {
     return this.queue.upsertJobScheduler(
       'hourly-heartbeat',
-      { pattern: '0 * * * *' },
+      { pattern: '0 * * * *', tz: SCHEDULER_TIMEZONE },
       { name: 'heartbeat', data: { label: 'hourly' } },
     );
   }

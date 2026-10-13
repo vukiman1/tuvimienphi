@@ -1,6 +1,7 @@
 import type { ChapterMucBrief } from '@org/shared-tu-vi';
 import type { AiMessage } from '../../../ai/ai.types';
 import type { MucParagraph } from './chapter-schema';
+import { serializeBriefForPrompt } from './serialize-brief';
 
 /**
  * Mục con nối sau hai đoạn chính. Giữ nguyên giọng và mọi quy tắc hình thức của bài, chỉ khác là
@@ -48,7 +49,7 @@ export function buildMucMessages(
   brief: ChapterMucBrief,
   daThu: readonly { readonly paragraph: MucParagraph; readonly loi: readonly string[] }[],
 ): AiMessage[] {
-  const messages: AiMessage[] = [{ role: 'user', text: JSON.stringify(brief, null, 2) }];
+  const messages: AiMessage[] = [{ role: 'user', text: serializeBriefForPrompt(brief) }];
 
   for (const lan of daThu) {
     messages.push({ role: 'model', text: JSON.stringify(lan.paragraph) });

@@ -40,6 +40,7 @@ module.exports = async function () {
     REDIS_PORT: redisPort,
     REDIS_PASSWORD: process.env.REDIS_PASSWORD ?? '',
     CORS_ORIGINS: process.env.CORS_ORIGINS ?? 'http://localhost:4200',
+    ADMIN_BOOTSTRAP_EMAILS: process.env.ADMIN_BOOTSTRAP_EMAILS ?? 'e2e-admin@tuvi.local',
   };
 
   try {

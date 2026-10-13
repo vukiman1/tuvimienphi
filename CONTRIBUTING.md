@@ -20,6 +20,10 @@ pnpm install                          # also wires up husky hooks via the `prepa
 pnpm bootstrap                        # copies .env files, boots Postgres + Redis, runs migrations
 ```
 
+`pnpm bootstrap` stops at the migration step until `ADMIN_BOOTSTRAP_EMAILS` in
+`apps/backend/.env` names the Google address that should own the admin console. Set it and
+run `pnpm bootstrap` again — details in [docs/local-admin-access.md](./docs/local-admin-access.md).
+
 Run both apps in dev mode:
 
 ```bash

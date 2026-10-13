@@ -16,21 +16,25 @@ Quy ước ưu tiên: 🔴 nên làm sớm (bảo mật) · 🟡 nên làm (ch�
 | 6   | Change password endpoint (+ hash khi update) | 🟢      | Feature   | [02-auth-account-lifecycle.md](02-auth-account-lifecycle.md) |
 | 7   | Unit test SessionService / CryptoService     | 🟡      | Test      | [03-auth-tests.md](03-auth-tests.md)                         |
 | 8   | Redis cluster: hash-tag cho session keys     | 🟢      | Scaling   | [04-infra-scaling.md](04-infra-scaling.md)                   |
-| 9   | Audit logging cho sự kiện auth               | 🟢      | Ops       | [04-infra-scaling.md](04-infra-scaling.md)                   |
+| 9   | ~~Audit logging cho sự kiện auth~~ — đã có   | ✅      | Ops       | [10-activity-log.md](10-activity-log.md)                     |
 | 10  | CAPTCHA cho login                            | 🟢      | Hardening | [04-infra-scaling.md](04-infra-scaling.md)                   |
 
 ## Admin console
 
-| #   | Việc                                    | Ưu tiên | Loại      | Chi tiết                                   |
-| --- | --------------------------------------- | ------- | --------- | ------------------------------------------ |
-| 1   | Hạn tuyệt đối cho phiên (`maxLifetime`) | 🔴      | Hardening | [06-admin-console.md](06-admin-console.md) |
-| 2   | Phiên tách theo audience (user / admin) | 🔴      | Hardening | [06-admin-console.md](06-admin-console.md) |
-| 3   | `RolesGuard` + đường đăng nhập admin    | 🔴      | Feature   | [06-admin-console.md](06-admin-console.md) |
-| 4   | Module `admin` và endpoint thật         | 🟡      | Feature   | [06-admin-console.md](06-admin-console.md) |
-| 4b  | Cái bẫy của app hai transport           | 🔴      | Hardening | [06-admin-console.md](06-admin-console.md) |
-| 4c  | Phân trang REST — quyết sau GraphQL     | 🟡      | Refactor  | [06-admin-console.md](06-admin-console.md) |
-| 5   | `POST /van-han` đang mở cho mọi user    | 🔴      | Fix       | [06-admin-console.md](06-admin-console.md) |
-| 6   | Console chưa có lớp bảo vệ nào          | 🔴      | Fix       | [06-admin-console.md](06-admin-console.md) |
+| #   | Việc                                                      | Ưu tiên | Loại      | Chi tiết                                       |
+| --- | --------------------------------------------------------- | ------- | --------- | ---------------------------------------------- |
+| 1   | Hạn tuyệt đối cho phiên (`maxLifetime`)                   | 🔴      | Hardening | [06-admin-console.md](06-admin-console.md)     |
+| 2   | Phiên tách theo audience (user / admin)                   | 🔴      | Hardening | [06-admin-console.md](06-admin-console.md)     |
+| 3   | `RolesGuard` + đường đăng nhập admin                      | 🔴      | Feature   | [06-admin-console.md](06-admin-console.md)     |
+| 4   | Module `admin` và endpoint thật                           | 🟡      | Feature   | [06-admin-console.md](06-admin-console.md)     |
+| 4b  | Cái bẫy của app hai transport                             | 🔴      | Hardening | [06-admin-console.md](06-admin-console.md)     |
+| 4c  | Phân trang REST — quyết sau GraphQL                       | 🟡      | Refactor  | [06-admin-console.md](06-admin-console.md)     |
+| 5   | ~~`POST /van-han` đang mở cho mọi user~~ — đã đóng        | ✅      | Fix       | [13-van-han-console.md](13-van-han-console.md) |
+| 6   | Console chưa có lớp bảo vệ nào                            | 🔴      | Fix       | [06-admin-console.md](06-admin-console.md)     |
+| 7   | ~~Nhật ký hoạt động query được~~ — đã có                  | ✅      | Feature   | [10-activity-log.md](10-activity-log.md)       |
+| 8   | ~~Soạn và xuất bản vận hạn theo năm~~ — đã có             | ✅      | Feature   | [13-van-han-console.md](13-van-han-console.md) |
+| 9   | AI soạn nội dung vận hạn (nút đang khoá)                  | 🟢      | Feature   | [13-van-han-console.md](13-van-han-console.md) |
+| 10  | ~~Console quản lý khoá AI, chọn model, kiểm tra~~ — đã có | ✅      | Feature   | [14-ai-providers.md](14-ai-providers.md)       |
 
 ## REST contract
 
@@ -41,11 +45,12 @@ Quy ước ưu tiên: 🔴 nên làm sớm (bảo mật) · 🟡 nên làm (ch�
 
 ## Build & tooling
 
-| #   | Việc                                          | Ưu tiên | Loại     | Chi tiết                                     |
-| --- | --------------------------------------------- | ------- | -------- | -------------------------------------------- |
-| 1   | `pnpm dev` build hai lần (một lần production) | 🟡      | Fix      | [07-build-pipeline.md](07-build-pipeline.md) |
-| 2   | Xoá project Vercel + nới trần luận giải       | 🟡      | Refactor | [07-build-pipeline.md](07-build-pipeline.md) |
-| 3   | Watch + restart cho dev                       | 🟢      | Tooling  | [07-build-pipeline.md](07-build-pipeline.md) |
+| #   | Việc                                          | Ưu tiên | Loại     | Chi tiết                                       |
+| --- | --------------------------------------------- | ------- | -------- | ---------------------------------------------- |
+| 1   | `pnpm dev` build hai lần (một lần production) | 🟡      | Fix      | [07-build-pipeline.md](07-build-pipeline.md)   |
+| 2   | Xoá project Vercel + nới trần luận giải       | 🟡      | Refactor | [07-build-pipeline.md](07-build-pipeline.md)   |
+| 3   | Watch + restart cho dev                       | 🟢      | Tooling  | [07-build-pipeline.md](07-build-pipeline.md)   |
+| 4   | Worker riêng + quy ước cron (UTC, BullMQ)     | 🟡      | Ops      | [11-worker-and-cron.md](11-worker-and-cron.md) |
 
 ## Lá số
 

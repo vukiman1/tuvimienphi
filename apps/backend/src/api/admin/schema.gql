@@ -2,6 +2,80 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type ActivityEntry {
+  actorEmail: String
+  actorName: String
+  event: String!
+  id: ID!
+  ipAddress: String
+  occurredAt: String!
+  userId: ID
+}
+
+type ActivityPage {
+  entries: [ActivityEntry!]!
+  total: Int!
+}
+
+type AdminAiCall {
+  at: String!
+  costUsd: Float
+  error: String
+  id: ID!
+  inputTokens: Int!
+  isQuotaHit: Boolean!
+  label: String
+  latencyMs: Int
+  model: String!
+  outputTokens: Int!
+  provider: AiProvider!
+  purpose: AiUsagePurpose!
+  status: AiCallStatus!
+  userEmail: String
+}
+
+type AdminAiCallPage {
+  items: [AdminAiCall!]!
+  total: Int!
+}
+
+type AdminAiHealth {
+  checkedAt: String!
+  error: String
+  latencyMs: Int
+  model: String
+  status: AiHealthStatus!
+}
+
+type AdminAiProvider {
+  apiKeyHint: String
+  hasApiKey: Boolean!
+  health: AdminAiHealth
+  isActive: Boolean!
+  models: [String!]!
+  monthlyBudgetUsd: Float
+  provider: AiProvider!
+  updatedAt: String
+}
+
+type AdminAiSettings {
+  providers: [AdminAiProvider!]!
+  source: AiSource!
+}
+
+type AdminAiUsageDay {
+  calls: Int!
+  costUsd: Float
+  day: String!
+  failedCalls: Int!
+  inputTokens: Float!
+  model: String!
+  outputTokens: Float!
+  provider: AiProvider!
+  purpose: AiUsagePurpose!
+  quotaHits: Int!
+}
+
 type AdminOverview {
   activeUsers: PeriodMetric!
   devices: [LabelledCount!]!
@@ -40,6 +114,95 @@ enum AdminUserSortField {
   EMAIL
 }
 
+type AdminVanHanAge {
+  birthYear: Int!
+  canChi: String!
+  female: String!
+  male: String!
+  menh: String!
+}
+
+type AdminVanHanAspect {
+  aspect: String!
+  body: String!
+  rating: Int!
+}
+
+type AdminVanHanBirthYear {
+  age: Int!
+  birthYear: Int!
+  canChi: String!
+  menh: String!
+}
+
+type AdminVanHanEditor {
+  birthYearOptions: [AdminVanHanBirthYear!]!
+  canChi: String!
+  previousEntry: AdminVanHanEntry
+  publishedAt: String
+  slot: AdminVanHanSlot!
+  year: Int!
+}
+
+type AdminVanHanEntry {
+  bornYears: [Int!]!
+  id: ID!
+  luanGiai: [AdminVanHanAspect!]!
+  luuNien: String!
+  sourceUrl: String!
+  title: String!
+  tungTuoi: [AdminVanHanAge!]!
+  updatedAt: String!
+}
+
+type AdminVanHanSlot {
+  entry: AdminVanHanEntry
+  missing: [VanHanMissingPart!]!
+  year: Int!
+  zodiac: String!
+  zodiacOrder: Int!
+}
+
+type AdminVanHanYear {
+  canChi: String!
+  publishedAt: String
+  slots: [AdminVanHanSlot!]!
+  year: Int!
+}
+
+type AdminVanHanYearSummary {
+  entryCount: Int!
+  publishedAt: String
+  year: Int!
+}
+
+enum AiCallStatus {
+  FAILED
+  OK
+}
+
+enum AiHealthStatus {
+  FAILED
+  OK
+}
+
+enum AiProvider {
+  ANTHROPIC
+  GEMINI
+  OPENAI
+}
+
+enum AiSource {
+  CONSOLE
+  ENVIRONMENT
+  NONE
+}
+
+enum AiUsagePurpose {
+  CHECK
+  GENERATION
+}
+
 type DailyCount {
   count: Int!
   date: String!
@@ -50,6 +213,18 @@ type LabelledCount {
   label: String!
 }
 
+type Mutation {
+  checkAiProvider(provider: AiProvider!): AdminAiProvider!
+  clearAiProviderKey(provider: AiProvider!): AdminAiSettings!
+  publishVanHanYear(year: Int!): AdminVanHanYear!
+  saveAiProvider(input: SaveAiProviderInput!): AdminAiProvider!
+  saveVanHanEntry(input: SaveVanHanEntryInput!): AdminVanHanSlot!
+  setActiveAiProvider(provider: AiProvider): AdminAiSettings!
+  setAiProviderBudget(monthlyBudgetUsd: Float, provider: AiProvider!): AdminAiProvider!
+  testAiProvider(input: TestAiProviderInput!): AdminAiHealth!
+  unpublishVanHanYear(year: Int!): AdminVanHanYear!
+}
+
 type PeriodMetric {
   previous: Int!
   series: [DailyCount!]!
@@ -58,8 +233,16 @@ type PeriodMetric {
 
 type Query {
   activeUsersSeries(from: String, to: String): [DailyCount!]!
+  aiCalls(from: String!, limit: Int, model: String!, page: Int, provider: AiProvider!, purpose: AiUsagePurpose!, to: String!): AdminAiCallPage!
+  aiProviderModels(apiKey: String, provider: AiProvider!): [String!]!
+  aiSettings: AdminAiSettings!
+  aiUsage(from: String!, to: String!): [AdminAiUsageDay!]!
   overview(from: String, to: String): AdminOverview!
+  recentActivity(limit: Int, page: Int): ActivityPage!
   users(balanceMax: Int, balanceMin: Int, isEmailVerified: Boolean, joinedFrom: String, joinedTo: String, limit: Int, page: Int, roles: [Role!], search: String, sortBy: AdminUserSortField, sortDirection: SortDirection): AdminUserPage!
+  vanHanEditor(year: Int!, zodiacOrder: Int!): AdminVanHanEditor!
+  vanHanYear(year: Int!): AdminVanHanYear!
+  vanHanYears: [AdminVanHanYearSummary!]!
 }
 
 enum Role {
@@ -69,7 +252,46 @@ enum Role {
   USER
 }
 
+input SaveAiProviderInput {
+  apiKey: String
+  models: [String!]!
+  provider: AiProvider!
+}
+
+input SaveVanHanEntryInput {
+  luanGiai: [VanHanAspectInput!]!
+  luuNien: String!
+  sourceUrl: String
+  tungTuoi: [VanHanAgeInput!]!
+  year: Int!
+  zodiacOrder: Int!
+}
+
 enum SortDirection {
   ASC
   DESC
+}
+
+input TestAiProviderInput {
+  apiKey: String
+  models: [String!]!
+  provider: AiProvider!
+}
+
+input VanHanAgeInput {
+  birthYear: Int!
+  female: String!
+  male: String!
+}
+
+input VanHanAspectInput {
+  aspect: String!
+  body: String!
+  rating: Int!
+}
+
+enum VanHanMissingPart {
+  LUAN_GIAI
+  LUU_NIEN
+  TUNG_TUOI
 }

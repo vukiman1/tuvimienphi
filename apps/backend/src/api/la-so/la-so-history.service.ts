@@ -9,6 +9,8 @@ import {
   type SyncLaSoHistoryEntry,
 } from '@org/shared-contracts';
 import { In, Repository } from 'typeorm';
+import { ActivityLogService } from '../activity/activity-log.service';
+import { LaSoEvent } from './la-so-event';
 import { LaSoHistoryEntity } from './entities/la-so-history.entity';
 
 /** Past this, the oldest entries are dropped. Nobody scrolls back further, and the list is fetched
@@ -20,6 +22,7 @@ export class LaSoHistoryService {
   constructor(
     @InjectRepository(LaSoHistoryEntity)
     private readonly repo: Repository<LaSoHistoryEntity>,
+    private readonly activity: ActivityLogService,
   ) {}
 
   async list(userId: string): Promise<LaSoHistoryEntry[]> {
@@ -31,6 +34,15 @@ export class LaSoHistoryService {
     const row = toRow(userId, input, new Date());
     await this.repo.upsert(row, ['userId', 'birthKey']);
     await this.trim(userId);
+    this.activity.record(LaSoEvent.VIEWED, {
+      userId,
+      metadata: {
+        fullName: row.fullName,
+        day: row.day,
+        month: row.month,
+        year: row.year,
+      },
+    });
     return toEntry(row);
   }
 

@@ -5,7 +5,12 @@ describe('tryModels', () => {
   it('trả kết quả của model đầu tiên nhận lời gọi', async () => {
     const goi = jest.fn().mockResolvedValue('xong');
 
-    await expect(tryModels(['a', 'b'], goi)).resolves.toEqual({ result: 'xong', model: 'a' });
+    await expect(tryModels(['a', 'b'], goi)).resolves.toEqual({
+      result: 'xong',
+      model: 'a',
+      failedAttempts: [],
+      latencyMs: expect.any(Number),
+    });
     expect(goi).toHaveBeenCalledTimes(1);
   });
 
@@ -15,7 +20,12 @@ describe('tryModels', () => {
       .mockRejectedValueOnce(new Error('UNAVAILABLE'))
       .mockResolvedValueOnce('xong');
 
-    await expect(tryModels(['a', 'b'], goi)).resolves.toEqual({ result: 'xong', model: 'b' });
+    await expect(tryModels(['a', 'b'], goi)).resolves.toEqual({
+      result: 'xong',
+      model: 'b',
+      failedAttempts: [{ model: 'a', reason: 'UNAVAILABLE', latencyMs: expect.any(Number) }],
+      latencyMs: expect.any(Number),
+    });
   });
 
   it('ném lỗi kèm lý do của từng model khi không model nào nhận', async () => {
@@ -28,8 +38,8 @@ describe('tryModels', () => {
 
     expect(loi).toBeInstanceOf(AiUnavailableError);
     expect((loi as AiUnavailableError).attempts).toEqual([
-      { model: 'a', reason: 'RESOURCE_EXHAUSTED' },
-      { model: 'b', reason: 'UNAVAILABLE' },
+      { model: 'a', reason: 'RESOURCE_EXHAUSTED', latencyMs: expect.any(Number) },
+      { model: 'b', reason: 'UNAVAILABLE', latencyMs: expect.any(Number) },
     ]);
   });
 

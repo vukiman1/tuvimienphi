@@ -1,15 +1,22 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AiModule } from '../../ai/ai.module';
+import { ActivityLogEntity } from '../activity/entities/activity-log.entity';
 import { AuthIdentityEntity } from '../auth/entities/auth-identity.entity';
 import { UserSessionEntity } from '../auth/entities/user-session.entity';
 import { LaSoHistoryEntity } from '../la-so/entities/la-so-history.entity';
 import { UserEntity } from '../user/entities/user.entity';
+import { VanHanModule } from '../van-han/van-han.module';
+import { AdminActivityResolver } from './activity/admin-activity.resolver';
+import { AdminActivityService } from './activity/admin-activity.service';
 import { adminGraphqlOptions } from './admin-graphql.config';
+import { AdminAiResolver } from './ai/admin-ai.resolver';
 import { AdminOverviewResolver } from './overview/admin-overview.resolver';
 import { AdminOverviewService } from './overview/admin-overview.service';
 import { AdminUsersResolver } from './users/admin-users.resolver';
 import { AdminUsersService } from './users/admin-users.service';
+import { AdminVanHanResolver } from './van-han/admin-van-han.resolver';
 
 @Module({
   imports: [
@@ -18,9 +25,21 @@ import { AdminUsersService } from './users/admin-users.service';
       UserSessionEntity,
       LaSoHistoryEntity,
       AuthIdentityEntity,
+      ActivityLogEntity,
     ]),
     GraphQLModule.forRoot(adminGraphqlOptions),
+    VanHanModule,
+    AiModule,
   ],
-  providers: [AdminUsersService, AdminUsersResolver, AdminOverviewService, AdminOverviewResolver],
+  providers: [
+    AdminUsersService,
+    AdminUsersResolver,
+    AdminOverviewService,
+    AdminOverviewResolver,
+    AdminActivityService,
+    AdminActivityResolver,
+    AdminVanHanResolver,
+    AdminAiResolver,
+  ],
 })
 export class AdminModule {}

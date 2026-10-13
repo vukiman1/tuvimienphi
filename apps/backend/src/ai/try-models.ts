@@ -1,8 +1,5 @@
+import { readableReason } from './ai-error-reason';
 import { AiUnavailableError, type ModelAttempt } from './ai.errors';
-
-function reasonOf(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
-}
 
 /**
  * Gọi lần lượt từng model cho tới khi có model trả kết quả.
@@ -16,15 +13,22 @@ export async function tryModels<T>(
   call: (model: string) => Promise<T>,
   /** Hết ngân sách thời gian thì dừng hẳn: thử model kế tiếp cũng chỉ hỏng ngay lập tức. */
   shouldStop?: () => boolean,
-): Promise<{ readonly result: T; readonly model: string }> {
+): Promise<{
+  readonly result: T;
+  readonly model: string;
+  readonly failedAttempts: readonly ModelAttempt[];
+  readonly latencyMs: number;
+}> {
   const attempts: ModelAttempt[] = [];
 
   for (const model of models) {
     if (shouldStop?.()) break;
+    const startedAt = Date.now();
     try {
-      return { result: await call(model), model };
+      const result = await call(model);
+      return { result, model, failedAttempts: attempts, latencyMs: Date.now() - startedAt };
     } catch (error) {
-      attempts.push({ model, reason: reasonOf(error) });
+      attempts.push({ model, reason: readableReason(error), latencyMs: Date.now() - startedAt });
     }
   }
 

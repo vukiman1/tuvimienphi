@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import type { Request } from 'express';
+import { ActivityLogService } from '../../activity/activity-log.service';
 
 export enum AuthEvent {
   LOGIN_SUCCEEDED = 'auth.login.succeeded',
@@ -20,7 +21,7 @@ export enum AuthEvent {
   TWO_FACTOR_RECOVERED = 'auth.two_factor.recovered',
 }
 
-interface AuthEventContext {
+export interface AuthEventContext {
   userId?: string;
   email?: string;
   jti?: string;
@@ -31,13 +32,21 @@ interface AuthEventContext {
 export class AuthAuditService {
   private readonly logger = new Logger('AuthAudit');
 
+  constructor(private readonly activity: ActivityLogService) {}
+
   record(event: AuthEvent, context: AuthEventContext = {}): void {
     const { request, ...fields } = context;
-    this.logger.log({
-      event,
-      ...fields,
-      ip: request ? clientIp(request) : undefined,
-      userAgent: request?.headers['user-agent'],
+    const ip = request ? clientIp(request) : undefined;
+    const userAgent = request?.headers['user-agent'];
+
+    this.logger.log({ event, ...fields, ip, userAgent });
+
+    this.activity.record(event, {
+      userId: fields.userId,
+      actorEmail: fields.email,
+      ipAddress: ip,
+      userAgent,
+      metadata: fields.jti ? { jti: fields.jti } : null,
     });
   }
 }

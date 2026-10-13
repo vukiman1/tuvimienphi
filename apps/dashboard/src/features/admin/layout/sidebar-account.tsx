@@ -1,6 +1,6 @@
 import { useNavigate } from '@tanstack/react-router';
-import { BellOutlined, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Button, Divider, Dropdown, Flex, Typography, theme } from 'antd';
+import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import { Avatar, Dropdown, Flex, Typography, theme } from 'antd';
 import { env } from '@/config/env';
 import { resetAuthBootstrap } from '@/features/auth/bootstrap';
 import { LOGIN_PATH } from '@/features/auth/route-guards';
@@ -13,8 +13,6 @@ const ROLE_LABEL: Record<string, string> = {
   SELLER: 'Người bán',
   USER: 'Người dùng',
 };
-
-const ACTION_BUTTON_STYLE = { justifyContent: 'flex-start', paddingInline: 8 } as const;
 
 enum UserMenuKey {
   Profile = 'profile',
@@ -100,29 +98,6 @@ export function SidebarAccount() {
           />
         </Flex>
       </Dropdown>
-
-      <Divider style={{ margin: 0 }} />
-
-      <Dropdown
-        trigger={['click']}
-        placement="topLeft"
-        menu={{ items: [{ key: 'empty', label: 'Chưa có thông báo nào', disabled: true }] }}
-      >
-        <Button block type="text" icon={<BellOutlined />} style={ACTION_BUTTON_STYLE}>
-          Thông báo
-        </Button>
-      </Dropdown>
-
-      <Button
-        block
-        danger
-        type="text"
-        icon={<LogoutOutlined />}
-        style={ACTION_BUTTON_STYLE}
-        onClick={() => void signOut()}
-      >
-        Đăng xuất
-      </Button>
 
       <Typography.Text
         type="secondary"

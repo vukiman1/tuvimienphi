@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { VanHanDetail, VanHanDetailLoader } from '@/features/van-han/components/van-han-detail';
+import {
+  VanHanDetail,
+  VanHanDetailEmpty,
+  VanHanDetailLoader,
+} from '@/features/van-han/components/van-han-detail';
 import { ZodiacPicker } from '@/features/van-han/components/zodiac-picker';
-import { toVanHanFortune } from '@/features/van-han/map-van-han';
-import { VAN_HAN_FORTUNE_BY_CHI } from '@/features/van-han/van-han-mock';
+import { resolveVanHanView } from '@/features/van-han/van-han-view';
 import { getYearCanChi } from '@org/shared-tu-vi';
 import { ZODIAC_CHI, type ZodiacChi } from '@/lib/zodiac-icons';
 import { vanHanQueries } from '@/services/van-han-service';
@@ -14,22 +17,17 @@ function chiOfYear(year: number): ZodiacChi {
   return ZODIAC_CHI[(year - CHI_YEAR_OFFSET) % 12].chi;
 }
 
-function orderOfChi(chi: ZodiacChi): number {
-  return ZODIAC_CHI.findIndex((entry) => entry.chi === chi) + 1;
-}
-
 /** Thời gian hiển thị loader (la bàn xoay) khi chuyển tuổi — đủ để cảm nhận "luận giải". */
 const SWITCH_LOADING_MS = 600;
 
 export function VanHanPage() {
-  const currentYear = new Date().getFullYear();
-  const [selectedChi, setSelectedChi] = useState<ZodiacChi>(() => chiOfYear(currentYear));
+  const [selectedChi, setSelectedChi] = useState<ZodiacChi>(() =>
+    chiOfYear(new Date().getFullYear()),
+  );
   const [isSwitching, setIsSwitching] = useState(true);
 
-  const { data: entries } = useQuery(vanHanQueries.byYear(currentYear));
-  const entry = entries?.find((item) => item.zodiacOrder === orderOfChi(selectedChi));
-  // Chưa có dữ liệu thật thì hiển thị nội dung minh họa riêng theo từng con giáp.
-  const fortune = entry ? toVanHanFortune(entry) : VAN_HAN_FORTUNE_BY_CHI[selectedChi];
+  const { data: current, isPending } = useQuery(vanHanQueries.current());
+  const view = resolveVanHanView(current, selectedChi);
 
   // Bật skeleton ngay khi người dùng chọn tuổi khác; effect bên dưới lo việc tắt.
   const handleSelectChi = (chi: ZodiacChi) => {
@@ -50,18 +48,21 @@ export function VanHanPage() {
     <main className="mx-auto w-full max-w-5xl px-4 py-8 font-body md:px-6">
       <h1 className="font-display text-3xl font-bold text-foreground">Vận Hạn</h1>
       <p className="mt-1 text-sm text-muted-foreground">
-        Chọn con giáp để xem sao chiếu mệnh và vận hạn năm {getYearCanChi(currentYear)}{' '}
-        {currentYear} theo tuổi.
+        {current
+          ? `Chọn con giáp để xem sao chiếu mệnh và vận hạn năm ${getYearCanChi(current.year)} ${current.year} theo tuổi.`
+          : 'Chọn con giáp để xem sao chiếu mệnh và vận hạn trong năm theo tuổi.'}
       </p>
 
       <div className="mt-6 flex flex-col gap-4">
         <ZodiacPicker onSelect={handleSelectChi} selectedChi={selectedChi} />
-        {isSwitching ? (
+        {isSwitching || isPending ? (
           <VanHanDetailLoader />
-        ) : (
+        ) : view ? (
           <div key={selectedChi}>
-            <VanHanDetail chi={selectedChi} currentYear={currentYear} fortune={fortune} />
+            <VanHanDetail chi={selectedChi} currentYear={view.year} fortune={view.fortune} />
           </div>
+        ) : (
+          <VanHanDetailEmpty chi={selectedChi} />
         )}
       </div>
     </main>
