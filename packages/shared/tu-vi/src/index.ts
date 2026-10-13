@@ -32,4 +32,6 @@ export * from './luan/build-menh-muc-briefs.js';
 export * from './luan/build-muc-briefs.js';
 export * from './luan/build-cong-danh-brief.js';
 export * from './luan/build-cong-danh-muc-briefs.js';
+export * from './luan/build-tai-bach-brief.js';
+export * from './luan/build-tai-bach-muc-briefs.js';
 export * from './luan/bang/menh-than.js';

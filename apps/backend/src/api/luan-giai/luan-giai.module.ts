@@ -8,6 +8,7 @@ import { LuanGiaiChapterEntity } from './entities/luan-giai-chapter.entity';
 import { LuanGiaiController } from './luan-giai.controller';
 import { LuanGiaiService } from './luan-giai.service';
 import { MenhGenerator } from './menh.generator';
+import { TaiBachGenerator } from './tai-bach.generator';
 import { ThanCuGenerator } from './than-cu.generator';
 
 /**
@@ -24,6 +25,7 @@ import { ThanCuGenerator } from './than-cu.generator';
     ThanCuGenerator,
     MenhGenerator,
     CongDanhGenerator,
+    TaiBachGenerator,
   ],
   exports: [LuanGiaiService],
 })
