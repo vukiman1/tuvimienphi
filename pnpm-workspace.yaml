@@ -24,10 +24,10 @@ overrides:
   # test times out, turning a 5s suite into a 5-minute one. 2.2.27 is still affected and is the
   # newest release, so cap here rather than pin one version.
   nwsapi: '<=2.2.25'
-  multer: '^2.2.0'
+  multer: '^2.4.0'
   js-yaml: '^4.3.2'
   qs: '^6.16.0'
-  undici: '^7.28.0'
+  undici: '^7.29.1'
   tmp: '^0.2.7'
   piscina: '^4.9.3'
   form-data: '^4.0.6'
@@ -36,5 +36,8 @@ overrides:
   'http-proxy-middleware@^2': '^2.0.10'
   'http-proxy-middleware@^3': '^3.0.7'
   'body-parser@^2': '^2.3.0'
-  seroval: '~1.5.6'
-  seroval-plugins: '~1.5.6'
+  seroval: '^1.6.3'
+  seroval-plugins: '^1.6.3'
+  proxy-addr: '^2.0.8'
+  source-map-js: '^1.2.2'
+  '@graphql-tools/utils@12.0.0': '12.0.1'
