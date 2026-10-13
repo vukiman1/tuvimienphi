@@ -20,6 +20,7 @@ import {
   CHAPTER_CONG_DANH,
   CHAPTER_MENH,
   CHAPTER_ORDERS,
+  CHAPTER_TAI_BACH,
   CHAPTER_THAN_CU,
   GENERATION_BUDGET_MS,
 } from './luan-giai.constants';
@@ -27,6 +28,7 @@ import {
   ChapterGenerationFailedException,
   ChapterQuotaExceededException,
 } from './luan-giai.exceptions';
+import { TaiBachGenerator } from './tai-bach.generator';
 import { ThanCuGenerator } from './than-cu.generator';
 
 @Injectable()
@@ -42,11 +44,13 @@ export class LuanGiaiService {
     thanCu: ThanCuGenerator,
     menh: MenhGenerator,
     congDanh: CongDanhGenerator,
+    taiBach: TaiBachGenerator,
   ) {
     this.generators = {
       [CHAPTER_THAN_CU]: thanCu,
       [CHAPTER_MENH]: menh,
       [CHAPTER_CONG_DANH]: congDanh,
+      [CHAPTER_TAI_BACH]: taiBach,
     };
   }
 

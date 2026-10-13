@@ -17,7 +17,12 @@ import type { Repository } from 'typeorm';
 import { currentAiCallContext, type AiCallContext } from '../../ai/ai-call-context';
 import type { ChapterQuotaService } from './chapter-quota.service';
 import type { LuanGiaiChapterEntity } from './entities/luan-giai-chapter.entity';
-import { CHAPTER_CONG_DANH, CHAPTER_MENH, CHAPTER_THAN_CU } from './luan-giai.constants';
+import {
+  CHAPTER_CONG_DANH,
+  CHAPTER_MENH,
+  CHAPTER_TAI_BACH,
+  CHAPTER_THAN_CU,
+} from './luan-giai.constants';
 import {
   ChapterGenerationFailedException,
   ChapterQuotaExceededException,
@@ -25,6 +30,7 @@ import {
 import type { ChapterResult } from './chapter-generator';
 import type { CongDanhGenerator } from './cong-danh.generator';
 import type { MenhGenerator } from './menh.generator';
+import type { TaiBachGenerator } from './tai-bach.generator';
 import type { ThanCuGenerator } from './than-cu.generator';
 import { LuanGiaiService } from './luan-giai.service';
 
@@ -73,6 +79,10 @@ function dungService(overrides?: Overrides) {
     coTheSinh: jest.fn().mockReturnValue(true),
     generate: jest.fn().mockResolvedValue(KET),
   };
+  const generatorTaiBach = {
+    coTheSinh: jest.fn().mockReturnValue(true),
+    generate: jest.fn().mockResolvedValue(KET),
+  };
 
   return {
     service: new LuanGiaiService(
@@ -81,12 +91,14 @@ function dungService(overrides?: Overrides) {
       generator as unknown as ThanCuGenerator,
       generatorMenh as unknown as MenhGenerator,
       generatorCongDanh as unknown as CongDanhGenerator,
+      generatorTaiBach as unknown as TaiBachGenerator,
     ),
     repo,
     quota,
     generator,
     generatorMenh,
     generatorCongDanh,
+    generatorTaiBach,
   };
 }
 
@@ -132,6 +144,16 @@ describe('LuanGiaiService.request', () => {
 
     expect(ket).toEqual({ status: LuanGiaiChapterStatus.Ready, article: BAI });
     expect(generatorCongDanh.generate).toHaveBeenCalledTimes(1);
+    expect(generator.generate).not.toHaveBeenCalled();
+  });
+
+  it('sinh chương 04 bằng generator của chính chương đó', async () => {
+    const { service, generator, generatorTaiBach } = dungService();
+
+    const ket = await service.request('u1', CO_BANG, CHAPTER_TAI_BACH);
+
+    expect(ket).toEqual({ status: LuanGiaiChapterStatus.Ready, article: BAI });
+    expect(generatorTaiBach.generate).toHaveBeenCalledTimes(1);
     expect(generator.generate).not.toHaveBeenCalled();
   });
 
