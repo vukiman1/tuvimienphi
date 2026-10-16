@@ -100,6 +100,24 @@ type AdminOverview {
   totalUsers: Int!
 }
 
+type AdminPayment {
+  amountVnd: Int!
+  content: String!
+  creditsGranted: Int!
+  id: ID!
+  referenceCode: String!
+  status: PaymentStatus!
+  suggestedCredits: Int!
+  transactionAt: String!
+  unmatchedReason: UnmatchedReason
+  userEmail: String
+}
+
+type AdminPaymentPage {
+  payments: [AdminPayment!]!
+  total: Int!
+}
+
 type AdminUser {
   avatar: String
   balance: Int!
@@ -214,6 +232,12 @@ enum AiUsagePurpose {
   GENERATION
 }
 
+input AssignPaymentInput {
+  credits: Int!
+  paymentId: ID!
+  userEmail: String!
+}
+
 type DailyCount {
   count: Int!
   date: String!
@@ -226,6 +250,7 @@ type LabelledCount {
 
 type Mutation {
   adjustChapterCredits(input: AdjustChapterCreditsInput!): AdminCreditBalance!
+  assignPayment(input: AssignPaymentInput!): AdminPayment!
   checkAiProvider(provider: AiProvider!): AdminAiProvider!
   clearAiProviderKey(provider: AiProvider!): AdminAiSettings!
   publishVanHanYear(year: Int!): AdminVanHanYear!
@@ -235,6 +260,11 @@ type Mutation {
   setAiProviderBudget(monthlyBudgetUsd: Float, provider: AiProvider!): AdminAiProvider!
   testAiProvider(input: TestAiProviderInput!): AdminAiHealth!
   unpublishVanHanYear(year: Int!): AdminVanHanYear!
+}
+
+enum PaymentStatus {
+  Credited
+  Unmatched
 }
 
 type PeriodMetric {
@@ -250,6 +280,7 @@ type Query {
   aiSettings: AdminAiSettings!
   aiUsage(from: String!, to: String!): [AdminAiUsageDay!]!
   overview(from: String, to: String): AdminOverview!
+  payments(limit: Int, page: Int, status: PaymentStatus): AdminPaymentPage!
   recentActivity(limit: Int, page: Int): ActivityPage!
   users(balanceMax: Int, balanceMin: Int, isEmailVerified: Boolean, joinedFrom: String, joinedTo: String, limit: Int, page: Int, roles: [Role!], search: String, sortBy: AdminUserSortField, sortDirection: SortDirection): AdminUserPage!
   vanHanEditor(year: Int!, zodiacOrder: Int!): AdminVanHanEditor!
@@ -288,6 +319,12 @@ input TestAiProviderInput {
   apiKey: String
   models: [String!]!
   provider: AiProvider!
+}
+
+enum UnmatchedReason {
+  AmountTooLow
+  NoCode
+  UnknownCode
 }
 
 input VanHanAgeInput {

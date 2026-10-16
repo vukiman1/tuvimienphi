@@ -36,6 +36,16 @@ export type AiUsagePurpose =
   | 'CHECK'
   | 'GENERATION';
 
+export type AssignPaymentInput = {
+  credits: number;
+  paymentId: string | number;
+  userEmail: string;
+};
+
+export type PaymentStatus =
+  | 'Credited'
+  | 'Unmatched';
+
 export type Role =
   | 'ADMIN'
   | 'SELLER'
@@ -66,6 +76,11 @@ export type TestAiProviderInput = {
   models: Array<string>;
   provider: AiProvider;
 };
+
+export type UnmatchedReason =
+  | 'AmountTooLow'
+  | 'NoCode'
+  | 'UnknownCode';
 
 export type VanHanAgeInput = {
   birthYear: number;
@@ -180,6 +195,22 @@ export type AdminOverviewQueryVariables = Exact<{
 
 
 export type AdminOverviewQuery = { overview: { from: string, to: string, totalUsers: number, googleUsers: number, passwordUsers: number, savedCharts: number, activeUsers: { value: number, previous: number, series: Array<{ date: string, count: number }> }, logins: { value: number, previous: number, series: Array<{ date: string, count: number }> }, newUsers: { value: number, previous: number, series: Array<{ date: string, count: number }> }, newCharts: { value: number, previous: number, series: Array<{ date: string, count: number }> }, devices: Array<{ label: string, count: number }> } };
+
+export type AdminPaymentsQueryVariables = Exact<{
+  page?: number | null | undefined;
+  limit?: number | null | undefined;
+  status?: PaymentStatus | null | undefined;
+}>;
+
+
+export type AdminPaymentsQuery = { payments: { total: number, payments: Array<{ id: string, amountVnd: number, content: string, referenceCode: string, status: PaymentStatus, unmatchedReason: UnmatchedReason | null, creditsGranted: number, suggestedCredits: number, userEmail: string | null, transactionAt: string }> } };
+
+export type AssignPaymentMutationVariables = Exact<{
+  input: AssignPaymentInput;
+}>;
+
+
+export type AssignPaymentMutation = { assignPayment: { id: string, status: PaymentStatus, creditsGranted: number, userEmail: string | null } };
 
 export type AdminUsersQueryVariables = Exact<{
   page?: number | null | undefined;
@@ -514,6 +545,35 @@ export const AdminOverviewDocument = new TypedDocumentString(`
     count
   }
 }`) as unknown as TypedDocumentString<AdminOverviewQuery, AdminOverviewQueryVariables>;
+export const AdminPaymentsDocument = new TypedDocumentString(`
+    query AdminPayments($page: Int, $limit: Int, $status: PaymentStatus) {
+  payments(page: $page, limit: $limit, status: $status) {
+    total
+    payments {
+      id
+      amountVnd
+      content
+      referenceCode
+      status
+      unmatchedReason
+      creditsGranted
+      suggestedCredits
+      userEmail
+      transactionAt
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<AdminPaymentsQuery, AdminPaymentsQueryVariables>;
+export const AssignPaymentDocument = new TypedDocumentString(`
+    mutation AssignPayment($input: AssignPaymentInput!) {
+  assignPayment(input: $input) {
+    id
+    status
+    creditsGranted
+    userEmail
+  }
+}
+    `) as unknown as TypedDocumentString<AssignPaymentMutation, AssignPaymentMutationVariables>;
 export const AdminUsersDocument = new TypedDocumentString(`
     query AdminUsers($page: Int, $limit: Int, $search: String, $roles: [Role!], $isEmailVerified: Boolean, $joinedFrom: String, $joinedTo: String, $balanceMin: Int, $balanceMax: Int, $sortBy: AdminUserSortField, $sortDirection: SortDirection) {
   users(

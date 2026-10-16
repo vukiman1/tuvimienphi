@@ -12,5 +12,6 @@ import { SepayWebhookController } from './sepay/sepay-webhook.controller';
   imports: [TypeOrmModule.forFeature([PaymentEntity, UserEntity]), CreditsModule, ActivityModule],
   controllers: [SepayWebhookController],
   providers: [PaymentService, SepayApiKeyGuard],
+  exports: [PaymentService],
 })
 export class PaymentModule {}

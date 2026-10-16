@@ -14,6 +14,7 @@ import { Route as AdsRouteImport } from './routes/ads'
 import { Route as AiRouteImport } from './routes/ai'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as PaymentsRouteImport } from './routes/payments'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as UsersRouteImport } from './routes/users'
 import { Route as VanHanRouteImport } from './routes/van-han'
@@ -44,6 +45,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PaymentsRoute = PaymentsRouteImport.update({
+  id: '/payments',
+  path: '/payments',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -71,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/ai': typeof AiRoute
   '/blog': typeof BlogRoute
   '/login': typeof LoginRoute
+  '/payments': typeof PaymentsRoute
   '/profile': typeof ProfileRoute
   '/users': typeof UsersRoute
   '/van-han': typeof VanHanRoute
@@ -82,6 +89,7 @@ export interface FileRoutesByTo {
   '/ai': typeof AiRoute
   '/blog': typeof BlogRoute
   '/login': typeof LoginRoute
+  '/payments': typeof PaymentsRoute
   '/profile': typeof ProfileRoute
   '/users': typeof UsersRoute
   '/van-han': typeof VanHanRoute
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   '/ai': typeof AiRoute
   '/blog': typeof BlogRoute
   '/login': typeof LoginRoute
+  '/payments': typeof PaymentsRoute
   '/profile': typeof ProfileRoute
   '/users': typeof UsersRoute
   '/van-han': typeof VanHanRoute
@@ -107,6 +116,7 @@ export interface FileRouteTypes {
     | '/ai'
     | '/blog'
     | '/login'
+    | '/payments'
     | '/profile'
     | '/users'
     | '/van-han'
@@ -118,6 +128,7 @@ export interface FileRouteTypes {
     | '/ai'
     | '/blog'
     | '/login'
+    | '/payments'
     | '/profile'
     | '/users'
     | '/van-han'
@@ -129,6 +140,7 @@ export interface FileRouteTypes {
     | '/ai'
     | '/blog'
     | '/login'
+    | '/payments'
     | '/profile'
     | '/users'
     | '/van-han'
@@ -141,6 +153,7 @@ export interface RootRouteChildren {
   AiRoute: typeof AiRoute
   BlogRoute: typeof BlogRoute
   LoginRoute: typeof LoginRoute
+  PaymentsRoute: typeof PaymentsRoute
   ProfileRoute: typeof ProfileRoute
   UsersRoute: typeof UsersRoute
   VanHanRoute: typeof VanHanRoute
@@ -184,6 +197,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/payments': {
+      id: '/payments'
+      path: '/payments'
+      fullPath: '/payments'
+      preLoaderRoute: typeof PaymentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/profile': {
       id: '/profile'
       path: '/profile'
@@ -221,6 +241,7 @@ const rootRouteChildren: RootRouteChildren = {
   AiRoute: AiRoute,
   BlogRoute: BlogRoute,
   LoginRoute: LoginRoute,
+  PaymentsRoute: PaymentsRoute,
   ProfileRoute: ProfileRoute,
   UsersRoute: UsersRoute,
   VanHanRoute: VanHanRoute,

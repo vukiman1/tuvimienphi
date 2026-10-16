@@ -1,3 +1,4 @@
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import type { ConfigService } from '@nestjs/config';
 import type { DataSource, EntityManager } from 'typeorm';
 import type { ActivityLogService } from '../activity/activity-log.service';
@@ -167,5 +168,102 @@ describe('PaymentService.recordSepayTransaction', () => {
     grant.mockRejectedValue(new Error('boom'));
     await expect(service.recordSepayTransaction(TRANSACTION)).rejects.toThrow('boom');
     expect(record).not.toHaveBeenCalled();
+  });
+});
+
+const ADMIN_EMAIL = 'admin@tuvimienphi.vn';
+const TARGET_EMAIL = 'an@example.com';
+
+const UNMATCHED_PAYMENT = {
+  id: PAYMENT_ID,
+  amountVnd: 5000,
+  content: 'chuyen tien',
+  referenceCode: 'FT26289',
+  status: PaymentStatus.Credited,
+  unmatchedReason: UnmatchedReason.NoCode,
+  creditsGranted: 5,
+  transactionAt: new Date('2026-10-16T03:00:00.000Z'),
+};
+
+interface AssignHarness {
+  readonly service: PaymentService;
+  readonly grant: jest.Mock;
+  readonly record: jest.Mock;
+  readonly findOne: jest.Mock;
+  readonly set: jest.Mock;
+}
+
+const buildAssignHarness = (options: { affected?: number; user?: unknown } = {}): AssignHarness => {
+  const { affected = 1, user = { id: USER_ID, email: TARGET_EMAIL } } = options;
+  const set = jest.fn().mockReturnThis();
+  const builder = {
+    update: jest.fn().mockReturnThis(),
+    set,
+    where: jest.fn().mockReturnThis(),
+    execute: jest.fn().mockResolvedValue({ affected }),
+  };
+  const findOne = jest.fn().mockResolvedValue(user);
+  const manager = {
+    findOne,
+    findOneOrFail: jest.fn().mockResolvedValue(UNMATCHED_PAYMENT),
+    createQueryBuilder: jest.fn().mockReturnValue(builder),
+  } as unknown as EntityManager;
+  const transaction = jest.fn(async (work: (entityManager: EntityManager) => Promise<unknown>) =>
+    work(manager),
+  );
+  const grant = jest.fn().mockResolvedValue(5);
+  const record = jest.fn();
+  const service = new PaymentService(
+    { transaction } as unknown as DataSource,
+    { getOrThrow: (key: string): number => CONFIG[key] } as unknown as ConfigService,
+    { grant } as unknown as ChapterCreditsService,
+    { record } as unknown as ActivityLogService,
+  );
+  return { service, grant, record, findOne, set };
+};
+
+describe('PaymentService.assign', () => {
+  const input = { paymentId: PAYMENT_ID, userEmail: ` ${TARGET_EMAIL.toUpperCase()} `, credits: 5 };
+
+  it('assigns an unmatched payment and grants the credits in one transaction', async () => {
+    const { service, grant, record, findOne, set } = buildAssignHarness();
+
+    const result = await service.assign(input, ADMIN_EMAIL);
+
+    expect(findOne).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({ where: { email: TARGET_EMAIL } }),
+    );
+    expect(set).toHaveBeenCalledWith({
+      status: PaymentStatus.Credited,
+      userId: USER_ID,
+      creditsGranted: 5,
+    });
+    expect(grant).toHaveBeenCalledWith(USER_ID, 5, expect.anything());
+    expect(record).toHaveBeenCalledWith(CreditsEvent.PURCHASED, {
+      userId: USER_ID,
+      actorEmail: ADMIN_EMAIL,
+      metadata: { paymentId: PAYMENT_ID, amountVnd: 5000, credits: 5, isManualAssignment: true },
+    });
+    expect(result).toMatchObject({ id: PAYMENT_ID, userEmail: TARGET_EMAIL, suggestedCredits: 5 });
+  });
+
+  it('refuses to assign a payment twice', async () => {
+    const { service, grant, record } = buildAssignHarness({ affected: 0 });
+
+    await expect(service.assign(input, ADMIN_EMAIL)).rejects.toThrow(
+      new BadRequestException('Giao dịch này đã được cộng rồi.'),
+    );
+    expect(grant).not.toHaveBeenCalled();
+    expect(record).not.toHaveBeenCalled();
+  });
+
+  it('rejects an email that belongs to no user', async () => {
+    const { service, grant } = buildAssignHarness({ user: null });
+
+    await expect(service.assign(input, ADMIN_EMAIL)).rejects.toThrow(
+      new NotFoundException('Không tìm thấy người dùng với email này.'),
+    );
+    expect(grant).not.toHaveBeenCalled();
   });
 });
