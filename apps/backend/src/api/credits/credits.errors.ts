@@ -11,3 +11,10 @@ export class ChapterCreditsUserNotFoundError extends Error {
     this.name = 'ChapterCreditsUserNotFoundError';
   }
 }
+
+export class PaymentCodeAllocationError extends Error {
+  constructor(userId: string) {
+    super(`Could not allocate a payment code for user ${userId}`);
+    this.name = 'PaymentCodeAllocationError';
+  }
+}
