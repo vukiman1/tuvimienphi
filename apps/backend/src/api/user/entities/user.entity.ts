@@ -47,6 +47,14 @@ export class UserEntity extends BaseEntity {
   })
   token!: number;
 
+  @Column({
+    type: 'int',
+    nullable: false,
+    default: 0,
+    name: 'chapter_credits',
+  })
+  chapterCredits!: number;
+
   @Column({ nullable: true, type: 'varchar', length: 255, name: 'password' })
   @Exclude()
   password!: string | null;
