@@ -96,6 +96,23 @@ describe('TopUpDialog', () => {
     expect(onToppedUp).toHaveBeenCalledTimes(1);
   });
 
+  it('still lets a gift code be redeemed when checkout is unavailable', async () => {
+    jest.mocked(httpRequest.get).mockImplementation((async (path: string) => {
+      if (path === '/credits/checkout') throw new Error('checkout unavailable');
+      return summary(0);
+    }) as never);
+    jest
+      .mocked(httpRequest.post)
+      .mockResolvedValue({ creditsGranted: 3, chapterCredits: 3 } as never);
+
+    renderDialog();
+    expect(await screen.findByText('Hoặc nhập giftcode')).toBeTruthy();
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'WELCOME3' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Áp dụng' }));
+
+    expect(await screen.findByText('Đã cộng 3 lượt.')).toBeTruthy();
+  });
+
   it('copies the transfer content to the clipboard', async () => {
     mockEndpoints([summary(0)]);
     const writeText = jest.fn().mockResolvedValue(undefined);

@@ -93,9 +93,12 @@ function TopUpBody({ onToppedUp }: TopUpBodyProps) {
   }
   if (error) {
     return (
-      <p className="font-body text-[15px] leading-[24px] text-[#a8281c]">
-        {errorMessage(error, CHECKOUT_ERROR_MESSAGE)}
-      </p>
+      <div className="flex flex-col gap-4">
+        <p className="font-body text-[15px] leading-[24px] text-[#a8281c]">
+          {errorMessage(error, CHECKOUT_ERROR_MESSAGE)}
+        </p>
+        <GiftCodeField onRedeemed={markGiftRedeemed} />
+      </div>
     );
   }
   if (!checkout) return null;
