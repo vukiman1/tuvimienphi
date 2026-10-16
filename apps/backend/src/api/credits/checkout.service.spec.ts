@@ -1,4 +1,4 @@
-import { ServiceUnavailableException } from '@nestjs/common';
+import { ConflictException } from '@nestjs/common';
 import type { ConfigService } from '@nestjs/config';
 import { QueryFailedError, type Repository } from 'typeorm';
 import type { UserEntity } from '../user/entities/user.entity';
@@ -103,6 +103,6 @@ describe('CheckoutService', () => {
       ...PAYMENT_CONFIG,
       'payment.accountNumber': '',
     });
-    await expect(service.checkoutFor(USER_ID)).rejects.toBeInstanceOf(ServiceUnavailableException);
+    await expect(service.checkoutFor(USER_ID)).rejects.toBeInstanceOf(ConflictException);
   });
 });

@@ -1,4 +1,4 @@
-import { Injectable, ServiceUnavailableException } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import type { CreditCheckout } from '@org/shared-contracts';
@@ -29,7 +29,7 @@ export class CheckoutService {
     const bankCode = this.configService.get<string>('payment.bankCode') ?? '';
     const accountNumber = this.configService.get<string>('payment.accountNumber') ?? '';
     if (!bankCode || !accountNumber) {
-      throw new ServiceUnavailableException(CHECKOUT_CLOSED_MESSAGE);
+      throw new ConflictException(CHECKOUT_CLOSED_MESSAGE);
     }
 
     const amountVnd = this.configService.getOrThrow<number>('payment.priceVnd');
