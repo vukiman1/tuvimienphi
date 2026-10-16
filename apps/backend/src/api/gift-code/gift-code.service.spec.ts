@@ -168,6 +168,84 @@ describe('GiftCodeService.redeem', () => {
   });
 });
 
+describe('GiftCodeService admin management', () => {
+  const ADMIN_EMAIL = 'admin@example.com';
+  const CREATE_INPUT = { code: CODE, credits: CREDITS, maxRedemptions: 3 };
+
+  const buildAdminHarness = (saveError?: Error) => {
+    const save = jest.fn().mockImplementation(async (entity: GiftCodeEntity) => {
+      if (saveError) throw saveError;
+      return { ...entity, id: GIFT_CODE_ID };
+    });
+    const create = jest.fn((entity: Partial<GiftCodeEntity>) => entity);
+    const find = jest.fn().mockResolvedValue([]);
+    const findOneBy = jest.fn();
+    const repository = { save, create, find, findOneBy };
+    const service = new GiftCodeService(
+      { getRepository: () => repository } as unknown as DataSource,
+      {} as ChapterCreditsService,
+      {} as ActivityLogService,
+    );
+    return { service, save, find, findOneBy };
+  };
+
+  it('stores the code with the creating admin and the expiry as a date', async () => {
+    const { service, save } = buildAdminHarness();
+
+    await service.create({ ...CREATE_INPUT, expiresAt: '2026-12-31T10:00:00.000Z' }, ADMIN_EMAIL);
+
+    expect(save).toHaveBeenCalledWith({
+      code: CODE,
+      credits: CREDITS,
+      maxRedemptions: 3,
+      expiresAt: new Date('2026-12-31T10:00:00.000Z'),
+      createdByEmail: ADMIN_EMAIL,
+    });
+  });
+
+  it('generates a code when none is given', async () => {
+    const { service, save } = buildAdminHarness();
+
+    await service.create({ credits: CREDITS, maxRedemptions: 3 }, ADMIN_EMAIL);
+
+    expect(save).toHaveBeenCalledWith(
+      expect.objectContaining({ code: expect.stringMatching(/^[A-Z0-9]{8}$/), expiresAt: null }),
+    );
+  });
+
+  it('rejects a duplicate code', async () => {
+    const duplicate = new QueryFailedError('INSERT', [], UNIQUE_VIOLATION as unknown as Error);
+    const { service } = buildAdminHarness(duplicate);
+
+    await expect(service.create(CREATE_INPUT, ADMIN_EMAIL)).rejects.toThrow('Mã này đã tồn tại.');
+  });
+
+  it('lists codes newest first', async () => {
+    const { service, find } = buildAdminHarness();
+
+    await service.list();
+
+    expect(find).toHaveBeenCalledWith({ order: { createdAt: 'DESC', id: 'DESC' } });
+  });
+
+  it('toggles a code active flag', async () => {
+    const { service, save, findOneBy } = buildAdminHarness();
+    findOneBy.mockResolvedValue(buildGiftCode());
+
+    const result = await service.setActive(GIFT_CODE_ID, false);
+
+    expect(save).toHaveBeenCalledWith(expect.objectContaining({ isActive: false }));
+    expect(result.isActive).toBe(false);
+  });
+
+  it('rejects toggling an unknown code', async () => {
+    const { service, findOneBy } = buildAdminHarness();
+    findOneBy.mockResolvedValue(null);
+
+    await expect(service.setActive(GIFT_CODE_ID, true)).rejects.toThrow('Không tìm thấy giftcode.');
+  });
+});
+
 describe('normalizeGiftCode', () => {
   it('trims and uppercases', () => {
     expect(normalizeGiftCode('  summer25 ')).toBe(CODE);

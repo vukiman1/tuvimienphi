@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdsRouteImport } from './routes/ads'
 import { Route as AiRouteImport } from './routes/ai'
 import { Route as BlogRouteImport } from './routes/blog'
+import { Route as GiftCodesRouteImport } from './routes/gift-codes'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as PaymentsRouteImport } from './routes/payments'
 import { Route as ProfileRouteImport } from './routes/profile'
@@ -38,6 +39,11 @@ const AiRoute = AiRouteImport.update({
 const BlogRoute = BlogRouteImport.update({
   id: '/blog',
   path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GiftCodesRoute = GiftCodesRouteImport.update({
+  id: '/gift-codes',
+  path: '/gift-codes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -76,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/ads': typeof AdsRoute
   '/ai': typeof AiRoute
   '/blog': typeof BlogRoute
+  '/gift-codes': typeof GiftCodesRoute
   '/login': typeof LoginRoute
   '/payments': typeof PaymentsRoute
   '/profile': typeof ProfileRoute
@@ -88,6 +95,7 @@ export interface FileRoutesByTo {
   '/ads': typeof AdsRoute
   '/ai': typeof AiRoute
   '/blog': typeof BlogRoute
+  '/gift-codes': typeof GiftCodesRoute
   '/login': typeof LoginRoute
   '/payments': typeof PaymentsRoute
   '/profile': typeof ProfileRoute
@@ -101,6 +109,7 @@ export interface FileRoutesById {
   '/ads': typeof AdsRoute
   '/ai': typeof AiRoute
   '/blog': typeof BlogRoute
+  '/gift-codes': typeof GiftCodesRoute
   '/login': typeof LoginRoute
   '/payments': typeof PaymentsRoute
   '/profile': typeof ProfileRoute
@@ -115,6 +124,7 @@ export interface FileRouteTypes {
     | '/ads'
     | '/ai'
     | '/blog'
+    | '/gift-codes'
     | '/login'
     | '/payments'
     | '/profile'
@@ -127,6 +137,7 @@ export interface FileRouteTypes {
     | '/ads'
     | '/ai'
     | '/blog'
+    | '/gift-codes'
     | '/login'
     | '/payments'
     | '/profile'
@@ -139,6 +150,7 @@ export interface FileRouteTypes {
     | '/ads'
     | '/ai'
     | '/blog'
+    | '/gift-codes'
     | '/login'
     | '/payments'
     | '/profile'
@@ -152,6 +164,7 @@ export interface RootRouteChildren {
   AdsRoute: typeof AdsRoute
   AiRoute: typeof AiRoute
   BlogRoute: typeof BlogRoute
+  GiftCodesRoute: typeof GiftCodesRoute
   LoginRoute: typeof LoginRoute
   PaymentsRoute: typeof PaymentsRoute
   ProfileRoute: typeof ProfileRoute
@@ -188,6 +201,13 @@ declare module '@tanstack/react-router' {
       path: '/blog'
       fullPath: '/blog'
       preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gift-codes': {
+      id: '/gift-codes'
+      path: '/gift-codes'
+      fullPath: '/gift-codes'
+      preLoaderRoute: typeof GiftCodesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -240,6 +260,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdsRoute: AdsRoute,
   AiRoute: AiRoute,
   BlogRoute: BlogRoute,
+  GiftCodesRoute: GiftCodesRoute,
   LoginRoute: LoginRoute,
   PaymentsRoute: PaymentsRoute,
   ProfileRoute: ProfileRoute,

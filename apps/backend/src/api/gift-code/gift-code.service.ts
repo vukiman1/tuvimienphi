@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import type { RedeemGiftCodeResponse } from '@org/shared-contracts';
 import { DataSource, QueryFailedError, type EntityManager } from 'typeorm';
 import { ActivityLogService } from '../activity/activity-log.service';
 import { ChapterCreditsService } from '../credits/chapter-credits.service';
 import { CreditsEvent } from '../credits/credits-event';
+import { generatePaymentCode } from '../credits/payment-code';
 import { GiftCodeEntity } from './entities/gift-code.entity';
 import { GiftCodeRedemptionEntity } from './entities/gift-code-redemption.entity';
 import { UNIQUE_VIOLATION_CODE } from './gift-code.constants';
@@ -15,8 +16,17 @@ import {
 } from './gift-code.errors';
 
 const REDEMPTION_INCREMENT = 1;
+const DUPLICATE_CODE_MESSAGE = 'Mã này đã tồn tại.';
+const GIFT_CODE_NOT_FOUND_MESSAGE = 'Không tìm thấy giftcode.';
 
 export const normalizeGiftCode = (raw: string): string => raw.trim().toUpperCase();
+
+export interface NewGiftCode {
+  readonly code?: string;
+  readonly credits: number;
+  readonly maxRedemptions: number;
+  readonly expiresAt?: string;
+}
 
 interface Redemption {
   readonly giftCode: GiftCodeEntity;
@@ -42,6 +52,37 @@ export class GiftCodeService {
       metadata: { giftCodeId: giftCode.id, code: giftCode.code, credits: giftCode.credits },
     });
     return { creditsGranted: giftCode.credits, chapterCredits };
+  }
+
+  list(): Promise<GiftCodeEntity[]> {
+    return this.dataSource
+      .getRepository(GiftCodeEntity)
+      .find({ order: { createdAt: 'DESC', id: 'DESC' } });
+  }
+
+  async create(input: NewGiftCode, adminEmail: string): Promise<GiftCodeEntity> {
+    const repository = this.dataSource.getRepository(GiftCodeEntity);
+    const giftCode = repository.create({
+      code: input.code ?? generatePaymentCode(),
+      credits: input.credits,
+      maxRedemptions: input.maxRedemptions,
+      expiresAt: input.expiresAt ? new Date(input.expiresAt) : null,
+      createdByEmail: adminEmail,
+    });
+    try {
+      return await repository.save(giftCode);
+    } catch (error) {
+      if (!this.isUniqueViolation(error)) throw error;
+      throw new BadRequestException(DUPLICATE_CODE_MESSAGE);
+    }
+  }
+
+  async setActive(id: string, isActive: boolean): Promise<GiftCodeEntity> {
+    const repository = this.dataSource.getRepository(GiftCodeEntity);
+    const giftCode = await repository.findOneBy({ id });
+    if (!giftCode) throw new NotFoundException(GIFT_CODE_NOT_FOUND_MESSAGE);
+    giftCode.isActive = isActive;
+    return repository.save(giftCode);
   }
 
   private async redeemWithinTransaction(

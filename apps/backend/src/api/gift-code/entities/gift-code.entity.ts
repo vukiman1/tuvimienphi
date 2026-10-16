@@ -1,3 +1,4 @@
+import { GIFT_CODE_MAX_LENGTH } from '@org/shared-contracts';
 import { Check, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('gift_code')
@@ -7,7 +8,7 @@ export class GiftCodeEntity {
   @PrimaryGeneratedColumn('uuid', { primaryKeyConstraintName: 'PK_gift_code_id' })
   id!: string;
 
-  @Column({ type: 'varchar', length: 32, unique: true })
+  @Column({ type: 'varchar', length: GIFT_CODE_MAX_LENGTH, unique: true })
   code!: string;
 
   @Column({ type: 'integer' })

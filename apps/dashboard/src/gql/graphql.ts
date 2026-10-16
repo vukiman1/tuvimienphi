@@ -42,6 +42,13 @@ export type AssignPaymentInput = {
   userEmail: string;
 };
 
+export type CreateGiftCodeInput = {
+  code?: string | null | undefined;
+  credits: number;
+  expiresAt?: string | null | undefined;
+  maxRedemptions: number;
+};
+
 export type PaymentStatus =
   | 'Credited'
   | 'Unmatched';
@@ -185,6 +192,26 @@ export type AiCallsQueryVariables = Exact<{
 
 
 export type AiCallsQuery = { aiCalls: { total: number, items: Array<{ id: string, at: string, status: AiCallStatus, isQuotaHit: boolean, inputTokens: number, outputTokens: number, latencyMs: number | null, costUsd: number | null, error: string | null, label: string | null, userEmail: string | null }> } };
+
+export type AdminGiftCodesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminGiftCodesQuery = { giftCodes: Array<{ id: string, code: string, credits: number, maxRedemptions: number, redeemedCount: number, expiresAt: string | null, isActive: boolean, createdByEmail: string, createdAt: string }> };
+
+export type CreateGiftCodeMutationVariables = Exact<{
+  input: CreateGiftCodeInput;
+}>;
+
+
+export type CreateGiftCodeMutation = { createGiftCode: { id: string } };
+
+export type SetGiftCodeActiveMutationVariables = Exact<{
+  id: string | number;
+  isActive: boolean;
+}>;
+
+
+export type SetGiftCodeActiveMutation = { setGiftCodeActive: { id: string, isActive: boolean } };
 
 export type MetricFieldsFragment = { value: number, previous: number, series: Array<{ date: string, count: number }> };
 
@@ -510,6 +537,36 @@ export const AiCallsDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<AiCallsQuery, AiCallsQueryVariables>;
+export const AdminGiftCodesDocument = new TypedDocumentString(`
+    query AdminGiftCodes {
+  giftCodes {
+    id
+    code
+    credits
+    maxRedemptions
+    redeemedCount
+    expiresAt
+    isActive
+    createdByEmail
+    createdAt
+  }
+}
+    `) as unknown as TypedDocumentString<AdminGiftCodesQuery, AdminGiftCodesQueryVariables>;
+export const CreateGiftCodeDocument = new TypedDocumentString(`
+    mutation CreateGiftCode($input: CreateGiftCodeInput!) {
+  createGiftCode(input: $input) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<CreateGiftCodeMutation, CreateGiftCodeMutationVariables>;
+export const SetGiftCodeActiveDocument = new TypedDocumentString(`
+    mutation SetGiftCodeActive($id: ID!, $isActive: Boolean!) {
+  setGiftCodeActive(id: $id, isActive: $isActive) {
+    id
+    isActive
+  }
+}
+    `) as unknown as TypedDocumentString<SetGiftCodeActiveMutation, SetGiftCodeActiveMutationVariables>;
 export const AdminOverviewDocument = new TypedDocumentString(`
     query AdminOverview($from: String, $to: String) {
   overview(from: $from, to: $to) {

@@ -86,6 +86,18 @@ type AdminCreditBalance {
   userId: ID!
 }
 
+type AdminGiftCode {
+  code: String!
+  createdAt: String!
+  createdByEmail: String!
+  credits: Int!
+  expiresAt: String
+  id: ID!
+  isActive: Boolean!
+  maxRedemptions: Int!
+  redeemedCount: Int!
+}
+
 type AdminOverview {
   activeUsers: PeriodMetric!
   devices: [LabelledCount!]!
@@ -238,6 +250,13 @@ input AssignPaymentInput {
   userEmail: String!
 }
 
+input CreateGiftCodeInput {
+  code: String
+  credits: Int!
+  expiresAt: String
+  maxRedemptions: Int!
+}
+
 type DailyCount {
   count: Int!
   date: String!
@@ -253,11 +272,13 @@ type Mutation {
   assignPayment(input: AssignPaymentInput!): AdminPayment!
   checkAiProvider(provider: AiProvider!): AdminAiProvider!
   clearAiProviderKey(provider: AiProvider!): AdminAiSettings!
+  createGiftCode(input: CreateGiftCodeInput!): AdminGiftCode!
   publishVanHanYear(year: Int!): AdminVanHanYear!
   saveAiProvider(input: SaveAiProviderInput!): AdminAiProvider!
   saveVanHanEntry(input: SaveVanHanEntryInput!): AdminVanHanSlot!
   setActiveAiProvider(provider: AiProvider): AdminAiSettings!
   setAiProviderBudget(monthlyBudgetUsd: Float, provider: AiProvider!): AdminAiProvider!
+  setGiftCodeActive(id: ID!, isActive: Boolean!): AdminGiftCode!
   testAiProvider(input: TestAiProviderInput!): AdminAiHealth!
   unpublishVanHanYear(year: Int!): AdminVanHanYear!
 }
@@ -279,6 +300,7 @@ type Query {
   aiProviderModels(apiKey: String, provider: AiProvider!): [String!]!
   aiSettings: AdminAiSettings!
   aiUsage(from: String!, to: String!): [AdminAiUsageDay!]!
+  giftCodes: [AdminGiftCode!]!
   overview(from: String, to: String): AdminOverview!
   payments(limit: Int, page: Int, status: PaymentStatus): AdminPaymentPage!
   recentActivity(limit: Int, page: Int): ActivityPage!
