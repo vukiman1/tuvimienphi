@@ -71,6 +71,15 @@ storage:
   mediaBucket: ''
   mediaPublicUrl: ''
 
+payment:
+  sepayWebhookApiKey: ''
+  bankCode: ''
+  accountNumber: ''
+  accountName: ''
+  qrImageBaseUrl: https://vietqr.app/img
+  priceVnd: 5000
+  creditsPerPayment: 5
+
 queueBoard:
   enabled: true
   user: admin

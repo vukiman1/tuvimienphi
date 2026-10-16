@@ -55,6 +55,9 @@ export class UserEntity extends BaseEntity {
   })
   chapterCredits!: number;
 
+  @Column({ type: 'char', length: 8, nullable: true, unique: true, name: 'payment_code' })
+  paymentCode!: string | null;
+
   @Column({ nullable: true, type: 'varchar', length: 255, name: 'password' })
   @Exclude()
   password!: string | null;

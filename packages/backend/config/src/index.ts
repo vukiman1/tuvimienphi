@@ -131,6 +131,16 @@ interface StorageConfig {
   mediaPublicUrl: string;
 }
 
+interface PaymentConfig {
+  sepayWebhookApiKey: string;
+  bankCode: string;
+  accountNumber: string;
+  accountName: string;
+  qrImageBaseUrl: string;
+  priceVnd: number | string;
+  creditsPerPayment: number | string;
+}
+
 interface QueueBoardConfig {
   enabled: boolean;
   user: string;
@@ -257,6 +267,15 @@ const backendConfigSchema = z.object({
     mediaBucket: z.string().default(''),
     mediaPublicUrl: z.union([z.literal(''), z.url()]).default(''),
   }),
+  payment: z.object({
+    sepayWebhookApiKey: z.string().default(''),
+    bankCode: z.string().default(''),
+    accountNumber: z.string().default(''),
+    accountName: z.string().default(''),
+    qrImageBaseUrl: z.url(),
+    priceVnd: z.coerce.number().int().positive(),
+    creditsPerPayment: z.coerce.number().int().positive(),
+  }),
   queueBoard: z.object({
     enabled: z.boolean().default(true),
     user: z.string().default('admin'),
@@ -306,6 +325,7 @@ export default () => {
     google: nodeConfig.get<GoogleConfig>('google'),
     admin: nodeConfig.get<AdminConfig>('admin'),
     storage: nodeConfig.get<StorageConfig>('storage'),
+    payment: nodeConfig.get<PaymentConfig>('payment'),
     queueBoard: nodeConfig.get<QueueBoardConfig>('queueBoard'),
     queue: nodeConfig.get<QueueConfig>('queue'),
   });
@@ -325,6 +345,7 @@ export default () => {
     google,
     admin,
     storage,
+    payment,
     queueBoard,
     queue,
   } = validated;
@@ -368,6 +389,7 @@ export default () => {
     google,
     admin,
     storage,
+    payment,
     queueBoard,
     queue,
   };
