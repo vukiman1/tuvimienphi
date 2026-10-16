@@ -9,6 +9,7 @@ import { LuanGiaiController } from './luan-giai.controller';
 import { LuanGiaiService } from './luan-giai.service';
 import { MenhGenerator } from './menh.generator';
 import { TaiBachGenerator } from './tai-bach.generator';
+import { TinhDuyenGenerator } from './tinh-duyen.generator';
 import { ThanCuGenerator } from './than-cu.generator';
 
 /**
@@ -26,6 +27,7 @@ import { ThanCuGenerator } from './than-cu.generator';
     MenhGenerator,
     CongDanhGenerator,
     TaiBachGenerator,
+    TinhDuyenGenerator,
   ],
   exports: [LuanGiaiService],
 })
