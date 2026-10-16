@@ -5,17 +5,17 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Res,
   UseGuards,
 } from '@nestjs/common';
+import type { Response } from 'express';
 import { SkipThrottle } from '@nestjs/throttler';
 import { InvalidSepayPayloadError } from '../payment.errors';
 import { PaymentService } from '../payment.service';
 import { SepayApiKeyGuard } from './sepay-api-key.guard';
 import { parseSepayWebhook, type SepayTransaction } from './sepay-webhook.schema';
 
-interface SepayWebhookAck {
-  readonly success: true;
-}
+const SEPAY_SUCCESS_BODY = { success: true } as const;
 
 @Controller('payments/sepay')
 export class SepayWebhookController {
@@ -25,9 +25,9 @@ export class SepayWebhookController {
   @HttpCode(HttpStatus.OK)
   @SkipThrottle()
   @UseGuards(SepayApiKeyGuard)
-  async receive(@Body() body: unknown): Promise<SepayWebhookAck> {
+  async receive(@Body() body: unknown, @Res() res: Response): Promise<void> {
     await this.paymentService.recordSepayTransaction(this.parse(body));
-    return { success: true };
+    res.status(HttpStatus.OK).json(SEPAY_SUCCESS_BODY);
   }
 
   private parse(body: unknown): SepayTransaction {
