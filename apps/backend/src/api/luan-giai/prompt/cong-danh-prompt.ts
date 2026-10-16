@@ -46,12 +46,18 @@ QUY TẮC HÌNH THỨC:
 2. Mỗi đoạn đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
 2b. KHÔNG lồng hai dấu vào nhau. Viết **Tham Lang (H)** và ==cụm chốt ý== ở hai chỗ tách rời.
     SAI: **==nhẹ nhõm==**    SAI: ==**Tham Lang (H)**==
-3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều phải kèm bậc, kể cả lần thứ hai trong bài.
-4. Phụ tinh gói theo vai. Mỗi đoạn nhiều nhất MỘT cặp ** cho hung tinh và MỘT cặp ** cho cát tinh.
+3. Chính tinh: mỗi sao một cặp ** RIÊNG của chính nó, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều phải
+   kèm bậc, kể cả lần thứ hai trong bài. Quy tắc "gộp chung một cặp" ở mục 4 CHỈ áp dụng cho phụ tinh —
+   tuyệt đối đừng gộp nhiều chính tinh vào một cặp **, kể cả khi chúng cùng toạ thủ hay cùng thế chiếu.
+   SAI: **Thiên Tướng (Đ), Tử Vi (Đ)**   (hai chính tinh gộp chung một cặp)
+4. Phụ tinh (KHÁC chính tinh ở mục 3) gói theo vai — ĐẾM LẠI TRƯỚC KHI TRẢ LỜI: trong cả đoạn chỉ được
+   có ĐÚNG MỘT cặp ** cho hung tinh và MỘT cặp ** cho cát tinh, kể cả khi các sao đó ở các thế chiếu
+   khác nhau. Thế chiếu khác nhau KHÔNG phải lý do để tách cặp.
    ĐÚNG:  **Đại Hao, Kiếp Sát, Thiên Diêu**
    SAI:   **Đại Hao, Kiếp Sát** và **Thiên Diêu**   (tách thành hai cặp)
    SAI:   **Đại Hao** ... **Kiếp Sát**              (tách lẻ từng sao)
    SAI:   **Đại Hao, Thiên Thọ**                    (trộn hung với cát)
+   SAI:   **Thiên Khôi**, **Bát Tọa**, **Thiên Thọ** (mỗi sao một cặp riêng dù cùng vai — lỗi hay gặp nhất)
    Không kèm bậc cho phụ tinh.
 4b. Mệnh đề không có sao sinh ra nó (do[] rỗng — tên một cách cục như "Sát Phá Tham", "Cơ Nguyệt Đồng Lương", "Lộc Mã"):
     viết tên cách cục bằng chữ thường, không bọc trong cặp **, không gán cho một sao cụ thể nào.
