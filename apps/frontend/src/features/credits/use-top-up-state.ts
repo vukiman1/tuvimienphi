@@ -20,7 +20,7 @@ export type TopUpState =
       readonly chapterCredits: number;
     };
 
-interface TopUp {
+interface TopUpController {
   readonly topUpState: TopUpState;
   readonly markGiftRedeemed: (response: RedeemGiftCodeResponse) => void;
 }
@@ -34,11 +34,11 @@ function hasCreditsRisen(
   return credits !== undefined && baselineCredits !== undefined && credits > baselineCredits;
 }
 
-export function useTopUpState(): TopUp {
+export function useTopUpState(): TopUpController {
   const [baselineCredits, setBaselineCredits] = useState<number | undefined>();
   const [giftRedemption, setGiftRedemption] = useState<RedeemGiftCodeResponse | undefined>();
 
-  const { data, isFetchedAfterMount } = useQuery({
+  const { data, isFetchedAfterMount, isRefetchError } = useQuery({
     ...creditsQueries.summary(),
     refetchOnMount: 'always',
     refetchInterval: (query) =>
@@ -47,7 +47,7 @@ export function useTopUpState(): TopUp {
         : PAYMENT_POLL_INTERVAL_MS,
   });
 
-  if (data && isFetchedAfterMount && baselineCredits === undefined) {
+  if (data && isFetchedAfterMount && !isRefetchError && baselineCredits === undefined) {
     setBaselineCredits(data.chapterCredits);
   }
 

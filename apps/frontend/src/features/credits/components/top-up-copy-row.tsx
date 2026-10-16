@@ -12,7 +12,11 @@ export function TopUpCopyRow({ label, value }: TopUpCopyRowProps) {
   const [isCopied, setIsCopied] = useState(false);
 
   async function copyValue(): Promise<void> {
-    await navigator.clipboard.writeText(value);
+    try {
+      await navigator.clipboard.writeText(value);
+    } catch {
+      return;
+    }
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), COPIED_FEEDBACK_MS);
   }

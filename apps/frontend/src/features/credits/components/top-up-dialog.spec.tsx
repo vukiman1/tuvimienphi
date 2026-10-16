@@ -1,6 +1,8 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { CreditCheckout, CreditSummary } from '@org/shared-contracts';
+import { ApiError } from '@/lib/api-error';
+import { creditsQueries } from '@/features/credits/credits-queries';
 import { httpRequest } from '@/lib/http-request';
 import { TopUpDialog } from './top-up-dialog';
 
@@ -9,6 +11,8 @@ jest.mock('@/lib/http-request', () => ({
 }));
 
 const POLL_INTERVAL_MS = 3_000;
+const HTTP_CONFLICT = 409;
+const CHECKOUT_CLOSED_MESSAGE = 'Chức năng nạp lượt đang tạm đóng.';
 
 const CHECKOUT: CreditCheckout = {
   qrImageUrl: 'https://qr.sepay.vn/img?acc=123&amount=5000',
@@ -34,8 +38,10 @@ function mockEndpoints(summaries: readonly CreditSummary[]): void {
   }) as never);
 }
 
-function renderDialog(onToppedUp: () => void = jest.fn()): void {
-  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+function renderDialog(
+  onToppedUp: () => void = jest.fn(),
+  queryClient: QueryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } }),
+): void {
   render(
     <QueryClientProvider client={queryClient}>
       <TopUpDialog onOpenChange={jest.fn()} onToppedUp={onToppedUp} open />
@@ -77,6 +83,28 @@ describe('TopUpDialog', () => {
     expect(onToppedUp).toHaveBeenCalledTimes(1);
   });
 
+  it('ignores a stale cached balance when the refetch on open fails', async () => {
+    const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    queryClient.setQueryData(creditsQueries.summary().queryKey, summary(5));
+    const summaries = [new Error('network down'), summary(10), summary(15)];
+    let summaryCalls = 0;
+    jest.mocked(httpRequest.get).mockImplementation((async (path: string) => {
+      if (path === '/credits/checkout') return CHECKOUT;
+      const next = summaries[Math.min(summaryCalls, summaries.length - 1)];
+      summaryCalls += 1;
+      if (next instanceof Error) throw next;
+      return next;
+    }) as never);
+
+    renderDialog(jest.fn(), queryClient);
+    await screen.findByRole('img');
+    await act(() => jest.advanceTimersByTimeAsync(POLL_INTERVAL_MS));
+    expect(screen.queryByText(/Đã nhận!/)).toBeNull();
+
+    await act(() => jest.advanceTimersByTimeAsync(POLL_INTERVAL_MS));
+    expect(await screen.findByText('Đã nhận! Bạn có 15 lượt.')).toBeTruthy();
+  });
+
   it('shows the gift-code copy, not the paid copy, after a redemption raises the balance', async () => {
     mockEndpoints([summary(0), summary(5), summary(5)]);
     jest
@@ -98,7 +126,13 @@ describe('TopUpDialog', () => {
 
   it('still lets a gift code be redeemed when checkout is unavailable', async () => {
     jest.mocked(httpRequest.get).mockImplementation((async (path: string) => {
-      if (path === '/credits/checkout') throw new Error('checkout unavailable');
+      if (path === '/credits/checkout') {
+        throw new ApiError({
+          statusCode: HTTP_CONFLICT,
+          success: false,
+          errors: { message: CHECKOUT_CLOSED_MESSAGE },
+        });
+      }
       return summary(0);
     }) as never);
     jest
@@ -106,6 +140,7 @@ describe('TopUpDialog', () => {
       .mockResolvedValue({ creditsGranted: 3, chapterCredits: 3 } as never);
 
     renderDialog();
+    expect(await screen.findByText(CHECKOUT_CLOSED_MESSAGE)).toBeTruthy();
     expect(await screen.findByText('Hoặc nhập giftcode')).toBeTruthy();
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'WELCOME3' } });
     fireEvent.click(screen.getByRole('button', { name: 'Áp dụng' }));
