@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { DataSource, In, type EntityManager } from 'typeorm';
+import { DataSource, In, Raw, type EntityManager } from 'typeorm';
 import { ActivityLogService } from '../activity/activity-log.service';
 import { ChapterCreditsService } from '../credits/chapter-credits.service';
 import { CreditsEvent } from '../credits/credits-event';
@@ -22,6 +22,8 @@ const INCOMING_TRANSFER_TYPE = 'in';
 const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 20;
 const ALREADY_CREDITED_MESSAGE = 'Giao dịch này đã được cộng rồi.';
+const AMBIGUOUS_MATCH_LIMIT = 2;
+const AMBIGUOUS_EMAIL_MESSAGE = 'Có nhiều tài khoản trùng email này, hãy kiểm tra lại.';
 const ASSIGN_USER_NOT_FOUND_MESSAGE = 'Không tìm thấy người dùng với email này.';
 
 interface CreditedPayment {
@@ -108,12 +110,15 @@ export class PaymentService {
     manager: EntityManager,
     { paymentId, userEmail, credits }: AssignPaymentCommand,
   ): Promise<{ payment: PaymentEntity; userId: string; userEmail: string }> {
-    const email = userEmail.trim().toLowerCase();
-    const user = await manager.findOne(UserEntity, {
-      where: { email },
-      select: { id: true },
+    const normalizedEmail = userEmail.trim().toLowerCase();
+    const matches = await manager.find(UserEntity, {
+      where: { email: Raw((column) => `LOWER(${column}) = :normalizedEmail`, { normalizedEmail }) },
+      select: { id: true, email: true },
+      take: AMBIGUOUS_MATCH_LIMIT,
     });
-    if (!user) throw new NotFoundException(ASSIGN_USER_NOT_FOUND_MESSAGE);
+    if (matches.length === 0) throw new NotFoundException(ASSIGN_USER_NOT_FOUND_MESSAGE);
+    if (matches.length > 1) throw new BadRequestException(AMBIGUOUS_EMAIL_MESSAGE);
+    const [user] = matches;
 
     const result = await manager
       .createQueryBuilder()
@@ -128,7 +133,7 @@ export class PaymentService {
 
     await this.chapterCredits.grant(user.id, credits, manager);
     const payment = await manager.findOneOrFail(PaymentEntity, { where: { id: paymentId } });
-    return { payment, userId: user.id, userEmail: email };
+    return { payment, userId: user.id, userEmail: user.email };
   }
 
   private async emailsById(payments: readonly PaymentEntity[]): Promise<Map<string, string>> {

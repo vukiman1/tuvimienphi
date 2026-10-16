@@ -189,12 +189,14 @@ interface AssignHarness {
   readonly service: PaymentService;
   readonly grant: jest.Mock;
   readonly record: jest.Mock;
-  readonly findOne: jest.Mock;
+  readonly find: jest.Mock;
   readonly set: jest.Mock;
 }
 
-const buildAssignHarness = (options: { affected?: number; user?: unknown } = {}): AssignHarness => {
-  const { affected = 1, user = { id: USER_ID, email: TARGET_EMAIL } } = options;
+const buildAssignHarness = (
+  options: { affected?: number; users?: readonly unknown[] } = {},
+): AssignHarness => {
+  const { affected = 1, users = [{ id: USER_ID, email: TARGET_EMAIL }] } = options;
   const set = jest.fn().mockReturnThis();
   const builder = {
     update: jest.fn().mockReturnThis(),
@@ -202,9 +204,9 @@ const buildAssignHarness = (options: { affected?: number; user?: unknown } = {})
     where: jest.fn().mockReturnThis(),
     execute: jest.fn().mockResolvedValue({ affected }),
   };
-  const findOne = jest.fn().mockResolvedValue(user);
+  const find = jest.fn().mockResolvedValue(users);
   const manager = {
-    findOne,
+    find,
     findOneOrFail: jest.fn().mockResolvedValue(UNMATCHED_PAYMENT),
     createQueryBuilder: jest.fn().mockReturnValue(builder),
   } as unknown as EntityManager;
@@ -219,21 +221,17 @@ const buildAssignHarness = (options: { affected?: number; user?: unknown } = {})
     { grant } as unknown as ChapterCreditsService,
     { record } as unknown as ActivityLogService,
   );
-  return { service, grant, record, findOne, set };
+  return { service, grant, record, find, set };
 };
 
 describe('PaymentService.assign', () => {
   const input = { paymentId: PAYMENT_ID, userEmail: ` ${TARGET_EMAIL.toUpperCase()} `, credits: 5 };
 
   it('assigns an unmatched payment and grants the credits in one transaction', async () => {
-    const { service, grant, record, findOne, set } = buildAssignHarness();
+    const { service, grant, record, set } = buildAssignHarness();
 
     const result = await service.assign(input, ADMIN_EMAIL);
 
-    expect(findOne).toHaveBeenCalledWith(
-      expect.anything(),
-      expect.objectContaining({ where: { email: TARGET_EMAIL } }),
-    );
     expect(set).toHaveBeenCalledWith({
       status: PaymentStatus.Credited,
       userId: USER_ID,
@@ -259,10 +257,37 @@ describe('PaymentService.assign', () => {
   });
 
   it('rejects an email that belongs to no user', async () => {
-    const { service, grant } = buildAssignHarness({ user: null });
+    const { service, grant } = buildAssignHarness({ users: [] });
 
     await expect(service.assign(input, ADMIN_EMAIL)).rejects.toThrow(
       new NotFoundException('Không tìm thấy người dùng với email này.'),
+    );
+    expect(grant).not.toHaveBeenCalled();
+  });
+
+  it('finds the user regardless of email case', async () => {
+    const storedEmail = 'An@Example.com';
+    const { service, grant } = buildAssignHarness({ users: [{ id: USER_ID, email: storedEmail }] });
+
+    const result = await service.assign(
+      { paymentId: PAYMENT_ID, userEmail: ' AN@Example.com ', credits: 5 },
+      ADMIN_EMAIL,
+    );
+
+    expect(grant).toHaveBeenCalledWith(USER_ID, 5, expect.anything());
+    expect(result.userEmail).toBe(storedEmail);
+  });
+
+  it('refuses when two accounts share the email case-insensitively', async () => {
+    const { service, grant } = buildAssignHarness({
+      users: [
+        { id: USER_ID, email: 'An@Example.com' },
+        { id: 'user-2', email: 'an@example.com' },
+      ],
+    });
+
+    await expect(service.assign(input, ADMIN_EMAIL)).rejects.toThrow(
+      new BadRequestException('Có nhiều tài khoản trùng email này, hãy kiểm tra lại.'),
     );
     expect(grant).not.toHaveBeenCalled();
   });
