@@ -1,4 +1,4 @@
-import type { Repository } from 'typeorm';
+import type { EntityManager, Repository } from 'typeorm';
 import type { UserEntity } from '../user/entities/user.entity';
 import { ChapterCreditsService } from './chapter-credits.service';
 import {
@@ -50,6 +50,27 @@ describe('ChapterCreditsService', () => {
     await expect(service.adjust('ghost', 5)).rejects.toBeInstanceOf(
       ChapterCreditsUserNotFoundError,
     );
+  });
+
+  it("runs a grant on the caller's transaction manager, not the repository's own", async () => {
+    const transactionBuilder = {
+      update: jest.fn().mockReturnThis(),
+      set: jest.fn().mockReturnThis(),
+      where: jest.fn().mockReturnThis(),
+      returning: jest.fn().mockReturnThis(),
+      execute: jest.fn().mockResolvedValue({ raw: [{ chapter_credits: 8 }] }),
+    };
+    const transactionManager = {
+      createQueryBuilder: jest.fn().mockReturnValue(transactionBuilder),
+    } as unknown as EntityManager;
+    const repositoryManager = { createQueryBuilder: jest.fn() };
+    const repo = { manager: repositoryManager } as unknown as Repository<UserEntity>;
+
+    await new ChapterCreditsService(repo).grant('u1', 5, transactionManager);
+
+    expect(transactionManager.createQueryBuilder).toHaveBeenCalledTimes(1);
+    expect(transactionBuilder.execute).toHaveBeenCalledTimes(1);
+    expect(repositoryManager.createQueryBuilder).not.toHaveBeenCalled();
   });
 
   it('returns the new balance after a grant', async () => {

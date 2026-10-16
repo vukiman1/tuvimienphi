@@ -33,17 +33,20 @@ interface Harness {
   readonly record: jest.Mock;
   readonly findOne: jest.Mock;
   readonly transaction: jest.Mock;
+  readonly manager: EntityManager;
+  readonly orIgnore: jest.Mock;
 }
 
 const buildHarness = (options: { isDuplicate?: boolean; userId?: string | null } = {}): Harness => {
   const { isDuplicate = false, userId = USER_ID } = options;
   const execute = jest.fn().mockResolvedValue({ raw: isDuplicate ? [] : [{ id: PAYMENT_ID }] });
   const values = jest.fn().mockReturnThis();
+  const orIgnore = jest.fn().mockReturnThis();
   const builder = {
     insert: jest.fn().mockReturnThis(),
     into: jest.fn().mockReturnThis(),
     values,
-    orIgnore: jest.fn().mockReturnThis(),
+    orIgnore,
     returning: jest.fn().mockReturnThis(),
     execute,
   };
@@ -64,15 +67,15 @@ const buildHarness = (options: { isDuplicate?: boolean; userId?: string | null }
     { grant } as unknown as ChapterCreditsService,
     { record } as unknown as ActivityLogService,
   );
-  return { service, values, grant, record, findOne, transaction };
+  return { service, values, grant, record, findOne, transaction, manager, orIgnore };
 };
 
 describe('PaymentService.recordSepayTransaction', () => {
   it('credits a matched 5k transfer once', async () => {
-    const { service, values, grant, record } = buildHarness();
+    const { service, values, grant, record, manager } = buildHarness();
     await service.recordSepayTransaction(TRANSACTION);
     expect(grant).toHaveBeenCalledTimes(1);
-    expect(grant).toHaveBeenCalledWith(USER_ID, 5, expect.anything());
+    expect(grant).toHaveBeenCalledWith(USER_ID, 5, manager);
     expect(values).toHaveBeenCalledWith(
       expect.objectContaining({
         sepayTransactionId: '92704',
@@ -109,8 +112,9 @@ describe('PaymentService.recordSepayTransaction', () => {
   });
 
   it('ignores a transaction id it has already stored', async () => {
-    const { service, grant, record } = buildHarness({ isDuplicate: true });
+    const { service, grant, record, orIgnore } = buildHarness({ isDuplicate: true });
     await service.recordSepayTransaction(TRANSACTION);
+    expect(orIgnore).toHaveBeenCalledTimes(1);
     expect(grant).not.toHaveBeenCalled();
     expect(record).not.toHaveBeenCalled();
   });
@@ -174,7 +178,7 @@ describe('PaymentService.recordSepayTransaction', () => {
 const ADMIN_EMAIL = 'admin@tuvimienphi.vn';
 const TARGET_EMAIL = 'an@example.com';
 
-const UNMATCHED_PAYMENT = {
+const CREDITED_AFTER_ASSIGN = {
   id: PAYMENT_ID,
   amountVnd: 5000,
   content: 'chuyen tien',
@@ -191,6 +195,7 @@ interface AssignHarness {
   readonly record: jest.Mock;
   readonly find: jest.Mock;
   readonly set: jest.Mock;
+  readonly manager: EntityManager;
 }
 
 const buildAssignHarness = (
@@ -207,7 +212,7 @@ const buildAssignHarness = (
   const find = jest.fn().mockResolvedValue(users);
   const manager = {
     find,
-    findOneOrFail: jest.fn().mockResolvedValue(UNMATCHED_PAYMENT),
+    findOneOrFail: jest.fn().mockResolvedValue(CREDITED_AFTER_ASSIGN),
     createQueryBuilder: jest.fn().mockReturnValue(builder),
   } as unknown as EntityManager;
   const transaction = jest.fn(async (work: (entityManager: EntityManager) => Promise<unknown>) =>
@@ -221,14 +226,14 @@ const buildAssignHarness = (
     { grant } as unknown as ChapterCreditsService,
     { record } as unknown as ActivityLogService,
   );
-  return { service, grant, record, find, set };
+  return { service, grant, record, find, set, manager };
 };
 
 describe('PaymentService.assign', () => {
   const input = { paymentId: PAYMENT_ID, userEmail: ` ${TARGET_EMAIL.toUpperCase()} `, credits: 5 };
 
   it('assigns an unmatched payment and grants the credits in one transaction', async () => {
-    const { service, grant, record, set } = buildAssignHarness();
+    const { service, grant, record, set, manager } = buildAssignHarness();
 
     const result = await service.assign(input, ADMIN_EMAIL);
 
@@ -237,7 +242,7 @@ describe('PaymentService.assign', () => {
       userId: USER_ID,
       creditsGranted: 5,
     });
-    expect(grant).toHaveBeenCalledWith(USER_ID, 5, expect.anything());
+    expect(grant).toHaveBeenCalledWith(USER_ID, 5, manager);
     expect(record).toHaveBeenCalledWith(CreditsEvent.PURCHASED, {
       userId: USER_ID,
       actorEmail: ADMIN_EMAIL,

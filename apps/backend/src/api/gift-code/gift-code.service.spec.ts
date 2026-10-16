@@ -72,12 +72,12 @@ const buildHarness = (options: HarnessOptions = {}) => {
     { grant } as unknown as ChapterCreditsService,
     { record } as unknown as ActivityLogService,
   );
-  return { service, calls, where, setLock, insert, increment, grant, record };
+  return { service, calls, where, setLock, insert, increment, grant, record, manager };
 };
 
 describe('GiftCodeService.redeem', () => {
   it("grants the code's credits and counts the redemption", async () => {
-    const { service, insert, increment, grant, record } = buildHarness();
+    const { service, insert, increment, grant, record, manager } = buildHarness();
 
     const result = await service.redeem(USER_ID, CODE);
 
@@ -92,7 +92,7 @@ describe('GiftCodeService.redeem', () => {
       'redeemedCount',
       1,
     );
-    expect(grant).toHaveBeenCalledWith(USER_ID, CREDITS, expect.anything());
+    expect(grant).toHaveBeenCalledWith(USER_ID, CREDITS, manager);
     expect(record).toHaveBeenCalledWith(CreditsEvent.GIFT_REDEEMED, {
       userId: USER_ID,
       metadata: { giftCodeId: GIFT_CODE_ID, code: CODE, credits: CREDITS },
