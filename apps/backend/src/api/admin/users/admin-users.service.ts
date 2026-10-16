@@ -27,6 +27,7 @@ const LISTED_COLUMNS = [
   'user.role',
   'user.isEmailVerified',
   'user.balance',
+  'user.chapterCredits',
   'user.createdAt',
 ];
 

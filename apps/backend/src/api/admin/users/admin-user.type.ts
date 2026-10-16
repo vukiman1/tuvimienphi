@@ -26,6 +26,9 @@ export class AdminUser {
   @Field(() => Int)
   balance: number;
 
+  @Field(() => Int)
+  chapterCredits: number;
+
   @Field()
   createdAt: string;
 
@@ -34,6 +37,15 @@ export class AdminUser {
 
   @Field(() => String, { nullable: true })
   lastActiveAt: string | null;
+}
+
+@ObjectType()
+export class AdminCreditBalance {
+  @Field(() => ID)
+  userId: string;
+
+  @Field(() => Int)
+  chapterCredits: number;
 }
 
 @ObjectType()

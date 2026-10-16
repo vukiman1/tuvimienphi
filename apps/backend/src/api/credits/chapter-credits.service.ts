@@ -66,8 +66,10 @@ export class ChapterCreditsService {
       .returning(CREDITS_COLUMN)
       .execute();
     const row = this.firstRow(result.raw);
-    if (!row) throw new ChapterCreditsWouldGoNegativeError(userId, delta);
-    return row.chapter_credits;
+    if (row) return row.chapter_credits;
+    const isUserPresent = await this.userRepo.existsBy({ id: userId });
+    if (!isUserPresent) throw new ChapterCreditsUserNotFoundError(userId);
+    throw new ChapterCreditsWouldGoNegativeError(userId, delta);
   }
 
   async balance(userId: string): Promise<number> {

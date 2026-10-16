@@ -17,6 +17,11 @@ type ActivityPage {
   total: Int!
 }
 
+input AdjustChapterCreditsInput {
+  delta: Int!
+  userId: ID!
+}
+
 type AdminAiCall {
   at: String!
   costUsd: Float
@@ -76,6 +81,11 @@ type AdminAiUsageDay {
   quotaHits: Int!
 }
 
+type AdminCreditBalance {
+  chapterCredits: Int!
+  userId: ID!
+}
+
 type AdminOverview {
   activeUsers: PeriodMetric!
   devices: [LabelledCount!]!
@@ -93,6 +103,7 @@ type AdminOverview {
 type AdminUser {
   avatar: String
   balance: Int!
+  chapterCredits: Int!
   createdAt: String!
   displayName: String
   email: String!
@@ -214,6 +225,7 @@ type LabelledCount {
 }
 
 type Mutation {
+  adjustChapterCredits(input: AdjustChapterCreditsInput!): AdminCreditBalance!
   checkAiProvider(provider: AiProvider!): AdminAiProvider!
   clearAiProviderKey(provider: AiProvider!): AdminAiSettings!
   publishVanHanYear(year: Int!): AdminVanHanYear!

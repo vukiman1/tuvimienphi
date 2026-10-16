@@ -2,8 +2,10 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AiModule } from '../../ai/ai.module';
+import { ActivityModule } from '../activity/activity.module';
 import { ActivityLogEntity } from '../activity/entities/activity-log.entity';
 import { AuthIdentityEntity } from '../auth/entities/auth-identity.entity';
+import { CreditsModule } from '../credits/credits.module';
 import { UserSessionEntity } from '../auth/entities/user-session.entity';
 import { LaSoHistoryEntity } from '../la-so/entities/la-so-history.entity';
 import { UserEntity } from '../user/entities/user.entity';
@@ -30,6 +32,8 @@ import { AdminVanHanResolver } from './van-han/admin-van-han.resolver';
     GraphQLModule.forRoot(adminGraphqlOptions),
     VanHanModule,
     AiModule,
+    CreditsModule,
+    ActivityModule,
   ],
   providers: [
     AdminUsersService,
