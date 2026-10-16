@@ -1,5 +1,7 @@
-import { useNavigate, useRouterState } from '@tanstack/react-router';
-import { Flex, Layout, Menu, Typography } from 'antd';
+import { Link, useNavigate, useRouterState } from '@tanstack/react-router';
+import { ExportOutlined } from '@ant-design/icons';
+import { Button, Flex, Layout, Menu, Tooltip } from 'antd';
+import { env } from '@/config/env';
 import { NAV_ITEMS, activeNavPath, isNavPath } from './nav-items';
 import { SidebarAccount } from './sidebar-account';
 
@@ -7,6 +9,8 @@ const SIDER_WIDTH = 224;
 const BACKDROP_HEIGHT = 520;
 const BACKDROP_OPACITY = 0.45;
 const BACKDROP_FADE = 'linear-gradient(to bottom, transparent 0%, black 45%)';
+const LOGO_HEIGHT = 32;
+const CLIENT_LINK_LABEL = 'Xem trang web';
 
 export function Sidebar() {
   const navigate = useNavigate();
@@ -44,10 +48,21 @@ export function Sidebar() {
         }}
       />
 
-      <Flex align="center" justify="center" style={{ position: 'relative', height: 64 }}>
-        <Typography.Title level={5} style={{ margin: 0 }}>
-          Tử Vi
-        </Typography.Title>
+      <Flex align="center" justify="center" gap={8} style={{ position: 'relative', height: 64 }}>
+        <Link to="/">
+          <img src="/brand/logo.png" alt="Tử Vi" height={LOGO_HEIGHT} />
+        </Link>
+        <Tooltip title={CLIENT_LINK_LABEL}>
+          <Button
+            type="text"
+            size="small"
+            icon={<ExportOutlined />}
+            href={env.clientUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={CLIENT_LINK_LABEL}
+          />
+        </Tooltip>
       </Flex>
 
       <Menu
