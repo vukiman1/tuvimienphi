@@ -3,7 +3,8 @@ import type { LuanGiaiSection } from '@org/shared-contracts';
 import {
   buildCongDanhBrief,
   buildCongDanhMucBriefs,
-  type CongDanhMucBrief,
+  type CungMucBrief,
+  type PhuTinhMucKey,
   type NatalChart,
 } from '@org/shared-tu-vi';
 import { AiClient } from '../../ai/ai.client';
@@ -89,7 +90,7 @@ export class CongDanhGenerator {
   }
 
   private async sinhMuc(
-    brief: CongDanhMucBrief,
+    brief: CungMucBrief<PhuTinhMucKey>,
     budgetMs: number,
   ): Promise<LuanGiaiSection | null> {
     try {

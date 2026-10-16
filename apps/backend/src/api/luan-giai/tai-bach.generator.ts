@@ -4,7 +4,8 @@ import {
   buildTaiBachBrief,
   buildTaiBachMucBriefs,
   type NatalChart,
-  type TaiBachMucBrief,
+  type CungMucBrief,
+  type PhuTinhMucKey,
 } from '@org/shared-tu-vi';
 import { AiClient } from '../../ai/ai.client';
 import { assembleTaiBachArticle } from './assemble-tai-bach-article';
@@ -88,7 +89,10 @@ export class TaiBachGenerator {
     };
   }
 
-  private async sinhMuc(brief: TaiBachMucBrief, budgetMs: number): Promise<LuanGiaiSection | null> {
+  private async sinhMuc(
+    brief: CungMucBrief<PhuTinhMucKey>,
+    budgetMs: number,
+  ): Promise<LuanGiaiSection | null> {
     try {
       const ket = await sinhVoiKiem<MucParagraph>(
         this.ai,
