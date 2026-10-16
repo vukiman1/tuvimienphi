@@ -1,7 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Alert, DatePicker, Form, Input, InputNumber, Modal } from 'antd';
 import type { Dayjs } from 'dayjs';
-import { GIFT_CODE_MAX_LENGTH } from '@org/shared-contracts';
+import {
+  GIFT_CODE_MAX_LENGTH,
+  MAX_GIFT_CODE_CREDITS,
+  MAX_GIFT_CODE_REDEMPTIONS,
+} from '@org/shared-contracts';
 import { errorMessage } from '@/lib/api-error';
 import { rejectionReason } from '@/lib/graphql-request';
 import { GIFT_CODES_QUERY_KEY, createGiftCode } from '../data/admin-gift-codes.query';
@@ -19,8 +23,6 @@ interface GiftCodeFormValues {
 }
 
 const MIN_COUNT = 1;
-const MAX_CREDITS = 1000;
-const MAX_REDEMPTIONS = 100000;
 const EXPIRY_FORMAT = 'YYYY-MM-DD HH:mm';
 const CREATE_FAILED = 'Không tạo được giftcode.';
 const REQUIRED_MESSAGE = 'Bắt buộc.';
@@ -73,7 +75,7 @@ export function GiftCodeForm({ open, onClose }: GiftCodeFormProps) {
         >
           <InputNumber<number>
             min={MIN_COUNT}
-            max={MAX_CREDITS}
+            max={MAX_GIFT_CODE_CREDITS}
             precision={0}
             style={{ width: '100%' }}
           />
@@ -85,7 +87,7 @@ export function GiftCodeForm({ open, onClose }: GiftCodeFormProps) {
         >
           <InputNumber<number>
             min={MIN_COUNT}
-            max={MAX_REDEMPTIONS}
+            max={MAX_GIFT_CODE_REDEMPTIONS}
             precision={0}
             style={{ width: '100%' }}
           />

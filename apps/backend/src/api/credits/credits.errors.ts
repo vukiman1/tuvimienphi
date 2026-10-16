@@ -7,7 +7,7 @@ export class ChapterCreditsWouldGoNegativeError extends Error {
 
 export class ChapterCreditsUserNotFoundError extends Error {
   constructor(userId: string) {
-    super(`Cannot grant chapter credits: user ${userId} not found`);
+    super(`Cannot change chapter credits: user ${userId} not found`);
     this.name = 'ChapterCreditsUserNotFoundError';
   }
 }

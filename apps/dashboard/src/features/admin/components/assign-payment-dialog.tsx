@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Alert, Flex, Input, InputNumber, Modal, Typography } from 'antd';
 import { formatNumber } from '@org/frontend-shared';
+import { MAX_ASSIGNED_CREDITS, MIN_ASSIGNED_CREDITS } from '@org/shared-contracts';
 import { errorMessage } from '@/lib/api-error';
 import { rejectionReason } from '@/lib/graphql-request';
 import {
@@ -15,8 +16,6 @@ interface AssignPaymentDialogProps {
   readonly onClose: () => void;
 }
 
-const MIN_CREDITS = 1;
-const MAX_CREDITS = 1000;
 const ASSIGN_FAILED = 'Không cộng được lượt.';
 
 export function AssignPaymentDialog({ payment, onClose }: AssignPaymentDialogProps) {
@@ -24,7 +23,7 @@ export function AssignPaymentDialog({ payment, onClose }: AssignPaymentDialogPro
   const [userEmail, setUserEmail] = useState('');
   const [editedCredits, setEditedCredits] = useState<number | null>(null);
 
-  const credits = editedCredits ?? Math.max(MIN_CREDITS, payment?.suggestedCredits ?? 0);
+  const credits = editedCredits ?? Math.max(MIN_ASSIGNED_CREDITS, payment?.suggestedCredits ?? 0);
 
   const assignment = useMutation({
     mutationFn: (paymentId: string) =>
@@ -35,7 +34,7 @@ export function AssignPaymentDialog({ payment, onClose }: AssignPaymentDialogPro
     },
   });
 
-  const canSave = userEmail.trim() !== '' && credits >= MIN_CREDITS;
+  const canSave = userEmail.trim() !== '' && credits >= MIN_ASSIGNED_CREDITS;
 
   return (
     <Modal
@@ -66,11 +65,11 @@ export function AssignPaymentDialog({ payment, onClose }: AssignPaymentDialogPro
         />
         <InputNumber<number>
           value={credits}
-          min={MIN_CREDITS}
-          max={MAX_CREDITS}
+          min={MIN_ASSIGNED_CREDITS}
+          max={MAX_ASSIGNED_CREDITS}
           precision={0}
           style={{ width: '100%' }}
-          onChange={(value) => setEditedCredits(value ?? MIN_CREDITS)}
+          onChange={(value) => setEditedCredits(value ?? MIN_ASSIGNED_CREDITS)}
         />
         {assignment.isError ? (
           <Alert

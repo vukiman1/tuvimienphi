@@ -11,7 +11,7 @@ import {
   GiftCodeNotFoundError,
   GiftCodeUsedUpError,
 } from './gift-code.errors';
-import { GiftCodeService, normalizeGiftCode } from './gift-code.service';
+import { GiftCodeService } from './gift-code.service';
 
 const USER_ID = 'user-1';
 const GIFT_CODE_ID = 'gift-1';
@@ -243,11 +243,5 @@ describe('GiftCodeService admin management', () => {
     findOneBy.mockResolvedValue(null);
 
     await expect(service.setActive(GIFT_CODE_ID, true)).rejects.toThrow('Không tìm thấy giftcode.');
-  });
-});
-
-describe('normalizeGiftCode', () => {
-  it('trims and uppercases', () => {
-    expect(normalizeGiftCode('  summer25 ')).toBe(CODE);
   });
 });

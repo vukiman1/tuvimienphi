@@ -14,12 +14,11 @@ import {
   GiftCodeNotFoundError,
   GiftCodeUsedUpError,
 } from './gift-code.errors';
+import { normalizeGiftCode } from './normalize-gift-code';
 
 const REDEMPTION_INCREMENT = 1;
 const DUPLICATE_CODE_MESSAGE = 'Mã này đã tồn tại.';
 const GIFT_CODE_NOT_FOUND_MESSAGE = 'Không tìm thấy giftcode.';
-
-export const normalizeGiftCode = (raw: string): string => raw.trim().toUpperCase();
 
 export interface NewGiftCode {
   readonly code?: string;

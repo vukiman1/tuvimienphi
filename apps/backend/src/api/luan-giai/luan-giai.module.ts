@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { RedisModule } from '@org/backend-redis';
 import { AiModule } from '../../ai/ai.module';
 import { CreditsModule } from '../credits/credits.module';
 import { CongDanhGenerator } from './cong-danh.generator';
@@ -18,12 +17,7 @@ import { ThanCuGenerator } from './than-cu.generator';
  * hai bên.
  */
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([LuanGiaiChapterEntity]),
-    RedisModule,
-    AiModule,
-    CreditsModule,
-  ],
+  imports: [TypeOrmModule.forFeature([LuanGiaiChapterEntity]), AiModule, CreditsModule],
   controllers: [LuanGiaiController],
   providers: [
     LuanGiaiService,

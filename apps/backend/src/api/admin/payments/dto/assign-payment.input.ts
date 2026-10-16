@@ -1,8 +1,6 @@
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
+import { MAX_ASSIGNED_CREDITS, MIN_ASSIGNED_CREDITS } from '@org/shared-contracts';
 import { IsEmail, IsInt, IsUUID, Max, Min } from 'class-validator';
-
-export const MIN_ASSIGNED_CREDITS = 1;
-export const MAX_ASSIGNED_CREDITS = 1000;
 
 @InputType()
 export class AssignPaymentInput {

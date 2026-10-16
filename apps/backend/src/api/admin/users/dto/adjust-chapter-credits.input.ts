@@ -1,7 +1,6 @@
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
+import { MAX_CREDIT_ADJUSTMENT } from '@org/shared-contracts';
 import { IsInt, IsUUID, Max, Min, NotEquals } from 'class-validator';
-
-export const MAX_CREDIT_ADJUSTMENT = 1000;
 
 @InputType()
 export class AdjustChapterCreditsInput {

@@ -1,5 +1,6 @@
 import { Button, Tag, Typography, type TableProps } from 'antd';
 import { formatNumber } from '@org/frontend-shared';
+import { formatDateTime } from '@/lib/format-date-time';
 import type { PaymentStatus, UnmatchedReason } from '@/gql/graphql';
 import type { AdminPaymentRow } from '../data/admin-payments.query';
 
@@ -21,14 +22,6 @@ const STATUS_COLOR = {
   Unmatched: 'orange',
 } as const satisfies Record<PaymentStatus, string>;
 
-const dateTimeFormatter = new Intl.DateTimeFormat('vi-VN', {
-  day: '2-digit',
-  month: '2-digit',
-  year: 'numeric',
-  hour: '2-digit',
-  minute: '2-digit',
-});
-
 export function buildPaymentsColumns(
   onAssign: (payment: AdminPaymentRow) => void,
 ): TableProps<AdminPaymentRow>['columns'] {
@@ -38,7 +31,7 @@ export function buildPaymentsColumns(
       title: 'Thời gian',
       dataIndex: 'transactionAt',
       width: 160,
-      render: (transactionAt: string) => dateTimeFormatter.format(new Date(transactionAt)),
+      render: formatDateTime,
     },
     {
       key: 'amountVnd',
