@@ -28,12 +28,27 @@ type MotY = readonly [y: string, ...tuKhoa: string[]];
  * luận thuận gì, nghịch gì", không phải lần qua tám dòng object cho mỗi mệnh đề.
  */
 export function cell(sao: ChinhTinhName, thuan: MotY, nghich: MotY): CellLuan {
-  const [yThuan, ...tuKhoaThuan] = thuan;
-  const [yNghich, ...tuKhoaNghich] = nghich;
+  return { chung: [menhDeThuan(sao, thuan), menhDeNghich(sao, nghich)] };
+}
+
+export function cellTheoDoSang(
+  sao: ChinhTinhName,
+  thuan: MotY,
+  nghich: MotY,
+  khiSang: MotY,
+  khiHam: MotY,
+): CellLuan {
+  const sang = [menhDeThuan(sao, khiSang)];
   return {
-    chung: [
-      { y: yThuan, do: [sao], sac: Sac.Thuan, trong: TRONG_THUAN, tuKhoa: tuKhoaThuan },
-      { y: yNghich, do: [sao], sac: Sac.Nghich, trong: TRONG_NGHICH, tuKhoa: tuKhoaNghich },
-    ],
+    ...cell(sao, thuan, nghich),
+    theoBac: { M: sang, V: sang, Đ: sang, H: [menhDeNghich(sao, khiHam)] },
   };
+}
+
+function menhDeThuan(sao: ChinhTinhName, [y, ...tuKhoa]: MotY): LuanDe {
+  return { y, do: [sao], sac: Sac.Thuan, trong: TRONG_THUAN, tuKhoa };
+}
+
+function menhDeNghich(sao: ChinhTinhName, [y, ...tuKhoa]: MotY): LuanDe {
+  return { y, do: [sao], sac: Sac.Nghich, trong: TRONG_NGHICH, tuKhoa };
 }
