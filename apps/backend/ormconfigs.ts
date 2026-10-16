@@ -11,6 +11,7 @@ import { UserSessionEntity } from './src/api/auth/entities/user-session.entity';
 import { UserTotpEntity } from './src/api/auth/entities/user-totp.entity';
 import { UserRecoveryCodeEntity } from './src/api/auth/entities/user-recovery-code.entity';
 import { AuthIdentityEntity } from './src/api/auth/entities/auth-identity.entity';
+import { PaymentEntity } from './src/api/payment/entities/payment.entity';
 import { VanHanEntity } from './src/api/van-han/entities/van-han.entity';
 import { VanHanPublishedYearEntity } from './src/api/van-han/entities/van-han-published-year.entity';
 
@@ -75,6 +76,7 @@ export const options: DataSourceOptions = {
     AiProviderEntity,
     AiUsageDailyEntity,
     AiCallEntity,
+    PaymentEntity,
   ],
   migrationsTableName: 'migrations',
   migrations: [join(__dirname, `src/migrations/*.${migrationExtension}`)],
