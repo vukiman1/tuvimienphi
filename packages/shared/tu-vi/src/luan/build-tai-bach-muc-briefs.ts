@@ -2,7 +2,8 @@ import type { NatalChart } from '../cast-chart.js';
 import { isHungTinh } from '../sao-cat-hung.js';
 import type { PhuTinhName } from '../sao-names.js';
 import { PHU_TINH_TAI_BACH } from './bang/tai-bach/phu-tinh-tai-bach.js';
-import { buildTaiBachBrief, taiBachIndexOf, type TaiBachBrief } from './build-tai-bach-brief.js';
+import { cungIndexOf, type CungBrief } from './build-cung-brief.js';
+import { buildTaiBachBrief } from './build-tai-bach-brief.js';
 import type { MucExtras } from './chapter-brief.js';
 import { type LuanDe } from './luan-de.js';
 import { theCungAt, type TheChieu } from './the-cung.js';
@@ -12,7 +13,7 @@ export enum TaiBachMucKey {
   DiemCanGiu = 'diem-can-giu',
 }
 
-export interface TaiBachMucBrief extends TaiBachBrief, MucExtras<TaiBachMucKey> {}
+export interface TaiBachMucBrief extends CungBrief, MucExtras<TaiBachMucKey> {}
 
 const TOI_THIEU_MENH_DE = 2;
 const TRAN_MENH_DE = 3;
@@ -22,7 +23,7 @@ function catBot(luan: readonly LuanDe[]): LuanDe[] {
 }
 
 function phuTinhTheoVai(chart: NatalChart, muonHung: boolean): LuanDe[] {
-  const the = theCungAt(chart, taiBachIndexOf(chart));
+  const the = theCungAt(chart, cungIndexOf(chart, 'Tài Bạch'));
   const luan = the.phuTinh
     .filter((sao) => isHungTinh(sao.name) === muonHung)
     .map((sao) => PHU_TINH_TAI_BACH[sao.name])
@@ -39,7 +40,7 @@ function saoCuaMuc(
   catTinh: { ten: PhuTinhName; the: TheChieu }[];
 } {
   const daDung = new Set(luan.flatMap((de) => de.do));
-  const trongBai = theCungAt(chart, taiBachIndexOf(chart))
+  const trongBai = theCungAt(chart, cungIndexOf(chart, 'Tài Bạch'))
     .phuTinh.filter((sao) => daDung.has(sao.name))
     .map((sao) => ({ ten: sao.name, the: sao.the }));
 

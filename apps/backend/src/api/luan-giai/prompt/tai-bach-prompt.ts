@@ -1,4 +1,4 @@
-import type { TaiBachBrief } from '@org/shared-tu-vi';
+import type { CungBrief } from '@org/shared-tu-vi';
 import type { AiMessage } from '../../../ai/ai.types';
 import type { ThanCuParagraphs } from './chapter-schema';
 import { serializeBriefForPrompt } from './serialize-brief';
@@ -64,7 +64,7 @@ QUY TẮC HÌNH THỨC:
 6. anNgu khác null: giọng tiết chế, không tuyệt đối hoá. Không gọi tên "Tuần" hay "Triệt" trong bài.`;
 
 export function buildTaiBachMessages(
-  brief: TaiBachBrief,
+  brief: CungBrief,
   daThu: readonly { readonly paragraphs: ThanCuParagraphs; readonly loi: readonly string[] }[],
 ): AiMessage[] {
   const messages: AiMessage[] = [{ role: 'user', text: serializeBriefForPrompt(brief) }];

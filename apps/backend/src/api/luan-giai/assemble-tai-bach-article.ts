@@ -1,5 +1,5 @@
 import type { LuanGiaiArticle, LuanGiaiSection } from '@org/shared-contracts';
-import { Gender, type TaiBachBrief } from '@org/shared-tu-vi';
+import { Gender, type CungBrief } from '@org/shared-tu-vi';
 import type { ThanCuParagraphs } from './prompt/chapter-schema';
 import {
   KHUNG_TAI_BACH,
@@ -11,7 +11,7 @@ import {
 const NHAN_GIOI_TINH: Record<Gender, string> = { [Gender.Nam]: 'Nam', [Gender.Nu]: 'Nữ' };
 
 export function assembleTaiBachArticle(
-  brief: TaiBachBrief,
+  brief: CungBrief,
   paragraphs: ThanCuParagraphs,
   sections: readonly LuanGiaiSection[] = [],
 ): LuanGiaiArticle {

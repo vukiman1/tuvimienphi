@@ -1,7 +1,8 @@
 import { castNatal, type NatalChart } from '../cast-chart.js';
 import { tamHopIndexes, xungChieuIndex } from '../chi.js';
 import { Gender } from '../van-han.js';
-import { buildCongDanhBrief, quanLocIndexOf } from './build-cong-danh-brief.js';
+import { buildCongDanhBrief } from './build-cong-danh-brief.js';
+import { cungIndexOf } from './build-cung-brief.js';
 import { Sac } from './luan-de.js';
 import { TheChieu } from './the-cung.js';
 
@@ -77,7 +78,7 @@ describe('buildCongDanhBrief', () => {
       menhIndex: number;
       cungs: { chinhTinh: unknown[]; chinhTinhMuon: unknown[]; phuTinh: unknown[] }[];
     };
-    const quanLocIndex = quanLocIndexOf(tron as unknown as NatalChart);
+    const quanLocIndex = cungIndexOf(tron as unknown as NatalChart, 'Quan Lộc');
     const [tamHopA, tamHopB] = tamHopIndexes(quanLocIndex);
     for (const index of [quanLocIndex, xungChieuIndex(quanLocIndex), tamHopA, tamHopB]) {
       tron.cungs[index].chinhTinh = [];
