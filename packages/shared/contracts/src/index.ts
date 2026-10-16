@@ -218,3 +218,4 @@ export * from './birth-input.js';
 export * from './la-so-history.js';
 export * from './luan-giai.js';
 export * from './avatar.js';
+export * from './credits.js';

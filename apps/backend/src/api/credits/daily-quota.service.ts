@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { RedisService } from '@org/backend-redis';
-import { DAILY_CHAPTER_QUOTA, QUOTA_WINDOW_SECONDS } from './luan-giai.constants';
+import { DAILY_CHAPTER_QUOTA, QUOTA_WINDOW_SECONDS } from './credits.constants';
 
 /**
  * Đọc rồi tăng trong một lệnh: hai request cùng lúc của một người không được cùng thấy còn suất
@@ -26,12 +26,17 @@ function keyFor(userId: string): string {
 }
 
 @Injectable()
-export class ChapterQuotaService {
+export class DailyQuotaService {
   constructor(private readonly redis: RedisService) {}
 
   /** Hoàn lại suất khi lượt sinh hỏng — người dùng không nên mất suất vì lỗi của hệ thống. */
   async refund(userId: string): Promise<void> {
     await this.redis.eval(REFUND, 1, keyFor(userId));
+  }
+
+  async remaining(userId: string): Promise<number> {
+    const used = Number((await this.redis.get(keyFor(userId))) ?? '0');
+    return Math.max(0, DAILY_CHAPTER_QUOTA - used);
   }
 
   async consume(userId: string): Promise<boolean> {

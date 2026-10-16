@@ -11,6 +11,7 @@ import { RedisModule } from '@org/backend-redis';
 import { join } from 'path';
 import { AdminModule } from '../api/admin/admin.module';
 import { AuthModule } from '../api/auth/auth.module';
+import { CreditsModule } from '../api/credits/credits.module';
 import { LaSoModule } from '../api/la-so/la-so.module';
 import { LuanGiaiModule } from '../api/luan-giai/luan-giai.module';
 import { UserModule } from '../api/user/user.module';
@@ -55,6 +56,7 @@ import { queueBoardRootImports } from './queue-board-registration';
     UserModule,
     LaSoModule,
     LuanGiaiModule,
+    CreditsModule,
     RedisModule,
     HealthModule,
     QueueModule,
