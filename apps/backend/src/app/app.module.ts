@@ -14,6 +14,7 @@ import { AuthModule } from '../api/auth/auth.module';
 import { CreditsModule } from '../api/credits/credits.module';
 import { LaSoModule } from '../api/la-so/la-so.module';
 import { LuanGiaiModule } from '../api/luan-giai/luan-giai.module';
+import { PaymentModule } from '../api/payment/payment.module';
 import { UserModule } from '../api/user/user.module';
 import { EmailModule } from '../email/email.module';
 import { StorageModule } from '../storage/storage.module';
@@ -57,6 +58,7 @@ import { queueBoardRootImports } from './queue-board-registration';
     LaSoModule,
     LuanGiaiModule,
     CreditsModule,
+    PaymentModule,
     RedisModule,
     HealthModule,
     QueueModule,
