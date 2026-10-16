@@ -1,5 +1,10 @@
 import { queryOptions } from '@tanstack/react-query';
-import type { CreditCheckout, CreditSummary } from '@org/shared-contracts';
+import type {
+  CreditCheckout,
+  CreditSummary,
+  RedeemGiftCodeRequest,
+  RedeemGiftCodeResponse,
+} from '@org/shared-contracts';
 import { ApiError } from '@/lib/api-error';
 import { httpRequest } from '@/lib/http-request';
 
@@ -19,6 +24,11 @@ export const creditsQueries = {
       staleTime: Infinity,
     }),
 };
+
+export function redeemGiftCode(code: string): Promise<RedeemGiftCodeResponse> {
+  const body: RedeemGiftCodeRequest = { code };
+  return httpRequest.post<RedeemGiftCodeResponse>('/credits/gift-code', body);
+}
 
 export function isOutOfLuot(error: unknown): boolean {
   return error instanceof ApiError && error.statusCode === HTTP_PAYMENT_REQUIRED;

@@ -5,7 +5,7 @@ import { httpRequest } from '@/lib/http-request';
 import { TopUpDialog } from './top-up-dialog';
 
 jest.mock('@/lib/http-request', () => ({
-  httpRequest: { get: jest.fn() },
+  httpRequest: { get: jest.fn(), post: jest.fn() },
 }));
 
 const POLL_INTERVAL_MS = 3_000;
@@ -73,6 +73,25 @@ describe('TopUpDialog', () => {
     await act(() => jest.advanceTimersByTimeAsync(POLL_INTERVAL_MS));
 
     expect(await screen.findByText('Đã nhận! Bạn có 5 lượt.')).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Xem luận giải' }));
+    expect(onToppedUp).toHaveBeenCalledTimes(1);
+  });
+
+  it('shows the gift-code copy, not the paid copy, after a redemption raises the balance', async () => {
+    mockEndpoints([summary(0), summary(5), summary(5)]);
+    jest
+      .mocked(httpRequest.post)
+      .mockResolvedValue({ creditsGranted: 5, chapterCredits: 5 } as never);
+    const onToppedUp = jest.fn();
+
+    renderDialog(onToppedUp);
+    await screen.findByRole('img');
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'WELCOME5' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Áp dụng' }));
+
+    expect(await screen.findByText('Đã cộng 5 lượt.')).toBeTruthy();
+    await act(() => jest.advanceTimersByTimeAsync(POLL_INTERVAL_MS));
+    expect(screen.queryByText(/Đã nhận!/)).toBeNull();
     fireEvent.click(screen.getByRole('button', { name: 'Xem luận giải' }));
     expect(onToppedUp).toHaveBeenCalledTimes(1);
   });
