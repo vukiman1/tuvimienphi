@@ -4,6 +4,11 @@ type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 /** Internal type. DO NOT USE DIRECTLY. */
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 import { DocumentTypeDecoration } from '@graphql-typed-document-node/core';
+export type AdjustChapterCreditsInput = {
+  delta: number;
+  userId: string | number;
+};
+
 export type AdminUserSortField =
   | 'BALANCE'
   | 'CREATED_AT'
@@ -191,7 +196,14 @@ export type AdminUsersQueryVariables = Exact<{
 }>;
 
 
-export type AdminUsersQuery = { users: { total: number, users: Array<{ id: string, email: string, displayName: string | null, avatar: string | null, role: Role, isEmailVerified: boolean, balance: number, createdAt: string, genCount: number, lastActiveAt: string | null }> } };
+export type AdminUsersQuery = { users: { total: number, users: Array<{ id: string, email: string, displayName: string | null, avatar: string | null, role: Role, isEmailVerified: boolean, balance: number, chapterCredits: number, createdAt: string, genCount: number, lastActiveAt: string | null }> } };
+
+export type AdjustChapterCreditsMutationVariables = Exact<{
+  input: AdjustChapterCreditsInput;
+}>;
+
+
+export type AdjustChapterCreditsMutation = { adjustChapterCredits: { userId: string, chapterCredits: number } };
 
 export type VanHanYearsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -526,6 +538,7 @@ export const AdminUsersDocument = new TypedDocumentString(`
       role
       isEmailVerified
       balance
+      chapterCredits
       createdAt
       genCount
       lastActiveAt
@@ -533,6 +546,14 @@ export const AdminUsersDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<AdminUsersQuery, AdminUsersQueryVariables>;
+export const AdjustChapterCreditsDocument = new TypedDocumentString(`
+    mutation AdjustChapterCredits($input: AdjustChapterCreditsInput!) {
+  adjustChapterCredits(input: $input) {
+    userId
+    chapterCredits
+  }
+}
+    `) as unknown as TypedDocumentString<AdjustChapterCreditsMutation, AdjustChapterCreditsMutationVariables>;
 export const VanHanYearsDocument = new TypedDocumentString(`
     query VanHanYears {
   vanHanYears {

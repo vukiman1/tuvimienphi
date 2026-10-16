@@ -36,10 +36,20 @@ export const adminUsersDocument = graphql(`
         role
         isEmailVerified
         balance
+        chapterCredits
         createdAt
         genCount
         lastActiveAt
       }
+    }
+  }
+`);
+
+export const adjustChapterCreditsDocument = graphql(`
+  mutation AdjustChapterCredits($input: AdjustChapterCreditsInput!) {
+    adjustChapterCredits(input: $input) {
+      userId
+      chapterCredits
     }
   }
 `);

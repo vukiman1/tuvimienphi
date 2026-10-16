@@ -15,6 +15,9 @@ export const ACTIVITY_LABEL: Record<string, string> = {
   'auth.two_factor.disabled': 'đã tắt xác thực hai lớp',
   'auth.two_factor.recovery_requested': 'yêu cầu mã khôi phục',
   'auth.two_factor.recovered': 'đã khôi phục bằng mã dự phòng',
+  'credits.adjusted': 'được chỉnh lượt',
+  'credits.purchased': 'đã mua lượt',
+  'credits.gift_redeemed': 'đã nhập giftcode',
   'la-so.viewed': 'xem lá số',
 };
 

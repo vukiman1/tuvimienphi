@@ -1,4 +1,4 @@
-import { Avatar, Flex, Tag, Typography, type TableProps } from 'antd';
+import { Avatar, Button, Flex, Tag, Typography, type TableProps } from 'antd';
 import { formatDate, formatNumber, initials } from '@org/frontend-shared';
 import type { Role } from '@/gql/graphql';
 import type { AdminUserRow, AdminUsersFilters } from '../data/admin-users.query';
@@ -36,7 +36,10 @@ const dateTimeFormatter = new Intl.DateTimeFormat('vi-VN', {
   minute: '2-digit',
 });
 
-export function buildUsersColumns(filters: AdminUsersFilters): TableProps<AdminUserRow>['columns'] {
+export function buildUsersColumns(
+  filters: AdminUsersFilters,
+  onAdjustCredits: (user: AdminUserRow) => void,
+): TableProps<AdminUserRow>['columns'] {
   return [
     {
       key: 'user',
@@ -84,6 +87,14 @@ export function buildUsersColumns(filters: AdminUsersFilters): TableProps<AdminU
       render: (balance: number) => formatNumber(balance),
     },
     {
+      key: 'chapterCredits',
+      title: 'Lượt mua',
+      dataIndex: 'chapterCredits',
+      width: 110,
+      align: 'right',
+      render: (chapterCredits: number) => formatNumber(chapterCredits),
+    },
+    {
       key: 'genCount',
       title: 'Lá số',
       dataIndex: 'genCount',
@@ -105,6 +116,16 @@ export function buildUsersColumns(filters: AdminUsersFilters): TableProps<AdminU
       width: 180,
       render: (lastActiveAt: string | null) =>
         lastActiveAt ? dateTimeFormatter.format(new Date(lastActiveAt)) : NO_ACTIVITY,
+    },
+    {
+      key: 'actions',
+      title: '',
+      width: 110,
+      render: (_, user) => (
+        <Button type="link" onClick={() => onAdjustCredits(user)}>
+          Chỉnh lượt
+        </Button>
+      ),
     },
   ];
 }
