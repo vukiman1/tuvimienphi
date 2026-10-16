@@ -22,6 +22,7 @@ import {
   CHAPTER_MENH,
   CHAPTER_TAI_BACH,
   CHAPTER_THAN_CU,
+  CHAPTER_TINH_DUYEN,
 } from './luan-giai.constants';
 import {
   ChapterGenerationFailedException,
@@ -31,6 +32,7 @@ import type { ChapterResult } from './chapter-generator';
 import type { CongDanhGenerator } from './cong-danh.generator';
 import type { MenhGenerator } from './menh.generator';
 import type { TaiBachGenerator } from './tai-bach.generator';
+import type { TinhDuyenGenerator } from './tinh-duyen.generator';
 import type { ThanCuGenerator } from './than-cu.generator';
 import { LuanGiaiService } from './luan-giai.service';
 
@@ -83,6 +85,10 @@ function dungService(overrides?: Overrides) {
     coTheSinh: jest.fn().mockReturnValue(true),
     generate: jest.fn().mockResolvedValue(KET),
   };
+  const generatorTinhDuyen = {
+    coTheSinh: jest.fn().mockReturnValue(true),
+    generate: jest.fn().mockResolvedValue(KET),
+  };
 
   return {
     service: new LuanGiaiService(
@@ -92,6 +98,7 @@ function dungService(overrides?: Overrides) {
       generatorMenh as unknown as MenhGenerator,
       generatorCongDanh as unknown as CongDanhGenerator,
       generatorTaiBach as unknown as TaiBachGenerator,
+      generatorTinhDuyen as unknown as TinhDuyenGenerator,
     ),
     repo,
     quota,
@@ -99,6 +106,7 @@ function dungService(overrides?: Overrides) {
     generatorMenh,
     generatorCongDanh,
     generatorTaiBach,
+    generatorTinhDuyen,
   };
 }
 
@@ -157,10 +165,20 @@ describe('LuanGiaiService.request', () => {
     expect(generator.generate).not.toHaveBeenCalled();
   });
 
+  it('sinh chương 05 bằng generator của chính chương đó', async () => {
+    const { service, generator, generatorTinhDuyen } = dungService();
+
+    const ket = await service.request('u1', CO_BANG, CHAPTER_TINH_DUYEN);
+
+    expect(ket).toEqual({ status: LuanGiaiChapterStatus.Ready, article: BAI });
+    expect(generatorTinhDuyen.generate).toHaveBeenCalledTimes(1);
+    expect(generator.generate).not.toHaveBeenCalled();
+  });
+
   it('báo unavailable cho chương chưa có bảng, không đụng tới database', async () => {
     const { service, repo, quota } = dungService();
 
-    const ket = await service.request('u1', CO_BANG, '05');
+    const ket = await service.request('u1', CO_BANG, '06');
 
     expect(ket).toEqual({ status: LuanGiaiChapterStatus.Unavailable });
     expect(repo.findOne).not.toHaveBeenCalled();
@@ -240,7 +258,7 @@ describe('LuanGiaiService.status', () => {
     const { chapters } = await service.status('1960-05-26-duong-h11-nam');
 
     expect(chapters[CHAPTER_THAN_CU]).toBe(LuanGiaiChapterStatus.Pending);
-    expect(chapters['05']).toBe(LuanGiaiChapterStatus.Unavailable);
+    expect(chapters['06']).toBe(LuanGiaiChapterStatus.Unavailable);
   });
 
   it('liệt kê đủ sáu chương để mục lục không bị thiếu ô', async () => {

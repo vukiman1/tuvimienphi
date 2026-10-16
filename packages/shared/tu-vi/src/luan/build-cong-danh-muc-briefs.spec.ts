@@ -1,6 +1,7 @@
 import { castNatal, type NatalChart } from '../cast-chart.js';
 import { Gender } from '../van-han.js';
-import { buildCongDanhMucBriefs, CongDanhMucKey } from './build-cong-danh-muc-briefs.js';
+import { PhuTinhMucKey } from './build-cung-muc-briefs.js';
+import { buildCongDanhMucBriefs } from './build-cong-danh-muc-briefs.js';
 
 const THIEN_LUONG: NatalChart = castNatal({
   solarDate: new Date(1953, 0, 25),
@@ -26,14 +27,14 @@ describe('buildCongDanhMucBriefs', () => {
     const mucs = buildCongDanhMucBriefs(THIEN_LUONG);
 
     expect(mucs.map((muc) => muc.muc).sort()).toEqual(
-      [CongDanhMucKey.DiemManh, CongDanhMucKey.DiemCanGiu].sort(),
+      [PhuTinhMucKey.DiemManh, PhuTinhMucKey.DiemCanGiu].sort(),
     );
   });
 
   it('bỏ hẳn mục không đủ hai mệnh đề thay vì trả một mục cụt', () => {
     const mucs = buildCongDanhMucBriefs(DIEM_MANH_MONG);
 
-    expect(mucs.map((muc) => muc.muc)).toEqual([CongDanhMucKey.DiemCanGiu]);
+    expect(mucs.map((muc) => muc.muc)).toEqual([PhuTinhMucKey.DiemCanGiu]);
   });
 
   it('liệt kê sao đứng sau mệnh đề của chính mục đó, không phải sao của bài chính', () => {

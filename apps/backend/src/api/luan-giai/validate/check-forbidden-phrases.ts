@@ -24,12 +24,21 @@ const VAN_HANH_CHINH = [
   'khi xét qua',
 ] as const;
 
+const VO_CHONG_O_CUNG_PHU_THE = /(?<!\p{L})(vợ|chồng)(?!\p{L}|\s(?:chất|chéo))/u;
+
 function tim(bai: BaiCanKiem, cam: readonly string[]): string[] {
   return bai.doan.flatMap((doan, chiSo) => {
     const thuong = doan.toLowerCase();
     return cam
       .filter((cum) => thuong.includes(cum))
       .map((cum) => `đoạn ${chiSo + 1}: dùng cụm bị cấm "${cum}"`);
+  });
+}
+
+function timVoChong(bai: BaiCanKiem): string[] {
+  return bai.doan.flatMap((doan, chiSo) => {
+    const khop = VO_CHONG_O_CUNG_PHU_THE.exec(doan.toLowerCase());
+    return khop ? [`đoạn ${chiSo + 1}: dùng cụm bị cấm "${khop[1]}"`] : [];
   });
 }
 
@@ -41,7 +50,11 @@ function tim(bai: BaiCanKiem, cam: readonly string[]): string[] {
  * tầng kiểm nào gác thì mô hình bỏ qua.
  */
 export function checkForbiddenPhrases(brief: ChapterBrief, bai: BaiCanKiem): string[] {
-  return tim(bai, [...(brief.cung === 'Mệnh' ? [] : CHI_DUNG_O_CUNG_MENH), ...HUA_HEN_VO_CAN_CU]);
+  const cumBiCam = tim(bai, [
+    ...(brief.cung === 'Mệnh' ? [] : CHI_DUNG_O_CUNG_MENH),
+    ...HUA_HEN_VO_CAN_CU,
+  ]);
+  return brief.cung === 'Phu Thê' ? [...cumBiCam, ...timVoChong(bai)] : cumBiCam;
 }
 
 /**
