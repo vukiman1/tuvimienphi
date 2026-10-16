@@ -1,0 +1,91 @@
+import { act, fireEvent, render, screen } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import type { CreditCheckout, CreditSummary } from '@org/shared-contracts';
+import { httpRequest } from '@/lib/http-request';
+import { TopUpDialog } from './top-up-dialog';
+
+jest.mock('@/lib/http-request', () => ({
+  httpRequest: { get: jest.fn() },
+}));
+
+const POLL_INTERVAL_MS = 3_000;
+
+const CHECKOUT: CreditCheckout = {
+  qrImageUrl: 'https://qr.sepay.vn/img?acc=123&amount=5000',
+  bankCode: 'MBBank',
+  accountNumber: '0123456789',
+  accountName: 'NGUYEN VAN A',
+  amountVnd: 5_000,
+  transferContent: 'TVMP AB23CD45',
+  creditsPerPayment: 5,
+};
+
+function summary(chapterCredits: number): CreditSummary {
+  return { dailyLimit: 3, dailyRemaining: 0, chapterCredits };
+}
+
+function mockEndpoints(summaries: readonly CreditSummary[]): void {
+  let summaryCalls = 0;
+  jest.mocked(httpRequest.get).mockImplementation((async (path: string) => {
+    if (path === '/credits/checkout') return CHECKOUT;
+    const next = summaries[Math.min(summaryCalls, summaries.length - 1)];
+    summaryCalls += 1;
+    return next;
+  }) as never);
+}
+
+function renderDialog(onToppedUp: () => void = jest.fn()): void {
+  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  render(
+    <QueryClientProvider client={queryClient}>
+      <TopUpDialog onOpenChange={jest.fn()} onToppedUp={onToppedUp} open />
+    </QueryClientProvider>,
+  );
+}
+
+describe('TopUpDialog', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.useFakeTimers();
+  });
+  afterEach(() => jest.useRealTimers());
+
+  it('shows the QR and transfer content from checkout', async () => {
+    mockEndpoints([summary(0)]);
+
+    renderDialog();
+
+    const qr = await screen.findByRole('img');
+    expect(qr.getAttribute('src')).toBe(CHECKOUT.qrImageUrl);
+    expect(screen.getByText(CHECKOUT.transferContent)).toBeTruthy();
+    expect(screen.getByText(CHECKOUT.accountNumber)).toBeTruthy();
+    expect(screen.getByText(/Chuyển khoản 5\.000đ để nhận thêm 5 lượt/)).toBeTruthy();
+  });
+
+  it('announces the top-up once the credit balance rises', async () => {
+    mockEndpoints([summary(0), summary(5)]);
+    const onToppedUp = jest.fn();
+
+    renderDialog(onToppedUp);
+    await screen.findByRole('img');
+    expect(screen.queryByText(/Đã nhận!/)).toBeNull();
+
+    await act(() => jest.advanceTimersByTimeAsync(POLL_INTERVAL_MS));
+
+    expect(await screen.findByText('Đã nhận! Bạn có 5 lượt.')).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Xem luận giải' }));
+    expect(onToppedUp).toHaveBeenCalledTimes(1);
+  });
+
+  it('copies the transfer content to the clipboard', async () => {
+    mockEndpoints([summary(0)]);
+    const writeText = jest.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true });
+
+    renderDialog();
+    await screen.findByRole('img');
+    fireEvent.click(screen.getByRole('button', { name: 'Sao chép nội dung chuyển khoản' }));
+
+    expect(writeText).toHaveBeenCalledWith(CHECKOUT.transferContent);
+  });
+});
