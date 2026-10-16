@@ -12,6 +12,7 @@ import { join } from 'path';
 import { AdminModule } from '../api/admin/admin.module';
 import { AuthModule } from '../api/auth/auth.module';
 import { CreditsModule } from '../api/credits/credits.module';
+import { GiftCodeModule } from '../api/gift-code/gift-code.module';
 import { LaSoModule } from '../api/la-so/la-so.module';
 import { LuanGiaiModule } from '../api/luan-giai/luan-giai.module';
 import { PaymentModule } from '../api/payment/payment.module';
@@ -59,6 +60,7 @@ import { queueBoardRootImports } from './queue-board-registration';
     LuanGiaiModule,
     CreditsModule,
     PaymentModule,
+    GiftCodeModule,
     RedisModule,
     HealthModule,
     QueueModule,

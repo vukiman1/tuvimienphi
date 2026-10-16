@@ -13,3 +13,14 @@ export interface CreditCheckout {
   readonly transferContent: string;
   readonly creditsPerPayment: number;
 }
+
+export const GIFT_CODE_MAX_LENGTH = 32;
+
+export interface RedeemGiftCodeRequest {
+  readonly code: string;
+}
+
+export interface RedeemGiftCodeResponse {
+  readonly creditsGranted: number;
+  readonly chapterCredits: number;
+}
