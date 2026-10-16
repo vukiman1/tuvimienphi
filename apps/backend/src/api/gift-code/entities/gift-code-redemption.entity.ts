@@ -11,7 +11,11 @@ export class GiftCodeRedemptionEntity {
   })
   giftCodeId!: string;
 
-  @PrimaryColumn({ name: 'user_id', type: 'uuid' })
+  @PrimaryColumn({
+    name: 'user_id',
+    type: 'uuid',
+    primaryKeyConstraintName: 'PK_gift_code_redemption',
+  })
   userId!: string;
 
   @ManyToOne(() => GiftCodeEntity, { onDelete: 'CASCADE' })
