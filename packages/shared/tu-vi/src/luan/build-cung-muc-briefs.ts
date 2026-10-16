@@ -50,6 +50,18 @@ function saoCuaMuc(
   };
 }
 
+export function buildCungMucBrief<K extends string>(
+  chart: NatalChart,
+  bang: CungLuanBang,
+  muc: K,
+  tieuDe: string,
+): CungMucBrief<K> | null {
+  const goc = buildCungBrief(chart, bang);
+  if (!goc) return null;
+
+  return { ...goc, muc, tieuDe, sourceCung: `${bang.cung} · ${goc.chi}`, duKien: [] };
+}
+
 export function buildPhuTinhMucBriefs(
   chart: NatalChart,
   bang: CungLuanBang,
@@ -79,7 +91,7 @@ export function buildPhuTinhMucBriefs(
       muc: mot.muc,
       tieuDe: mot.tieuDe,
       sourceCung: `${bang.cung} · ${goc.chi}`,
-      duKien: [] as string[],
+      duKien: [],
       luan: mot.luan,
     }));
 }
