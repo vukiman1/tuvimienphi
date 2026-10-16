@@ -1,11 +1,12 @@
 import { BaseEntity } from '@org/backend-base';
 import { Roles } from '@org/backend-enum';
 import { Exclude } from 'class-transformer';
-import { BeforeInsert, BeforeUpdate, Column, Entity, Index, Unique } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Check, Column, Entity, Index, Unique } from 'typeorm';
 import * as argon2 from 'argon2';
 
 const ARGON2_HASH_PREFIX = '$argon2';
 
+@Check('CHK_users_chapter_credits_non_negative', '"chapter_credits" >= 0')
 @Entity('users')
 @Unique(['email'])
 @Index('fulltext_index', ['email'], { fulltext: true })
