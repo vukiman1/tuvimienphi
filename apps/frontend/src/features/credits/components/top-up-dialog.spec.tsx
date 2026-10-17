@@ -159,4 +159,18 @@ describe('TopUpDialog', () => {
 
     expect(writeText).toHaveBeenCalledWith(CHECKOUT.transferContent);
   });
+
+  it('tells the person when copying fails', async () => {
+    mockEndpoints([summary(0)]);
+    const writeText = jest.fn().mockRejectedValue(new Error('denied'));
+    Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true });
+
+    renderDialog();
+    await screen.findByRole('img');
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Sao chép nội dung chuyển khoản' }));
+    });
+
+    expect(screen.getByRole('alert').textContent).toBe('Không sao chép được, bạn hãy tự gõ.');
+  });
 });
