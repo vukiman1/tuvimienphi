@@ -19,7 +19,7 @@ export class PaymentEntity {
   @Column({ type: 'text' })
   content!: string;
 
-  @Column({ name: 'reference_code', type: 'varchar', length: 64 })
+  @Column({ name: 'reference_code', type: 'text' })
   referenceCode!: string;
 
   @Column({ type: 'varchar', length: 12 })

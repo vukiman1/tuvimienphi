@@ -16,6 +16,16 @@ describe('parseSepayWebhook', () => {
     expect(transaction).toEqual(VALID_PAYLOAD);
   });
 
+  it('stores a transfer whose content is null as an unmatched payment without a code', () => {
+    const transaction = parseSepayWebhook({ ...VALID_PAYLOAD, content: null });
+    expect(transaction.content).toBe('');
+  });
+
+  it('accepts a transfer without a reference code', () => {
+    const transaction = parseSepayWebhook({ ...VALID_PAYLOAD, referenceCode: undefined });
+    expect(transaction.referenceCode).toBe('');
+  });
+
   it('rejects a payload without an id', () => {
     expect(() => parseSepayWebhook({ ...VALID_PAYLOAD, id: undefined })).toThrow(
       InvalidSepayPayloadError,
