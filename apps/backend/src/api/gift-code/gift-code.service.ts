@@ -96,15 +96,15 @@ export class GiftCodeService {
       .where('gift.code = :code', { code })
       .getOne();
     if (!giftCode || !giftCode.isActive) throw new GiftCodeNotFoundError(code);
-    if (giftCode.expiresAt && giftCode.expiresAt.getTime() < Date.now()) {
-      throw new GiftCodeExpiredError(code);
-    }
-    if (giftCode.redeemedCount >= giftCode.maxRedemptions) throw new GiftCodeUsedUpError(code);
-
     const isAlreadyRedeemed = await manager.exists(GiftCodeRedemptionEntity, {
       where: { giftCodeId: giftCode.id, userId },
     });
     if (isAlreadyRedeemed) throw new GiftCodeAlreadyRedeemedError(code, userId);
+
+    if (giftCode.expiresAt && giftCode.expiresAt.getTime() < Date.now()) {
+      throw new GiftCodeExpiredError(code);
+    }
+    if (giftCode.redeemedCount >= giftCode.maxRedemptions) throw new GiftCodeUsedUpError(code);
 
     await this.insertRedemption(manager, giftCode, userId);
     await manager.increment(

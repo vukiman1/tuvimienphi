@@ -156,6 +156,18 @@ describe('GiftCodeService.redeem', () => {
     expect(grant).not.toHaveBeenCalled();
   });
 
+  it('tells someone who already redeemed a used-up code that they used it', async () => {
+    const { service, grant } = buildHarness({
+      isAlreadyRedeemed: true,
+      giftCode: buildGiftCode({ redeemedCount: 3, maxRedemptions: 3 }),
+    });
+
+    await expect(service.redeem(USER_ID, CODE)).rejects.toBeInstanceOf(
+      GiftCodeAlreadyRedeemedError,
+    );
+    expect(grant).not.toHaveBeenCalled();
+  });
+
   it('maps a concurrent duplicate insert to already redeemed', async () => {
     const insertError = new QueryFailedError('INSERT', [], UNIQUE_VIOLATION as unknown as Error);
     const { service, grant, record } = buildHarness({ insertError });
