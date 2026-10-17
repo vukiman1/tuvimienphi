@@ -11,7 +11,7 @@ import {
 import { chartFromBirthInput } from '@org/shared-tu-vi';
 import { Repository } from 'typeorm';
 import { runWithAiCallContext } from '../../ai/ai-call-context';
-import { ChapterQuotaService } from './chapter-quota.service';
+import { ChapterAllowanceService } from '../credits/chapter-allowance.service';
 import { CongDanhGenerator } from './cong-danh.generator';
 import { LuanGiaiChapterEntity } from './entities/luan-giai-chapter.entity';
 import type { ChapterGenerator } from './chapter-generator';
@@ -42,7 +42,7 @@ export class LuanGiaiService {
   constructor(
     @InjectRepository(LuanGiaiChapterEntity)
     private readonly repo: Repository<LuanGiaiChapterEntity>,
-    private readonly quota: ChapterQuotaService,
+    private readonly allowance: ChapterAllowanceService,
     thanCu: ThanCuGenerator,
     menh: MenhGenerator,
     congDanh: CongDanhGenerator,
@@ -109,23 +109,22 @@ export class LuanGiaiService {
       return { status: LuanGiaiChapterStatus.Unavailable };
     }
 
-    if (!(await this.quota.consume(userId))) {
-      throw new ChapterQuotaExceededException();
-    }
+    const source = await this.allowance.consume(userId);
+    if (!source) throw new ChapterQuotaExceededException();
 
     try {
       const ket = await runWithAiCallContext({ userId, label: `luan-giai:${order}` }, () =>
         generator.generate(chart, GENERATION_BUDGET_MS),
       );
       if (!ket) {
-        await this.quota.refund(userId);
+        await this.allowance.refund(userId, source);
         return { status: LuanGiaiChapterStatus.Unavailable };
       }
 
       await this.save(key, order, ket.article, ket.model, ket.attempts);
       return { status: LuanGiaiChapterStatus.Ready, article: ket.article };
     } catch (error) {
-      await this.quota.refund(userId);
+      await this.allowance.refund(userId, source);
       this.logger.warn(`${key}:${order} sinh hỏng: ${(error as Error).message}`);
       throw new ChapterGenerationFailedException();
     }

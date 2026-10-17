@@ -7,6 +7,14 @@ describe('activeNavPath', () => {
     expect(activeNavPath('/')).toBe('/');
   });
 
+  it('lights up the payments section', () => {
+    expect(activeNavPath('/payments')).toBe('/payments');
+  });
+
+  it('lights up the gift codes section', () => {
+    expect(activeNavPath('/gift-codes')).toBe('/gift-codes');
+  });
+
   it('keeps the section lit on a page nested inside it', () => {
     expect(activeNavPath('/van-han/2027/7')).toBe('/van-han');
   });

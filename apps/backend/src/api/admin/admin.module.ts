@@ -2,8 +2,10 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AiModule } from '../../ai/ai.module';
+import { ActivityModule } from '../activity/activity.module';
 import { ActivityLogEntity } from '../activity/entities/activity-log.entity';
 import { AuthIdentityEntity } from '../auth/entities/auth-identity.entity';
+import { CreditsModule } from '../credits/credits.module';
 import { UserSessionEntity } from '../auth/entities/user-session.entity';
 import { LaSoHistoryEntity } from '../la-so/entities/la-so-history.entity';
 import { UserEntity } from '../user/entities/user.entity';
@@ -14,6 +16,10 @@ import { adminGraphqlOptions } from './admin-graphql.config';
 import { AdminAiResolver } from './ai/admin-ai.resolver';
 import { AdminOverviewResolver } from './overview/admin-overview.resolver';
 import { AdminOverviewService } from './overview/admin-overview.service';
+import { GiftCodeModule } from '../gift-code/gift-code.module';
+import { PaymentModule } from '../payment/payment.module';
+import { AdminGiftCodesResolver } from './gift-codes/admin-gift-codes.resolver';
+import { AdminPaymentsResolver } from './payments/admin-payments.resolver';
 import { AdminUsersResolver } from './users/admin-users.resolver';
 import { AdminUsersService } from './users/admin-users.service';
 import { AdminVanHanResolver } from './van-han/admin-van-han.resolver';
@@ -30,10 +36,16 @@ import { AdminVanHanResolver } from './van-han/admin-van-han.resolver';
     GraphQLModule.forRoot(adminGraphqlOptions),
     VanHanModule,
     AiModule,
+    CreditsModule,
+    ActivityModule,
+    PaymentModule,
+    GiftCodeModule,
   ],
   providers: [
     AdminUsersService,
     AdminUsersResolver,
+    AdminPaymentsResolver,
+    AdminGiftCodesResolver,
     AdminOverviewService,
     AdminOverviewResolver,
     AdminActivityService,

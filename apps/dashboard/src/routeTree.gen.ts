@@ -13,7 +13,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdsRouteImport } from './routes/ads'
 import { Route as AiRouteImport } from './routes/ai'
 import { Route as BlogRouteImport } from './routes/blog'
+import { Route as GiftCodesRouteImport } from './routes/gift-codes'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as PaymentsRouteImport } from './routes/payments'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as UsersRouteImport } from './routes/users'
 import { Route as VanHanRouteImport } from './routes/van-han'
@@ -39,9 +41,19 @@ const BlogRoute = BlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GiftCodesRoute = GiftCodesRouteImport.update({
+  id: '/gift-codes',
+  path: '/gift-codes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaymentsRoute = PaymentsRouteImport.update({
+  id: '/payments',
+  path: '/payments',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -70,7 +82,9 @@ export interface FileRoutesByFullPath {
   '/ads': typeof AdsRoute
   '/ai': typeof AiRoute
   '/blog': typeof BlogRoute
+  '/gift-codes': typeof GiftCodesRoute
   '/login': typeof LoginRoute
+  '/payments': typeof PaymentsRoute
   '/profile': typeof ProfileRoute
   '/users': typeof UsersRoute
   '/van-han': typeof VanHanRoute
@@ -81,7 +95,9 @@ export interface FileRoutesByTo {
   '/ads': typeof AdsRoute
   '/ai': typeof AiRoute
   '/blog': typeof BlogRoute
+  '/gift-codes': typeof GiftCodesRoute
   '/login': typeof LoginRoute
+  '/payments': typeof PaymentsRoute
   '/profile': typeof ProfileRoute
   '/users': typeof UsersRoute
   '/van-han': typeof VanHanRoute
@@ -93,7 +109,9 @@ export interface FileRoutesById {
   '/ads': typeof AdsRoute
   '/ai': typeof AiRoute
   '/blog': typeof BlogRoute
+  '/gift-codes': typeof GiftCodesRoute
   '/login': typeof LoginRoute
+  '/payments': typeof PaymentsRoute
   '/profile': typeof ProfileRoute
   '/users': typeof UsersRoute
   '/van-han': typeof VanHanRoute
@@ -106,7 +124,9 @@ export interface FileRouteTypes {
     | '/ads'
     | '/ai'
     | '/blog'
+    | '/gift-codes'
     | '/login'
+    | '/payments'
     | '/profile'
     | '/users'
     | '/van-han'
@@ -117,7 +137,9 @@ export interface FileRouteTypes {
     | '/ads'
     | '/ai'
     | '/blog'
+    | '/gift-codes'
     | '/login'
+    | '/payments'
     | '/profile'
     | '/users'
     | '/van-han'
@@ -128,7 +150,9 @@ export interface FileRouteTypes {
     | '/ads'
     | '/ai'
     | '/blog'
+    | '/gift-codes'
     | '/login'
+    | '/payments'
     | '/profile'
     | '/users'
     | '/van-han'
@@ -140,7 +164,9 @@ export interface RootRouteChildren {
   AdsRoute: typeof AdsRoute
   AiRoute: typeof AiRoute
   BlogRoute: typeof BlogRoute
+  GiftCodesRoute: typeof GiftCodesRoute
   LoginRoute: typeof LoginRoute
+  PaymentsRoute: typeof PaymentsRoute
   ProfileRoute: typeof ProfileRoute
   UsersRoute: typeof UsersRoute
   VanHanRoute: typeof VanHanRoute
@@ -177,11 +203,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/gift-codes': {
+      id: '/gift-codes'
+      path: '/gift-codes'
+      fullPath: '/gift-codes'
+      preLoaderRoute: typeof GiftCodesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payments': {
+      id: '/payments'
+      path: '/payments'
+      fullPath: '/payments'
+      preLoaderRoute: typeof PaymentsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -220,7 +260,9 @@ const rootRouteChildren: RootRouteChildren = {
   AdsRoute: AdsRoute,
   AiRoute: AiRoute,
   BlogRoute: BlogRoute,
+  GiftCodesRoute: GiftCodesRoute,
   LoginRoute: LoginRoute,
+  PaymentsRoute: PaymentsRoute,
   ProfileRoute: ProfileRoute,
   UsersRoute: UsersRoute,
   VanHanRoute: VanHanRoute,

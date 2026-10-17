@@ -17,6 +17,11 @@ type ActivityPage {
   total: Int!
 }
 
+input AdjustChapterCreditsInput {
+  delta: Int!
+  userId: ID!
+}
+
 type AdminAiCall {
   at: String!
   costUsd: Float
@@ -76,6 +81,23 @@ type AdminAiUsageDay {
   quotaHits: Int!
 }
 
+type AdminCreditBalance {
+  chapterCredits: Int!
+  userId: ID!
+}
+
+type AdminGiftCode {
+  code: String!
+  createdAt: String!
+  createdByEmail: String!
+  credits: Int!
+  expiresAt: String
+  id: ID!
+  isActive: Boolean!
+  maxRedemptions: Int!
+  redeemedCount: Int!
+}
+
 type AdminOverview {
   activeUsers: PeriodMetric!
   devices: [LabelledCount!]!
@@ -90,9 +112,28 @@ type AdminOverview {
   totalUsers: Int!
 }
 
+type AdminPayment {
+  amountVnd: Int!
+  content: String!
+  creditsGranted: Int!
+  id: ID!
+  referenceCode: String!
+  status: PaymentStatus!
+  suggestedCredits: Int!
+  transactionAt: String!
+  unmatchedReason: UnmatchedReason
+  userEmail: String
+}
+
+type AdminPaymentPage {
+  payments: [AdminPayment!]!
+  total: Int!
+}
+
 type AdminUser {
   avatar: String
   balance: Int!
+  chapterCredits: Int!
   createdAt: String!
   displayName: String
   email: String!
@@ -203,6 +244,19 @@ enum AiUsagePurpose {
   GENERATION
 }
 
+input AssignPaymentInput {
+  credits: Int!
+  paymentId: ID!
+  userEmail: String!
+}
+
+input CreateGiftCodeInput {
+  code: String
+  credits: Int!
+  expiresAt: String
+  maxRedemptions: Int!
+}
+
 type DailyCount {
   count: Int!
   date: String!
@@ -214,15 +268,24 @@ type LabelledCount {
 }
 
 type Mutation {
+  adjustChapterCredits(input: AdjustChapterCreditsInput!): AdminCreditBalance!
+  assignPayment(input: AssignPaymentInput!): AdminPayment!
   checkAiProvider(provider: AiProvider!): AdminAiProvider!
   clearAiProviderKey(provider: AiProvider!): AdminAiSettings!
+  createGiftCode(input: CreateGiftCodeInput!): AdminGiftCode!
   publishVanHanYear(year: Int!): AdminVanHanYear!
   saveAiProvider(input: SaveAiProviderInput!): AdminAiProvider!
   saveVanHanEntry(input: SaveVanHanEntryInput!): AdminVanHanSlot!
   setActiveAiProvider(provider: AiProvider): AdminAiSettings!
   setAiProviderBudget(monthlyBudgetUsd: Float, provider: AiProvider!): AdminAiProvider!
+  setGiftCodeActive(id: ID!, isActive: Boolean!): AdminGiftCode!
   testAiProvider(input: TestAiProviderInput!): AdminAiHealth!
   unpublishVanHanYear(year: Int!): AdminVanHanYear!
+}
+
+enum PaymentStatus {
+  Credited
+  Unmatched
 }
 
 type PeriodMetric {
@@ -237,7 +300,9 @@ type Query {
   aiProviderModels(apiKey: String, provider: AiProvider!): [String!]!
   aiSettings: AdminAiSettings!
   aiUsage(from: String!, to: String!): [AdminAiUsageDay!]!
+  giftCodes: [AdminGiftCode!]!
   overview(from: String, to: String): AdminOverview!
+  payments(limit: Int, page: Int, status: PaymentStatus): AdminPaymentPage!
   recentActivity(limit: Int, page: Int): ActivityPage!
   users(balanceMax: Int, balanceMin: Int, isEmailVerified: Boolean, joinedFrom: String, joinedTo: String, limit: Int, page: Int, roles: [Role!], search: String, sortBy: AdminUserSortField, sortDirection: SortDirection): AdminUserPage!
   vanHanEditor(year: Int!, zodiacOrder: Int!): AdminVanHanEditor!
@@ -276,6 +341,12 @@ input TestAiProviderInput {
   apiKey: String
   models: [String!]!
   provider: AiProvider!
+}
+
+enum UnmatchedReason {
+  AmountTooLow
+  NoCode
+  UnknownCode
 }
 
 input VanHanAgeInput {

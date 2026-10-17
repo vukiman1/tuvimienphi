@@ -82,6 +82,12 @@ storage:
   mediaBucket: R2_MEDIA_BUCKET
   mediaPublicUrl: R2_MEDIA_PUBLIC_URL
 
+payment:
+  sepayWebhookApiKey: SEPAY_WEBHOOK_API_KEY
+  bankCode: SEPAY_BANK_CODE
+  accountNumber: SEPAY_ACCOUNT_NUMBER
+  accountName: SEPAY_ACCOUNT_NAME
+
 queueBoard:
   enabled:
     __name: QUEUE_BOARD_ENABLED

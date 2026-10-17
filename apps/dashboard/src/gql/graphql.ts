@@ -4,6 +4,11 @@ type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 /** Internal type. DO NOT USE DIRECTLY. */
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 import { DocumentTypeDecoration } from '@graphql-typed-document-node/core';
+export type AdjustChapterCreditsInput = {
+  delta: number;
+  userId: string | number;
+};
+
 export type AdminUserSortField =
   | 'BALANCE'
   | 'CREATED_AT'
@@ -30,6 +35,23 @@ export type AiSource =
 export type AiUsagePurpose =
   | 'CHECK'
   | 'GENERATION';
+
+export type AssignPaymentInput = {
+  credits: number;
+  paymentId: string | number;
+  userEmail: string;
+};
+
+export type CreateGiftCodeInput = {
+  code?: string | null | undefined;
+  credits: number;
+  expiresAt?: string | null | undefined;
+  maxRedemptions: number;
+};
+
+export type PaymentStatus =
+  | 'Credited'
+  | 'Unmatched';
 
 export type Role =
   | 'ADMIN'
@@ -61,6 +83,11 @@ export type TestAiProviderInput = {
   models: Array<string>;
   provider: AiProvider;
 };
+
+export type UnmatchedReason =
+  | 'AmountTooLow'
+  | 'NoCode'
+  | 'UnknownCode';
 
 export type VanHanAgeInput = {
   birthYear: number;
@@ -166,6 +193,26 @@ export type AiCallsQueryVariables = Exact<{
 
 export type AiCallsQuery = { aiCalls: { total: number, items: Array<{ id: string, at: string, status: AiCallStatus, isQuotaHit: boolean, inputTokens: number, outputTokens: number, latencyMs: number | null, costUsd: number | null, error: string | null, label: string | null, userEmail: string | null }> } };
 
+export type AdminGiftCodesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminGiftCodesQuery = { giftCodes: Array<{ id: string, code: string, credits: number, maxRedemptions: number, redeemedCount: number, expiresAt: string | null, isActive: boolean, createdByEmail: string, createdAt: string }> };
+
+export type CreateGiftCodeMutationVariables = Exact<{
+  input: CreateGiftCodeInput;
+}>;
+
+
+export type CreateGiftCodeMutation = { createGiftCode: { id: string } };
+
+export type SetGiftCodeActiveMutationVariables = Exact<{
+  id: string | number;
+  isActive: boolean;
+}>;
+
+
+export type SetGiftCodeActiveMutation = { setGiftCodeActive: { id: string, isActive: boolean } };
+
 export type MetricFieldsFragment = { value: number, previous: number, series: Array<{ date: string, count: number }> };
 
 export type AdminOverviewQueryVariables = Exact<{
@@ -175,6 +222,22 @@ export type AdminOverviewQueryVariables = Exact<{
 
 
 export type AdminOverviewQuery = { overview: { from: string, to: string, totalUsers: number, googleUsers: number, passwordUsers: number, savedCharts: number, activeUsers: { value: number, previous: number, series: Array<{ date: string, count: number }> }, logins: { value: number, previous: number, series: Array<{ date: string, count: number }> }, newUsers: { value: number, previous: number, series: Array<{ date: string, count: number }> }, newCharts: { value: number, previous: number, series: Array<{ date: string, count: number }> }, devices: Array<{ label: string, count: number }> } };
+
+export type AdminPaymentsQueryVariables = Exact<{
+  page?: number | null | undefined;
+  limit?: number | null | undefined;
+  status?: PaymentStatus | null | undefined;
+}>;
+
+
+export type AdminPaymentsQuery = { payments: { total: number, payments: Array<{ id: string, amountVnd: number, content: string, referenceCode: string, status: PaymentStatus, unmatchedReason: UnmatchedReason | null, creditsGranted: number, suggestedCredits: number, userEmail: string | null, transactionAt: string }> } };
+
+export type AssignPaymentMutationVariables = Exact<{
+  input: AssignPaymentInput;
+}>;
+
+
+export type AssignPaymentMutation = { assignPayment: { id: string, status: PaymentStatus, creditsGranted: number, userEmail: string | null } };
 
 export type AdminUsersQueryVariables = Exact<{
   page?: number | null | undefined;
@@ -191,7 +254,14 @@ export type AdminUsersQueryVariables = Exact<{
 }>;
 
 
-export type AdminUsersQuery = { users: { total: number, users: Array<{ id: string, email: string, displayName: string | null, avatar: string | null, role: Role, isEmailVerified: boolean, balance: number, createdAt: string, genCount: number, lastActiveAt: string | null }> } };
+export type AdminUsersQuery = { users: { total: number, users: Array<{ id: string, email: string, displayName: string | null, avatar: string | null, role: Role, isEmailVerified: boolean, balance: number, chapterCredits: number, createdAt: string, genCount: number, lastActiveAt: string | null }> } };
+
+export type AdjustChapterCreditsMutationVariables = Exact<{
+  input: AdjustChapterCreditsInput;
+}>;
+
+
+export type AdjustChapterCreditsMutation = { adjustChapterCredits: { userId: string, chapterCredits: number } };
 
 export type VanHanYearsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -467,6 +537,36 @@ export const AiCallsDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<AiCallsQuery, AiCallsQueryVariables>;
+export const AdminGiftCodesDocument = new TypedDocumentString(`
+    query AdminGiftCodes {
+  giftCodes {
+    id
+    code
+    credits
+    maxRedemptions
+    redeemedCount
+    expiresAt
+    isActive
+    createdByEmail
+    createdAt
+  }
+}
+    `) as unknown as TypedDocumentString<AdminGiftCodesQuery, AdminGiftCodesQueryVariables>;
+export const CreateGiftCodeDocument = new TypedDocumentString(`
+    mutation CreateGiftCode($input: CreateGiftCodeInput!) {
+  createGiftCode(input: $input) {
+    id
+  }
+}
+    `) as unknown as TypedDocumentString<CreateGiftCodeMutation, CreateGiftCodeMutationVariables>;
+export const SetGiftCodeActiveDocument = new TypedDocumentString(`
+    mutation SetGiftCodeActive($id: ID!, $isActive: Boolean!) {
+  setGiftCodeActive(id: $id, isActive: $isActive) {
+    id
+    isActive
+  }
+}
+    `) as unknown as TypedDocumentString<SetGiftCodeActiveMutation, SetGiftCodeActiveMutationVariables>;
 export const AdminOverviewDocument = new TypedDocumentString(`
     query AdminOverview($from: String, $to: String) {
   overview(from: $from, to: $to) {
@@ -502,6 +602,35 @@ export const AdminOverviewDocument = new TypedDocumentString(`
     count
   }
 }`) as unknown as TypedDocumentString<AdminOverviewQuery, AdminOverviewQueryVariables>;
+export const AdminPaymentsDocument = new TypedDocumentString(`
+    query AdminPayments($page: Int, $limit: Int, $status: PaymentStatus) {
+  payments(page: $page, limit: $limit, status: $status) {
+    total
+    payments {
+      id
+      amountVnd
+      content
+      referenceCode
+      status
+      unmatchedReason
+      creditsGranted
+      suggestedCredits
+      userEmail
+      transactionAt
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<AdminPaymentsQuery, AdminPaymentsQueryVariables>;
+export const AssignPaymentDocument = new TypedDocumentString(`
+    mutation AssignPayment($input: AssignPaymentInput!) {
+  assignPayment(input: $input) {
+    id
+    status
+    creditsGranted
+    userEmail
+  }
+}
+    `) as unknown as TypedDocumentString<AssignPaymentMutation, AssignPaymentMutationVariables>;
 export const AdminUsersDocument = new TypedDocumentString(`
     query AdminUsers($page: Int, $limit: Int, $search: String, $roles: [Role!], $isEmailVerified: Boolean, $joinedFrom: String, $joinedTo: String, $balanceMin: Int, $balanceMax: Int, $sortBy: AdminUserSortField, $sortDirection: SortDirection) {
   users(
@@ -526,6 +655,7 @@ export const AdminUsersDocument = new TypedDocumentString(`
       role
       isEmailVerified
       balance
+      chapterCredits
       createdAt
       genCount
       lastActiveAt
@@ -533,6 +663,14 @@ export const AdminUsersDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<AdminUsersQuery, AdminUsersQueryVariables>;
+export const AdjustChapterCreditsDocument = new TypedDocumentString(`
+    mutation AdjustChapterCredits($input: AdjustChapterCreditsInput!) {
+  adjustChapterCredits(input: $input) {
+    userId
+    chapterCredits
+  }
+}
+    `) as unknown as TypedDocumentString<AdjustChapterCreditsMutation, AdjustChapterCreditsMutationVariables>;
 export const VanHanYearsDocument = new TypedDocumentString(`
     query VanHanYears {
   vanHanYears {

@@ -3,9 +3,11 @@ import {
   CompassOutlined,
   DashboardOutlined,
   FileTextOutlined,
+  GiftOutlined,
   NotificationOutlined,
   RobotOutlined,
   TeamOutlined,
+  WalletOutlined,
 } from '@ant-design/icons';
 import type { FileRoutesByTo } from '@/routeTree.gen';
 
@@ -20,6 +22,8 @@ export interface NavItem {
 export const NAV_ITEMS: readonly NavItem[] = [
   { to: '/', label: 'Tổng quan', icon: <DashboardOutlined /> },
   { to: '/users', label: 'Người dùng', icon: <TeamOutlined /> },
+  { to: '/payments', label: 'Thanh toán', icon: <WalletOutlined /> },
+  { to: '/gift-codes', label: 'Giftcode', icon: <GiftOutlined /> },
   { to: '/blog', label: 'Bài viết', icon: <FileTextOutlined /> },
   { to: '/ads', label: 'Quảng cáo', icon: <NotificationOutlined /> },
   { to: '/van-han', label: 'Vận hạn', icon: <CompassOutlined /> },

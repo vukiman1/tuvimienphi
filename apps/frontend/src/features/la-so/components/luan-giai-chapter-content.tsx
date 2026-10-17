@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   LuanGiaiChapterStatus,
   type BirthInput,
   type LuanGiaiChapterStatusMap,
 } from '@org/shared-contracts';
+import { TopUpDialog } from '@/features/credits/components/top-up-dialog';
+import { isOutOfLuot } from '@/features/credits/credits-queries';
 import type { LuanGiaiChapter } from '@/features/la-so/luan-giai-data';
 import { articleMedia } from '@/features/la-so/luan-giai-media';
 import { luanGiaiQueries, requestChapter } from '@/features/la-so/luan-giai-queries';
@@ -27,6 +30,7 @@ interface LuanGiaiChapterContentProps {
 export function LuanGiaiChapterContent({ birth, chapter, status }: LuanGiaiChapterContentProps) {
   const queryClient = useQueryClient();
   const options = luanGiaiQueries.chapter(birth, chapter.order);
+  const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const daCoBai = status === LuanGiaiChapterStatus.Ready;
   const { data } = useQuery({ ...options, enabled: daCoBai });
 
@@ -44,7 +48,15 @@ export function LuanGiaiChapterContent({ birth, chapter, status }: LuanGiaiChapt
           },
       );
     },
+    onError: (error) => {
+      if (isOutOfLuot(error)) setIsTopUpOpen(true);
+    },
   });
+
+  function continueAfterTopUp(): void {
+    setIsTopUpOpen(false);
+    xin.mutate();
+  }
 
   if (xin.isPending) {
     return <LuanGiaiSkeletonCard isWriting />;
@@ -69,10 +81,17 @@ export function LuanGiaiChapterContent({ birth, chapter, status }: LuanGiaiChapt
   }
 
   return (
-    <LuanGiaiPromptCard
-      chapter={chapter}
-      error={xin.error ? errorMessage(xin.error, DEFAULT_ERROR_MESSAGE) : undefined}
-      onRequest={() => xin.mutate()}
-    />
+    <>
+      <LuanGiaiPromptCard
+        chapter={chapter}
+        error={xin.error ? errorMessage(xin.error, DEFAULT_ERROR_MESSAGE) : undefined}
+        onRequest={() => xin.mutate()}
+      />
+      <TopUpDialog
+        onOpenChange={setIsTopUpOpen}
+        onToppedUp={continueAfterTopUp}
+        open={isTopUpOpen}
+      />
+    </>
   );
 }

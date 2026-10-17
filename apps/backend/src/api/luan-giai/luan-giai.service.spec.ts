@@ -15,7 +15,8 @@ import {
 import { buildThanCuBrief } from '@org/shared-tu-vi';
 import type { Repository } from 'typeorm';
 import { currentAiCallContext, type AiCallContext } from '../../ai/ai-call-context';
-import type { ChapterQuotaService } from './chapter-quota.service';
+import { AllowanceSource } from '../credits/allowance-source.enum';
+import type { ChapterAllowanceService } from '../credits/chapter-allowance.service';
 import type { LuanGiaiChapterEntity } from './entities/luan-giai-chapter.entity';
 import {
   CHAPTER_CONG_DANH,
@@ -65,8 +66,10 @@ function dungService(overrides?: Overrides) {
     find: jest.fn().mockResolvedValue(overrides?.daCo ?? []),
     upsert: jest.fn().mockResolvedValue(undefined),
   };
-  const quota = {
-    consume: jest.fn().mockResolvedValue(overrides?.conSuat ?? true),
+  const allowance = {
+    consume: jest
+      .fn()
+      .mockResolvedValue(overrides?.conSuat === false ? null : AllowanceSource.Daily),
     refund: jest.fn().mockResolvedValue(undefined),
   };
   const generator = {
@@ -93,7 +96,7 @@ function dungService(overrides?: Overrides) {
   return {
     service: new LuanGiaiService(
       repo as unknown as Repository<LuanGiaiChapterEntity>,
-      quota as unknown as ChapterQuotaService,
+      allowance as unknown as ChapterAllowanceService,
       generator as unknown as ThanCuGenerator,
       generatorMenh as unknown as MenhGenerator,
       generatorCongDanh as unknown as CongDanhGenerator,
@@ -101,7 +104,7 @@ function dungService(overrides?: Overrides) {
       generatorTinhDuyen as unknown as TinhDuyenGenerator,
     ),
     repo,
-    quota,
+    allowance,
     generator,
     generatorMenh,
     generatorCongDanh,
@@ -124,7 +127,7 @@ describe('LuanGiaiService.request', () => {
   });
 
   it('trả bài đã có mà không sinh lại cũng không trừ suất', async () => {
-    const { service, generator, quota } = dungService({
+    const { service, generator, allowance } = dungService({
       row: { article: BAI } as LuanGiaiChapterEntity,
     });
 
@@ -132,7 +135,7 @@ describe('LuanGiaiService.request', () => {
 
     expect(ket).toEqual({ status: LuanGiaiChapterStatus.Ready, article: BAI });
     expect(generator.generate).not.toHaveBeenCalled();
-    expect(quota.consume).not.toHaveBeenCalled();
+    expect(allowance.consume).not.toHaveBeenCalled();
   });
 
   it('sinh chương 02 bằng generator của chính chương đó', async () => {
@@ -176,22 +179,22 @@ describe('LuanGiaiService.request', () => {
   });
 
   it('báo unavailable cho chương chưa có bảng, không đụng tới database', async () => {
-    const { service, repo, quota } = dungService();
+    const { service, repo, allowance } = dungService();
 
     const ket = await service.request('u1', CO_BANG, '06');
 
     expect(ket).toEqual({ status: LuanGiaiChapterStatus.Unavailable });
     expect(repo.findOne).not.toHaveBeenCalled();
-    expect(quota.consume).not.toHaveBeenCalled();
+    expect(allowance.consume).not.toHaveBeenCalled();
   });
 
   it('báo unavailable khi không dựng nổi brief, không trừ suất cho việc chắc chắn không ra bài', async () => {
-    const { service, generator, quota } = dungService({ coBang: false });
+    const { service, generator, allowance } = dungService({ coBang: false });
 
     const ket = await service.request('u1', CO_BANG, CHAPTER_THAN_CU);
 
     expect(ket).toEqual({ status: LuanGiaiChapterStatus.Unavailable });
-    expect(quota.consume).not.toHaveBeenCalled();
+    expect(allowance.consume).not.toHaveBeenCalled();
     expect(generator.generate).not.toHaveBeenCalled();
   });
 
@@ -232,14 +235,14 @@ describe('LuanGiaiService.request', () => {
   });
 
   it('hoàn suất khi lượt sinh hỏng vì phía hệ thống', async () => {
-    const { service, quota } = dungService({
+    const { service, allowance } = dungService({
       sinh: jest.fn().mockRejectedValue(new Error('UNAVAILABLE')),
     });
 
     await expect(service.request('u1', CO_BANG, CHAPTER_THAN_CU)).rejects.toThrow(
       ChapterGenerationFailedException,
     );
-    expect(quota.refund).toHaveBeenCalledWith('u1');
+    expect(allowance.refund).toHaveBeenCalledWith('u1', AllowanceSource.Daily);
   });
 });
 

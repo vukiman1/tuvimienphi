@@ -9,6 +9,7 @@ export interface AdminUserSummary {
   role: Roles;
   isEmailVerified: boolean;
   balance: number;
+  chapterCredits: number;
   createdAt: string;
   genCount: number;
   lastActiveAt: string | null;
@@ -31,6 +32,7 @@ export function toAdminUserSummary(
     role: user.role,
     isEmailVerified: user.isEmailVerified,
     balance: user.balance,
+    chapterCredits: user.chapterCredits,
     createdAt: user.createdAt.toISOString(),
     genCount: Number(derived.genCount ?? 0),
     lastActiveAt: toIsoString(derived.lastActiveAt),

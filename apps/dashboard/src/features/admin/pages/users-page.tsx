@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Alert, Flex, Table, Typography } from 'antd';
 import { formatNumber } from '@org/frontend-shared';
 import { errorMessage } from '@/lib/api-error';
+import { AdjustCreditsDialog } from '../components/adjust-credits-dialog';
 import { UsersActiveFilters } from '../components/users-active-filters';
 import { readTableChange } from '../components/users-table-adapter';
 import { buildUsersColumns } from '../components/users-table-columns';
@@ -20,6 +21,7 @@ const LOAD_FAILED = 'Không tải được danh sách người dùng.';
 
 export function UsersPage() {
   const [filters, setFilters] = useState<AdminUsersFilters>(DEFAULT_USERS_FILTERS);
+  const [adjusting, setAdjusting] = useState<AdminUserRow | null>(null);
   const { data, isFetching, isError, error } = useQuery(adminUsersQuery(filters));
 
   const applyFilters = (patch: Partial<AdminUsersFilters>) => {
@@ -45,7 +47,7 @@ export function UsersPage() {
 
       <Table<AdminUserRow>
         rowKey="id"
-        columns={buildUsersColumns(filters)}
+        columns={buildUsersColumns(filters, setAdjusting)}
         dataSource={data?.users.users}
         loading={isFetching}
         scroll={{ x: 'max-content' }}
@@ -63,6 +65,8 @@ export function UsersPage() {
           showTotal: (total) => `${formatNumber(total)} người dùng`,
         }}
       />
+
+      <AdjustCreditsDialog user={adjusting} onClose={() => setAdjusting(null)} />
     </Flex>
   );
 }

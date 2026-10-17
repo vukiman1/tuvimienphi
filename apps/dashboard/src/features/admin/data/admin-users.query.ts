@@ -1,8 +1,15 @@
 import { keepPreviousData, queryOptions } from '@tanstack/react-query';
-import type { AdminUsersQuery, AdminUserSortField, Role, SortDirection } from '@/gql/graphql';
+import type {
+  AdjustChapterCreditsInput,
+  AdminUsersQuery,
+  AdminUserSortField,
+  Role,
+  SortDirection,
+} from '@/gql/graphql';
 import { graphqlRequest } from '@/lib/graphql-request';
-import { adminUsersDocument } from './admin-users.document';
+import { adjustChapterCreditsDocument, adminUsersDocument } from './admin-users.document';
 
+export const USERS_QUERY_KEY = ['admin', 'users'] as const;
 export const USERS_PAGE_SIZE = 20;
 export const USERS_SEARCH_MAX_LENGTH = 120;
 export const USERS_FIRST_PAGE = 1;
@@ -37,7 +44,7 @@ export const DEFAULT_USERS_FILTERS: AdminUsersFilters = {
 
 export function adminUsersQuery(filters: AdminUsersFilters) {
   return queryOptions({
-    queryKey: ['admin', 'users', filters],
+    queryKey: [...USERS_QUERY_KEY, filters],
     queryFn: () =>
       graphqlRequest(adminUsersDocument, {
         page: filters.page,
@@ -54,4 +61,8 @@ export function adminUsersQuery(filters: AdminUsersFilters) {
       }),
     placeholderData: keepPreviousData,
   });
+}
+
+export function adjustChapterCredits(input: AdjustChapterCreditsInput) {
+  return graphqlRequest(adjustChapterCreditsDocument, { input });
 }
