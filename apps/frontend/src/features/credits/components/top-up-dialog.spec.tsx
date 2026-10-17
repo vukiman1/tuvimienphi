@@ -74,11 +74,14 @@ describe('TopUpDialog', () => {
 
     renderDialog(onToppedUp);
     await screen.findByRole('img');
-    expect(screen.queryByText(/Đã nhận!/)).toBeNull();
+    expect(screen.queryByText('Thanh toán thành công')).toBeNull();
 
     await act(() => jest.advanceTimersByTimeAsync(POLL_INTERVAL_MS));
 
-    expect(await screen.findByText('Đã nhận! Bạn có 5 lượt.')).toBeTruthy();
+    expect(await screen.findByText('Thanh toán thành công')).toBeTruthy();
+    expect(screen.getByText('Bạn có 5 lượt, dùng không giới hạn thời gian.')).toBeTruthy();
+    expect(screen.queryByText('Bạn đã hết lượt miễn phí hôm nay')).toBeNull();
+    expect(screen.queryByText(/Chuyển khoản 5\.000đ/)).toBeNull();
     fireEvent.click(screen.getByRole('button', { name: 'Xem luận giải' }));
     expect(onToppedUp).toHaveBeenCalledTimes(1);
   });
@@ -99,10 +102,10 @@ describe('TopUpDialog', () => {
     renderDialog(jest.fn(), queryClient);
     await screen.findByRole('img');
     await act(() => jest.advanceTimersByTimeAsync(POLL_INTERVAL_MS));
-    expect(screen.queryByText(/Đã nhận!/)).toBeNull();
+    expect(screen.queryByText('Thanh toán thành công')).toBeNull();
 
     await act(() => jest.advanceTimersByTimeAsync(POLL_INTERVAL_MS));
-    expect(await screen.findByText('Đã nhận! Bạn có 15 lượt.')).toBeTruthy();
+    expect(await screen.findByText('Bạn có 15 lượt, dùng không giới hạn thời gian.')).toBeTruthy();
   });
 
   it('shows the gift-code copy, not the paid copy, after a redemption raises the balance', async () => {
@@ -117,9 +120,10 @@ describe('TopUpDialog', () => {
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'WELCOME5' } });
     fireEvent.click(screen.getByRole('button', { name: 'Áp dụng' }));
 
-    expect(await screen.findByText('Đã cộng 5 lượt.')).toBeTruthy();
+    expect(await screen.findByText('Nhập giftcode thành công')).toBeTruthy();
+    expect(screen.getByText('Đã cộng 5 lượt. Bạn có 5 lượt.')).toBeTruthy();
     await act(() => jest.advanceTimersByTimeAsync(POLL_INTERVAL_MS));
-    expect(screen.queryByText(/Đã nhận!/)).toBeNull();
+    expect(screen.queryByText('Thanh toán thành công')).toBeNull();
     fireEvent.click(screen.getByRole('button', { name: 'Xem luận giải' }));
     expect(onToppedUp).toHaveBeenCalledTimes(1);
   });
@@ -145,7 +149,8 @@ describe('TopUpDialog', () => {
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'WELCOME3' } });
     fireEvent.click(screen.getByRole('button', { name: 'Áp dụng' }));
 
-    expect(await screen.findByText('Đã cộng 3 lượt.')).toBeTruthy();
+    expect(await screen.findByText('Đã cộng 3 lượt. Bạn có 3 lượt.')).toBeTruthy();
+    expect(screen.queryByText(CHECKOUT_CLOSED_MESSAGE)).toBeNull();
   });
 
   it('copies the transfer content to the clipboard', async () => {
