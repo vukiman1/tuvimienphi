@@ -21,6 +21,7 @@ import type { SepayTransaction } from './sepay/sepay-webhook.schema';
 const INCOMING_TRANSFER_TYPE = 'in';
 const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 20;
+const PAYMENT_NOT_FOUND_MESSAGE = 'Không tìm thấy giao dịch.';
 const ALREADY_CREDITED_MESSAGE = 'Giao dịch này đã được cộng rồi.';
 const AMBIGUOUS_MATCH_LIMIT = 2;
 const AMBIGUOUS_EMAIL_MESSAGE = 'Có nhiều tài khoản trùng email này, hãy kiểm tra lại.';
@@ -129,7 +130,11 @@ export class PaymentService {
         unmatched: PaymentStatus.Unmatched,
       })
       .execute();
-    if (!result.affected) throw new BadRequestException(ALREADY_CREDITED_MESSAGE);
+    if (!result.affected) {
+      const doesPaymentExist = await manager.exists(PaymentEntity, { where: { id: paymentId } });
+      if (!doesPaymentExist) throw new NotFoundException(PAYMENT_NOT_FOUND_MESSAGE);
+      throw new BadRequestException(ALREADY_CREDITED_MESSAGE);
+    }
 
     await this.chapterCredits.grant(user.id, credits, manager);
     const payment = await manager.findOneOrFail(PaymentEntity, { where: { id: paymentId } });

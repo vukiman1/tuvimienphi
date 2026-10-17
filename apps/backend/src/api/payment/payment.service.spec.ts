@@ -199,9 +199,13 @@ interface AssignHarness {
 }
 
 const buildAssignHarness = (
-  options: { affected?: number; users?: readonly unknown[] } = {},
+  options: { affected?: number; users?: readonly unknown[]; paymentExists?: boolean } = {},
 ): AssignHarness => {
-  const { affected = 1, users = [{ id: USER_ID, email: TARGET_EMAIL }] } = options;
+  const {
+    affected = 1,
+    users = [{ id: USER_ID, email: TARGET_EMAIL }],
+    paymentExists = true,
+  } = options;
   const set = jest.fn().mockReturnThis();
   const builder = {
     update: jest.fn().mockReturnThis(),
@@ -212,6 +216,7 @@ const buildAssignHarness = (
   const find = jest.fn().mockResolvedValue(users);
   const manager = {
     find,
+    exists: jest.fn().mockResolvedValue(paymentExists),
     findOneOrFail: jest.fn().mockResolvedValue(CREDITED_AFTER_ASSIGN),
     createQueryBuilder: jest.fn().mockReturnValue(builder),
   } as unknown as EntityManager;
@@ -256,6 +261,16 @@ describe('PaymentService.assign', () => {
 
     await expect(service.assign(input, ADMIN_EMAIL)).rejects.toThrow(
       new BadRequestException('Giao dịch này đã được cộng rồi.'),
+    );
+    expect(grant).not.toHaveBeenCalled();
+    expect(record).not.toHaveBeenCalled();
+  });
+
+  it('reports an unknown payment as not found', async () => {
+    const { service, grant, record } = buildAssignHarness({ affected: 0, paymentExists: false });
+
+    await expect(service.assign(input, ADMIN_EMAIL)).rejects.toThrow(
+      new NotFoundException('Không tìm thấy giao dịch.'),
     );
     expect(grant).not.toHaveBeenCalled();
     expect(record).not.toHaveBeenCalled();
