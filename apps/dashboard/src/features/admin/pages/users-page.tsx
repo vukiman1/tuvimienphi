@@ -4,6 +4,7 @@ import { Alert, Flex, Table, Typography } from 'antd';
 import { formatNumber } from '@org/frontend-shared';
 import { errorMessage } from '@/lib/api-error';
 import { AdjustCreditsDialog } from '../components/adjust-credits-dialog';
+import { DailyQuotaSetting } from '../components/daily-quota-setting';
 import { UsersActiveFilters } from '../components/users-active-filters';
 import { readTableChange } from '../components/users-table-adapter';
 import { buildUsersColumns } from '../components/users-table-columns';
@@ -16,13 +17,17 @@ import {
   type AdminUserRow,
   type AdminUsersFilters,
 } from '../data/admin-users.query';
+import { adminCreditSettingsQuery } from '../data/admin-credit-settings.query';
 
 const LOAD_FAILED = 'Không tải được danh sách người dùng.';
+const SETTINGS_LOAD_FAILED = 'Không tải được lượt miễn phí mỗi ngày.';
 
 export function UsersPage() {
   const [filters, setFilters] = useState<AdminUsersFilters>(DEFAULT_USERS_FILTERS);
   const [adjusting, setAdjusting] = useState<AdminUserRow | null>(null);
   const { data, isFetching, isError, error } = useQuery(adminUsersQuery(filters));
+  const creditSettings = useQuery(adminCreditSettingsQuery());
+  const dailyChapterQuota = creditSettings.data?.creditSettings.dailyChapterQuota;
 
   const applyFilters = (patch: Partial<AdminUsersFilters>) => {
     setFilters((current) => ({ ...current, ...patch, page: USERS_FIRST_PAGE }));
@@ -41,13 +46,24 @@ export function UsersPage() {
         />
       </Flex>
 
+      {dailyChapterQuota === undefined ? null : (
+        <DailyQuotaSetting dailyChapterQuota={dailyChapterQuota} />
+      )}
+      {creditSettings.isError ? (
+        <Alert
+          type="error"
+          showIcon
+          title={errorMessage(creditSettings.error, SETTINGS_LOAD_FAILED)}
+        />
+      ) : null}
+
       <UsersActiveFilters filters={filters} onChange={applyFilters} />
 
       {isError ? <Alert type="error" showIcon title={errorMessage(error, LOAD_FAILED)} /> : null}
 
       <Table<AdminUserRow>
         rowKey="id"
-        columns={buildUsersColumns(filters, setAdjusting)}
+        columns={buildUsersColumns(filters, setAdjusting, dailyChapterQuota)}
         dataSource={data?.users.users}
         loading={isFetching}
         scroll={{ x: 'max-content' }}

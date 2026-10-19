@@ -22,6 +22,7 @@ function userWithCredits(chapterCredits: number): AdminUserRow {
     isEmailVerified: true,
     balance: 0,
     chapterCredits,
+    dailyChapterUsed: 0,
     createdAt: '2026-10-01T00:00:00.000Z',
     genCount: 0,
     lastActiveAt: null,

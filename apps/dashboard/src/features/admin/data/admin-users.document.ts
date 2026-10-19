@@ -37,6 +37,7 @@ export const adminUsersDocument = graphql(`
         isEmailVerified
         balance
         chapterCredits
+        dailyChapterUsed
         createdAt
         genCount
         lastActiveAt
