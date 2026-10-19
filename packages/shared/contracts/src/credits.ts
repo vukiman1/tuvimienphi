@@ -20,6 +20,7 @@ export const MAX_GIFT_CODE_REDEMPTIONS = 100000;
 export const MIN_ASSIGNED_CREDITS = 1;
 export const MAX_ASSIGNED_CREDITS = 1000;
 export const MAX_CREDIT_ADJUSTMENT = 1000;
+export const MAX_DAILY_CHAPTER_QUOTA = 100;
 
 export interface RedeemGiftCodeRequest {
   readonly code: string;

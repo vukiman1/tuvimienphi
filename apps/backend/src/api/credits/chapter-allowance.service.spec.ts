@@ -10,7 +10,7 @@ function buildService(overrides?: {
   const daily = {
     consume: jest.fn().mockResolvedValue(overrides?.isDailyAvailable ?? true),
     refund: jest.fn().mockResolvedValue(undefined),
-    remaining: jest.fn().mockResolvedValue(2),
+    status: jest.fn().mockResolvedValue({ limit: 3, remaining: 2 }),
   };
   const credits = {
     tryConsume: jest.fn().mockResolvedValue(overrides?.isCreditAvailable ?? true),

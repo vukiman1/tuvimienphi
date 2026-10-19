@@ -18,3 +18,10 @@ export class PaymentCodeAllocationError extends Error {
     this.name = 'PaymentCodeAllocationError';
   }
 }
+
+export class CreditSettingsMissingError extends Error {
+  constructor() {
+    super('The credit_settings row is missing; run the CreateCreditSettings migration');
+    this.name = 'CreditSettingsMissingError';
+  }
+}

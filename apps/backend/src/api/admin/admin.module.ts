@@ -14,6 +14,7 @@ import { AdminActivityResolver } from './activity/admin-activity.resolver';
 import { AdminActivityService } from './activity/admin-activity.service';
 import { adminGraphqlOptions } from './admin-graphql.config';
 import { AdminAiResolver } from './ai/admin-ai.resolver';
+import { AdminCreditSettingsResolver } from './credit-settings/admin-credit-settings.resolver';
 import { AdminOverviewResolver } from './overview/admin-overview.resolver';
 import { AdminOverviewService } from './overview/admin-overview.service';
 import { GiftCodeModule } from '../gift-code/gift-code.module';
@@ -46,6 +47,7 @@ import { AdminVanHanResolver } from './van-han/admin-van-han.resolver';
     AdminUsersResolver,
     AdminPaymentsResolver,
     AdminGiftCodesResolver,
+    AdminCreditSettingsResolver,
     AdminOverviewService,
     AdminOverviewResolver,
     AdminActivityService,

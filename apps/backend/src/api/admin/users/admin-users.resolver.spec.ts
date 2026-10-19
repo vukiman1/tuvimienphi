@@ -2,11 +2,13 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import type { ActivityLogService } from '../../activity/activity-log.service';
 import type { ChapterCreditsService } from '../../credits/chapter-credits.service';
 import { CreditsEvent } from '../../credits/credits-event';
+import type { DailyQuotaService } from '../../credits/daily-quota.service';
 import {
   ChapterCreditsUserNotFoundError,
   ChapterCreditsWouldGoNegativeError,
 } from '../../credits/credits.errors';
 import type { UserEntity } from '../../user/entities/user.entity';
+import type { AdminUserSummary } from './admin-user.mapper';
 import { AdminUsersResolver } from './admin-users.resolver';
 import type { AdminUsersService } from './admin-users.service';
 
@@ -18,6 +20,7 @@ function build(adjust: jest.Mock): { resolver: AdminUsersResolver; record: jest.
   const resolver = new AdminUsersResolver(
     {} as AdminUsersService,
     { adjust } as unknown as ChapterCreditsService,
+    {} as DailyQuotaService,
     { record } as unknown as ActivityLogService,
   );
   return { resolver, record };
@@ -65,5 +68,27 @@ describe('AdminUsersResolver.adjustChapterCredits', () => {
     await expect(resolver.adjustChapterCredits({ userId: USER_ID, delta: 3 }, ADMIN)).rejects.toBe(
       failure,
     );
+  });
+});
+
+describe('AdminUsersResolver.users', () => {
+  it('adds how many free lượt each listed user spent today', async () => {
+    const listed = { id: USER_ID } as AdminUserSummary;
+    const idle = { id: 'idle-user' } as AdminUserSummary;
+    const resolver = new AdminUsersResolver(
+      {
+        list: jest.fn().mockResolvedValue({ total: 2, users: [listed, idle] }),
+      } as unknown as AdminUsersService,
+      {} as ChapterCreditsService,
+      {
+        usedBy: jest.fn().mockResolvedValue(new Map([[USER_ID, 2]])),
+      } as unknown as DailyQuotaService,
+      {} as ActivityLogService,
+    );
+
+    const page = await resolver.users({});
+
+    expect(page.total).toBe(2);
+    expect(page.users.map((user) => user.dailyChapterUsed)).toEqual([2, 0]);
   });
 });

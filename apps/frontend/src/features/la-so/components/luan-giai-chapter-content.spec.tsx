@@ -16,7 +16,7 @@ jest.mock('@/lib/http-request', () => ({
 
 const HTTP_PAYMENT_REQUIRED = 402;
 const HTTP_SERVICE_UNAVAILABLE = 503;
-const OUT_OF_LUOT_MESSAGE = 'Bạn đã dùng hết 3 lượt miễn phí hôm nay.';
+const OUT_OF_LUOT_MESSAGE = 'Bạn đã dùng hết lượt miễn phí hôm nay.';
 const SERVICE_DOWN_MESSAGE = 'Hệ thống đang bận, thử lại sau nhé.';
 
 const BIRTH: BirthInput = {

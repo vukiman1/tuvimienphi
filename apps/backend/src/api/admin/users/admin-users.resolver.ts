@@ -8,6 +8,7 @@ import { GqlAuthGuard } from '../../auth/guards/gql-auth.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { ChapterCreditsService } from '../../credits/chapter-credits.service';
 import { CreditsEvent } from '../../credits/credits-event';
+import { DailyQuotaService } from '../../credits/daily-quota.service';
 import {
   ChapterCreditsUserNotFoundError,
   ChapterCreditsWouldGoNegativeError,
@@ -29,12 +30,18 @@ export class AdminUsersResolver {
   constructor(
     private readonly adminUsers: AdminUsersService,
     private readonly chapterCredits: ChapterCreditsService,
+    private readonly dailyQuota: DailyQuotaService,
     private readonly activityLog: ActivityLogService,
   ) {}
 
   @Query(() => AdminUserPage, { name: 'users' })
   async users(@Args() args: ListUsersArgs): Promise<AdminUserPage> {
-    return this.adminUsers.list(args);
+    const page = await this.adminUsers.list(args);
+    const dailyUsed = await this.dailyQuota.usedBy(page.users.map((user) => user.id));
+    return {
+      total: page.total,
+      users: page.users.map((user) => ({ ...user, dailyChapterUsed: dailyUsed.get(user.id) ?? 0 })),
+    };
   }
 
   @Mutation(() => AdminCreditBalance, { name: 'adjustChapterCredits' })

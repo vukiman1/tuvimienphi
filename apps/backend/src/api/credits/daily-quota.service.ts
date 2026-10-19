@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { RedisService } from '@org/backend-redis';
-import { DAILY_CHAPTER_QUOTA, QUOTA_WINDOW_SECONDS } from './credits.constants';
+import { CreditSettingsService } from './credit-settings.service';
+import { QUOTA_WINDOW_SECONDS } from './credits.constants';
 
 /**
  * Đọc rồi tăng trong một lệnh: hai request cùng lúc của một người không được cùng thấy còn suất
@@ -21,31 +22,53 @@ if used > 0 then redis.call('DECR', KEYS[1]) end
 return 1
 `;
 
+export interface DailyQuotaStatus {
+  readonly limit: number;
+  readonly remaining: number;
+}
+
 function keyFor(userId: string): string {
   return `luan-giai:quota:${userId}`;
 }
 
+function toUsedCount(value: string | null): number {
+  return Number(value ?? '0');
+}
+
 @Injectable()
 export class DailyQuotaService {
-  constructor(private readonly redis: RedisService) {}
+  constructor(
+    private readonly redis: RedisService,
+    private readonly settings: CreditSettingsService,
+  ) {}
 
   /** Hoàn lại suất khi lượt sinh hỏng — người dùng không nên mất suất vì lỗi của hệ thống. */
   async refund(userId: string): Promise<void> {
     await this.redis.eval(REFUND, 1, keyFor(userId));
   }
 
-  async remaining(userId: string): Promise<number> {
-    const used = Number((await this.redis.get(keyFor(userId))) ?? '0');
-    return Math.max(0, DAILY_CHAPTER_QUOTA - used);
+  async status(userId: string): Promise<DailyQuotaStatus> {
+    const [stored, limit] = await Promise.all([
+      this.redis.get(keyFor(userId)),
+      this.settings.dailyChapterQuota(),
+    ]);
+    return { limit, remaining: Math.max(0, limit - toUsedCount(stored)) };
+  }
+
+  async usedBy(userIds: readonly string[]): Promise<ReadonlyMap<string, number>> {
+    if (userIds.length === 0) return new Map();
+    const stored = await this.redis.mGet(userIds.map(keyFor));
+    return new Map(userIds.map((userId, index) => [userId, toUsedCount(stored[index] ?? null)]));
   }
 
   async consume(userId: string): Promise<boolean> {
+    const limit = await this.settings.dailyChapterQuota();
     const used = await this.redis.eval<number>(
       CONSUME,
       1,
       keyFor(userId),
       QUOTA_WINDOW_SECONDS,
-      DAILY_CHAPTER_QUOTA,
+      limit,
     );
     return used !== -1;
   }
