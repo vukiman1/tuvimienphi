@@ -294,7 +294,7 @@ pnpm dlx storybook@latest init
 
 ## 🔴 Production features (làm khi cần)
 
-### [ ] BullMQ + background jobs
+### [x] BullMQ + background jobs
 
 **Why**: đã có Redis, không dùng cho job queue thì phí. Email, report generation, webhook delivery đều nên async.
 
