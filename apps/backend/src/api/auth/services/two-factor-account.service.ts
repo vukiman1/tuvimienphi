@@ -6,7 +6,8 @@ import {
 } from '@nestjs/common';
 import * as argon2 from 'argon2';
 import type { Request } from 'express';
-import { EmailService } from '../../../email/email.service';
+import { EmailKind } from '../../../email/email-job';
+import { EmailQueueService } from '../../../email/email-queue.service';
 import { UserEntity } from '../../user/entities/user.entity';
 import { UserService } from '../../user/user.service';
 import { AuthAuditService, AuthEvent } from './auth-audit.service';
@@ -17,6 +18,7 @@ import { TwoFactorChallengeService } from './two-factor-challenge.service';
 import { TwoFactorService } from './two-factor.service';
 
 const RECOVERY_TTL_MS = 15 * 60 * 1000;
+const MS_PER_MINUTE = 60_000;
 
 /**
  * Everything a signed-in user does to their own second factor, plus the email escape hatch.
@@ -29,7 +31,7 @@ export class TwoFactorAccountService {
     private readonly twoFactorChallengeService: TwoFactorChallengeService,
     private readonly emailCodeService: EmailCodeService,
     private readonly userService: UserService,
-    private readonly emailService: EmailService,
+    private readonly emailQueue: EmailQueueService,
     private readonly sessionRevocationService: SessionRevocationService,
     private readonly auditService: AuthAuditService,
   ) {}
@@ -90,11 +92,12 @@ export class TwoFactorAccountService {
       user.id,
       RECOVERY_TTL_MS,
     );
-    await this.emailService.sendTwoFactorRecoveryCode(
-      user.email,
+    await this.emailQueue.enqueue({
+      kind: EmailKind.TWO_FACTOR_RECOVERY,
+      to: user.email,
       code,
-      Math.round(RECOVERY_TTL_MS / 60_000),
-    );
+      expiryMinutes: Math.round(RECOVERY_TTL_MS / MS_PER_MINUTE),
+    });
     this.auditService.record(AuthEvent.TWO_FACTOR_RECOVERY_REQUESTED, {
       userId: user.id,
       request,

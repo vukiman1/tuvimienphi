@@ -9,7 +9,8 @@ import * as argon2 from 'argon2';
 import type { Request, Response } from 'express';
 import { CryptoService } from '@org/backend-crypto';
 import { UserService } from '../../user/user.service';
-import { EmailService } from '../../../email/email.service';
+import { EmailKind } from '../../../email/email-job';
+import { EmailQueueService } from '../../../email/email-queue.service';
 import { AuthService } from './auth.service';
 import { SessionRevocationService } from './session-revocation.service';
 import { SessionCookieService } from './session-cookie.service';
@@ -44,12 +45,7 @@ describe('AuthService', () => {
     revokeAllSessions: jest.Mock;
     revokeOtherSessions: jest.Mock;
   };
-  let email: {
-    sendWelcomeEmail: jest.Mock;
-    sendVerificationCode: jest.Mock;
-    sendPasswordResetCode: jest.Mock;
-    sendTwoFactorRecoveryCode: jest.Mock;
-  };
+  let emailQueue: { enqueue: jest.Mock };
   let audit: { record: jest.Mock };
   let userSessionService: {
     createSession: jest.Mock;
@@ -110,12 +106,7 @@ describe('AuthService', () => {
       revokeAllSessions: jest.fn(),
       revokeOtherSessions: jest.fn(),
     };
-    email = {
-      sendWelcomeEmail: jest.fn(),
-      sendVerificationCode: jest.fn(),
-      sendPasswordResetCode: jest.fn(),
-      sendTwoFactorRecoveryCode: jest.fn(),
-    };
+    emailQueue = { enqueue: jest.fn().mockResolvedValue(undefined) };
     audit = { record: jest.fn() };
     userSessionService = {
       createSession: jest.fn(),
@@ -150,7 +141,7 @@ describe('AuthService', () => {
     service = new AuthService(
       userService as unknown as UserService,
       sessionService as unknown as SessionService,
-      email as unknown as EmailService,
+      emailQueue as unknown as EmailQueueService,
       audit as unknown as AuthAuditService,
       userSessionService as unknown as UserSessionService,
       new SessionRevocationService(
@@ -195,12 +186,15 @@ describe('AuthService', () => {
         'user-1',
         expect.any(Number),
       );
-      expect(email.sendVerificationCode).toHaveBeenCalledWith(
-        'a@b.c',
-        '123456',
-        expect.any(Number),
+      expect(emailQueue.enqueue).toHaveBeenCalledWith({
+        kind: EmailKind.EMAIL_VERIFICATION,
+        to: 'a@b.c',
+        code: '123456',
+        expiryMinutes: 15,
+      });
+      expect(emailQueue.enqueue).not.toHaveBeenCalledWith(
+        expect.objectContaining({ kind: EmailKind.WELCOME }),
       );
-      expect(email.sendWelcomeEmail).not.toHaveBeenCalled();
       expect(audit.record).toHaveBeenCalledWith(
         AuthEvent.REGISTERED,
         expect.objectContaining({ userId: 'user-1' }),
@@ -240,8 +234,26 @@ describe('AuthService', () => {
       expect(userService.update).toHaveBeenCalledWith(expect.objectContaining({ id: 'user-1' }), {
         isEmailVerified: true,
       });
-      expect(email.sendWelcomeEmail).toHaveBeenCalledWith('a@b.c');
+      expect(emailQueue.enqueue).toHaveBeenCalledWith({ kind: EmailKind.WELCOME, to: 'a@b.c' });
       expect(audit.record).toHaveBeenCalledWith(AuthEvent.EMAIL_VERIFIED, expect.any(Object));
+    });
+
+    it('still verifies the account when the welcome email cannot be queued', async () => {
+      userService.getOne.mockResolvedValue({ id: 'user-1' });
+      emailCode.consume.mockResolvedValue('user-1');
+      userService.getOneOrFail.mockResolvedValue({
+        id: 'user-1',
+        email: 'a@b.c',
+        isEmailVerified: false,
+      });
+      emailQueue.enqueue.mockRejectedValue(new Error("Stream isn't writeable"));
+
+      await expect(service.verifyEmail(dto, request)).resolves.toEqual({
+        message: 'Email verified successfully',
+      });
+      expect(userService.update).toHaveBeenCalledWith(expect.anything(), {
+        isEmailVerified: true,
+      });
     });
   });
 
@@ -252,7 +264,7 @@ describe('AuthService', () => {
       await service.forgotPassword('nobody@b.c', request);
 
       expect(emailCode.issue).not.toHaveBeenCalled();
-      expect(email.sendPasswordResetCode).not.toHaveBeenCalled();
+      expect(emailQueue.enqueue).not.toHaveBeenCalled();
     });
 
     it('issues a reset code and emails it when the user exists', async () => {
@@ -265,10 +277,20 @@ describe('AuthService', () => {
         'user-1',
         expect.any(Number),
       );
-      expect(email.sendPasswordResetCode).toHaveBeenCalledWith(
-        'a@b.c',
-        '123456',
-        expect.any(Number),
+      expect(emailQueue.enqueue).toHaveBeenCalledWith({
+        kind: EmailKind.PASSWORD_RESET,
+        to: 'a@b.c',
+        code: '123456',
+        expiryMinutes: 15,
+      });
+    });
+
+    it('fails the request when its code cannot be queued, so the user is not told a code is on its way', async () => {
+      userService.getOne.mockResolvedValue({ id: 'user-1' });
+      emailQueue.enqueue.mockRejectedValue(new Error("Stream isn't writeable"));
+
+      await expect(service.forgotPassword('a@b.c', request)).rejects.toThrow(
+        "Stream isn't writeable",
       );
     });
   });

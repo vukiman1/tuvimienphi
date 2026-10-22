@@ -5,6 +5,7 @@ import { TwoFactorAccountService } from './two-factor-account.service';
 import { SessionRevocationService } from './session-revocation.service';
 import { SessionRevokeReason } from '../enums/session-revoke-reason.enum';
 import { AuthEvent } from './auth-audit.service';
+import { EmailKind } from '../../../email/email-job';
 
 const request = { headers: {} } as Request;
 
@@ -13,7 +14,7 @@ describe('TwoFactorAccountService', () => {
   let challenge: Record<string, jest.Mock>;
   let emailCode: Record<string, jest.Mock>;
   let userService: Record<string, jest.Mock>;
-  let email: Record<string, jest.Mock>;
+  let emailQueue: Record<string, jest.Mock>;
   let sessions: Record<string, jest.Mock>;
   let userSessions: Record<string, jest.Mock>;
   let audit: Record<string, jest.Mock>;
@@ -31,7 +32,7 @@ describe('TwoFactorAccountService', () => {
     challenge = { peek: jest.fn() };
     emailCode = { issue: jest.fn().mockResolvedValue('123456'), consume: jest.fn() };
     userService = { getOneOrFail: jest.fn() };
-    email = { sendTwoFactorRecoveryCode: jest.fn() };
+    emailQueue = { enqueue: jest.fn().mockResolvedValue(undefined) };
     sessions = { revokeAllSessions: jest.fn() };
     userSessions = { revokeAllSessions: jest.fn() };
     audit = { record: jest.fn() };
@@ -41,7 +42,7 @@ describe('TwoFactorAccountService', () => {
       challenge as never,
       emailCode as never,
       userService as never,
-      email as never,
+      emailQueue as never,
       new SessionRevocationService(sessions as never, userSessions as never),
       audit as never,
     );
@@ -92,7 +93,7 @@ describe('TwoFactorAccountService', () => {
       challenge.peek.mockResolvedValue(null);
 
       await expect(service.requestRecovery('nope', request)).rejects.toBeInstanceOf(GoneException);
-      expect(email.sendTwoFactorRecoveryCode).not.toHaveBeenCalled();
+      expect(emailQueue.enqueue).not.toHaveBeenCalled();
     });
 
     it('sends to the address on the account, never one supplied by the caller', async () => {
@@ -101,7 +102,12 @@ describe('TwoFactorAccountService', () => {
 
       await service.requestRecovery('challenge-1', request);
 
-      expect(email.sendTwoFactorRecoveryCode).toHaveBeenCalledWith('a@b.c', '123456', 15);
+      expect(emailQueue.enqueue).toHaveBeenCalledWith({
+        kind: EmailKind.TWO_FACTOR_RECOVERY,
+        to: 'a@b.c',
+        code: '123456',
+        expiryMinutes: 15,
+      });
     });
 
     it('rejects a code that was never issued or has expired', async () => {

@@ -1,9 +1,21 @@
+import { UnrecoverableError } from 'bullmq';
+
 export class EmailSendError extends Error {
   constructor(
-    public readonly recipient: string,
+    public readonly statusCode: number | null,
     cause: string,
+    public readonly code: string | null,
   ) {
-    super(`Failed to send email to ${recipient}: ${cause}`);
+    super(`Resend rejected the email (${statusCode ?? 'no status'}): ${cause}`);
     this.name = 'EmailSendError';
+  }
+}
+
+export class UnknownEmailKindError extends UnrecoverableError {
+  constructor(job: unknown) {
+    const kind =
+      typeof job === 'object' && job !== null && 'kind' in job ? String(job.kind) : 'missing';
+    super(`Unknown email job kind: ${kind}`);
+    this.name = 'UnknownEmailKindError';
   }
 }
