@@ -1,12 +1,8 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { DAILY_CHAPTER_QUOTA } from '../credits/credits.constants';
 
 export class ChapterQuotaExceededException extends HttpException {
   constructor() {
-    super(
-      `Bạn đã dùng hết ${DAILY_CHAPTER_QUOTA} lượt miễn phí hôm nay.`,
-      HttpStatus.PAYMENT_REQUIRED,
-    );
+    super('Bạn đã dùng hết lượt miễn phí hôm nay.', HttpStatus.PAYMENT_REQUIRED);
   }
 }
 

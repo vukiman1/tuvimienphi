@@ -11,6 +11,7 @@ import { UserSessionEntity } from './src/api/auth/entities/user-session.entity';
 import { UserTotpEntity } from './src/api/auth/entities/user-totp.entity';
 import { UserRecoveryCodeEntity } from './src/api/auth/entities/user-recovery-code.entity';
 import { AuthIdentityEntity } from './src/api/auth/entities/auth-identity.entity';
+import { CreditSettingsEntity } from './src/api/credits/entities/credit-settings.entity';
 import { GiftCodeEntity } from './src/api/gift-code/entities/gift-code.entity';
 import { GiftCodeRedemptionEntity } from './src/api/gift-code/entities/gift-code-redemption.entity';
 import { PaymentEntity } from './src/api/payment/entities/payment.entity';
@@ -81,6 +82,7 @@ export const options: DataSourceOptions = {
     PaymentEntity,
     GiftCodeEntity,
     GiftCodeRedemptionEntity,
+    CreditSettingsEntity,
   ],
   migrationsTableName: 'migrations',
   migrations: [join(__dirname, `src/migrations/*.${migrationExtension}`)],

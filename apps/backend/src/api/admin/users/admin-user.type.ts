@@ -29,6 +29,9 @@ export class AdminUser {
   @Field(() => Int)
   chapterCredits: number;
 
+  @Field(() => Int)
+  dailyChapterUsed: number;
+
   @Field()
   createdAt: string;
 

@@ -36,9 +36,15 @@ const dateTimeFormatter = new Intl.DateTimeFormat('vi-VN', {
   minute: '2-digit',
 });
 
+function formatDailyUsage(used: number, dailyChapterQuota: number | undefined): string {
+  if (dailyChapterQuota === undefined) return formatNumber(used);
+  return `${formatNumber(used)}/${formatNumber(dailyChapterQuota)}`;
+}
+
 export function buildUsersColumns(
   filters: AdminUsersFilters,
   onAdjustCredits: (user: AdminUserRow) => void,
+  dailyChapterQuota: number | undefined,
 ): TableProps<AdminUserRow>['columns'] {
   return [
     {
@@ -93,6 +99,14 @@ export function buildUsersColumns(
       width: 110,
       align: 'right',
       render: (chapterCredits: number) => formatNumber(chapterCredits),
+    },
+    {
+      key: 'dailyChapterUsed',
+      title: 'Miễn phí hôm nay',
+      dataIndex: 'dailyChapterUsed',
+      width: 150,
+      align: 'right',
+      render: (used: number) => formatDailyUsage(used, dailyChapterQuota),
     },
     {
       key: 'genCount',

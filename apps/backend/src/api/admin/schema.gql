@@ -86,6 +86,10 @@ type AdminCreditBalance {
   userId: ID!
 }
 
+type AdminCreditSettings {
+  dailyChapterQuota: Int!
+}
+
 type AdminGiftCode {
   code: String!
   createdAt: String!
@@ -135,6 +139,7 @@ type AdminUser {
   balance: Int!
   chapterCredits: Int!
   createdAt: String!
+  dailyChapterUsed: Int!
   displayName: String
   email: String!
   genCount: Int!
@@ -281,6 +286,7 @@ type Mutation {
   setGiftCodeActive(id: ID!, isActive: Boolean!): AdminGiftCode!
   testAiProvider(input: TestAiProviderInput!): AdminAiHealth!
   unpublishVanHanYear(year: Int!): AdminVanHanYear!
+  updateCreditSettings(input: UpdateCreditSettingsInput!): AdminCreditSettings!
 }
 
 enum PaymentStatus {
@@ -300,6 +306,7 @@ type Query {
   aiProviderModels(apiKey: String, provider: AiProvider!): [String!]!
   aiSettings: AdminAiSettings!
   aiUsage(from: String!, to: String!): [AdminAiUsageDay!]!
+  creditSettings: AdminCreditSettings!
   giftCodes: [AdminGiftCode!]!
   overview(from: String, to: String): AdminOverview!
   payments(limit: Int, page: Int, status: PaymentStatus): AdminPaymentPage!
@@ -347,6 +354,10 @@ enum UnmatchedReason {
   AmountTooLow
   NoCode
   UnknownCode
+}
+
+input UpdateCreditSettingsInput {
+  dailyChapterQuota: Int!
 }
 
 input VanHanAgeInput {

@@ -20,6 +20,10 @@ export class RedisService {
     return this.redis.get(key);
   }
 
+  mGet(keys: readonly string[]): Promise<Array<string | null>> {
+    return this.redis.mget(...keys);
+  }
+
   del(key: string): Promise<number> {
     return this.redis.del(key);
   }

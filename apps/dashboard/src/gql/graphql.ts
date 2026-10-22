@@ -89,6 +89,10 @@ export type UnmatchedReason =
   | 'NoCode'
   | 'UnknownCode';
 
+export type UpdateCreditSettingsInput = {
+  dailyChapterQuota: number;
+};
+
 export type VanHanAgeInput = {
   birthYear: number;
   female: string;
@@ -193,6 +197,18 @@ export type AiCallsQueryVariables = Exact<{
 
 export type AiCallsQuery = { aiCalls: { total: number, items: Array<{ id: string, at: string, status: AiCallStatus, isQuotaHit: boolean, inputTokens: number, outputTokens: number, latencyMs: number | null, costUsd: number | null, error: string | null, label: string | null, userEmail: string | null }> } };
 
+export type AdminCreditSettingsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AdminCreditSettingsQuery = { creditSettings: { dailyChapterQuota: number } };
+
+export type UpdateCreditSettingsMutationVariables = Exact<{
+  input: UpdateCreditSettingsInput;
+}>;
+
+
+export type UpdateCreditSettingsMutation = { updateCreditSettings: { dailyChapterQuota: number } };
+
 export type AdminGiftCodesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -254,7 +270,7 @@ export type AdminUsersQueryVariables = Exact<{
 }>;
 
 
-export type AdminUsersQuery = { users: { total: number, users: Array<{ id: string, email: string, displayName: string | null, avatar: string | null, role: Role, isEmailVerified: boolean, balance: number, chapterCredits: number, createdAt: string, genCount: number, lastActiveAt: string | null }> } };
+export type AdminUsersQuery = { users: { total: number, users: Array<{ id: string, email: string, displayName: string | null, avatar: string | null, role: Role, isEmailVerified: boolean, balance: number, chapterCredits: number, dailyChapterUsed: number, createdAt: string, genCount: number, lastActiveAt: string | null }> } };
 
 export type AdjustChapterCreditsMutationVariables = Exact<{
   input: AdjustChapterCreditsInput;
@@ -537,6 +553,20 @@ export const AiCallsDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<AiCallsQuery, AiCallsQueryVariables>;
+export const AdminCreditSettingsDocument = new TypedDocumentString(`
+    query AdminCreditSettings {
+  creditSettings {
+    dailyChapterQuota
+  }
+}
+    `) as unknown as TypedDocumentString<AdminCreditSettingsQuery, AdminCreditSettingsQueryVariables>;
+export const UpdateCreditSettingsDocument = new TypedDocumentString(`
+    mutation UpdateCreditSettings($input: UpdateCreditSettingsInput!) {
+  updateCreditSettings(input: $input) {
+    dailyChapterQuota
+  }
+}
+    `) as unknown as TypedDocumentString<UpdateCreditSettingsMutation, UpdateCreditSettingsMutationVariables>;
 export const AdminGiftCodesDocument = new TypedDocumentString(`
     query AdminGiftCodes {
   giftCodes {
@@ -656,6 +686,7 @@ export const AdminUsersDocument = new TypedDocumentString(`
       isEmailVerified
       balance
       chapterCredits
+      dailyChapterUsed
       createdAt
       genCount
       lastActiveAt
