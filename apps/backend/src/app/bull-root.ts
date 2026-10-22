@@ -1,6 +1,7 @@
 import { BullModule } from '@nestjs/bullmq';
 import type { DynamicModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { workerConnection, type RedisSettings } from './redis-connection';
 
 /** Nối BullMQ vào cùng Redis với phần còn lại của ứng dụng. */
 export function bullRootImport(): DynamicModule {
@@ -8,14 +9,7 @@ export function bullRootImport(): DynamicModule {
     imports: [ConfigModule],
     inject: [ConfigService],
     useFactory: (config: ConfigService) => ({
-      connection: {
-        host: config.get<string>('redis.host'),
-        port: config.get<number>('redis.port'),
-        password: config.get<string>('redis.password') || undefined,
-        db: config.get<number>('redis.db'),
-        ...(config.get<boolean>('redis.tls') ? { tls: {} } : {}),
-        maxRetriesPerRequest: null,
-      },
+      connection: workerConnection(config.getOrThrow<RedisSettings>('redis')),
     }),
   });
 }

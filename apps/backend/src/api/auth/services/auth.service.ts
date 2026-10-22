@@ -15,7 +15,8 @@ import { VerifyEmailDto } from '../dto/verify-email.dto';
 import { ChangePasswordDto } from '../dto/change-password.dto';
 import { UserEntity } from '../../user/entities/user.entity';
 import { UserService } from '../../user/user.service';
-import { EmailService } from '../../../email/email.service';
+import { EmailKind } from '../../../email/email-job';
+import { EmailQueueService } from '../../../email/email-queue.service';
 import { SessionService } from './session.service';
 import { AuthAuditService, AuthEvent } from './auth-audit.service';
 import { UserSessionService } from './user-session.service';
@@ -51,7 +52,7 @@ export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly sessionService: SessionService,
-    private readonly emailService: EmailService,
+    private readonly emailQueue: EmailQueueService,
     private readonly auditService: AuthAuditService,
     private readonly userSessionService: UserSessionService,
     private readonly sessionRevocationService: SessionRevocationService,
@@ -238,7 +239,7 @@ export class AuthService {
     const user = await this.consumeEmailCode(EmailCodeKind.EMAIL_VERIFY, email, code);
     if (!user.isEmailVerified) {
       await this.userService.update(user, { isEmailVerified: true });
-      await this.trySend(() => this.emailService.sendWelcomeEmail(user.email), user.email);
+      await this.queueWelcomeEmail(user.email);
     }
     this.auditService.record(AuthEvent.EMAIL_VERIFIED, {
       userId: user.id,
@@ -267,11 +268,12 @@ export class AuthService {
         user.id,
         PASSWORD_RESET_TTL_MS,
       );
-      await this.trySend(
-        () =>
-          this.emailService.sendPasswordResetCode(email, code, toMinutes(PASSWORD_RESET_TTL_MS)),
-        email,
-      );
+      await this.emailQueue.enqueue({
+        kind: EmailKind.PASSWORD_RESET,
+        to: email,
+        code,
+        expiryMinutes: toMinutes(PASSWORD_RESET_TTL_MS),
+      });
       this.auditService.record(AuthEvent.PASSWORD_RESET_REQUESTED, {
         userId: user.id,
         email,
@@ -412,18 +414,20 @@ export class AuthService {
       userId,
       EMAIL_VERIFY_TTL_MS,
     );
-    await this.trySend(
-      () => this.emailService.sendVerificationCode(email, code, toMinutes(EMAIL_VERIFY_TTL_MS)),
-      email,
-    );
+    await this.emailQueue.enqueue({
+      kind: EmailKind.EMAIL_VERIFICATION,
+      to: email,
+      code,
+      expiryMinutes: toMinutes(EMAIL_VERIFY_TTL_MS),
+    });
   }
 
-  private async trySend(send: () => Promise<void>, recipient: string): Promise<void> {
+  private async queueWelcomeEmail(to: string): Promise<void> {
     try {
-      await send();
+      await this.emailQueue.enqueue({ kind: EmailKind.WELCOME, to });
     } catch (error) {
       this.logger.error(
-        `Failed to send email to ${recipient}`,
+        'Failed to queue the welcome email',
         error instanceof Error ? error.stack : undefined,
       );
     }

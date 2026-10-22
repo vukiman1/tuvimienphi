@@ -17,7 +17,7 @@ Mặc định của `QUEUE_ROLE` là `both`, nên máy local vẫn một tiến 
 
 Dùng chung image vì worker là cùng một chương trình đóng vai khác: chung entity, chung config, chung kết nối DB và Redis. Quan trọng hơn, một image ghim một tag thì hai bên **không thể lệch phiên bản** — mà chúng dùng chung database và chung hình dạng payload của job, nên producer đẩy thứ consumer chưa hiểu là loại lỗi rất khó lần. Service `migrate` vốn đã dùng lại image này theo đúng cách đó.
 
-`BullModule.registerQueue` đăng ký ở mọi vai, nên tiến trình nào cũng `enqueue` được. Chỉ `QueueProcessor` và `QueueScheduler` mới theo vai.
+`BullModule.registerQueue` đăng ký ở mọi vai, nên tiến trình nào cũng `enqueue` được. Chỉ `QueueProcessor`, `QueueScheduler` và `EmailProcessor` mới theo vai.
 
 Worker vẫn chạy HTTP nhưng không publish cổng, để nó có `/health/readiness` y như backend — đó là thứ `tools/vps/deploy-backend.sh` dùng để xác nhận worker đã sống, và là thứ bộ theo dõi sẽ đọc. Cái giá là worker cõng theo tầng HTTP nó không phục vụ. Nếu bộ nhớ VPS chật thì đây là chỗ cắt đầu tiên: đổi sang `NestFactory.createApplicationContext()` cho vai consumer, nhưng khi đó phải nghĩ lại healthcheck.
 
@@ -60,6 +60,8 @@ Thêm phương thức vào `QueueService` theo khuôn `scheduleHourly()`, rồi 
 
 **Chỉ có một worker.** Không có dự phòng. Ở quy mô hiện tại là hợp lý, nhưng biết để khỏi bất ngờ.
 
+**Worker chết là email auth chết im.** Đăng ký, quên mật khẩu, khôi phục 2FA vẫn trả "đã gửi mã", nhưng job nằm chờ trong Redis và không mail nào đi. Job đang chờ không bao giờ fail nên `removeOnFail` không dọn, mã OTP nằm trong Redis tới khi worker lên lại. Lúc đó worker gửi cả lô mã đã hết hạn. Đây là lý do thứ hai, nặng hơn cron, để bộ theo dõi worker đáng làm.
+
 **`mem_limit: 384m`** (heap 300m) là con số đặt tạm, chưa đối chiếu với RAM thật của VPS. Cron làm tổng hợp nặng trên `activity_log` hay `la_so_history` có thể chạm trần.
 
 ## 6. bull-board ở production
@@ -73,3 +75,17 @@ Nếu bật thì phải xử ba điểm trước:
 - **Nó không chỉ đọc.** Xoá, retry, promote job được, và payload job hiện nguyên trên trang — khi luận giải vào queue thì đó là ngày sinh và prompt của người dùng.
 
 Cách được khuyên: đặt Cloudflare Access trước `/queues`. Tunnel đã là lối vào duy nhất và backend chỉ publish ở `127.0.0.1`, nên không có origin công khai để đi vòng qua cổng. Cách rẻ hơn: giữ tắt, khi cần thì mở qua SSH local-forward.
+
+## 7. Email đi qua queue `email`
+
+Bốn email của auth (chào mừng, xác thực, đặt lại mật khẩu, khôi phục 2FA) không gửi trong request nữa. `EmailQueueService.enqueue()` đẩy job vào queue `email`, `EmailProcessor` ở vai consumer mới gọi Resend.
+
+**Không lên bull-board.** Payload chứa mã OTP còn hiệu lực. Ai mở được board là đọc được mã reset của bất kỳ ai, nên queue này cố ý không đăng ký vào `queueBoardFeatureImports`.
+
+**`queue.add()` không treo khi Redis chết.** Queue phía producer dùng `producerConnection()` với `enableOfflineQueue: false`, nên riêng lệnh `add` báo lỗi ngay. Nhưng endpoint thì vẫn chậm: ba luồng OTP gọi `emailCodeService.issue()` (welcome thì đọc mã) qua client của `RedisModule` trước khi tới `enqueue`, mà client đó để offline queue mặc định với `maxRetriesPerRequest: 20`, nên request chờ khoảng 10–40 giây rồi mới ra 500. Muốn cả endpoint báo lỗi ngay thì phải đổi `RedisModule`, việc đó chạm mọi chỗ dùng Redis nên để thay đổi riêng. Worker dùng `workerConnection()` với `maxRetriesPerRequest: null`, và connection đó phải khai trên `@Processor`, vì `@nestjs/bullmq` dựng Worker từ options của queue.
+
+**Retry khoảng 75 giây.** 5 lần thử, backoff exponential từ 5 giây. Lỗi 4xx của Resend thành `UnrecoverableError` vì thử lại cũng vô ích, trừ 429 và 409 `concurrent_idempotent_requests` (lần gửi trước cùng key còn đang chạy). Mỗi lần gửi kèm idempotency key `<kind>/<jobId>`, với `jobId` là UUID. Không dùng bộ đếm mặc định của BullMQ vì Redis bị flush thì bộ đếm quay về 1 và Resend sẽ chặn key trùng.
+
+**`removeOnFail: true`, không dùng `{ age }`.** BullMQ dọn theo `age` một cách lười, chỉ khi có job khác xong hoặc lỗi. Queue vắng thì job lỗi giữ mã OTP lâu hơn TTL 15 phút. Dấu vết còn lại là log: mỗi lần retry là một dòng `warn` `failed <kind> email job <jobId>`, còn job bỏ cuộc (hết lượt hoặc lỗi không retry được) là một dòng `error` `gave up on <kind> email job <jobId>`. Mail auth bị mất thì tìm theo dòng `error` đó. Cả hai đều không có mã, không có địa chỉ.
+
+**Mail tới muộn có thể mang mã cũ.** `issue()` thay mã cũ bằng mã mới. Nếu job đầu còn đang retry mà người dùng bấm gửi lại, mail tới sau có thể chứa mã đã chết. Cửa sổ retry khoảng 75 giây nên chấp nhận, miễn là worker đang chạy (xem mục 5).

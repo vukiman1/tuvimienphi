@@ -10,6 +10,7 @@ interface SendEmailParams {
   to: string;
   subject: string;
   html: string;
+  idempotencyKey: string;
 }
 
 @Injectable()
@@ -30,12 +31,17 @@ export class EmailService {
     }
   }
 
-  async sendWelcomeEmail(to: string): Promise<void> {
+  async sendWelcomeEmail(to: string, idempotencyKey: string): Promise<void> {
     const html = await render(WelcomeEmail({ email: to, appUrl: this.appUrl }));
-    await this.send({ to, subject: 'Welcome aboard 🎉', html });
+    await this.send({ to, subject: 'Welcome aboard 🎉', html, idempotencyKey });
   }
 
-  async sendVerificationCode(to: string, code: string, expiryMinutes: number): Promise<void> {
+  async sendVerificationCode(
+    to: string,
+    code: string,
+    expiryMinutes: number,
+    idempotencyKey: string,
+  ): Promise<void> {
     const html = await render(
       VerificationCodeEmail({
         heading: 'Confirm your email',
@@ -44,10 +50,15 @@ export class EmailService {
         expiryMinutes,
       }),
     );
-    await this.send({ to, subject: `${code} is your confirmation code`, html });
+    await this.send({ to, subject: `${code} is your confirmation code`, html, idempotencyKey });
   }
 
-  async sendPasswordResetCode(to: string, code: string, expiryMinutes: number): Promise<void> {
+  async sendPasswordResetCode(
+    to: string,
+    code: string,
+    expiryMinutes: number,
+    idempotencyKey: string,
+  ): Promise<void> {
     const html = await render(
       VerificationCodeEmail({
         heading: 'Reset your password',
@@ -56,10 +67,15 @@ export class EmailService {
         expiryMinutes,
       }),
     );
-    await this.send({ to, subject: `${code} is your password reset code`, html });
+    await this.send({ to, subject: `${code} is your password reset code`, html, idempotencyKey });
   }
 
-  async sendTwoFactorRecoveryCode(to: string, code: string, expiryMinutes: number): Promise<void> {
+  async sendTwoFactorRecoveryCode(
+    to: string,
+    code: string,
+    expiryMinutes: number,
+    idempotencyKey: string,
+  ): Promise<void> {
     const html = await render(
       VerificationCodeEmail({
         heading: 'Turn off two-factor authentication',
@@ -69,18 +85,21 @@ export class EmailService {
         expiryMinutes,
       }),
     );
-    await this.send({ to, subject: `${code} is your recovery code`, html });
+    await this.send({ to, subject: `${code} is your recovery code`, html, idempotencyKey });
   }
 
-  private async send({ to, subject, html }: SendEmailParams): Promise<void> {
+  private async send({ to, subject, html, idempotencyKey }: SendEmailParams): Promise<void> {
     if (!this.resend) {
-      this.logger.warn(`Email to ${to} skipped (no API key): ${subject}`);
+      this.logger.warn(`Email skipped (no API key): ${subject}`);
       return;
     }
 
-    const { error } = await this.resend.emails.send({ from: this.from, to, subject, html });
+    const { error } = await this.resend.emails.send(
+      { from: this.from, to, subject, html },
+      { idempotencyKey },
+    );
     if (error) {
-      throw new EmailSendError(to, error.message);
+      throw new EmailSendError(error.statusCode ?? null, error.message, error.name ?? null);
     }
   }
 }
