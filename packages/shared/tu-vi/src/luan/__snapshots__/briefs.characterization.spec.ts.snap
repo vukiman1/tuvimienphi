@@ -1,0 +1,6180 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`brief của lá số 1955-06-26 21h Nữ Công danh 1`] = `
+{
+  "chinh": {
+    "anNgu": null,
+    "catTinh": [
+      {
+        "ten": "Thiên Hỉ",
+        "the": "nhị hợp",
+      },
+    ],
+    "chi": "Hợi",
+    "chiNamSinh": "Mùi",
+    "chinhTinh": [
+      {
+        "bac": "M",
+        "ten": "Thái Âm",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "V",
+        "ten": "Thiên Cơ",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "V",
+        "ten": "Thái Dương",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "V",
+        "ten": "Thiên Lương",
+        "the": "tam hợp",
+      },
+    ],
+    "cung": "Quan Lộc",
+    "gioiTinh": "nu",
+    "hungTinh": [],
+    "laVoChinhDieu": false,
+    "luan": [
+      {
+        "do": [
+          "Thiên Cơ",
+        ],
+        "sac": "thuan",
+        "trong": 80,
+        "tuKhoa": [
+          "xoay việc",
+          "lên phương án",
+        ],
+        "y": "xoay việc nhanh, hợp vai trò tính toán và lên phương án",
+      },
+      {
+        "do": [],
+        "sac": "thuan",
+        "trong": 88,
+        "tuKhoa": [
+          "Cơ Nguyệt Đồng Lương",
+          "cần bền",
+        ],
+        "y": "cách Cơ Nguyệt Đồng Lương chủ ổn định, hợp việc cần bền và cần nghĩ",
+      },
+      {
+        "do": [
+          "Thái Âm",
+        ],
+        "sac": "nghich",
+        "trong": 94,
+        "tuKhoa": [
+          "ngại xung phong",
+          "chậm hơn người khác",
+        ],
+        "y": "ngại xung phong, công sức bỏ ra dễ bị nhìn thấy chậm hơn người khác",
+      },
+      {
+        "do": [
+          "Thái Âm",
+        ],
+        "sac": "nghich",
+        "trong": 80,
+        "tuKhoa": [
+          "vướng lại",
+          "trắc trở",
+        ],
+        "y": "phần thuận lợi bị vướng lại, muốn được việc thì cũng phải qua trắc trở",
+      },
+      {
+        "do": [
+          "Thiên Hỉ",
+        ],
+        "sac": "hoa-giai",
+        "trong": 18,
+        "tuKhoa": [
+          "tin vui",
+          "hoà hợp",
+        ],
+        "y": "có tin vui về công việc, không khí làm việc hoà hợp hơn",
+      },
+    ],
+  },
+  "muc": [
+    {
+      "anNgu": null,
+      "catTinh": [
+        {
+          "ten": "Thiên Y",
+          "the": "xung chiếu",
+        },
+        {
+          "ten": "Hóa Lộc",
+          "the": "xung chiếu",
+        },
+        {
+          "ten": "Hóa Quyền",
+          "the": "tam hợp",
+        },
+      ],
+      "chi": "Hợi",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "M",
+          "ten": "Thái Âm",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "V",
+          "ten": "Thiên Cơ",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "V",
+          "ten": "Thái Dương",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "V",
+          "ten": "Thiên Lương",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Quan Lộc",
+      "duKien": [],
+      "gioiTinh": "nu",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Hóa Quyền",
+          ],
+          "sac": "thuan",
+          "trong": 68,
+          "tuKhoa": [
+            "thực quyền",
+            "quyết định",
+          ],
+          "y": "có thực quyền, tiếng nói đủ sức quyết định trong công việc",
+        },
+        {
+          "do": [
+            "Hóa Lộc",
+          ],
+          "sac": "thuan",
+          "trong": 58,
+          "tuKhoa": [
+            "tài lộc",
+            "thu nhập",
+          ],
+          "y": "công việc đi kèm tài lộc, thu nhập thuận theo công sức bỏ ra",
+        },
+        {
+          "do": [
+            "Thiên Y",
+          ],
+          "sac": "thuan",
+          "trong": 45,
+          "tuKhoa": [
+            "gây thiện cảm",
+            "được tín nhiệm",
+          ],
+          "y": "dễ gây thiện cảm, được tín nhiệm khi làm việc cùng người khác",
+        },
+      ],
+      "muc": "diem-manh",
+      "sourceCung": "Quan Lộc · Hợi",
+      "tieuDe": "Điểm mạnh trong sự nghiệp",
+    },
+    {
+      "anNgu": null,
+      "catTinh": [],
+      "chi": "Hợi",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "M",
+          "ten": "Thái Âm",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "V",
+          "ten": "Thiên Cơ",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "V",
+          "ten": "Thái Dương",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "V",
+          "ten": "Thiên Lương",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Quan Lộc",
+      "duKien": [],
+      "gioiTinh": "nu",
+      "hungTinh": [
+        {
+          "ten": "Linh Tinh",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Thiên Diêu",
+          "the": "xung chiếu",
+        },
+        {
+          "ten": "Đà La",
+          "the": "nhị hợp",
+        },
+      ],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Đà La",
+          ],
+          "sac": "nghich",
+          "trong": 62,
+          "tuKhoa": [
+            "trắc trở",
+            "chậm",
+            "dây dưa",
+          ],
+          "y": "trắc trở kéo dài, việc gì cũng chậm và dây dưa",
+        },
+        {
+          "do": [
+            "Thiên Diêu",
+          ],
+          "sac": "nghich",
+          "trong": 60,
+          "tuKhoa": [
+            "sa đà vào việc ngoài lề",
+            "phân tán",
+          ],
+          "y": "dễ sa đà vào việc ngoài lề, phân tán sức tập trung khỏi việc chính",
+        },
+        {
+          "do": [
+            "Linh Tinh",
+          ],
+          "sac": "nghich",
+          "trong": 50,
+          "tuKhoa": [
+            "uất ức",
+            "khó nói",
+          ],
+          "y": "uất ức âm ỉ vì công việc, khó nói thẳng ra",
+        },
+      ],
+      "muc": "diem-can-giu",
+      "sourceCung": "Quan Lộc · Hợi",
+      "tieuDe": "Điểm cần giữ trong sự nghiệp",
+    },
+  ],
+}
+`;
+
+exports[`brief của lá số 1955-06-26 21h Nữ Mệnh 1`] = `
+{
+  "chinh": {
+    "anNgu": "Triệt",
+    "catTinh": [],
+    "chi": "Mùi",
+    "chiNamSinh": "Mùi",
+    "chinhTinh": [
+      {
+        "bac": "H",
+        "ten": "Thiên Đồng",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "H",
+        "ten": "Cự Môn",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "M",
+        "ten": "Thái Âm",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "V",
+        "ten": "Thái Dương",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "V",
+        "ten": "Thiên Lương",
+        "the": "tam hợp",
+      },
+    ],
+    "cung": "Mệnh",
+    "gioiTinh": "nu",
+    "hungTinh": [],
+    "laVoChinhDieu": true,
+    "luan": [
+      {
+        "do": [
+          "Thiên Lương",
+        ],
+        "sac": "thuan",
+        "trong": 50,
+        "tuKhoa": [
+          "ngay thẳng",
+          "lẽ phải",
+        ],
+        "y": "ngay thẳng, hay đứng ra nói giúp lẽ phải",
+      },
+      {
+        "do": [
+          "Thái Dương",
+        ],
+        "sac": "thuan",
+        "trong": 42,
+        "tuKhoa": [
+          "nhiệt tình",
+          "lo phần việc",
+        ],
+        "y": "nhiệt tình, sẵn lòng lo phần việc của người khác",
+      },
+      {
+        "do": [
+          "Thái Âm",
+        ],
+        "sac": "nghich",
+        "trong": 60,
+        "tuKhoa": [
+          "vướng lại",
+          "trắc trở",
+        ],
+        "y": "phần thuận lợi bị vướng lại, muốn được việc thì cũng phải qua trắc trở",
+      },
+      {
+        "do": [
+          "Thiên Lương",
+        ],
+        "sac": "nghich",
+        "trong": 46,
+        "tuKhoa": [
+          "dạy bảo",
+          "xa cách",
+        ],
+        "y": "ưa dạy bảo, dễ làm người khác thấy xa cách",
+      },
+    ],
+  },
+  "muc": [
+    {
+      "anNgu": "Triệt",
+      "catTinh": [],
+      "chi": "Mùi",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "H",
+          "ten": "Thiên Đồng",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "H",
+          "ten": "Cự Môn",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "M",
+          "ten": "Thái Âm",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "V",
+          "ten": "Thái Dương",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "V",
+          "ten": "Thiên Lương",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Mệnh",
+      "duKien": [],
+      "gioiTinh": "nu",
+      "hungTinh": [
+        {
+          "ten": "Phá Toái",
+          "the": "xung chiếu",
+        },
+        {
+          "ten": "Thiên Hình",
+          "the": "xung chiếu",
+        },
+        {
+          "ten": "Linh Tinh",
+          "the": "tam hợp",
+        },
+      ],
+      "laVoChinhDieu": true,
+      "luan": [
+        {
+          "do": [
+            "Phá Toái",
+          ],
+          "sac": "nghich",
+          "trong": 55,
+          "tuKhoa": [
+            "đổ vỡ",
+            "gián đoạn",
+          ],
+          "y": "dễ có đổ vỡ hoặc gián đoạn giữa chừng",
+        },
+        {
+          "do": [
+            "Thiên Hình",
+          ],
+          "sac": "nghich",
+          "trong": 50,
+          "tuKhoa": [
+            "nguyên tắc",
+            "khắc khẩu",
+          ],
+          "y": "nguyên tắc cứng, dễ thành khắc khẩu",
+        },
+        {
+          "do": [
+            "Linh Tinh",
+          ],
+          "sac": "nghich",
+          "trong": 50,
+          "tuKhoa": [
+            "uất ức",
+            "khó nói",
+          ],
+          "y": "uất ức âm ỉ, khó nói thẳng",
+        },
+      ],
+      "muc": "diem-can-giu",
+      "sourceCung": "Mệnh · Mùi",
+      "tieuDe": "Điểm cần giữ",
+    },
+    {
+      "anNgu": "Triệt",
+      "catTinh": [],
+      "chi": "Mùi",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "H",
+          "ten": "Thiên Đồng",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "H",
+          "ten": "Cự Môn",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "M",
+          "ten": "Thái Âm",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "V",
+          "ten": "Thái Dương",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "V",
+          "ten": "Thiên Lương",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Mệnh",
+      "duKien": [
+        "Mộc Tam Cục",
+        "bản mệnh Sa Trung Kim",
+        "cách Cơ Nguyệt Đồng Lương",
+        "cách Xương Khúc",
+      ],
+      "gioiTinh": "nu",
+      "hungTinh": [],
+      "laVoChinhDieu": true,
+      "luan": [
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 88,
+          "tuKhoa": [
+            "Cơ Nguyệt Đồng Lương",
+            "cần bền",
+          ],
+          "y": "cách Cơ Nguyệt Đồng Lương chủ ổn định, hợp việc cần bền và cần nghĩ",
+        },
+        {
+          "do": [],
+          "sac": "nghich",
+          "trong": 78,
+          "tuKhoa": [
+            "bung phá",
+            "bước nhảy",
+          ],
+          "y": "thiếu nét bung phá nên ít khi có bước nhảy lớn",
+        },
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 76,
+          "tuKhoa": [
+            "Xương Khúc",
+            "chữ nghĩa",
+          ],
+          "y": "có Xương Khúc nên hợp chữ nghĩa, học hành và những việc cần trình bày",
+        },
+      ],
+      "muc": "ngu-hanh",
+      "sourceCung": "Mệnh · Mùi",
+      "tieuDe": "Ngũ hành bản mệnh",
+    },
+  ],
+}
+`;
+
+exports[`brief của lá số 1955-06-26 21h Nữ Thân cư 1`] = `
+{
+  "chinh": {
+    "anNgu": "Tuần",
+    "catTinh": [
+      {
+        "ten": "Hóa Lộc",
+        "the": "toạ thủ",
+      },
+    ],
+    "chi": "Tị",
+    "chiNamSinh": "Mùi",
+    "chinhTinh": [
+      {
+        "bac": "V",
+        "ten": "Thiên Cơ",
+      },
+    ],
+    "cung": "Phu Thê",
+    "gioiTinh": "nu",
+    "hungTinh": [
+      {
+        "ten": "Thiên Diêu",
+        "the": "toạ thủ",
+      },
+    ],
+    "laVoChinhDieu": false,
+    "luan": [
+      {
+        "do": [
+          "Thiên Cơ",
+        ],
+        "sac": "thuan",
+        "trong": 78,
+        "tuKhoa": [
+          "nhanh trí",
+          "bàn chuyện",
+        ],
+        "y": "người bạn đời nhanh trí, bàn chuyện gì cũng hợp",
+      },
+      {
+        "do": [
+          "Hóa Lộc",
+        ],
+        "sac": "thuan",
+        "trong": 33,
+        "tuKhoa": [
+          "phần lộc",
+          "dễ thở",
+        ],
+        "y": "có phần lộc đi kèm, đường tài chính của hai người dễ thở",
+      },
+      {
+        "do": [
+          "Thiên Cơ",
+        ],
+        "sac": "nghich",
+        "trong": 72,
+        "tuKhoa": [
+          "đổi ý",
+          "khó đoán",
+        ],
+        "y": "hay đổi ý nên khó đoán được người ấy muốn gì",
+      },
+      {
+        "do": [
+          "Thiên Diêu",
+        ],
+        "sac": "nghich",
+        "trong": 34,
+        "tuKhoa": [
+          "đa tình",
+          "ngoài luồng",
+        ],
+        "y": "thêm phần đa tình, dễ vướng chuyện ngoài luồng",
+      },
+    ],
+  },
+  "muc": [
+    {
+      "anNgu": "Tuần",
+      "catTinh": [
+        {
+          "ten": "Hóa Lộc",
+          "the": "toạ thủ",
+        },
+      ],
+      "chi": "Tị",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "V",
+          "ten": "Thiên Cơ",
+        },
+      ],
+      "cung": "Phu Thê",
+      "duKien": [
+        "Thân chủ hậu vận, rõ dần từ khoảng 35 tuổi",
+        "vòng Tràng Sinh đang ở cung Bệnh",
+      ],
+      "gioiTinh": "nu",
+      "hungTinh": [
+        {
+          "ten": "Thiên Diêu",
+          "the": "toạ thủ",
+        },
+      ],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 88,
+          "tuKhoa": [
+            "35",
+            "nửa sau",
+          ],
+          "y": "cung an Thân nói về nửa sau cuộc đời, rõ dần từ khoảng 35 tuổi trở đi",
+        },
+        {
+          "do": [],
+          "sac": "nghich",
+          "trong": 82,
+          "tuKhoa": [
+            "trục trặc",
+            "giữ gìn",
+          ],
+          "y": "cung có trục trặc, phần này cần giữ gìn hơn phần khác",
+        },
+      ],
+      "muc": "thoi-diem",
+      "sourceCung": "Phu Thê · Tị",
+      "tieuDe": "Thời điểm",
+    },
+    {
+      "anNgu": "Tuần",
+      "catTinh": [
+        {
+          "ten": "Hóa Lộc",
+          "the": "toạ thủ",
+        },
+      ],
+      "chi": "Tị",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "V",
+          "ten": "Thiên Cơ",
+        },
+      ],
+      "cung": "Phu Thê",
+      "duKien": [
+        "Mệnh và Thân không có thế rõ",
+      ],
+      "gioiTinh": "nu",
+      "hungTinh": [
+        {
+          "ten": "Thiên Diêu",
+          "the": "toạ thủ",
+        },
+      ],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 84,
+          "tuKhoa": [
+            "độc lập",
+          ],
+          "y": "Mệnh và Thân không đứng thế nào rõ rệt nên hai phần đời khá độc lập",
+        },
+        {
+          "do": [],
+          "sac": "nghich",
+          "trong": 84,
+          "tuKhoa": [
+            "không tự động",
+          ],
+          "y": "ít liên hệ nên cái gây dựng ở nửa đầu không tự động chuyển sang nửa sau",
+        },
+      ],
+      "muc": "menh-than",
+      "sourceCung": "Phu Thê · Tị",
+      "tieuDe": "Mệnh và Thân",
+    },
+    {
+      "anNgu": "Tuần",
+      "catTinh": [
+        {
+          "ten": "Hóa Lộc",
+          "the": "toạ thủ",
+        },
+      ],
+      "chi": "Tị",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "V",
+          "ten": "Thiên Cơ",
+        },
+      ],
+      "cung": "Phu Thê",
+      "duKien": [
+        "Tuần án ngữ",
+        "cách Cơ Nguyệt Đồng Lương",
+        "Hóa Lộc toạ thủ",
+      ],
+      "gioiTinh": "nu",
+      "hungTinh": [
+        {
+          "ten": "Thiên Diêu",
+          "the": "toạ thủ",
+        },
+      ],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 88,
+          "tuKhoa": [
+            "Cơ Nguyệt Đồng Lương",
+            "cần bền",
+          ],
+          "y": "cách Cơ Nguyệt Đồng Lương chủ ổn định, hợp việc cần bền và cần nghĩ",
+        },
+        {
+          "do": [],
+          "sac": "nghich",
+          "trong": 84,
+          "tuKhoa": [
+            "Tuần án ngữ",
+            "trì hoãn",
+          ],
+          "y": "có Tuần án ngữ nên việc ở cung này hay phải qua một lần trì hoãn mới thành",
+        },
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 84,
+          "tuKhoa": [
+            "Hoá Lộc",
+            "có nguồn",
+          ],
+          "y": "có Hoá Lộc nên phần này thường có nguồn, không đến nỗi bí đường",
+        },
+      ],
+      "muc": "the-cuc",
+      "sourceCung": "Phu Thê · Tị",
+      "tieuDe": "Thế cục",
+    },
+  ],
+}
+`;
+
+exports[`brief của lá số 1955-06-26 21h Nữ Tài bạch 1`] = `
+{
+  "chinh": {
+    "anNgu": null,
+    "catTinh": [],
+    "chi": "Mão",
+    "chiNamSinh": "Mùi",
+    "chinhTinh": [
+      {
+        "bac": "V",
+        "ten": "Thái Dương",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "V",
+        "ten": "Thiên Lương",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "M",
+        "ten": "Thái Âm",
+        "the": "tam hợp",
+      },
+    ],
+    "cung": "Tài Bạch",
+    "gioiTinh": "nu",
+    "hungTinh": [],
+    "laVoChinhDieu": false,
+    "luan": [
+      {
+        "do": [
+          "Thiên Lương",
+        ],
+        "sac": "thuan",
+        "trong": 104,
+        "tuKhoa": [
+          "gỡ khó tài chính",
+          "cố vấn",
+        ],
+        "y": "được tin tưởng giao vai trò gỡ khó tài chính hoặc làm người cố vấn tiền bạc",
+      },
+      {
+        "do": [
+          "Thái Dương",
+        ],
+        "sac": "thuan",
+        "trong": 94,
+        "tuKhoa": [
+          "năng nổ",
+          "đứng mũi chịu sào",
+        ],
+        "y": "năng nổ kiếm tiền, hợp vai trò đứng mũi chịu sào cho cả nhà về tài chính",
+      },
+      {
+        "do": [
+          "Thiên Lương",
+        ],
+        "sac": "nghich",
+        "trong": 96,
+        "tuKhoa": [
+          "thay người khác",
+          "không phải của mình",
+        ],
+        "y": "hay đứng ra gánh nợ hay chi tiêu thay người khác, nhận thêm phần không phải của mình",
+      },
+      {
+        "do": [
+          "Thái Dương",
+        ],
+        "sac": "nghich",
+        "trong": 86,
+        "tuKhoa": [
+          "bỏ sức nhiều",
+          "chưa tương xứng",
+        ],
+        "y": "bỏ sức nhiều cho tiền bạc mà phần thu về chưa tương xứng",
+      },
+    ],
+  },
+  "muc": [],
+}
+`;
+
+exports[`brief của lá số 1955-06-26 21h Nữ Tình duyên 1`] = `
+{
+  "chinh": {
+    "anNgu": "Tuần",
+    "catTinh": [
+      {
+        "ten": "Hóa Lộc",
+        "the": "toạ thủ",
+      },
+    ],
+    "chi": "Tị",
+    "chiNamSinh": "Mùi",
+    "chinhTinh": [
+      {
+        "bac": "V",
+        "ten": "Thiên Cơ",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "M",
+        "ten": "Thái Âm",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "H",
+        "ten": "Thiên Đồng",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "H",
+        "ten": "Cự Môn",
+        "the": "tam hợp",
+      },
+    ],
+    "cung": "Phu Thê",
+    "gioiTinh": "nu",
+    "hungTinh": [],
+    "laVoChinhDieu": false,
+    "luan": [
+      {
+        "do": [
+          "Thiên Cơ",
+        ],
+        "sac": "thuan",
+        "trong": 78,
+        "tuKhoa": [
+          "lanh lợi",
+          "tinh ý",
+        ],
+        "y": "người bạn đời lanh lợi và tinh ý, hiểu được cả điều mình chưa kịp nói",
+      },
+      {
+        "do": [
+          "Hóa Lộc",
+        ],
+        "sac": "thuan",
+        "trong": 33,
+        "tuKhoa": [
+          "phần lộc",
+          "đủ đầy",
+        ],
+        "y": "đường duyên có phần lộc, ở cạnh nhau thấy đủ đầy",
+      },
+      {
+        "do": [
+          "Thiên Cơ",
+        ],
+        "sac": "nghich",
+        "trong": 72,
+        "tuKhoa": [
+          "suy tính nhiều",
+          "đổi theo từng lúc",
+        ],
+        "y": "người ấy suy tính nhiều, tâm trạng đổi theo từng lúc nên đường duyên ít khi phẳng lặng",
+      },
+      {
+        "do": [
+          "Thái Âm",
+        ],
+        "sac": "nghich",
+        "trong": 60,
+        "tuKhoa": [
+          "vướng lại",
+          "trắc trở",
+        ],
+        "y": "phần êm ấm giữa hai người bị vướng lại, muốn gắn bó thì cũng phải qua trắc trở",
+      },
+    ],
+  },
+  "giaDao": [
+    {
+      "anNgu": "Tuần",
+      "catTinh": [
+        {
+          "ten": "Thiên Đức",
+          "the": "toạ thủ",
+        },
+      ],
+      "chi": "Thìn",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "H",
+          "ten": "Thất Sát",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "M",
+          "ten": "Liêm Trinh",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "V",
+          "ten": "Thiên Phủ",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "H",
+          "ten": "Phá Quân",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "H",
+          "ten": "Tham Lang",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Tử Tức",
+      "duKien": [],
+      "gioiTinh": "nu",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Liêm Trinh",
+          ],
+          "sac": "thuan",
+          "trong": 57,
+          "tuKhoa": [
+            "khí khái",
+            "ngay thẳng",
+          ],
+          "y": "con có khí khái, sống ngay thẳng, biết giữ chữ tín",
+        },
+        {
+          "do": [
+            "Thiên Phủ",
+          ],
+          "sac": "thuan",
+          "trong": 53,
+          "tuKhoa": [
+            "điềm tĩnh",
+            "phúc hậu",
+          ],
+          "y": "con điềm tĩnh, biết điều, có nét phúc hậu",
+        },
+        {
+          "do": [
+            "Liêm Trinh",
+          ],
+          "sac": "nghich",
+          "trong": 53,
+          "tuKhoa": [
+            "tính bướng",
+            "giữ ý mình",
+          ],
+          "y": "lúc có con, hai bên dễ căng thẳng vì tính bướng, ai cũng muốn giữ ý mình",
+        },
+        {
+          "do": [
+            "Thiên Phủ",
+          ],
+          "sac": "nghich",
+          "trong": 48,
+          "tuKhoa": [
+            "ưa nếp cũ",
+            "ngần ngừ",
+          ],
+          "y": "khi có con, con thận trọng, ưa nếp cũ, gặp lựa chọn mới hay ngần ngừ lâu",
+        },
+        {
+          "do": [
+            "Thiên Đức",
+          ],
+          "sac": "hoa-giai",
+          "trong": 29,
+          "tuKhoa": [
+            "đức lành",
+            "hoá nhẹ",
+          ],
+          "y": "có đức lành che chở, chuyện lo cho con cũng dễ hoá nhẹ",
+        },
+      ],
+      "muc": "con-cai",
+      "sourceCung": "Tử Tức · Thìn",
+      "tieuDe": "Con cái",
+    },
+    {
+      "anNgu": null,
+      "catTinh": [
+        {
+          "ten": "Thiên Hỉ",
+          "the": "xung chiếu",
+        },
+      ],
+      "chi": "Thân",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "H",
+          "ten": "Phá Quân",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "V",
+          "ten": "Vũ Khúc",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "M",
+          "ten": "Thiên Tướng",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "H",
+          "ten": "Tham Lang",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "H",
+          "ten": "Thất Sát",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Phụ Mẫu",
+      "duKien": [],
+      "gioiTinh": "nu",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Thiên Tướng",
+          ],
+          "sac": "thuan",
+          "trong": 76,
+          "tuKhoa": [
+            "công bằng",
+            "che chắn",
+          ],
+          "y": "cha mẹ công bằng, hay đứng ra che chắn khi mình gặp chuyện",
+        },
+        {
+          "do": [
+            "Vũ Khúc",
+          ],
+          "sac": "thuan",
+          "trong": 70,
+          "tuKhoa": [
+            "cứng cỏi",
+            "tự lập từ sớm",
+          ],
+          "y": "nếp dạy cứng cỏi, rèn cho mình tính tự lập từ sớm",
+        },
+        {
+          "do": [
+            "Thiên Tướng",
+          ],
+          "sac": "nghich",
+          "trong": 70,
+          "tuKhoa": [
+            "thể diện",
+            "khó mở lời",
+          ],
+          "y": "thể diện được đặt nặng trong gia đình, có điều riêng khó mở lời",
+        },
+        {
+          "do": [
+            "Vũ Khúc",
+          ],
+          "sac": "nghich",
+          "trong": 64,
+          "tuKhoa": [
+            "nói thành lời",
+            "khô khan",
+          ],
+          "y": "tình cảm trong gia đình gốc ít được nói thành lời, đôi khi thấy khô khan",
+        },
+        {
+          "do": [
+            "Thiên Hỉ",
+          ],
+          "sac": "hoa-giai",
+          "trong": 34,
+          "tuKhoa": [
+            "sum họp",
+            "hoà thuận",
+          ],
+          "y": "gia đình gốc hay có dịp sum họp, không khí hoà thuận",
+        },
+      ],
+      "muc": "cha-me",
+      "sourceCung": "Phụ Mẫu · Thân",
+      "tieuDe": "Cha mẹ",
+    },
+  ],
+  "muc": [
+    {
+      "anNgu": "Tuần",
+      "catTinh": [
+        {
+          "ten": "Thiên Y",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Hóa Lộc",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Hồng Loan",
+          "the": "nhị hợp",
+        },
+      ],
+      "chi": "Tị",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "V",
+          "ten": "Thiên Cơ",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "M",
+          "ten": "Thái Âm",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "H",
+          "ten": "Thiên Đồng",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "H",
+          "ten": "Cự Môn",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Phu Thê",
+      "duKien": [],
+      "gioiTinh": "nu",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Hồng Loan",
+          ],
+          "sac": "thuan",
+          "trong": 62,
+          "tuKhoa": [
+            "duyên đến",
+            "đúng lúc",
+          ],
+          "y": "duyên đến rõ ràng, dễ gặp người hợp ý vào đúng lúc",
+        },
+        {
+          "do": [
+            "Hóa Lộc",
+          ],
+          "sac": "thuan",
+          "trong": 58,
+          "tuKhoa": [
+            "phần lộc",
+            "đủ đầy",
+          ],
+          "y": "đường duyên có phần lộc, ở cạnh nhau thấy đủ đầy",
+        },
+        {
+          "do": [
+            "Thiên Y",
+          ],
+          "sac": "thuan",
+          "trong": 45,
+          "tuKhoa": [
+            "chăm sóc",
+            "xoa dịu",
+          ],
+          "y": "hai người biết chăm sóc nhau, dễ xoa dịu nhau khi có chuyện buồn",
+        },
+      ],
+      "muc": "diem-manh",
+      "sourceCung": "Phu Thê · Tị",
+      "tieuDe": "Điểm mạnh trong tình duyên",
+    },
+    {
+      "anNgu": "Tuần",
+      "catTinh": [],
+      "chi": "Tị",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "V",
+          "ten": "Thiên Cơ",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "M",
+          "ten": "Thái Âm",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "H",
+          "ten": "Thiên Đồng",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "H",
+          "ten": "Cự Môn",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Phu Thê",
+      "duKien": [],
+      "gioiTinh": "nu",
+      "hungTinh": [
+        {
+          "ten": "Thiên Diêu",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Cô Thần",
+          "the": "nhị hợp",
+        },
+        {
+          "ten": "Kiếp Sát",
+          "the": "nhị hợp",
+        },
+      ],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Thiên Diêu",
+          ],
+          "sac": "nghich",
+          "trong": 60,
+          "tuKhoa": [
+            "lãng mạn",
+            "giữ ranh giới",
+          ],
+          "y": "tính lãng mạn, sức quyến rũ mạnh nên dễ được người khác để ý, cần giữ ranh giới cho rõ",
+        },
+        {
+          "do": [
+            "Kiếp Sát",
+          ],
+          "sac": "nghich",
+          "trong": 60,
+          "tuKhoa": [
+            "đổi bất chợt",
+            "dè dặt",
+          ],
+          "y": "cách hai người gần gũi nhau hay đổi bất chợt, lúc quấn quýt lúc lại dè dặt",
+        },
+        {
+          "do": [
+            "Cô Thần",
+          ],
+          "sac": "nghich",
+          "trong": 58,
+          "tuKhoa": [
+            "lẻ loi",
+          ],
+          "y": "có lúc thấy lẻ loi ngay cả khi đang ở cạnh người ấy",
+        },
+      ],
+      "muc": "diem-can-giu",
+      "sourceCung": "Phu Thê · Tị",
+      "tieuDe": "Điểm cần giữ trong tình duyên",
+    },
+  ],
+}
+`;
+
+exports[`brief của lá số 1955-12-09 7h Nữ Công danh 1`] = `
+{
+  "chinh": {
+    "anNgu": null,
+    "catTinh": [],
+    "chi": "Hợi",
+    "chiNamSinh": "Mùi",
+    "chinhTinh": [
+      {
+        "bac": "Đ",
+        "ten": "Thiên Tướng",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "H",
+        "ten": "Vũ Khúc",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "H",
+        "ten": "Phá Quân",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Thiên Phủ",
+        "the": "tam hợp",
+      },
+    ],
+    "cung": "Quan Lộc",
+    "gioiTinh": "nu",
+    "hungTinh": [],
+    "laVoChinhDieu": false,
+    "luan": [
+      {
+        "do": [
+          "Thiên Tướng",
+        ],
+        "sac": "thuan",
+        "trong": 85,
+        "tuKhoa": [
+          "chỉn chu",
+          "tin tưởng",
+        ],
+        "y": "chỉn chu nên được giao những việc cần sự tin tưởng",
+      },
+      {
+        "do": [],
+        "sac": "thuan",
+        "trong": 88,
+        "tuKhoa": [
+          "Tử Phủ Vũ Tướng",
+          "việc quản",
+        ],
+        "y": "cách Tử Phủ Vũ Tướng chủ quyền quý và ổn, hợp việc quản và việc giữ",
+      },
+      {
+        "do": [
+          "Thiên Tướng",
+        ],
+        "sac": "nghich",
+        "trong": 78,
+        "tuKhoa": [
+          "theo khuôn",
+          "đề xuất",
+        ],
+        "y": "quen làm theo khuôn có sẵn, ngại tự đề xuất một hướng mới",
+      },
+      {
+        "do": [],
+        "sac": "nghich",
+        "trong": 84,
+        "tuKhoa": [
+          "Không Kiếp",
+          "hao hụt",
+        ],
+        "y": "có Không Kiếp nên dễ hao hụt, gây dựng rồi lại phải dựng lại",
+      },
+      {
+        "do": [],
+        "sac": "hoa-giai",
+        "trong": 70,
+        "tuKhoa": [
+          "nghĩ khác",
+          "bước sau",
+        ],
+        "y": "chính cái mất đi lại buộc phải nghĩ khác đi, nên bước sau thường khác hẳn bước trước",
+      },
+    ],
+  },
+  "muc": [
+    {
+      "anNgu": null,
+      "catTinh": [],
+      "chi": "Hợi",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "Đ",
+          "ten": "Thiên Tướng",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "H",
+          "ten": "Vũ Khúc",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "H",
+          "ten": "Phá Quân",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Phủ",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Quan Lộc",
+      "duKien": [],
+      "gioiTinh": "nu",
+      "hungTinh": [
+        {
+          "ten": "Địa Không",
+          "the": "tam hợp",
+        },
+        {
+          "ten": "Đà La",
+          "the": "nhị hợp",
+        },
+      ],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Địa Không",
+          ],
+          "sac": "nghich",
+          "trong": 62,
+          "tuKhoa": [
+            "không đọng lại",
+            "như mong đợi",
+          ],
+          "y": "có giai đoạn công sức bỏ ra không đọng lại thành quả như mong đợi",
+        },
+        {
+          "do": [
+            "Đà La",
+          ],
+          "sac": "nghich",
+          "trong": 62,
+          "tuKhoa": [
+            "trắc trở",
+            "chậm",
+            "dây dưa",
+          ],
+          "y": "trắc trở kéo dài, việc gì cũng chậm và dây dưa",
+        },
+      ],
+      "muc": "diem-can-giu",
+      "sourceCung": "Quan Lộc · Hợi",
+      "tieuDe": "Điểm cần giữ trong sự nghiệp",
+    },
+  ],
+}
+`;
+
+exports[`brief của lá số 1955-12-09 7h Nữ Mệnh 1`] = `
+{
+  "chinh": {
+    "anNgu": "Triệt",
+    "catTinh": [],
+    "chi": "Mùi",
+    "chiNamSinh": "Mùi",
+    "chinhTinh": [
+      {
+        "bac": "Đ",
+        "ten": "Thiên Phủ",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Liêm Trinh",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Thất Sát",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Thiên Tướng",
+        "the": "tam hợp",
+      },
+    ],
+    "cung": "Mệnh",
+    "gioiTinh": "nu",
+    "hungTinh": [],
+    "laVoChinhDieu": false,
+    "luan": [
+      {
+        "do": [
+          "Thiên Phủ",
+        ],
+        "sac": "thuan",
+        "trong": 64,
+        "tuKhoa": [
+          "điềm đạm",
+          "lo xa",
+        ],
+        "y": "điềm đạm, biết lo xa và giữ được cái đang có",
+      },
+      {
+        "do": [
+          "Liêm Trinh",
+        ],
+        "sac": "thuan",
+        "trong": 48,
+        "tuKhoa": [
+          "giữ nguyên tắc",
+          "xuê xoa",
+        ],
+        "y": "giữ nguyên tắc, không xuê xoa cho xong việc",
+      },
+      {
+        "do": [
+          "Thiên Phủ",
+        ],
+        "sac": "nghich",
+        "trong": 59,
+        "tuKhoa": [
+          "thủ thế",
+          "cái mới",
+        ],
+        "y": "thủ thế, chậm mở lòng với cái mới",
+      },
+      {
+        "do": [
+          "Liêm Trinh",
+        ],
+        "sac": "nghich",
+        "trong": 44,
+        "tuKhoa": [
+          "tự ép mình",
+          "thảnh thơi",
+        ],
+        "y": "tự ép mình quá mức, trong lòng ít khi thảnh thơi",
+      },
+    ],
+  },
+  "muc": [
+    {
+      "anNgu": "Triệt",
+      "catTinh": [],
+      "chi": "Mùi",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "Đ",
+          "ten": "Thiên Phủ",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Liêm Trinh",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thất Sát",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Tướng",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Mệnh",
+      "duKien": [],
+      "gioiTinh": "nu",
+      "hungTinh": [
+        {
+          "ten": "Địa Không",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Phá Toái",
+          "the": "xung chiếu",
+        },
+        {
+          "ten": "Hỏa Tinh",
+          "the": "xung chiếu",
+        },
+      ],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Địa Không",
+          ],
+          "sac": "nghich",
+          "trong": 62,
+          "tuKhoa": [
+            "hụt hẫng",
+            "trống trải",
+          ],
+          "y": "dễ hụt hẫng, có giai đoạn thấy trống trải ngay trong quan hệ",
+        },
+        {
+          "do": [
+            "Phá Toái",
+          ],
+          "sac": "nghich",
+          "trong": 55,
+          "tuKhoa": [
+            "đổ vỡ",
+            "gián đoạn",
+          ],
+          "y": "dễ có đổ vỡ hoặc gián đoạn giữa chừng",
+        },
+        {
+          "do": [
+            "Hỏa Tinh",
+          ],
+          "sac": "nghich",
+          "trong": 50,
+          "tuKhoa": [
+            "nóng",
+            "xung đột",
+          ],
+          "y": "tính khí nóng, xung đột đến nhanh đi nhanh",
+        },
+      ],
+      "muc": "diem-can-giu",
+      "sourceCung": "Mệnh · Mùi",
+      "tieuDe": "Điểm cần giữ",
+    },
+    {
+      "anNgu": "Triệt",
+      "catTinh": [],
+      "chi": "Mùi",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "Đ",
+          "ten": "Thiên Phủ",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Liêm Trinh",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thất Sát",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Tướng",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Mệnh",
+      "duKien": [
+        "Mộc Tam Cục",
+        "bản mệnh Sa Trung Kim",
+        "cách Tả Hữu",
+        "cách Không Kiếp",
+      ],
+      "gioiTinh": "nu",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [],
+          "sac": "nghich",
+          "trong": 84,
+          "tuKhoa": [
+            "Không Kiếp",
+            "hao hụt",
+          ],
+          "y": "có Không Kiếp nên dễ hao hụt, gây dựng rồi lại phải dựng lại",
+        },
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 74,
+          "tuKhoa": [
+            "Tả Hữu",
+            "phụ giúp",
+          ],
+          "y": "có Tả Hữu nên làm việc gì cũng dễ có người phụ giúp",
+        },
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 72,
+          "tuKhoa": [
+            "hợp cảnh",
+            "dùng được trọn",
+          ],
+          "y": "hợp cảnh nên dùng được trọn sức mình",
+        },
+      ],
+      "muc": "ngu-hanh",
+      "sourceCung": "Mệnh · Mùi",
+      "tieuDe": "Ngũ hành bản mệnh",
+    },
+  ],
+}
+`;
+
+exports[`brief của lá số 1955-12-09 7h Nữ Thân cư 1`] = `
+{
+  "chinh": {
+    "anNgu": null,
+    "catTinh": [
+      {
+        "ten": "Thiên Thọ",
+        "the": "nhị hợp",
+      },
+    ],
+    "chi": "Mão",
+    "chiNamSinh": "Mùi",
+    "chinhTinh": [
+      {
+        "bac": "B",
+        "ten": "Tử Vi",
+      },
+      {
+        "bac": "H",
+        "ten": "Tham Lang",
+      },
+    ],
+    "cung": "Tài Bạch",
+    "gioiTinh": "nu",
+    "hungTinh": [],
+    "laVoChinhDieu": true,
+    "luan": [
+      {
+        "do": [],
+        "sac": "thuan",
+        "trong": 80,
+        "tuKhoa": [
+          "thích nghi",
+          "đổi theo",
+        ],
+        "y": "không bị một khuôn nào đóng sẵn nên dễ thích nghi, hoàn cảnh đổi thì mình đổi theo được",
+      },
+      {
+        "do": [
+          "Tử Vi",
+        ],
+        "sac": "thuan",
+        "trong": 64,
+        "tuKhoa": [
+          "vị thế",
+          "chỗ đứng",
+        ],
+        "y": "tiền vào theo vị thế và chức phận, càng có chỗ đứng càng dư",
+      },
+      {
+        "do": [],
+        "sac": "nghich",
+        "trong": 76,
+        "tuKhoa": [
+          "chủ kiến",
+          "dẫn đi",
+        ],
+        "y": "thiếu chủ kiến ở phần này, dễ bị người và hoàn cảnh bên ngoài dẫn đi",
+      },
+      {
+        "do": [
+          "Tử Vi",
+        ],
+        "sac": "nghich",
+        "trong": 59,
+        "tuKhoa": [
+          "thể diện",
+          "khó dành",
+        ],
+        "y": "tiêu theo thể diện nên khó dành lại được nhiều",
+      },
+      {
+        "do": [
+          "Thiên Thọ",
+        ],
+        "sac": "hoa-giai",
+        "trong": 22,
+        "tuKhoa": [
+          "bền",
+          "giữ được lâu",
+        ],
+        "y": "có yếu tố bền, giữ được lâu khi đã ổn định",
+      },
+    ],
+  },
+  "muc": [
+    {
+      "anNgu": null,
+      "catTinh": [
+        {
+          "ten": "Thiên Thọ",
+          "the": "nhị hợp",
+        },
+      ],
+      "chi": "Mão",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "B",
+          "ten": "Tử Vi",
+        },
+        {
+          "bac": "H",
+          "ten": "Tham Lang",
+        },
+      ],
+      "cung": "Tài Bạch",
+      "duKien": [
+        "Thân chủ hậu vận, rõ dần từ khoảng 35 tuổi",
+        "vòng Tràng Sinh đang ở cung Đế Vượng",
+      ],
+      "gioiTinh": "nu",
+      "hungTinh": [],
+      "laVoChinhDieu": true,
+      "luan": [
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 88,
+          "tuKhoa": [
+            "35",
+            "nửa sau",
+          ],
+          "y": "cung an Thân nói về nửa sau cuộc đời, rõ dần từ khoảng 35 tuổi trở đi",
+        },
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 82,
+          "tuKhoa": [
+            "ở đỉnh",
+            "mạnh nhất",
+          ],
+          "y": "cung ở đỉnh, mạnh nhất trong cả vòng",
+        },
+      ],
+      "muc": "thoi-diem",
+      "sourceCung": "Tài Bạch · Mão",
+      "tieuDe": "Thời điểm",
+    },
+    {
+      "anNgu": null,
+      "catTinh": [
+        {
+          "ten": "Thiên Thọ",
+          "the": "nhị hợp",
+        },
+      ],
+      "chi": "Mão",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "B",
+          "ten": "Tử Vi",
+        },
+        {
+          "bac": "H",
+          "ten": "Tham Lang",
+        },
+      ],
+      "cung": "Tài Bạch",
+      "duKien": [
+        "Mệnh và Thân tam hợp",
+      ],
+      "gioiTinh": "nu",
+      "hungTinh": [],
+      "laVoChinhDieu": true,
+      "luan": [
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 84,
+          "tuKhoa": [
+            "tam hợp",
+            "nối tiếp",
+          ],
+          "y": "Mệnh và Thân đứng thế tam hợp nên hậu vận nối tiếp được cái tiền vận gây dựng",
+        },
+        {
+          "do": [],
+          "sac": "nghich",
+          "trong": 84,
+          "tuKhoa": [
+            "cùng chiều",
+            "vấp",
+          ],
+          "y": "hai phần đời cùng chiều nên thuận thì thuận cả, mà vấp thì cũng vấp cả",
+        },
+      ],
+      "muc": "menh-than",
+      "sourceCung": "Tài Bạch · Mão",
+      "tieuDe": "Mệnh và Thân",
+    },
+    {
+      "anNgu": null,
+      "catTinh": [
+        {
+          "ten": "Thiên Thọ",
+          "the": "nhị hợp",
+        },
+      ],
+      "chi": "Mão",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "B",
+          "ten": "Tử Vi",
+        },
+        {
+          "bac": "H",
+          "ten": "Tham Lang",
+        },
+      ],
+      "cung": "Tài Bạch",
+      "duKien": [
+        "cách Tử Phủ Vũ Tướng",
+        "cách Không Kiếp",
+      ],
+      "gioiTinh": "nu",
+      "hungTinh": [],
+      "laVoChinhDieu": true,
+      "luan": [
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 88,
+          "tuKhoa": [
+            "Tử Phủ Vũ Tướng",
+            "việc quản",
+          ],
+          "y": "cách Tử Phủ Vũ Tướng chủ quyền quý và ổn, hợp việc quản và việc giữ",
+        },
+        {
+          "do": [],
+          "sac": "nghich",
+          "trong": 84,
+          "tuKhoa": [
+            "Không Kiếp",
+            "hao hụt",
+          ],
+          "y": "có Không Kiếp nên dễ hao hụt, gây dựng rồi lại phải dựng lại",
+        },
+        {
+          "do": [],
+          "sac": "nghich",
+          "trong": 78,
+          "tuKhoa": [
+            "nề nếp",
+            "đổi gấp",
+          ],
+          "y": "quen giữ nề nếp nên chậm xoay khi hoàn cảnh đổi gấp",
+        },
+      ],
+      "muc": "the-cuc",
+      "sourceCung": "Tài Bạch · Mão",
+      "tieuDe": "Thế cục",
+    },
+  ],
+}
+`;
+
+exports[`brief của lá số 1955-12-09 7h Nữ Tài bạch 1`] = `
+{
+  "chinh": {
+    "anNgu": null,
+    "catTinh": [],
+    "chi": "Mão",
+    "chiNamSinh": "Mùi",
+    "chinhTinh": [
+      {
+        "bac": "B",
+        "ten": "Tử Vi",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "H",
+        "ten": "Tham Lang",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Thiên Phủ",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Thiên Tướng",
+        "the": "tam hợp",
+      },
+    ],
+    "cung": "Tài Bạch",
+    "gioiTinh": "nu",
+    "hungTinh": [],
+    "laVoChinhDieu": true,
+    "luan": [
+      {
+        "do": [
+          "Tử Vi",
+        ],
+        "sac": "thuan",
+        "trong": 67,
+        "tuKhoa": [
+          "quy mô",
+          "cầm trùm",
+        ],
+        "y": "có cách kiếm tiền quy mô, hợp đứng ở vị trí cầm trùm nguồn thu",
+      },
+      {
+        "do": [],
+        "sac": "thuan",
+        "trong": 88,
+        "tuKhoa": [
+          "Tử Phủ Vũ Tướng",
+          "việc quản",
+        ],
+        "y": "cách Tử Phủ Vũ Tướng chủ quyền quý và ổn, hợp việc quản và việc giữ",
+      },
+      {
+        "do": [
+          "Tử Vi",
+        ],
+        "sac": "nghich",
+        "trong": 63,
+        "tuKhoa": [
+          "theo ý mình",
+          "khó san sẻ",
+        ],
+        "y": "nặng cách chi tiêu theo ý mình, khó san sẻ quyền quyết định tiền bạc cho người khác",
+      },
+      {
+        "do": [],
+        "sac": "nghich",
+        "trong": 84,
+        "tuKhoa": [
+          "Không Kiếp",
+          "hao hụt",
+        ],
+        "y": "có Không Kiếp nên dễ hao hụt, gây dựng rồi lại phải dựng lại",
+      },
+      {
+        "do": [],
+        "sac": "hoa-giai",
+        "trong": 70,
+        "tuKhoa": [
+          "nghĩ khác",
+          "bước sau",
+        ],
+        "y": "chính cái mất đi lại buộc phải nghĩ khác đi, nên bước sau thường khác hẳn bước trước",
+      },
+    ],
+  },
+  "muc": [
+    {
+      "anNgu": null,
+      "catTinh": [
+        {
+          "ten": "Thiên Y",
+          "the": "nhị hợp",
+        },
+        {
+          "ten": "Thiên Thọ",
+          "the": "nhị hợp",
+        },
+      ],
+      "chi": "Mão",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "B",
+          "ten": "Tử Vi",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "H",
+          "ten": "Tham Lang",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Phủ",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Tướng",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Tài Bạch",
+      "duKien": [],
+      "gioiTinh": "nu",
+      "hungTinh": [],
+      "laVoChinhDieu": true,
+      "luan": [
+        {
+          "do": [
+            "Thiên Thọ",
+          ],
+          "sac": "hoa-giai",
+          "trong": 55,
+          "tuKhoa": [
+            "bền",
+            "giữ được tiền lâu",
+          ],
+          "y": "có yếu tố bền, giữ được tiền lâu khi tài chính đã vào ổn định",
+        },
+        {
+          "do": [
+            "Thiên Y",
+          ],
+          "sac": "thuan",
+          "trong": 45,
+          "tuKhoa": [
+            "được tín nhiệm",
+            "nhẹ nhàng",
+          ],
+          "y": "dễ được tín nhiệm khi hợp tác làm ăn, tiền bạc qua lại cũng nhẹ nhàng",
+        },
+      ],
+      "muc": "diem-manh",
+      "sourceCung": "Tài Bạch · Mão",
+      "tieuDe": "Điểm mạnh trong tài chính",
+    },
+    {
+      "anNgu": null,
+      "catTinh": [],
+      "chi": "Mão",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "B",
+          "ten": "Tử Vi",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "H",
+          "ten": "Tham Lang",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Phủ",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Tướng",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Tài Bạch",
+      "duKien": [],
+      "gioiTinh": "nu",
+      "hungTinh": [
+        {
+          "ten": "Địa Không",
+          "the": "tam hợp",
+        },
+        {
+          "ten": "Thiên Diêu",
+          "the": "nhị hợp",
+        },
+      ],
+      "laVoChinhDieu": true,
+      "luan": [
+        {
+          "do": [
+            "Địa Không",
+          ],
+          "sac": "nghich",
+          "trong": 62,
+          "tuKhoa": [
+            "không đọng lại",
+            "để dành",
+          ],
+          "y": "có giai đoạn tiền kiếm được không đọng lại thành của để dành",
+        },
+        {
+          "do": [
+            "Thiên Diêu",
+          ],
+          "sac": "nghich",
+          "trong": 60,
+          "tuKhoa": [
+            "thú vui ngoài lề",
+            "không giúp tích luỹ",
+          ],
+          "y": "dễ tiêu tiền vào những thú vui ngoài lề, sa đà vào chỗ không giúp tích luỹ",
+        },
+      ],
+      "muc": "diem-can-giu",
+      "sourceCung": "Tài Bạch · Mão",
+      "tieuDe": "Điểm cần giữ trong tài chính",
+    },
+  ],
+}
+`;
+
+exports[`brief của lá số 1955-12-09 7h Nữ Tình duyên 1`] = `
+{
+  "chinh": {
+    "anNgu": "Tuần",
+    "catTinh": [],
+    "chi": "Tị",
+    "chiNamSinh": "Mùi",
+    "chinhTinh": [
+      {
+        "bac": "H",
+        "ten": "Vũ Khúc",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "H",
+        "ten": "Phá Quân",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Thiên Tướng",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "B",
+        "ten": "Tử Vi",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "H",
+        "ten": "Tham Lang",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Liêm Trinh",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Thất Sát",
+        "the": "tam hợp",
+      },
+    ],
+    "cung": "Phu Thê",
+    "gioiTinh": "nu",
+    "hungTinh": [],
+    "laVoChinhDieu": false,
+    "luan": [
+      {
+        "do": [
+          "Vũ Khúc",
+        ],
+        "sac": "thuan",
+        "trong": 51,
+        "tuKhoa": [
+          "quả quyết",
+          "đứng ra lo liệu",
+        ],
+        "y": "người bạn đời quả quyết, đáng cậy nhờ khi cần có người đứng ra lo liệu",
+      },
+      {
+        "do": [
+          "Phá Quân",
+        ],
+        "sac": "thuan",
+        "trong": 51,
+        "tuKhoa": [
+          "dám nghĩ dám làm",
+          "điều mới",
+        ],
+        "y": "người bạn đời dám nghĩ dám làm, mang đến cho đường duyên nhiều điều mới",
+      },
+      {
+        "do": [
+          "Vũ Khúc",
+        ],
+        "sac": "nghich",
+        "trong": 47,
+        "tuKhoa": [
+          "kiệm lời",
+          "khô khan",
+        ],
+        "y": "người ấy kiệm lời và cứng rắn, chuyện tình cảm dễ khô khan nếu không chủ động hâm nóng",
+      },
+      {
+        "do": [
+          "Phá Quân",
+        ],
+        "sac": "nghich",
+        "trong": 47,
+        "tuKhoa": [
+          "xáo trộn",
+          "đổi thay",
+        ],
+        "y": "đường duyên dễ trải qua xáo trộn, hai người cần đổi thay cách đối đãi với nhau mới tìm được chỗ yên ổn",
+      },
+    ],
+  },
+  "giaDao": [
+    {
+      "anNgu": "Tuần",
+      "catTinh": [
+        {
+          "ten": "Thiên Thọ",
+          "the": "xung chiếu",
+        },
+      ],
+      "chi": "Thìn",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "H",
+          "ten": "Thiên Đồng",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "H",
+          "ten": "Cự Môn",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "V",
+          "ten": "Thiên Cơ",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "V",
+          "ten": "Thái Âm",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "V",
+          "ten": "Thiên Lương",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Tử Tức",
+      "duKien": [],
+      "gioiTinh": "nu",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Thiên Đồng",
+          ],
+          "sac": "thuan",
+          "trong": 51,
+          "tuKhoa": [
+            "hiền hoà",
+            "nhẹ lòng",
+          ],
+          "y": "nếu có con, con tính tình hiền hoà, dễ gần gũi, ở cạnh thấy nhẹ lòng",
+        },
+        {
+          "do": [
+            "Thiên Cơ",
+          ],
+          "sac": "thuan",
+          "trong": 50,
+          "tuKhoa": [
+            "sáng dạ",
+            "biết quan sát",
+          ],
+          "y": "con sáng dạ, nhanh hiểu và biết quan sát",
+        },
+        {
+          "do": [
+            "Thái Âm",
+          ],
+          "sac": "nghich",
+          "trong": 60,
+          "tuKhoa": [
+            "vướng lại",
+            "trắc trở",
+          ],
+          "y": "khi có con, sự gần gũi giữa hai bên có lúc bị vướng lại, muốn hiểu nhau thì cũng phải qua trắc trở",
+        },
+        {
+          "do": [
+            "Thiên Đồng",
+          ],
+          "sac": "nghich",
+          "trong": 47,
+          "tuKhoa": [
+            "ưa thong thả",
+            "chần chừ",
+          ],
+          "y": "con ưa thong thả, việc gì chưa thích thì hay chần chừ",
+        },
+        {
+          "do": [
+            "Thiên Thọ",
+          ],
+          "sac": "hoa-giai",
+          "trong": 31,
+          "tuKhoa": [
+            "độ bền",
+            "càng gắn bó",
+          ],
+          "y": "nếu có con, mối thân giữa mình và con có độ bền, càng lâu càng gắn bó",
+        },
+      ],
+      "muc": "con-cai",
+      "sourceCung": "Tử Tức · Thìn",
+      "tieuDe": "Con cái",
+    },
+    {
+      "anNgu": null,
+      "catTinh": [
+        {
+          "ten": "Thiên Hỉ",
+          "the": "xung chiếu",
+        },
+      ],
+      "chi": "Thân",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "V",
+          "ten": "Thiên Cơ",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "V",
+          "ten": "Thái Âm",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "V",
+          "ten": "Thiên Lương",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "H",
+          "ten": "Thiên Đồng",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Phụ Mẫu",
+      "duKien": [],
+      "gioiTinh": "nu",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Thiên Cơ",
+          ],
+          "sac": "thuan",
+          "trong": 104,
+          "tuKhoa": [
+            "tinh ý",
+            "nghĩ thấu đáo",
+          ],
+          "y": "cha mẹ khéo léo, tinh ý, hay chỉ cho mình cách nghĩ thấu đáo",
+        },
+        {
+          "do": [
+            "Thiên Lương",
+          ],
+          "sac": "thuan",
+          "trong": 66,
+          "tuKhoa": [
+            "phúc ấm",
+            "chỉ đường",
+          ],
+          "y": "phúc ấm gia đình dày, người đi trước thường chỉ đường cho mình đúng lúc",
+        },
+        {
+          "do": [
+            "Thiên Cơ",
+          ],
+          "sac": "nghich",
+          "trong": 96,
+          "tuKhoa": [
+            "lúc gần lúc xa",
+            "đổi theo hoàn cảnh",
+          ],
+          "y": "tình thân với gia đình gốc lúc gần lúc xa, dễ đổi theo hoàn cảnh",
+        },
+        {
+          "do": [
+            "Thái Âm",
+          ],
+          "sac": "nghich",
+          "trong": 86,
+          "tuKhoa": [
+            "kín đáo",
+            "tủi thân",
+          ],
+          "y": "tình cảm với phía mẹ kín đáo, thương mà khó bày tỏ nên dễ tủi thân",
+        },
+        {
+          "do": [
+            "Thiên Hỉ",
+          ],
+          "sac": "hoa-giai",
+          "trong": 34,
+          "tuKhoa": [
+            "sum họp",
+            "hoà thuận",
+          ],
+          "y": "gia đình gốc hay có dịp sum họp, không khí hoà thuận",
+        },
+      ],
+      "muc": "cha-me",
+      "sourceCung": "Phụ Mẫu · Thân",
+      "tieuDe": "Cha mẹ",
+    },
+  ],
+  "muc": [
+    {
+      "anNgu": "Tuần",
+      "catTinh": [
+        {
+          "ten": "Hồng Loan",
+          "the": "nhị hợp",
+        },
+        {
+          "ten": "Hóa Lộc",
+          "the": "nhị hợp",
+        },
+      ],
+      "chi": "Tị",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "H",
+          "ten": "Vũ Khúc",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "H",
+          "ten": "Phá Quân",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Tướng",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "B",
+          "ten": "Tử Vi",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "H",
+          "ten": "Tham Lang",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Liêm Trinh",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thất Sát",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Phu Thê",
+      "duKien": [],
+      "gioiTinh": "nu",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Hồng Loan",
+          ],
+          "sac": "thuan",
+          "trong": 62,
+          "tuKhoa": [
+            "duyên đến",
+            "đúng lúc",
+          ],
+          "y": "duyên đến rõ ràng, dễ gặp người hợp ý vào đúng lúc",
+        },
+        {
+          "do": [
+            "Hóa Lộc",
+          ],
+          "sac": "thuan",
+          "trong": 58,
+          "tuKhoa": [
+            "phần lộc",
+            "đủ đầy",
+          ],
+          "y": "đường duyên có phần lộc, ở cạnh nhau thấy đủ đầy",
+        },
+      ],
+      "muc": "diem-manh",
+      "sourceCung": "Phu Thê · Tị",
+      "tieuDe": "Điểm mạnh trong tình duyên",
+    },
+    {
+      "anNgu": "Tuần",
+      "catTinh": [],
+      "chi": "Tị",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "H",
+          "ten": "Vũ Khúc",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "H",
+          "ten": "Phá Quân",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Tướng",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "B",
+          "ten": "Tử Vi",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "H",
+          "ten": "Tham Lang",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Liêm Trinh",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thất Sát",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Phu Thê",
+      "duKien": [],
+      "gioiTinh": "nu",
+      "hungTinh": [
+        {
+          "ten": "Phá Toái",
+          "the": "tam hợp",
+        },
+        {
+          "ten": "Cô Thần",
+          "the": "nhị hợp",
+        },
+        {
+          "ten": "Kiếp Sát",
+          "the": "nhị hợp",
+        },
+      ],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Kiếp Sát",
+          ],
+          "sac": "nghich",
+          "trong": 60,
+          "tuKhoa": [
+            "đổi bất chợt",
+            "dè dặt",
+          ],
+          "y": "cách hai người gần gũi nhau hay đổi bất chợt, lúc quấn quýt lúc lại dè dặt",
+        },
+        {
+          "do": [
+            "Cô Thần",
+          ],
+          "sac": "nghich",
+          "trong": 58,
+          "tuKhoa": [
+            "lẻ loi",
+          ],
+          "y": "có lúc thấy lẻ loi ngay cả khi đang ở cạnh người ấy",
+        },
+        {
+          "do": [
+            "Phá Toái",
+          ],
+          "sac": "nghich",
+          "trong": 55,
+          "tuKhoa": [
+            "bị cắt ngang",
+            "việc xen vào",
+          ],
+          "y": "nhịp gần gũi giữa hai người hay bị cắt ngang, đang êm thì lại có việc xen vào",
+        },
+      ],
+      "muc": "diem-can-giu",
+      "sourceCung": "Phu Thê · Tị",
+      "tieuDe": "Điểm cần giữ trong tình duyên",
+    },
+  ],
+}
+`;
+
+exports[`brief của lá số 1956-03-03 1h Nam Công danh 1`] = `
+{
+  "chinh": {
+    "anNgu": "Tuần",
+    "catTinh": [
+      {
+        "ten": "Thiên Thọ",
+        "the": "xung chiếu",
+      },
+    ],
+    "chi": "Tị",
+    "chiNamSinh": "Thân",
+    "chinhTinh": [
+      {
+        "bac": "Đ",
+        "ten": "Thiên Đồng",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "H",
+        "ten": "Thiên Lương",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "M",
+        "ten": "Thiên Cơ",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "M",
+        "ten": "Cự Môn",
+        "the": "tam hợp",
+      },
+    ],
+    "cung": "Quan Lộc",
+    "gioiTinh": "nam",
+    "hungTinh": [],
+    "laVoChinhDieu": false,
+    "luan": [
+      {
+        "do": [
+          "Thiên Đồng",
+        ],
+        "sac": "thuan",
+        "trong": 71,
+        "tuKhoa": [
+          "hoà nhã",
+          "hợp tác",
+        ],
+        "y": "hoà nhã nơi làm việc, dễ bắt tay hợp tác với đồng nghiệp",
+      },
+      {
+        "do": [],
+        "sac": "thuan",
+        "trong": 66,
+        "tuKhoa": [
+          "Cơ Nguyệt Đồng Lương",
+          "cần bền",
+        ],
+        "y": "cách Cơ Nguyệt Đồng Lương chủ ổn định, hợp việc cần bền và cần nghĩ",
+      },
+      {
+        "do": [
+          "Thiên Đồng",
+        ],
+        "sac": "nghich",
+        "trong": 66,
+        "tuKhoa": [
+          "ngại tranh phần",
+          "bứt phá",
+        ],
+        "y": "ngại tranh phần, thiếu hẳn một cú bứt phá để tiến xa hơn",
+      },
+      {
+        "do": [],
+        "sac": "nghich",
+        "trong": 59,
+        "tuKhoa": [
+          "bung phá",
+          "bước nhảy",
+        ],
+        "y": "thiếu nét bung phá nên ít khi có bước nhảy lớn",
+      },
+      {
+        "do": [
+          "Thiên Thọ",
+        ],
+        "sac": "hoa-giai",
+        "trong": 31,
+        "tuKhoa": [
+          "bền",
+          "giữ được lâu",
+        ],
+        "y": "có yếu tố bền, giữ được lâu khi công việc đã ổn định",
+      },
+    ],
+  },
+  "muc": [
+    {
+      "anNgu": "Tuần",
+      "catTinh": [
+        {
+          "ten": "Hóa Lộc",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Thiên Thọ",
+          "the": "xung chiếu",
+        },
+        {
+          "ten": "Hóa Quyền",
+          "the": "tam hợp",
+        },
+      ],
+      "chi": "Tị",
+      "chiNamSinh": "Thân",
+      "chinhTinh": [
+        {
+          "bac": "Đ",
+          "ten": "Thiên Đồng",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "H",
+          "ten": "Thiên Lương",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "M",
+          "ten": "Thiên Cơ",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "M",
+          "ten": "Cự Môn",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Quan Lộc",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Hóa Quyền",
+          ],
+          "sac": "thuan",
+          "trong": 68,
+          "tuKhoa": [
+            "thực quyền",
+            "quyết định",
+          ],
+          "y": "có thực quyền, tiếng nói đủ sức quyết định trong công việc",
+        },
+        {
+          "do": [
+            "Hóa Lộc",
+          ],
+          "sac": "thuan",
+          "trong": 58,
+          "tuKhoa": [
+            "tài lộc",
+            "thu nhập",
+          ],
+          "y": "công việc đi kèm tài lộc, thu nhập thuận theo công sức bỏ ra",
+        },
+        {
+          "do": [
+            "Thiên Thọ",
+          ],
+          "sac": "hoa-giai",
+          "trong": 55,
+          "tuKhoa": [
+            "bền",
+            "giữ được lâu",
+          ],
+          "y": "có yếu tố bền, giữ được lâu khi công việc đã ổn định",
+        },
+      ],
+      "muc": "diem-manh",
+      "sourceCung": "Quan Lộc · Tị",
+      "tieuDe": "Điểm mạnh trong sự nghiệp",
+    },
+    {
+      "anNgu": "Tuần",
+      "catTinh": [],
+      "chi": "Tị",
+      "chiNamSinh": "Thân",
+      "chinhTinh": [
+        {
+          "bac": "Đ",
+          "ten": "Thiên Đồng",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "H",
+          "ten": "Thiên Lương",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "M",
+          "ten": "Thiên Cơ",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "M",
+          "ten": "Cự Môn",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Quan Lộc",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [
+        {
+          "ten": "Kiếp Sát",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Cô Thần",
+          "the": "xung chiếu",
+        },
+        {
+          "ten": "Thiên Diêu",
+          "the": "tam hợp",
+        },
+      ],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Kiếp Sát",
+          ],
+          "sac": "nghich",
+          "trong": 60,
+          "tuKhoa": [
+            "biến cố bất ngờ",
+            "mất đi phần thành quả",
+          ],
+          "y": "có giai đoạn công việc gặp biến cố bất ngờ, mất đi phần thành quả đã gây dựng",
+        },
+        {
+          "do": [
+            "Thiên Diêu",
+          ],
+          "sac": "nghich",
+          "trong": 60,
+          "tuKhoa": [
+            "sa đà vào việc ngoài lề",
+            "phân tán",
+          ],
+          "y": "dễ sa đà vào việc ngoài lề, phân tán sức tập trung khỏi việc chính",
+        },
+        {
+          "do": [
+            "Cô Thần",
+          ],
+          "sac": "nghich",
+          "trong": 58,
+          "tuKhoa": [
+            "tự xoay sở một mình",
+            "ít người cùng gánh",
+          ],
+          "y": "nhiều lúc phải tự xoay sở một mình, ít người cùng gánh việc",
+        },
+      ],
+      "muc": "diem-can-giu",
+      "sourceCung": "Quan Lộc · Tị",
+      "tieuDe": "Điểm cần giữ trong sự nghiệp",
+    },
+  ],
+}
+`;
+
+exports[`brief của lá số 1956-03-03 1h Nam Mệnh 1`] = `
+{
+  "chinh": {
+    "anNgu": null,
+    "catTinh": [
+      {
+        "ten": "Nguyệt Đức",
+        "the": "toạ thủ",
+      },
+    ],
+    "chi": "Sửu",
+    "chiNamSinh": "Thân",
+    "chinhTinh": [
+      {
+        "bac": "Đ",
+        "ten": "Thái Dương",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Thái Âm",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Thiên Đồng",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "M",
+        "ten": "Thiên Cơ",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "M",
+        "ten": "Cự Môn",
+        "the": "tam hợp",
+      },
+    ],
+    "cung": "Mệnh",
+    "gioiTinh": "nam",
+    "hungTinh": [
+      {
+        "ten": "Thiên Diêu",
+        "the": "toạ thủ",
+      },
+    ],
+    "laVoChinhDieu": true,
+    "luan": [
+      {
+        "do": [
+          "Thiên Cơ",
+        ],
+        "sac": "thuan",
+        "trong": 71,
+        "tuKhoa": [
+          "nghĩ nhanh",
+          "tính trước",
+        ],
+        "y": "nghĩ nhanh, hay tính trước vài nước",
+      },
+      {
+        "do": [
+          "Thái Dương",
+        ],
+        "sac": "thuan",
+        "trong": 64,
+        "tuKhoa": [
+          "nhiệt tình",
+          "lo phần việc",
+        ],
+        "y": "nhiệt tình, sẵn lòng lo phần việc của người khác",
+      },
+      {
+        "do": [
+          "Thiên Cơ",
+        ],
+        "sac": "nghich",
+        "trong": 66,
+        "tuKhoa": [
+          "do dự",
+          "chậm chốt",
+        ],
+        "y": "tính nhiều hoá do dự, chậm chốt một đường",
+      },
+      {
+        "do": [
+          "Thiên Diêu",
+        ],
+        "sac": "nghich",
+        "trong": 60,
+        "tuKhoa": [
+          "đa tình",
+          "ngoài luồng",
+        ],
+        "y": "thêm phần đa tình, dễ vướng chuyện ngoài luồng",
+      },
+      {
+        "do": [
+          "Nguyệt Đức",
+        ],
+        "sac": "hoa-giai",
+        "trong": 50,
+        "tuKhoa": [
+          "che chở",
+          "người đỡ",
+        ],
+        "y": "có phúc đức che chở, gặp việc thường có người đỡ",
+      },
+    ],
+  },
+  "muc": [
+    {
+      "anNgu": null,
+      "catTinh": [
+        {
+          "ten": "Hồng Loan",
+          "the": "xung chiếu",
+        },
+        {
+          "ten": "Hóa Lộc",
+          "the": "tam hợp",
+        },
+        {
+          "ten": "Hóa Quyền",
+          "the": "tam hợp",
+        },
+      ],
+      "chi": "Sửu",
+      "chiNamSinh": "Thân",
+      "chinhTinh": [
+        {
+          "bac": "Đ",
+          "ten": "Thái Dương",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thái Âm",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Đồng",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "M",
+          "ten": "Thiên Cơ",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "M",
+          "ten": "Cự Môn",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Mệnh",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [],
+      "laVoChinhDieu": true,
+      "luan": [
+        {
+          "do": [
+            "Hóa Quyền",
+          ],
+          "sac": "thuan",
+          "trong": 68,
+          "tuKhoa": [
+            "tiếng nói",
+            "quyền quyết",
+          ],
+          "y": "người ấy có tiếng nói và quyền quyết trong nhà",
+        },
+        {
+          "do": [
+            "Hồng Loan",
+          ],
+          "sac": "thuan",
+          "trong": 62,
+          "tuKhoa": [
+            "duyên đến",
+            "hôn sự",
+          ],
+          "y": "duyên đến rõ ràng, dễ có hôn sự đúng lúc",
+        },
+        {
+          "do": [
+            "Hóa Lộc",
+          ],
+          "sac": "thuan",
+          "trong": 58,
+          "tuKhoa": [
+            "phần lộc",
+            "dễ thở",
+          ],
+          "y": "có phần lộc đi kèm, đường tài chính của hai người dễ thở",
+        },
+      ],
+      "muc": "diem-manh",
+      "sourceCung": "Mệnh · Sửu",
+      "tieuDe": "Điểm mạnh",
+    },
+    {
+      "anNgu": null,
+      "catTinh": [],
+      "chi": "Sửu",
+      "chiNamSinh": "Thân",
+      "chinhTinh": [
+        {
+          "bac": "Đ",
+          "ten": "Thái Dương",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thái Âm",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Đồng",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "M",
+          "ten": "Thiên Cơ",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "M",
+          "ten": "Cự Môn",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Mệnh",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [
+        {
+          "ten": "Thiên Diêu",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Kiếp Sát",
+          "the": "tam hợp",
+        },
+        {
+          "ten": "Phá Toái",
+          "the": "tam hợp",
+        },
+      ],
+      "laVoChinhDieu": true,
+      "luan": [
+        {
+          "do": [
+            "Thiên Diêu",
+          ],
+          "sac": "nghich",
+          "trong": 60,
+          "tuKhoa": [
+            "đa tình",
+            "ngoài luồng",
+          ],
+          "y": "thêm phần đa tình, dễ vướng chuyện ngoài luồng",
+        },
+        {
+          "do": [
+            "Kiếp Sát",
+          ],
+          "sac": "nghich",
+          "trong": 60,
+          "tuKhoa": [
+            "áp lực",
+            "mất mát",
+          ],
+          "y": "có giai đoạn chịu áp lực hoặc mất mát trong quan hệ",
+        },
+        {
+          "do": [
+            "Phá Toái",
+          ],
+          "sac": "nghich",
+          "trong": 55,
+          "tuKhoa": [
+            "đổ vỡ",
+            "gián đoạn",
+          ],
+          "y": "dễ có đổ vỡ hoặc gián đoạn giữa chừng",
+        },
+      ],
+      "muc": "diem-can-giu",
+      "sourceCung": "Mệnh · Sửu",
+      "tieuDe": "Điểm cần giữ",
+    },
+    {
+      "anNgu": null,
+      "catTinh": [],
+      "chi": "Sửu",
+      "chiNamSinh": "Thân",
+      "chinhTinh": [
+        {
+          "bac": "Đ",
+          "ten": "Thái Dương",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thái Âm",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Đồng",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "M",
+          "ten": "Thiên Cơ",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "M",
+          "ten": "Cự Môn",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Mệnh",
+      "duKien": [
+        "Thổ Ngũ Cục",
+        "bản mệnh Sơn Hạ Hỏa",
+        "cách Cơ Nguyệt Đồng Lương",
+        "cách Xương Khúc",
+      ],
+      "gioiTinh": "nam",
+      "hungTinh": [],
+      "laVoChinhDieu": true,
+      "luan": [
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 88,
+          "tuKhoa": [
+            "Cơ Nguyệt Đồng Lương",
+            "cần bền",
+          ],
+          "y": "cách Cơ Nguyệt Đồng Lương chủ ổn định, hợp việc cần bền và cần nghĩ",
+        },
+        {
+          "do": [],
+          "sac": "nghich",
+          "trong": 78,
+          "tuKhoa": [
+            "bung phá",
+            "bước nhảy",
+          ],
+          "y": "thiếu nét bung phá nên ít khi có bước nhảy lớn",
+        },
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 76,
+          "tuKhoa": [
+            "Xương Khúc",
+            "chữ nghĩa",
+          ],
+          "y": "có Xương Khúc nên hợp chữ nghĩa, học hành và những việc cần trình bày",
+        },
+      ],
+      "muc": "ngu-hanh",
+      "sourceCung": "Mệnh · Sửu",
+      "tieuDe": "Ngũ hành bản mệnh",
+    },
+  ],
+}
+`;
+
+exports[`brief của lá số 1956-03-03 1h Nam Thân cư 1`] = `
+{
+  "chinh": {
+    "anNgu": null,
+    "catTinh": [
+      {
+        "ten": "Thiên Thọ",
+        "the": "tam hợp",
+      },
+    ],
+    "chi": "Mão",
+    "chiNamSinh": "Thân",
+    "chinhTinh": [
+      {
+        "bac": "M",
+        "ten": "Thiên Cơ",
+      },
+      {
+        "bac": "M",
+        "ten": "Cự Môn",
+      },
+    ],
+    "cung": "Phúc Đức",
+    "gioiTinh": "nam",
+    "hungTinh": [],
+    "laVoChinhDieu": true,
+    "luan": [
+      {
+        "do": [
+          "Thiên Cơ",
+        ],
+        "sac": "thuan",
+        "trong": 81,
+        "tuKhoa": [
+          "ngẫm nghĩ",
+          "suy xét",
+        ],
+        "y": "hay ngẫm nghĩ, tìm được cái thú trong chuyện suy xét",
+      },
+      {
+        "do": [],
+        "sac": "thuan",
+        "trong": 80,
+        "tuKhoa": [
+          "thích nghi",
+          "đổi theo",
+        ],
+        "y": "không bị một khuôn nào đóng sẵn nên dễ thích nghi, hoàn cảnh đổi thì mình đổi theo được",
+      },
+      {
+        "do": [],
+        "sac": "nghich",
+        "trong": 76,
+        "tuKhoa": [
+          "chủ kiến",
+          "dẫn đi",
+        ],
+        "y": "thiếu chủ kiến ở phần này, dễ bị người và hoàn cảnh bên ngoài dẫn đi",
+      },
+      {
+        "do": [
+          "Thiên Cơ",
+        ],
+        "sac": "nghich",
+        "trong": 76,
+        "tuKhoa": [
+          "lo xa",
+          "ít khi thật sự nghỉ",
+        ],
+        "y": "lo xa quá mức nên đầu ít khi thật sự nghỉ",
+      },
+      {
+        "do": [
+          "Thiên Thọ",
+        ],
+        "sac": "hoa-giai",
+        "trong": 33,
+        "tuKhoa": [
+          "bền",
+          "giữ được lâu",
+        ],
+        "y": "có yếu tố bền, giữ được lâu khi đã ổn định",
+      },
+    ],
+  },
+  "muc": [
+    {
+      "anNgu": null,
+      "catTinh": [
+        {
+          "ten": "Thiên Thọ",
+          "the": "tam hợp",
+        },
+      ],
+      "chi": "Mão",
+      "chiNamSinh": "Thân",
+      "chinhTinh": [
+        {
+          "bac": "M",
+          "ten": "Thiên Cơ",
+        },
+        {
+          "bac": "M",
+          "ten": "Cự Môn",
+        },
+      ],
+      "cung": "Phúc Đức",
+      "duKien": [
+        "Thân chủ hậu vận, rõ dần từ khoảng 35 tuổi",
+        "đại vận 25–34 tuổi",
+        "vòng Tràng Sinh đang ở cung Tử",
+      ],
+      "gioiTinh": "nam",
+      "hungTinh": [],
+      "laVoChinhDieu": true,
+      "luan": [
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 88,
+          "tuKhoa": [
+            "35",
+            "nửa sau",
+          ],
+          "y": "cung an Thân nói về nửa sau cuộc đời, rõ dần từ khoảng 35 tuổi trở đi",
+        },
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 90,
+          "tuKhoa": [
+            "25",
+            "34",
+          ],
+          "y": "riêng quãng 25 đến 34 tuổi là lúc cung này lên tiếng rõ nhất",
+        },
+        {
+          "do": [],
+          "sac": "nghich",
+          "trong": 82,
+          "tuKhoa": [
+            "hết đà",
+            "mượn sức",
+          ],
+          "y": "cung hết đà, muốn tiến phải mượn sức từ chỗ khác",
+        },
+      ],
+      "muc": "thoi-diem",
+      "sourceCung": "Phúc Đức · Mão",
+      "tieuDe": "Thời điểm",
+    },
+    {
+      "anNgu": null,
+      "catTinh": [
+        {
+          "ten": "Thiên Thọ",
+          "the": "tam hợp",
+        },
+      ],
+      "chi": "Mão",
+      "chiNamSinh": "Thân",
+      "chinhTinh": [
+        {
+          "bac": "M",
+          "ten": "Thiên Cơ",
+        },
+        {
+          "bac": "M",
+          "ten": "Cự Môn",
+        },
+      ],
+      "cung": "Phúc Đức",
+      "duKien": [
+        "Mệnh và Thân không có thế rõ",
+      ],
+      "gioiTinh": "nam",
+      "hungTinh": [],
+      "laVoChinhDieu": true,
+      "luan": [
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 84,
+          "tuKhoa": [
+            "độc lập",
+          ],
+          "y": "Mệnh và Thân không đứng thế nào rõ rệt nên hai phần đời khá độc lập",
+        },
+        {
+          "do": [],
+          "sac": "nghich",
+          "trong": 84,
+          "tuKhoa": [
+            "không tự động",
+          ],
+          "y": "ít liên hệ nên cái gây dựng ở nửa đầu không tự động chuyển sang nửa sau",
+        },
+      ],
+      "muc": "menh-than",
+      "sourceCung": "Phúc Đức · Mão",
+      "tieuDe": "Mệnh và Thân",
+    },
+    {
+      "anNgu": null,
+      "catTinh": [
+        {
+          "ten": "Thiên Thọ",
+          "the": "tam hợp",
+        },
+      ],
+      "chi": "Mão",
+      "chiNamSinh": "Thân",
+      "chinhTinh": [
+        {
+          "bac": "M",
+          "ten": "Thiên Cơ",
+        },
+        {
+          "bac": "M",
+          "ten": "Cự Môn",
+        },
+      ],
+      "cung": "Phúc Đức",
+      "duKien": [
+        "cách Cơ Nguyệt Đồng Lương",
+        "cách Khôi Việt",
+        "cách Hoả Linh",
+      ],
+      "gioiTinh": "nam",
+      "hungTinh": [],
+      "laVoChinhDieu": true,
+      "luan": [
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 88,
+          "tuKhoa": [
+            "Cơ Nguyệt Đồng Lương",
+            "cần bền",
+          ],
+          "y": "cách Cơ Nguyệt Đồng Lương chủ ổn định, hợp việc cần bền và cần nghĩ",
+        },
+        {
+          "do": [],
+          "sac": "nghich",
+          "trong": 80,
+          "tuKhoa": [
+            "Hoả Linh",
+            "đến nhanh",
+          ],
+          "y": "có Hoả Linh nên việc đến nhanh và gấp, ít khi báo trước",
+        },
+        {
+          "do": [],
+          "sac": "nghich",
+          "trong": 78,
+          "tuKhoa": [
+            "bung phá",
+            "bước nhảy",
+          ],
+          "y": "thiếu nét bung phá nên ít khi có bước nhảy lớn",
+        },
+      ],
+      "muc": "the-cuc",
+      "sourceCung": "Phúc Đức · Mão",
+      "tieuDe": "Thế cục",
+    },
+  ],
+}
+`;
+
+exports[`brief của lá số 1956-03-03 1h Nam Tài bạch 1`] = `
+{
+  "chinh": {
+    "anNgu": null,
+    "catTinh": [
+      {
+        "ten": "Nguyệt Đức",
+        "the": "tam hợp",
+      },
+    ],
+    "chi": "Dậu",
+    "chiNamSinh": "Thân",
+    "chinhTinh": [
+      {
+        "bac": "M",
+        "ten": "Thiên Cơ",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "M",
+        "ten": "Cự Môn",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Thiên Đồng",
+        "the": "tam hợp",
+      },
+    ],
+    "cung": "Tài Bạch",
+    "gioiTinh": "nam",
+    "hungTinh": [],
+    "laVoChinhDieu": false,
+    "luan": [
+      {
+        "do": [
+          "Thiên Cơ",
+        ],
+        "sac": "thuan",
+        "trong": 112,
+        "tuKhoa": [
+          "xoay vòng vốn",
+          "nắm bắt thời cơ",
+        ],
+        "y": "xoay vòng vốn nhanh nhạy, hợp kiếm tiền từ tính toán và nắm bắt thời cơ",
+      },
+      {
+        "do": [
+          "Cự Môn",
+        ],
+        "sac": "thuan",
+        "trong": 102,
+        "tuKhoa": [
+          "có trọng lượng",
+          "thương lượng",
+        ],
+        "y": "ăn nói có trọng lượng, hợp kiếm tiền từ việc cần tranh luận hay thương lượng",
+      },
+      {
+        "do": [
+          "Thiên Cơ",
+        ],
+        "sac": "nghich",
+        "trong": 104,
+        "tuKhoa": [
+          "đổi hướng",
+          "khó giữ",
+        ],
+        "y": "đổi hướng làm ăn liên tục, khó giữ một nguồn thu ổn định lâu dài",
+      },
+      {
+        "do": [
+          "Cự Môn",
+        ],
+        "sac": "nghich",
+        "trong": 94,
+        "tuKhoa": [
+          "va chạm",
+          "thị phi",
+        ],
+        "y": "lời thẳng dễ va chạm, quanh chuyện tiền hay vướng thị phi không đáng có",
+      },
+      {
+        "do": [
+          "Nguyệt Đức",
+        ],
+        "sac": "hoa-giai",
+        "trong": 30,
+        "tuKhoa": [
+          "che chở",
+          "người đỡ",
+        ],
+        "y": "có phúc đức che chở, lúc khó về tiền thường có người đỡ",
+      },
+    ],
+  },
+  "muc": [
+    {
+      "anNgu": null,
+      "catTinh": [
+        {
+          "ten": "Hóa Quyền",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Nguyệt Đức",
+          "the": "tam hợp",
+        },
+        {
+          "ten": "Hóa Lộc",
+          "the": "tam hợp",
+        },
+      ],
+      "chi": "Dậu",
+      "chiNamSinh": "Thân",
+      "chinhTinh": [
+        {
+          "bac": "M",
+          "ten": "Thiên Cơ",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "M",
+          "ten": "Cự Môn",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Đồng",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Tài Bạch",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Hóa Quyền",
+          ],
+          "sac": "thuan",
+          "trong": 68,
+          "tuKhoa": [
+            "thực quyền",
+            "tự mình quyết",
+          ],
+          "y": "có thực quyền với đồng tiền mình làm ra, tự mình quyết được cách dùng",
+        },
+        {
+          "do": [
+            "Hóa Lộc",
+          ],
+          "sac": "thuan",
+          "trong": 58,
+          "tuKhoa": [
+            "tài lộc",
+            "thuận theo công sức",
+          ],
+          "y": "tài lộc đến tự nhiên, tiền vào thuận theo công sức bỏ ra",
+        },
+        {
+          "do": [
+            "Nguyệt Đức",
+          ],
+          "sac": "hoa-giai",
+          "trong": 50,
+          "tuKhoa": [
+            "che chở",
+            "người đỡ",
+          ],
+          "y": "có phúc đức che chở, lúc khó về tiền thường có người đỡ",
+        },
+      ],
+      "muc": "diem-manh",
+      "sourceCung": "Tài Bạch · Dậu",
+      "tieuDe": "Điểm mạnh trong tài chính",
+    },
+    {
+      "anNgu": null,
+      "catTinh": [],
+      "chi": "Dậu",
+      "chiNamSinh": "Thân",
+      "chinhTinh": [
+        {
+          "bac": "M",
+          "ten": "Thiên Cơ",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "M",
+          "ten": "Cự Môn",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Đồng",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Tài Bạch",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [
+        {
+          "ten": "Thiên Diêu",
+          "the": "tam hợp",
+        },
+        {
+          "ten": "Kiếp Sát",
+          "the": "tam hợp",
+        },
+        {
+          "ten": "Đà La",
+          "the": "nhị hợp",
+        },
+      ],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Đà La",
+          ],
+          "sac": "nghich",
+          "trong": 62,
+          "tuKhoa": [
+            "trắc trở",
+            "chậm",
+            "dây dưa",
+          ],
+          "y": "đường tiền vào trắc trở kéo dài, việc thu tiền hay chậm và dây dưa",
+        },
+        {
+          "do": [
+            "Thiên Diêu",
+          ],
+          "sac": "nghich",
+          "trong": 60,
+          "tuKhoa": [
+            "thú vui ngoài lề",
+            "không giúp tích luỹ",
+          ],
+          "y": "dễ tiêu tiền vào những thú vui ngoài lề, sa đà vào chỗ không giúp tích luỹ",
+        },
+        {
+          "do": [
+            "Kiếp Sát",
+          ],
+          "sac": "nghich",
+          "trong": 60,
+          "tuKhoa": [
+            "biến cố bất ngờ",
+            "mất đi",
+          ],
+          "y": "có giai đoạn tiền bạc gặp biến cố bất ngờ, mất đi một phần đã tích luỹ",
+        },
+      ],
+      "muc": "diem-can-giu",
+      "sourceCung": "Tài Bạch · Dậu",
+      "tieuDe": "Điểm cần giữ trong tài chính",
+    },
+  ],
+}
+`;
+
+exports[`brief của lá số 1956-03-03 1h Nam Tình duyên 1`] = `
+{
+  "chinh": {
+    "anNgu": null,
+    "catTinh": [
+      {
+        "ten": "Thiên Thọ",
+        "the": "toạ thủ",
+      },
+    ],
+    "chi": "Hợi",
+    "chiNamSinh": "Thân",
+    "chinhTinh": [
+      {
+        "bac": "H",
+        "ten": "Thiên Lương",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Thiên Đồng",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Thái Dương",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Thái Âm",
+        "the": "tam hợp",
+      },
+    ],
+    "cung": "Phu Thê",
+    "gioiTinh": "nam",
+    "hungTinh": [],
+    "laVoChinhDieu": false,
+    "luan": [
+      {
+        "do": [
+          "Thiên Đồng",
+        ],
+        "sac": "thuan",
+        "trong": 74,
+        "tuKhoa": [
+          "ôn hoà",
+          "nhẹ nhõm",
+        ],
+        "y": "người bạn đời ôn hoà, dễ tính, ở bên nhau thấy nhẹ nhõm",
+      },
+      {
+        "do": [
+          "Thiên Lương",
+        ],
+        "sac": "thuan",
+        "trong": 68,
+        "tuKhoa": [
+          "hiền hậu",
+          "nâng đỡ",
+        ],
+        "y": "người bạn đời hiền hậu, biết che chở và nâng đỡ khi mình chênh vênh",
+      },
+      {
+        "do": [
+          "Thiên Đồng",
+        ],
+        "sac": "nghich",
+        "trong": 69,
+        "tuKhoa": [
+          "ngại nói thẳng",
+          "bị gác lại",
+        ],
+        "y": "người ấy ngại nói thẳng nên chuyện cần nói rõ giữa hai người hay bị gác lại",
+      },
+      {
+        "do": [
+          "Thiên Lương",
+        ],
+        "sac": "nghich",
+        "trong": 62,
+        "tuKhoa": [
+          "khuyên răn",
+          "bao bọc quá mức",
+        ],
+        "y": "người ấy hay khuyên răn, dễ khiến mình thấy bị bao bọc quá mức",
+      },
+      {
+        "do": [
+          "Thiên Thọ",
+        ],
+        "sac": "hoa-giai",
+        "trong": 55,
+        "tuKhoa": [
+          "độ bền",
+          "giữ được lâu",
+        ],
+        "y": "tình cảm có độ bền, đã gắn bó thì giữ được lâu",
+      },
+    ],
+  },
+  "giaDao": [
+    {
+      "anNgu": null,
+      "catTinh": [],
+      "chi": "Tuất",
+      "chiNamSinh": "Thân",
+      "chinhTinh": [
+        {
+          "bac": "V",
+          "ten": "Tử Vi",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "V",
+          "ten": "Thiên Tướng",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Phá Quân",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "V",
+          "ten": "Liêm Trinh",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "V",
+          "ten": "Vũ Khúc",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "M",
+          "ten": "Thiên Phủ",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Tử Tức",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Tử Vi",
+          ],
+          "sac": "thuan",
+          "trong": 94,
+          "tuKhoa": [
+            "khí chất đàng hoàng",
+            "chí lớn",
+          ],
+          "y": "khi có con, con mang khí chất đàng hoàng và sớm có chí lớn",
+        },
+        {
+          "do": [
+            "Thiên Tướng",
+          ],
+          "sac": "thuan",
+          "trong": 94,
+          "tuKhoa": [
+            "tốt bụng",
+            "bênh vực",
+          ],
+          "y": "con tốt bụng, có lòng bênh vực người yếu thế",
+        },
+        {
+          "do": [
+            "Tử Vi",
+          ],
+          "sac": "nghich",
+          "trong": 86,
+          "tuKhoa": [
+            "tự tôn",
+            "lựa lời",
+          ],
+          "y": "con có lòng tự tôn cao, muốn con nghe thì phải biết lựa lời",
+        },
+        {
+          "do": [
+            "Thiên Tướng",
+          ],
+          "sac": "nghich",
+          "trong": 86,
+          "tuKhoa": [
+            "nghe theo bạn bè",
+            "lời người nhà",
+          ],
+          "y": "lúc có con, con dễ nghe theo bạn bè hơn là lời người nhà",
+        },
+      ],
+      "muc": "con-cai",
+      "sourceCung": "Tử Tức · Tuất",
+      "tieuDe": "Con cái",
+    },
+    {
+      "anNgu": null,
+      "catTinh": [
+        {
+          "ten": "Thiên Thọ",
+          "the": "nhị hợp",
+        },
+      ],
+      "chi": "Dần",
+      "chiNamSinh": "Thân",
+      "chinhTinh": [
+        {
+          "bac": "V",
+          "ten": "Liêm Trinh",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Tham Lang",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "V",
+          "ten": "Vũ Khúc",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "M",
+          "ten": "Thiên Phủ",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "V",
+          "ten": "Tử Vi",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "V",
+          "ten": "Thiên Tướng",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Phụ Mẫu",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Tham Lang",
+          ],
+          "sac": "thuan",
+          "trong": 64,
+          "tuKhoa": [
+            "xởi lởi",
+            "giao thiệp",
+          ],
+          "y": "nếp nhà cởi mở, xởi lởi, dạy mình cách giao thiệp rộng",
+        },
+        {
+          "do": [
+            "Thiên Phủ",
+          ],
+          "sac": "thuan",
+          "trong": 61,
+          "tuKhoa": [
+            "vững vàng",
+            "tìm về",
+          ],
+          "y": "gia đình gốc vững vàng, là nơi để mình tìm về khi mỏi mệt",
+        },
+        {
+          "do": [
+            "Liêm Trinh",
+          ],
+          "sac": "nghich",
+          "trong": 86,
+          "tuKhoa": [
+            "bất đồng quan điểm",
+            "lùi một bước",
+          ],
+          "y": "giữa mình và cha mẹ dễ bất đồng quan điểm, không ai chịu lùi một bước",
+        },
+        {
+          "do": [
+            "Liêm Trinh",
+          ],
+          "sac": "nghich",
+          "trong": 80,
+          "tuKhoa": [
+            "vướng lại",
+            "trắc trở",
+          ],
+          "y": "phần nâng đỡ từ cha mẹ bị vướng lại, muốn gần nhau thì cũng phải qua trắc trở",
+        },
+        {
+          "do": [
+            "Thiên Thọ",
+          ],
+          "sac": "hoa-giai",
+          "trong": 22,
+          "tuKhoa": [
+            "bền chặt",
+            "không sứt mẻ",
+          ],
+          "y": "tình thân với cha mẹ bền chặt, có lúc lấn cấn cũng không sứt mẻ",
+        },
+      ],
+      "muc": "cha-me",
+      "sourceCung": "Phụ Mẫu · Dần",
+      "tieuDe": "Cha mẹ",
+    },
+  ],
+  "muc": [
+    {
+      "anNgu": null,
+      "catTinh": [
+        {
+          "ten": "Thiên Thọ",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Hóa Lộc",
+          "the": "xung chiếu",
+        },
+        {
+          "ten": "Hồng Loan",
+          "the": "tam hợp",
+        },
+      ],
+      "chi": "Hợi",
+      "chiNamSinh": "Thân",
+      "chinhTinh": [
+        {
+          "bac": "H",
+          "ten": "Thiên Lương",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Đồng",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thái Dương",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thái Âm",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Phu Thê",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Hồng Loan",
+          ],
+          "sac": "thuan",
+          "trong": 62,
+          "tuKhoa": [
+            "duyên đến",
+            "đúng lúc",
+          ],
+          "y": "duyên đến rõ ràng, dễ gặp người hợp ý vào đúng lúc",
+        },
+        {
+          "do": [
+            "Hóa Lộc",
+          ],
+          "sac": "thuan",
+          "trong": 58,
+          "tuKhoa": [
+            "phần lộc",
+            "đủ đầy",
+          ],
+          "y": "đường duyên có phần lộc, ở cạnh nhau thấy đủ đầy",
+        },
+        {
+          "do": [
+            "Thiên Thọ",
+          ],
+          "sac": "hoa-giai",
+          "trong": 55,
+          "tuKhoa": [
+            "độ bền",
+            "giữ được lâu",
+          ],
+          "y": "tình cảm có độ bền, đã gắn bó thì giữ được lâu",
+        },
+      ],
+      "muc": "diem-manh",
+      "sourceCung": "Phu Thê · Hợi",
+      "tieuDe": "Điểm mạnh trong tình duyên",
+    },
+    {
+      "anNgu": null,
+      "catTinh": [],
+      "chi": "Hợi",
+      "chiNamSinh": "Thân",
+      "chinhTinh": [
+        {
+          "bac": "H",
+          "ten": "Thiên Lương",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Đồng",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thái Dương",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thái Âm",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Phu Thê",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [
+        {
+          "ten": "Cô Thần",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Kiếp Sát",
+          "the": "xung chiếu",
+        },
+        {
+          "ten": "Đại Hao",
+          "the": "nhị hợp",
+        },
+      ],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Đại Hao",
+          ],
+          "sac": "nghich",
+          "trong": 65,
+          "tuKhoa": [
+            "hao tâm sức",
+            "chưa tương xứng",
+          ],
+          "y": "dễ hao tâm sức vì người ấy, cho đi nhiều mà nhận lại chưa tương xứng",
+        },
+        {
+          "do": [
+            "Kiếp Sát",
+          ],
+          "sac": "nghich",
+          "trong": 60,
+          "tuKhoa": [
+            "đổi bất chợt",
+            "dè dặt",
+          ],
+          "y": "cách hai người gần gũi nhau hay đổi bất chợt, lúc quấn quýt lúc lại dè dặt",
+        },
+        {
+          "do": [
+            "Cô Thần",
+          ],
+          "sac": "nghich",
+          "trong": 58,
+          "tuKhoa": [
+            "lẻ loi",
+          ],
+          "y": "có lúc thấy lẻ loi ngay cả khi đang ở cạnh người ấy",
+        },
+      ],
+      "muc": "diem-can-giu",
+      "sourceCung": "Phu Thê · Hợi",
+      "tieuDe": "Điểm cần giữ trong tình duyên",
+    },
+  ],
+}
+`;
+
+exports[`brief của lá số 1960-05-26 21h Nam Công danh 1`] = `
+{
+  "chinh": {
+    "anNgu": null,
+    "catTinh": [
+      {
+        "ten": "Thiên Thọ",
+        "the": "xung chiếu",
+      },
+    ],
+    "chi": "Hợi",
+    "chiNamSinh": "Tý",
+    "chinhTinh": [
+      {
+        "bac": "H",
+        "ten": "Liêm Trinh",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "H",
+        "ten": "Tham Lang",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "B",
+        "ten": "Thiên Phủ",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Thiên Tướng",
+        "the": "tam hợp",
+      },
+    ],
+    "cung": "Quan Lộc",
+    "gioiTinh": "nam",
+    "hungTinh": [],
+    "laVoChinhDieu": true,
+    "luan": [
+      {
+        "do": [
+          "Liêm Trinh",
+        ],
+        "sac": "thuan",
+        "trong": 51,
+        "tuKhoa": [
+          "nguyên tắc",
+          "yên tâm",
+        ],
+        "y": "giữ nguyên tắc và kỷ luật, việc giao cho là yên tâm",
+      },
+      {
+        "do": [],
+        "sac": "thuan",
+        "trong": 76,
+        "tuKhoa": [
+          "Xương Khúc",
+          "chữ nghĩa",
+        ],
+        "y": "có Xương Khúc nên hợp chữ nghĩa, học hành và những việc cần trình bày",
+      },
+      {
+        "do": [
+          "Liêm Trinh",
+        ],
+        "sac": "nghich",
+        "trong": 47,
+        "tuKhoa": [
+          "khó xuê xoa",
+          "căng",
+        ],
+        "y": "khó xuê xoa với đồng nghiệp, dễ căng vì đòi hỏi quá chặt",
+      },
+      {
+        "do": [],
+        "sac": "nghich",
+        "trong": 68,
+        "tuKhoa": [
+          "thực hành",
+          "bỏ lại",
+        ],
+        "y": "thiên về nghĩ và nói nên phần thực hành đôi khi bị bỏ lại",
+      },
+      {
+        "do": [
+          "Thiên Thọ",
+        ],
+        "sac": "hoa-giai",
+        "trong": 31,
+        "tuKhoa": [
+          "bền",
+          "giữ được lâu",
+        ],
+        "y": "có yếu tố bền, giữ được lâu khi công việc đã ổn định",
+      },
+    ],
+  },
+  "muc": [
+    {
+      "anNgu": null,
+      "catTinh": [
+        {
+          "ten": "Nguyệt Đức",
+          "the": "xung chiếu",
+        },
+        {
+          "ten": "Thiên Thọ",
+          "the": "xung chiếu",
+        },
+        {
+          "ten": "Hồng Loan",
+          "the": "tam hợp",
+        },
+      ],
+      "chi": "Hợi",
+      "chiNamSinh": "Tý",
+      "chinhTinh": [
+        {
+          "bac": "H",
+          "ten": "Liêm Trinh",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "H",
+          "ten": "Tham Lang",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "B",
+          "ten": "Thiên Phủ",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Tướng",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Quan Lộc",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [],
+      "laVoChinhDieu": true,
+      "luan": [
+        {
+          "do": [
+            "Hồng Loan",
+          ],
+          "sac": "thuan",
+          "trong": 62,
+          "tuKhoa": [
+            "được chú ý đúng lúc",
+            "duyên gặp cơ hội",
+          ],
+          "y": "dễ được chú ý đúng lúc, có duyên gặp cơ hội hoặc đối tác tốt",
+        },
+        {
+          "do": [
+            "Thiên Thọ",
+          ],
+          "sac": "hoa-giai",
+          "trong": 55,
+          "tuKhoa": [
+            "bền",
+            "giữ được lâu",
+          ],
+          "y": "có yếu tố bền, giữ được lâu khi công việc đã ổn định",
+        },
+        {
+          "do": [
+            "Nguyệt Đức",
+          ],
+          "sac": "hoa-giai",
+          "trong": 50,
+          "tuKhoa": [
+            "che chở",
+            "người đỡ",
+          ],
+          "y": "có phúc đức che chở, gặp việc khó thường có người đỡ",
+        },
+      ],
+      "muc": "diem-manh",
+      "sourceCung": "Quan Lộc · Hợi",
+      "tieuDe": "Điểm mạnh trong sự nghiệp",
+    },
+    {
+      "anNgu": null,
+      "catTinh": [],
+      "chi": "Hợi",
+      "chiNamSinh": "Tý",
+      "chinhTinh": [
+        {
+          "bac": "H",
+          "ten": "Liêm Trinh",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "H",
+          "ten": "Tham Lang",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "B",
+          "ten": "Thiên Phủ",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Tướng",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Quan Lộc",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [
+        {
+          "ten": "Kiếp Sát",
+          "the": "xung chiếu",
+        },
+        {
+          "ten": "Đại Hao",
+          "the": "xung chiếu",
+        },
+        {
+          "ten": "Đà La",
+          "the": "tam hợp",
+        },
+      ],
+      "laVoChinhDieu": true,
+      "luan": [
+        {
+          "do": [
+            "Đại Hao",
+          ],
+          "sac": "nghich",
+          "trong": 65,
+          "tuKhoa": [
+            "hao tổn",
+            "công sức",
+            "chưa thấy thu lại",
+          ],
+          "y": "hao tổn nhiều công sức và tiền bạc cho công việc mà chưa thấy thu lại tương xứng",
+        },
+        {
+          "do": [
+            "Đà La",
+          ],
+          "sac": "nghich",
+          "trong": 62,
+          "tuKhoa": [
+            "trắc trở",
+            "chậm",
+            "dây dưa",
+          ],
+          "y": "trắc trở kéo dài, việc gì cũng chậm và dây dưa",
+        },
+        {
+          "do": [
+            "Kiếp Sát",
+          ],
+          "sac": "nghich",
+          "trong": 60,
+          "tuKhoa": [
+            "biến cố bất ngờ",
+            "mất đi phần thành quả",
+          ],
+          "y": "có giai đoạn công việc gặp biến cố bất ngờ, mất đi phần thành quả đã gây dựng",
+        },
+      ],
+      "muc": "diem-can-giu",
+      "sourceCung": "Quan Lộc · Hợi",
+      "tieuDe": "Điểm cần giữ trong sự nghiệp",
+    },
+  ],
+}
+`;
+
+exports[`brief của lá số 1960-05-26 21h Nam Mệnh 1`] = `
+{
+  "chinh": {
+    "anNgu": "Triệt",
+    "catTinh": [
+      {
+        "ten": "Thiên Khôi",
+        "the": "nhị hợp",
+      },
+    ],
+    "chi": "Mùi",
+    "chiNamSinh": "Tý",
+    "chinhTinh": [
+      {
+        "bac": "Đ",
+        "ten": "Thiên Tướng",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Tử Vi",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "V",
+        "ten": "Phá Quân",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "B",
+        "ten": "Thiên Phủ",
+        "the": "tam hợp",
+      },
+    ],
+    "cung": "Mệnh",
+    "gioiTinh": "nam",
+    "hungTinh": [],
+    "laVoChinhDieu": false,
+    "luan": [
+      {
+        "do": [
+          "Thiên Tướng",
+        ],
+        "sac": "thuan",
+        "trong": 64,
+        "tuKhoa": [
+          "chỉn chu",
+          "giữ lời",
+        ],
+        "y": "chỉn chu, giữ lời nên người ta yên tâm giao việc",
+      },
+      {
+        "do": [
+          "Phá Quân",
+        ],
+        "sac": "thuan",
+        "trong": 53,
+        "tuKhoa": [
+          "phá lệ",
+          "khác số đông",
+        ],
+        "y": "dám phá lệ, không ngại làm khác số đông",
+      },
+      {
+        "do": [
+          "Thiên Tướng",
+        ],
+        "sac": "nghich",
+        "trong": 59,
+        "tuKhoa": [
+          "theo khuôn",
+          "tự mở đường",
+        ],
+        "y": "quen làm theo khuôn, ít khi tự mở đường riêng",
+      },
+      {
+        "do": [
+          "Phá Quân",
+        ],
+        "sac": "nghich",
+        "trong": 48,
+        "tuKhoa": [
+          "đổi hướng",
+          "ổn định",
+        ],
+        "y": "đổi hướng liên tục, khó giữ mọi thứ ổn định",
+      },
+      {
+        "do": [
+          "Thiên Khôi",
+        ],
+        "sac": "hoa-giai",
+        "trong": 12,
+        "tuKhoa": [
+          "quý nhân",
+        ],
+        "y": "gặp việc khó thường có quý nhân đỡ một tay",
+      },
+    ],
+  },
+  "muc": [
+    {
+      "anNgu": "Triệt",
+      "catTinh": [
+        {
+          "ten": "Hồng Loan",
+          "the": "tam hợp",
+        },
+        {
+          "ten": "Thiên Khôi",
+          "the": "nhị hợp",
+        },
+      ],
+      "chi": "Mùi",
+      "chiNamSinh": "Tý",
+      "chinhTinh": [
+        {
+          "bac": "Đ",
+          "ten": "Thiên Tướng",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Tử Vi",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "V",
+          "ten": "Phá Quân",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "B",
+          "ten": "Thiên Phủ",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Mệnh",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Hồng Loan",
+          ],
+          "sac": "thuan",
+          "trong": 62,
+          "tuKhoa": [
+            "duyên đến",
+            "hôn sự",
+          ],
+          "y": "duyên đến rõ ràng, dễ có hôn sự đúng lúc",
+        },
+        {
+          "do": [
+            "Thiên Khôi",
+          ],
+          "sac": "hoa-giai",
+          "trong": 52,
+          "tuKhoa": [
+            "quý nhân",
+          ],
+          "y": "gặp việc khó thường có quý nhân đỡ một tay",
+        },
+      ],
+      "muc": "diem-manh",
+      "sourceCung": "Mệnh · Mùi",
+      "tieuDe": "Điểm mạnh",
+    },
+    {
+      "anNgu": "Triệt",
+      "catTinh": [],
+      "chi": "Mùi",
+      "chiNamSinh": "Tý",
+      "chinhTinh": [
+        {
+          "bac": "Đ",
+          "ten": "Thiên Tướng",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Tử Vi",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "V",
+          "ten": "Phá Quân",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "B",
+          "ten": "Thiên Phủ",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Mệnh",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [
+        {
+          "ten": "Đà La",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Thiên Không",
+          "the": "xung chiếu",
+        },
+        {
+          "ten": "Thiên Hình",
+          "the": "xung chiếu",
+        },
+      ],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Đà La",
+          ],
+          "sac": "nghich",
+          "trong": 62,
+          "tuKhoa": [
+            "trắc trở",
+            "chậm",
+            "dây dưa",
+          ],
+          "y": "trắc trở kéo dài, việc gì cũng chậm và dây dưa",
+        },
+        {
+          "do": [
+            "Thiên Không",
+          ],
+          "sac": "nghich",
+          "trong": 55,
+          "tuKhoa": [
+            "hụt hẫng",
+            "kỳ vọng",
+          ],
+          "y": "dễ hụt hẫng vì kỳ vọng không khớp thực tế",
+        },
+        {
+          "do": [
+            "Thiên Hình",
+          ],
+          "sac": "nghich",
+          "trong": 50,
+          "tuKhoa": [
+            "nguyên tắc",
+            "khắc khẩu",
+          ],
+          "y": "nguyên tắc cứng, dễ thành khắc khẩu",
+        },
+      ],
+      "muc": "diem-can-giu",
+      "sourceCung": "Mệnh · Mùi",
+      "tieuDe": "Điểm cần giữ",
+    },
+    {
+      "anNgu": "Triệt",
+      "catTinh": [],
+      "chi": "Mùi",
+      "chiNamSinh": "Tý",
+      "chinhTinh": [
+        {
+          "bac": "Đ",
+          "ten": "Thiên Tướng",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Tử Vi",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "V",
+          "ten": "Phá Quân",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "B",
+          "ten": "Thiên Phủ",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Mệnh",
+      "duKien": [
+        "Mộc Tam Cục",
+        "bản mệnh Bích Thượng Thổ",
+        "cách Tử Phủ Vũ Tướng",
+        "cách Xương Khúc",
+        "cách Hoả Linh",
+      ],
+      "gioiTinh": "nam",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 88,
+          "tuKhoa": [
+            "Tử Phủ Vũ Tướng",
+            "việc quản",
+          ],
+          "y": "cách Tử Phủ Vũ Tướng chủ quyền quý và ổn, hợp việc quản và việc giữ",
+        },
+        {
+          "do": [],
+          "sac": "nghich",
+          "trong": 80,
+          "tuKhoa": [
+            "Hoả Linh",
+            "đến nhanh",
+          ],
+          "y": "có Hoả Linh nên việc đến nhanh và gấp, ít khi báo trước",
+        },
+        {
+          "do": [],
+          "sac": "nghich",
+          "trong": 78,
+          "tuKhoa": [
+            "khó bung",
+            "kìm lại",
+          ],
+          "y": "có sức mà khó bung ra hết vì hoàn cảnh kìm lại",
+        },
+      ],
+      "muc": "ngu-hanh",
+      "sourceCung": "Mệnh · Mùi",
+      "tieuDe": "Ngũ hành bản mệnh",
+    },
+  ],
+}
+`;
+
+exports[`brief của lá số 1960-05-26 21h Nam Thân cư 1`] = `
+{
+  "chinh": {
+    "anNgu": "Tuần",
+    "catTinh": [
+      {
+        "ten": "Thiên Thọ",
+        "the": "toạ thủ",
+      },
+      {
+        "ten": "Hóa Quyền",
+        "the": "tam hợp",
+      },
+    ],
+    "chi": "Tị",
+    "chiNamSinh": "Tý",
+    "chinhTinh": [
+      {
+        "bac": "H",
+        "ten": "Liêm Trinh",
+      },
+      {
+        "bac": "H",
+        "ten": "Tham Lang",
+      },
+    ],
+    "cung": "Phu Thê",
+    "gioiTinh": "nam",
+    "hungTinh": [
+      {
+        "ten": "Đại Hao",
+        "the": "toạ thủ",
+      },
+    ],
+    "laVoChinhDieu": false,
+    "luan": [
+      {
+        "do": [
+          "Liêm Trinh",
+          "Tham Lang",
+        ],
+        "sac": "thuan",
+        "trong": 44,
+        "tuKhoa": [
+          "sức hút",
+          "giao tiếp",
+          "an phận",
+        ],
+        "y": "người bạn đời có sức hút, giỏi giao tiếp và không cam chịu an phận",
+      },
+      {
+        "do": [
+          "Hóa Quyền",
+        ],
+        "sac": "thuan",
+        "trong": 31,
+        "tuKhoa": [
+          "tiếng nói",
+          "quyền quyết",
+        ],
+        "y": "người ấy có tiếng nói và quyền quyết trong nhà",
+      },
+      {
+        "do": [
+          "Liêm Trinh",
+          "Tham Lang",
+        ],
+        "sac": "nghich",
+        "trong": 41,
+        "tuKhoa": [
+          "đào hoa",
+          "nhiều sóng",
+          "dang dở",
+        ],
+        "y": "cả hai đều là sao đào hoa nên đường tình duyên nhiều sóng, dễ dang dở trước khi định",
+      },
+      {
+        "do": [
+          "Đại Hao",
+        ],
+        "sac": "nghich",
+        "trong": 37,
+        "tuKhoa": [
+          "hao tán",
+          "tiêu tốn",
+          "tiền bạc",
+        ],
+        "y": "hao tán, dễ tiêu tốn tâm sức và tiền bạc vì chuyện tình cảm",
+      },
+      {
+        "do": [
+          "Thiên Thọ",
+        ],
+        "sac": "hoa-giai",
+        "trong": 31,
+        "tuKhoa": [
+          "bền",
+          "giữ được lâu",
+        ],
+        "y": "có yếu tố bền, giữ được lâu khi đã ổn định",
+      },
+    ],
+  },
+  "muc": [
+    {
+      "anNgu": "Tuần",
+      "catTinh": [
+        {
+          "ten": "Thiên Thọ",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Hóa Quyền",
+          "the": "tam hợp",
+        },
+      ],
+      "chi": "Tị",
+      "chiNamSinh": "Tý",
+      "chinhTinh": [
+        {
+          "bac": "H",
+          "ten": "Liêm Trinh",
+        },
+        {
+          "bac": "H",
+          "ten": "Tham Lang",
+        },
+      ],
+      "cung": "Phu Thê",
+      "duKien": [
+        "Thân chủ hậu vận, rõ dần từ khoảng 35 tuổi",
+        "vòng Tràng Sinh đang ở cung Bệnh",
+      ],
+      "gioiTinh": "nam",
+      "hungTinh": [
+        {
+          "ten": "Đại Hao",
+          "the": "toạ thủ",
+        },
+      ],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 88,
+          "tuKhoa": [
+            "35",
+            "nửa sau",
+          ],
+          "y": "cung an Thân nói về nửa sau cuộc đời, rõ dần từ khoảng 35 tuổi trở đi",
+        },
+        {
+          "do": [],
+          "sac": "nghich",
+          "trong": 82,
+          "tuKhoa": [
+            "trục trặc",
+            "giữ gìn",
+          ],
+          "y": "cung có trục trặc, phần này cần giữ gìn hơn phần khác",
+        },
+      ],
+      "muc": "thoi-diem",
+      "sourceCung": "Phu Thê · Tị",
+      "tieuDe": "Thời điểm",
+    },
+    {
+      "anNgu": "Tuần",
+      "catTinh": [
+        {
+          "ten": "Thiên Thọ",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Hóa Quyền",
+          "the": "tam hợp",
+        },
+      ],
+      "chi": "Tị",
+      "chiNamSinh": "Tý",
+      "chinhTinh": [
+        {
+          "bac": "H",
+          "ten": "Liêm Trinh",
+        },
+        {
+          "bac": "H",
+          "ten": "Tham Lang",
+        },
+      ],
+      "cung": "Phu Thê",
+      "duKien": [
+        "Mệnh và Thân không có thế rõ",
+      ],
+      "gioiTinh": "nam",
+      "hungTinh": [
+        {
+          "ten": "Đại Hao",
+          "the": "toạ thủ",
+        },
+      ],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 84,
+          "tuKhoa": [
+            "độc lập",
+          ],
+          "y": "Mệnh và Thân không đứng thế nào rõ rệt nên hai phần đời khá độc lập",
+        },
+        {
+          "do": [],
+          "sac": "nghich",
+          "trong": 84,
+          "tuKhoa": [
+            "không tự động",
+          ],
+          "y": "ít liên hệ nên cái gây dựng ở nửa đầu không tự động chuyển sang nửa sau",
+        },
+      ],
+      "muc": "menh-than",
+      "sourceCung": "Phu Thê · Tị",
+      "tieuDe": "Mệnh và Thân",
+    },
+    {
+      "anNgu": "Tuần",
+      "catTinh": [
+        {
+          "ten": "Thiên Thọ",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Hóa Quyền",
+          "the": "tam hợp",
+        },
+      ],
+      "chi": "Tị",
+      "chiNamSinh": "Tý",
+      "chinhTinh": [
+        {
+          "bac": "H",
+          "ten": "Liêm Trinh",
+        },
+        {
+          "bac": "H",
+          "ten": "Tham Lang",
+        },
+      ],
+      "cung": "Phu Thê",
+      "duKien": [
+        "Tuần án ngữ",
+        "cách Sát Phá Tham",
+        "cách Hoả Linh",
+      ],
+      "gioiTinh": "nam",
+      "hungTinh": [
+        {
+          "ten": "Đại Hao",
+          "the": "toạ thủ",
+        },
+      ],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [],
+          "sac": "thuan",
+          "trong": 88,
+          "tuKhoa": [
+            "Sát Phá Tham",
+            "mở đường",
+          ],
+          "y": "cách Sát Phá Tham chủ biến động, hợp mở đường và làm cái chưa ai làm",
+        },
+        {
+          "do": [],
+          "sac": "nghich",
+          "trong": 84,
+          "tuKhoa": [
+            "Tuần án ngữ",
+            "trì hoãn",
+          ],
+          "y": "có Tuần án ngữ nên việc ở cung này hay phải qua một lần trì hoãn mới thành",
+        },
+        {
+          "do": [],
+          "sac": "hoa-giai",
+          "trong": 80,
+          "tuKhoa": [
+            "làm nhẹ",
+            "vừa phải",
+          ],
+          "y": "án ngữ làm nhẹ cả mặt tốt lẫn mặt xấu, nên đọc mọi kết luận ở mức vừa phải",
+        },
+      ],
+      "muc": "the-cuc",
+      "sourceCung": "Phu Thê · Tị",
+      "tieuDe": "Thế cục",
+    },
+  ],
+}
+`;
+
+exports[`brief của lá số 1960-05-26 21h Nam Tài bạch 1`] = `
+{
+  "chinh": {
+    "anNgu": null,
+    "catTinh": [],
+    "chi": "Mão",
+    "chiNamSinh": "Tý",
+    "chinhTinh": [
+      {
+        "bac": "B",
+        "ten": "Thiên Phủ",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Vũ Khúc",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "H",
+        "ten": "Thất Sát",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Thiên Tướng",
+        "the": "tam hợp",
+      },
+    ],
+    "cung": "Tài Bạch",
+    "gioiTinh": "nam",
+    "hungTinh": [],
+    "laVoChinhDieu": false,
+    "luan": [
+      {
+        "do": [
+          "Thiên Phủ",
+        ],
+        "sac": "thuan",
+        "trong": 77,
+        "tuKhoa": [
+          "ổn định",
+          "tích luỹ dần",
+        ],
+        "y": "ổn định, biết giữ của và tích luỹ dần theo năm tháng",
+      },
+      {
+        "do": [],
+        "sac": "thuan",
+        "trong": 88,
+        "tuKhoa": [
+          "Tử Phủ Vũ Tướng",
+          "việc quản",
+        ],
+        "y": "cách Tử Phủ Vũ Tướng chủ quyền quý và ổn, hợp việc quản và việc giữ",
+      },
+      {
+        "do": [
+          "Thiên Phủ",
+        ],
+        "sac": "nghich",
+        "trong": 70,
+        "tuKhoa": [
+          "ngại mạo hiểm",
+          "chậm bắt",
+        ],
+        "y": "ngại mạo hiểm, chậm bắt lấy cơ hội sinh lời mới xuất hiện",
+      },
+      {
+        "do": [],
+        "sac": "nghich",
+        "trong": 82,
+        "tuKhoa": [
+          "Kình Đà",
+          "nhiều gai",
+        ],
+        "y": "có Kình Đà nên đường đi nhiều gai, việc gì cũng phải chen mới qua",
+      },
+      {
+        "do": [],
+        "sac": "hoa-giai",
+        "trong": 68,
+        "tuKhoa": [
+          "dạn",
+          "chùn",
+        ],
+        "y": "quen chen thì cũng dạn, khó khăn về sau không còn làm chùn",
+      },
+    ],
+  },
+  "muc": [
+    {
+      "anNgu": null,
+      "catTinh": [
+        {
+          "ten": "Hồng Loan",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Hóa Quyền",
+          "the": "xung chiếu",
+        },
+        {
+          "ten": "Hóa Lộc",
+          "the": "nhị hợp",
+        },
+      ],
+      "chi": "Mão",
+      "chiNamSinh": "Tý",
+      "chinhTinh": [
+        {
+          "bac": "B",
+          "ten": "Thiên Phủ",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Vũ Khúc",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "H",
+          "ten": "Thất Sát",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Tướng",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Tài Bạch",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Hóa Quyền",
+          ],
+          "sac": "thuan",
+          "trong": 68,
+          "tuKhoa": [
+            "thực quyền",
+            "tự mình quyết",
+          ],
+          "y": "có thực quyền với đồng tiền mình làm ra, tự mình quyết được cách dùng",
+        },
+        {
+          "do": [
+            "Hồng Loan",
+          ],
+          "sac": "thuan",
+          "trong": 62,
+          "tuKhoa": [
+            "đến đúng lúc",
+            "duyên làm ăn",
+          ],
+          "y": "dễ gặp cơ hội tiền bạc đến đúng lúc, duyên làm ăn thuận",
+        },
+        {
+          "do": [
+            "Hóa Lộc",
+          ],
+          "sac": "thuan",
+          "trong": 58,
+          "tuKhoa": [
+            "tài lộc",
+            "thuận theo công sức",
+          ],
+          "y": "tài lộc đến tự nhiên, tiền vào thuận theo công sức bỏ ra",
+        },
+      ],
+      "muc": "diem-manh",
+      "sourceCung": "Tài Bạch · Mão",
+      "tieuDe": "Điểm mạnh trong tài chính",
+    },
+    {
+      "anNgu": null,
+      "catTinh": [],
+      "chi": "Mão",
+      "chiNamSinh": "Tý",
+      "chinhTinh": [
+        {
+          "bac": "B",
+          "ten": "Thiên Phủ",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Vũ Khúc",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "H",
+          "ten": "Thất Sát",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Tướng",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Tài Bạch",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [
+        {
+          "ten": "Kình Dương",
+          "the": "xung chiếu",
+        },
+        {
+          "ten": "Đà La",
+          "the": "tam hợp",
+        },
+        {
+          "ten": "Linh Tinh",
+          "the": "tam hợp",
+        },
+      ],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Đà La",
+          ],
+          "sac": "nghich",
+          "trong": 62,
+          "tuKhoa": [
+            "trắc trở",
+            "chậm",
+            "dây dưa",
+          ],
+          "y": "đường tiền vào trắc trở kéo dài, việc thu tiền hay chậm và dây dưa",
+        },
+        {
+          "do": [
+            "Kình Dương",
+          ],
+          "sac": "nghich",
+          "trong": 55,
+          "tuKhoa": [
+            "va chạm",
+            "lời qua tiếng lại",
+          ],
+          "y": "dễ va chạm, lời qua tiếng lại quanh chuyện tiền bạc",
+        },
+        {
+          "do": [
+            "Linh Tinh",
+          ],
+          "sac": "nghich",
+          "trong": 50,
+          "tuKhoa": [
+            "uất ức",
+            "khó nói",
+          ],
+          "y": "có lúc uất ức vì chuyện tiền mà khó nói thẳng ra",
+        },
+      ],
+      "muc": "diem-can-giu",
+      "sourceCung": "Tài Bạch · Mão",
+      "tieuDe": "Điểm cần giữ trong tài chính",
+    },
+  ],
+}
+`;
+
+exports[`brief của lá số 1960-05-26 21h Nam Tình duyên 1`] = `
+{
+  "chinh": {
+    "anNgu": "Tuần",
+    "catTinh": [
+      {
+        "ten": "Thiên Thọ",
+        "the": "toạ thủ",
+      },
+    ],
+    "chi": "Tị",
+    "chiNamSinh": "Tý",
+    "chinhTinh": [
+      {
+        "bac": "H",
+        "ten": "Liêm Trinh",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "H",
+        "ten": "Tham Lang",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Vũ Khúc",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "H",
+        "ten": "Thất Sát",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Tử Vi",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "V",
+        "ten": "Phá Quân",
+        "the": "tam hợp",
+      },
+    ],
+    "cung": "Phu Thê",
+    "gioiTinh": "nam",
+    "hungTinh": [],
+    "laVoChinhDieu": false,
+    "luan": [
+      {
+        "do": [
+          "Liêm Trinh",
+        ],
+        "sac": "thuan",
+        "trong": 51,
+        "tuKhoa": [
+          "khí tiết",
+          "yêu ghét rõ ràng",
+        ],
+        "y": "người bạn đời sống có khí tiết, yêu ghét rõ ràng",
+      },
+      {
+        "do": [
+          "Tham Lang",
+        ],
+        "sac": "thuan",
+        "trong": 51,
+        "tuKhoa": [
+          "sức hấp dẫn",
+          "thêm màu sắc",
+        ],
+        "y": "người bạn đời có sức hấp dẫn, biết làm cho đường duyên thêm màu sắc",
+      },
+      {
+        "do": [
+          "Liêm Trinh",
+        ],
+        "sac": "nghich",
+        "trong": 47,
+        "tuKhoa": [
+          "ghen tuông",
+          "giận dỗi",
+        ],
+        "y": "tình cảm giữa hai người nồng nhưng dễ sinh ghen tuông và giận dỗi",
+      },
+      {
+        "do": [
+          "Tham Lang",
+        ],
+        "sac": "nghich",
+        "trong": 47,
+        "tuKhoa": [
+          "ham trải nghiệm",
+          "rơi vào nếp quen",
+        ],
+        "y": "người ấy ham trải nghiệm, dễ chán khi tình cảm rơi vào nếp quen",
+      },
+      {
+        "do": [
+          "Thiên Thọ",
+        ],
+        "sac": "hoa-giai",
+        "trong": 31,
+        "tuKhoa": [
+          "độ bền",
+          "giữ được lâu",
+        ],
+        "y": "tình cảm có độ bền, đã gắn bó thì giữ được lâu",
+      },
+    ],
+  },
+  "giaDao": [
+    {
+      "anNgu": "Tuần",
+      "catTinh": [
+        {
+          "ten": "Thiên Đức",
+          "the": "nhị hợp",
+        },
+      ],
+      "chi": "Thìn",
+      "chiNamSinh": "Tý",
+      "chinhTinh": [
+        {
+          "bac": "H",
+          "ten": "Thái Âm",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "H",
+          "ten": "Thái Dương",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "M",
+          "ten": "Thiên Đồng",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "V",
+          "ten": "Thiên Lương",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Cơ",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Tử Tức",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Thái Âm",
+          ],
+          "sac": "thuan",
+          "trong": 59,
+          "tuKhoa": [
+            "quấn nhà",
+            "phút riêng",
+          ],
+          "y": "con quấn nhà, quý những phút riêng bên người thân",
+        },
+        {
+          "do": [
+            "Thái Dương",
+          ],
+          "sac": "thuan",
+          "trong": 46,
+          "tuKhoa": [
+            "thẳng tính",
+            "cho minh bạch",
+          ],
+          "y": "con thẳng tính, có gì cũng muốn nói ra cho minh bạch",
+        },
+        {
+          "do": [
+            "Thiên Đồng",
+          ],
+          "sac": "nghich",
+          "trong": 60,
+          "tuKhoa": [
+            "vướng lại",
+            "trắc trở",
+          ],
+          "y": "khi có con, sự gần gũi giữa hai bên có lúc bị vướng lại, muốn hiểu nhau thì cũng phải qua trắc trở",
+        },
+        {
+          "do": [
+            "Thái Âm",
+          ],
+          "sac": "nghich",
+          "trong": 54,
+          "tuKhoa": [
+            "hay giữ buồn",
+            "được lắng nghe",
+          ],
+          "y": "con nhạy cảm, hay giữ buồn trong lòng, cần được lắng nghe nhiều",
+        },
+        {
+          "do": [
+            "Thiên Đức",
+          ],
+          "sac": "hoa-giai",
+          "trong": 15,
+          "tuKhoa": [
+            "đức lành",
+            "hoá nhẹ",
+          ],
+          "y": "có đức lành che chở, chuyện lo cho con cũng dễ hoá nhẹ",
+        },
+      ],
+      "muc": "con-cai",
+      "sourceCung": "Tử Tức · Thìn",
+      "tieuDe": "Con cái",
+    },
+    {
+      "anNgu": null,
+      "catTinh": [
+        {
+          "ten": "Thiên Thọ",
+          "the": "nhị hợp",
+        },
+      ],
+      "chi": "Thân",
+      "chiNamSinh": "Tý",
+      "chinhTinh": [
+        {
+          "bac": "M",
+          "ten": "Thiên Đồng",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "V",
+          "ten": "Thiên Lương",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Cơ",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "H",
+          "ten": "Thái Âm",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Phụ Mẫu",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Thiên Lương",
+          ],
+          "sac": "thuan",
+          "trong": 94,
+          "tuKhoa": [
+            "phúc ấm",
+            "chỉ đường",
+          ],
+          "y": "phúc ấm gia đình dày, người đi trước thường chỉ đường cho mình đúng lúc",
+        },
+        {
+          "do": [
+            "Thiên Đồng",
+          ],
+          "sac": "thuan",
+          "trong": 56,
+          "tuKhoa": [
+            "êm đềm",
+            "hiền hoà",
+          ],
+          "y": "tuổi thơ có phần êm đềm, người lớn trong gia đình hiền hoà, dễ tính",
+        },
+        {
+          "do": [
+            "Thiên Đồng",
+          ],
+          "sac": "nghich",
+          "trong": 94,
+          "tuKhoa": [
+            "nuông chiều",
+            "trông vào gia đình",
+          ],
+          "y": "được nuông chiều nhiều nên chậm cứng cáp, quen trông vào gia đình",
+        },
+        {
+          "do": [
+            "Thiên Lương",
+          ],
+          "sac": "nghich",
+          "trong": 86,
+          "tuKhoa": [
+            "răn dạy",
+            "lo xa",
+          ],
+          "y": "người đi trước hay răn dạy, lo xa thay mình đến mức thấy chật chội",
+        },
+        {
+          "do": [
+            "Thiên Thọ",
+          ],
+          "sac": "hoa-giai",
+          "trong": 17,
+          "tuKhoa": [
+            "bền chặt",
+            "không sứt mẻ",
+          ],
+          "y": "tình thân với cha mẹ bền chặt, có lúc lấn cấn cũng không sứt mẻ",
+        },
+      ],
+      "muc": "cha-me",
+      "sourceCung": "Phụ Mẫu · Thân",
+      "tieuDe": "Cha mẹ",
+    },
+  ],
+  "muc": [
+    {
+      "anNgu": "Tuần",
+      "catTinh": [
+        {
+          "ten": "Nguyệt Đức",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Thiên Thọ",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Hóa Quyền",
+          "the": "tam hợp",
+        },
+      ],
+      "chi": "Tị",
+      "chiNamSinh": "Tý",
+      "chinhTinh": [
+        {
+          "bac": "H",
+          "ten": "Liêm Trinh",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "H",
+          "ten": "Tham Lang",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Vũ Khúc",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "H",
+          "ten": "Thất Sát",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Tử Vi",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "V",
+          "ten": "Phá Quân",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Phu Thê",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Hóa Quyền",
+          ],
+          "sac": "thuan",
+          "trong": 68,
+          "tuKhoa": [
+            "có chủ kiến",
+            "quyền quyết",
+          ],
+          "y": "người ấy có chủ kiến, nắm quyền quyết trong những việc chung của hai người",
+        },
+        {
+          "do": [
+            "Thiên Thọ",
+          ],
+          "sac": "hoa-giai",
+          "trong": 55,
+          "tuKhoa": [
+            "độ bền",
+            "giữ được lâu",
+          ],
+          "y": "tình cảm có độ bền, đã gắn bó thì giữ được lâu",
+        },
+        {
+          "do": [
+            "Nguyệt Đức",
+          ],
+          "sac": "hoa-giai",
+          "trong": 50,
+          "tuKhoa": [
+            "lục đục",
+            "đỡ lời",
+          ],
+          "y": "gặp lúc hai người lục đục thường có người đứng ra đỡ lời",
+        },
+      ],
+      "muc": "diem-manh",
+      "sourceCung": "Phu Thê · Tị",
+      "tieuDe": "Điểm mạnh trong tình duyên",
+    },
+    {
+      "anNgu": "Tuần",
+      "catTinh": [],
+      "chi": "Tị",
+      "chiNamSinh": "Tý",
+      "chinhTinh": [
+        {
+          "bac": "H",
+          "ten": "Liêm Trinh",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "H",
+          "ten": "Tham Lang",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Vũ Khúc",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "H",
+          "ten": "Thất Sát",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Tử Vi",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "V",
+          "ten": "Phá Quân",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Phu Thê",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [
+        {
+          "ten": "Kiếp Sát",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Thiên Diêu",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Đại Hao",
+          "the": "toạ thủ",
+        },
+      ],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Đại Hao",
+          ],
+          "sac": "nghich",
+          "trong": 65,
+          "tuKhoa": [
+            "hao tâm sức",
+            "chưa tương xứng",
+          ],
+          "y": "dễ hao tâm sức vì người ấy, cho đi nhiều mà nhận lại chưa tương xứng",
+        },
+        {
+          "do": [
+            "Kiếp Sát",
+          ],
+          "sac": "nghich",
+          "trong": 60,
+          "tuKhoa": [
+            "đổi bất chợt",
+            "dè dặt",
+          ],
+          "y": "cách hai người gần gũi nhau hay đổi bất chợt, lúc quấn quýt lúc lại dè dặt",
+        },
+        {
+          "do": [
+            "Thiên Diêu",
+          ],
+          "sac": "nghich",
+          "trong": 60,
+          "tuKhoa": [
+            "lãng mạn",
+            "giữ ranh giới",
+          ],
+          "y": "tính lãng mạn, sức quyến rũ mạnh nên dễ được người khác để ý, cần giữ ranh giới cho rõ",
+        },
+      ],
+      "muc": "diem-can-giu",
+      "sourceCung": "Phu Thê · Tị",
+      "tieuDe": "Điểm cần giữ trong tình duyên",
+    },
+  ],
+}
+`;
