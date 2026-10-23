@@ -9,6 +9,12 @@ export interface SaoTrongBai {
   readonly the: TheChieu;
 }
 
+export interface ChinhTinhTrongBai {
+  readonly ten: ChinhTinhName;
+  readonly bac: Rating | null;
+  readonly the: TheChieu;
+}
+
 /**
  * Phần lá số mà mọi chương đều cần và năm tầng kiểm đều đọc. Chương nào cần thêm dữ kiện riêng thì
  * mở rộng kiểu này, đừng nới nó ra cho vừa một chương.
@@ -19,7 +25,7 @@ export interface ChapterBrief {
   readonly chi: string;
   readonly gioiTinh: Gender;
   readonly chiNamSinh: string;
-  readonly chinhTinh: readonly { readonly ten: ChinhTinhName; readonly bac: Rating | null }[];
+  readonly chinhTinh: readonly ChinhTinhTrongBai[];
   readonly laVoChinhDieu: boolean;
   readonly hungTinh: readonly SaoTrongBai[];
   readonly catTinh: readonly SaoTrongBai[];

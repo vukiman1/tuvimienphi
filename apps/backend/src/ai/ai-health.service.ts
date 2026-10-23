@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { AiProvider, type AiCredentials } from './ai-provider';
-import { AiProviderClients } from './ai-provider-clients';
-import { AiSettingsService, type AiHealthOutcome } from './ai-settings.service';
-import { readableReason } from './ai-error-reason';
-import { AiUsagePurpose } from './ai-usage-purpose.enum';
-import { AiUsageService } from './ai-usage.service';
-import { AiUnavailableError } from './ai.errors';
-import type { AiRequest } from './ai.types';
-import { AiHealthStatus, AiProviderEntity } from './entities/ai-provider.entity';
+import { AiProvider } from './port/ai-provider.enum';
+import type { AiCredentials } from './port/ai-provider';
+import { AiProviderClients } from './providers/ai-provider-clients';
+import { AiSettingsService, type AiHealthOutcome } from './settings/ai-settings.service';
+import { readableReason } from './port/ai-error-reason';
+import { AiUsagePurpose } from './usage/ai-usage-purpose.enum';
+import { AiUsageService } from './usage/ai-usage.service';
+import { AiUnavailableError } from './port/ai.errors';
+import type { AiRequest } from './port/ai.types';
+import { AiHealthStatus, AiProviderEntity } from './settings/entities/ai-provider.entity';
 
 export const HEALTH_TIMEOUT_MS = 20_000;
 export const MAX_HEALTH_ERROR_LENGTH = 500;
@@ -33,6 +34,10 @@ export class AiHealthService {
   async check(provider: AiProvider): Promise<AiProviderEntity> {
     const credentials = await this.settings.credentialsOf(provider);
     return this.settings.recordHealth(provider, await this.probe(provider, credentials));
+  }
+
+  async listModels(provider: AiProvider, apiKey: string): Promise<string[]> {
+    return this.providers.of(provider).listModels(apiKey);
   }
 
   async probe(provider: AiProvider, credentials: AiCredentials): Promise<AiHealthOutcome> {

@@ -25,8 +25,8 @@ describe('buildThanCuBrief', () => {
     expect(brief?.cung).toBe('Phu Thê');
     expect(brief?.chi).toBe('Tị');
     expect(brief?.chinhTinh).toEqual([
-      { ten: 'Liêm Trinh', bac: 'H' },
-      { ten: 'Tham Lang', bac: 'H' },
+      { ten: 'Liêm Trinh', bac: 'H', the: TheChieu.ToaThu },
+      { ten: 'Tham Lang', bac: 'H', the: TheChieu.ToaThu },
     ]);
   });
 
@@ -81,6 +81,21 @@ describe('buildThanCuBrief', () => {
     expect(brief?.chinhTinh.map((sao) => sao.ten)).toEqual(
       than.chinhTinhMuon.map((sao) => sao.name),
     );
+  });
+
+  it('chính tinh mượn của Thân vô chính diệu mang thế xung chiếu', () => {
+    const chart = castNatal({ solarDate: new Date(1955, 11, 9), hour: 7, gender: Gender.Nu });
+    const brief = buildThanCuBrief(chart);
+
+    expect(brief?.laVoChinhDieu).toBe(true);
+    expect(brief?.chinhTinh.length).toBeGreaterThan(0);
+    expect(brief?.chinhTinh.every((sao) => sao.the === TheChieu.XungChieu)).toBe(true);
+  });
+
+  it('chính tinh toạ thủ của Thân mang thế toạ thủ', () => {
+    const brief = buildThanCuBrief(LIEM_THAM);
+
+    expect(brief?.chinhTinh.every((sao) => sao.the === TheChieu.ToaThu)).toBe(true);
   });
 
   it('cung trống vẫn có mệnh đề nói về chính cái trống đó', () => {

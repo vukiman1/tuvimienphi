@@ -2,16 +2,16 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AiHealthService } from './ai-health.service';
-import { AiProviderClients } from './ai-provider-clients';
-import { AiSettingsService } from './ai-settings.service';
-import { AiUsageService } from './ai-usage.service';
-import { AiClient } from './ai.client';
-import { AnthropicProvider } from './anthropic.provider';
-import { AiCallEntity } from './entities/ai-call.entity';
-import { AiProviderEntity } from './entities/ai-provider.entity';
-import { AiUsageDailyEntity } from './entities/ai-usage-daily.entity';
-import { GeminiProvider } from './gemini.provider';
-import { OpenAiProvider } from './openai.provider';
+import { AiProviderClients } from './providers/ai-provider-clients';
+import { AiSettingsService } from './settings/ai-settings.service';
+import { AiUsageService } from './usage/ai-usage.service';
+import { AiClient } from './port/ai.client';
+import { AnthropicProvider } from './providers/anthropic.provider';
+import { AiCallEntity } from './usage/entities/ai-call.entity';
+import { AiProviderEntity } from './settings/entities/ai-provider.entity';
+import { AiUsageDailyEntity } from './usage/entities/ai-usage-daily.entity';
+import { GeminiProvider } from './providers/gemini.provider';
+import { OpenAiProvider } from './providers/openai.provider';
 import { RoutingAiClient } from './routing-ai.client';
 
 @Module({
@@ -29,6 +29,6 @@ import { RoutingAiClient } from './routing-ai.client';
     AiHealthService,
     { provide: AiClient, useClass: RoutingAiClient },
   ],
-  exports: [AiClient, AiSettingsService, AiHealthService, AiProviderClients, AiUsageService],
+  exports: [AiClient, AiSettingsService, AiHealthService, AiUsageService],
 })
 export class AiModule {}

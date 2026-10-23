@@ -1,7 +1,4 @@
-import type { CungBrief, CungName } from '@org/shared-tu-vi';
-import type { AiMessage } from '../../../ai/ai.types';
-import type { ThanCuParagraphs } from './chapter-schema';
-import { serializeBriefForPrompt } from './serialize-brief';
+import type { CungName } from '@org/shared-tu-vi';
 
 export interface CungChuDe {
   readonly cung: CungName;
@@ -70,21 +67,4 @@ QUY TẮC HÌNH THỨC:
     viết tên cách cục bằng chữ thường, không bọc trong cặp **, không gán cho một sao cụ thể nào.
 5. Không nhắc tên sao nào ngoài brief.
 6. anNgu khác null: giọng tiết chế, không tuyệt đối hoá. Không gọi tên "Tuần" hay "Triệt" trong bài.`;
-}
-
-export function buildCungMessages(
-  brief: CungBrief,
-  daThu: readonly { readonly paragraphs: ThanCuParagraphs; readonly loi: readonly string[] }[],
-): AiMessage[] {
-  const messages: AiMessage[] = [{ role: 'user', text: serializeBriefForPrompt(brief) }];
-
-  for (const lan of daThu) {
-    messages.push({ role: 'model', text: JSON.stringify(lan.paragraphs) });
-    messages.push({
-      role: 'user',
-      text: `Bản trên vi phạm:\n${lan.loi.map((mot) => `- ${mot}`).join('\n')}\nViết lại cho đúng, giữ nguyên nội dung mệnh đề.`,
-    });
-  }
-
-  return messages;
 }

@@ -1,6 +1,6 @@
-import type { AiHealthOutcome, AiSource } from '../../../ai/ai-settings.service';
-import type { AiCall, AiCallPage } from '../../../ai/ai-usage.service';
-import type { AiProviderEntity } from '../../../ai/entities/ai-provider.entity';
+import type { AiHealthOutcome, AiSource } from '../../../ai/settings/ai-settings.service';
+import type { AiCall, AiCallPage } from '../../../ai/usage/ai-usage.service';
+import type { AiProviderEntity } from '../../../ai/settings/entities/ai-provider.entity';
 import type {
   AdminAiCall,
   AdminAiCallPage,

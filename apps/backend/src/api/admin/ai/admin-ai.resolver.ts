@@ -3,11 +3,10 @@ import { Roles } from '@org/backend-enum';
 import { BadRequestException, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Throttle } from '@nestjs/throttler';
-import { readableReason } from '../../../ai/ai-error-reason';
+import { readableReason } from '../../../ai/port/ai-error-reason';
 import { AiHealthService } from '../../../ai/ai-health.service';
-import { AiProviderClients } from '../../../ai/ai-provider-clients';
-import { AiSettingsService } from '../../../ai/ai-settings.service';
-import { AiUsageService } from '../../../ai/ai-usage.service';
+import { AiSettingsService } from '../../../ai/settings/ai-settings.service';
+import { AiUsageService } from '../../../ai/usage/ai-usage.service';
 import { RequireRoles } from '../../auth/decorators/require-roles.decorator';
 import { GqlAuthGuard } from '../../auth/guards/gql-auth.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
@@ -42,7 +41,6 @@ export class AdminAiResolver {
   constructor(
     private readonly settings: AiSettingsService,
     private readonly health: AiHealthService,
-    private readonly providers: AiProviderClients,
     private readonly usage: AiUsageService,
   ) {}
 
@@ -56,7 +54,7 @@ export class AdminAiResolver {
   async aiProviderModels(@Args() { provider, apiKey }: AiProviderModelsArgs): Promise<string[]> {
     const key = apiKey ?? (await this.settings.apiKeyOf(provider));
     try {
-      return await this.providers.of(provider).listModels(key);
+      return await this.health.listModels(provider, key);
     } catch (error) {
       throw new BadRequestException(
         `${provider} would not list its models: ${readableReason(error)}`,

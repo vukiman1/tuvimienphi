@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { AiProviderClients } from './ai-provider-clients';
-import { AiSettingsService } from './ai-settings.service';
-import { AiUsagePurpose } from './ai-usage-purpose.enum';
-import { AiUsageService } from './ai-usage.service';
-import { AiClient } from './ai.client';
-import { AiNotConfiguredError } from './ai.errors';
-import type { AiRequest, AiResult } from './ai.types';
+import { AiProviderClients } from './providers/ai-provider-clients';
+import { AiSettingsService } from './settings/ai-settings.service';
+import { AiUsagePurpose } from './usage/ai-usage-purpose.enum';
+import { AiUsageService } from './usage/ai-usage.service';
+import { AiClient } from './port/ai.client';
+import { AiNotConfiguredError } from './port/ai.errors';
+import type { AiRequest, AiResult } from './port/ai.types';
 
 @Injectable()
 export class RoutingAiClient extends AiClient {

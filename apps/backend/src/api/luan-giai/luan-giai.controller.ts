@@ -11,13 +11,11 @@ import { LuanGiaiService } from './luan-giai.service';
 export class LuanGiaiController {
   constructor(private readonly luanGiai: LuanGiaiService) {}
 
-  /** Mở trang thì hỏi một lượt: chương nào đã có bài, chương nào còn khoá. */
   @Get(':birthKey')
   status(@Param('birthKey') birthKey: string): Promise<LuanGiaiChapterStatusMap> {
     return this.luanGiai.status(birthKey);
   }
 
-  /** Client hỏi lại đường này khi đang chờ. Mở cho khách: bài đã sinh thì ai xem lá số đó cũng đọc được. */
   @Get(':birthKey/:order')
   read(
     @Param('birthKey') birthKey: string,
@@ -26,7 +24,6 @@ export class LuanGiaiController {
     return this.luanGiai.read(birthKey, order);
   }
 
-  /** Xin sinh chương. Chỉ đường này tiêu tiền nên chỉ đường này cần đăng nhập và bị trừ suất. */
   @Post(':order')
   @HttpCode(200)
   @UseGuards(AuthGuard(StrategyKey.JWT.USER))

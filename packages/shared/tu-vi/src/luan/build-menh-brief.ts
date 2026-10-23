@@ -7,7 +7,7 @@ import type { Rating } from '../sao-rating.js';
 import { CHINH_TINH_MENH } from './bang/menh/chinh-tinh-menh.js';
 import type { CellLuan } from './bang/cell-luan.js';
 import { PHU_TINH_LUAN } from './bang/phu-tinh.js';
-import type { ChapterBrief } from './chapter-brief.js';
+import type { ChapterBrief, ChinhTinhTrongBai } from './chapter-brief.js';
 import { Sac, type LuanDe } from './luan-de.js';
 import { TheChieu, theCungAt, type SaoTheoThe, type TheCung } from './the-cung.js';
 
@@ -22,20 +22,8 @@ const LIMIT: Record<Sac, number> = { [Sac.Thuan]: 2, [Sac.Nghich]: 2, [Sac.HoaGi
 /** Tuần hay Triệt án ngữ làm nhẹ cả mặt tốt lẫn mặt xấu, nên hạ đều chứ không hạ riêng chiều nào. */
 const AN_NGU_FACTOR = 0.75;
 
-/**
- * Chính tinh nhuộm tính cách từ cả bốn thế, không riêng sao toạ thủ: chương Mệnh đọc tam phương tứ
- * chính. Thế đi kèm để bài gọi đúng vị trí và để chấm trọng số theo mức tác động.
- */
-export interface ChinhTinhTrongBai {
-  readonly ten: ChinhTinhName;
-  readonly bac: Rating | null;
-  readonly the: TheChieu;
-}
-
 export interface MenhBrief extends ChapterBrief {
   readonly cung: 'Mệnh';
-  /** Chính tinh của cả tam phương tứ chính, nên mỗi sao phải nói rõ nó chiếu tới từ thế nào. */
-  readonly chinhTinh: readonly ChinhTinhTrongBai[];
 }
 
 interface DraftClaim {

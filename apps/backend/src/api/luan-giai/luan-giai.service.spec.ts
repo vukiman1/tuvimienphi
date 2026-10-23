@@ -1,5 +1,3 @@
-// Sau khi bảng phủ 100% thì không còn lá số thật nào cho ra null, mà nhánh unavailable vẫn phải
-// giữ làm lưới an toàn khi bảng thay đổi — nên mock chỗ dựng brief để chạm tới nó.
 jest.mock('@org/shared-tu-vi', () => ({
   ...jest.requireActual('@org/shared-tu-vi'),
   buildThanCuBrief: jest.fn(),
@@ -14,7 +12,7 @@ import {
 } from '@org/shared-contracts';
 import { buildThanCuBrief } from '@org/shared-tu-vi';
 import type { Repository } from 'typeorm';
-import { currentAiCallContext, type AiCallContext } from '../../ai/ai-call-context';
+import { currentAiCallContext, type AiCallContext } from '../../ai/port/ai-call-context';
 import { AllowanceSource } from '../credits/allowance-source.enum';
 import type { ChapterAllowanceService } from '../credits/chapter-allowance.service';
 import type { LuanGiaiChapterEntity } from './entities/luan-giai-chapter.entity';
@@ -29,15 +27,10 @@ import {
   ChapterGenerationFailedException,
   ChapterQuotaExceededException,
 } from './luan-giai.exceptions';
-import type { ChapterResult } from './chapter-generator';
-import type { CongDanhGenerator } from './cong-danh.generator';
-import type { MenhGenerator } from './menh.generator';
-import type { TaiBachGenerator } from './tai-bach.generator';
-import type { TinhDuyenGenerator } from './tinh-duyen.generator';
-import type { ThanCuGenerator } from './than-cu.generator';
+import type { ChapterGenerator, ChapterResult } from './generation/chapter-generator';
+import { CHAPTER_DEFINITIONS } from './generation/chapter-registry';
 import { LuanGiaiService } from './luan-giai.service';
 
-/** Thân cư Phu Thê, Liêm Trinh + Tham Lang — tổ hợp đã có trong bảng luận. */
 const CO_BANG: BirthInput = {
   day: 26,
   month: 5,
@@ -57,7 +50,6 @@ interface Overrides {
   readonly daCo?: readonly Pick<LuanGiaiChapterEntity, 'chapterOrder'>[];
   readonly conSuat?: boolean;
   readonly sinh?: jest.Mock;
-  readonly coBang?: boolean;
 }
 
 function dungService(overrides?: Overrides) {
@@ -73,43 +65,18 @@ function dungService(overrides?: Overrides) {
     refund: jest.fn().mockResolvedValue(undefined),
   };
   const generator = {
-    coTheSinh: jest.fn().mockReturnValue(overrides?.coBang ?? true),
     generate: overrides?.sinh ?? jest.fn().mockResolvedValue(KET),
-  };
-  const generatorMenh = {
-    coTheSinh: jest.fn().mockReturnValue(true),
-    generate: jest.fn().mockResolvedValue(KET),
-  };
-  const generatorCongDanh = {
-    coTheSinh: jest.fn().mockReturnValue(true),
-    generate: jest.fn().mockResolvedValue(KET),
-  };
-  const generatorTaiBach = {
-    coTheSinh: jest.fn().mockReturnValue(true),
-    generate: jest.fn().mockResolvedValue(KET),
-  };
-  const generatorTinhDuyen = {
-    coTheSinh: jest.fn().mockReturnValue(true),
-    generate: jest.fn().mockResolvedValue(KET),
   };
 
   return {
     service: new LuanGiaiService(
       repo as unknown as Repository<LuanGiaiChapterEntity>,
       allowance as unknown as ChapterAllowanceService,
-      generator as unknown as ThanCuGenerator,
-      generatorMenh as unknown as MenhGenerator,
-      generatorCongDanh as unknown as CongDanhGenerator,
-      generatorTaiBach as unknown as TaiBachGenerator,
-      generatorTinhDuyen as unknown as TinhDuyenGenerator,
+      generator as unknown as ChapterGenerator,
     ),
     repo,
     allowance,
     generator,
-    generatorMenh,
-    generatorCongDanh,
-    generatorTaiBach,
-    generatorTinhDuyen,
   };
 }
 
@@ -138,44 +105,60 @@ describe('LuanGiaiService.request', () => {
     expect(allowance.consume).not.toHaveBeenCalled();
   });
 
-  it('sinh chương 02 bằng generator của chính chương đó', async () => {
-    const { service, generator, generatorMenh } = dungService();
+  it('sinh chương 02 bằng định nghĩa của chính chương đó', async () => {
+    const { service, generator } = dungService();
 
     const ket = await service.request('u1', CO_BANG, CHAPTER_MENH);
 
     expect(ket).toEqual({ status: LuanGiaiChapterStatus.Ready, article: BAI });
-    expect(generatorMenh.generate).toHaveBeenCalledTimes(1);
-    expect(generator.generate).not.toHaveBeenCalled();
+    expect(generator.generate).toHaveBeenCalledTimes(1);
+    expect(generator.generate).toHaveBeenCalledWith(
+      CHAPTER_DEFINITIONS.get(CHAPTER_MENH),
+      expect.anything(),
+      expect.any(Number),
+    );
   });
 
-  it('sinh chương 03 bằng generator của chính chương đó', async () => {
-    const { service, generator, generatorCongDanh } = dungService();
+  it('sinh chương 03 bằng định nghĩa của chính chương đó', async () => {
+    const { service, generator } = dungService();
 
     const ket = await service.request('u1', CO_BANG, CHAPTER_CONG_DANH);
 
     expect(ket).toEqual({ status: LuanGiaiChapterStatus.Ready, article: BAI });
-    expect(generatorCongDanh.generate).toHaveBeenCalledTimes(1);
-    expect(generator.generate).not.toHaveBeenCalled();
+    expect(generator.generate).toHaveBeenCalledTimes(1);
+    expect(generator.generate).toHaveBeenCalledWith(
+      CHAPTER_DEFINITIONS.get(CHAPTER_CONG_DANH),
+      expect.anything(),
+      expect.any(Number),
+    );
   });
 
-  it('sinh chương 04 bằng generator của chính chương đó', async () => {
-    const { service, generator, generatorTaiBach } = dungService();
+  it('sinh chương 04 bằng định nghĩa của chính chương đó', async () => {
+    const { service, generator } = dungService();
 
     const ket = await service.request('u1', CO_BANG, CHAPTER_TAI_BACH);
 
     expect(ket).toEqual({ status: LuanGiaiChapterStatus.Ready, article: BAI });
-    expect(generatorTaiBach.generate).toHaveBeenCalledTimes(1);
-    expect(generator.generate).not.toHaveBeenCalled();
+    expect(generator.generate).toHaveBeenCalledTimes(1);
+    expect(generator.generate).toHaveBeenCalledWith(
+      CHAPTER_DEFINITIONS.get(CHAPTER_TAI_BACH),
+      expect.anything(),
+      expect.any(Number),
+    );
   });
 
-  it('sinh chương 05 bằng generator của chính chương đó', async () => {
-    const { service, generator, generatorTinhDuyen } = dungService();
+  it('sinh chương 05 bằng định nghĩa của chính chương đó', async () => {
+    const { service, generator } = dungService();
 
     const ket = await service.request('u1', CO_BANG, CHAPTER_TINH_DUYEN);
 
     expect(ket).toEqual({ status: LuanGiaiChapterStatus.Ready, article: BAI });
-    expect(generatorTinhDuyen.generate).toHaveBeenCalledTimes(1);
-    expect(generator.generate).not.toHaveBeenCalled();
+    expect(generator.generate).toHaveBeenCalledTimes(1);
+    expect(generator.generate).toHaveBeenCalledWith(
+      CHAPTER_DEFINITIONS.get(CHAPTER_TINH_DUYEN),
+      expect.anything(),
+      expect.any(Number),
+    );
   });
 
   it('báo unavailable cho chương chưa có bảng, không đụng tới database', async () => {
@@ -189,7 +172,8 @@ describe('LuanGiaiService.request', () => {
   });
 
   it('báo unavailable khi không dựng nổi brief, không trừ suất cho việc chắc chắn không ra bài', async () => {
-    const { service, generator, allowance } = dungService({ coBang: false });
+    dungBrief.mockReturnValue(null);
+    const { service, generator, allowance } = dungService();
 
     const ket = await service.request('u1', CO_BANG, CHAPTER_THAN_CU);
 

@@ -1,6 +1,6 @@
 import { ArgsType, Field, Float } from '@nestjs/graphql';
 import { IsEnum, IsNumber, IsOptional, Max, Min } from 'class-validator';
-import { AiProvider } from '../../../../ai/ai-provider';
+import { AiProvider } from '../../../../ai/port/ai-provider.enum';
 
 export const MIN_BUDGET_USD = 0.01;
 export const MAX_BUDGET_USD = 1_000_000;

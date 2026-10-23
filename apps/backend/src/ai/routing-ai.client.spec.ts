@@ -1,10 +1,10 @@
-import { AiProvider } from './ai-provider';
-import { AiProviderClients } from './ai-provider-clients';
-import { AiSettingsService, AiSource, type ActiveAi } from './ai-settings.service';
-import { AiUsagePurpose } from './ai-usage-purpose.enum';
-import { AiUsageService } from './ai-usage.service';
-import { AiNotConfiguredError } from './ai.errors';
-import type { AiRequest, AiResult } from './ai.types';
+import { AiProvider } from './port/ai-provider.enum';
+import { AiProviderClients } from './providers/ai-provider-clients';
+import { AiSettingsService, AiSource, type ActiveAi } from './settings/ai-settings.service';
+import { AiUsagePurpose } from './usage/ai-usage-purpose.enum';
+import { AiUsageService } from './usage/ai-usage.service';
+import { AiNotConfiguredError } from './port/ai.errors';
+import type { AiRequest, AiResult } from './port/ai.types';
 import { RoutingAiClient } from './routing-ai.client';
 
 const REQUEST: AiRequest = {
