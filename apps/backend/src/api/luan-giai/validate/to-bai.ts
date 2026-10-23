@@ -1,5 +1,5 @@
 import { Sac } from '@org/shared-tu-vi';
-import type { DoanChinh, MucParagraph } from '../prompt/chapter-schema';
+import type { DoanChinh, MucParagraph } from '../generation/chapter-schema';
 import type { BaiCanKiem } from './bai-can-kiem';
 
 /** Bài chính: đoạn đầu nhận mệnh đề thuận, đoạn sau nhận nghịch rồi hoá giải. */

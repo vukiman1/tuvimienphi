@@ -1,5 +1,5 @@
 import { Gender, Sac, TheChieu, type ChapterBrief } from '@org/shared-tu-vi';
-import type { DoanChinh } from './chapter-schema';
+import type { DoanChinh } from '../generation/chapter-schema';
 import { buildMessages } from './build-messages';
 import { serializeBriefForPrompt } from './serialize-brief';
 

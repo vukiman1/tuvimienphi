@@ -29,8 +29,8 @@ import {
   ChapterGenerationFailedException,
   ChapterQuotaExceededException,
 } from './luan-giai.exceptions';
-import type { ChapterGenerator, ChapterResult } from './chapter-generator';
-import { CHAPTER_DEFINITIONS } from './chapter-registry';
+import type { ChapterGenerator, ChapterResult } from './generation/chapter-generator';
+import { CHAPTER_DEFINITIONS } from './generation/chapter-registry';
 import { LuanGiaiService } from './luan-giai.service';
 
 /** Thân cư Phu Thê, Liêm Trinh + Tham Lang — tổ hợp đã có trong bảng luận. */

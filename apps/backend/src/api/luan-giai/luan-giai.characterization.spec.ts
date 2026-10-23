@@ -15,8 +15,8 @@ import {
 } from '@org/shared-tu-vi';
 import { AiClient } from '../../ai/port/ai.client';
 import type { AiMessage, AiRequest, AiResult, AiSchema } from '../../ai/port/ai.types';
-import { ChapterGenerator, type ChapterResult } from './chapter-generator';
-import { CHAPTER_DEFINITIONS } from './chapter-registry';
+import { ChapterGenerator, type ChapterResult } from './generation/chapter-generator';
+import { CHAPTER_DEFINITIONS } from './generation/chapter-registry';
 
 interface LaSoMau {
   readonly ten: string;

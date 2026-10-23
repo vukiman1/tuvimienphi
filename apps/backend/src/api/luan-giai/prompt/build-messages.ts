@@ -1,6 +1,6 @@
 import type { ChapterBrief } from '@org/shared-tu-vi';
 import type { AiMessage } from '../../../ai/port/ai.types';
-import type { LanThu } from '../sinh-voi-kiem';
+import type { LanThu } from '../generation/sinh-voi-kiem';
 import { serializeBriefForPrompt } from './serialize-brief';
 
 function yeuCauVietLai(loi: readonly string[]): string {

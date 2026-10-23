@@ -12,8 +12,8 @@ import { chartFromBirthInput } from '@org/shared-tu-vi';
 import { Repository } from 'typeorm';
 import { runWithAiCallContext } from '../../ai/port/ai-call-context';
 import { ChapterAllowanceService } from '../credits/chapter-allowance.service';
-import { ChapterGenerator } from './chapter-generator';
-import { CHAPTER_DEFINITIONS } from './chapter-registry';
+import { ChapterGenerator } from './generation/chapter-generator';
+import { CHAPTER_DEFINITIONS } from './generation/chapter-registry';
 import { LuanGiaiChapterEntity } from './entities/luan-giai-chapter.entity';
 import { CHAPTER_ORDERS, GENERATION_BUDGET_MS } from './luan-giai.constants';
 import {

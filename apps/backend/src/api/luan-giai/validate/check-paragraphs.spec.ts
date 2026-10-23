@@ -1,5 +1,5 @@
 import { Sac, TheChieu, type ThanCuBrief } from '@org/shared-tu-vi';
-import type { DoanChinh } from '../prompt/chapter-schema';
+import type { DoanChinh } from '../generation/chapter-schema';
 import { checkParagraphs } from './check-paragraphs';
 import { baiChinh, baiMuc } from './to-bai';
 
