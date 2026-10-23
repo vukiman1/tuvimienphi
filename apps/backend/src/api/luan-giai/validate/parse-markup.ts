@@ -11,7 +11,6 @@ export function sentences(text: string): string[] {
   return text.split(/(?<=[.!?])\s+/).filter((cau) => cau.trim().length > 0);
 }
 
-/** Mỗi cặp `**...**` là một nhóm; dấu phẩy bên trong tách thành nhiều tên sao. */
 export function boldGroups(text: string): string[][] {
   return [...text.matchAll(BOLD)].map((khop) => khop[1].split(',').map((ten) => ten.trim()));
 }

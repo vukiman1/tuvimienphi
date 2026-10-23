@@ -1,6 +1,5 @@
 import type { AiSchema } from '../../../ai/port/ai.types';
 
-/** Hai đoạn duy nhất mô hình được viết. Phần còn lại của bài lấy từ bảng khung. */
 export interface DoanChinh {
   readonly doan1: string;
   readonly doan2: string;
@@ -15,7 +14,6 @@ export const DOAN_CHINH_SCHEMA: AiSchema = {
   required: ['doan1', 'doan2'],
 };
 
-/** Một mục con chỉ có một đoạn hai câu. */
 export interface MucParagraph {
   readonly doan: string;
 }

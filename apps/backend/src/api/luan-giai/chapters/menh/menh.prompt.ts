@@ -1,9 +1,3 @@
-/**
- * Cùng bộ luật với chương Thân cư, khác ở ba điều E, F, G: chương này luận cung Mệnh và đọc cả tam
- * phương tứ chính, nên cách gọi vị trí và phạm vi nội dung khác hẳn.
- *
- * Luật nào chỉ nằm trong prompt mà không có tầng kiểm gác thì mô hình sẽ bỏ qua.
- */
 export const MENH_SYSTEM_PROMPT = `Bạn viết luận giải tử vi tiếng Việt cho một trang tra lá số.
 
 GIỌNG — quan trọng ngang nội dung:

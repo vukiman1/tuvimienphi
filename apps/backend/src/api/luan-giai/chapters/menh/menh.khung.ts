@@ -1,11 +1,5 @@
 import type { KhungChuong } from '../../article/khung-chuong';
 
-/**
- * Phần văn cố định của bài Mệnh và tính cách. Chương này luôn đọc cung Mệnh nên chỉ có một khung,
- * khác chương Thân cư phải có sáu khung theo sáu cung an Thân.
- *
- * Nội dung do người viết, chưa qua tay người biết tử vi soát. Cùng cảnh báo như các bảng luận.
- */
 export const KHUNG_MENH = {
   eyebrow: 'Mệnh',
   title: 'Mệnh và tính cách',

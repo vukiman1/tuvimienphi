@@ -3,10 +3,6 @@ import type { DoanChinh } from '../generation/chapter-schema';
 import { checkParagraphs } from './check-paragraphs';
 import { baiChinh, baiMuc } from './to-bai';
 
-/**
- * Brief viết cố định chứ không suy từ một lá số thật: hợp đồng của bộ kiểm là `(brief, bài)`, nên
- * nó không được vỡ mỗi lần bảng luận đổi nội dung.
- */
 const BRIEF: ThanCuBrief = {
   cung: 'Phu Thê',
   chi: 'Tị',
@@ -72,7 +68,6 @@ const DAT: DoanChinh = {
     'Tuy nhiên, **Đại Hao, Kiếp Sát** cùng góp mặt nên đường tình cảm có lúc hao tán, tiêu tốn tâm sức, cũng có giai đoạn chịu áp lực hoặc mất mát. Điều đáng chú ý là **Thiên Thọ** hội chiếu tới, chủ sự bền và giữ được lâu khi đã ổn định, vì vậy ==sóng gió thường nằm ở chặng đầu== hơn là ở cả chặng đường.',
 };
 
-/** Bài chính luôn là hai đoạn; gói lại cho gọn vì mọi ca dưới đây đều đi qua đúng hình dạng đó. */
 const kiem = (paragraphs: DoanChinh): string[] => checkParagraphs(BRIEF, baiChinh(paragraphs));
 
 describe('checkParagraphs', () => {
@@ -159,8 +154,6 @@ describe('checkParagraphs', () => {
   });
 
   it('chạy được y nguyên trên mục con một đoạn', () => {
-    // Mục con dùng lại phần lá số của brief chính, chỉ khác `luan` — nên bộ kiểm không phải biết
-    // nó là mục hay là bài.
     const briefMuc: ThanCuBrief = {
       ...BRIEF,
       luan: [

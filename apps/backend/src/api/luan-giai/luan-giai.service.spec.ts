@@ -1,5 +1,3 @@
-// Sau khi bảng phủ 100% thì không còn lá số thật nào cho ra null, mà nhánh unavailable vẫn phải
-// giữ làm lưới an toàn khi bảng thay đổi — nên mock chỗ dựng brief để chạm tới nó.
 jest.mock('@org/shared-tu-vi', () => ({
   ...jest.requireActual('@org/shared-tu-vi'),
   buildThanCuBrief: jest.fn(),
@@ -33,7 +31,6 @@ import type { ChapterGenerator, ChapterResult } from './generation/chapter-gener
 import { CHAPTER_DEFINITIONS } from './generation/chapter-registry';
 import { LuanGiaiService } from './luan-giai.service';
 
-/** Thân cư Phu Thê, Liêm Trinh + Tham Lang — tổ hợp đã có trong bảng luận. */
 const CO_BANG: BirthInput = {
   day: 26,
   month: 5,

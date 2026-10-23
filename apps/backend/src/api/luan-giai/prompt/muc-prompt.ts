@@ -1,15 +1,9 @@
-/**
- * Mục con nối sau hai đoạn chính. Giữ nguyên giọng và mọi quy tắc hình thức của bài, chỉ khác là
- * một đoạn thay vì hai, và phải dẫn được các dữ kiện cụ thể trong `duKien` — mốc tuổi, tên trạng
- * thái, tên hoá — vì đó mới là thứ người đọc đối chiếu được với lá số của mình.
- */
 function luatViTri(cung: string): string {
   return cung === 'Mệnh'
     ? '6. Sao đang xét ở cung Mệnh — gọi "thủ mệnh", "chiếu mệnh" là đúng khi sao đứng đúng thế đó.'
     : `6. Sao đang xét ở cung ${cung}, KHÔNG phải cung Mệnh — đừng viết "thủ mệnh", "chiếu mệnh".`;
 }
 
-/** Prompt đổi theo cung mục đang đọc: cách gọi vị trí chỉ đúng với cung đó. */
 export function mucSystemPrompt(cung: string): string {
   return `Bạn viết một mục ngắn trong bài luận giải tử vi tiếng Việt.
 

@@ -4,19 +4,9 @@ import type { KhungChuong } from '../../article/khung-chuong';
 
 type ThanCuCung = (typeof THAN_CU_CUNGS)[number];
 
-/**
- * Phần văn cố định của bài Thân cư. Bốn mẩu này chỉ phụ thuộc cung nào an Thân, không phụ thuộc sao
- * và không phụ thuộc người xem — viết một lần, dùng cho mọi lá số rơi vào cung đó.
- *
- * Thân chỉ an vào sáu cung nên bảng đủ ở sáu mục, không có ô trống.
- *
- * Nội dung do người viết, chưa qua tay người biết tử vi soát. Cùng cảnh báo như các bảng luận.
- */
 interface KhungThanCu {
   readonly quote: string;
-  /** Đoạn định khung mở bài: nói Thân cư cung này nghĩa là gì, không nhắc tên sao nào. */
   readonly moBai: string;
-  /** Đoạn chống hiểu sai, đóng khung nhấn mạnh ở cuối bài. */
   readonly summary: string;
   readonly closing: string;
 }

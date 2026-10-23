@@ -2,7 +2,6 @@ import { Sac } from '@org/shared-tu-vi';
 import type { DoanChinh, MucParagraph } from '../generation/chapter-schema';
 import type { BaiCanKiem } from './bai-can-kiem';
 
-/** Bài chính: đoạn đầu nhận mệnh đề thuận, đoạn sau nhận nghịch rồi hoá giải. */
 export function baiChinh(paragraphs: DoanChinh): BaiCanKiem {
   return {
     doan: [paragraphs.doan1, paragraphs.doan2],
@@ -10,7 +9,6 @@ export function baiChinh(paragraphs: DoanChinh): BaiCanKiem {
   };
 }
 
-/** Mục con chỉ có một đoạn nên mọi sắc thái dồn vào đó. */
 export function baiMuc(paragraph: MucParagraph): BaiCanKiem {
   return {
     doan: [paragraph.doan],

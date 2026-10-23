@@ -1,7 +1,3 @@
-/**
- * Mọi luật ở đây đều có một tầng bộ kiểm gác. Luật nào chỉ nằm trong prompt mà không ai kiểm thì
- * mô hình bỏ qua — đo được hai lần lúc dựng, với "bước vào cung" và "sự hiện diện của".
- */
 export const THAN_CU_SYSTEM_PROMPT = `Bạn viết luận giải tử vi tiếng Việt cho một trang tra lá số.
 
 GIỌNG — quan trọng ngang nội dung:
