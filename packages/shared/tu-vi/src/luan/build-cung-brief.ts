@@ -8,7 +8,7 @@ import type { Rating } from '../sao-rating.js';
 import { cachCucTai } from './bang/cach-cuc.js';
 import type { CellLuan } from './bang/cell-luan.js';
 import type { CungLuanBang } from './bang/cung-luan-bang.js';
-import type { ChapterBrief } from './chapter-brief.js';
+import type { ChapterBrief, ChinhTinhTrongBai } from './chapter-brief.js';
 import { Sac, type LuanDe } from './luan-de.js';
 import { TheChieu, theCungAt, type SaoTheoThe, type TheCung } from './the-cung.js';
 
@@ -26,15 +26,8 @@ export function cungIndexOf(chart: NatalChart, cung: CungName): number {
   return mod12(chart.menhIndex + CUNG_NAMES.indexOf(cung));
 }
 
-interface ChinhTinhTrongBai {
-  readonly ten: ChinhTinhName;
-  readonly bac: Rating | null;
-  readonly the: TheChieu;
-}
-
 export interface CungBrief extends ChapterBrief {
   readonly cung: CungName;
-  readonly chinhTinh: readonly ChinhTinhTrongBai[];
 }
 
 interface DraftClaim {

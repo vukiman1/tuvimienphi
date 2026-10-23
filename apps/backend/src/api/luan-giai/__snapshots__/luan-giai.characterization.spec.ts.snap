@@ -57,7 +57,8 @@ exports[`chương 01 lá số 1955-06-26 21h Nữ ghi lại cả lượt sinh l�
   "chinhTinh": [
     {
       "ten": "Thiên Cơ",
-      "bac": "V"
+      "bac": "V",
+      "the": "toạ thủ"
     }
   ],
   "laVoChinhDieu": false,
@@ -202,7 +203,8 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Thiên Cơ",
-      "bac": "V"
+      "bac": "V",
+      "the": "toạ thủ"
     }
   ],
   "laVoChinhDieu": false,
@@ -357,7 +359,8 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Thiên Cơ",
-      "bac": "V"
+      "bac": "V",
+      "the": "toạ thủ"
     }
   ],
   "laVoChinhDieu": false,
@@ -453,7 +456,8 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Thiên Cơ",
-      "bac": "V"
+      "bac": "V",
+      "the": "toạ thủ"
     }
   ],
   "laVoChinhDieu": false,
@@ -559,7 +563,8 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Thiên Cơ",
-      "bac": "V"
+      "bac": "V",
+      "the": "toạ thủ"
     }
   ],
   "laVoChinhDieu": false,
@@ -668,7 +673,8 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Thiên Cơ",
-      "bac": "V"
+      "bac": "V",
+      "the": "toạ thủ"
     }
   ],
   "laVoChinhDieu": false,
@@ -787,7 +793,8 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Thiên Cơ",
-      "bac": "V"
+      "bac": "V",
+      "the": "toạ thủ"
     }
   ],
   "laVoChinhDieu": false,
@@ -886,7 +893,8 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Thiên Cơ",
-      "bac": "V"
+      "bac": "V",
+      "the": "toạ thủ"
     }
   ],
   "laVoChinhDieu": false,
@@ -1044,11 +1052,13 @@ exports[`chương 01 lá số 1955-12-09 7h Nữ ghi lại cả lượt sinh l�
   "chinhTinh": [
     {
       "ten": "Tử Vi",
-      "bac": "B"
+      "bac": "B",
+      "the": "xung chiếu"
     },
     {
       "ten": "Tham Lang",
-      "bac": "H"
+      "bac": "H",
+      "the": "xung chiếu"
     }
   ],
   "laVoChinhDieu": true,
@@ -1195,11 +1205,13 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Tử Vi",
-      "bac": "B"
+      "bac": "B",
+      "the": "xung chiếu"
     },
     {
       "ten": "Tham Lang",
-      "bac": "H"
+      "bac": "H",
+      "the": "xung chiếu"
     }
   ],
   "laVoChinhDieu": true,
@@ -1356,11 +1368,13 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Tử Vi",
-      "bac": "B"
+      "bac": "B",
+      "the": "xung chiếu"
     },
     {
       "ten": "Tham Lang",
-      "bac": "H"
+      "bac": "H",
+      "the": "xung chiếu"
     }
   ],
   "laVoChinhDieu": true,
@@ -1453,11 +1467,13 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Tử Vi",
-      "bac": "B"
+      "bac": "B",
+      "the": "xung chiếu"
     },
     {
       "ten": "Tham Lang",
-      "bac": "H"
+      "bac": "H",
+      "the": "xung chiếu"
     }
   ],
   "laVoChinhDieu": true,
@@ -1560,11 +1576,13 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Tử Vi",
-      "bac": "B"
+      "bac": "B",
+      "the": "xung chiếu"
     },
     {
       "ten": "Tham Lang",
-      "bac": "H"
+      "bac": "H",
+      "the": "xung chiếu"
     }
   ],
   "laVoChinhDieu": true,
@@ -1667,11 +1685,13 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Tử Vi",
-      "bac": "B"
+      "bac": "B",
+      "the": "xung chiếu"
     },
     {
       "ten": "Tham Lang",
-      "bac": "H"
+      "bac": "H",
+      "the": "xung chiếu"
     }
   ],
   "laVoChinhDieu": true,
@@ -1784,11 +1804,13 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Tử Vi",
-      "bac": "B"
+      "bac": "B",
+      "the": "xung chiếu"
     },
     {
       "ten": "Tham Lang",
-      "bac": "H"
+      "bac": "H",
+      "the": "xung chiếu"
     }
   ],
   "laVoChinhDieu": true,
@@ -1882,11 +1904,13 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Tử Vi",
-      "bac": "B"
+      "bac": "B",
+      "the": "xung chiếu"
     },
     {
       "ten": "Tham Lang",
-      "bac": "H"
+      "bac": "H",
+      "the": "xung chiếu"
     }
   ],
   "laVoChinhDieu": true,
@@ -2039,11 +2063,13 @@ exports[`chương 01 lá số 1956-03-03 1h Nam ghi lại cả lượt sinh lạ
   "chinhTinh": [
     {
       "ten": "Thiên Cơ",
-      "bac": "M"
+      "bac": "M",
+      "the": "xung chiếu"
     },
     {
       "ten": "Cự Môn",
-      "bac": "M"
+      "bac": "M",
+      "the": "xung chiếu"
     }
   ],
   "laVoChinhDieu": true,
@@ -2190,11 +2216,13 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Thiên Cơ",
-      "bac": "M"
+      "bac": "M",
+      "the": "xung chiếu"
     },
     {
       "ten": "Cự Môn",
-      "bac": "M"
+      "bac": "M",
+      "the": "xung chiếu"
     }
   ],
   "laVoChinhDieu": true,
@@ -2351,11 +2379,13 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Thiên Cơ",
-      "bac": "M"
+      "bac": "M",
+      "the": "xung chiếu"
     },
     {
       "ten": "Cự Môn",
-      "bac": "M"
+      "bac": "M",
+      "the": "xung chiếu"
     }
   ],
   "laVoChinhDieu": true,
@@ -2446,11 +2476,13 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Thiên Cơ",
-      "bac": "M"
+      "bac": "M",
+      "the": "xung chiếu"
     },
     {
       "ten": "Cự Môn",
-      "bac": "M"
+      "bac": "M",
+      "the": "xung chiếu"
     }
   ],
   "laVoChinhDieu": true,
@@ -2551,11 +2583,13 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Thiên Cơ",
-      "bac": "M"
+      "bac": "M",
+      "the": "xung chiếu"
     },
     {
       "ten": "Cự Môn",
-      "bac": "M"
+      "bac": "M",
+      "the": "xung chiếu"
     }
   ],
   "laVoChinhDieu": true,
@@ -2659,11 +2693,13 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Thiên Cơ",
-      "bac": "M"
+      "bac": "M",
+      "the": "xung chiếu"
     },
     {
       "ten": "Cự Môn",
-      "bac": "M"
+      "bac": "M",
+      "the": "xung chiếu"
     }
   ],
   "laVoChinhDieu": true,
@@ -2777,11 +2813,13 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Thiên Cơ",
-      "bac": "M"
+      "bac": "M",
+      "the": "xung chiếu"
     },
     {
       "ten": "Cự Môn",
-      "bac": "M"
+      "bac": "M",
+      "the": "xung chiếu"
     }
   ],
   "laVoChinhDieu": true,
@@ -2885,11 +2923,13 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Thiên Cơ",
-      "bac": "M"
+      "bac": "M",
+      "the": "xung chiếu"
     },
     {
       "ten": "Cự Môn",
-      "bac": "M"
+      "bac": "M",
+      "the": "xung chiếu"
     }
   ],
   "laVoChinhDieu": true,
@@ -3052,11 +3092,13 @@ exports[`chương 01 lá số 1960-05-26 21h Nam ghi lại cả lượt sinh l�
   "chinhTinh": [
     {
       "ten": "Liêm Trinh",
-      "bac": "H"
+      "bac": "H",
+      "the": "toạ thủ"
     },
     {
       "ten": "Tham Lang",
-      "bac": "H"
+      "bac": "H",
+      "the": "toạ thủ"
     }
   ],
   "laVoChinhDieu": false,
@@ -3221,11 +3263,13 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Liêm Trinh",
-      "bac": "H"
+      "bac": "H",
+      "the": "toạ thủ"
     },
     {
       "ten": "Tham Lang",
-      "bac": "H"
+      "bac": "H",
+      "the": "toạ thủ"
     }
   ],
   "laVoChinhDieu": false,
@@ -3400,11 +3444,13 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Liêm Trinh",
-      "bac": "H"
+      "bac": "H",
+      "the": "toạ thủ"
     },
     {
       "ten": "Tham Lang",
-      "bac": "H"
+      "bac": "H",
+      "the": "toạ thủ"
     }
   ],
   "laVoChinhDieu": false,
@@ -3504,11 +3550,13 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Liêm Trinh",
-      "bac": "H"
+      "bac": "H",
+      "the": "toạ thủ"
     },
     {
       "ten": "Tham Lang",
-      "bac": "H"
+      "bac": "H",
+      "the": "toạ thủ"
     }
   ],
   "laVoChinhDieu": false,
@@ -3618,11 +3666,13 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Liêm Trinh",
-      "bac": "H"
+      "bac": "H",
+      "the": "toạ thủ"
     },
     {
       "ten": "Tham Lang",
-      "bac": "H"
+      "bac": "H",
+      "the": "toạ thủ"
     }
   ],
   "laVoChinhDieu": false,
@@ -3735,11 +3785,13 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Liêm Trinh",
-      "bac": "H"
+      "bac": "H",
+      "the": "toạ thủ"
     },
     {
       "ten": "Tham Lang",
-      "bac": "H"
+      "bac": "H",
+      "the": "toạ thủ"
     }
   ],
   "laVoChinhDieu": false,
@@ -3862,11 +3914,13 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Liêm Trinh",
-      "bac": "H"
+      "bac": "H",
+      "the": "toạ thủ"
     },
     {
       "ten": "Tham Lang",
-      "bac": "H"
+      "bac": "H",
+      "the": "toạ thủ"
     }
   ],
   "laVoChinhDieu": false,
@@ -3969,11 +4023,13 @@ QUY TẮC HÌNH THỨC:
   "chinhTinh": [
     {
       "ten": "Liêm Trinh",
-      "bac": "H"
+      "bac": "H",
+      "the": "toạ thủ"
     },
     {
       "ten": "Tham Lang",
-      "bac": "H"
+      "bac": "H",
+      "the": "toạ thủ"
     }
   ],
   "laVoChinhDieu": false,

@@ -2,31 +2,15 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AiModule } from '../../ai/ai.module';
 import { CreditsModule } from '../credits/credits.module';
-import { CongDanhGenerator } from './cong-danh.generator';
+import { ChapterGenerator } from './generation/chapter-generator';
 import { LuanGiaiChapterEntity } from './entities/luan-giai-chapter.entity';
 import { LuanGiaiController } from './luan-giai.controller';
 import { LuanGiaiService } from './luan-giai.service';
-import { MenhGenerator } from './menh.generator';
-import { TaiBachGenerator } from './tai-bach.generator';
-import { TinhDuyenGenerator } from './tinh-duyen.generator';
-import { ThanCuGenerator } from './than-cu.generator';
 
-/**
- * Sinh luận giải chạy ngay trong request, không qua hàng đợi. Đổi sang hàng đợi sau này chỉ là thêm
- * một processor và đổi thân `LuanGiaiService.request` — generator của từng chương không biết gì về
- * hai bên.
- */
 @Module({
   imports: [TypeOrmModule.forFeature([LuanGiaiChapterEntity]), AiModule, CreditsModule],
   controllers: [LuanGiaiController],
-  providers: [
-    LuanGiaiService,
-    ThanCuGenerator,
-    MenhGenerator,
-    CongDanhGenerator,
-    TaiBachGenerator,
-    TinhDuyenGenerator,
-  ],
+  providers: [LuanGiaiService, ChapterGenerator],
   exports: [LuanGiaiService],
 })
 export class LuanGiaiModule {}

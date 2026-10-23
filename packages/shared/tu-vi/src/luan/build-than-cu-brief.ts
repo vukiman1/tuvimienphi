@@ -226,6 +226,7 @@ export function buildThanCuBrief(chart: NatalChart): ThanCuBrief | null {
     chinhTinh: (the.laVoChinhDieu ? the.chinhTinhMuon : the.chinhTinh).map((sao) => ({
       ten: sao.name,
       bac: sao.rating,
+      the: the.laVoChinhDieu ? TheChieu.XungChieu : TheChieu.ToaThu,
     })),
     laVoChinhDieu: the.laVoChinhDieu,
     hungTinh: phuTinhUsed.filter((sao) => isHungTinh(sao.ten)),
