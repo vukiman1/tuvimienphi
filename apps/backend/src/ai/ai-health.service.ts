@@ -3,7 +3,7 @@ import { AiProvider } from './port/ai-provider.enum';
 import type { AiCredentials } from './port/ai-provider';
 import { AiProviderClients } from './providers/ai-provider-clients';
 import { AiSettingsService, type AiHealthOutcome } from './settings/ai-settings.service';
-import { readableReason } from './providers/ai-error-reason';
+import { readableReason } from './port/ai-error-reason';
 import { AiUsagePurpose } from './usage/ai-usage-purpose.enum';
 import { AiUsageService } from './usage/ai-usage.service';
 import { AiUnavailableError } from './port/ai.errors';
@@ -34,6 +34,10 @@ export class AiHealthService {
   async check(provider: AiProvider): Promise<AiProviderEntity> {
     const credentials = await this.settings.credentialsOf(provider);
     return this.settings.recordHealth(provider, await this.probe(provider, credentials));
+  }
+
+  async listModels(provider: AiProvider, apiKey: string): Promise<string[]> {
+    return this.providers.of(provider).listModels(apiKey);
   }
 
   async probe(provider: AiProvider, credentials: AiCredentials): Promise<AiHealthOutcome> {

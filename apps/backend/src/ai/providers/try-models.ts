@@ -1,4 +1,4 @@
-import { readableReason } from './ai-error-reason';
+import { readableReason } from '../port/ai-error-reason';
 import { AiUnavailableError, type ModelAttempt } from '../port/ai.errors';
 
 /**

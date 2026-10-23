@@ -29,6 +29,6 @@ import { RoutingAiClient } from './routing-ai.client';
     AiHealthService,
     { provide: AiClient, useClass: RoutingAiClient },
   ],
-  exports: [AiClient, AiSettingsService, AiHealthService, AiProviderClients, AiUsageService],
+  exports: [AiClient, AiSettingsService, AiHealthService, AiUsageService],
 })
 export class AiModule {}

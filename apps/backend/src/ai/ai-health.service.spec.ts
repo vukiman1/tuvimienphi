@@ -12,7 +12,10 @@ import { AiHealthStatus, AiProviderEntity } from './settings/entities/ai-provide
 
 const CREDENTIALS = { apiKey: 'sk-key', models: ['fast', 'slow'] };
 
-function setup(generate: AiProviderClient['generate']) {
+function setup(
+  generate: AiProviderClient['generate'],
+  listModels: AiProviderClient['listModels'] = jest.fn(),
+) {
   const recorded: AiHealthOutcome[] = [];
   const settings = {
     credentialsOf: jest.fn().mockResolvedValue(CREDENTIALS),
@@ -21,7 +24,7 @@ function setup(generate: AiProviderClient['generate']) {
       return new AiProviderEntity();
     }),
   };
-  const providers = { of: () => ({ generate, listModels: jest.fn() }) };
+  const providers = { of: () => ({ generate, listModels }) };
   const usage = {
     track: jest.fn(
       (_provider: AiProvider, _purpose: AiUsagePurpose, work: () => Promise<AiResult>) => work(),
@@ -115,6 +118,19 @@ describe('AiHealthService.check', () => {
 
     expect(generate).not.toHaveBeenCalled();
     expect(settings.recordHealth).not.toHaveBeenCalled();
+  });
+});
+
+describe('AiHealthService.listModels', () => {
+  it('lists the models the provider offers for the given key', async () => {
+    const listModels = jest.fn().mockResolvedValue(['fast', 'slow']);
+    const { service } = setup(jest.fn(), listModels);
+
+    await expect(service.listModels(AiProvider.OPENAI, 'sk-typed')).resolves.toEqual([
+      'fast',
+      'slow',
+    ]);
+    expect(listModels).toHaveBeenCalledWith('sk-typed');
   });
 });
 
