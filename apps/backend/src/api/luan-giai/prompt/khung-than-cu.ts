@@ -2,7 +2,7 @@ import { THAN_CU_CUNGS } from '@org/shared-tu-vi';
 import { UnknownThanCuCungError } from '../luan-giai.errors';
 import type { KhungChuong } from './khung-chuong';
 
-export type ThanCuCung = (typeof THAN_CU_CUNGS)[number];
+type ThanCuCung = (typeof THAN_CU_CUNGS)[number];
 
 /**
  * Phần văn cố định của bài Thân cư. Bốn mẩu này chỉ phụ thuộc cung nào an Thân, không phụ thuộc sao
@@ -12,7 +12,7 @@ export type ThanCuCung = (typeof THAN_CU_CUNGS)[number];
  *
  * Nội dung do người viết, chưa qua tay người biết tử vi soát. Cùng cảnh báo như các bảng luận.
  */
-export interface KhungThanCu {
+interface KhungThanCu {
   readonly quote: string;
   /** Đoạn định khung mở bài: nói Thân cư cung này nghĩa là gì, không nhắc tên sao nào. */
   readonly moBai: string;
@@ -24,7 +24,7 @@ export interface KhungThanCu {
 const THAN_CU_EYEBROW = 'Thân cư';
 const THAN_CU_CLOSING_LABEL = 'Một lời dành cho bạn';
 
-export const KHUNG_THAN_CU: Readonly<Record<ThanCuCung, KhungThanCu>> = {
+const KHUNG_THAN_CU: Readonly<Record<ThanCuCung, KhungThanCu>> = {
   Mệnh: {
     quote: 'Người sống đúng với mình thường đi chậm hơn lúc đầu, nhưng ít khi phải quay lại.',
     moBai:

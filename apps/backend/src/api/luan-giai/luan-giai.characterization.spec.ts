@@ -15,12 +15,8 @@ import {
 } from '@org/shared-tu-vi';
 import { AiClient } from '../../ai/port/ai.client';
 import type { AiMessage, AiRequest, AiResult, AiSchema } from '../../ai/port/ai.types';
-import { CongDanhGenerator } from './cong-danh.generator';
-import type { ChapterResult } from './chapter-generator';
-import { MenhGenerator } from './menh.generator';
-import { TaiBachGenerator } from './tai-bach.generator';
-import { ThanCuGenerator } from './than-cu.generator';
-import { TinhDuyenGenerator } from './tinh-duyen.generator';
+import { ChapterGenerator, type ChapterResult } from './chapter-generator';
+import { CHAPTER_DEFINITIONS } from './chapter-registry';
 
 interface LaSoMau {
   readonly ten: string;
@@ -109,20 +105,9 @@ class AiGhiLai extends AiClient {
 }
 
 function sinhChuong(order: string, chart: NatalChart, ai: AiClient): Promise<ChapterResult | null> {
-  switch (order) {
-    case '01':
-      return new ThanCuGenerator(ai).generate(chart, BUDGET_MS);
-    case '02':
-      return new MenhGenerator(ai).generate(chart, BUDGET_MS);
-    case '03':
-      return new CongDanhGenerator(ai).generate(chart, BUDGET_MS);
-    case '04':
-      return new TaiBachGenerator(ai).generate(chart, BUDGET_MS);
-    case '05':
-      return new TinhDuyenGenerator(ai).generate(chart, BUDGET_MS);
-    default:
-      throw new Error(`Chương ${order} chưa có generator`);
-  }
+  const chapter = CHAPTER_DEFINITIONS.get(order);
+  if (!chapter) throw new Error(`Chương ${order} chưa có định nghĩa`);
+  return new ChapterGenerator(ai).generate(chapter, chart, BUDGET_MS);
 }
 
 describe.each(CHAPTER_ORDERS_DA_CO)('chương %s', (order) => {

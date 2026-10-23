@@ -1,9 +1,10 @@
 jest.mock('./validate/check-paragraphs', () => ({ checkParagraphs: jest.fn() }));
 
-import { buildTaiBachMucBriefs, castNatal, Gender, type NatalChart } from '@org/shared-tu-vi';
+import { buildCongDanhMucBriefs, castNatal, Gender, type NatalChart } from '@org/shared-tu-vi';
 import { AiClient } from '../../ai/port/ai.client';
 import type { AiRequest, AiResult } from '../../ai/port/ai.types';
-import { TaiBachGenerator } from './tai-bach.generator';
+import { ChapterGenerator } from './chapter-generator';
+import { CONG_DANH_CHAPTER } from './cong-danh.chapter';
 import { checkParagraphs } from './validate/check-paragraphs';
 
 const LA_SO: NatalChart = castNatal({
@@ -57,7 +58,7 @@ class AiTheoSchema extends AiClient {
 
 const kiem = checkParagraphs as jest.MockedFunction<typeof checkParagraphs>;
 
-describe('TaiBachGenerator', () => {
+describe('CONG_DANH_CHAPTER', () => {
   beforeEach(() => {
     kiem.mockReset().mockReturnValue([]);
   });
@@ -65,10 +66,10 @@ describe('TaiBachGenerator', () => {
   it('ghép bài từ khung cố định và hai đoạn mô hình viết', async () => {
     const ai = new AiGia([BAI]);
 
-    const ket = await new TaiBachGenerator(ai).generate(LA_SO, BUDGET_MS);
+    const ket = await new ChapterGenerator(ai).generate(CONG_DANH_CHAPTER, LA_SO, BUDGET_MS);
 
-    expect(ket?.article.title).toBe('Tài bạch tiền tài');
-    expect(ket?.article.sourceCung).toBe('Tài Bạch');
+    expect(ket?.article.title).toBe('Công danh sự nghiệp');
+    expect(ket?.article.sourceCung).toBe('Quan Lộc');
     expect(ket?.article.paragraphs).toHaveLength(3);
     expect(ket?.article.paragraphs.slice(1)).toEqual(['Hai câu. Câu nữa.', 'Hai câu. Câu nữa.']);
     expect(ket?.attempts).toBe(1);
@@ -76,9 +77,9 @@ describe('TaiBachGenerator', () => {
 
   it('gắn mục phụ vào bài, mỗi mục một lần gọi mô hình', async () => {
     const ai = new AiTheoSchema();
-    const soMuc = buildTaiBachMucBriefs(LA_SO).length;
+    const soMuc = buildCongDanhMucBriefs(LA_SO).length;
 
-    const ket = await new TaiBachGenerator(ai).generate(LA_SO, BUDGET_MS);
+    const ket = await new ChapterGenerator(ai).generate(CONG_DANH_CHAPTER, LA_SO, BUDGET_MS);
 
     expect(soMuc).toBeGreaterThan(0);
     expect(ket?.article.sections).toHaveLength(soMuc);
