@@ -1,4 +1,4 @@
-import { Gender, Sac, type ChapterBrief } from '@org/shared-tu-vi';
+import { Gender, Sac, TheChieu, type ChapterBrief } from '@org/shared-tu-vi';
 import { serializeBriefForPrompt } from './serialize-brief';
 
 const BRIEF: ChapterBrief = {
@@ -6,7 +6,7 @@ const BRIEF: ChapterBrief = {
   chi: 'Tý',
   gioiTinh: Gender.Nam,
   chiNamSinh: 'Thìn',
-  chinhTinh: [{ ten: 'Thiên Lương', bac: 'M' }],
+  chinhTinh: [{ ten: 'Thiên Lương', bac: 'M', the: TheChieu.ToaThu }],
   laVoChinhDieu: false,
   hungTinh: [],
   catTinh: [],

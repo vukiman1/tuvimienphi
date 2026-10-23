@@ -13,8 +13,8 @@ const BRIEF: ThanCuBrief = {
   gioiTinh: 'nam' as ThanCuBrief['gioiTinh'],
   chiNamSinh: 'Tý',
   chinhTinh: [
-    { ten: 'Liêm Trinh', bac: 'H' },
-    { ten: 'Tham Lang', bac: 'H' },
+    { ten: 'Liêm Trinh', bac: 'H', the: TheChieu.ToaThu },
+    { ten: 'Tham Lang', bac: 'H', the: TheChieu.ToaThu },
   ],
   laVoChinhDieu: false,
   hungTinh: [

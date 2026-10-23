@@ -24,15 +24,9 @@ const NGON_TU_TOA_THU = [
  * chiếu tới thì không biết cách nói đó gắn vào sao nào, và đoán bừa sẽ tạo báo động giả.
  */
 export function checkPosition(brief: ChapterBrief, bai: BaiCanKiem): string[] {
-  const moiSao = [...brief.hungTinh, ...brief.catTinh];
+  const moiSao = [...brief.chinhTinh, ...brief.hungTinh, ...brief.catTinh];
   const chieuToi = moiSao.filter((sao) => sao.the !== TheChieu.ToaThu);
-  // Cung vô chính diệu thì chính tinh trong brief là sao MƯỢN, không toạ thủ — chúng cũng phải bị
-  // chặn nếu bài nói là đóng tại cung.
-  const chinhTinhToaThu = brief.laVoChinhDieu ? [] : brief.chinhTinh.map((sao) => sao.ten);
-  const toaThu = [
-    ...chinhTinhToaThu,
-    ...moiSao.filter((sao) => sao.the === TheChieu.ToaThu).map((sao) => sao.ten),
-  ];
+  const toaThu = moiSao.filter((sao) => sao.the === TheChieu.ToaThu).map((sao) => sao.ten);
 
   return bai.doan.flatMap((doan, chiSo) =>
     sentences(doan).flatMap((cau) => {
@@ -40,24 +34,12 @@ export function checkPosition(brief: ChapterBrief, bai: BaiCanKiem): string[] {
       if (!NGON_TU_TOA_THU.some((tu) => thuong.includes(tu))) return [];
       if (toaThu.some((ten) => thuong.includes(ten.toLowerCase()))) return [];
 
-      const saoMuon = brief.laVoChinhDieu
-        ? brief.chinhTinh
-            .filter((sao) => thuong.includes(sao.ten.toLowerCase()))
-            .map(
-              (sao) =>
-                `đoạn ${chiSo + 1}: "${sao.ten}" là sao mượn từ cung xung chiếu, không toạ thủ tại cung an Thân`,
-            )
-        : [];
-
-      return [
-        ...saoMuon,
-        ...chieuToi
-          .filter((sao) => thuong.includes(sao.ten.toLowerCase()))
-          .map(
-            (sao) =>
-              `đoạn ${chiSo + 1}: "${sao.ten}" ở thế ${sao.the}, không đứng tại cung — đừng nói là toạ thủ hay đóng tại đây`,
-          ),
-      ];
+      return chieuToi
+        .filter((sao) => thuong.includes(sao.ten.toLowerCase()))
+        .map(
+          (sao) =>
+            `đoạn ${chiSo + 1}: "${sao.ten}" ở thế ${sao.the}, không đứng tại cung — đừng nói là toạ thủ hay đóng tại đây`,
+        );
     }),
   );
 }
