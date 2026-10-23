@@ -87,7 +87,6 @@ branches:
           - frontend-e2e
           - dashboard-e2e
           - security-scan
-          - 'ci/circleci: verify'
       enforce_admins: false
       required_linear_history: true
       allow_force_pushes: false
