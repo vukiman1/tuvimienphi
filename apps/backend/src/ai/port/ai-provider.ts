@@ -1,6 +1,4 @@
-import type { AiRequest, AiResult } from '../port/ai.types';
-
-export { AI_PROVIDERS, AiProvider } from './ai-provider.enum';
+import type { AiRequest, AiResult } from './ai.types';
 
 export interface AiCredentials {
   readonly apiKey: string;

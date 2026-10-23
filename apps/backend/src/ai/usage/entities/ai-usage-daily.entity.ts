@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
-import { AiProvider } from '../../providers/ai-provider.enum';
+import { AiProvider } from '../../port/ai-provider.enum';
 import { AiUsagePurpose } from '../ai-usage-purpose.enum';
 
 @Entity('ai_usage_daily')

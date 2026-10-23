@@ -4,7 +4,7 @@ import { Between, LessThan, Repository } from 'typeorm';
 import { currentAiCallContext, type AiCallContext } from '../port/ai-call-context';
 import { AiCallStatus } from './ai-call-status.enum';
 import { costUsd } from './ai-pricing';
-import type { AiProvider } from '../providers/ai-provider';
+import type { AiProvider } from '../port/ai-provider.enum';
 import { AiUsagePurpose } from './ai-usage-purpose.enum';
 import { AiUnavailableError, type ModelAttempt } from '../port/ai.errors';
 import type { AiResult } from '../port/ai.types';

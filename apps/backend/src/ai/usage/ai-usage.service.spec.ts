@@ -1,5 +1,5 @@
 import type { Repository } from 'typeorm';
-import { AiProvider } from '../providers/ai-provider';
+import { AiProvider } from '../port/ai-provider.enum';
 import { AiUsagePurpose } from './ai-usage-purpose.enum';
 import { runWithAiCallContext } from '../port/ai-call-context';
 import { AiCallStatus } from './ai-call-status.enum';

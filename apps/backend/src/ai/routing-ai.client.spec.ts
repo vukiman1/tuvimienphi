@@ -1,4 +1,4 @@
-import { AiProvider } from './providers/ai-provider';
+import { AiProvider } from './port/ai-provider.enum';
 import { AiProviderClients } from './providers/ai-provider-clients';
 import { AiSettingsService, AiSource, type ActiveAi } from './settings/ai-settings.service';
 import { AiUsagePurpose } from './usage/ai-usage-purpose.enum';

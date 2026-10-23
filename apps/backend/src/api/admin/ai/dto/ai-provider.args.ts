@@ -1,6 +1,6 @@
 import { ArgsType, Field } from '@nestjs/graphql';
 import { IsEnum, IsOptional } from 'class-validator';
-import { AiProvider } from '../../../../ai/providers/ai-provider';
+import { AiProvider } from '../../../../ai/port/ai-provider.enum';
 import { IsOptionalApiKey } from './ai-input.validators';
 
 @ArgsType()

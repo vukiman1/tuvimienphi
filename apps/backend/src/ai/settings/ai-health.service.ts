@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { AiProvider, type AiCredentials } from '../providers/ai-provider';
+import { AiProvider } from '../port/ai-provider.enum';
+import type { AiCredentials } from '../port/ai-provider';
 import { AiProviderClients } from '../providers/ai-provider-clients';
 import { AiSettingsService, type AiHealthOutcome } from './ai-settings.service';
 import { readableReason } from '../providers/ai-error-reason';

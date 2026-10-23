@@ -1,6 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
 import { AiHealthService, MAX_HEALTH_ERROR_LENGTH } from './ai-health.service';
-import { AiProvider, type AiProviderClient } from '../providers/ai-provider';
+import { AiProvider } from '../port/ai-provider.enum';
+import type { AiProviderClient } from '../port/ai-provider';
 import { AiProviderClients } from '../providers/ai-provider-clients';
 import { AiSettingsService, type AiHealthOutcome } from './ai-settings.service';
 import { AiUsagePurpose } from '../usage/ai-usage-purpose.enum';

@@ -1,6 +1,6 @@
 import { Field, Float, ID, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { AiCallStatus } from '../../../ai/usage/ai-call-status.enum';
-import { AiProvider } from '../../../ai/providers/ai-provider';
+import { AiProvider } from '../../../ai/port/ai-provider.enum';
 import { AiSource } from '../../../ai/settings/ai-settings.service';
 import { AiUsagePurpose } from '../../../ai/usage/ai-usage-purpose.enum';
 import { AiHealthStatus } from '../../../ai/settings/entities/ai-provider.entity';

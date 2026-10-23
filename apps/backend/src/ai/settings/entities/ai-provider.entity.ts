@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { Column, Entity, PrimaryColumn } from 'typeorm';
-import { AiProvider } from '../../providers/ai-provider.enum';
+import { AiProvider } from '../../port/ai-provider.enum';
 
 export enum AiHealthStatus {
   OK = 'OK',

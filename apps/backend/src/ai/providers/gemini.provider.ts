@@ -1,7 +1,7 @@
 import { GoogleGenAI } from '@google/genai';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import type { AiCredentials, AiProviderClient } from './ai-provider';
+import type { AiCredentials, AiProviderClient } from '../port/ai-provider';
 import type { AiRequest, AiResult } from '../port/ai.types';
 import { tryModels } from './try-models';
 

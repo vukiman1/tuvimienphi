@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import OpenAI from 'openai';
-import type { AiCredentials, AiProviderClient } from './ai-provider';
+import type { AiCredentials, AiProviderClient } from '../port/ai-provider';
 import type { AiMessage, AiRequest, AiResult } from '../port/ai.types';
 import { closedSchema } from './closed-schema';
 import { tryModels } from './try-models';
