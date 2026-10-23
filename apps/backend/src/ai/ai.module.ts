@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AiHealthService } from './settings/ai-health.service';
+import { AiHealthService } from './ai-health.service';
 import { AiProviderClients } from './providers/ai-provider-clients';
 import { AiSettingsService } from './settings/ai-settings.service';
 import { AiUsageService } from './usage/ai-usage.service';

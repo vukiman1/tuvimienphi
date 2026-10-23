@@ -1,14 +1,14 @@
 import { BadRequestException } from '@nestjs/common';
 import { AiHealthService, MAX_HEALTH_ERROR_LENGTH } from './ai-health.service';
-import { AiProvider } from '../port/ai-provider.enum';
-import type { AiProviderClient } from '../port/ai-provider';
-import { AiProviderClients } from '../providers/ai-provider-clients';
-import { AiSettingsService, type AiHealthOutcome } from './ai-settings.service';
-import { AiUsagePurpose } from '../usage/ai-usage-purpose.enum';
-import { AiUsageService } from '../usage/ai-usage.service';
-import { AiUnavailableError } from '../port/ai.errors';
-import type { AiResult } from '../port/ai.types';
-import { AiHealthStatus, AiProviderEntity } from './entities/ai-provider.entity';
+import { AiProvider } from './port/ai-provider.enum';
+import type { AiProviderClient } from './port/ai-provider';
+import { AiProviderClients } from './providers/ai-provider-clients';
+import { AiSettingsService, type AiHealthOutcome } from './settings/ai-settings.service';
+import { AiUsagePurpose } from './usage/ai-usage-purpose.enum';
+import { AiUsageService } from './usage/ai-usage.service';
+import { AiUnavailableError } from './port/ai.errors';
+import type { AiResult } from './port/ai.types';
+import { AiHealthStatus, AiProviderEntity } from './settings/entities/ai-provider.entity';
 
 const CREDENTIALS = { apiKey: 'sk-key', models: ['fast', 'slow'] };
 

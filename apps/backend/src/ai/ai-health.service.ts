@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { AiProvider } from '../port/ai-provider.enum';
-import type { AiCredentials } from '../port/ai-provider';
-import { AiProviderClients } from '../providers/ai-provider-clients';
-import { AiSettingsService, type AiHealthOutcome } from './ai-settings.service';
-import { readableReason } from '../providers/ai-error-reason';
-import { AiUsagePurpose } from '../usage/ai-usage-purpose.enum';
-import { AiUsageService } from '../usage/ai-usage.service';
-import { AiUnavailableError } from '../port/ai.errors';
-import type { AiRequest } from '../port/ai.types';
-import { AiHealthStatus, AiProviderEntity } from './entities/ai-provider.entity';
+import { AiProvider } from './port/ai-provider.enum';
+import type { AiCredentials } from './port/ai-provider';
+import { AiProviderClients } from './providers/ai-provider-clients';
+import { AiSettingsService, type AiHealthOutcome } from './settings/ai-settings.service';
+import { readableReason } from './providers/ai-error-reason';
+import { AiUsagePurpose } from './usage/ai-usage-purpose.enum';
+import { AiUsageService } from './usage/ai-usage.service';
+import { AiUnavailableError } from './port/ai.errors';
+import type { AiRequest } from './port/ai.types';
+import { AiHealthStatus, AiProviderEntity } from './settings/entities/ai-provider.entity';
 
 export const HEALTH_TIMEOUT_MS = 20_000;
 export const MAX_HEALTH_ERROR_LENGTH = 500;

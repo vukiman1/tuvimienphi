@@ -4,7 +4,7 @@ import { BadRequestException, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Throttle } from '@nestjs/throttler';
 import { readableReason } from '../../../ai/providers/ai-error-reason';
-import { AiHealthService } from '../../../ai/settings/ai-health.service';
+import { AiHealthService } from '../../../ai/ai-health.service';
 import { AiProviderClients } from '../../../ai/providers/ai-provider-clients';
 import { AiSettingsService } from '../../../ai/settings/ai-settings.service';
 import { AiUsageService } from '../../../ai/usage/ai-usage.service';
