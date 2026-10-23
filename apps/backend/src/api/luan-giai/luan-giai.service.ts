@@ -10,7 +10,7 @@ import {
 } from '@org/shared-contracts';
 import { chartFromBirthInput } from '@org/shared-tu-vi';
 import { Repository } from 'typeorm';
-import { runWithAiCallContext } from '../../ai/ai-call-context';
+import { runWithAiCallContext } from '../../ai/port/ai-call-context';
 import { ChapterAllowanceService } from '../credits/chapter-allowance.service';
 import { CongDanhGenerator } from './cong-danh.generator';
 import { LuanGiaiChapterEntity } from './entities/luan-giai-chapter.entity';

@@ -8,8 +8,8 @@ import {
   Gender,
   type NatalChart,
 } from '@org/shared-tu-vi';
-import { AiClient } from '../../ai/ai.client';
-import type { AiRequest, AiResult } from '../../ai/ai.types';
+import { AiClient } from '../../ai/port/ai.client';
+import type { AiRequest, AiResult } from '../../ai/port/ai.types';
 import { type CungChapter, CungChapterGenerator, MucKind } from './cung-chapter.generator';
 import { TAI_BACH_SYSTEM_PROMPT } from './prompt/tai-bach-prompt';
 import { KHUNG_TAI_BACH } from './prompt/khung-tai-bach';

@@ -1,6 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { AiUnavailableError } from './ai.errors';
-import type { AiRequest } from './ai.types';
+import { AiUnavailableError } from '../port/ai.errors';
+import type { AiRequest } from '../port/ai.types';
 import { AnthropicProvider } from './anthropic.provider';
 
 const mockCreate = jest.fn();

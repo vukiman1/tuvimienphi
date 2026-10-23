@@ -1,6 +1,6 @@
 import OpenAI from 'openai';
-import { AiUnavailableError } from './ai.errors';
-import type { AiRequest } from './ai.types';
+import { AiUnavailableError } from '../port/ai.errors';
+import type { AiRequest } from '../port/ai.types';
 import { OpenAiProvider } from './openai.provider';
 
 const mockCreate = jest.fn();

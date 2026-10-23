@@ -6,7 +6,7 @@ import {
   type MucBrief,
   type NatalChart,
 } from '@org/shared-tu-vi';
-import { AiClient } from '../../ai/ai.client';
+import { AiClient } from '../../ai/port/ai.client';
 import { assembleThanCuArticle } from './assemble-than-cu-article';
 import {
   MUC_SCHEMA,

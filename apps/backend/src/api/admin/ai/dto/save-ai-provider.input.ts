@@ -1,6 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsEnum } from 'class-validator';
-import { AiProvider } from '../../../../ai/ai-provider';
+import { AiProvider } from '../../../../ai/providers/ai-provider';
 import { IsModelIds, IsOptionalApiKey } from './ai-input.validators';
 
 @InputType()

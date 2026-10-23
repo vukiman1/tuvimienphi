@@ -1,13 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, LessThan, Repository } from 'typeorm';
-import { currentAiCallContext, type AiCallContext } from './ai-call-context';
+import { currentAiCallContext, type AiCallContext } from '../port/ai-call-context';
 import { AiCallStatus } from './ai-call-status.enum';
 import { costUsd } from './ai-pricing';
-import type { AiProvider } from './ai-provider';
+import type { AiProvider } from '../providers/ai-provider';
 import { AiUsagePurpose } from './ai-usage-purpose.enum';
-import { AiUnavailableError, type ModelAttempt } from './ai.errors';
-import type { AiResult } from './ai.types';
+import { AiUnavailableError, type ModelAttempt } from '../port/ai.errors';
+import type { AiResult } from '../port/ai.types';
 import { AiCallEntity } from './entities/ai-call.entity';
 import { AiUsageDailyEntity } from './entities/ai-usage-daily.entity';
 

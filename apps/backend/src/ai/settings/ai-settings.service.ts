@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CryptoService } from '@org/backend-crypto';
 import { Repository } from 'typeorm';
-import { AI_PROVIDERS, AiProvider, type AiCredentials } from './ai-provider';
+import { AI_PROVIDERS, AiProvider, type AiCredentials } from '../providers/ai-provider';
 import { AiHealthStatus, AiProviderEntity } from './entities/ai-provider.entity';
 import { maskApiKey } from './mask-api-key';
 

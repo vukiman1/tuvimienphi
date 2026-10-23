@@ -1,6 +1,6 @@
 import type { ChapterBrief } from '@org/shared-tu-vi';
-import type { AiClient } from '../../ai/ai.client';
-import type { AiMessage, AiSchema } from '../../ai/ai.types';
+import type { AiClient } from '../../ai/port/ai.client';
+import type { AiMessage, AiSchema } from '../../ai/port/ai.types';
 import {
   ChapterRejectedError,
   ChapterTimedOutError,

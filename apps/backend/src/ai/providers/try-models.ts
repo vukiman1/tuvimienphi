@@ -1,5 +1,5 @@
 import { readableReason } from './ai-error-reason';
-import { AiUnavailableError, type ModelAttempt } from './ai.errors';
+import { AiUnavailableError, type ModelAttempt } from '../port/ai.errors';
 
 /**
  * Gọi lần lượt từng model cho tới khi có model trả kết quả.

@@ -1,4 +1,4 @@
-import { AiUnavailableError } from './ai.errors';
+import { AiUnavailableError } from '../port/ai.errors';
 import { tryModels } from './try-models';
 
 describe('tryModels', () => {

@@ -1,8 +1,8 @@
-import { AiProvider } from '../../../ai/ai-provider';
-import { AiCallStatus } from '../../../ai/ai-call-status.enum';
-import { AiSource } from '../../../ai/ai-settings.service';
-import { AiUsagePurpose } from '../../../ai/ai-usage-purpose.enum';
-import { AiHealthStatus, AiProviderEntity } from '../../../ai/entities/ai-provider.entity';
+import { AiProvider } from '../../../ai/providers/ai-provider';
+import { AiCallStatus } from '../../../ai/usage/ai-call-status.enum';
+import { AiSource } from '../../../ai/settings/ai-settings.service';
+import { AiUsagePurpose } from '../../../ai/usage/ai-usage-purpose.enum';
+import { AiHealthStatus, AiProviderEntity } from '../../../ai/settings/entities/ai-provider.entity';
 import {
   toAdminAiCallPage,
   toAdminAiProbe,

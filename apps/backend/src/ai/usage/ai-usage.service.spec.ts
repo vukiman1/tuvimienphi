@@ -1,7 +1,7 @@
 import type { Repository } from 'typeorm';
-import { AiProvider } from './ai-provider';
+import { AiProvider } from '../providers/ai-provider';
 import { AiUsagePurpose } from './ai-usage-purpose.enum';
-import { runWithAiCallContext } from './ai-call-context';
+import { runWithAiCallContext } from '../port/ai-call-context';
 import { AiCallStatus } from './ai-call-status.enum';
 import {
   AiUsageService,
@@ -11,8 +11,8 @@ import {
   toAiCall,
   type AiCallRow,
 } from './ai-usage.service';
-import { AiUnavailableError } from './ai.errors';
-import type { AiResult } from './ai.types';
+import { AiUnavailableError } from '../port/ai.errors';
+import type { AiResult } from '../port/ai.types';
 import { AiCallEntity } from './entities/ai-call.entity';
 import { AiUsageDailyEntity } from './entities/ai-usage-daily.entity';
 

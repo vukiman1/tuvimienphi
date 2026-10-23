@@ -1,4 +1,4 @@
-import type { AiSchema } from '../../../ai/ai.types';
+import type { AiSchema } from '../../../ai/port/ai.types';
 
 /** Hai đoạn duy nhất mô hình được viết. Phần còn lại của bài lấy từ bảng khung. */
 export interface ThanCuParagraphs {

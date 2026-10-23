@@ -7,8 +7,8 @@ import {
   Gender,
   type NatalChart,
 } from '@org/shared-tu-vi';
-import { AiClient } from '../../ai/ai.client';
-import type { AiRequest, AiResult } from '../../ai/ai.types';
+import { AiClient } from '../../ai/port/ai.client';
+import type { AiRequest, AiResult } from '../../ai/port/ai.types';
 import { GIA_DAO_SYSTEM_PROMPT } from './prompt/tinh-duyen-prompt';
 import { TinhDuyenGenerator } from './tinh-duyen.generator';
 import { checkParagraphs } from './validate/check-paragraphs';

@@ -6,7 +6,7 @@ import {
   type MenhMucBrief,
   type NatalChart,
 } from '@org/shared-tu-vi';
-import { AiClient } from '../../ai/ai.client';
+import { AiClient } from '../../ai/port/ai.client';
 import { assembleMenhArticle } from './assemble-menh-article';
 import type { ChapterResult } from './chapter-generator';
 import {

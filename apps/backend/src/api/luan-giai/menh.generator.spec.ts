@@ -5,8 +5,8 @@
 jest.mock('./validate/check-paragraphs', () => ({ checkParagraphs: jest.fn() }));
 
 import { buildMenhMucBriefs, castNatal, Gender, type NatalChart } from '@org/shared-tu-vi';
-import { AiClient } from '../../ai/ai.client';
-import type { AiRequest, AiResult } from '../../ai/ai.types';
+import { AiClient } from '../../ai/port/ai.client';
+import type { AiRequest, AiResult } from '../../ai/port/ai.types';
 import { MenhGenerator } from './menh.generator';
 import { checkParagraphs } from './validate/check-paragraphs';
 

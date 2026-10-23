@@ -14,7 +14,7 @@ import {
 } from '@org/shared-contracts';
 import { buildThanCuBrief } from '@org/shared-tu-vi';
 import type { Repository } from 'typeorm';
-import { currentAiCallContext, type AiCallContext } from '../../ai/ai-call-context';
+import { currentAiCallContext, type AiCallContext } from '../../ai/port/ai-call-context';
 import { AllowanceSource } from '../credits/allowance-source.enum';
 import type { ChapterAllowanceService } from '../credits/chapter-allowance.service';
 import type { LuanGiaiChapterEntity } from './entities/luan-giai-chapter.entity';

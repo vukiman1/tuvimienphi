@@ -2,7 +2,7 @@ import { BadRequestException, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CryptoService } from '@org/backend-crypto';
 import { Repository } from 'typeorm';
-import { AiProvider } from './ai-provider';
+import { AiProvider } from '../providers/ai-provider';
 import { AiSettingsService, AiSource } from './ai-settings.service';
 import { AiHealthStatus, AiProviderEntity } from './entities/ai-provider.entity';
 

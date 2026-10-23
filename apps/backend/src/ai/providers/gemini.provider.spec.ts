@@ -1,6 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 import { ConfigService } from '@nestjs/config';
-import type { AiRequest } from './ai.types';
+import type { AiRequest } from '../port/ai.types';
 import { GeminiProvider } from './gemini.provider';
 
 const mockGenerateContent = jest.fn();

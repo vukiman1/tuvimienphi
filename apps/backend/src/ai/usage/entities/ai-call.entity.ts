@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { AiCallStatus } from '../ai-call-status.enum';
-import { AiProvider } from '../ai-provider.enum';
+import { AiProvider } from '../../providers/ai-provider.enum';
 import { AiUsagePurpose } from '../ai-usage-purpose.enum';
 
 @Entity('ai_call')

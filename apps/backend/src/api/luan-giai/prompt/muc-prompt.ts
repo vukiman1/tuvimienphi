@@ -1,5 +1,5 @@
 import type { ChapterMucBrief } from '@org/shared-tu-vi';
-import type { AiMessage } from '../../../ai/ai.types';
+import type { AiMessage } from '../../../ai/port/ai.types';
 import type { MucParagraph } from './chapter-schema';
 import { serializeBriefForPrompt } from './serialize-brief';
 

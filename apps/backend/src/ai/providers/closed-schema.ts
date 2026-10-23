@@ -1,4 +1,4 @@
-import type { AiSchema } from './ai.types';
+import type { AiSchema } from '../port/ai.types';
 
 export type JsonSchema = Record<string, unknown>;
 

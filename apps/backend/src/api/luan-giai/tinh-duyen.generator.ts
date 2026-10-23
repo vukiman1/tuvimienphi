@@ -4,7 +4,7 @@ import {
   buildTinhDuyenBrief,
   buildTinhDuyenMucBriefs,
 } from '@org/shared-tu-vi';
-import { AiClient } from '../../ai/ai.client';
+import { AiClient } from '../../ai/port/ai.client';
 import {
   type CungChapter,
   CungChapterGenerator,

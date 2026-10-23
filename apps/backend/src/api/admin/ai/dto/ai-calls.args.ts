@@ -1,7 +1,7 @@
 import { ArgsType, Field, Int } from '@nestjs/graphql';
 import { IsEnum, IsInt, IsOptional, IsString, Matches, Max, MaxLength, Min } from 'class-validator';
-import { AiProvider } from '../../../../ai/ai-provider';
-import { AiUsagePurpose } from '../../../../ai/ai-usage-purpose.enum';
+import { AiProvider } from '../../../../ai/providers/ai-provider';
+import { AiUsagePurpose } from '../../../../ai/usage/ai-usage-purpose.enum';
 
 export const DEFAULT_CALLS_PAGE_SIZE = 20;
 export const MAX_CALLS_PAGE_SIZE = 100;
