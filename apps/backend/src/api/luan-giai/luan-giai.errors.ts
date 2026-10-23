@@ -24,3 +24,10 @@ export class ChapterTimedOutError extends Error {
     this.name = 'ChapterTimedOutError';
   }
 }
+
+export class UnknownThanCuCungError extends Error {
+  constructor(readonly cung: string) {
+    super(`Thân cannot sit in cung "${cung}", so there is no Thân cư khung for it`);
+    this.name = 'UnknownThanCuCungError';
+  }
+}

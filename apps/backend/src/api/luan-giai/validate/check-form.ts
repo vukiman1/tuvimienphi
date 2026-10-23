@@ -6,10 +6,6 @@ const SENTENCES_PER_PARAGRAPH = 2;
 const HIGHLIGHTS_PER_PARAGRAPH = 1;
 const MAX_HIGHLIGHT_WORDS = 12;
 
-/**
- * Tầng một: hình thức và tên sao. Bắt được lỗi nguy hiểm nhất — mô hình gọi tên một sao có thật,
- * hợp cảnh, đúng vai trò trong câu, nhưng không có trong lá số. Đọc không ai phát hiện ra.
- */
 export function checkForm(brief: ChapterBrief, bai: BaiCanKiem): string[] {
   const hopLe = new Set<string>([
     ...brief.chinhTinh.map((sao) => sao.ten),
@@ -48,9 +44,6 @@ function kiemMotDoan(
 
   const nhomPhuTinh: string[][] = [];
   for (const nhom of boldGroups(doan)) {
-    // Lồng ==...== vào trong **...** thì phần bên trong bị bóc ra như một tên sao, kéo theo hai
-    // thông báo sai chỗ — "không có trong brief" và "tách thành 2 cặp". Bắt riêng và nói thẳng,
-    // vì mô hình đọc hai thông báo kia xong không biết đường nào mà sửa.
     if (nhom.some((token) => token.includes('='))) {
       loi.push(`đoạn ${thuTu}: không được lồng ==...== vào trong **...**, hai dấu phải tách rời`);
       continue;
@@ -79,7 +72,6 @@ function kiemMotDoan(
     }
   }
 
-  // Gói theo vai chứ không gói tất cả vào một cặp: bài mẫu để hung tinh ở câu một, cát tinh ở câu hai.
   const soNhomHung = nhomPhuTinh.filter((nhom) => nhom.some((ten) => laHung.has(ten))).length;
   const soNhomCat = nhomPhuTinh.filter((nhom) => nhom.every((ten) => !laHung.has(ten))).length;
   if (soNhomHung > 1) loi.push(`đoạn ${thuTu}: hung tinh tách thành ${soNhomHung} cặp **`);

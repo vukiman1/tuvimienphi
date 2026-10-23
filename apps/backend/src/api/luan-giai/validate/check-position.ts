@@ -2,7 +2,6 @@ import { TheChieu, type ChapterBrief } from '@org/shared-tu-vi';
 import type { BaiCanKiem } from './bai-can-kiem';
 import { sentences } from './parse-markup';
 
-/** Cách nói khẳng định sao ĐỨNG TẠI cung. Chỉ đúng với sao toạ thủ. */
 const NGON_TU_TOA_THU = [
   'toạ thủ',
   'tọa thủ',
@@ -13,16 +12,6 @@ const NGON_TU_TOA_THU = [
   'thủ tại cung',
 ] as const;
 
-/**
- * Tầng năm: nói đúng vị trí sao.
- *
- * Sao tam hợp, xung chiếu hay nhị hợp KHÔNG đứng ở cung đang xét — chúng chiếu tới. Viết "Thiên Y
- * toạ thủ" cho một sao thực ra nằm ở cung xung chiếu là sai vị trí, mà đọc lên vẫn trôi hệt như
- * chuyện "thủ mệnh" ở tầng bốn.
- *
- * Chỉ báo lỗi khi trong câu KHÔNG có sao toạ thủ nào: một câu vừa nhắc sao toạ thủ vừa nhắc sao
- * chiếu tới thì không biết cách nói đó gắn vào sao nào, và đoán bừa sẽ tạo báo động giả.
- */
 export function checkPosition(brief: ChapterBrief, bai: BaiCanKiem): string[] {
   const moiSao = [...brief.chinhTinh, ...brief.hungTinh, ...brief.catTinh];
   const chieuToi = moiSao.filter((sao) => sao.the !== TheChieu.ToaThu);
