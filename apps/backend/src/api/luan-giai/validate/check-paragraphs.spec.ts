@@ -1,5 +1,5 @@
 import { Sac, TheChieu, type ThanCuBrief } from '@org/shared-tu-vi';
-import type { ThanCuParagraphs } from '../prompt/chapter-schema';
+import type { DoanChinh } from '../prompt/chapter-schema';
 import { checkParagraphs } from './check-paragraphs';
 import { baiChinh, baiMuc } from './to-bai';
 
@@ -65,7 +65,7 @@ const BRIEF: ThanCuBrief = {
   ],
 };
 
-const DAT: ThanCuParagraphs = {
+const DAT: DoanChinh = {
   doan1:
     'Cung Phu Thê có **Liêm Trinh (H)** đi cùng **Tham Lang (H)**, cho thấy người bạn đời có sức hút và giỏi giao tiếp. Có thêm **Thiên Y** đóng tại đây, người ấy cũng ==hợp duyên và được quý mến==.',
   doan2:
@@ -73,8 +73,7 @@ const DAT: ThanCuParagraphs = {
 };
 
 /** Bài chính luôn là hai đoạn; gói lại cho gọn vì mọi ca dưới đây đều đi qua đúng hình dạng đó. */
-const kiem = (paragraphs: ThanCuParagraphs): string[] =>
-  checkParagraphs(BRIEF, baiChinh(paragraphs));
+const kiem = (paragraphs: DoanChinh): string[] => checkParagraphs(BRIEF, baiChinh(paragraphs));
 
 describe('checkParagraphs', () => {
   it('cho qua bản viết đúng cả năm tầng', () => {

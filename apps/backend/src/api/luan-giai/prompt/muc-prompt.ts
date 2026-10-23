@@ -1,8 +1,3 @@
-import type { ChapterMucBrief } from '@org/shared-tu-vi';
-import type { AiMessage } from '../../../ai/port/ai.types';
-import type { MucParagraph } from './chapter-schema';
-import { serializeBriefForPrompt } from './serialize-brief';
-
 /**
  * Mục con nối sau hai đoạn chính. Giữ nguyên giọng và mọi quy tắc hình thức của bài, chỉ khác là
  * một đoạn thay vì hai, và phải dẫn được các dữ kiện cụ thể trong `duKien` — mốc tuổi, tên trạng
@@ -43,21 +38,4 @@ QUY TẮC HÌNH THỨC:
 5. Không nhắc tên sao nào ngoài brief.
 ${luatViTri(cung)}
 7. Chỉ sao có the="toạ thủ" mới được nói là đóng tại cung; sao ở thế khác thì viết "hội chiếu", "chiếu tới".`;
-}
-
-export function buildMucMessages(
-  brief: ChapterMucBrief,
-  daThu: readonly { readonly paragraph: MucParagraph; readonly loi: readonly string[] }[],
-): AiMessage[] {
-  const messages: AiMessage[] = [{ role: 'user', text: serializeBriefForPrompt(brief) }];
-
-  for (const lan of daThu) {
-    messages.push({ role: 'model', text: JSON.stringify(lan.paragraph) });
-    messages.push({
-      role: 'user',
-      text: `Bản trên vi phạm:\n${lan.loi.map((mot) => `- ${mot}`).join('\n')}\nViết lại cho đúng, giữ nguyên nội dung mệnh đề.`,
-    });
-  }
-
-  return messages;
 }

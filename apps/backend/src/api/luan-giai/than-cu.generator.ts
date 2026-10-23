@@ -7,15 +7,18 @@ import {
   type NatalChart,
 } from '@org/shared-tu-vi';
 import { AiClient } from '../../ai/port/ai.client';
-import { assembleThanCuArticle } from './assemble-than-cu-article';
+import { assembleArticle } from './assemble-article';
+import { parseDoanChinh, parseMuc } from './parse-paragraphs';
+import { buildMessages } from './prompt/build-messages';
 import {
+  DOAN_CHINH_SCHEMA,
   MUC_SCHEMA,
-  THAN_CU_SCHEMA,
+  type DoanChinh,
   type MucParagraph,
-  type ThanCuParagraphs,
 } from './prompt/chapter-schema';
-import { buildMucMessages, mucSystemPrompt } from './prompt/muc-prompt';
-import { buildThanCuMessages, THAN_CU_SYSTEM_PROMPT } from './prompt/than-cu-prompt';
+import { khungThanCu } from './prompt/khung-than-cu';
+import { mucSystemPrompt } from './prompt/muc-prompt';
+import { THAN_CU_SYSTEM_PROMPT } from './prompt/than-cu-prompt';
 import { sinhVoiKiem } from './sinh-voi-kiem';
 import { baiChinh, baiMuc } from './validate/to-bai';
 
@@ -24,14 +27,6 @@ export interface ThanCuResult {
   /** Model nào viết ra bài và tổng số lượt phải sinh lại — theo dõi để thấy prompt xuống cấp sớm. */
   readonly model: string;
   readonly attempts: number;
-}
-
-function parse<T>(text: string, coDu: (value: Record<string, unknown>) => boolean): T {
-  const raw: unknown = JSON.parse(text);
-  if (typeof raw !== 'object' || raw === null || !coDu(raw as Record<string, unknown>)) {
-    throw new Error('shape');
-  }
-  return raw as T;
 }
 
 @Injectable()
@@ -58,22 +53,14 @@ export class ThanCuGenerator {
     const mucBriefs = buildMucBriefs(chart);
 
     const [chinh, ...mucs] = await Promise.all([
-      sinhVoiKiem<ThanCuParagraphs>(
+      sinhVoiKiem<DoanChinh>(
         this.ai,
         {
           brief,
           system: THAN_CU_SYSTEM_PROMPT,
-          schema: THAN_CU_SCHEMA,
-          messages: (daThu) =>
-            buildThanCuMessages(
-              brief,
-              daThu.map((lan) => ({ paragraphs: lan.paragraph, loi: lan.loi })),
-            ),
-          parse: (text) =>
-            parse<ThanCuParagraphs>(
-              text,
-              (o) => typeof o.doan1 === 'string' && typeof o.doan2 === 'string',
-            ),
+          schema: DOAN_CHINH_SCHEMA,
+          messages: (daThu) => buildMessages(brief, daThu),
+          parse: parseDoanChinh,
           toBai: baiChinh,
         },
         budgetMs,
@@ -87,7 +74,7 @@ export class ThanCuGenerator {
     const tongLuot = chinh.attempts;
 
     return {
-      article: assembleThanCuArticle(brief, chinh.value, sections),
+      article: assembleArticle(khungThanCu(brief.cung), brief, chinh.value, sections),
       model: chinh.model,
       attempts: tongLuot,
     };
@@ -101,8 +88,8 @@ export class ThanCuGenerator {
           brief,
           system: mucSystemPrompt(brief.cung),
           schema: MUC_SCHEMA,
-          messages: (daThu) => buildMucMessages(brief, daThu),
-          parse: (text) => parse<MucParagraph>(text, (o) => typeof o.doan === 'string'),
+          messages: (daThu) => buildMessages(brief, daThu),
+          parse: parseMuc,
           toBai: baiMuc,
         },
         budgetMs,

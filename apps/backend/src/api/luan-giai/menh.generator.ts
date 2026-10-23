@@ -7,39 +7,21 @@ import {
   type NatalChart,
 } from '@org/shared-tu-vi';
 import { AiClient } from '../../ai/port/ai.client';
-import { assembleMenhArticle } from './assemble-menh-article';
+import { assembleArticle } from './assemble-article';
 import type { ChapterResult } from './chapter-generator';
+import { parseDoanChinh, parseMuc } from './parse-paragraphs';
+import { buildMessages } from './prompt/build-messages';
 import {
+  DOAN_CHINH_SCHEMA,
   MUC_SCHEMA,
-  THAN_CU_SCHEMA,
+  type DoanChinh,
   type MucParagraph,
-  type ThanCuParagraphs,
 } from './prompt/chapter-schema';
-import { buildMenhMessages, MENH_SYSTEM_PROMPT } from './prompt/menh-prompt';
-import { buildMucMessages, mucSystemPrompt } from './prompt/muc-prompt';
+import { KHUNG_MENH } from './prompt/khung-menh';
+import { MENH_SYSTEM_PROMPT } from './prompt/menh-prompt';
+import { mucSystemPrompt } from './prompt/muc-prompt';
 import { sinhVoiKiem } from './sinh-voi-kiem';
 import { baiChinh, baiMuc } from './validate/to-bai';
-
-function parseMuc(text: string): MucParagraph {
-  const raw: unknown = JSON.parse(text);
-  if (typeof raw !== 'object' || raw === null || typeof (raw as MucParagraph).doan !== 'string') {
-    throw new Error('shape');
-  }
-  return raw as MucParagraph;
-}
-
-function parse(text: string): ThanCuParagraphs {
-  const raw: unknown = JSON.parse(text);
-  if (
-    typeof raw !== 'object' ||
-    raw === null ||
-    typeof (raw as ThanCuParagraphs).doan1 !== 'string' ||
-    typeof (raw as ThanCuParagraphs).doan2 !== 'string'
-  ) {
-    throw new Error('shape');
-  }
-  return raw as ThanCuParagraphs;
-}
 
 @Injectable()
 export class MenhGenerator {
@@ -61,18 +43,14 @@ export class MenhGenerator {
     // Bài chính và từng mục chạy SONG SONG: chúng độc lập nhau nên chờ tuần tự chỉ tổ nhân thời
     // gian lên mà không được gì. Mục nào hỏng thì bỏ mục đó, bài thiếu một mục vẫn hơn không có bài.
     const [chinh, ...mucs] = await Promise.all([
-      sinhVoiKiem<ThanCuParagraphs>(
+      sinhVoiKiem<DoanChinh>(
         this.ai,
         {
           brief,
           system: MENH_SYSTEM_PROMPT,
-          schema: THAN_CU_SCHEMA,
-          messages: (daThu) =>
-            buildMenhMessages(
-              brief,
-              daThu.map((lan) => ({ paragraphs: lan.paragraph, loi: lan.loi })),
-            ),
-          parse,
+          schema: DOAN_CHINH_SCHEMA,
+          messages: (daThu) => buildMessages(brief, daThu),
+          parse: parseDoanChinh,
           toBai: baiChinh,
         },
         budgetMs,
@@ -85,7 +63,7 @@ export class MenhGenerator {
     const sections = mucs.filter((muc): muc is LuanGiaiSection => muc !== null);
 
     return {
-      article: assembleMenhArticle(brief, chinh.value, sections),
+      article: assembleArticle(KHUNG_MENH, brief, chinh.value, sections),
       model: chinh.model,
       attempts: chinh.attempts,
     };
@@ -99,7 +77,7 @@ export class MenhGenerator {
           brief,
           system: mucSystemPrompt(brief.cung),
           schema: MUC_SCHEMA,
-          messages: (daThu) => buildMucMessages(brief, daThu),
+          messages: (daThu) => buildMessages(brief, daThu),
           parse: parseMuc,
           toBai: baiMuc,
         },

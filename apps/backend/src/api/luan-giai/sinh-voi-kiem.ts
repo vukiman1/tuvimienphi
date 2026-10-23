@@ -19,11 +19,16 @@ export interface KetSinh<T> {
   readonly attempts: number;
 }
 
+export interface LanThu<T> {
+  readonly paragraph: T;
+  readonly loi: readonly string[];
+}
+
 export interface CachSinh<T> {
   readonly brief: ChapterBrief;
   readonly system: string;
   readonly schema: AiSchema;
-  readonly messages: (daThu: readonly { paragraph: T; loi: readonly string[] }[]) => AiMessage[];
+  readonly messages: (daThu: readonly LanThu<T>[]) => AiMessage[];
   readonly parse: (text: string) => T;
   readonly toBai: (value: T) => BaiCanKiem;
 }
@@ -34,7 +39,7 @@ export async function sinhVoiKiem<T>(
   budgetMs: number,
   onReject?: (lan: number, model: string, loi: readonly string[]) => void,
 ): Promise<KetSinh<T>> {
-  const daThu: { paragraph: T; loi: readonly string[] }[] = [];
+  const daThu: LanThu<T>[] = [];
   const deadline = Date.now() + budgetMs;
 
   for (let lan = 1; lan <= MAX_ATTEMPTS; lan += 1) {

@@ -1,12 +1,12 @@
 import type { AiSchema } from '../../../ai/port/ai.types';
 
 /** Hai đoạn duy nhất mô hình được viết. Phần còn lại của bài lấy từ bảng khung. */
-export interface ThanCuParagraphs {
+export interface DoanChinh {
   readonly doan1: string;
   readonly doan2: string;
 }
 
-export const THAN_CU_SCHEMA: AiSchema = {
+export const DOAN_CHINH_SCHEMA: AiSchema = {
   type: 'object',
   properties: {
     doan1: { type: 'string', description: 'Đoạn thuận, đúng hai câu' },

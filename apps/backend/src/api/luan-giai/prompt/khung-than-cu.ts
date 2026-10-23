@@ -1,4 +1,6 @@
-import type { THAN_CU_CUNGS } from '@org/shared-tu-vi';
+import { THAN_CU_CUNGS } from '@org/shared-tu-vi';
+import { UnknownThanCuCungError } from '../luan-giai.errors';
+import type { KhungChuong } from './khung-chuong';
 
 export type ThanCuCung = (typeof THAN_CU_CUNGS)[number];
 
@@ -19,8 +21,8 @@ export interface KhungThanCu {
   readonly closing: string;
 }
 
-export const THAN_CU_EYEBROW = 'Thân cư';
-export const THAN_CU_CLOSING_LABEL = 'Một lời dành cho bạn';
+const THAN_CU_EYEBROW = 'Thân cư';
+const THAN_CU_CLOSING_LABEL = 'Một lời dành cho bạn';
 
 export const KHUNG_THAN_CU: Readonly<Record<ThanCuCung, KhungThanCu>> = {
   Mệnh: {
@@ -73,3 +75,19 @@ export const KHUNG_THAN_CU: Readonly<Record<ThanCuCung, KhungThanCu>> = {
       'Duyên tốt không chỉ nằm ở việc gặp đúng người, mà còn ở khả năng cùng một người đi đúng đường.',
   },
 };
+
+function laCungAnThan(cung: string): cung is ThanCuCung {
+  return THAN_CU_CUNGS.some((cungAnThan) => cungAnThan === cung);
+}
+
+export function khungThanCu(cung: string): KhungChuong {
+  if (!laCungAnThan(cung)) {
+    throw new UnknownThanCuCungError(cung);
+  }
+  return {
+    ...KHUNG_THAN_CU[cung],
+    eyebrow: THAN_CU_EYEBROW,
+    title: `${THAN_CU_EYEBROW} ${cung}`,
+    closingLabel: THAN_CU_CLOSING_LABEL,
+  };
+}
