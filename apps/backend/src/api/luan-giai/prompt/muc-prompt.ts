@@ -29,6 +29,9 @@ QUY TẮC HÌNH THỨC:
 2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**
 3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
 4. Phụ tinh gói theo vai: hung tinh vào MỘT cặp **, cát tinh vào MỘT cặp ** khác. Không kèm bậc.
+4b. Mệnh đề không có sao sinh ra nó (do[] rỗng — tên một cách cục như "Sát Phá Tham", "Cơ Nguyệt Đồng Lương",
+   "Lộc Mã"; tên một hoá như "Hóa Kỵ", "Hóa Quyền"; tên án ngữ như "Tuần", "Triệt"): viết tên đó bằng chữ thường,
+   không bọc trong cặp **, không gán cho một sao cụ thể nào.
 5. Không nhắc tên sao nào ngoài brief.
 ${luatViTri(cung)}
 7. Chỉ sao có the="toạ thủ" mới được nói là đóng tại cung; sao ở thế khác thì viết "hội chiếu", "chiếu tới".`;

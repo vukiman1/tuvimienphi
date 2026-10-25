@@ -13,4 +13,11 @@ describe('mucSystemPrompt', () => {
 
     expect(prompt).not.toContain('đừng viết "thủ mệnh"');
   });
+
+  it('có quy tắc riêng cho mệnh đề không gắn sao (cách cục, hoá, án ngữ)', () => {
+    const prompt = mucSystemPrompt('Mệnh');
+
+    expect(prompt).toContain('không có sao sinh ra nó');
+    expect(prompt).toContain('viết tên đó bằng chữ thường');
+  });
 });
