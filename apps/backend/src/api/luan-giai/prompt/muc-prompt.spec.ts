@@ -18,6 +18,7 @@ describe('mucSystemPrompt', () => {
     const prompt = mucSystemPrompt('Mệnh');
 
     expect(prompt).toContain('không có sao sinh ra nó');
-    expect(prompt).toContain('viết tên đó bằng chữ thường');
+    expect(prompt).toContain('giữ nguyên chữ hoa đúng như trong brief');
+    expect(prompt).not.toContain('bằng chữ thường');
   });
 });
