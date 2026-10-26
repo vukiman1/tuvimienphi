@@ -5,9 +5,18 @@ describe('MENH_SYSTEM_PROMPT', () => {
     expect(MENH_SYSTEM_PROMPT).not.toContain('Câu 1 dẫn tên chính tinh kèm bậc. Câu 2 khai triển');
   });
 
-  it('vẫn yêu cầu mỗi câu dẫn đúng một mệnh đề cùng tên và bậc của chính tinh sinh ra nó', () => {
+  it('yêu cầu mỗi câu dẫn đúng một mệnh đề cùng tên sao sinh ra nó', () => {
+    expect(MENH_SYSTEM_PROMPT).toContain('Mỗi câu dẫn đúng một mệnh đề cùng tên sao sinh ra nó');
+  });
+
+  it('chỉ đòi kèm bậc khi sao sinh ra mệnh đề là chính tinh', () => {
+    expect(MENH_SYSTEM_PROMPT).toContain('chính tinh thì kèm bậc, phụ tinh thì không');
+    expect(MENH_SYSTEM_PROMPT).not.toContain('cùng tên và bậc của chính tinh');
+  });
+
+  it('nói rõ hoá là phụ tinh nên không kèm bậc dù đi theo chính tinh có bậc', () => {
     expect(MENH_SYSTEM_PROMPT).toContain(
-      'Mỗi câu dẫn đúng một mệnh đề cùng tên và bậc của chính tinh',
+      'Hóa Lộc, Hóa Quyền, Hóa Khoa, Hóa Kỵ là phụ tinh: không kèm',
     );
   });
 
