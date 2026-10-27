@@ -76,7 +76,9 @@ function kiemMotDoan(
     }
   }
 
-  const nhomPhaiGop = nhomPhuTinh.filter((nhom) => !nhom.every((ten) => sinhMenhDe.has(ten)));
+  const nhomPhaiGop = nhomPhuTinh.filter(
+    (nhom) => !nhom.every((token) => sinhMenhDe.has(stripRating(token))),
+  );
   const soNhomHung = nhomPhaiGop.filter((nhom) => nhom.some((ten) => laHung.has(ten))).length;
   const soNhomCat = nhomPhaiGop.filter((nhom) => nhom.every((ten) => !laHung.has(ten))).length;
   if (soNhomHung > 1) loi.push(`đoạn ${thuTu}: hung tinh tách thành ${soNhomHung} cặp **`);

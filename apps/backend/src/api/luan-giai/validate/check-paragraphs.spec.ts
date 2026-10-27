@@ -112,6 +112,17 @@ describe('checkParagraphs', () => {
     expect(loi).toEqual([]);
   });
 
+  it('phụ tinh sinh ra mệnh đề mà viết kèm bậc thì chỉ bị báo lỗi bậc', () => {
+    const loi = kiem({
+      ...DAT,
+      doan2: DAT.doan2.replace('**Đại Hao, Kiếp Sát**', '**Đại Hao (H)** và **Kiếp Sát (H)**'),
+    });
+    expect(loi).toEqual([
+      'đoạn 2: phụ tinh "Đại Hao (H)" không được kèm bậc',
+      'đoạn 2: phụ tinh "Kiếp Sát (H)" không được kèm bậc',
+    ]);
+  });
+
   it('chặn đoạn viết thành ba câu', () => {
     const loi = kiem({ ...DAT, doan2: `${DAT.doan2} Nhưng rồi cũng qua.` });
     expect(loi).toContain('đoạn 2: 3 câu, cần đúng 2');
