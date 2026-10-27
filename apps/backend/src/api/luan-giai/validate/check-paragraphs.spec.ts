@@ -16,6 +16,8 @@ const BRIEF: ThanCuBrief = {
   hungTinh: [
     { ten: 'Đại Hao', the: TheChieu.ToaThu },
     { ten: 'Kiếp Sát', the: TheChieu.ToaThu },
+    { ten: 'Đà La', the: TheChieu.TamHop },
+    { ten: 'Thiên Hình', the: TheChieu.TamHop },
   ],
   catTinh: [
     { ten: 'Thiên Y', the: TheChieu.ToaThu },
@@ -91,12 +93,23 @@ describe('checkParagraphs', () => {
     expect(loi).toContain('đoạn 1: chính tinh "Tham Lang" thiếu bậc');
   });
 
-  it('chặn phụ tinh cùng vai bị tách thành nhiều cặp', () => {
+  it('chặn phụ tinh chỉ nhắc kèm bị tách khỏi cặp chung của vai', () => {
+    const loi = kiem({
+      ...DAT,
+      doan2: DAT.doan2.replace(
+        '**Đại Hao, Kiếp Sát**',
+        '**Đại Hao, Kiếp Sát, Đà La** cùng **Thiên Hình**',
+      ),
+    });
+    expect(loi).toContain('đoạn 2: hung tinh tách thành 2 cặp **');
+  });
+
+  it('cho mỗi phụ tinh sinh ra mệnh đề đứng một cặp ** riêng', () => {
     const loi = kiem({
       ...DAT,
       doan2: DAT.doan2.replace('**Đại Hao, Kiếp Sát**', '**Đại Hao** và **Kiếp Sát**'),
     });
-    expect(loi).toContain('đoạn 2: hung tinh tách thành 2 cặp **');
+    expect(loi).toEqual([]);
   });
 
   it('chặn đoạn viết thành ba câu', () => {

@@ -14,8 +14,11 @@ export function checkForm(brief: ChapterBrief, bai: BaiCanKiem): string[] {
   ]);
   const bacCua = new Map(brief.chinhTinh.map((sao) => [sao.ten as string, sao.bac]));
   const laHung = new Set<string>(brief.hungTinh.map((sao) => sao.ten));
+  const sinhMenhDe = new Set<string>(brief.luan.flatMap((menhDe) => menhDe.do));
 
-  return bai.doan.flatMap((doan, chiSo) => kiemMotDoan(doan, chiSo + 1, hopLe, bacCua, laHung));
+  return bai.doan.flatMap((doan, chiSo) =>
+    kiemMotDoan(doan, chiSo + 1, hopLe, bacCua, laHung, sinhMenhDe),
+  );
 }
 
 function kiemMotDoan(
@@ -24,6 +27,7 @@ function kiemMotDoan(
   hopLe: ReadonlySet<string>,
   bacCua: ReadonlyMap<string, string | null>,
   laHung: ReadonlySet<string>,
+  sinhMenhDe: ReadonlySet<string>,
 ): string[] {
   const loi: string[] = [];
   const soCau = countSentences(doan);
@@ -72,8 +76,9 @@ function kiemMotDoan(
     }
   }
 
-  const soNhomHung = nhomPhuTinh.filter((nhom) => nhom.some((ten) => laHung.has(ten))).length;
-  const soNhomCat = nhomPhuTinh.filter((nhom) => nhom.every((ten) => !laHung.has(ten))).length;
+  const nhomPhaiGop = nhomPhuTinh.filter((nhom) => !nhom.every((ten) => sinhMenhDe.has(ten)));
+  const soNhomHung = nhomPhaiGop.filter((nhom) => nhom.some((ten) => laHung.has(ten))).length;
+  const soNhomCat = nhomPhaiGop.filter((nhom) => nhom.every((ten) => !laHung.has(ten))).length;
   if (soNhomHung > 1) loi.push(`đoạn ${thuTu}: hung tinh tách thành ${soNhomHung} cặp **`);
   if (soNhomCat > 1) loi.push(`đoạn ${thuTu}: cát tinh tách thành ${soNhomCat} cặp **`);
   for (const nhom of nhomPhuTinh) {
