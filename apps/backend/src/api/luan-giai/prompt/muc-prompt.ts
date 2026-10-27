@@ -28,7 +28,9 @@ QUY TẮC HÌNH THỨC:
 2. Đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
 2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**
 3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
-4. Phụ tinh gói theo vai: hung tinh vào MỘT cặp **, cát tinh vào MỘT cặp ** khác. Không kèm bậc.
+4. Phụ tinh không kèm bậc. Phụ tinh nào là sao sinh ra một mệnh đề (tên nó nằm trong do[]) thì được một
+   cặp ** riêng, đặt cùng câu với ý của nó. Các phụ tinh còn lại gói theo vai: hung tinh vào MỘT cặp **,
+   cát tinh vào MỘT cặp ** khác.
 4b. Mệnh đề không có sao sinh ra nó (do[] rỗng — tên một cách cục như "Sát Phá Tham", "Cơ Nguyệt Đồng Lương",
    "Lộc Mã"; tên một hoá như "Hoá Kỵ", "Hoá Quyền"; tên án ngữ như "Tuần", "Triệt"): viết tên đó không bọc
    trong cặp **, giữ nguyên chữ hoa đúng như trong brief, không gán cho một sao cụ thể nào.
