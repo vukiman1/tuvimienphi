@@ -123,6 +123,34 @@ describe('checkParagraphs', () => {
     ]);
   });
 
+  it('cho mục có ba phụ tinh cùng vai, mỗi sao một ý, đứng ba cặp ** riêng trong hai câu', () => {
+    const briefMuc: ThanCuBrief = {
+      ...BRIEF,
+      catTinh: [...BRIEF.catTinh, { ten: 'Thiên Khôi', the: TheChieu.ToaThu }],
+      luan: [
+        ...BRIEF.luan.filter(
+          (menhDe) => menhDe.do[0] === 'Thiên Y' || menhDe.do[0] === 'Thiên Thọ',
+        ),
+        {
+          y: 'gặp việc khó thường có quý nhân đỡ một tay',
+          do: ['Thiên Khôi'],
+          sac: Sac.HoaGiai,
+          trong: 50,
+          tuKhoa: ['quý nhân', 'đỡ một tay'],
+        },
+      ],
+    };
+
+    const loi = checkParagraphs(
+      briefMuc,
+      baiMuc({
+        doan: 'Có **Thiên Y** đóng tại đây nên bạn hợp duyên, lại thêm **Thiên Khôi** đóng tại đây nên gặp việc khó thường có quý nhân đỡ một tay. Nhờ **Thiên Thọ** hội chiếu tới mà mọi thứ ==bền và giữ được lâu== khi đã ổn định.',
+      }),
+    );
+
+    expect(loi).toEqual([]);
+  });
+
   it('chặn đoạn viết thành ba câu', () => {
     const loi = kiem({ ...DAT, doan2: `${DAT.doan2} Nhưng rồi cũng qua.` });
     expect(loi).toContain('đoạn 2: 3 câu, cần đúng 2');
