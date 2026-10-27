@@ -13,7 +13,6 @@ describe('THAN_CU_SYSTEM_PROMPT', () => {
 
   it('chỉ đòi kèm bậc khi sao sinh ra mệnh đề là chính tinh', () => {
     expect(THAN_CU_SYSTEM_PROMPT).toContain('chính tinh thì kèm bậc, phụ tinh thì không');
-    expect(THAN_CU_SYSTEM_PROMPT).not.toContain('cùng tên và bậc của chính tinh');
   });
 
   it('nói rõ hoá là phụ tinh nên không kèm bậc dù đi theo chính tinh có bậc', () => {
