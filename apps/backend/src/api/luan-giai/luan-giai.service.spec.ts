@@ -230,6 +230,135 @@ describe('LuanGiaiService.request', () => {
   });
 });
 
+interface Deferred<T> {
+  readonly promise: Promise<T>;
+  readonly resolve: (value: T) => void;
+  readonly reject: (error: Error) => void;
+}
+
+function deferred<T>(): Deferred<T> {
+  let resolve!: (value: T) => void;
+  let reject!: (error: Error) => void;
+  const promise = new Promise<T>((onResolve, onReject) => {
+    resolve = onResolve;
+    reject = onReject;
+  });
+  return { promise, resolve, reject };
+}
+
+describe('LuanGiaiService.request khi một chương đang được sinh dở', () => {
+  beforeEach(() => {
+    dungBrief
+      .mockReset()
+      .mockReturnValue(
+        jest
+          .requireActual('@org/shared-tu-vi')
+          .buildThanCuBrief(
+            jest.requireActual('@org/shared-tu-vi').chartFromBirthInput(CO_BANG).chart,
+          ),
+      );
+  });
+
+  it('request đến sau chờ chung lượt đang sinh, không sinh lại và không trừ thêm suất', async () => {
+    const generation = deferred<ChapterResult>();
+    const { service, generator, allowance } = dungService({
+      sinh: jest.fn().mockReturnValue(generation.promise),
+    });
+
+    const truoc = service.request('u1', CO_BANG, CHAPTER_THAN_CU);
+    const sau = service.request('u1', CO_BANG, CHAPTER_THAN_CU);
+    generation.resolve(KET);
+
+    const ready = { status: LuanGiaiChapterStatus.Ready, article: BAI };
+    await expect(truoc).resolves.toEqual(ready);
+    await expect(sau).resolves.toEqual(ready);
+    expect(generator.generate).toHaveBeenCalledTimes(1);
+    expect(allowance.consume).toHaveBeenCalledTimes(1);
+  });
+
+  it('lượt đang sinh hỏng thì hoàn suất đúng một lần và báo hỏng cho mọi request đang chờ', async () => {
+    const generation = deferred<ChapterResult>();
+    const { service, allowance } = dungService({
+      sinh: jest.fn().mockReturnValue(generation.promise),
+    });
+
+    const truoc = service.request('u1', CO_BANG, CHAPTER_THAN_CU);
+    const sau = service.request('u1', CO_BANG, CHAPTER_THAN_CU);
+    generation.reject(new Error('UNAVAILABLE'));
+
+    await expect(truoc).rejects.toThrow(ChapterGenerationFailedException);
+    await expect(sau).rejects.toThrow(ChapterGenerationFailedException);
+    expect(allowance.refund).toHaveBeenCalledTimes(1);
+  });
+
+  it('hai chương khác nhau của cùng lá số sinh song song, không chờ nhau', async () => {
+    const thanCu = deferred<ChapterResult>();
+    const menh = deferred<ChapterResult>();
+    const bothStarted = deferred<void>();
+    const sinh = jest.fn((chapter: unknown) => {
+      if (sinh.mock.calls.length === 2) bothStarted.resolve();
+      return chapter === CHAPTER_DEFINITIONS.get(CHAPTER_MENH) ? menh.promise : thanCu.promise;
+    });
+    const { service } = dungService({ sinh });
+
+    const requests = Promise.all([
+      service.request('u1', CO_BANG, CHAPTER_THAN_CU),
+      service.request('u1', CO_BANG, CHAPTER_MENH),
+    ]);
+    await bothStarted.promise;
+    thanCu.resolve(KET);
+    menh.resolve({ ...KET, article: { title: 'Mệnh' } as LuanGiaiArticle });
+
+    const [thanCuKet, menhKet] = await requests;
+    expect(thanCuKet).toEqual({ status: LuanGiaiChapterStatus.Ready, article: BAI });
+    expect(menhKet).toEqual({
+      status: LuanGiaiChapterStatus.Ready,
+      article: { title: 'Mệnh' },
+    });
+  });
+
+  it('request đến khi chương đang sinh dở thì chờ luôn, không đọc lại database', async () => {
+    const generation = deferred<ChapterResult>();
+    const { service, repo } = dungService({
+      sinh: jest.fn().mockReturnValue(generation.promise),
+    });
+
+    const truoc = service.request('u1', CO_BANG, CHAPTER_THAN_CU);
+    const sau = service.request('u2', CO_BANG, CHAPTER_THAN_CU);
+    generation.resolve(KET);
+    await Promise.all([truoc, sau]);
+
+    expect(repo.findOne).toHaveBeenCalledTimes(1);
+  });
+
+  it('lượt trước đã xong mà chưa có bài thì request sau sinh lượt mới', async () => {
+    const { service, generator } = dungService({
+      sinh: jest.fn().mockRejectedValueOnce(new Error('UNAVAILABLE')).mockResolvedValue(KET),
+    });
+
+    await expect(service.request('u1', CO_BANG, CHAPTER_THAN_CU)).rejects.toThrow(
+      ChapterGenerationFailedException,
+    );
+    const ket = await service.request('u1', CO_BANG, CHAPTER_THAN_CU);
+
+    expect(ket).toEqual({ status: LuanGiaiChapterStatus.Ready, article: BAI });
+    expect(generator.generate).toHaveBeenCalledTimes(2);
+  });
+
+  it('người đi trước hết suất thì người đang chờ tự sinh bằng suất của mình', async () => {
+    const { service, generator, allowance } = dungService();
+    allowance.consume.mockResolvedValueOnce(null).mockResolvedValue(AllowanceSource.Credit);
+
+    const truoc = service.request('het-suat', CO_BANG, CHAPTER_THAN_CU);
+    const sau = service.request('con-suat', CO_BANG, CHAPTER_THAN_CU);
+
+    await expect(truoc).rejects.toThrow(ChapterQuotaExceededException);
+    await expect(sau).resolves.toEqual({ status: LuanGiaiChapterStatus.Ready, article: BAI });
+    expect(allowance.consume).toHaveBeenLastCalledWith('con-suat');
+    expect(generator.generate).toHaveBeenCalledTimes(1);
+  });
+});
+
 describe('LuanGiaiService.status', () => {
   it('chương đã có bài thì mở được, chương có bảng mà chưa sinh thì còn khoá', async () => {
     const { service } = dungService({ daCo: [{ chapterOrder: CHAPTER_THAN_CU }] });

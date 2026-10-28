@@ -8,10 +8,11 @@ import {
   type LuanGiaiChapterResponse,
   type LuanGiaiChapterStatusMap,
 } from '@org/shared-contracts';
-import { chartFromBirthInput } from '@org/shared-tu-vi';
+import { chartFromBirthInput, type NatalChart } from '@org/shared-tu-vi';
 import { Repository } from 'typeorm';
 import { runWithAiCallContext } from '../../ai/port/ai-call-context';
 import { ChapterAllowanceService } from '../credits/chapter-allowance.service';
+import type { ChapterDefinition } from './generation/chapter-definition';
 import { ChapterGenerator } from './generation/chapter-generator';
 import { CHAPTER_DEFINITIONS } from './generation/chapter-registry';
 import { LuanGiaiChapterEntity } from './entities/luan-giai-chapter.entity';
@@ -24,6 +25,7 @@ import {
 @Injectable()
 export class LuanGiaiService {
   private readonly logger = new Logger(LuanGiaiService.name);
+  private readonly inFlightRequests = new Map<string, Promise<LuanGiaiChapterResponse>>();
 
   constructor(
     @InjectRepository(LuanGiaiChapterEntity)
@@ -74,7 +76,39 @@ export class LuanGiaiService {
     if (!chapter) return { status: LuanGiaiChapterStatus.Unavailable };
 
     const key = birthKey(input);
+    const flightKey = `${key}:${order}`;
 
+    const inFlight = this.inFlightRequests.get(flightKey);
+    if (inFlight) return this.joinInFlight(inFlight, userId, input, order);
+
+    const flight = this.readOrGenerate(userId, chapter, input, key, order).finally(() =>
+      this.inFlightRequests.delete(flightKey),
+    );
+    this.inFlightRequests.set(flightKey, flight);
+    return flight;
+  }
+
+  private async joinInFlight(
+    inFlight: Promise<LuanGiaiChapterResponse>,
+    userId: string,
+    input: BirthInput,
+    order: string,
+  ): Promise<LuanGiaiChapterResponse> {
+    try {
+      return await inFlight;
+    } catch (error) {
+      if (error instanceof ChapterQuotaExceededException) return this.request(userId, input, order);
+      throw error;
+    }
+  }
+
+  private async readOrGenerate(
+    userId: string,
+    chapter: ChapterDefinition,
+    input: BirthInput,
+    key: string,
+    order: string,
+  ): Promise<LuanGiaiChapterResponse> {
     const daCo = await this.findArticle(key, order);
     if (daCo) return { status: LuanGiaiChapterStatus.Ready, article: daCo };
 
@@ -83,6 +117,16 @@ export class LuanGiaiService {
       return { status: LuanGiaiChapterStatus.Unavailable };
     }
 
+    return this.generateAndSave(userId, chapter, chart, key, order);
+  }
+
+  private async generateAndSave(
+    userId: string,
+    chapter: ChapterDefinition,
+    chart: NatalChart,
+    key: string,
+    order: string,
+  ): Promise<LuanGiaiChapterResponse> {
     const source = await this.allowance.consume(userId);
     if (!source) throw new ChapterQuotaExceededException();
 
