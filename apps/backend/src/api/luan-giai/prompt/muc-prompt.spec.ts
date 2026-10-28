@@ -28,6 +28,13 @@ describe('mucSystemPrompt', () => {
     expect(prompt).not.toContain('"Hóa Kỵ", "Hóa Quyền"');
   });
 
+  it('cho phụ tinh sinh ra mệnh đề một cặp ** riêng cạnh ý của nó', () => {
+    const prompt = mucSystemPrompt('Mệnh');
+
+    expect(prompt).toContain('cặp ** riêng, đặt cùng câu với ý của nó');
+    expect(prompt).toContain('Các phụ tinh còn lại gói theo vai');
+  });
+
   it('hoá đã có trong catTinh hoặc hungTinh thì viết như phụ tinh', () => {
     expect(mucSystemPrompt('Mệnh')).toContain(
       'Riêng hoá nào đã có tên trong catTinh hoặc hungTinh thì là phụ tinh: viết theo mục 4.',

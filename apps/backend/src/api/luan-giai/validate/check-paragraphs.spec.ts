@@ -16,6 +16,8 @@ const BRIEF: ThanCuBrief = {
   hungTinh: [
     { ten: 'Đại Hao', the: TheChieu.ToaThu },
     { ten: 'Kiếp Sát', the: TheChieu.ToaThu },
+    { ten: 'Đà La', the: TheChieu.TamHop },
+    { ten: 'Thiên Hình', the: TheChieu.TamHop },
   ],
   catTinh: [
     { ten: 'Thiên Y', the: TheChieu.ToaThu },
@@ -91,12 +93,62 @@ describe('checkParagraphs', () => {
     expect(loi).toContain('đoạn 1: chính tinh "Tham Lang" thiếu bậc');
   });
 
-  it('chặn phụ tinh cùng vai bị tách thành nhiều cặp', () => {
+  it('chặn phụ tinh chỉ nhắc kèm bị tách khỏi cặp chung của vai', () => {
+    const loi = kiem({
+      ...DAT,
+      doan2: DAT.doan2.replace(
+        '**Đại Hao, Kiếp Sát**',
+        '**Đại Hao, Kiếp Sát, Đà La** cùng **Thiên Hình**',
+      ),
+    });
+    expect(loi).toContain('đoạn 2: hung tinh tách thành 2 cặp **');
+  });
+
+  it('cho mỗi phụ tinh sinh ra mệnh đề đứng một cặp ** riêng', () => {
     const loi = kiem({
       ...DAT,
       doan2: DAT.doan2.replace('**Đại Hao, Kiếp Sát**', '**Đại Hao** và **Kiếp Sát**'),
     });
-    expect(loi).toContain('đoạn 2: hung tinh tách thành 2 cặp **');
+    expect(loi).toEqual([]);
+  });
+
+  it('phụ tinh sinh ra mệnh đề mà viết kèm bậc thì chỉ bị báo lỗi bậc', () => {
+    const loi = kiem({
+      ...DAT,
+      doan2: DAT.doan2.replace('**Đại Hao, Kiếp Sát**', '**Đại Hao (H)** và **Kiếp Sát (H)**'),
+    });
+    expect(loi).toEqual([
+      'đoạn 2: phụ tinh "Đại Hao (H)" không được kèm bậc',
+      'đoạn 2: phụ tinh "Kiếp Sát (H)" không được kèm bậc',
+    ]);
+  });
+
+  it('cho mục có ba phụ tinh cùng vai, mỗi sao một ý, đứng ba cặp ** riêng trong hai câu', () => {
+    const briefMuc: ThanCuBrief = {
+      ...BRIEF,
+      catTinh: [...BRIEF.catTinh, { ten: 'Thiên Khôi', the: TheChieu.ToaThu }],
+      luan: [
+        ...BRIEF.luan.filter(
+          (menhDe) => menhDe.do[0] === 'Thiên Y' || menhDe.do[0] === 'Thiên Thọ',
+        ),
+        {
+          y: 'gặp việc khó thường có quý nhân đỡ một tay',
+          do: ['Thiên Khôi'],
+          sac: Sac.HoaGiai,
+          trong: 50,
+          tuKhoa: ['quý nhân', 'đỡ một tay'],
+        },
+      ],
+    };
+
+    const loi = checkParagraphs(
+      briefMuc,
+      baiMuc({
+        doan: 'Có **Thiên Y** đóng tại đây nên bạn hợp duyên, lại thêm **Thiên Khôi** đóng tại đây nên gặp việc khó thường có quý nhân đỡ một tay. Nhờ **Thiên Thọ** hội chiếu tới mà mọi thứ ==bền và giữ được lâu== khi đã ổn định.',
+      }),
+    );
+
+    expect(loi).toEqual([]);
   });
 
   it('chặn đoạn viết thành ba câu', () => {
