@@ -11,11 +11,10 @@ const LINE_WIDTHS = ['w-full', 'w-[96%]', 'w-[88%]', 'w-[93%]', 'w-[62%]'] as co
 const TICK_MS = 1_000;
 
 /**
- * Đo trên bài thật: viết đạt ngay thì khoảng 7 giây, phải viết lại ba lượt thì tới 20. Thanh tiến
- * trình bò tới mốc này rồi chậm dần, không bao giờ đầy — máy chủ làm xong mới trả một lần, không có
- * đường nào báo về đang ở bước nào, nên vẽ một thanh chạy tới 100% là nói dối.
+ * Thanh tiến trình bò tới mốc này rồi chậm dần, không bao giờ đầy — máy chủ làm xong mới trả một
+ * lần, không có đường nào báo về đang ở bước nào, nên vẽ một thanh chạy tới 100% là nói dối.
  */
-const KY_VONG_GIAY = 14;
+const KY_VONG_GIAY = 20;
 const TRAN_PHAN_TRAM = 90;
 
 /** Dưới ngưỡng này thì nhắc tới thời gian chỉ tổ làm người ta để ý là phải chờ. */
@@ -65,7 +64,7 @@ export function LuanGiaiSkeletonCard({ isWriting }: LuanGiaiSkeletonCardProps) {
               ) : null}
             </p>
             <p className="mt-1 text-center font-body text-[13px] text-[#8a7a63]">
-              Mỗi bài viết riêng cho lá số này, thường mất 10–20 giây
+              Mỗi bài viết riêng cho lá số này, thường mất 10–40 giây
             </p>
 
             <div
