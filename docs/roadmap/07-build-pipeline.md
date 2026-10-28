@@ -36,16 +36,18 @@ webpack. Build giờ chỉ sinh `main.js`.
 **Nhưng #90 bỏ sót một chỗ**, và nó làm gãy trang công khai: `apps/frontend/vercel.json` vẫn rewrite
 `/api/*` về `https://tuvimienphi-backend.vercel.app`, host đã chết. Vá ở #97.
 
-**Còn lại hai thứ, không phải việc của repo:**
+**Còn lại một thứ, không phải việc của repo:**
 
 - **Project `tuvimienphi-backend` vẫn tồn tại trong dashboard Vercel** — xoá file trong repo không gỡ
   được một project đã kết nối, nên nó vẫn build preview mỗi PR. Phải xoá trong dashboard. Coi như mọi
   secret còn cấu hình ở đó đã lộ; riêng `SECRET_KEY` thì **không xoay được** nếu đã có ai đăng ký TOTP,
   vì nó mã hoá TOTP secret khi lưu.
-- **`GENERATION_BUDGET_MS` vẫn căn theo trần 30 giây của Vercel function.** Xem
-  `luan-giai.constants.ts` và `luan-giai.service.ts`. Trên VPS không còn trần đó, nên đây là ràng buộc
-  tự đặt mà không ai cần — nới ra thì lượt sinh luận giải có thêm thời gian thử lại. Là quyết định sản
-  phẩm, không phải dọn dẹp.
+
+**`GENERATION_BUDGET_MS` đã nới từ 22 lên 60 giây.** 22 giây chỉ để lọt trần 30 giây của Vercel
+function. Trên VPS, request đi qua Cloudflare Tunnel (trần 100 giây) và frontend không đặt timeout.
+Đo `gemini-3.1-flash-lite` thì một lời gọi mất 2–37 giây, trung vị khoảng 10, nên 22 giây bỏ mục khá
+thường xuyên. `stop_grace_period` 30 giây của backend trong `docker-compose.prod.yml` giờ ngắn hơn ngân
+sách: deploy giữa lúc sinh có thể giết request sau khi đã trừ lượt mà chưa kịp hoàn.
 
 ---
 

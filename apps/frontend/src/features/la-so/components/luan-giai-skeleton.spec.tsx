@@ -24,7 +24,7 @@ describe('LuanGiaiSkeletonCard', () => {
     render(<LuanGiaiSkeletonCard isWriting />);
 
     expect(screen.getByText(/Đang viết luận giải/)).toBeTruthy();
-    expect(screen.getByText(/10–20 giây/)).toBeTruthy();
+    expect(screen.getByText(/10–40 giây/)).toBeTruthy();
   });
 
   it('chạy tiến trình theo thời gian chờ', () => {
