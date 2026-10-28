@@ -4,12 +4,12 @@ Thanks for taking the time to contribute. This guide gets you from clone to merg
 
 ## Prerequisites
 
-| Tool   | Version | Install                                                  |
-| ------ | ------- | -------------------------------------------------------- |
-| Node   | 22.x    | https://nodejs.org or `nvm install 22`                   |
-| pnpm   | 10.x    | `corepack enable && corepack prepare pnpm@10 --activate` |
-| Docker | 20+     | https://docs.docker.com/get-docker/                      |
-| Git    | 2.40+   | system package                                           |
+| Tool   | Version | Install                                |
+| ------ | ------- | -------------------------------------- |
+| Node   | 26.x    | https://nodejs.org or `nvm install 26` |
+| pnpm   | 10.x    | `npm install -g pnpm@10`               |
+| Docker | 20+     | https://docs.docker.com/get-docker/    |
+| Git    | 2.40+   | system package                         |
 
 ## Initial setup
 
@@ -30,7 +30,7 @@ Run both apps in dev mode:
 pnpm dev                              # backend :3000 + frontend :4200
 ```
 
-Swagger API docs: http://localhost:3000/api/docs
+Swagger API docs: http://localhost:3000/docs
 
 ## Daily workflow
 
