@@ -19,6 +19,7 @@ export * from './an-chinh-tinh.js';
 export * from './tu-hoa.js';
 
 export * from './van-han.js';
+export * from './dan-gian.js';
 export * from './tieu-han.js';
 export * from './luu-nien.js';
 
