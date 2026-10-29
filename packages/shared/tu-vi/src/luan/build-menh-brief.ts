@@ -4,12 +4,13 @@ import { CHI } from '../lich/lunar-calendar.js';
 import { isHungTinh } from '../sao-cat-hung.js';
 import type { ChinhTinhName, SaoName } from '../sao-names.js';
 import type { Rating } from '../sao-rating.js';
+import type { TuHoa } from '../tu-hoa.js';
 import { CHINH_TINH_MENH } from './bang/menh/chinh-tinh-menh.js';
 import type { CellLuan } from './bang/cell-luan.js';
 import { PHU_TINH_LUAN } from './bang/phu-tinh.js';
 import type { ChapterBrief, ChinhTinhTrongBai } from './chapter-brief.js';
 import { Sac, type LuanDe } from './luan-de.js';
-import { TheChieu, theCungAt, type SaoTheoThe, type TheCung } from './the-cung.js';
+import { TheChieu, theCungAt, type SaoTheoThe } from './the-cung.js';
 
 const BRIGHTNESS_FACTOR: Record<Rating, number> = { M: 1.2, V: 1.1, Đ: 1.0, B: 0.9, H: 0.8 };
 const THE_FACTOR: Record<TheChieu, number> = {
@@ -74,10 +75,10 @@ function phuTinhClaims(phuTinh: readonly SaoTheoThe[]): DraftClaim[] {
 const HOA_KY_GIAM_THUAN = 0.55;
 const HOA_KHAC_BONUS = 10;
 
-function applyTuHoa(claims: DraftClaim[], the: TheCung): DraftClaim[] {
+function applyTuHoa(claims: DraftClaim[], tuHoaTacDong: readonly TuHoa[]): DraftClaim[] {
   const themVao: DraftClaim[] = [];
 
-  for (const hoa of the.tuHoaTacDong) {
+  for (const hoa of tuHoaTacDong) {
     for (const claim of claims) {
       if (!claim.do.includes(hoa.star)) continue;
 
@@ -104,13 +105,17 @@ function applyTuHoa(claims: DraftClaim[], the: TheCung): DraftClaim[] {
   return [...claims, ...themVao];
 }
 
-export function buildMenhBrief(chart: NatalChart): MenhBrief | null {
-  const the = theCungAt(chart, chart.menhIndex);
-  const [tamHopA, tamHopB] = tamHopIndexes(chart.menhIndex);
+export function buildMenhLensBrief(
+  chart: NatalChart,
+  anchorIndex: number,
+  tuHoaTacDong?: readonly TuHoa[],
+): ChapterBrief | null {
+  const the = theCungAt(chart, anchorIndex);
+  const [tamHopA, tamHopB] = tamHopIndexes(anchorIndex);
 
   const chinhTinh = [
-    ...chinhTinhCua(chart.cungs[chart.menhIndex].chinhTinh, TheChieu.ToaThu),
-    ...chinhTinhCua(chart.cungs[xungChieuIndex(chart.menhIndex)].chinhTinh, TheChieu.XungChieu),
+    ...chinhTinhCua(chart.cungs[anchorIndex].chinhTinh, TheChieu.ToaThu),
+    ...chinhTinhCua(chart.cungs[xungChieuIndex(anchorIndex)].chinhTinh, TheChieu.XungChieu),
     ...chinhTinhCua(chart.cungs[tamHopA].chinhTinh, TheChieu.TamHop),
     ...chinhTinhCua(chart.cungs[tamHopB].chinhTinh, TheChieu.TamHop),
   ];
@@ -125,7 +130,7 @@ export function buildMenhBrief(chart: NatalChart): MenhBrief | null {
       }),
       ...phuTinhClaims(the.phuTinh),
     ],
-    the,
+    tuHoaTacDong ?? the.tuHoaTacDong,
   );
 
   if (the.anNgu) {
@@ -149,15 +154,20 @@ export function buildMenhBrief(chart: NatalChart): MenhBrief | null {
     .map((sao) => ({ ten: sao.name, the: sao.the }));
 
   return {
-    cung: 'Mệnh',
-    chi: CHI[chart.menhIndex],
+    cung: chart.cungs[anchorIndex].name,
+    chi: CHI[anchorIndex],
     gioiTinh: chart.gender,
     chiNamSinh: CHI[chart.pillars.year.chi],
-    laVoChinhDieu: chart.cungs[chart.menhIndex].isVoChinhDieu,
+    laVoChinhDieu: chart.cungs[anchorIndex].isVoChinhDieu,
     chinhTinh,
     hungTinh: phuTinhTrongBai.filter((sao) => isHungTinh(sao.ten)),
     catTinh: phuTinhTrongBai.filter((sao) => !isHungTinh(sao.ten)),
     anNgu: the.anNgu,
     luan,
   };
+}
+
+export function buildMenhBrief(chart: NatalChart): MenhBrief | null {
+  const brief = buildMenhLensBrief(chart, chart.menhIndex);
+  return brief && { ...brief, cung: 'Mệnh' };
 }

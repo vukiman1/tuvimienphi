@@ -38,6 +38,7 @@ import type { Rating } from './sao-rating.js';
 import { anCungThang, anCungThangGieng, anTieuHan } from './tieu-han.js';
 import { anCanLuong, formatCanLuong } from './can-luong.js';
 import { anTuHoa, type TuHoa } from './tu-hoa.js';
+import { viewYearPillar } from './view-year.js';
 import { anTriet, anTuan, type BlockedPair } from './tuan-triet.js';
 import {
   Gender,
@@ -288,7 +289,7 @@ export function castNatal(input: NatalInput): NatalChart {
 }
 
 /** Vị trí natal của mọi sao, để hoá khí của tầng đại vận đóng đúng vào cung của sao nhận hoá. */
-function starPlacesOf(natal: NatalChart): ReadonlyMap<SaoName, number> {
+export function starPlacesOf(natal: NatalChart): ReadonlyMap<SaoName, number> {
   return new Map(
     natal.cungs.flatMap((cung) =>
       [...cung.chinhTinh, ...cung.phuTinh].map((star): [SaoName, number] => [
@@ -317,10 +318,7 @@ export function applyViewYear(natal: NatalChart, viewYear: number | undefined): 
     tieuHan === null
       ? NO_MONTHS
       : anCungThang(anCungThangGieng(tieuHan, natal.lunar.month, natal.hourChi));
-  const luuTinh =
-    viewYear === undefined
-      ? []
-      : anLuuTinh(getYearPillar(convertSolarToLunar(new Date(viewYear, 6, 1)).year));
+  const luuTinh = viewYear === undefined ? [] : anLuuTinh(viewYearPillar(viewYear));
 
   const currentDaiVan = age === null ? undefined : daiVanAt(natal.daiVan, age);
   const daiVanTinh =

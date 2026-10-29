@@ -1,4 +1,4 @@
-import { anLuuDaiVanTinh } from './an-luu-dai-van.js';
+import { anLuuDaiVanTinh, anTuHoaDaiVan } from './an-luu-dai-van.js';
 import { castChart } from './cast-chart.js';
 import type { SaoName } from './sao-names.js';
 import { Gender } from './van-han.js';
@@ -364,6 +364,11 @@ describe('anLuuDaiVanTinh — bốn hoá đóng tại cung của sao nhận hoá
     ]);
     const placed = anLuuDaiVanTinh({ can: CAN_NHAM, chi: 0 }, places);
     expect(placed.find((sao) => sao.name === 'Hóa Khoa')?.chiIndex).toBe(THIEN_PHU_AT);
+  });
+
+  it('cho can Nhâm, anTuHoaDaiVan trả hoá Khoa vào Thiên Phủ', () => {
+    const CAN_NHAM = 8;
+    expect(anTuHoaDaiVan(CAN_NHAM)).toContainEqual({ hoa: 'Hóa Khoa', star: 'Thiên Phủ' });
   });
 });
 
