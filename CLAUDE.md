@@ -22,6 +22,39 @@
 
 <!-- nx configuration end-->
 
+# Commands
+
+- Setup: `pnpm install && pnpm bootstrap` (copies `.env`, starts Postgres + Redis, runs migrations).
+- Before claiming done: `pnpm nx affected -t lint typecheck test` (same gate as pre-push, plus tests).
+- Single project: `pnpm nx <target> <project>` — apps are `@org/backend`, `@org/frontend`, `@org/dashboard` (plus `-e2e`); libs are `shared-tu-vi`, `shared-contracts`, `frontend-shared`, `backend-*`.
+- Entity changed: `pnpm db:migration:generate <Name>`, then commit the file in `apps/backend/src/migrations`.
+- Admin GraphQL schema changed (`apps/backend/src/api/admin/schema.gql`): `pnpm nx codegen @org/dashboard` to refresh `apps/dashboard/src/gql`.
+
+# Map
+
+- `apps/backend` — NestJS. HTTP features under `src/api/<feature>`; infra modules (`ai`, `email`, `storage`, `transport`) at `src/` root.
+- `apps/frontend` — public React SPA, TanStack Router file routes, feature code in `src/features/<feature>`.
+- `apps/dashboard` — admin console, talks to the backend over GraphQL (codegen, not hand-written types).
+- `packages/shared/tu-vi` — pure chart engine: casting a lá số (`cast-chart.ts`) and building luận giải briefs (`src/luan`). No I/O; most domain bugs are fixed here.
+- `packages/shared/contracts` — DTOs shared by backend and frontend.
+- `packages/backend/*` — reusable Nest infrastructure (config, jwt, redis, crypto, filters, ...).
+
+## Luận giải pipeline
+
+A chapter is `chapters/<name>/` in `apps/backend/src/api/luan-giai`: brief from `shared-tu-vi/src/luan/build-<name>-brief.ts` → prompt (`prompt/`) → `generation/chapter-generator.ts` calls the AI port → `validate/` rejects mục that break the rules → `article/` assembles. New chapters register in `generation/chapter-registry.ts` and get an id in `luan-giai.constants.ts`.
+
+## Backend architecture
+
+Moving to hexagonal one module at a time. `src/ai` is the template (`port/`, `providers/`, `settings/`, `usage/`); feature code imports only `ai/port`, enforced by `no-restricted-imports` in `apps/backend/eslint.config.mjs`. Other modules still inject TypeORM repositories directly — don't rewrite them unless asked.
+
+# Gotchas
+
+- The dev servers (`pnpm dev`: frontend 4200, backend 3000, dashboard) are usually already running. Reuse them; never `pkill -f vite` / `pkill -f nx` — it silently kills the user's servers.
+- Backend typecheck failing with TS6305 everywhere = stale buildinfo. Delete `apps/backend/dist/tsconfig.app.tsbuildinfo` and `apps/backend/out-tsc/jest/tsconfig.spec.tsbuildinfo`. Never delete `apps/backend/dist` (the dev server serves from it).
+- After pulling dependency bumps, run `pnpm install` before trusting any build error.
+- Never edit generated files: `routeTree.gen.ts`, `apps/dashboard/src/gql/**`, `schema.gql`.
+- `SECRET_KEY` encrypts TOTP secrets at rest; changing it on a database with users locks them out.
+
 # Comments
 
 Do not write comments. Not in TypeScript, not in YAML, Dockerfiles, shell scripts, or env templates.
