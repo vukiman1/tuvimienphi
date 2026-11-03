@@ -1,27 +1,43 @@
-import { Body, Controller, Get, HttpCode, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Param,
+  ParseIntPipe,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { StrategyKey } from '@org/backend-constants';
 import { User } from '@org/backend-decorators';
 import type { LuanGiaiChapterResponse, LuanGiaiChapterStatusMap } from '@org/shared-contracts';
-import { BirthInputDto } from '../la-so/dto/birth-input.dto';
 import { UserEntity } from '../user/entities/user.entity';
+import { LuanGiaiRequestDto } from './dto/luan-giai-request.dto';
 import { LuanGiaiService } from './luan-giai.service';
+
+const VIEW_YEAR_QUERY = 'viewYear';
 
 @Controller('luan-giai')
 export class LuanGiaiController {
   constructor(private readonly luanGiai: LuanGiaiService) {}
 
   @Get(':birthKey')
-  status(@Param('birthKey') birthKey: string): Promise<LuanGiaiChapterStatusMap> {
-    return this.luanGiai.status(birthKey);
+  status(
+    @Param('birthKey') birthKey: string,
+    @Query(VIEW_YEAR_QUERY, new ParseIntPipe({ optional: true })) viewYear?: number,
+  ): Promise<LuanGiaiChapterStatusMap> {
+    return this.luanGiai.status(birthKey, viewYear);
   }
 
   @Get(':birthKey/:order')
   read(
     @Param('birthKey') birthKey: string,
     @Param('order') order: string,
+    @Query(VIEW_YEAR_QUERY, new ParseIntPipe({ optional: true })) viewYear?: number,
   ): Promise<LuanGiaiChapterResponse> {
-    return this.luanGiai.read(birthKey, order);
+    return this.luanGiai.read(birthKey, order, viewYear);
   }
 
   @Post(':order')
@@ -30,8 +46,9 @@ export class LuanGiaiController {
   request(
     @User() user: UserEntity,
     @Param('order') order: string,
-    @Body() body: BirthInputDto,
+    @Body() body: LuanGiaiRequestDto,
   ): Promise<LuanGiaiChapterResponse> {
-    return this.luanGiai.request(user.id, body, order);
+    const { viewYear, ...birth } = body;
+    return this.luanGiai.request(user.id, birth, order, viewYear);
   }
 }

@@ -22,10 +22,14 @@ import {
   CHAPTER_TAI_BACH,
   CHAPTER_THAN_CU,
   CHAPTER_TINH_DUYEN,
+  CHAPTER_VAN_HAN,
 } from './luan-giai.constants';
+import { RequiredMucFailedError } from './luan-giai.errors';
 import {
   ChapterGenerationFailedException,
   ChapterQuotaExceededException,
+  InvalidViewYearException,
+  ViewYearRequiredException,
 } from './luan-giai.exceptions';
 import type { ChapterGenerator, ChapterResult } from './generation/chapter-generator';
 import { CHAPTER_DEFINITIONS } from './generation/chapter-registry';
@@ -47,7 +51,7 @@ const dungBrief = buildThanCuBrief as jest.MockedFunction<typeof buildThanCuBrie
 
 interface Overrides {
   readonly row?: LuanGiaiChapterEntity | null;
-  readonly daCo?: readonly Pick<LuanGiaiChapterEntity, 'chapterOrder'>[];
+  readonly daCo?: readonly Pick<LuanGiaiChapterEntity, 'chapterOrder' | 'viewYear'>[];
   readonly conSuat?: boolean;
   readonly sinh?: jest.Mock;
 }
@@ -168,7 +172,7 @@ describe('LuanGiaiService.request', () => {
   it('báo unavailable cho chương chưa có bảng, không đụng tới database', async () => {
     const { service, repo, allowance } = dungService();
 
-    const ket = await service.request('u1', CO_BANG, '06');
+    const ket = await service.request('u1', CO_BANG, '99');
 
     expect(ket).toEqual({ status: LuanGiaiChapterStatus.Unavailable });
     expect(repo.findOne).not.toHaveBeenCalled();
@@ -202,8 +206,12 @@ describe('LuanGiaiService.request', () => {
 
     expect(ket).toEqual({ status: LuanGiaiChapterStatus.Ready, article: BAI });
     expect(repo.upsert).toHaveBeenCalledWith(
-      expect.objectContaining({ birthKey: '1960-05-26-duong-h11-nam', chapterOrder: '01' }),
-      ['birthKey', 'chapterOrder'],
+      expect.objectContaining({
+        birthKey: '1960-05-26-duong-h11-nam',
+        chapterOrder: '01',
+        viewYear: 0,
+      }),
+      ['birthKey', 'chapterOrder', 'viewYear'],
     );
   });
 
@@ -365,20 +373,19 @@ describe('LuanGiaiService.request khi một chương đang được sinh dở', 
 
 describe('LuanGiaiService.status', () => {
   it('chương đã có bài thì mở được, chương có bảng mà chưa sinh thì còn khoá', async () => {
-    const { service } = dungService({ daCo: [{ chapterOrder: CHAPTER_THAN_CU }] });
+    const { service } = dungService({ daCo: [{ chapterOrder: CHAPTER_THAN_CU, viewYear: 0 }] });
 
     const { chapters } = await service.status('1960-05-26-duong-h11-nam');
 
     expect(chapters[CHAPTER_THAN_CU]).toBe(LuanGiaiChapterStatus.Ready);
   });
 
-  it('chương chưa có bảng luận thì báo unavailable chứ không phải khoá chờ bấm', async () => {
+  it('chương có bảng mà chưa sinh thì còn khoá chờ bấm', async () => {
     const { service } = dungService();
 
     const { chapters } = await service.status('1960-05-26-duong-h11-nam');
 
     expect(chapters[CHAPTER_THAN_CU]).toBe(LuanGiaiChapterStatus.Pending);
-    expect(chapters['06']).toBe(LuanGiaiChapterStatus.Unavailable);
   });
 
   it('liệt kê đủ sáu chương để mục lục không bị thiếu ô', async () => {
@@ -387,5 +394,146 @@ describe('LuanGiaiService.status', () => {
     const { chapters } = await service.status('1960-05-26-duong-h11-nam');
 
     expect(Object.keys(chapters)).toHaveLength(6);
+  });
+});
+
+const KEY = '1960-05-26-duong-h11-nam';
+const VIEW_YEAR = 2027;
+
+describe('LuanGiaiService theo năm xem', () => {
+  it('chương 06 sinh và lưu theo đúng năm xem, với ngữ cảnh năm hiện tại', async () => {
+    const { service, generator, repo } = dungService();
+
+    const ket = await service.request('u1', CO_BANG, CHAPTER_VAN_HAN, VIEW_YEAR);
+
+    expect(ket).toEqual({ status: LuanGiaiChapterStatus.Ready, article: BAI });
+    expect(generator.generate).toHaveBeenCalledWith(
+      CHAPTER_DEFINITIONS.get(CHAPTER_VAN_HAN),
+      expect.anything(),
+      expect.any(Number),
+      { viewYear: VIEW_YEAR, currentYear: new Date().getFullYear() },
+    );
+    expect(repo.upsert).toHaveBeenCalledWith(
+      expect.objectContaining({ chapterOrder: CHAPTER_VAN_HAN, viewYear: VIEW_YEAR }),
+      ['birthKey', 'chapterOrder', 'viewYear'],
+    );
+  });
+
+  it('chương 06 thiếu năm xem thì từ chối trước khi trừ suất', async () => {
+    const { service, allowance } = dungService();
+
+    await expect(service.request('u1', CO_BANG, CHAPTER_VAN_HAN)).rejects.toThrow(
+      ViewYearRequiredException,
+    );
+    expect(allowance.consume).not.toHaveBeenCalled();
+  });
+
+  it('năm xem ngoài khoảng tra được thì từ chối trước khi chạm database', async () => {
+    const { service, repo } = dungService();
+
+    await expect(service.read(KEY, CHAPTER_VAN_HAN, 99_999)).rejects.toThrow(
+      InvalidViewYearException,
+    );
+    expect(repo.findOne).not.toHaveBeenCalled();
+  });
+
+  it('năm xem trước năm sinh thì báo unavailable và không trừ suất', async () => {
+    const { service, allowance } = dungService();
+
+    const ket = await service.request('u1', CO_BANG, CHAPTER_VAN_HAN, 1950);
+
+    expect(ket).toEqual({ status: LuanGiaiChapterStatus.Unavailable });
+    expect(allowance.consume).not.toHaveBeenCalled();
+  });
+
+  it('chương không theo năm thì bỏ qua năm xem client gửi, vẫn tìm và lưu ở năm 0', async () => {
+    const { service, repo, generator } = dungService();
+
+    await service.request('u1', CO_BANG, CHAPTER_MENH, VIEW_YEAR);
+
+    expect(repo.findOne).toHaveBeenCalledWith({
+      where: { birthKey: KEY, chapterOrder: CHAPTER_MENH, viewYear: 0 },
+    });
+    expect(repo.upsert).toHaveBeenCalledWith(
+      expect.objectContaining({ chapterOrder: CHAPTER_MENH, viewYear: 0 }),
+      ['birthKey', 'chapterOrder', 'viewYear'],
+    );
+    expect(generator.generate).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.anything(),
+      expect.any(Number),
+      expect.objectContaining({ viewYear: null }),
+    );
+  });
+
+  it('hai năm xem khác nhau của chương 06 sinh riêng, cùng một năm thì chờ chung', async () => {
+    const generation = deferred<ChapterResult>();
+    const { service, generator, allowance } = dungService({
+      sinh: jest.fn().mockReturnValue(generation.promise),
+    });
+
+    const requests = Promise.all([
+      service.request('u1', CO_BANG, CHAPTER_VAN_HAN, 2026),
+      service.request('u1', CO_BANG, CHAPTER_VAN_HAN, VIEW_YEAR),
+      service.request('u2', CO_BANG, CHAPTER_VAN_HAN, VIEW_YEAR),
+    ]);
+    generation.resolve(KET);
+    await requests;
+
+    expect(generator.generate).toHaveBeenCalledTimes(2);
+    expect(allowance.consume).toHaveBeenCalledTimes(2);
+  });
+
+  it('mục bắt buộc hỏng thì hoàn suất đúng một lần và không lưu gì', async () => {
+    const { service, allowance, repo } = dungService({
+      sinh: jest.fn().mockRejectedValue(new RequiredMucFailedError('Điều cần giữ', 'chặn')),
+    });
+
+    await expect(service.request('u1', CO_BANG, CHAPTER_VAN_HAN, VIEW_YEAR)).rejects.toThrow(
+      ChapterGenerationFailedException,
+    );
+    expect(allowance.refund).toHaveBeenCalledTimes(1);
+    expect(repo.upsert).not.toHaveBeenCalled();
+  });
+
+  it('đọc chương 06 theo đúng năm xem', async () => {
+    const { service, repo } = dungService({ row: { article: BAI } as LuanGiaiChapterEntity });
+
+    const ket = await service.read(KEY, CHAPTER_VAN_HAN, VIEW_YEAR);
+
+    expect(ket).toEqual({ status: LuanGiaiChapterStatus.Ready, article: BAI });
+    expect(repo.findOne).toHaveBeenCalledWith({
+      where: { birthKey: KEY, chapterOrder: CHAPTER_VAN_HAN, viewYear: VIEW_YEAR },
+    });
+  });
+
+  it('chương 06 chỉ mở khi đã có bài cho đúng năm đang xem', async () => {
+    const { service } = dungService({
+      daCo: [{ chapterOrder: CHAPTER_VAN_HAN, viewYear: 2026 }],
+    });
+
+    const nam2026 = await service.status(KEY, 2026);
+    const nam2027 = await service.status(KEY, VIEW_YEAR);
+
+    expect(nam2026.chapters[CHAPTER_VAN_HAN]).toBe(LuanGiaiChapterStatus.Ready);
+    expect(nam2027.chapters[CHAPTER_VAN_HAN]).toBe(LuanGiaiChapterStatus.Pending);
+  });
+
+  it('không gửi năm xem thì chương 06 còn khoá chờ bấm', async () => {
+    const { service } = dungService({
+      daCo: [{ chapterOrder: CHAPTER_VAN_HAN, viewYear: VIEW_YEAR }],
+    });
+
+    const { chapters } = await service.status(KEY);
+
+    expect(chapters[CHAPTER_VAN_HAN]).toBe(LuanGiaiChapterStatus.Pending);
+  });
+
+  it('chương không theo năm mở như nhau ở mọi năm xem', async () => {
+    const { service } = dungService({ daCo: [{ chapterOrder: CHAPTER_MENH, viewYear: 0 }] });
+
+    const { chapters } = await service.status(KEY, VIEW_YEAR);
+
+    expect(chapters[CHAPTER_MENH]).toBe(LuanGiaiChapterStatus.Ready);
   });
 });
