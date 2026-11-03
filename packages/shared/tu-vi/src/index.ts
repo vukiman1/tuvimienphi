@@ -17,8 +17,11 @@ export * from './sao-ngu-hanh-data.js';
 export * from './sao-cat-hung.js';
 export * from './an-chinh-tinh.js';
 export * from './tu-hoa.js';
+export { anTuHoaDaiVan } from './an-luu-dai-van.js';
 
 export * from './van-han.js';
+export * from './view-year.js';
+export * from './dan-gian.js';
 export * from './tieu-han.js';
 export * from './luu-nien.js';
 

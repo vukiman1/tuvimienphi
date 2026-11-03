@@ -48,7 +48,7 @@ function xuongKhucAt(can: number): readonly SaoPlacement<PhuTinhName>[] {
  * Tứ hoá của tầng đại vận trùng bảng sinh niên ở chín can. Riêng Nhâm, hoá Khoa vào Thiên Phủ chứ
  * không vào Tả Phù như tầng sinh niên của chính trang — ba lá số can Nhâm đều thế.
  */
-function anTuHoaDaiVan(can: number): readonly TuHoa[] {
+export function anTuHoaDaiVan(can: number): readonly TuHoa[] {
   const tuHoa = anTuHoa(can);
   if (can !== CAN_NHAM) {
     return tuHoa;

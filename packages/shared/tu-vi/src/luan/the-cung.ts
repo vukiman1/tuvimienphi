@@ -1,4 +1,4 @@
-import type { NatalChart, NatalCungView, SaoView } from '../cast-chart.js';
+import { starPlacesOf, type NatalChart, type NatalCungView, type SaoView } from '../cast-chart.js';
 import { nhiHopIndex, tamHopIndexes, xungChieuIndex } from '../chi.js';
 import type { CungName } from '../dia-ban.js';
 import type { ChinhTinhName, PhuTinhName } from '../sao-names.js';
@@ -73,4 +73,24 @@ export function theCungAt(chart: NatalChart, chiIndex: number): TheCung {
     tuHoaTacDong: chart.tuHoa.filter((hoa) => coMat.has(hoa.hoa)),
     anNgu: anNguCua(cung),
   };
+}
+
+export function theCuaChi(anchorIndex: number, chiIndex: number): TheChieu | null {
+  if (chiIndex === anchorIndex) return TheChieu.ToaThu;
+  if (chiIndex === xungChieuIndex(anchorIndex)) return TheChieu.XungChieu;
+  if (tamHopIndexes(anchorIndex).includes(chiIndex)) return TheChieu.TamHop;
+  if (chiIndex === nhiHopIndex(anchorIndex)) return TheChieu.NhiHop;
+  return null;
+}
+
+export function tuHoaTacDongTai(
+  chart: NatalChart,
+  anchorIndex: number,
+  tuHoa: readonly TuHoa[],
+): readonly TuHoa[] {
+  const starPlaces = starPlacesOf(chart);
+  return tuHoa.filter((hoa) => {
+    const chiIndex = starPlaces.get(hoa.star);
+    return chiIndex !== undefined && theCuaChi(anchorIndex, chiIndex) !== null;
+  });
 }
