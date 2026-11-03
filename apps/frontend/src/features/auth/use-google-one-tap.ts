@@ -5,10 +5,14 @@ import { ensureGoogleIdentity, promptGoogleOneTap } from '@/lib/google-identity'
 import { notify } from '@/lib/toast';
 import { authService } from '@/services/auth-service';
 import { selectIsAuthenticated, selectIsInitializing, useAuthStore } from '@/stores/auth-store';
+import { usePendingTwoFactor } from './pending-two-factor-store';
 import { startSession } from './session';
+import { useAuthModal } from './use-auth-modal';
 
 export function useGoogleOneTap(): void {
   const navigate = useNavigate();
+  const { open: openAuthModal } = useAuthModal();
+  const setChallengeToken = usePendingTwoFactor((state) => state.setChallengeToken);
   const isAuthenticated = useAuthStore(selectIsAuthenticated);
   const isInitializing = useAuthStore(selectIsInitializing);
   const clientId = appConfig.google.clientId;
@@ -25,6 +29,11 @@ export function useGoogleOneTap(): void {
     const onCredential = async (credential: string) => {
       try {
         const result = await authService.googleOneTap(credential);
+        if ('twoFactorRequired' in result) {
+          setChallengeToken(result.challengeToken);
+          await openAuthModal('login');
+          return;
+        }
         startSession(result.user);
         // Same confirmation the email and 2FA sign-in paths already show.
         notify.success('Signed in.');
@@ -47,5 +56,5 @@ export function useGoogleOneTap(): void {
     return () => {
       cancelled = true;
     };
-  }, [clientId, isAuthenticated, isInitializing, navigate]);
+  }, [clientId, isAuthenticated, isInitializing, navigate, openAuthModal, setChallengeToken]);
 }

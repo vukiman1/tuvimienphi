@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { isInternalPath } from './route-guards';
 
@@ -11,8 +12,11 @@ export function useAuthModal() {
   const navigate = useNavigate();
   const search = useSearch({ strict: false }) as { auth?: AuthModalView; redirect?: string };
 
-  const open = (view: AuthModalView) =>
-    navigate({ to: '.', search: (previous) => ({ ...previous, auth: view }) });
+  const open = useCallback(
+    (view: AuthModalView) =>
+      navigate({ to: '.', search: (previous) => ({ ...previous, auth: view }) }),
+    [navigate],
+  );
 
   const close = () =>
     navigate({

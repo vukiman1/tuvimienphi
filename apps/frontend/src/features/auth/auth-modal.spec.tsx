@@ -11,6 +11,7 @@ import { z } from 'zod';
 import { AuthModal } from './auth-modal';
 import { authService } from '@/services/auth-service';
 import { useAuthStore } from '@/stores/auth-store';
+import { usePendingTwoFactor } from './pending-two-factor-store';
 
 jest.mock('@/services/auth-service', () => ({
   authService: { login: jest.fn() },
@@ -57,6 +58,25 @@ describe('AuthModal', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     useAuthStore.setState({ user: null, isInitializing: false });
+    usePendingTwoFactor.setState({ challengeToken: null });
+  });
+
+  it('opens straight on the code step when Google sign-in is waiting for a second factor', async () => {
+    usePendingTwoFactor.setState({ challengeToken: 'challenge-1' });
+
+    renderAt('/?auth=login');
+
+    expect(await screen.findByLabelText('Verification code')).toBeTruthy();
+  });
+
+  it('forgets a pending challenge once the modal closes', async () => {
+    usePendingTwoFactor.setState({ challengeToken: 'challenge-1' });
+    const router = renderAt('/?auth=login');
+    await screen.findByLabelText('Verification code');
+
+    await router.navigate({ to: '/', search: {} });
+
+    await waitFor(() => expect(usePendingTwoFactor.getState().challengeToken).toBeNull());
   });
 
   it('stays closed when the search param is absent', async () => {
