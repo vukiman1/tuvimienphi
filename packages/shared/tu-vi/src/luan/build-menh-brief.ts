@@ -13,7 +13,7 @@ import { Sac, type LuanDe } from './luan-de.js';
 import { TheChieu, theCungAt, type SaoTheoThe } from './the-cung.js';
 
 const BRIGHTNESS_FACTOR: Record<Rating, number> = { M: 1.2, V: 1.1, Đ: 1.0, B: 0.9, H: 0.8 };
-const THE_FACTOR: Record<TheChieu, number> = {
+export const THE_FACTOR: Record<TheChieu, number> = {
   [TheChieu.ToaThu]: 1,
   [TheChieu.XungChieu]: 0.75,
   [TheChieu.TamHop]: 0.6,

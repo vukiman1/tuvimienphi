@@ -1371,6 +1371,341 @@ exports[`brief của lá số 1955-06-26 21h Nữ Tình duyên 1`] = `
 }
 `;
 
+exports[`brief của lá số 1955-06-26 21h Nữ Vận hạn 1`] = `
+{
+  "chinh": {
+    "anNgu": null,
+    "catTinh": [
+      {
+        "ten": "Thiên Hỉ",
+        "the": "toạ thủ",
+      },
+    ],
+    "chi": "Dần",
+    "chiNamSinh": "Mùi",
+    "chinhTinh": [
+      {
+        "bac": "V",
+        "ten": "Vũ Khúc",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "M",
+        "ten": "Thiên Tướng",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "H",
+        "ten": "Phá Quân",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "M",
+        "ten": "Tử Vi",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "M",
+        "ten": "Liêm Trinh",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "V",
+        "ten": "Thiên Phủ",
+        "the": "tam hợp",
+      },
+    ],
+    "cung": "Tật Ách",
+    "gioiTinh": "nu",
+    "hungTinh": [],
+    "laVoChinhDieu": false,
+    "luan": [
+      {
+        "do": [
+          "Thiên Tướng",
+        ],
+        "sac": "thuan",
+        "trong": 102,
+        "tuKhoa": [
+          "chỉn chu",
+          "giữ lời",
+        ],
+        "y": "chỉn chu, giữ lời nên người ta yên tâm giao việc",
+      },
+      {
+        "do": [
+          "Vũ Khúc",
+        ],
+        "sac": "thuan",
+        "trong": 94,
+        "tuKhoa": [
+          "dứt khoát",
+          "làm cho xong",
+        ],
+        "y": "dứt khoát, đã nhận việc là làm cho xong",
+      },
+      {
+        "do": [
+          "Thiên Tướng",
+        ],
+        "sac": "nghich",
+        "trong": 94,
+        "tuKhoa": [
+          "theo khuôn",
+          "tự mở đường",
+        ],
+        "y": "quen làm theo khuôn, ít khi tự mở đường riêng",
+      },
+      {
+        "do": [
+          "Vũ Khúc",
+        ],
+        "sac": "nghich",
+        "trong": 86,
+        "tuKhoa": [
+          "nói thẳng",
+          "mất lòng",
+        ],
+        "y": "nói thẳng tới mức khô, dễ mất lòng người nghe",
+      },
+      {
+        "do": [
+          "Thiên Hỉ",
+        ],
+        "sac": "hoa-giai",
+        "trong": 45,
+        "tuKhoa": [
+          "tin vui",
+          "hòa hợp",
+        ],
+        "y": "có tin vui, không khí hòa hợp",
+      },
+    ],
+    "vanHan": {
+      "chuDeVan": "mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền",
+      "cungDaiVan": "Tật Ách",
+      "cungTieuHan": "Thiên Di",
+      "daiVanTuoi": "73–82 tuổi",
+      "namCanChi": "Đinh Mùi",
+      "namThuTrongVan": 1,
+      "namXem": 2027,
+      "tone": "khuyen",
+      "tuoi": 73,
+    },
+  },
+  "muc": [
+    {
+      "anNgu": null,
+      "catTinh": [
+        {
+          "ten": "Hóa Quyền",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Hóa Khoa",
+          "the": "tam hợp",
+        },
+        {
+          "ten": "Thiên Việt",
+          "the": "tam hợp",
+        },
+      ],
+      "chi": "Sửu",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "H",
+          "ten": "Thiên Đồng",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "H",
+          "ten": "Cự Môn",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "V",
+          "ten": "Thiên Cơ",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Thiên Di",
+      "duKien": [],
+      "gioiTinh": "nu",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Hóa Quyền",
+          ],
+          "sac": "thuan",
+          "trong": 65,
+          "tuKhoa": [
+            "tiếng nói",
+            "quyền quyết",
+          ],
+          "y": "có tiếng nói hơn, được giao thêm việc và quyền quyết",
+        },
+        {
+          "do": [
+            "Hóa Khoa",
+          ],
+          "sac": "thuan",
+          "trong": 37,
+          "tuKhoa": [
+            "tiếng tốt",
+            "ghi nhận",
+          ],
+          "y": "có tiếng tốt, công sức được ghi nhận",
+        },
+        {
+          "do": [
+            "Thiên Việt",
+          ],
+          "sac": "thuan",
+          "trong": 31,
+          "tuKhoa": [
+            "người giúp",
+            "lối ra",
+          ],
+          "y": "có người giúp đúng lúc, việc khó dễ tìm được lối ra",
+        },
+      ],
+      "muc": "diem-sang",
+      "sourceCung": "Thiên Di · Sửu",
+      "tieuDe": "Điểm sáng trong năm",
+      "vanHan": {
+        "chuDeVan": "mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền",
+        "cungDaiVan": "Tật Ách",
+        "cungTieuHan": "Thiên Di",
+        "daiVanTuoi": "73–82 tuổi",
+        "namCanChi": "Đinh Mùi",
+        "namThuTrongVan": 1,
+        "namXem": 2027,
+        "tone": "khuyen",
+        "tuoi": 73,
+      },
+    },
+    {
+      "anNgu": null,
+      "catTinh": [],
+      "chi": "Sửu",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "H",
+          "ten": "Thiên Đồng",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "H",
+          "ten": "Cự Môn",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "V",
+          "ten": "Thiên Cơ",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Thiên Di",
+      "duKien": [],
+      "gioiTinh": "nu",
+      "hungTinh": [
+        {
+          "ten": "Hóa Kỵ",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Thiên Hư",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Kình Dương",
+          "the": "xung chiếu",
+        },
+      ],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Hóa Kỵ",
+          ],
+          "sac": "nghich",
+          "trong": 70,
+          "tuKhoa": [
+            "vướng mắc",
+            "hiểu lầm",
+          ],
+          "y": "việc dễ vướng mắc và hiểu lầm, nên nói rõ từ đầu và kiên nhẫn",
+        },
+        {
+          "do": [
+            "Thiên Hư",
+          ],
+          "sac": "nghich",
+          "trong": 48,
+          "tuKhoa": [
+            "kỳ vọng",
+            "dự phòng",
+          ],
+          "y": "kế hoạch dễ hụt so với kỳ vọng, nên tính sẵn phần dự phòng",
+        },
+        {
+          "do": [
+            "Kình Dương",
+          ],
+          "sac": "nghich",
+          "trong": 44,
+          "tuKhoa": [
+            "cạnh tranh",
+            "mềm mỏng",
+          ],
+          "y": "dễ cạnh tranh gay gắt và lời qua tiếng lại, nên mềm mỏng hơn thường lệ",
+        },
+      ],
+      "muc": "dieu-can-giu",
+      "sourceCung": "Thiên Di · Sửu",
+      "tieuDe": "Điều cần giữ",
+      "vanHan": {
+        "chuDeVan": "mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền",
+        "cungDaiVan": "Tật Ách",
+        "cungTieuHan": "Thiên Di",
+        "daiVanTuoi": "73–82 tuổi",
+        "namCanChi": "Đinh Mùi",
+        "namThuTrongVan": 1,
+        "namXem": 2027,
+        "tone": "khuyen",
+        "tuoi": 73,
+      },
+    },
+  ],
+  "year": {
+    "cungDaiVan": "Tật Ách",
+    "cungDaiVanKeTiep": "Tài Bạch",
+    "cungTieuHan": "Thiên Di",
+    "daiVan": {
+      "chiIndex": 2,
+      "endAge": 82,
+      "startAge": 73,
+    },
+    "daiVanKeTiep": {
+      "chiIndex": 3,
+      "endAge": 92,
+      "startAge": 83,
+    },
+    "namBatDauVanKeTiep": 2037,
+    "namCanChi": "Đinh Mùi",
+    "namThuTrongVan": 1,
+    "tieuHan": 1,
+    "tone": "khuyen",
+    "tuoi": 73,
+    "viewYear": 2027,
+  },
+}
+`;
+
 exports[`brief của lá số 1955-12-09 7h Nữ Công danh 1`] = `
 {
   "chinh": {
@@ -2794,6 +3129,372 @@ exports[`brief của lá số 1955-12-09 7h Nữ Tình duyên 1`] = `
       "tieuDe": "Điểm cần giữ trong tình duyên",
     },
   ],
+}
+`;
+
+exports[`brief của lá số 1955-12-09 7h Nữ Vận hạn 1`] = `
+{
+  "chinh": {
+    "anNgu": null,
+    "catTinh": [
+      {
+        "ten": "Thiên Hỉ",
+        "the": "toạ thủ",
+      },
+    ],
+    "chi": "Dần",
+    "chiNamSinh": "Mùi",
+    "chinhTinh": [
+      {
+        "bac": "V",
+        "ten": "Thiên Cơ",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "V",
+        "ten": "Thái Âm",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "M",
+        "ten": "Thái Dương",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "H",
+        "ten": "Cự Môn",
+        "the": "tam hợp",
+      },
+    ],
+    "cung": "Tật Ách",
+    "gioiTinh": "nu",
+    "hungTinh": [],
+    "laVoChinhDieu": true,
+    "luan": [
+      {
+        "do": [
+          "Thái Âm",
+        ],
+        "sac": "thuan",
+        "trong": 80,
+        "tuKhoa": [
+          "ý tứ",
+          "cảm giác",
+        ],
+        "y": "ý tứ, để ý tới cảm giác của người bên cạnh",
+      },
+      {
+        "do": [
+          "Thái Dương",
+        ],
+        "sac": "thuan",
+        "trong": 61,
+        "tuKhoa": [
+          "nhiệt tình",
+          "lo phần việc",
+        ],
+        "y": "nhiệt tình, sẵn lòng lo phần việc của người khác",
+      },
+      {
+        "do": [
+          "Thiên Cơ",
+        ],
+        "sac": "nghich",
+        "trong": 80,
+        "tuKhoa": [
+          "vướng lại",
+          "trắc trở",
+        ],
+        "y": "phần thuận lợi bị vướng lại, muốn được việc thì cũng phải qua trắc trở",
+      },
+      {
+        "do": [
+          "Thái Âm",
+        ],
+        "sac": "nghich",
+        "trong": 74,
+        "tuKhoa": [
+          "giấu bụng",
+          "ít khi nói ra",
+        ],
+        "y": "giấu bụng, buồn vui ít khi nói ra",
+      },
+      {
+        "do": [
+          "Thiên Hỉ",
+        ],
+        "sac": "hoa-giai",
+        "trong": 45,
+        "tuKhoa": [
+          "tin vui",
+          "hòa hợp",
+        ],
+        "y": "có tin vui, không khí hòa hợp",
+      },
+    ],
+    "vanHan": {
+      "chuDeVan": "mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền",
+      "cungDaiVan": "Tật Ách",
+      "cungTieuHan": "Thiên Di",
+      "daiVanTuoi": "73–82 tuổi",
+      "namCanChi": "Đinh Mùi",
+      "namThuTrongVan": 1,
+      "namXem": 2027,
+      "tone": "khuyen",
+      "tuoi": 73,
+    },
+  },
+  "muc": [
+    {
+      "anNgu": null,
+      "catTinh": [
+        {
+          "ten": "Hóa Khoa",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Hóa Lộc",
+          "the": "tam hợp",
+        },
+        {
+          "ten": "Thiên Việt",
+          "the": "tam hợp",
+        },
+      ],
+      "chi": "Sửu",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "Đ",
+          "ten": "Liêm Trinh",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thất Sát",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Phủ",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "H",
+          "ten": "Vũ Khúc",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "H",
+          "ten": "Phá Quân",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "B",
+          "ten": "Tử Vi",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "H",
+          "ten": "Tham Lang",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Thiên Di",
+      "duKien": [],
+      "gioiTinh": "nu",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Hóa Khoa",
+          ],
+          "sac": "thuan",
+          "trong": 62,
+          "tuKhoa": [
+            "tiếng tốt",
+            "ghi nhận",
+          ],
+          "y": "có tiếng tốt, công sức được ghi nhận",
+        },
+        {
+          "do": [
+            "Hóa Lộc",
+          ],
+          "sac": "thuan",
+          "trong": 41,
+          "tuKhoa": [
+            "cơ hội",
+            "kết quả",
+          ],
+          "y": "tiền và cơ hội đến thuận, việc mới dễ có kết quả",
+        },
+        {
+          "do": [
+            "Thiên Việt",
+          ],
+          "sac": "thuan",
+          "trong": 31,
+          "tuKhoa": [
+            "người giúp",
+            "lối ra",
+          ],
+          "y": "có người giúp đúng lúc, việc khó dễ tìm được lối ra",
+        },
+      ],
+      "muc": "diem-sang",
+      "sourceCung": "Thiên Di · Sửu",
+      "tieuDe": "Điểm sáng trong năm",
+      "vanHan": {
+        "chuDeVan": "mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền",
+        "cungDaiVan": "Tật Ách",
+        "cungTieuHan": "Thiên Di",
+        "daiVanTuoi": "73–82 tuổi",
+        "namCanChi": "Đinh Mùi",
+        "namThuTrongVan": 1,
+        "namXem": 2027,
+        "tone": "khuyen",
+        "tuoi": 73,
+      },
+    },
+    {
+      "anNgu": null,
+      "catTinh": [
+        {
+          "ten": "Thái Tuế",
+          "the": "xung chiếu",
+        },
+      ],
+      "chi": "Sửu",
+      "chiNamSinh": "Mùi",
+      "chinhTinh": [
+        {
+          "bac": "Đ",
+          "ten": "Liêm Trinh",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thất Sát",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Phủ",
+          "the": "xung chiếu",
+        },
+        {
+          "bac": "H",
+          "ten": "Vũ Khúc",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "H",
+          "ten": "Phá Quân",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "B",
+          "ten": "Tử Vi",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "H",
+          "ten": "Tham Lang",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Thiên Di",
+      "duKien": [],
+      "gioiTinh": "nu",
+      "hungTinh": [
+        {
+          "ten": "Thiên Hư",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Kình Dương",
+          "the": "xung chiếu",
+        },
+      ],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Thiên Hư",
+          ],
+          "sac": "nghich",
+          "trong": 48,
+          "tuKhoa": [
+            "kỳ vọng",
+            "dự phòng",
+          ],
+          "y": "kế hoạch dễ hụt so với kỳ vọng, nên tính sẵn phần dự phòng",
+        },
+        {
+          "do": [
+            "Kình Dương",
+          ],
+          "sac": "nghich",
+          "trong": 44,
+          "tuKhoa": [
+            "cạnh tranh",
+            "mềm mỏng",
+          ],
+          "y": "dễ cạnh tranh gay gắt và lời qua tiếng lại, nên mềm mỏng hơn thường lệ",
+        },
+        {
+          "do": [
+            "Thái Tuế",
+          ],
+          "sac": "nghich",
+          "trong": 41,
+          "tuKhoa": [
+            "thị phi",
+            "lời nói",
+          ],
+          "y": "dễ vướng thị phi vì lời nói, nên nói chậm và giữ chữ tín",
+        },
+      ],
+      "muc": "dieu-can-giu",
+      "sourceCung": "Thiên Di · Sửu",
+      "tieuDe": "Điều cần giữ",
+      "vanHan": {
+        "chuDeVan": "mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền",
+        "cungDaiVan": "Tật Ách",
+        "cungTieuHan": "Thiên Di",
+        "daiVanTuoi": "73–82 tuổi",
+        "namCanChi": "Đinh Mùi",
+        "namThuTrongVan": 1,
+        "namXem": 2027,
+        "tone": "khuyen",
+        "tuoi": 73,
+      },
+    },
+  ],
+  "year": {
+    "cungDaiVan": "Tật Ách",
+    "cungDaiVanKeTiep": "Tài Bạch",
+    "cungTieuHan": "Thiên Di",
+    "daiVan": {
+      "chiIndex": 2,
+      "endAge": 82,
+      "startAge": 73,
+    },
+    "daiVanKeTiep": {
+      "chiIndex": 3,
+      "endAge": 92,
+      "startAge": 83,
+    },
+    "namBatDauVanKeTiep": 2037,
+    "namCanChi": "Đinh Mùi",
+    "namThuTrongVan": 1,
+    "tieuHan": 1,
+    "tone": "khuyen",
+    "tuoi": 73,
+    "viewYear": 2027,
+  },
 }
 `;
 
@@ -4483,6 +5184,330 @@ exports[`brief của lá số 1956-03-03 1h Nam Tình duyên 1`] = `
       "tieuDe": "Điểm cần giữ trong tình duyên",
     },
   ],
+}
+`;
+
+exports[`brief của lá số 1956-03-03 1h Nam Vận hạn 1`] = `
+{
+  "chinh": {
+    "anNgu": null,
+    "catTinh": [
+      {
+        "ten": "Hồng Loan",
+        "the": "toạ thủ",
+      },
+      {
+        "ten": "Nguyệt Đức",
+        "the": "xung chiếu",
+      },
+    ],
+    "chi": "Mùi",
+    "chiNamSinh": "Thân",
+    "chinhTinh": [
+      {
+        "bac": "Đ",
+        "ten": "Thái Dương",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Thái Âm",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "H",
+        "ten": "Thiên Lương",
+        "the": "tam hợp",
+      },
+    ],
+    "cung": "Thiên Di",
+    "gioiTinh": "nam",
+    "hungTinh": [],
+    "laVoChinhDieu": false,
+    "luan": [
+      {
+        "do": [
+          "Thái Dương",
+        ],
+        "sac": "thuan",
+        "trong": 85,
+        "tuKhoa": [
+          "nhiệt tình",
+          "lo phần việc",
+        ],
+        "y": "nhiệt tình, sẵn lòng lo phần việc của người khác",
+      },
+      {
+        "do": [
+          "Hồng Loan",
+        ],
+        "sac": "thuan",
+        "trong": 62,
+        "tuKhoa": [
+          "duyên đến",
+          "hôn sự",
+        ],
+        "y": "duyên đến rõ ràng, dễ có hôn sự đúng lúc",
+      },
+      {
+        "do": [
+          "Thái Âm",
+        ],
+        "sac": "nghich",
+        "trong": 80,
+        "tuKhoa": [
+          "vướng lại",
+          "trắc trở",
+        ],
+        "y": "phần thuận lợi bị vướng lại, muốn được việc thì cũng phải qua trắc trở",
+      },
+      {
+        "do": [
+          "Thái Dương",
+        ],
+        "sac": "nghich",
+        "trong": 78,
+        "tuKhoa": [
+          "bộc trực",
+          "lỡ lời",
+        ],
+        "y": "bộc trực, nói xong mới thấy mình lỡ lời",
+      },
+      {
+        "do": [
+          "Nguyệt Đức",
+        ],
+        "sac": "hoa-giai",
+        "trong": 38,
+        "tuKhoa": [
+          "che chở",
+          "người đỡ",
+        ],
+        "y": "có phúc đức che chở, gặp việc thường có người đỡ",
+      },
+    ],
+    "vanHan": {
+      "chuDeVan": "mười năm của đi xa, ra ngoài và những mối quan hệ ngoài xã hội",
+      "cungDaiVan": "Thiên Di",
+      "cungTieuHan": "Tài Bạch",
+      "daiVanTuoi": "65–74 tuổi",
+      "namCanChi": "Đinh Mùi",
+      "namThuTrongVan": 8,
+      "namXem": 2027,
+      "tone": "khuyen",
+      "tuoi": 72,
+    },
+  },
+  "muc": [
+    {
+      "anNgu": null,
+      "catTinh": [
+        {
+          "ten": "Hóa Lộc",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Hóa Khoa",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Thiên Việt",
+          "the": "toạ thủ",
+        },
+      ],
+      "chi": "Dậu",
+      "chiNamSinh": "Thân",
+      "chinhTinh": [
+        {
+          "bac": "M",
+          "ten": "Thiên Cơ",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "M",
+          "ten": "Cự Môn",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Đồng",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Tài Bạch",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Hóa Lộc",
+          ],
+          "sac": "thuan",
+          "trong": 68,
+          "tuKhoa": [
+            "cơ hội",
+            "kết quả",
+          ],
+          "y": "tiền và cơ hội đến thuận, việc mới dễ có kết quả",
+        },
+        {
+          "do": [
+            "Hóa Khoa",
+          ],
+          "sac": "thuan",
+          "trong": 62,
+          "tuKhoa": [
+            "tiếng tốt",
+            "ghi nhận",
+          ],
+          "y": "có tiếng tốt, công sức được ghi nhận",
+        },
+        {
+          "do": [
+            "Thiên Việt",
+          ],
+          "sac": "thuan",
+          "trong": 52,
+          "tuKhoa": [
+            "người giúp",
+            "lối ra",
+          ],
+          "y": "có người giúp đúng lúc, việc khó dễ tìm được lối ra",
+        },
+      ],
+      "muc": "diem-sang",
+      "sourceCung": "Tài Bạch · Dậu",
+      "tieuDe": "Điểm sáng trong năm",
+      "vanHan": {
+        "chuDeVan": "mười năm của đi xa, ra ngoài và những mối quan hệ ngoài xã hội",
+        "cungDaiVan": "Thiên Di",
+        "cungTieuHan": "Tài Bạch",
+        "daiVanTuoi": "65–74 tuổi",
+        "namCanChi": "Đinh Mùi",
+        "namThuTrongVan": 8,
+        "namXem": 2027,
+        "tone": "khuyen",
+        "tuoi": 72,
+      },
+    },
+    {
+      "anNgu": null,
+      "catTinh": [],
+      "chi": "Dậu",
+      "chiNamSinh": "Thân",
+      "chinhTinh": [
+        {
+          "bac": "M",
+          "ten": "Thiên Cơ",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "M",
+          "ten": "Cự Môn",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Thiên Đồng",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Tài Bạch",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [
+        {
+          "ten": "Hóa Kỵ",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Tang Môn",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Bạch Hổ",
+          "the": "xung chiếu",
+        },
+      ],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Hóa Kỵ",
+          ],
+          "sac": "nghich",
+          "trong": 70,
+          "tuKhoa": [
+            "vướng mắc",
+            "hiểu lầm",
+          ],
+          "y": "việc dễ vướng mắc và hiểu lầm, nên nói rõ từ đầu và kiên nhẫn",
+        },
+        {
+          "do": [
+            "Tang Môn",
+          ],
+          "sac": "nghich",
+          "trong": 62,
+          "tuKhoa": [
+            "nặng nề",
+            "chuyện nhà",
+          ],
+          "y": "tâm trạng dễ nặng nề, chuyện nhà cần được quan tâm nhiều hơn",
+        },
+        {
+          "do": [
+            "Bạch Hổ",
+          ],
+          "sac": "nghich",
+          "trong": 47,
+          "tuKhoa": [
+            "va chạm",
+            "nóng vội",
+          ],
+          "y": "dễ va chạm và nóng vội, nên chậm lại trước các quyết định lớn",
+        },
+      ],
+      "muc": "dieu-can-giu",
+      "sourceCung": "Tài Bạch · Dậu",
+      "tieuDe": "Điều cần giữ",
+      "vanHan": {
+        "chuDeVan": "mười năm của đi xa, ra ngoài và những mối quan hệ ngoài xã hội",
+        "cungDaiVan": "Thiên Di",
+        "cungTieuHan": "Tài Bạch",
+        "daiVanTuoi": "65–74 tuổi",
+        "namCanChi": "Đinh Mùi",
+        "namThuTrongVan": 8,
+        "namXem": 2027,
+        "tone": "khuyen",
+        "tuoi": 72,
+      },
+    },
+  ],
+  "year": {
+    "cungDaiVan": "Thiên Di",
+    "cungDaiVanKeTiep": "Tật Ách",
+    "cungTieuHan": "Tài Bạch",
+    "daiVan": {
+      "chiIndex": 7,
+      "endAge": 74,
+      "startAge": 65,
+    },
+    "daiVanKeTiep": {
+      "chiIndex": 8,
+      "endAge": 84,
+      "startAge": 75,
+    },
+    "namBatDauVanKeTiep": 2030,
+    "namCanChi": "Đinh Mùi",
+    "namThuTrongVan": 8,
+    "tieuHan": 9,
+    "tone": "khuyen",
+    "tuoi": 72,
+    "viewYear": 2027,
+  },
 }
 `;
 
@@ -6204,5 +7229,375 @@ exports[`brief của lá số 1960-05-26 21h Nam Tình duyên 1`] = `
       "tieuDe": "Điểm cần giữ trong tình duyên",
     },
   ],
+}
+`;
+
+exports[`brief của lá số 1960-05-26 21h Nam Vận hạn 1`] = `
+{
+  "chinh": {
+    "anNgu": null,
+    "catTinh": [
+      {
+        "ten": "Thiên Đức",
+        "the": "tam hợp",
+      },
+    ],
+    "chi": "Sửu",
+    "chiNamSinh": "Tý",
+    "chinhTinh": [
+      {
+        "bac": "Đ",
+        "ten": "Tử Vi",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "V",
+        "ten": "Phá Quân",
+        "the": "toạ thủ",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Thiên Tướng",
+        "the": "xung chiếu",
+      },
+      {
+        "bac": "H",
+        "ten": "Liêm Trinh",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "H",
+        "ten": "Tham Lang",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "Đ",
+        "ten": "Vũ Khúc",
+        "the": "tam hợp",
+      },
+      {
+        "bac": "H",
+        "ten": "Thất Sát",
+        "the": "tam hợp",
+      },
+    ],
+    "cung": "Thiên Di",
+    "gioiTinh": "nam",
+    "hungTinh": [],
+    "laVoChinhDieu": false,
+    "luan": [
+      {
+        "do": [
+          "Phá Quân",
+        ],
+        "sac": "thuan",
+        "trong": 94,
+        "tuKhoa": [
+          "phá lệ",
+          "khác số đông",
+        ],
+        "y": "dám phá lệ, không ngại làm khác số đông",
+      },
+      {
+        "do": [
+          "Tử Vi",
+        ],
+        "sac": "thuan",
+        "trong": 85,
+        "tuKhoa": [
+          "gánh việc chung",
+          "trông vào",
+        ],
+        "y": "đứng ra gánh việc chung, người khác dễ trông vào",
+      },
+      {
+        "do": [
+          "Phá Quân",
+        ],
+        "sac": "nghich",
+        "trong": 86,
+        "tuKhoa": [
+          "đổi hướng",
+          "ổn định",
+        ],
+        "y": "đổi hướng liên tục, khó giữ mọi thứ ổn định",
+      },
+      {
+        "do": [
+          "Tử Vi",
+        ],
+        "sac": "nghich",
+        "trong": 78,
+        "tuKhoa": [
+          "thể diện",
+          "hạ mình",
+        ],
+        "y": "nặng thể diện, khó hạ mình nhận phần thiệt",
+      },
+      {
+        "do": [
+          "Thiên Đức",
+        ],
+        "sac": "hoa-giai",
+        "trong": 30,
+        "tuKhoa": [
+          "che chở",
+          "hung hóa cát",
+        ],
+        "y": "có đức che chở, hung hóa cát",
+      },
+    ],
+    "vanHan": {
+      "chuDeVan": "mười năm của đi xa, ra ngoài và những mối quan hệ ngoài xã hội",
+      "cungDaiVan": "Thiên Di",
+      "cungTieuHan": "Phu Thê",
+      "daiVanTuoi": "63–72 tuổi",
+      "namCanChi": "Đinh Mùi",
+      "namThuTrongVan": 6,
+      "namXem": 2027,
+      "tone": "khuyen",
+      "tuoi": 68,
+    },
+  },
+  "muc": [
+    {
+      "anNgu": "Tuần",
+      "catTinh": [
+        {
+          "ten": "Hóa Quyền",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Thiên Mã",
+          "the": "toạ thủ",
+        },
+        {
+          "ten": "Thiên Khôi",
+          "the": "xung chiếu",
+        },
+      ],
+      "chi": "Tị",
+      "chiNamSinh": "Tý",
+      "chinhTinh": [
+        {
+          "bac": "H",
+          "ten": "Liêm Trinh",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "H",
+          "ten": "Tham Lang",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Vũ Khúc",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "H",
+          "ten": "Thất Sát",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Tử Vi",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "V",
+          "ten": "Phá Quân",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Phu Thê",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Hóa Quyền",
+          ],
+          "sac": "thuan",
+          "trong": 65,
+          "tuKhoa": [
+            "tiếng nói",
+            "quyền quyết",
+          ],
+          "y": "có tiếng nói hơn, được giao thêm việc và quyền quyết",
+        },
+        {
+          "do": [
+            "Thiên Mã",
+          ],
+          "sac": "thuan",
+          "trong": 52,
+          "tuKhoa": [
+            "đi lại",
+            "cơ hội",
+          ],
+          "y": "nhiều dịp đi lại, thay đổi chỗ làm hoặc chỗ ở mở ra cơ hội",
+        },
+        {
+          "do": [
+            "Thiên Khôi",
+          ],
+          "sac": "thuan",
+          "trong": 41,
+          "tuKhoa": [
+            "quý nhân",
+            "nâng đỡ",
+          ],
+          "y": "gặp quý nhân là người lớn tuổi hoặc cấp trên nâng đỡ",
+        },
+      ],
+      "muc": "diem-sang",
+      "sourceCung": "Phu Thê · Tị",
+      "tieuDe": "Điểm sáng trong năm",
+      "vanHan": {
+        "chuDeVan": "mười năm của đi xa, ra ngoài và những mối quan hệ ngoài xã hội",
+        "cungDaiVan": "Thiên Di",
+        "cungTieuHan": "Phu Thê",
+        "daiVanTuoi": "63–72 tuổi",
+        "namCanChi": "Đinh Mùi",
+        "namThuTrongVan": 6,
+        "namXem": 2027,
+        "tone": "khuyen",
+        "tuoi": 68,
+      },
+    },
+    {
+      "anNgu": "Tuần",
+      "catTinh": [],
+      "chi": "Tị",
+      "chiNamSinh": "Tý",
+      "chinhTinh": [
+        {
+          "bac": "H",
+          "ten": "Liêm Trinh",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "H",
+          "ten": "Tham Lang",
+          "the": "toạ thủ",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Vũ Khúc",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "H",
+          "ten": "Thất Sát",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "Đ",
+          "ten": "Tử Vi",
+          "the": "tam hợp",
+        },
+        {
+          "bac": "V",
+          "ten": "Phá Quân",
+          "the": "tam hợp",
+        },
+      ],
+      "cung": "Phu Thê",
+      "duKien": [],
+      "gioiTinh": "nam",
+      "hungTinh": [
+        {
+          "ten": "Thiên Khốc",
+          "the": "xung chiếu",
+        },
+        {
+          "ten": "Tang Môn",
+          "the": "tam hợp",
+        },
+        {
+          "ten": "Thiên Hư",
+          "the": "tam hợp",
+        },
+      ],
+      "laVoChinhDieu": false,
+      "luan": [
+        {
+          "do": [
+            "Thiên Khốc",
+          ],
+          "sac": "nghich",
+          "trong": 38,
+          "tuKhoa": [
+            "buồn lo",
+            "chia sẻ",
+          ],
+          "y": "dễ buồn lo, cần có chỗ để chia sẻ thay vì ôm một mình",
+        },
+        {
+          "do": [
+            "Tang Môn",
+          ],
+          "sac": "nghich",
+          "trong": 37,
+          "tuKhoa": [
+            "nặng nề",
+            "chuyện nhà",
+          ],
+          "y": "tâm trạng dễ nặng nề, chuyện nhà cần được quan tâm nhiều hơn",
+        },
+        {
+          "do": [
+            "Thiên Hư",
+          ],
+          "sac": "nghich",
+          "trong": 29,
+          "tuKhoa": [
+            "kỳ vọng",
+            "dự phòng",
+          ],
+          "y": "kế hoạch dễ hụt so với kỳ vọng, nên tính sẵn phần dự phòng",
+        },
+      ],
+      "muc": "dieu-can-giu",
+      "sourceCung": "Phu Thê · Tị",
+      "tieuDe": "Điều cần giữ",
+      "vanHan": {
+        "chuDeVan": "mười năm của đi xa, ra ngoài và những mối quan hệ ngoài xã hội",
+        "cungDaiVan": "Thiên Di",
+        "cungTieuHan": "Phu Thê",
+        "daiVanTuoi": "63–72 tuổi",
+        "namCanChi": "Đinh Mùi",
+        "namThuTrongVan": 6,
+        "namXem": 2027,
+        "tone": "khuyen",
+        "tuoi": 68,
+      },
+    },
+  ],
+  "year": {
+    "cungDaiVan": "Thiên Di",
+    "cungDaiVanKeTiep": "Tật Ách",
+    "cungTieuHan": "Phu Thê",
+    "daiVan": {
+      "chiIndex": 1,
+      "endAge": 72,
+      "startAge": 63,
+    },
+    "daiVanKeTiep": {
+      "chiIndex": 2,
+      "endAge": 82,
+      "startAge": 73,
+    },
+    "namBatDauVanKeTiep": 2032,
+    "namCanChi": "Đinh Mùi",
+    "namThuTrongVan": 6,
+    "tieuHan": 5,
+    "tone": "khuyen",
+    "tuoi": 68,
+    "viewYear": 2027,
+  },
 }
 `;
