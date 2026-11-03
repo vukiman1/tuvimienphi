@@ -6,6 +6,7 @@ import type { AiRequest, AiResult } from '../../../../ai/port/ai.types';
 import { ChapterGenerator } from '../../generation/chapter-generator';
 import { THAN_CU_CHAPTER } from './than-cu.chapter';
 import { checkParagraphs } from '../../validate/check-paragraphs';
+import type { ChapterContext } from '../../generation/chapter-definition';
 
 const CO_BANG: NatalChart = castNatal({
   solarDate: new Date(1960, 4, 26),
@@ -15,6 +16,7 @@ const CO_BANG: NatalChart = castNatal({
 
 const BAI = JSON.stringify({ doan1: 'Hai câu. Câu nữa.', doan2: 'Hai câu. Câu nữa.' });
 const BUDGET_MS = 60_000;
+const NO_VIEW_YEAR: ChapterContext = { viewYear: null, currentYear: 2026 };
 
 class AiTheoSchema extends AiClient {
   readonly requests: AiRequest[] = [];
@@ -46,6 +48,7 @@ describe('THAN_CU_CHAPTER', () => {
       THAN_CU_CHAPTER,
       CO_BANG,
       BUDGET_MS,
+      NO_VIEW_YEAR,
     );
     const article = ket?.article;
 

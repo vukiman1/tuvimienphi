@@ -17,6 +17,8 @@ import { AiClient } from '../../ai/port/ai.client';
 import type { AiMessage, AiRequest, AiResult, AiSchema } from '../../ai/port/ai.types';
 import { ChapterGenerator, type ChapterResult } from './generation/chapter-generator';
 import { CHAPTER_DEFINITIONS } from './generation/chapter-registry';
+import type { ChapterContext } from './generation/chapter-definition';
+import { VAN_HAN_CHAPTER } from './chapters/van-han/van-han.chapter';
 
 interface LaSoMau {
   readonly ten: string;
@@ -30,6 +32,8 @@ interface GhiLai {
 }
 
 const BUDGET_MS = 60_000;
+const NO_VIEW_YEAR: ChapterContext = { viewYear: null, currentYear: 2026 };
+const VAN_HAN_CONTEXT: ChapterContext = { viewYear: 2027, currentYear: 2026 };
 const MUC_THEO_CUNG_GIA_DAO: Readonly<Record<string, GiaDaoMucKey>> = {
   'Tử Tức': GiaDaoMucKey.ConCai,
   'Phụ Mẫu': GiaDaoMucKey.ChaMe,
@@ -107,7 +111,7 @@ class AiGhiLai extends AiClient {
 function sinhChuong(order: string, chart: NatalChart, ai: AiClient): Promise<ChapterResult | null> {
   const chapter = CHAPTER_DEFINITIONS.get(order);
   if (!chapter) throw new Error(`Chương ${order} chưa có định nghĩa`);
-  return new ChapterGenerator(ai).generate(chapter, chart, BUDGET_MS);
+  return new ChapterGenerator(ai).generate(chapter, chart, BUDGET_MS, NO_VIEW_YEAR);
 }
 
 describe.each(CHAPTER_ORDERS_DA_CO)('chương %s', (order) => {
@@ -123,6 +127,25 @@ describe.each(CHAPTER_ORDERS_DA_CO)('chương %s', (order) => {
         attempts: ket?.attempts,
       }).toMatchSnapshot();
     });
+  });
+});
+
+describe.each(LA_SO_MAU)('chương 06, lá số $ten', ({ chart }) => {
+  it('ghi lại cả lượt sinh lại cho năm xem 2027', async () => {
+    const ai = new AiGhiLai();
+
+    const ket = await new ChapterGenerator(ai).generate(
+      VAN_HAN_CHAPTER,
+      chart,
+      BUDGET_MS,
+      VAN_HAN_CONTEXT,
+    );
+
+    expect({
+      requests: ai.sortedRequests(),
+      article: ket?.article,
+      attempts: ket?.attempts,
+    }).toMatchSnapshot();
   });
 });
 

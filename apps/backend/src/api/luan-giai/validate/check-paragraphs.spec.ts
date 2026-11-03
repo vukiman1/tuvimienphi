@@ -82,7 +82,9 @@ describe('checkParagraphs', () => {
       ...DAT,
       doan2: DAT.doan2.replace('**Đại Hao, Kiếp Sát**', '**Đại Hao, Kiếp Sát, Thiên Diêu**'),
     });
-    expect(loi).toContain('đoạn 2: "Thiên Diêu" không có trong brief');
+    expect(loi).toContain(
+      'đoạn 2: **Thiên Diêu** không phải tên một sao trong brief — cặp ** chỉ bọc tên sao có trong brief, chữ thường thì viết trơn',
+    );
   });
 
   it('chặn chính tinh nhắc mà thiếu bậc', () => {
@@ -202,7 +204,7 @@ describe('checkParagraphs', () => {
     expect(loi).toContain(
       'đoạn 1: không được lồng ==...== vào trong **...**, hai dấu phải tách rời',
     );
-    expect(loi.join('\n')).not.toMatch(/không có trong brief/);
+    expect(loi.join('\n')).not.toMatch(/không phải tên một sao trong brief/);
   });
 
   it('chạy được y nguyên trên mục con một đoạn', () => {

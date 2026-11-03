@@ -51,3 +51,12 @@ describe('checkForbiddenPhrases với cung khác Phu Thê', () => {
     expect(checkForbiddenPhrases(BRIEF_TAI_BACH, bai('Chồng bạn có thu nhập ổn.'))).toEqual([]);
   });
 });
+
+describe('checkForbiddenPhrases với lời doạ', () => {
+  it.each(['tai nạn', 'qua đời', 'phá sản'])('chặn "%s" ở mọi cung', (cum) => {
+    for (const brief of [BRIEF_PHU_THE, BRIEF_TAI_BACH]) {
+      const loi = checkForbiddenPhrases(brief, bai(`Năm này dễ gặp ${cum}.`));
+      expect(loi).toContain(`đoạn 1: dùng cụm bị cấm "${cum}"`);
+    }
+  });
+});

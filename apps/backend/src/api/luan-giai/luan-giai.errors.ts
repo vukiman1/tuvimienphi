@@ -31,3 +31,20 @@ export class UnknownThanCuCungError extends Error {
     this.name = 'UnknownThanCuCungError';
   }
 }
+
+export class RequiredMucFailedError extends Error {
+  constructor(
+    readonly mucTitle: string,
+    reason: string,
+  ) {
+    super(`required mục "${mucTitle}" could not be written: ${reason}`);
+    this.name = 'RequiredMucFailedError';
+  }
+}
+
+export class VanHanYearUnavailableError extends Error {
+  constructor(readonly viewYear: number | null) {
+    super(`chapter 06 has no vận hạn year for view year ${String(viewYear)}`);
+    this.name = 'VanHanYearUnavailableError';
+  }
+}

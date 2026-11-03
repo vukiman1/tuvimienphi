@@ -62,7 +62,9 @@ function kiemMotDoan(
       const ten = stripRating(token);
       const bac = ratingOf(token);
       if (!hopLe.has(ten)) {
-        loi.push(`đoạn ${thuTu}: "${ten}" không có trong brief`);
+        loi.push(
+          `đoạn ${thuTu}: **${ten}** không phải tên một sao trong brief — cặp ** chỉ bọc tên sao có trong brief, chữ thường thì viết trơn`,
+        );
         continue;
       }
       const bacDung = bacCua.get(ten);

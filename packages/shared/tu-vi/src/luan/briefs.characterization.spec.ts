@@ -10,6 +10,10 @@ import { buildTaiBachMucBriefs } from './build-tai-bach-muc-briefs.js';
 import { buildThanCuBrief } from './build-than-cu-brief.js';
 import { buildTinhDuyenBrief } from './build-tinh-duyen-brief.js';
 import { buildGiaDaoMucBriefs, buildTinhDuyenMucBriefs } from './build-tinh-duyen-muc-briefs.js';
+import { buildVanHanBrief, buildVanHanMucBriefs, vanHanYearOf } from './build-van-han-brief.js';
+
+const VAN_HAN_VIEW_YEAR = 2027;
+const VAN_HAN_CURRENT_YEAR = 2026;
 
 interface LaSoMau {
   readonly ten: string;
@@ -63,6 +67,15 @@ describe.each(LA_SO_MAU)('brief của lá số $ten', ({ chart }) => {
       chinh: buildTinhDuyenBrief(chart),
       muc: buildTinhDuyenMucBriefs(chart),
       giaDao: buildGiaDaoMucBriefs(chart),
+    }).toMatchSnapshot();
+  });
+
+  it('Vận hạn', () => {
+    const year = vanHanYearOf(chart, VAN_HAN_VIEW_YEAR, VAN_HAN_CURRENT_YEAR);
+    expect({
+      year,
+      chinh: year && buildVanHanBrief(chart, year),
+      muc: year && buildVanHanMucBriefs(chart, year),
     }).toMatchSnapshot();
   });
 });

@@ -6,6 +6,7 @@ import type { AiRequest, AiResult } from '../../../../ai/port/ai.types';
 import { ChapterGenerator } from '../../generation/chapter-generator';
 import { TAI_BACH_CHAPTER } from './tai-bach.chapter';
 import { checkParagraphs } from '../../validate/check-paragraphs';
+import type { ChapterContext } from '../../generation/chapter-definition';
 
 const LA_SO: NatalChart = castNatal({
   solarDate: new Date(1953, 0, 25),
@@ -16,6 +17,7 @@ const LA_SO: NatalChart = castNatal({
 const BAI = JSON.stringify({ doan1: 'Hai câu. Câu nữa.', doan2: 'Hai câu. Câu nữa.' });
 
 const BUDGET_MS = 60_000;
+const NO_VIEW_YEAR: ChapterContext = { viewYear: null, currentYear: 2026 };
 
 class AiGia extends AiClient {
   readonly requests: AiRequest[] = [];
@@ -66,7 +68,12 @@ describe('TAI_BACH_CHAPTER', () => {
   it('ghép bài từ khung cố định và hai đoạn mô hình viết', async () => {
     const ai = new AiGia([BAI]);
 
-    const ket = await new ChapterGenerator(ai).generate(TAI_BACH_CHAPTER, LA_SO, BUDGET_MS);
+    const ket = await new ChapterGenerator(ai).generate(
+      TAI_BACH_CHAPTER,
+      LA_SO,
+      BUDGET_MS,
+      NO_VIEW_YEAR,
+    );
 
     expect(ket?.article.title).toBe('Tài bạch tiền tài');
     expect(ket?.article.sourceCung).toBe('Tài Bạch');
@@ -79,7 +86,12 @@ describe('TAI_BACH_CHAPTER', () => {
     const ai = new AiTheoSchema();
     const soMuc = buildTaiBachMucBriefs(LA_SO).length;
 
-    const ket = await new ChapterGenerator(ai).generate(TAI_BACH_CHAPTER, LA_SO, BUDGET_MS);
+    const ket = await new ChapterGenerator(ai).generate(
+      TAI_BACH_CHAPTER,
+      LA_SO,
+      BUDGET_MS,
+      NO_VIEW_YEAR,
+    );
 
     expect(soMuc).toBeGreaterThan(0);
     expect(ket?.article.sections).toHaveLength(soMuc);
