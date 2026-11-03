@@ -23,14 +23,7 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --font-sans: 'Cormorant Garamond', ui-serif, Georgia, serif;
-  --font-display: 'Cormorant Garamond', ui-serif, Georgia, serif;
-  /* Sans của site, dùng ở những chỗ serif nhoè: chữ nhỏ xếp dày trong ô lá số, và chữ sáng trên
-     nền tối — nét serif mảnh mất định dạng khi đảo sáng tối. */
-  --font-ui: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  /* Cormorant là serif cho tiêu đề: nét mảnh, đặt dấu chồng tiếng Việt kém, đọc văn dài rất mỏi.
-     Noto Serif giữ đúng chất serif nhưng nét dày và dựng dấu tiếng Việt chuẩn. */
-  --font-body: 'Noto Serif', Charter, Georgia, serif;
+  --font-sans: 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -48,11 +41,7 @@
   --brand-hue: 45;
   --radius: 0.5rem;
 
-  /* Measured height of SiteHeader, in px because the root font-size is 137.5% and rem here would
-     mislead. The home hero subtracts it to fill exactly the first screen. Three values because the
-     header reflows twice: the nav drops to its own row below md, and the sign-in button to its own
-     row below lg. */
-  --site-header-height: 123px;
+  --site-header-height: 90px;
 
   /* Surfaces */
   --background: oklch(0.99 0.004 var(--brand-hue));
@@ -112,13 +101,7 @@
 
 @media (min-width: 48rem) {
   :root {
-    --site-header-height: 133px;
-  }
-}
-
-@media (min-width: 64rem) {
-  :root {
-    --site-header-height: 78px;
+    --site-header-height: 57px;
   }
 }
 
@@ -127,14 +110,8 @@
     @apply border-border outline-ring/50;
   }
 
-  /* Cormorant runs visually small; 22px root compensates so body text reads comfortably. */
-  html {
-    font-size: 137.5%;
-  }
-
   body {
     @apply bg-background text-foreground;
-    font-family: 'Cormorant Garamond', ui-serif, Georgia, serif;
   }
 
   /* Preflight của Tailwind 4 bỏ `cursor: pointer` mặc định trên nút, trả chúng về con trỏ mũi tên. */

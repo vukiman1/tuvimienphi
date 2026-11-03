@@ -35,7 +35,7 @@ export function SecurityCard() {
             <Lock className="size-5 text-[#904423]" />
           </div>
           <div>
-            <h3 className="font-display text-lg font-semibold text-[#1a1412]">Mật khẩu</h3>
+            <h3 className="text-lg font-semibold text-[#1a1412]">Mật khẩu</h3>
             <p className="mt-1 text-sm text-[#6b5a4e]">
               {user.hasPassword
                 ? 'Đổi mật khẩu sẽ đăng xuất tất cả các thiết bị khác của bạn.'

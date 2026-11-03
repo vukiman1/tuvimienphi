@@ -41,7 +41,7 @@ export function TopUpCopyRow({ label, value }: TopUpCopyRowProps) {
   const Icon = copyState === CopyState.Copied ? Check : Copy;
 
   return (
-    <div className="font-body text-[15px] leading-[24px]">
+    <div className="text-[15px] leading-[24px]">
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
           <p className="text-[13px] leading-[20px] text-[#6b6152]">{label}</p>

@@ -30,7 +30,7 @@ export function XuatHanhHours({ slots }: XuatHanhHoursProps) {
     <div className="rounded-2xl border border-[#c9a15c]/35 bg-card p-4 shadow-md md:p-5">
       <div className="flex items-center gap-2.5">
         <TitleRule />
-        <h2 className="font-display text-lg font-bold tracking-wide text-primary uppercase md:text-xl">
+        <h2 className="text-lg font-bold tracking-wide text-primary uppercase md:text-xl">
           Giờ Xuất Hành
         </h2>
         <span className="flex flex-1 flex-row-reverse items-center gap-1.5">
@@ -57,7 +57,7 @@ export function XuatHanhHours({ slots }: XuatHanhHoursProps) {
               />
               <div className="min-w-0">
                 <p
-                  className={`font-display text-sm font-bold whitespace-nowrap uppercase ${
+                  className={`text-sm font-bold whitespace-nowrap uppercase ${
                     slot.isGood ? 'text-[#3f7350]' : 'text-[#a9403a]'
                   }`}
                 >

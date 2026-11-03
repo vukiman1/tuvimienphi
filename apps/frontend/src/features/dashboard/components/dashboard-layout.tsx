@@ -103,12 +103,8 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
               />
               <div className="absolute inset-x-0 top-0 z-10 flex items-end gap-2 px-5">
                 <div>
-                  <p className="font-display text-base italic text-[#904423] opacity-80">
-                    Hiểu mình
-                  </p>
-                  <p className="font-display text-base italic text-[#904423] opacity-80">
-                    Sống an nhiên
-                  </p>
+                  <p className="text-base italic text-[#904423] opacity-80">Hiểu mình</p>
+                  <p className="text-base italic text-[#904423] opacity-80">Sống an nhiên</p>
                 </div>
                 <span className="flex size-5 shrink-0 items-center justify-center rounded-sm bg-[#b44131] font-seal text-[10px] text-white">
                   觀

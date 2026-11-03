@@ -11,9 +11,7 @@ export function ArticlePage({ slug }: ArticlePageProps) {
   if (!article) {
     return (
       <main className="mx-auto w-full max-w-2xl px-4 py-20 text-center md:px-6">
-        <h1 className="font-display text-[22px] font-semibold text-foreground">
-          Không tìm thấy bài viết
-        </h1>
+        <h1 className="text-[22px] font-semibold text-foreground">Không tìm thấy bài viết</h1>
         <p className="mt-3 text-[13px] text-muted-foreground">
           Bài viết bạn tìm không tồn tại hoặc đã được đổi tên.
         </p>
@@ -40,7 +38,7 @@ export function ArticlePage({ slug }: ArticlePageProps) {
         <span className="text-[12px] font-semibold uppercase tracking-widest text-primary">
           {categoryLabel(article.category)}
         </span>
-        <h1 className="mt-3 font-display text-[26px] font-semibold leading-tight text-foreground">
+        <h1 className="mt-3 text-[26px] font-semibold leading-tight text-foreground">
           {article.title}
         </h1>
         <div className="mt-4 flex items-center gap-2 text-[12px] text-muted-foreground">

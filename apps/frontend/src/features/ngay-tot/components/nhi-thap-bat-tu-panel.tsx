@@ -5,9 +5,7 @@ export function NhiThapBatTuPanel({ pillars, verses }: NhiThapBatTuResult) {
     <div className="rounded-xl border border-[#c9a15c]/40 bg-card p-3 shadow-md md:p-4">
       <div className="flex items-center justify-center gap-3 py-1">
         <span className="h-px max-w-24 flex-1 bg-gradient-to-r from-transparent to-[#c9a15c]/70" />
-        <p className="font-display text-lg font-bold whitespace-nowrap text-primary">
-          Nhị Thập Bát Tú
-        </p>
+        <p className="text-lg font-bold whitespace-nowrap text-primary">Nhị Thập Bát Tú</p>
         <span className="h-px max-w-24 flex-1 bg-gradient-to-l from-transparent to-[#c9a15c]/70" />
       </div>
 
@@ -20,9 +18,7 @@ export function NhiThapBatTuPanel({ pillars, verses }: NhiThapBatTuResult) {
             <p className="text-[0.65rem] font-bold tracking-wide text-muted-foreground uppercase">
               {pillar.label}
             </p>
-            <p className="font-display text-2xl leading-tight font-bold text-primary">
-              {pillar.value}
-            </p>
+            <p className="text-2xl leading-tight font-bold text-primary">{pillar.value}</p>
             <p className="text-sm font-semibold text-foreground">{pillar.canChi}</p>
             <p className="mt-1 rounded-full bg-gradient-to-br from-[#e8c987] to-[#b8894a] px-2.5 py-0.5 text-xs font-bold text-[#1a1a1c]">
               Sao {pillar.tu.name}
@@ -40,9 +36,7 @@ export function NhiThapBatTuPanel({ pillars, verses }: NhiThapBatTuResult) {
             key={verse.subtitle}
             className="rounded-lg border border-[#c9a15c]/30 bg-muted/20 px-4 py-3 text-center"
           >
-            <p className="font-display text-base font-bold text-primary uppercase">
-              {verse.tu.fullName}
-            </p>
+            <p className="text-base font-bold text-primary uppercase">{verse.tu.fullName}</p>
             <p className="text-xs text-muted-foreground">{verse.subtitle}</p>
             <div className="mt-2 flex flex-col gap-0.5">
               {verse.tu.verse.map((line) => (

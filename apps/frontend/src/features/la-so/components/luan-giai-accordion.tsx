@@ -35,12 +35,10 @@ function AccordionItem({
           onClick={onToggle}
           type="button"
         >
-          <span className="font-display text-[21px] leading-[28px] font-bold text-[#7a1f15]">
-            {entry.title}
-          </span>
-          <span className="font-body text-[13px] leading-[18px] text-[#8d6f42]">{entry.meta}</span>
+          <span className="text-[21px] leading-[28px] font-bold text-[#7a1f15]">{entry.title}</span>
+          <span className="text-[13px] leading-[18px] text-[#8d6f42]">{entry.meta}</span>
           {entry.badge && (
-            <span className="rounded-full bg-[#a8281c] px-[10px] py-[2px] font-body text-[12px] leading-[17px] font-semibold text-[#f5e8d0]">
+            <span className="rounded-full bg-[#a8281c] px-[10px] py-[2px] text-[12px] leading-[17px] font-semibold text-[#f5e8d0]">
               {entry.badge}
             </span>
           )}
@@ -78,7 +76,7 @@ function AccordionItem({
             {entry.paragraphs.map((paragraph) => (
               <p
                 key={paragraph.slice(0, 40)}
-                className="mt-2 font-body text-justify text-[17px] leading-[29px] text-[#2b2114]"
+                className="mt-2 text-justify text-[17px] leading-[29px] text-[#2b2114]"
               >
                 <RichText text={paragraph} />
               </p>
@@ -112,11 +110,11 @@ export function LuanGiaiAccordion({ entries, defaultOpenId }: LuanGiaiAccordionP
   return (
     <div className="mt-6">
       <div className="flex items-center justify-between gap-4">
-        <p className="font-body text-[14px] leading-[20px] text-[#8d6f42]">
+        <p className="text-[14px] leading-[20px] text-[#8d6f42]">
           {entries.length} mục · bấm để mở
         </p>
         <button
-          className="font-body text-[14px] leading-[20px] font-semibold text-[#a8281c] underline-offset-4 outline-none hover:underline focus-visible:underline"
+          className="text-[14px] leading-[20px] font-semibold text-[#a8281c] underline-offset-4 outline-none hover:underline focus-visible:underline"
           onClick={() => setOpenIds(isAllOpen ? [] : entries.map((item) => item.id))}
           type="button"
         >

@@ -65,7 +65,7 @@ export function MonthCalendar({
         >
           <ChevronLeft className="size-4" />
         </button>
-        <p className="font-display text-sm font-bold tracking-wide whitespace-nowrap text-primary uppercase sm:text-base md:text-xl">
+        <p className="text-sm font-bold tracking-wide whitespace-nowrap text-primary uppercase sm:text-base md:text-xl">
           Tháng {viewMonth}, {viewYear}
         </p>
         <div className="flex items-center gap-2">

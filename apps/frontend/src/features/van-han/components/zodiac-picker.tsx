@@ -57,7 +57,7 @@ export function ZodiacPicker({ selectedChi, onSelect }: ZodiacPickerProps) {
               />
             </span>
             <span
-              className={`font-display text-sm leading-none font-bold ${
+              className={`text-sm leading-none font-bold ${
                 isSelected ? 'text-[#a8332a]' : 'text-foreground'
               }`}
             >

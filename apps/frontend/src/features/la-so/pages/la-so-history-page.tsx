@@ -43,9 +43,7 @@ export function LaSoHistoryPage() {
         <header className="text-center">
           <div className="flex items-center justify-center gap-4">
             <TitleFlourish facing="left" />
-            <h1 className="font-display text-4xl font-bold text-[#7b2118] md:text-5xl">
-              Lá số đã xem
-            </h1>
+            <h1 className="text-4xl font-bold text-[#7b2118] md:text-5xl">Lá số đã xem</h1>
             <TitleFlourish facing="right" />
           </div>
           <p className="mx-auto mt-3 max-w-[46ch] text-sm text-[#6b5b48]">
@@ -53,7 +51,7 @@ export function LaSoHistoryPage() {
           </p>
 
           <Link
-            className="mt-6 inline-flex items-center gap-2 rounded-lg border border-[#c9a15c]/60 bg-[#8c2b1e] px-6 py-3 font-display text-lg font-semibold text-[#fdf6e9] shadow-lg transition-colors hover:bg-[#7b2118] focus-visible:ring-2 focus-visible:ring-[#c9a15c] focus-visible:ring-offset-2 focus-visible:outline-none"
+            className="mt-6 inline-flex items-center gap-2 rounded-lg border border-[#c9a15c]/60 bg-[#8c2b1e] px-6 py-3 text-lg font-semibold text-[#fdf6e9] shadow-lg transition-colors hover:bg-[#7b2118] focus-visible:ring-2 focus-visible:ring-[#c9a15c] focus-visible:ring-offset-2 focus-visible:outline-none"
             to="/"
           >
             <Plus className="size-5" />
@@ -68,7 +66,7 @@ export function LaSoHistoryPage() {
         <GoldWave />
         <div className="mt-2 flex items-center justify-center gap-3">
           <img alt="" aria-hidden className="size-6 object-contain" src={MEDIA.laSo.taiji} />
-          <p className="font-display text-sm tracking-[0.25em] text-[#8a7256]">
+          <p className="text-sm tracking-[0.25em] text-[#8a7256]">
             THIÊN THỜI · ĐỊA LỢI · NHÂN HÒA
           </p>
         </div>

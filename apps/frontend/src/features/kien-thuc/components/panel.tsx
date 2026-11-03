@@ -65,7 +65,7 @@ export function PanelHeading({ children }: { readonly children: ReactNode }) {
   return (
     <div className="mb-4 flex items-center gap-2.5">
       <span aria-hidden className="size-2 shrink-0 rotate-45 bg-[#c9a15c]" />
-      <h2 className="font-display text-[15px] font-semibold tracking-wide text-[#2a1f0e] uppercase">
+      <h2 className="text-[15px] font-semibold tracking-wide text-[#2a1f0e] uppercase">
         {children}
       </h2>
     </div>
