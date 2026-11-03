@@ -4,7 +4,7 @@ Các luồng vòng đời tài khoản chưa có. Quyết định phạm vi: tem
 
 ---
 
-## 4. 🟡 Forgot / reset password
+## 4. ✅ Forgot / reset password
 
 **Vấn đề:** chưa có cách lấy lại mật khẩu khi quên.
 
@@ -19,7 +19,7 @@ Các luồng vòng đời tài khoản chưa có. Quyết định phạm vi: tem
 
 ---
 
-## 5. 🟡 Email verification
+## 5. ✅ Email verification
 
 **Vấn đề:** register kích hoạt tài khoản ngay; welcome email được gửi nhưng không bắt xác minh email có thật.
 
@@ -36,7 +36,7 @@ Các luồng vòng đời tài khoản chưa có. Quyết định phạm vi: tem
 
 ---
 
-## 6. 🟢 Change password endpoint (+ hash khi update)
+## 6. ✅ Change password endpoint (+ hash khi update)
 
 **Vấn đề:** [auth.swagger.ts](../../apps/backend/src/api/auth/auth.swagger.ts) đã có `ApiChangePassword` nhưng **không có endpoint** tương ứng. Ngoài ra `UserEntity` chỉ hash ở `@BeforeInsert`, **không** có `@BeforeUpdate` → nếu thêm đổi-password qua `update` dễ quên hash, lưu plaintext.
 

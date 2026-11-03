@@ -348,7 +348,7 @@ P2-1.
 
 Hai mục dưới đây cần chốt hướng sản phẩm trước khi làm, không phải việc thuần kỹ thuật.
 
-## P2-1. Nối luận giải vào lá số thật
+## P2-1. ✅ Nối luận giải vào lá số thật
 
 **Vấn đề:** [luan-giai-data.ts](../../apps/frontend/src/features/la-so/luan-giai-data.ts) là nội dung
 mẫu cứng. Giao diện đã xong (6 chương, accordion, skeleton, nút phân tích) nhưng chữ hiện ra không
@@ -375,7 +375,7 @@ chốt cùng lúc với hướng bảng-luật-hay-AI.
 
 ---
 
-## P2-2. Lưu và xem lại lá số
+## P2-2. ✅ Lưu và xem lại lá số
 
 **Vấn đề:** lập xong, reload là mất.
 

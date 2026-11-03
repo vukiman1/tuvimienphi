@@ -4,7 +4,7 @@ Các điểm bảo mật còn hở trong luồng credential (không thuộc sess
 
 ---
 
-## 1. 🔴 Bịt account enumeration ở login
+## 1. ✅ Bịt account enumeration ở login
 
 **Vấn đề:** [user.local.strategy.ts](../../apps/backend/src/api/auth/strategies/local/user.local.strategy.ts) phân biệt hai trường hợp:
 
@@ -29,7 +29,7 @@ Kẻ tấn công dựa vào mã/nội dung lỗi khác nhau để dò email nào
 
 ---
 
-## 2. 🟡 Siết password policy ở DTO
+## 2. ✅ Siết password policy ở DTO
 
 **Vấn đề:** [register.dto.ts](../../apps/backend/src/api/auth/dto/register.dto.ts) chỉ `@IsString @IsNotEmpty` → password `"1"` cũng hợp lệ. Việc so khớp `confirmPassword` đang nằm ở service thay vì DTO.
 
@@ -44,7 +44,7 @@ Kẻ tấn công dựa vào mã/nội dung lỗi khác nhau để dò email nào
 
 ---
 
-## 3. 🟡 Bỏ fallback secret hardcode (fail-fast)
+## 3. ✅ Bỏ fallback secret hardcode (fail-fast)
 
 **Vấn đề:** còn fallback bí mật yếu trong code:
 
@@ -58,3 +58,13 @@ Config đã được zod validate nên runtime hiện luôn có giá trị, như
 **File liên quan:** `strategies/jwt/user.jwt.strategy.ts`, `packages/backend/crypto/src/crypto.service.ts`.
 
 **Acceptance:** chạy app thiếu `JWT_SECRET` / `SECRET_KEY` → fail ngay lúc bootstrap, không khởi động được.
+
+---
+
+## 4. ✅ Đăng nhập Google bỏ qua 2FA
+
+**Vấn đề:** `loginWithGoogle` cấp phiên ngay, chỉ kiểm vai console. Dashboard đăng nhập console bằng Google, nên console thực tế không có 2FA; người dùng website đã bật 2FA cũng không bị hỏi mã khi vào bằng Google.
+
+**Đã làm (#162):** đăng nhập mật khẩu và Google đi chung một cổng. Vai console bắt buộc đã bật 2FA; ai đã bật 2FA thì nhận challenge thay vì phiên. Challenge ghi lại loại phiên cần cấp, nên qua mã xong phiên Google vẫn là phiên OAuth. Dashboard và website có bước nhập mã sau Google.
+
+**Lưu ý vận hành:** tài khoản console phải bật 2FA trước khi deploy bản này, nếu không sẽ không vào được console. Tài khoản chỉ dùng Google cần đặt mật khẩu trước (Cài đặt → Đặt mật khẩu) vì bật 2FA yêu cầu có mật khẩu.
