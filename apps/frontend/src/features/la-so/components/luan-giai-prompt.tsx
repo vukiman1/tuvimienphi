@@ -7,10 +7,18 @@ interface LuanGiaiPromptCardProps {
   readonly onRequest: () => void;
   /** Lý do lần xin trước hỏng, thường là đã hết suất trong ngày. */
   readonly error?: string;
+  readonly actionLabel?: string;
 }
 
+const DEFAULT_ACTION_LABEL = 'Xem luận giải';
+
 /** Trạng thái chưa nạp: chỉ nạp nội dung khi người dùng thật sự muốn đọc mục này. */
-export function LuanGiaiPromptCard({ chapter, onRequest, error }: LuanGiaiPromptCardProps) {
+export function LuanGiaiPromptCard({
+  chapter,
+  onRequest,
+  error,
+  actionLabel = DEFAULT_ACTION_LABEL,
+}: LuanGiaiPromptCardProps) {
   return (
     <LuanGiaiCard>
       <LuanGiaiCardHeader order={chapter.order} title={chapter.title} />
@@ -25,7 +33,7 @@ export function LuanGiaiPromptCard({ chapter, onRequest, error }: LuanGiaiPrompt
           type="button"
         >
           <Eye aria-hidden className="size-[18px]" />
-          Xem luận giải
+          {actionLabel}
         </button>
         {error ? (
           <p className="max-w-[46ch] text-[15px] leading-[24px] text-[#a8281c]">{error}</p>

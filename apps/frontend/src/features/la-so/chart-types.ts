@@ -37,6 +37,7 @@ export interface CungView {
   readonly trangSinh: string;
   /** Tên cung theo lưu niên, ví dụ "LN.ĐIỀN". */
   readonly luuNien: string;
+  readonly isTieuHan: boolean;
   /** Sao của tầng lưu niên, in kèm tiền tố `L.`. */
   readonly luuTinh: readonly SaoView[];
   /** Sao của tầng lưu đại vận, in kèm tiền tố `ĐV.`. */

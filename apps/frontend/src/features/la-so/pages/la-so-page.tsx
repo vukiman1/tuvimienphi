@@ -110,6 +110,7 @@ export function LaSoPage() {
         chapters={LUAN_GIAI_CHAPTERS}
         motto={LUAN_GIAI_MOTTO}
         onSelectChapter={setActiveChapter}
+        viewYear={viewYear}
       />
     </main>
   );

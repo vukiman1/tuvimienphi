@@ -88,6 +88,7 @@ function toCungViews(chart: TuViChart): readonly CungView[] {
       daiVan: cung.daiVanLabel,
       trangSinh: cung.trangSinh,
       luuNien: cung.luuNienLabel,
+      isTieuHan: cung.chiIndex === chart.tieuHan,
       luuTinh: cung.luuTinh.map(toLuuSaoView),
       daiVanTinh: cung.daiVanTinh.map(toLuuSaoView),
       chinhTinh: cung.chinhTinh.map(toChinhTinhView),

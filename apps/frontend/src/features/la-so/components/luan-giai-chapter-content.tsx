@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
+  isYearDependentChapter,
   LuanGiaiChapterStatus,
   type BirthInput,
   type LuanGiaiChapterStatusMap,
@@ -21,27 +22,49 @@ interface LuanGiaiChapterContentProps {
   readonly chapter: LuanGiaiChapter;
   /** Chưa biết thì để trống — lúc đó hiện khung chờ chứ đừng đoán là chưa có bài. */
   readonly status?: LuanGiaiChapterStatus;
+  readonly viewYear: number;
+}
+
+interface PromptCopy {
+  readonly actionLabel?: string;
+  readonly unavailableMessage?: string;
+}
+
+const YEARLESS_PROMPT_COPY: PromptCopy = {};
+
+function promptCopy(order: string, viewYear: number): PromptCopy {
+  if (!isYearDependentChapter(order)) return YEARLESS_PROMPT_COPY;
+  return {
+    actionLabel: `Xem vận hạn năm ${viewYear}`,
+    unavailableMessage: `Chưa luận được vận hạn năm ${viewYear} cho lá số này, bạn thử chọn năm khác.`,
+  };
 }
 
 /**
  * Chương đã sinh thì mở thẳng khi vào trang; chương chưa sinh thì khoá lại, bấm mới sinh. Bài lưu
  * theo lá số nên lần thứ hai xem cùng lá số đó là đọc ngay, không gọi mô hình và không trừ suất.
  */
-export function LuanGiaiChapterContent({ birth, chapter, status }: LuanGiaiChapterContentProps) {
+export function LuanGiaiChapterContent({
+  birth,
+  chapter,
+  status,
+  viewYear,
+}: LuanGiaiChapterContentProps) {
   const queryClient = useQueryClient();
-  const options = luanGiaiQueries.chapter(birth, chapter.order);
+  const options = luanGiaiQueries.chapter(birth, chapter.order, viewYear);
+  const copy = promptCopy(chapter.order, viewYear);
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const daCoBai = status === LuanGiaiChapterStatus.Ready;
   const { data } = useQuery({ ...options, enabled: daCoBai });
 
   const xin = useMutation({
-    mutationFn: () => requestChapter(birth, chapter.order),
+    mutationFn: () => requestChapter(birth, chapter.order, viewYear),
     onSuccess: (response) => {
       if (response.status !== LuanGiaiChapterStatus.Ready) return;
       queryClient.setQueryData(options.queryKey, response);
       // Gỡ ổ khoá trên mục lục ngay tại chỗ, khỏi phải hỏi lại máy chủ một vòng nữa.
       queryClient.setQueryData<LuanGiaiChapterStatusMap>(
-        luanGiaiQueries.statusMap(birth).queryKey,
+        luanGiaiQueries.statusMap(birth, viewYear).queryKey,
         (cu) =>
           cu && {
             chapters: { ...cu.chapters, [chapter.order]: LuanGiaiChapterStatus.Ready },
@@ -57,6 +80,12 @@ export function LuanGiaiChapterContent({ birth, chapter, status }: LuanGiaiChapt
     setIsTopUpOpen(false);
     xin.mutate();
   }
+
+  const unavailableMessage =
+    xin.data?.status === LuanGiaiChapterStatus.Unavailable ? copy.unavailableMessage : undefined;
+  const requestError = xin.error
+    ? errorMessage(xin.error, DEFAULT_ERROR_MESSAGE)
+    : unavailableMessage;
 
   if (xin.isPending) {
     return <LuanGiaiSkeletonCard isWriting />;
@@ -84,7 +113,8 @@ export function LuanGiaiChapterContent({ birth, chapter, status }: LuanGiaiChapt
     <>
       <LuanGiaiPromptCard
         chapter={chapter}
-        error={xin.error ? errorMessage(xin.error, DEFAULT_ERROR_MESSAGE) : undefined}
+        actionLabel={copy.actionLabel}
+        error={requestError}
         onRequest={() => xin.mutate()}
       />
       <TopUpDialog

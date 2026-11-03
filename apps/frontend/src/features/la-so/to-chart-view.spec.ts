@@ -1,5 +1,6 @@
 import { CalendarType, Gender } from './birth-input';
 import type { ChartView } from './chart-types';
+import { chartFromBirthInput } from '@org/shared-tu-vi';
 import { toChartView } from './to-chart-view';
 
 /** Canh Tuất 1910, sinh 1/1/1911 dương, giờ Ngọ, nam — lá số đã đối chiếu với tuvi.vn. */
@@ -12,6 +13,18 @@ const CANH_TUAT = {
   gender: Gender.Male,
   viewYear: 2026,
 } as const;
+
+const CANH_TY_1960 = {
+  day: 26,
+  month: 5,
+  year: 1960,
+  calendar: CalendarType.Solar,
+  hour: 'Hợi',
+  gender: Gender.Male,
+} as const;
+
+const tieuHanIndexes = (chart: ChartView): number[] =>
+  chart.cungs.filter((cung) => cung.isTieuHan).map((cung) => cung.index);
 
 const chinhTinhOf = (chart: ChartView) =>
   chart.cungs.map((cung) => cung.chinhTinh.map((star) => star.name));
@@ -190,5 +203,20 @@ describe('toChartView', () => {
   it('names the lai nhân cung palace', () => {
     // Canh Tuất: cung Thìn mang can Canh, và Thìn cách Mệnh ở Mùi ba cung nên là cung Tử Tức.
     expect(toChartView(CANH_TUAT).meta.laiNhanCung).toBe('Tử Tức');
+  });
+
+  it('marks exactly the tiểu hạn cung of the view year', () => {
+    const chart = toChartView({ ...CANH_TY_1960, viewYear: 2027 });
+    const { chart: engineChart } = chartFromBirthInput(CANH_TY_1960, 2027);
+
+    expect(tieuHanIndexes(chart)).toEqual([engineChart.tieuHan]);
+  });
+
+  it('moves the tiểu hạn mark when the view year changes', () => {
+    const nam2026 = tieuHanIndexes(toChartView({ ...CANH_TY_1960, viewYear: 2026 }));
+    const nam2027 = tieuHanIndexes(toChartView({ ...CANH_TY_1960, viewYear: 2027 }));
+
+    expect(nam2026).toHaveLength(1);
+    expect(nam2026).not.toEqual(nam2027);
   });
 });

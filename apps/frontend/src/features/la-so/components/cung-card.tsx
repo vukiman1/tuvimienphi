@@ -89,6 +89,13 @@ export function CungCard({
             : CUNG_SURFACE_CLASS.base,
       )}
     >
+      {cung.isTieuHan ? (
+        <span
+          className={`pointer-events-none absolute top-0 right-[4px] px-[6px] text-[10px] leading-[11px] font-bold text-white ${CHART_RULE_CLASS.blockLabel}`}
+        >
+          Tiểu hạn
+        </span>
+      ) : null}
       <span className={cn('flex h-full flex-col transition-opacity', isDimmed && 'opacity-30')}>
         <div className="flex items-baseline justify-between gap-1.5">
           <span className="shrink-0 text-[13px] leading-[17px] font-bold whitespace-nowrap text-[#17150f]">
