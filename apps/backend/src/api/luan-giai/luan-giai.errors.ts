@@ -31,3 +31,13 @@ export class UnknownThanCuCungError extends Error {
     this.name = 'UnknownThanCuCungError';
   }
 }
+
+export class RequiredMucFailedError extends Error {
+  constructor(
+    readonly mucTitle: string,
+    reason: string,
+  ) {
+    super(`required mục "${mucTitle}" could not be written: ${reason}`);
+    this.name = 'RequiredMucFailedError';
+  }
+}

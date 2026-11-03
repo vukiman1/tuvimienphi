@@ -3,7 +3,14 @@ import type { LuanGiaiArticle, LuanGiaiSection } from '@org/shared-contracts';
 import type { ChapterBrief, ChapterMucBrief, NatalChart } from '@org/shared-tu-vi';
 import { AiClient } from '../../../ai/port/ai.client';
 import { assembleArticle } from '../article/assemble-article';
-import { type ChapterDefinition, type MucCanSinh, MucKind } from './chapter-definition';
+import {
+  type ChapterContext,
+  type ChapterDefinition,
+  type MucCanGoiMoHinh,
+  type MucCanSinh,
+  MucKind,
+} from './chapter-definition';
+import { RequiredMucFailedError } from '../luan-giai.errors';
 import { parseDoanChinh, parseMuc } from './parse-paragraphs';
 import { buildMessages } from '../prompt/build-messages';
 import { DOAN_CHINH_SCHEMA, MUC_SCHEMA, type DoanChinh, type MucParagraph } from './chapter-schema';
@@ -48,13 +55,14 @@ export class ChapterGenerator {
     chapter: ChapterDefinition,
     chart: NatalChart,
     budgetMs: number,
+    context: ChapterContext,
   ): Promise<ChapterResult | null> {
-    const brief = chapter.buildBrief(chart);
+    const brief = chapter.buildBrief(chart, context);
     if (!brief) return null;
 
-    const khung = chapter.khung(brief);
+    const khung = chapter.khung(brief, chart, context);
 
-    const mucCanSinh = chapter.buildMucs(chart);
+    const mucCanSinh = chapter.buildMucs(chart, context);
 
     const [chinh, ...mucs] = await Promise.all([
       sinhVoiKiem<DoanChinh>(
@@ -90,6 +98,8 @@ export class ChapterGenerator {
     muc: MucCanSinh,
     budgetMs: number,
   ): Promise<LuanGiaiSection | null> {
+    if (muc.kind === MucKind.Rendered) return muc.section;
+
     const { brief } = muc;
     try {
       const paragraphs = await this.sinhDoanCuaMuc(muc, budgetMs);
@@ -100,6 +110,9 @@ export class ChapterGenerator {
         paragraphs,
       };
     } catch (error) {
+      if (muc.kind === MucKind.PhuTinh && muc.isRequired) {
+        throw new RequiredMucFailedError(brief.tieuDe, errorMessage(error));
+      }
       this.logger.warn(
         `${chapter.name}: bỏ mục "${brief.tieuDe}": ${errorMessage(error).slice(0, MUC_ERROR_PREVIEW_LENGTH)}`,
       );
@@ -107,7 +120,7 @@ export class ChapterGenerator {
     }
   }
 
-  private async sinhDoanCuaMuc(muc: MucCanSinh, budgetMs: number): Promise<string[]> {
+  private async sinhDoanCuaMuc(muc: MucCanGoiMoHinh, budgetMs: number): Promise<string[]> {
     const { brief } = muc;
     switch (muc.kind) {
       case MucKind.PhuTinh: {
@@ -115,7 +128,7 @@ export class ChapterGenerator {
           this.ai,
           {
             brief,
-            system: mucSystemPrompt(brief.cung),
+            system: muc.systemPrompt ?? mucSystemPrompt(brief.cung),
             schema: MUC_SCHEMA,
             messages: (daThu) => buildMessages(brief, daThu),
             parse: parseMuc,

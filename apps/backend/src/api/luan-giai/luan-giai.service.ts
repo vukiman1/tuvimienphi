@@ -12,7 +12,7 @@ import { chartFromBirthInput, type NatalChart } from '@org/shared-tu-vi';
 import { Repository } from 'typeorm';
 import { runWithAiCallContext } from '../../ai/port/ai-call-context';
 import { ChapterAllowanceService } from '../credits/chapter-allowance.service';
-import type { ChapterDefinition } from './generation/chapter-definition';
+import type { ChapterContext, ChapterDefinition } from './generation/chapter-definition';
 import { ChapterGenerator } from './generation/chapter-generator';
 import { CHAPTER_DEFINITIONS } from './generation/chapter-registry';
 import { LuanGiaiChapterEntity } from './entities/luan-giai-chapter.entity';
@@ -113,17 +113,19 @@ export class LuanGiaiService {
     if (daCo) return { status: LuanGiaiChapterStatus.Ready, article: daCo };
 
     const { chart } = chartFromBirthInput(input);
-    if (chapter.buildBrief(chart) === null) {
+    const context: ChapterContext = { viewYear: null, currentYear: new Date().getFullYear() };
+    if (chapter.buildBrief(chart, context) === null) {
       return { status: LuanGiaiChapterStatus.Unavailable };
     }
 
-    return this.generateAndSave(userId, chapter, chart, key, order);
+    return this.generateAndSave(userId, chapter, chart, context, key, order);
   }
 
   private async generateAndSave(
     userId: string,
     chapter: ChapterDefinition,
     chart: NatalChart,
+    context: ChapterContext,
     key: string,
     order: string,
   ): Promise<LuanGiaiChapterResponse> {
@@ -132,7 +134,7 @@ export class LuanGiaiService {
 
     try {
       const ket = await runWithAiCallContext({ userId, label: `luan-giai:${order}` }, () =>
-        this.generator.generate(chapter, chart, GENERATION_BUDGET_MS),
+        this.generator.generate(chapter, chart, GENERATION_BUDGET_MS, context),
       );
       if (!ket) {
         await this.allowance.refund(userId, source);

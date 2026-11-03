@@ -116,6 +116,7 @@ describe('LuanGiaiService.request', () => {
       CHAPTER_DEFINITIONS.get(CHAPTER_MENH),
       expect.anything(),
       expect.any(Number),
+      { viewYear: null, currentYear: expect.any(Number) },
     );
   });
 
@@ -130,6 +131,7 @@ describe('LuanGiaiService.request', () => {
       CHAPTER_DEFINITIONS.get(CHAPTER_CONG_DANH),
       expect.anything(),
       expect.any(Number),
+      { viewYear: null, currentYear: expect.any(Number) },
     );
   });
 
@@ -144,6 +146,7 @@ describe('LuanGiaiService.request', () => {
       CHAPTER_DEFINITIONS.get(CHAPTER_TAI_BACH),
       expect.anything(),
       expect.any(Number),
+      { viewYear: null, currentYear: expect.any(Number) },
     );
   });
 
@@ -158,6 +161,7 @@ describe('LuanGiaiService.request', () => {
       CHAPTER_DEFINITIONS.get(CHAPTER_TINH_DUYEN),
       expect.anything(),
       expect.any(Number),
+      { viewYear: null, currentYear: expect.any(Number) },
     );
   });
 

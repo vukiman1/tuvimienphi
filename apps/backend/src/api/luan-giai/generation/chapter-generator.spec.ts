@@ -1,15 +1,28 @@
 jest.mock('../validate/check-paragraphs', () => ({ checkParagraphs: jest.fn() }));
 
 import { Logger } from '@nestjs/common';
-import { castNatal, GiaDaoMucKey, Gender, type NatalChart } from '@org/shared-tu-vi';
+import type { LuanGiaiSection } from '@org/shared-contracts';
+import {
+  buildMucBriefs,
+  castNatal,
+  GiaDaoMucKey,
+  Gender,
+  type NatalChart,
+} from '@org/shared-tu-vi';
 import { AiClient } from '../../../ai/port/ai.client';
 import type { AiRequest, AiResult } from '../../../ai/port/ai.types';
-import type { ChapterDefinition } from './chapter-definition';
+import {
+  type ChapterContext,
+  type ChapterDefinition,
+  type MucCanSinh,
+  MucKind,
+} from './chapter-definition';
 import { ChapterGenerator } from './chapter-generator';
 import {
   ChapterRejectedError,
   ChapterTimedOutError,
   MalformedChapterError,
+  RequiredMucFailedError,
 } from '../luan-giai.errors';
 import { GIA_DAO_SYSTEM_PROMPT } from '../chapters/tinh-duyen/tinh-duyen.prompt';
 import { MAX_ATTEMPTS } from './sinh-voi-kiem';
@@ -32,6 +45,7 @@ const LA_SO_GIA_DAO: NatalChart = castNatal({
 const BAI = JSON.stringify({ doan1: 'Hai câu. Câu nữa.', doan2: 'Hai câu. Câu nữa.' });
 const BAI_MOT_DOAN = JSON.stringify({ doan: 'Một câu. Câu nữa.' });
 const BUDGET_MS = 60_000;
+const NO_VIEW_YEAR: ChapterContext = { viewYear: null, currentYear: 2026 };
 const PROMPT_CHA_ME = GIA_DAO_SYSTEM_PROMPT[GiaDaoMucKey.ChaMe];
 
 const THAN_CU_KHONG_MUC: ChapterDefinition = { ...THAN_CU_CHAPTER, buildMucs: () => [] };
@@ -81,7 +95,12 @@ describe('ChapterGenerator', () => {
     kiem.mockReturnValueOnce(VI_PHAM).mockReturnValue(DAT_HET);
     const ai = new AiGia([BAI, BAI]);
 
-    const ket = await new ChapterGenerator(ai).generate(THAN_CU_KHONG_MUC, CO_BANG, BUDGET_MS);
+    const ket = await new ChapterGenerator(ai).generate(
+      THAN_CU_KHONG_MUC,
+      CO_BANG,
+      BUDGET_MS,
+      NO_VIEW_YEAR,
+    );
 
     expect(ket?.attempts).toBe(2);
     expect(ai.requests).toHaveLength(2);
@@ -93,7 +112,7 @@ describe('ChapterGenerator', () => {
     const ai = new AiGia([BAI, BAI, BAI, BAI, BAI]);
 
     await expect(
-      new ChapterGenerator(ai).generate(THAN_CU_KHONG_MUC, CO_BANG, BUDGET_MS),
+      new ChapterGenerator(ai).generate(THAN_CU_KHONG_MUC, CO_BANG, BUDGET_MS, NO_VIEW_YEAR),
     ).rejects.toThrow(ChapterRejectedError);
     expect(ai.requests).toHaveLength(5);
   });
@@ -102,7 +121,7 @@ describe('ChapterGenerator', () => {
     const ai = new AiGia([BAI]);
 
     await expect(
-      new ChapterGenerator(ai).generate(KHONG_DUNG_NOI_BRIEF, CO_BANG, BUDGET_MS),
+      new ChapterGenerator(ai).generate(KHONG_DUNG_NOI_BRIEF, CO_BANG, BUDGET_MS, NO_VIEW_YEAR),
     ).resolves.toBeNull();
     expect(ai.requests).toHaveLength(0);
   });
@@ -111,7 +130,7 @@ describe('ChapterGenerator', () => {
     const ai = new AiGia([BAI]);
 
     await expect(
-      new ChapterGenerator(ai).generate(THAN_CU_KHONG_MUC, CO_BANG, 100),
+      new ChapterGenerator(ai).generate(THAN_CU_KHONG_MUC, CO_BANG, 100, NO_VIEW_YEAR),
     ).rejects.toThrow(ChapterTimedOutError);
     expect(ai.requests).toHaveLength(0);
   });
@@ -120,7 +139,7 @@ describe('ChapterGenerator', () => {
     const ai = new AiGia(['không phải json']);
 
     await expect(
-      new ChapterGenerator(ai).generate(THAN_CU_KHONG_MUC, CO_BANG, BUDGET_MS),
+      new ChapterGenerator(ai).generate(THAN_CU_KHONG_MUC, CO_BANG, BUDGET_MS, NO_VIEW_YEAR),
     ).rejects.toThrow(MalformedChapterError);
   });
 });
@@ -137,6 +156,7 @@ describe('ChapterGenerator mục cung khác', () => {
       TINH_DUYEN_CHAPTER,
       LA_SO_GIA_DAO,
       BUDGET_MS,
+      NO_VIEW_YEAR,
     );
 
     const [yeuCau] = ai.requestsOf(PROMPT_CHA_ME);
@@ -149,7 +169,12 @@ describe('ChapterGenerator mục cung khác', () => {
   it('brief gửi cho mô hình ở mục cung khác không kèm trường riêng của mục', async () => {
     const ai = new AiTheoSchema();
 
-    await new ChapterGenerator(ai).generate(TINH_DUYEN_CHAPTER, LA_SO_GIA_DAO, BUDGET_MS);
+    await new ChapterGenerator(ai).generate(
+      TINH_DUYEN_CHAPTER,
+      LA_SO_GIA_DAO,
+      BUDGET_MS,
+      NO_VIEW_YEAR,
+    );
 
     const [yeuCau] = ai.requestsOf(PROMPT_CHA_ME);
     const noiDung = JSON.stringify(yeuCau.messages[0]);
@@ -163,6 +188,7 @@ describe('ChapterGenerator mục cung khác', () => {
       TINH_DUYEN_CHAPTER,
       LA_SO_GIA_DAO,
       BUDGET_MS,
+      NO_VIEW_YEAR,
     );
 
     const briefDaKiem = kiem.mock.calls.map(([brief]) => brief);
@@ -179,6 +205,7 @@ describe('ChapterGenerator mục cung khác', () => {
       TINH_DUYEN_CHAPTER,
       LA_SO_GIA_DAO,
       BUDGET_MS,
+      NO_VIEW_YEAR,
     );
 
     const slugs = ket?.article.sections?.map((section) => section.slug) ?? [];
@@ -196,6 +223,7 @@ describe('ChapterGenerator mục cung khác', () => {
         TINH_DUYEN_CHAPTER,
         LA_SO_GIA_DAO,
         BUDGET_MS,
+        NO_VIEW_YEAR,
       );
 
       const canhBaoBoMuc = warn.mock.calls
@@ -208,5 +236,93 @@ describe('ChapterGenerator mục cung khác', () => {
     } finally {
       warn.mockRestore();
     }
+  });
+});
+
+describe('ChapterGenerator mục dựng sẵn và mục bắt buộc', () => {
+  const [mucDau, mucSau] = buildMucBriefs(CO_BANG);
+  const MUC_DUNG_SAN: LuanGiaiSection = {
+    slug: 'dung-san',
+    title: 'Dựng sẵn',
+    sourceCung: 'Mệnh · Tý',
+    paragraphs: ['Đoạn viết sẵn từ bảng.'],
+  };
+  const PROMPT_RIENG = 'prompt riêng của mục';
+
+  function voiMuc(mucs: readonly MucCanSinh[]): ChapterDefinition {
+    return { ...THAN_CU_CHAPTER, buildMucs: () => mucs };
+  }
+
+  beforeEach(() => {
+    kiem.mockReset().mockReturnValue(DAT_HET);
+  });
+
+  it('đặt mục dựng sẵn đúng thứ tự định nghĩa mà không gọi mô hình cho nó', async () => {
+    const ai = new AiTheoSchema();
+    const chuong = voiMuc([
+      { kind: MucKind.PhuTinh, brief: mucDau },
+      { kind: MucKind.Rendered, section: MUC_DUNG_SAN },
+      { kind: MucKind.PhuTinh, brief: mucSau },
+    ]);
+
+    const ket = await new ChapterGenerator(ai).generate(chuong, CO_BANG, BUDGET_MS, NO_VIEW_YEAR);
+
+    expect(ket?.article.sections?.map((section) => section.slug)).toEqual([
+      mucDau.muc,
+      MUC_DUNG_SAN.slug,
+      mucSau.muc,
+    ]);
+    expect(ket?.article.sections?.[1]).toEqual(MUC_DUNG_SAN);
+    expect(ai.requests).toHaveLength(3);
+  });
+
+  it('mục bắt buộc bị chặn đủ MAX_ATTEMPTS lần thì cả chương hỏng', async () => {
+    kiem.mockImplementation((brief) =>
+      'muc' in brief && brief.muc === mucDau.muc ? ['chặn'] : [],
+    );
+    const chuong = voiMuc([{ kind: MucKind.PhuTinh, brief: mucDau, isRequired: true }]);
+
+    await expect(
+      new ChapterGenerator(new AiTheoSchema()).generate(chuong, CO_BANG, BUDGET_MS, NO_VIEW_YEAR),
+    ).rejects.toThrow(RequiredMucFailedError);
+  });
+
+  it('mục không bắt buộc bị chặn thì chỉ mất mục đó', async () => {
+    kiem.mockImplementation((brief) =>
+      'muc' in brief && brief.muc === mucDau.muc ? ['chặn'] : [],
+    );
+    const chuong = voiMuc([{ kind: MucKind.PhuTinh, brief: mucDau }]);
+
+    const ket = await new ChapterGenerator(new AiTheoSchema()).generate(
+      chuong,
+      CO_BANG,
+      BUDGET_MS,
+      NO_VIEW_YEAR,
+    );
+
+    expect(ket?.article.sections).toBeUndefined();
+  });
+
+  it('mục phụ tinh có prompt riêng thì gửi đúng prompt ấy', async () => {
+    const ai = new AiTheoSchema();
+    const chuong = voiMuc([{ kind: MucKind.PhuTinh, brief: mucDau, systemPrompt: PROMPT_RIENG }]);
+
+    await new ChapterGenerator(ai).generate(chuong, CO_BANG, BUDGET_MS, NO_VIEW_YEAR);
+
+    expect(ai.requestsOf(PROMPT_RIENG)).not.toHaveLength(0);
+  });
+
+  it('chuyển ngữ cảnh năm xem tới brief, mục và khung', async () => {
+    const nguCanh: ChapterContext = { viewYear: 2027, currentYear: 2026 };
+    const buildBrief = jest.fn(THAN_CU_CHAPTER.buildBrief);
+    const buildMucs = jest.fn(() => []);
+    const khung = jest.fn(THAN_CU_CHAPTER.khung);
+    const chuong: ChapterDefinition = { ...THAN_CU_CHAPTER, buildBrief, buildMucs, khung };
+
+    await new ChapterGenerator(new AiTheoSchema()).generate(chuong, CO_BANG, BUDGET_MS, nguCanh);
+
+    expect(buildBrief).toHaveBeenCalledWith(CO_BANG, nguCanh);
+    expect(buildMucs).toHaveBeenCalledWith(CO_BANG, nguCanh);
+    expect(khung).toHaveBeenCalledWith(expect.anything(), CO_BANG, nguCanh);
   });
 });

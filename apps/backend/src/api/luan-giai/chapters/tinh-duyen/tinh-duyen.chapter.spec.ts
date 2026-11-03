@@ -13,6 +13,7 @@ import { GIA_DAO_SYSTEM_PROMPT } from './tinh-duyen.prompt';
 import { ChapterGenerator } from '../../generation/chapter-generator';
 import { TINH_DUYEN_CHAPTER } from './tinh-duyen.chapter';
 import { checkParagraphs } from '../../validate/check-paragraphs';
+import type { ChapterContext } from '../../generation/chapter-definition';
 
 const LA_SO: NatalChart = castNatal({
   solarDate: new Date(1953, 0, 25),
@@ -22,6 +23,7 @@ const LA_SO: NatalChart = castNatal({
 
 const BAI = JSON.stringify({ doan1: 'Hai câu. Câu nữa.', doan2: 'Hai câu. Câu nữa.' });
 const BUDGET_MS = 60_000;
+const NO_VIEW_YEAR: ChapterContext = { viewYear: null, currentYear: 2026 };
 const GIA_DAO_SLUGS = ['con-cai', 'cha-me'];
 
 class AiTheoSchema extends AiClient {
@@ -58,6 +60,7 @@ describe('TINH_DUYEN_CHAPTER', () => {
       TINH_DUYEN_CHAPTER,
       LA_SO,
       BUDGET_MS,
+      NO_VIEW_YEAR,
     );
 
     expect(ket?.article.title).toBe('Tình duyên Gia đạo');
@@ -69,6 +72,7 @@ describe('TINH_DUYEN_CHAPTER', () => {
       TINH_DUYEN_CHAPTER,
       LA_SO,
       BUDGET_MS,
+      NO_VIEW_YEAR,
     );
 
     expect(ket?.article.sections?.map((section) => section.slug)).toEqual([
@@ -82,6 +86,7 @@ describe('TINH_DUYEN_CHAPTER', () => {
       TINH_DUYEN_CHAPTER,
       LA_SO,
       BUDGET_MS,
+      NO_VIEW_YEAR,
     );
 
     const giaDao = ket?.article.sections?.filter((section) => GIA_DAO_SLUGS.includes(section.slug));
@@ -95,7 +100,7 @@ describe('TINH_DUYEN_CHAPTER', () => {
   ])('mục %s gửi brief cung %s bằng prompt riêng của mục đó', async (muc, cung) => {
     const ai = new AiTheoSchema();
 
-    await new ChapterGenerator(ai).generate(TINH_DUYEN_CHAPTER, LA_SO, BUDGET_MS);
+    await new ChapterGenerator(ai).generate(TINH_DUYEN_CHAPTER, LA_SO, BUDGET_MS, NO_VIEW_YEAR);
 
     const yeuCau = ai.requests.filter((request) => request.system === GIA_DAO_SYSTEM_PROMPT[muc]);
     expect(yeuCau.map(cungCuaBrief)).toEqual([cung]);
@@ -104,7 +109,12 @@ describe('TINH_DUYEN_CHAPTER', () => {
   it('mỗi mục một lần gọi mô hình, cộng một lần cho bài chính', async () => {
     const ai = new AiTheoSchema();
 
-    const ket = await new ChapterGenerator(ai).generate(TINH_DUYEN_CHAPTER, LA_SO, BUDGET_MS);
+    const ket = await new ChapterGenerator(ai).generate(
+      TINH_DUYEN_CHAPTER,
+      LA_SO,
+      BUDGET_MS,
+      NO_VIEW_YEAR,
+    );
 
     expect(ai.requests).toHaveLength((ket?.article.sections?.length ?? 0) + 1);
   });
@@ -116,6 +126,7 @@ describe('TINH_DUYEN_CHAPTER', () => {
       TINH_DUYEN_CHAPTER,
       LA_SO,
       BUDGET_MS,
+      NO_VIEW_YEAR,
     );
 
     const slugs = ket?.article.sections?.map((section) => section.slug) ?? [];
