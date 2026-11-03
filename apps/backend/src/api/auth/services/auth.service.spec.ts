@@ -410,7 +410,12 @@ describe('AuthService', () => {
     });
 
     it('creates the session only once the code checks out', async () => {
-      twoFactorChallenge.peek.mockResolvedValue({ userId: 'user-1', rememberMe: false });
+      twoFactorChallenge.peek.mockResolvedValue({
+        userId: 'user-1',
+        rememberMe: false,
+        persistence: SessionPersistence.STANDARD,
+        authProvider: AuthProvider.LOCAL,
+      });
       twoFactorService.consumeCode.mockResolvedValue(true);
       userService.getOneOrFail.mockResolvedValue(user);
       const response = mockResponse();
@@ -422,7 +427,12 @@ describe('AuthService', () => {
     });
 
     it('rejects a wrong code without creating anything', async () => {
-      twoFactorChallenge.peek.mockResolvedValue({ userId: 'user-1', rememberMe: false });
+      twoFactorChallenge.peek.mockResolvedValue({
+        userId: 'user-1',
+        rememberMe: false,
+        persistence: SessionPersistence.STANDARD,
+        authProvider: AuthProvider.LOCAL,
+      });
       twoFactorService.consumeCode.mockResolvedValue(false);
       twoFactorChallenge.recordFailure.mockResolvedValue(true);
       const response = mockResponse();
@@ -444,7 +454,12 @@ describe('AuthService', () => {
     });
 
     it('answers 410 once the attempts are used up, and 401 before that', async () => {
-      twoFactorChallenge.peek.mockResolvedValue({ userId: 'user-1', rememberMe: false });
+      twoFactorChallenge.peek.mockResolvedValue({
+        userId: 'user-1',
+        rememberMe: false,
+        persistence: SessionPersistence.STANDARD,
+        authProvider: AuthProvider.LOCAL,
+      });
       twoFactorService.consumeCode.mockResolvedValue(false);
 
       twoFactorChallenge.recordFailure.mockResolvedValue(true);
@@ -459,7 +474,12 @@ describe('AuthService', () => {
     });
 
     it('carries rememberMe from the password step through to the session', async () => {
-      twoFactorChallenge.peek.mockResolvedValue({ userId: 'user-1', rememberMe: true });
+      twoFactorChallenge.peek.mockResolvedValue({
+        userId: 'user-1',
+        rememberMe: true,
+        persistence: SessionPersistence.REMEMBER,
+        authProvider: AuthProvider.LOCAL,
+      });
       twoFactorService.consumeCode.mockResolvedValue(true);
       userService.getOneOrFail.mockResolvedValue(user);
 
@@ -514,11 +534,20 @@ describe('AuthService', () => {
 
       await service.login(admin as never, mockResponse(), request, true, 'admin');
 
-      expect(twoFactorChallenge.issue).toHaveBeenCalledWith('user-1', false);
+      expect(twoFactorChallenge.issue).toHaveBeenCalledWith('user-1', {
+        rememberMe: false,
+        persistence: SessionPersistence.STANDARD,
+        authProvider: AuthProvider.LOCAL,
+      });
     });
 
     it('refuses to finish a public site challenge on the console', async () => {
-      twoFactorChallenge.peek.mockResolvedValue({ userId: 'user-1', rememberMe: false });
+      twoFactorChallenge.peek.mockResolvedValue({
+        userId: 'user-1',
+        rememberMe: false,
+        persistence: SessionPersistence.STANDARD,
+        authProvider: AuthProvider.LOCAL,
+      });
       twoFactorService.consumeCode.mockResolvedValue(true);
       userService.getOneOrFail.mockResolvedValue({ ...admin, role: Roles.USER });
 
@@ -559,6 +588,20 @@ describe('AuthService', () => {
   });
 
   describe('loginWithGoogle', () => {
+    const GOOGLE_IDENTITY = {
+      provider: AuthProvider.GOOGLE,
+      providerAccountId: 'sub-1',
+      email: 'boss@example.com',
+      emailVerified: true,
+    };
+    const GOOGLE_ADMIN = {
+      id: 'user-1',
+      email: 'boss@example.com',
+      avatar: null,
+      balance: 0,
+      role: Roles.SUPER_ADMIN,
+    };
+
     it('verifies the credential, resolves the user and issues an OAuth session', async () => {
       const response = mockResponse();
       verifier.verify.mockResolvedValue({
@@ -588,7 +631,7 @@ describe('AuthService', () => {
           authProvider: AuthProvider.GOOGLE,
         }),
       );
-      expect(result.user.email).toBe('jane@example.com');
+      expect(result).toMatchObject({ user: { email: 'jane@example.com' } });
     });
 
     it('issues no session when the credential fails verification', async () => {
@@ -603,30 +646,67 @@ describe('AuthService', () => {
       expect(response.cookie).not.toHaveBeenCalled();
     });
 
-    it('issues an admin session for a console role', async () => {
+    it('asks a console role for the second factor before any admin session', async () => {
       const response = mockResponse();
-      verifier.verify.mockResolvedValue({
-        provider: AuthProvider.GOOGLE,
-        providerAccountId: 'sub-1',
-        email: 'boss@example.com',
-        emailVerified: true,
-      });
-      socialAuthService.findOrLinkIdentity.mockResolvedValue({
-        id: 'user-1',
-        email: 'boss@example.com',
-        avatar: null,
-        balance: 0,
-        role: Roles.SUPER_ADMIN,
-      });
-      const issueSpy = jest.spyOn(service, 'issueSession');
+      verifier.verify.mockResolvedValue(GOOGLE_IDENTITY);
+      socialAuthService.findOrLinkIdentity.mockResolvedValue(GOOGLE_ADMIN);
+      twoFactorService.isEnabled.mockResolvedValue(true);
 
-      await service.loginWithGoogle('cred', response, request, 'admin');
+      const result = await service.loginWithGoogle('cred', response, request, 'admin');
 
-      expect(issueSpy).toHaveBeenCalledWith(
-        expect.objectContaining({ id: 'user-1' }),
-        response,
-        request,
-        expect.objectContaining({ audience: 'admin' }),
+      expect(result).toEqual({ twoFactorRequired: true, challengeToken: 'challenge-1' });
+      expect(sessionService.createSession).not.toHaveBeenCalled();
+      expect(response.cookie).not.toHaveBeenCalled();
+    });
+
+    it('refuses a console role that has not enrolled in two-factor', async () => {
+      const response = mockResponse();
+      verifier.verify.mockResolvedValue(GOOGLE_IDENTITY);
+      socialAuthService.findOrLinkIdentity.mockResolvedValue(GOOGLE_ADMIN);
+      twoFactorService.isEnabled.mockResolvedValue(false);
+
+      await expect(
+        service.loginWithGoogle('cred', response, request, 'admin'),
+      ).rejects.toBeInstanceOf(ForbiddenException);
+      expect(sessionService.createSession).not.toHaveBeenCalled();
+    });
+
+    it('asks a site user who enrolled in two-factor for the code too', async () => {
+      const response = mockResponse();
+      verifier.verify.mockResolvedValue(GOOGLE_IDENTITY);
+      socialAuthService.findOrLinkIdentity.mockResolvedValue({ ...GOOGLE_ADMIN, role: Roles.USER });
+      twoFactorService.isEnabled.mockResolvedValue(true);
+
+      const result = await service.loginWithGoogle('cred', response, request);
+
+      expect(result).toEqual({ twoFactorRequired: true, challengeToken: 'challenge-1' });
+      expect(twoFactorChallenge.issue).toHaveBeenCalledWith('user-1', {
+        rememberMe: false,
+        persistence: SessionPersistence.OAUTH,
+        authProvider: AuthProvider.GOOGLE,
+      });
+      expect(response.cookie).not.toHaveBeenCalled();
+    });
+
+    it('finishes a Google challenge as the OAuth session it started as', async () => {
+      twoFactorChallenge.peek.mockResolvedValue({
+        userId: 'user-1',
+        rememberMe: false,
+        persistence: SessionPersistence.OAUTH,
+        authProvider: AuthProvider.GOOGLE,
+      });
+      twoFactorService.consumeCode.mockResolvedValue(true);
+      userService.getOneOrFail.mockResolvedValue(GOOGLE_ADMIN);
+
+      await service.verifyTwoFactor('challenge-1', '123456', mockResponse(), request, 'admin');
+
+      expect(sessionService.createSession).toHaveBeenCalledWith(
+        'user-1',
+        'admin',
+        SessionPersistence.OAUTH,
+      );
+      expect(userSessionService.createSession).toHaveBeenCalledWith(
+        expect.objectContaining({ authProvider: AuthProvider.GOOGLE }),
       );
     });
 

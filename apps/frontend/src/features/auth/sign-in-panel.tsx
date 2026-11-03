@@ -1,12 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AuthMethodPanel } from './auth-method-panel';
 import { ForgotPasswordForm } from './forgot-password-form';
 import { LoginForm } from './login-form';
+import { usePendingTwoFactor } from './pending-two-factor-store';
+import { TwoFactorStep } from './two-factor-step';
 import { useAuthModal } from './use-auth-modal';
 
 export function SignInPanel() {
   const { open } = useAuthModal();
   const [isRecoveringPassword, setIsRecoveringPassword] = useState(false);
+  const challengeToken = usePendingTwoFactor((state) => state.challengeToken);
+  const setChallengeToken = usePendingTwoFactor((state) => state.setChallengeToken);
+
+  useEffect(() => () => setChallengeToken(null), [setChallengeToken]);
+
+  if (challengeToken) {
+    return (
+      <TwoFactorStep challengeToken={challengeToken} onExpired={() => setChallengeToken(null)} />
+    );
+  }
 
   const emailStep = isRecoveringPassword
     ? {

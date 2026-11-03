@@ -7,6 +7,7 @@ import { authService } from '@/services/auth-service';
 import { resetAuthBootstrap } from './bootstrap';
 import { GoogleSignInButton } from './google-sign-in-button';
 import { LoginBackdrop } from './login-backdrop';
+import { TwoFactorCodeForm } from './two-factor-code-form';
 import { ensureSession, hasConsoleAccess } from './route-guards';
 
 const CARD_WIDTH = 420;
@@ -28,28 +29,51 @@ export function LoginPanel() {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [challengeToken, setChallengeToken] = useState<string | null>(null);
+
+  const enterConsole = useCallback(async () => {
+    resetAuthBootstrap();
+    await ensureSession();
+    if (!hasConsoleAccess()) {
+      setError(NOT_AN_ADMIN);
+      return;
+    }
+    await navigate({ to: '/' });
+  }, [navigate]);
 
   const signIn = useCallback(
     async (credential: string) => {
       setIsSubmitting(true);
       setError(null);
       try {
-        await authService.googleOneTap(credential);
-        resetAuthBootstrap();
-        await ensureSession();
-        if (!hasConsoleAccess()) {
-          setError(NOT_AN_ADMIN);
+        const result = await authService.googleOneTap(credential);
+        if ('twoFactorRequired' in result) {
+          setChallengeToken(result.challengeToken);
           return;
         }
-        await navigate({ to: '/' });
+        await enterConsole();
       } catch (caught) {
         setError(errorMessage(caught, SIGN_IN_FAILED));
       } finally {
         setIsSubmitting(false);
       }
     },
-    [navigate],
+    [enterConsole],
   );
+
+  const verifyCode = useCallback(
+    async (code: string) => {
+      if (!challengeToken) return;
+      await authService.verifyTwoFactor(challengeToken, code);
+      await enterConsole();
+    },
+    [challengeToken, enterConsole],
+  );
+
+  const restartSignIn = useCallback((message: string) => {
+    setChallengeToken(null);
+    setError(message);
+  }, []);
 
   const onCredential = useCallback((credential: string) => void signIn(credential), [signIn]);
   const onUnavailable = useCallback((message: string) => setError(message), []);
@@ -107,7 +131,9 @@ export function LoginPanel() {
             justify="center"
             style={{ minHeight: SIGN_IN_SLOT_HEIGHT, width: '100%' }}
           >
-            {isSubmitting ? (
+            {challengeToken ? (
+              <TwoFactorCodeForm onExpired={restartSignIn} onSubmit={verifyCode} />
+            ) : isSubmitting ? (
               <Spin />
             ) : (
               <GoogleSignInButton onCredential={onCredential} onUnavailable={onUnavailable} />

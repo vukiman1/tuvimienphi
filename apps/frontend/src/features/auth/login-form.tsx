@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Form } from '@/components/ui/form';
 import { FormError } from '@/components/ui/form-error';
@@ -10,7 +9,7 @@ import { useFormWithSubmitError } from '@/lib/use-form-with-submit-error';
 import { notify } from '@/lib/toast';
 import { authService } from '@/services/auth-service';
 import { startSession } from './session';
-import { TwoFactorStep } from './two-factor-step';
+import { usePendingTwoFactor } from './pending-two-factor-store';
 import { loginSchema, type LoginFormValues } from './schemas';
 import { useAuthModal } from './use-auth-modal';
 
@@ -20,7 +19,7 @@ interface LoginFormProps {
 
 export function LoginForm({ onForgotPassword }: LoginFormProps) {
   const { finish } = useAuthModal();
-  const [challengeToken, setChallengeToken] = useState<string | null>(null);
+  const setChallengeToken = usePendingTwoFactor((state) => state.setChallengeToken);
 
   const { form, submitError } = useFormWithSubmitError<LoginFormValues>({
     defaultValues: { email: 'user@example.com', password: 'Local1234', rememberMe: false },
@@ -37,12 +36,6 @@ export function LoginForm({ onForgotPassword }: LoginFormProps) {
       await finish();
     },
   });
-
-  if (challengeToken) {
-    return (
-      <TwoFactorStep challengeToken={challengeToken} onExpired={() => setChallengeToken(null)} />
-    );
-  }
 
   return (
     <Form className="grid gap-5" onSubmit={form.handleSubmit}>

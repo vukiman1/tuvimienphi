@@ -5,6 +5,7 @@ import { ensureGoogleIdentity, promptGoogleOneTap } from '@/lib/google-identity'
 import { authService } from '@/services/auth-service';
 import { useAuthStore } from '@/stores/auth-store';
 import { notify } from '@/lib/toast';
+import { usePendingTwoFactor } from './pending-two-factor-store';
 
 jest.mock('@/config/app-config', () => ({
   appConfig: {
@@ -22,7 +23,10 @@ jest.mock('@/services/auth-service', () => ({
   authService: { googleOneTap: jest.fn() },
 }));
 const mockNavigate = jest.fn();
-jest.mock('@tanstack/react-router', () => ({ useNavigate: () => mockNavigate }));
+jest.mock('@tanstack/react-router', () => ({
+  useNavigate: () => mockNavigate,
+  useSearch: () => ({}),
+}));
 jest.mock('@/lib/toast', () => ({
   notify: { success: jest.fn(), error: jest.fn(), info: jest.fn() },
 }));
@@ -33,6 +37,7 @@ describe('useGoogleOneTap', () => {
     appConfig.google.clientId = 'test-client-id';
     jest.mocked(ensureGoogleIdentity).mockResolvedValue(undefined as never);
     useAuthStore.setState({ user: null, isInitializing: false });
+    usePendingTwoFactor.setState({ challengeToken: null });
   });
 
   it('prompts when the user is anonymous and initialization has finished', async () => {
@@ -107,5 +112,31 @@ describe('useGoogleOneTap', () => {
 
     expect(useAuthStore.getState().user).toBeNull();
     expect(mockNavigate).not.toHaveBeenCalled();
+  });
+
+  it('hands a second-factor challenge to the sign-in modal instead of signing in', async () => {
+    jest
+      .mocked(authService.googleOneTap)
+      .mockResolvedValue({ twoFactorRequired: true, challengeToken: 'challenge-1' });
+    renderHook(() => useGoogleOneTap());
+    await waitFor(() => expect(ensureGoogleIdentity).toHaveBeenCalled());
+    const onCredential = jest.mocked(ensureGoogleIdentity).mock.calls[0][0].callback;
+
+    await onCredential('cred-1');
+
+    expect(usePendingTwoFactor.getState().challengeToken).toBe('challenge-1');
+    expect(useAuthStore.getState().user).toBeNull();
+    expect(notify.success).not.toHaveBeenCalled();
+    expect(mockNavigate).toHaveBeenCalledWith(expect.objectContaining({ to: '.' }));
+  });
+
+  it('registers with Google once, not on every render', async () => {
+    const { rerender } = renderHook(() => useGoogleOneTap());
+    await waitFor(() => expect(ensureGoogleIdentity).toHaveBeenCalledTimes(1));
+
+    rerender();
+    await Promise.resolve();
+
+    expect(ensureGoogleIdentity).toHaveBeenCalledTimes(1);
   });
 });

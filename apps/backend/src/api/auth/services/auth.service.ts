@@ -93,8 +93,23 @@ export class AuthService {
     rememberMe: boolean,
     audience: UserType,
   ) {
+    const rememberSession = audience === 'user' && rememberMe;
+    return this.signIn(user, response, request, {
+      persistence: rememberSession ? SessionPersistence.REMEMBER : SessionPersistence.STANDARD,
+      rememberMe: rememberSession,
+      authProvider: AuthProvider.LOCAL,
+      audience,
+    });
+  }
+
+  private async signIn(
+    user: UserEntity,
+    response: Response,
+    request: Request,
+    options: IssueSessionOptions,
+  ) {
     const twoFactorEnabled = await this.twoFactorService.isEnabled(user.id);
-    if (audience === 'admin') {
+    if (options.audience === 'admin') {
       this.assertConsoleRole(user);
       if (!twoFactorEnabled) {
         throw new ForbiddenException(
@@ -103,23 +118,20 @@ export class AuthService {
       }
     }
 
-    const rememberSession = audience === 'user' && rememberMe;
-
     // Issuing a session before the code would make the code optional: a caller could skip the
     // prompt and use the cookie straight away.
     if (twoFactorEnabled) {
-      const challengeToken = await this.twoFactorChallengeService.issue(user.id, rememberSession);
+      const { rememberMe, persistence, authProvider } = options;
+      const challengeToken = await this.twoFactorChallengeService.issue(user.id, {
+        rememberMe,
+        persistence,
+        authProvider,
+      });
       this.auditService.record(AuthEvent.LOGIN_TWO_FACTOR_REQUIRED, { userId: user.id, request });
       return { twoFactorRequired: true as const, challengeToken };
     }
 
-    const persistence = rememberSession ? SessionPersistence.REMEMBER : SessionPersistence.STANDARD;
-    return this.issueSession(user, response, request, {
-      persistence,
-      rememberMe: rememberSession,
-      authProvider: AuthProvider.LOCAL,
-      audience,
-    });
+    return this.issueSession(user, response, request, options);
   }
 
   async verifyTwoFactor(
@@ -154,9 +166,9 @@ export class AuthService {
       this.assertConsoleRole(user);
     }
     return this.issueSession(user, response, request, {
-      persistence: claim.rememberMe ? SessionPersistence.REMEMBER : SessionPersistence.STANDARD,
+      persistence: claim.persistence,
       rememberMe: claim.rememberMe,
-      authProvider: AuthProvider.LOCAL,
+      authProvider: claim.authProvider,
       audience,
     });
   }
@@ -209,10 +221,7 @@ export class AuthService {
   ) {
     const identity = await this.googleOneTapVerifier.verify(credential);
     const user = await this.socialAuthService.findOrLinkIdentity(identity);
-    if (audience === 'admin') {
-      this.assertConsoleRole(user);
-    }
-    return this.issueSession(user, response, request, {
+    return this.signIn(user, response, request, {
       persistence: SessionPersistence.OAUTH,
       rememberMe: false,
       authProvider: AuthProvider.GOOGLE,
