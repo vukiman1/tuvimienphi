@@ -41,3 +41,10 @@ export class RequiredMucFailedError extends Error {
     this.name = 'RequiredMucFailedError';
   }
 }
+
+export class VanHanYearUnavailableError extends Error {
+  constructor(readonly viewYear: number | null) {
+    super(`chapter 06 has no vận hạn year for view year ${String(viewYear)}`);
+    this.name = 'VanHanYearUnavailableError';
+  }
+}

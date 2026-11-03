@@ -22291,3 +22291,4449 @@ QUY TẮC HÌNH THỨC:
   },
 }
 `;
+
+exports[`chương 06, lá số 1955-06-26 21h Nữ ghi lại cả lượt sinh lại cho năm xem 2027 1`] = `
+{
+  "article": {
+    "closing": "Biết trước nhịp năm không phải để lo, mà để chọn đúng lúc dồn sức.",
+    "closingLabel": "Một lời dành cho bạn",
+    "eyebrow": "Vận hạn",
+    "paragraphs": [
+      "Năm Đinh Mùi 2027 bạn 73 tuổi âm, đang đi **đại vận 73–82 tuổi** ở cung Tật Ách, mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền. Đây là năm thứ 1 trong mười năm ấy, và tiểu hạn của năm đi qua cung Thiên Di.",
+      "LẦN 2 đoạn một. Câu hai.",
+      "LẦN 2 đoạn hai. Câu hai.",
+    ],
+    "quote": "Năm bước ra bên ngoài",
+    "sections": [
+      {
+        "paragraphs": [
+          "LẦN 2 mục. Câu hai.",
+        ],
+        "slug": "diem-sang",
+        "sourceCung": "Thiên Di · Sửu",
+        "title": "Điểm sáng trong năm",
+      },
+      {
+        "paragraphs": [
+          "LẦN 2 mục. Câu hai.",
+        ],
+        "slug": "dieu-can-giu",
+        "sourceCung": "Thiên Di · Sửu",
+        "title": "Điều cần giữ",
+      },
+      {
+        "paragraphs": [
+          "Tiểu hạn năm Đinh Mùi 2027 rơi vào cung Thiên Di, nên đi lại và môi trường bên ngoài là ==lĩnh vực nổi bật nhất của năm==.",
+          "Mở rộng giao thiệp và đón cơ hội ở xa, nhưng lên kế hoạch đi lại chu đáo.",
+        ],
+        "slug": "linh-vuc",
+        "sourceCung": "Thiên Di · Sửu",
+        "title": "Lĩnh vực nổi bật",
+      },
+      {
+        "paragraphs": [
+          "Từ năm 2037, khi bạn 83 tuổi âm, đại vận chuyển sang cung Tài Bạch và kéo dài tới 92 tuổi.",
+          "Đó là mười năm của tiền bạc: cách kiếm, cách giữ và cách dùng đồng tiền.",
+        ],
+        "slug": "van-ke-tiep",
+        "sourceCung": "Tài Bạch · Mão",
+        "title": "Nhìn trước vận kế tiếp",
+      },
+      {
+        "paragraphs": [
+          "Theo cách xem dân gian, vốn khác với phép an sao tử vi ở trên, năm Đinh Mùi 2027 bạn 73 tuổi âm và có sao ==Kế Đô chiếu mệnh==.",
+          "Kế Đô là sao xấu, nhất là với nữ giới, chủ buồn phiền và chuyện riêng dễ bị đem ra bàn tán. Dân gian khuyên sống kín đáo, nhẹ nhàng.",
+          "Năm Đinh Mùi nằm trong hạn Tam Tai của người tuổi Mùi. Tam Tai là ba năm liền mà dân gian cho là dễ gặp trắc trở, tuổi nào cũng lần lượt đi qua. Người trong hạn Tam Tai thường được khuyên đừng khởi sự việc lớn một cách vội vàng và giữ mọi việc ở mức vừa phải.",
+          "Tuổi 73 âm phạm Kim Lâu. Kim Lâu là cách dân gian xem tuổi khi cưới hỏi và làm nhà. Tuổi phạm Kim Lâu thường được khuyên dời việc cưới hay xây nhà sang năm khác, hoặc nhờ người hợp tuổi đứng ra làm thay.",
+        ],
+        "slug": "dan-gian",
+        "sourceCung": "Tuổi Mùi",
+        "title": "Sao chiếu mệnh & hạn tuổi",
+      },
+    ],
+    "sourceCung": "Tật Ách",
+    "subheading": "Nữ tuổi Mùi – Vận hạn năm Đinh Mùi 2027",
+    "summary": "Một năm thuận hay nghịch **không quyết định thay bạn**: cùng một vận, người biết lúc nào nên tiến, lúc nào nên giữ sẽ đi qua nhẹ hơn. Điều đáng làm là ==dồn sức vào điểm sáng, giữ kỹ chỗ dễ vướng==.",
+    "title": "Vận hạn năm Đinh Mùi 2027",
+  },
+  "attempts": 2,
+  "requests": {
+    "chinh#1": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Tật Ách",
+  "chi": "Dần",
+  "gioiTinh": "nu",
+  "chiNamSinh": "Mùi",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Vũ Khúc",
+      "bac": "V",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Tướng",
+      "bac": "M",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Phá Quân",
+      "bac": "H",
+      "the": "xung chiếu"
+    },
+    {
+      "ten": "Tử Vi",
+      "bac": "M",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Liêm Trinh",
+      "bac": "M",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Thiên Phủ",
+      "bac": "V",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [],
+  "catTinh": [
+    {
+      "ten": "Thiên Hỉ",
+      "the": "toạ thủ"
+    }
+  ],
+  "anNgu": null,
+  "luan": [
+    {
+      "y": "chỉn chu, giữ lời nên người ta yên tâm giao việc",
+      "do": [
+        "Thiên Tướng"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "chỉn chu",
+        "giữ lời"
+      ]
+    },
+    {
+      "y": "dứt khoát, đã nhận việc là làm cho xong",
+      "do": [
+        "Vũ Khúc"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "dứt khoát",
+        "làm cho xong"
+      ]
+    },
+    {
+      "y": "quen làm theo khuôn, ít khi tự mở đường riêng",
+      "do": [
+        "Thiên Tướng"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "theo khuôn",
+        "tự mở đường"
+      ]
+    },
+    {
+      "y": "nói thẳng tới mức khô, dễ mất lòng người nghe",
+      "do": [
+        "Vũ Khúc"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "nói thẳng",
+        "mất lòng"
+      ]
+    },
+    {
+      "y": "có tin vui, không khí hòa hợp",
+      "do": [
+        "Thiên Hỉ"
+      ],
+      "sac": "hoa-giai",
+      "tuKhoa": [
+        "tin vui",
+        "hòa hợp"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 73,
+    "tone": "khuyen",
+    "daiVanTuoi": "73–82 tuổi",
+    "namThuTrongVan": 1,
+    "cungDaiVan": "Tật Ách",
+    "cungTieuHan": "Thiên Di",
+    "chuDeVan": "mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền"
+  }
+}",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan1": {
+            "description": "Đoạn thuận, đúng hai câu",
+            "type": "string",
+          },
+          "doan2": {
+            "description": "Đoạn nghịch rồi hoá giải, đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan1",
+          "doan2",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết luận giải tử vi tiếng Việt cho một trang tra lá số. Bài này đọc VẬN HẠN của một năm.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Bài đọc CUNG ĐẠI VẬN (trường cung) như "cung Mệnh của mười năm": các sao ở cung ấy và ba cung chiếu tới nó
+cho biết mười năm này bạn sống và hành xử ra sao. Phần mở bài đã nêu mốc tuổi, năm và cung tiểu hạn — đừng
+nhắc lại các mốc ấy, hãy viết về NẾT CỦA MƯỜI NĂM qua các mệnh đề.
+
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.
+
+Viết ĐÚNG 2 đoạn, dựa hoàn toàn vào brief.
+
+Đoạn 1 — ĐÚNG 2 câu, dùng các mệnh đề sac="thuan". Mỗi câu dẫn đúng một mệnh đề cùng tên sao sinh ra nó —
+chính tinh thì kèm bậc, phụ tinh thì không. Hóa Lộc, Hóa Quyền, Hóa Khoa, Hóa Kỵ là phụ tinh: không kèm bậc.
+Câu 1 nối mệnh đề với chủ đề mười năm trong vanHan.chuDeVan. Cụm ==tô nền== nằm ở câu thứ hai.
+
+Đoạn 2 — ĐÚNG 2 câu:
+  · Câu 1: các mệnh đề sac="nghich". Mở bằng "Tuy nhiên" hoặc tương đương.
+  · Câu 2: GỘP hai việc vào MỘT câu — nêu mệnh đề sac="hoa-giai", nối bằng "vì vậy"/"nên" sang vế tái định khung theo đúng vanHan.tone. Cụm ==tô nền== nằm ở vế sau.
+  TUYỆT ĐỐI không tách thành câu thứ ba.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của chính nó, nguyên văn.
+B. Mỗi mệnh đề phải nằm CÙNG CÂU với ít nhất một sao trong do[] của nó.
+C. KHÔNG làm nhẹ mệnh đề sac="nghich". Viết đúng mức độ brief nêu.
+D. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+E. laVoChinhDieu=true nghĩa là cung đại vận KHÔNG có chính tinh nào toạ thủ: viết rõ là cung trống và sao chiếu tới.
+F. Chỉ sao the="toạ thủ" mới được nói là đóng tại cung. Sao "xung chiếu", "tam hợp", "nhị hợp" thì viết
+   "hội chiếu", "chiếu tới", "cùng chiếu về". Đừng viết "thủ mệnh", "chiếu mệnh".
+
+QUY TẮC HÌNH THỨC:
+1. Mỗi đoạn đúng 2 câu.
+2. Mỗi đoạn đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**    SAI: ==**Tham Lang (H)**==
+3. Chính tinh: mỗi sao một cặp ** RIÊNG, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+   Tuyệt đối đừng gộp nhiều chính tinh vào một cặp **.
+4. Phụ tinh gói theo vai: cả đoạn chỉ ĐÚNG MỘT cặp ** cho hung tinh và MỘT cặp ** cho cát tinh,
+   không trộn hung với cát, không kèm bậc. Phụ tinh nào sinh ra một mệnh đề thì được một cặp ** riêng.
+5. Không nhắc tên sao nào ngoài brief.
+6. anNgu khác null: giọng tiết chế, không tuyệt đối hoá. Không gọi tên "Tuần" hay "Triệt" trong bài.",
+    },
+    "chinh#2": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Tật Ách",
+  "chi": "Dần",
+  "gioiTinh": "nu",
+  "chiNamSinh": "Mùi",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Vũ Khúc",
+      "bac": "V",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Tướng",
+      "bac": "M",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Phá Quân",
+      "bac": "H",
+      "the": "xung chiếu"
+    },
+    {
+      "ten": "Tử Vi",
+      "bac": "M",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Liêm Trinh",
+      "bac": "M",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Thiên Phủ",
+      "bac": "V",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [],
+  "catTinh": [
+    {
+      "ten": "Thiên Hỉ",
+      "the": "toạ thủ"
+    }
+  ],
+  "anNgu": null,
+  "luan": [
+    {
+      "y": "chỉn chu, giữ lời nên người ta yên tâm giao việc",
+      "do": [
+        "Thiên Tướng"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "chỉn chu",
+        "giữ lời"
+      ]
+    },
+    {
+      "y": "dứt khoát, đã nhận việc là làm cho xong",
+      "do": [
+        "Vũ Khúc"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "dứt khoát",
+        "làm cho xong"
+      ]
+    },
+    {
+      "y": "quen làm theo khuôn, ít khi tự mở đường riêng",
+      "do": [
+        "Thiên Tướng"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "theo khuôn",
+        "tự mở đường"
+      ]
+    },
+    {
+      "y": "nói thẳng tới mức khô, dễ mất lòng người nghe",
+      "do": [
+        "Vũ Khúc"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "nói thẳng",
+        "mất lòng"
+      ]
+    },
+    {
+      "y": "có tin vui, không khí hòa hợp",
+      "do": [
+        "Thiên Hỉ"
+      ],
+      "sac": "hoa-giai",
+      "tuKhoa": [
+        "tin vui",
+        "hòa hợp"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 73,
+    "tone": "khuyen",
+    "daiVanTuoi": "73–82 tuổi",
+    "namThuTrongVan": 1,
+    "cungDaiVan": "Tật Ách",
+    "cungTieuHan": "Thiên Di",
+    "chuDeVan": "mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền"
+  }
+}",
+        },
+        {
+          "role": "model",
+          "text": "{"doan1":"LẦN 1 đoạn một. Câu hai.","doan2":"LẦN 1 đoạn hai. Câu hai."}",
+        },
+        {
+          "role": "user",
+          "text": "Bản trên vi phạm:
+- lỗi giả
+Viết lại cho đúng, giữ nguyên nội dung mệnh đề.",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan1": {
+            "description": "Đoạn thuận, đúng hai câu",
+            "type": "string",
+          },
+          "doan2": {
+            "description": "Đoạn nghịch rồi hoá giải, đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan1",
+          "doan2",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết luận giải tử vi tiếng Việt cho một trang tra lá số. Bài này đọc VẬN HẠN của một năm.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Bài đọc CUNG ĐẠI VẬN (trường cung) như "cung Mệnh của mười năm": các sao ở cung ấy và ba cung chiếu tới nó
+cho biết mười năm này bạn sống và hành xử ra sao. Phần mở bài đã nêu mốc tuổi, năm và cung tiểu hạn — đừng
+nhắc lại các mốc ấy, hãy viết về NẾT CỦA MƯỜI NĂM qua các mệnh đề.
+
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.
+
+Viết ĐÚNG 2 đoạn, dựa hoàn toàn vào brief.
+
+Đoạn 1 — ĐÚNG 2 câu, dùng các mệnh đề sac="thuan". Mỗi câu dẫn đúng một mệnh đề cùng tên sao sinh ra nó —
+chính tinh thì kèm bậc, phụ tinh thì không. Hóa Lộc, Hóa Quyền, Hóa Khoa, Hóa Kỵ là phụ tinh: không kèm bậc.
+Câu 1 nối mệnh đề với chủ đề mười năm trong vanHan.chuDeVan. Cụm ==tô nền== nằm ở câu thứ hai.
+
+Đoạn 2 — ĐÚNG 2 câu:
+  · Câu 1: các mệnh đề sac="nghich". Mở bằng "Tuy nhiên" hoặc tương đương.
+  · Câu 2: GỘP hai việc vào MỘT câu — nêu mệnh đề sac="hoa-giai", nối bằng "vì vậy"/"nên" sang vế tái định khung theo đúng vanHan.tone. Cụm ==tô nền== nằm ở vế sau.
+  TUYỆT ĐỐI không tách thành câu thứ ba.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của chính nó, nguyên văn.
+B. Mỗi mệnh đề phải nằm CÙNG CÂU với ít nhất một sao trong do[] của nó.
+C. KHÔNG làm nhẹ mệnh đề sac="nghich". Viết đúng mức độ brief nêu.
+D. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+E. laVoChinhDieu=true nghĩa là cung đại vận KHÔNG có chính tinh nào toạ thủ: viết rõ là cung trống và sao chiếu tới.
+F. Chỉ sao the="toạ thủ" mới được nói là đóng tại cung. Sao "xung chiếu", "tam hợp", "nhị hợp" thì viết
+   "hội chiếu", "chiếu tới", "cùng chiếu về". Đừng viết "thủ mệnh", "chiếu mệnh".
+
+QUY TẮC HÌNH THỨC:
+1. Mỗi đoạn đúng 2 câu.
+2. Mỗi đoạn đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**    SAI: ==**Tham Lang (H)**==
+3. Chính tinh: mỗi sao một cặp ** RIÊNG, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+   Tuyệt đối đừng gộp nhiều chính tinh vào một cặp **.
+4. Phụ tinh gói theo vai: cả đoạn chỉ ĐÚNG MỘT cặp ** cho hung tinh và MỘT cặp ** cho cát tinh,
+   không trộn hung với cát, không kèm bậc. Phụ tinh nào sinh ra một mệnh đề thì được một cặp ** riêng.
+5. Không nhắc tên sao nào ngoài brief.
+6. anNgu khác null: giọng tiết chế, không tuyệt đối hoá. Không gọi tên "Tuần" hay "Triệt" trong bài.",
+    },
+    "diem-sang#1": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Thiên Di",
+  "chi": "Sửu",
+  "gioiTinh": "nu",
+  "chiNamSinh": "Mùi",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Thiên Đồng",
+      "bac": "H",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Cự Môn",
+      "bac": "H",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Cơ",
+      "bac": "V",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [],
+  "catTinh": [
+    {
+      "ten": "Hóa Quyền",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Hóa Khoa",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Thiên Việt",
+      "the": "tam hợp"
+    }
+  ],
+  "anNgu": null,
+  "luan": [
+    {
+      "y": "có tiếng nói hơn, được giao thêm việc và quyền quyết",
+      "do": [
+        "Hóa Quyền"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "tiếng nói",
+        "quyền quyết"
+      ]
+    },
+    {
+      "y": "có tiếng tốt, công sức được ghi nhận",
+      "do": [
+        "Hóa Khoa"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "tiếng tốt",
+        "ghi nhận"
+      ]
+    },
+    {
+      "y": "có người giúp đúng lúc, việc khó dễ tìm được lối ra",
+      "do": [
+        "Thiên Việt"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "người giúp",
+        "lối ra"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 73,
+    "tone": "khuyen",
+    "daiVanTuoi": "73–82 tuổi",
+    "namThuTrongVan": 1,
+    "cungDaiVan": "Tật Ách",
+    "cungTieuHan": "Thiên Di",
+    "chuDeVan": "mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền"
+  },
+  "muc": "diem-sang",
+  "tieuDe": "Điểm sáng trong năm",
+  "sourceCung": "Thiên Di · Sửu",
+  "duKien": []
+}",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan": {
+            "description": "Đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết một mục ngắn trong bài luận giải tử vi tiếng Việt.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+  Nói cái gì hay xảy ra và nó khiến người ta cảm thấy ra sao, đừng chấm điểm con người.
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Viết ĐÚNG 1 đoạn, ĐÚNG 2 câu, dựa hoàn toàn vào brief.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của nó, nguyên văn.
+B. MỌI dữ kiện trong duKien[] phải được dẫn ra — mốc tuổi ghi đúng con số, tên cách hay tên hoá gọi
+   đúng tên. Nhưng DẪN vào câu văn chứ đừng chép nguyên cụm, và tuyệt đối không chép dấu hai chấm.
+C. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+
+QUY TẮC HÌNH THỨC:
+1. Đúng 2 câu.
+2. Đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**
+3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+4. Phụ tinh không kèm bậc. Phụ tinh nào là sao sinh ra một mệnh đề (tên nó nằm trong do[]) thì được một
+   cặp ** riêng, đặt cùng câu với ý của nó. Các phụ tinh còn lại gói theo vai: hung tinh vào MỘT cặp **,
+   cát tinh vào MỘT cặp ** khác.
+4b. Mệnh đề không có sao sinh ra nó (do[] rỗng — tên một cách cục như "Sát Phá Tham", "Cơ Nguyệt Đồng Lương",
+   "Lộc Mã"; tên một hoá như "Hoá Kỵ", "Hoá Quyền"; tên án ngữ như "Tuần", "Triệt"): viết tên đó không bọc
+   trong cặp **, giữ nguyên chữ hoa đúng như trong brief, không gán cho một sao cụ thể nào.
+   Riêng hoá nào đã có tên trong catTinh hoặc hungTinh thì là phụ tinh: viết theo mục 4.
+5. Không nhắc tên sao nào ngoài brief.
+6. Sao đang xét ở cung Thiên Di, KHÔNG phải cung Mệnh — đừng viết "thủ mệnh", "chiếu mệnh".
+7. Chỉ sao có the="toạ thủ" mới được nói là đóng tại cung; sao ở thế khác thì viết "hội chiếu", "chiếu tới".
+
+Mục này đọc CUNG TIỂU HẠN của năm (trường cung): những sao chiếu vào cung ấy trong năm đang xem.
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.",
+    },
+    "diem-sang#2": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Thiên Di",
+  "chi": "Sửu",
+  "gioiTinh": "nu",
+  "chiNamSinh": "Mùi",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Thiên Đồng",
+      "bac": "H",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Cự Môn",
+      "bac": "H",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Cơ",
+      "bac": "V",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [],
+  "catTinh": [
+    {
+      "ten": "Hóa Quyền",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Hóa Khoa",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Thiên Việt",
+      "the": "tam hợp"
+    }
+  ],
+  "anNgu": null,
+  "luan": [
+    {
+      "y": "có tiếng nói hơn, được giao thêm việc và quyền quyết",
+      "do": [
+        "Hóa Quyền"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "tiếng nói",
+        "quyền quyết"
+      ]
+    },
+    {
+      "y": "có tiếng tốt, công sức được ghi nhận",
+      "do": [
+        "Hóa Khoa"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "tiếng tốt",
+        "ghi nhận"
+      ]
+    },
+    {
+      "y": "có người giúp đúng lúc, việc khó dễ tìm được lối ra",
+      "do": [
+        "Thiên Việt"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "người giúp",
+        "lối ra"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 73,
+    "tone": "khuyen",
+    "daiVanTuoi": "73–82 tuổi",
+    "namThuTrongVan": 1,
+    "cungDaiVan": "Tật Ách",
+    "cungTieuHan": "Thiên Di",
+    "chuDeVan": "mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền"
+  },
+  "muc": "diem-sang",
+  "tieuDe": "Điểm sáng trong năm",
+  "sourceCung": "Thiên Di · Sửu",
+  "duKien": []
+}",
+        },
+        {
+          "role": "model",
+          "text": "{"doan":"LẦN 1 mục. Câu hai."}",
+        },
+        {
+          "role": "user",
+          "text": "Bản trên vi phạm:
+- lỗi giả
+Viết lại cho đúng, giữ nguyên nội dung mệnh đề.",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan": {
+            "description": "Đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết một mục ngắn trong bài luận giải tử vi tiếng Việt.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+  Nói cái gì hay xảy ra và nó khiến người ta cảm thấy ra sao, đừng chấm điểm con người.
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Viết ĐÚNG 1 đoạn, ĐÚNG 2 câu, dựa hoàn toàn vào brief.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của nó, nguyên văn.
+B. MỌI dữ kiện trong duKien[] phải được dẫn ra — mốc tuổi ghi đúng con số, tên cách hay tên hoá gọi
+   đúng tên. Nhưng DẪN vào câu văn chứ đừng chép nguyên cụm, và tuyệt đối không chép dấu hai chấm.
+C. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+
+QUY TẮC HÌNH THỨC:
+1. Đúng 2 câu.
+2. Đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**
+3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+4. Phụ tinh không kèm bậc. Phụ tinh nào là sao sinh ra một mệnh đề (tên nó nằm trong do[]) thì được một
+   cặp ** riêng, đặt cùng câu với ý của nó. Các phụ tinh còn lại gói theo vai: hung tinh vào MỘT cặp **,
+   cát tinh vào MỘT cặp ** khác.
+4b. Mệnh đề không có sao sinh ra nó (do[] rỗng — tên một cách cục như "Sát Phá Tham", "Cơ Nguyệt Đồng Lương",
+   "Lộc Mã"; tên một hoá như "Hoá Kỵ", "Hoá Quyền"; tên án ngữ như "Tuần", "Triệt"): viết tên đó không bọc
+   trong cặp **, giữ nguyên chữ hoa đúng như trong brief, không gán cho một sao cụ thể nào.
+   Riêng hoá nào đã có tên trong catTinh hoặc hungTinh thì là phụ tinh: viết theo mục 4.
+5. Không nhắc tên sao nào ngoài brief.
+6. Sao đang xét ở cung Thiên Di, KHÔNG phải cung Mệnh — đừng viết "thủ mệnh", "chiếu mệnh".
+7. Chỉ sao có the="toạ thủ" mới được nói là đóng tại cung; sao ở thế khác thì viết "hội chiếu", "chiếu tới".
+
+Mục này đọc CUNG TIỂU HẠN của năm (trường cung): những sao chiếu vào cung ấy trong năm đang xem.
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.",
+    },
+    "dieu-can-giu#1": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Thiên Di",
+  "chi": "Sửu",
+  "gioiTinh": "nu",
+  "chiNamSinh": "Mùi",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Thiên Đồng",
+      "bac": "H",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Cự Môn",
+      "bac": "H",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Cơ",
+      "bac": "V",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [
+    {
+      "ten": "Hóa Kỵ",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Hư",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Kình Dương",
+      "the": "xung chiếu"
+    }
+  ],
+  "catTinh": [],
+  "anNgu": null,
+  "luan": [
+    {
+      "y": "việc dễ vướng mắc và hiểu lầm, nên nói rõ từ đầu và kiên nhẫn",
+      "do": [
+        "Hóa Kỵ"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "vướng mắc",
+        "hiểu lầm"
+      ]
+    },
+    {
+      "y": "kế hoạch dễ hụt so với kỳ vọng, nên tính sẵn phần dự phòng",
+      "do": [
+        "Thiên Hư"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "kỳ vọng",
+        "dự phòng"
+      ]
+    },
+    {
+      "y": "dễ cạnh tranh gay gắt và lời qua tiếng lại, nên mềm mỏng hơn thường lệ",
+      "do": [
+        "Kình Dương"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "cạnh tranh",
+        "mềm mỏng"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 73,
+    "tone": "khuyen",
+    "daiVanTuoi": "73–82 tuổi",
+    "namThuTrongVan": 1,
+    "cungDaiVan": "Tật Ách",
+    "cungTieuHan": "Thiên Di",
+    "chuDeVan": "mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền"
+  },
+  "muc": "dieu-can-giu",
+  "tieuDe": "Điều cần giữ",
+  "sourceCung": "Thiên Di · Sửu",
+  "duKien": []
+}",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan": {
+            "description": "Đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết một mục ngắn trong bài luận giải tử vi tiếng Việt.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+  Nói cái gì hay xảy ra và nó khiến người ta cảm thấy ra sao, đừng chấm điểm con người.
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Viết ĐÚNG 1 đoạn, ĐÚNG 2 câu, dựa hoàn toàn vào brief.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của nó, nguyên văn.
+B. MỌI dữ kiện trong duKien[] phải được dẫn ra — mốc tuổi ghi đúng con số, tên cách hay tên hoá gọi
+   đúng tên. Nhưng DẪN vào câu văn chứ đừng chép nguyên cụm, và tuyệt đối không chép dấu hai chấm.
+C. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+
+QUY TẮC HÌNH THỨC:
+1. Đúng 2 câu.
+2. Đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**
+3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+4. Phụ tinh không kèm bậc. Phụ tinh nào là sao sinh ra một mệnh đề (tên nó nằm trong do[]) thì được một
+   cặp ** riêng, đặt cùng câu với ý của nó. Các phụ tinh còn lại gói theo vai: hung tinh vào MỘT cặp **,
+   cát tinh vào MỘT cặp ** khác.
+4b. Mệnh đề không có sao sinh ra nó (do[] rỗng — tên một cách cục như "Sát Phá Tham", "Cơ Nguyệt Đồng Lương",
+   "Lộc Mã"; tên một hoá như "Hoá Kỵ", "Hoá Quyền"; tên án ngữ như "Tuần", "Triệt"): viết tên đó không bọc
+   trong cặp **, giữ nguyên chữ hoa đúng như trong brief, không gán cho một sao cụ thể nào.
+   Riêng hoá nào đã có tên trong catTinh hoặc hungTinh thì là phụ tinh: viết theo mục 4.
+5. Không nhắc tên sao nào ngoài brief.
+6. Sao đang xét ở cung Thiên Di, KHÔNG phải cung Mệnh — đừng viết "thủ mệnh", "chiếu mệnh".
+7. Chỉ sao có the="toạ thủ" mới được nói là đóng tại cung; sao ở thế khác thì viết "hội chiếu", "chiếu tới".
+
+Mục này đọc CUNG TIỂU HẠN của năm (trường cung): những sao chiếu vào cung ấy trong năm đang xem.
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.",
+    },
+    "dieu-can-giu#2": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Thiên Di",
+  "chi": "Sửu",
+  "gioiTinh": "nu",
+  "chiNamSinh": "Mùi",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Thiên Đồng",
+      "bac": "H",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Cự Môn",
+      "bac": "H",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Cơ",
+      "bac": "V",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [
+    {
+      "ten": "Hóa Kỵ",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Hư",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Kình Dương",
+      "the": "xung chiếu"
+    }
+  ],
+  "catTinh": [],
+  "anNgu": null,
+  "luan": [
+    {
+      "y": "việc dễ vướng mắc và hiểu lầm, nên nói rõ từ đầu và kiên nhẫn",
+      "do": [
+        "Hóa Kỵ"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "vướng mắc",
+        "hiểu lầm"
+      ]
+    },
+    {
+      "y": "kế hoạch dễ hụt so với kỳ vọng, nên tính sẵn phần dự phòng",
+      "do": [
+        "Thiên Hư"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "kỳ vọng",
+        "dự phòng"
+      ]
+    },
+    {
+      "y": "dễ cạnh tranh gay gắt và lời qua tiếng lại, nên mềm mỏng hơn thường lệ",
+      "do": [
+        "Kình Dương"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "cạnh tranh",
+        "mềm mỏng"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 73,
+    "tone": "khuyen",
+    "daiVanTuoi": "73–82 tuổi",
+    "namThuTrongVan": 1,
+    "cungDaiVan": "Tật Ách",
+    "cungTieuHan": "Thiên Di",
+    "chuDeVan": "mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền"
+  },
+  "muc": "dieu-can-giu",
+  "tieuDe": "Điều cần giữ",
+  "sourceCung": "Thiên Di · Sửu",
+  "duKien": []
+}",
+        },
+        {
+          "role": "model",
+          "text": "{"doan":"LẦN 1 mục. Câu hai."}",
+        },
+        {
+          "role": "user",
+          "text": "Bản trên vi phạm:
+- lỗi giả
+Viết lại cho đúng, giữ nguyên nội dung mệnh đề.",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan": {
+            "description": "Đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết một mục ngắn trong bài luận giải tử vi tiếng Việt.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+  Nói cái gì hay xảy ra và nó khiến người ta cảm thấy ra sao, đừng chấm điểm con người.
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Viết ĐÚNG 1 đoạn, ĐÚNG 2 câu, dựa hoàn toàn vào brief.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của nó, nguyên văn.
+B. MỌI dữ kiện trong duKien[] phải được dẫn ra — mốc tuổi ghi đúng con số, tên cách hay tên hoá gọi
+   đúng tên. Nhưng DẪN vào câu văn chứ đừng chép nguyên cụm, và tuyệt đối không chép dấu hai chấm.
+C. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+
+QUY TẮC HÌNH THỨC:
+1. Đúng 2 câu.
+2. Đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**
+3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+4. Phụ tinh không kèm bậc. Phụ tinh nào là sao sinh ra một mệnh đề (tên nó nằm trong do[]) thì được một
+   cặp ** riêng, đặt cùng câu với ý của nó. Các phụ tinh còn lại gói theo vai: hung tinh vào MỘT cặp **,
+   cát tinh vào MỘT cặp ** khác.
+4b. Mệnh đề không có sao sinh ra nó (do[] rỗng — tên một cách cục như "Sát Phá Tham", "Cơ Nguyệt Đồng Lương",
+   "Lộc Mã"; tên một hoá như "Hoá Kỵ", "Hoá Quyền"; tên án ngữ như "Tuần", "Triệt"): viết tên đó không bọc
+   trong cặp **, giữ nguyên chữ hoa đúng như trong brief, không gán cho một sao cụ thể nào.
+   Riêng hoá nào đã có tên trong catTinh hoặc hungTinh thì là phụ tinh: viết theo mục 4.
+5. Không nhắc tên sao nào ngoài brief.
+6. Sao đang xét ở cung Thiên Di, KHÔNG phải cung Mệnh — đừng viết "thủ mệnh", "chiếu mệnh".
+7. Chỉ sao có the="toạ thủ" mới được nói là đóng tại cung; sao ở thế khác thì viết "hội chiếu", "chiếu tới".
+
+Mục này đọc CUNG TIỂU HẠN của năm (trường cung): những sao chiếu vào cung ấy trong năm đang xem.
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.",
+    },
+  },
+}
+`;
+
+exports[`chương 06, lá số 1955-12-09 7h Nữ ghi lại cả lượt sinh lại cho năm xem 2027 1`] = `
+{
+  "article": {
+    "closing": "Biết trước nhịp năm không phải để lo, mà để chọn đúng lúc dồn sức.",
+    "closingLabel": "Một lời dành cho bạn",
+    "eyebrow": "Vận hạn",
+    "paragraphs": [
+      "Năm Đinh Mùi 2027 bạn 73 tuổi âm, đang đi **đại vận 73–82 tuổi** ở cung Tật Ách, mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền. Đây là năm thứ 1 trong mười năm ấy, và tiểu hạn của năm đi qua cung Thiên Di.",
+      "LẦN 2 đoạn một. Câu hai.",
+      "LẦN 2 đoạn hai. Câu hai.",
+    ],
+    "quote": "Năm bước ra bên ngoài",
+    "sections": [
+      {
+        "paragraphs": [
+          "LẦN 2 mục. Câu hai.",
+        ],
+        "slug": "diem-sang",
+        "sourceCung": "Thiên Di · Sửu",
+        "title": "Điểm sáng trong năm",
+      },
+      {
+        "paragraphs": [
+          "LẦN 2 mục. Câu hai.",
+        ],
+        "slug": "dieu-can-giu",
+        "sourceCung": "Thiên Di · Sửu",
+        "title": "Điều cần giữ",
+      },
+      {
+        "paragraphs": [
+          "Tiểu hạn năm Đinh Mùi 2027 rơi vào cung Thiên Di, nên đi lại và môi trường bên ngoài là ==lĩnh vực nổi bật nhất của năm==.",
+          "Mở rộng giao thiệp và đón cơ hội ở xa, nhưng lên kế hoạch đi lại chu đáo.",
+        ],
+        "slug": "linh-vuc",
+        "sourceCung": "Thiên Di · Sửu",
+        "title": "Lĩnh vực nổi bật",
+      },
+      {
+        "paragraphs": [
+          "Từ năm 2037, khi bạn 83 tuổi âm, đại vận chuyển sang cung Tài Bạch và kéo dài tới 92 tuổi.",
+          "Đó là mười năm của tiền bạc: cách kiếm, cách giữ và cách dùng đồng tiền.",
+        ],
+        "slug": "van-ke-tiep",
+        "sourceCung": "Tài Bạch · Mão",
+        "title": "Nhìn trước vận kế tiếp",
+      },
+      {
+        "paragraphs": [
+          "Theo cách xem dân gian, vốn khác với phép an sao tử vi ở trên, năm Đinh Mùi 2027 bạn 73 tuổi âm và có sao ==Kế Đô chiếu mệnh==.",
+          "Kế Đô là sao xấu, nhất là với nữ giới, chủ buồn phiền và chuyện riêng dễ bị đem ra bàn tán. Dân gian khuyên sống kín đáo, nhẹ nhàng.",
+          "Năm Đinh Mùi nằm trong hạn Tam Tai của người tuổi Mùi. Tam Tai là ba năm liền mà dân gian cho là dễ gặp trắc trở, tuổi nào cũng lần lượt đi qua. Người trong hạn Tam Tai thường được khuyên đừng khởi sự việc lớn một cách vội vàng và giữ mọi việc ở mức vừa phải.",
+          "Tuổi 73 âm phạm Kim Lâu. Kim Lâu là cách dân gian xem tuổi khi cưới hỏi và làm nhà. Tuổi phạm Kim Lâu thường được khuyên dời việc cưới hay xây nhà sang năm khác, hoặc nhờ người hợp tuổi đứng ra làm thay.",
+        ],
+        "slug": "dan-gian",
+        "sourceCung": "Tuổi Mùi",
+        "title": "Sao chiếu mệnh & hạn tuổi",
+      },
+    ],
+    "sourceCung": "Tật Ách",
+    "subheading": "Nữ tuổi Mùi – Vận hạn năm Đinh Mùi 2027",
+    "summary": "Một năm thuận hay nghịch **không quyết định thay bạn**: cùng một vận, người biết lúc nào nên tiến, lúc nào nên giữ sẽ đi qua nhẹ hơn. Điều đáng làm là ==dồn sức vào điểm sáng, giữ kỹ chỗ dễ vướng==.",
+    "title": "Vận hạn năm Đinh Mùi 2027",
+  },
+  "attempts": 2,
+  "requests": {
+    "chinh#1": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Tật Ách",
+  "chi": "Dần",
+  "gioiTinh": "nu",
+  "chiNamSinh": "Mùi",
+  "laVoChinhDieu": true,
+  "chinhTinh": [
+    {
+      "ten": "Thiên Cơ",
+      "bac": "V",
+      "the": "xung chiếu"
+    },
+    {
+      "ten": "Thái Âm",
+      "bac": "V",
+      "the": "xung chiếu"
+    },
+    {
+      "ten": "Thái Dương",
+      "bac": "M",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Cự Môn",
+      "bac": "H",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [],
+  "catTinh": [
+    {
+      "ten": "Thiên Hỉ",
+      "the": "toạ thủ"
+    }
+  ],
+  "anNgu": null,
+  "luan": [
+    {
+      "y": "ý tứ, để ý tới cảm giác của người bên cạnh",
+      "do": [
+        "Thái Âm"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "ý tứ",
+        "cảm giác"
+      ]
+    },
+    {
+      "y": "nhiệt tình, sẵn lòng lo phần việc của người khác",
+      "do": [
+        "Thái Dương"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "nhiệt tình",
+        "lo phần việc"
+      ]
+    },
+    {
+      "y": "phần thuận lợi bị vướng lại, muốn được việc thì cũng phải qua trắc trở",
+      "do": [
+        "Thiên Cơ"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "vướng lại",
+        "trắc trở"
+      ]
+    },
+    {
+      "y": "giấu bụng, buồn vui ít khi nói ra",
+      "do": [
+        "Thái Âm"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "giấu bụng",
+        "ít khi nói ra"
+      ]
+    },
+    {
+      "y": "có tin vui, không khí hòa hợp",
+      "do": [
+        "Thiên Hỉ"
+      ],
+      "sac": "hoa-giai",
+      "tuKhoa": [
+        "tin vui",
+        "hòa hợp"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 73,
+    "tone": "khuyen",
+    "daiVanTuoi": "73–82 tuổi",
+    "namThuTrongVan": 1,
+    "cungDaiVan": "Tật Ách",
+    "cungTieuHan": "Thiên Di",
+    "chuDeVan": "mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền"
+  }
+}",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan1": {
+            "description": "Đoạn thuận, đúng hai câu",
+            "type": "string",
+          },
+          "doan2": {
+            "description": "Đoạn nghịch rồi hoá giải, đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan1",
+          "doan2",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết luận giải tử vi tiếng Việt cho một trang tra lá số. Bài này đọc VẬN HẠN của một năm.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Bài đọc CUNG ĐẠI VẬN (trường cung) như "cung Mệnh của mười năm": các sao ở cung ấy và ba cung chiếu tới nó
+cho biết mười năm này bạn sống và hành xử ra sao. Phần mở bài đã nêu mốc tuổi, năm và cung tiểu hạn — đừng
+nhắc lại các mốc ấy, hãy viết về NẾT CỦA MƯỜI NĂM qua các mệnh đề.
+
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.
+
+Viết ĐÚNG 2 đoạn, dựa hoàn toàn vào brief.
+
+Đoạn 1 — ĐÚNG 2 câu, dùng các mệnh đề sac="thuan". Mỗi câu dẫn đúng một mệnh đề cùng tên sao sinh ra nó —
+chính tinh thì kèm bậc, phụ tinh thì không. Hóa Lộc, Hóa Quyền, Hóa Khoa, Hóa Kỵ là phụ tinh: không kèm bậc.
+Câu 1 nối mệnh đề với chủ đề mười năm trong vanHan.chuDeVan. Cụm ==tô nền== nằm ở câu thứ hai.
+
+Đoạn 2 — ĐÚNG 2 câu:
+  · Câu 1: các mệnh đề sac="nghich". Mở bằng "Tuy nhiên" hoặc tương đương.
+  · Câu 2: GỘP hai việc vào MỘT câu — nêu mệnh đề sac="hoa-giai", nối bằng "vì vậy"/"nên" sang vế tái định khung theo đúng vanHan.tone. Cụm ==tô nền== nằm ở vế sau.
+  TUYỆT ĐỐI không tách thành câu thứ ba.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của chính nó, nguyên văn.
+B. Mỗi mệnh đề phải nằm CÙNG CÂU với ít nhất một sao trong do[] của nó.
+C. KHÔNG làm nhẹ mệnh đề sac="nghich". Viết đúng mức độ brief nêu.
+D. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+E. laVoChinhDieu=true nghĩa là cung đại vận KHÔNG có chính tinh nào toạ thủ: viết rõ là cung trống và sao chiếu tới.
+F. Chỉ sao the="toạ thủ" mới được nói là đóng tại cung. Sao "xung chiếu", "tam hợp", "nhị hợp" thì viết
+   "hội chiếu", "chiếu tới", "cùng chiếu về". Đừng viết "thủ mệnh", "chiếu mệnh".
+
+QUY TẮC HÌNH THỨC:
+1. Mỗi đoạn đúng 2 câu.
+2. Mỗi đoạn đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**    SAI: ==**Tham Lang (H)**==
+3. Chính tinh: mỗi sao một cặp ** RIÊNG, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+   Tuyệt đối đừng gộp nhiều chính tinh vào một cặp **.
+4. Phụ tinh gói theo vai: cả đoạn chỉ ĐÚNG MỘT cặp ** cho hung tinh và MỘT cặp ** cho cát tinh,
+   không trộn hung với cát, không kèm bậc. Phụ tinh nào sinh ra một mệnh đề thì được một cặp ** riêng.
+5. Không nhắc tên sao nào ngoài brief.
+6. anNgu khác null: giọng tiết chế, không tuyệt đối hoá. Không gọi tên "Tuần" hay "Triệt" trong bài.",
+    },
+    "chinh#2": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Tật Ách",
+  "chi": "Dần",
+  "gioiTinh": "nu",
+  "chiNamSinh": "Mùi",
+  "laVoChinhDieu": true,
+  "chinhTinh": [
+    {
+      "ten": "Thiên Cơ",
+      "bac": "V",
+      "the": "xung chiếu"
+    },
+    {
+      "ten": "Thái Âm",
+      "bac": "V",
+      "the": "xung chiếu"
+    },
+    {
+      "ten": "Thái Dương",
+      "bac": "M",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Cự Môn",
+      "bac": "H",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [],
+  "catTinh": [
+    {
+      "ten": "Thiên Hỉ",
+      "the": "toạ thủ"
+    }
+  ],
+  "anNgu": null,
+  "luan": [
+    {
+      "y": "ý tứ, để ý tới cảm giác của người bên cạnh",
+      "do": [
+        "Thái Âm"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "ý tứ",
+        "cảm giác"
+      ]
+    },
+    {
+      "y": "nhiệt tình, sẵn lòng lo phần việc của người khác",
+      "do": [
+        "Thái Dương"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "nhiệt tình",
+        "lo phần việc"
+      ]
+    },
+    {
+      "y": "phần thuận lợi bị vướng lại, muốn được việc thì cũng phải qua trắc trở",
+      "do": [
+        "Thiên Cơ"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "vướng lại",
+        "trắc trở"
+      ]
+    },
+    {
+      "y": "giấu bụng, buồn vui ít khi nói ra",
+      "do": [
+        "Thái Âm"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "giấu bụng",
+        "ít khi nói ra"
+      ]
+    },
+    {
+      "y": "có tin vui, không khí hòa hợp",
+      "do": [
+        "Thiên Hỉ"
+      ],
+      "sac": "hoa-giai",
+      "tuKhoa": [
+        "tin vui",
+        "hòa hợp"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 73,
+    "tone": "khuyen",
+    "daiVanTuoi": "73–82 tuổi",
+    "namThuTrongVan": 1,
+    "cungDaiVan": "Tật Ách",
+    "cungTieuHan": "Thiên Di",
+    "chuDeVan": "mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền"
+  }
+}",
+        },
+        {
+          "role": "model",
+          "text": "{"doan1":"LẦN 1 đoạn một. Câu hai.","doan2":"LẦN 1 đoạn hai. Câu hai."}",
+        },
+        {
+          "role": "user",
+          "text": "Bản trên vi phạm:
+- lỗi giả
+Viết lại cho đúng, giữ nguyên nội dung mệnh đề.",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan1": {
+            "description": "Đoạn thuận, đúng hai câu",
+            "type": "string",
+          },
+          "doan2": {
+            "description": "Đoạn nghịch rồi hoá giải, đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan1",
+          "doan2",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết luận giải tử vi tiếng Việt cho một trang tra lá số. Bài này đọc VẬN HẠN của một năm.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Bài đọc CUNG ĐẠI VẬN (trường cung) như "cung Mệnh của mười năm": các sao ở cung ấy và ba cung chiếu tới nó
+cho biết mười năm này bạn sống và hành xử ra sao. Phần mở bài đã nêu mốc tuổi, năm và cung tiểu hạn — đừng
+nhắc lại các mốc ấy, hãy viết về NẾT CỦA MƯỜI NĂM qua các mệnh đề.
+
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.
+
+Viết ĐÚNG 2 đoạn, dựa hoàn toàn vào brief.
+
+Đoạn 1 — ĐÚNG 2 câu, dùng các mệnh đề sac="thuan". Mỗi câu dẫn đúng một mệnh đề cùng tên sao sinh ra nó —
+chính tinh thì kèm bậc, phụ tinh thì không. Hóa Lộc, Hóa Quyền, Hóa Khoa, Hóa Kỵ là phụ tinh: không kèm bậc.
+Câu 1 nối mệnh đề với chủ đề mười năm trong vanHan.chuDeVan. Cụm ==tô nền== nằm ở câu thứ hai.
+
+Đoạn 2 — ĐÚNG 2 câu:
+  · Câu 1: các mệnh đề sac="nghich". Mở bằng "Tuy nhiên" hoặc tương đương.
+  · Câu 2: GỘP hai việc vào MỘT câu — nêu mệnh đề sac="hoa-giai", nối bằng "vì vậy"/"nên" sang vế tái định khung theo đúng vanHan.tone. Cụm ==tô nền== nằm ở vế sau.
+  TUYỆT ĐỐI không tách thành câu thứ ba.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của chính nó, nguyên văn.
+B. Mỗi mệnh đề phải nằm CÙNG CÂU với ít nhất một sao trong do[] của nó.
+C. KHÔNG làm nhẹ mệnh đề sac="nghich". Viết đúng mức độ brief nêu.
+D. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+E. laVoChinhDieu=true nghĩa là cung đại vận KHÔNG có chính tinh nào toạ thủ: viết rõ là cung trống và sao chiếu tới.
+F. Chỉ sao the="toạ thủ" mới được nói là đóng tại cung. Sao "xung chiếu", "tam hợp", "nhị hợp" thì viết
+   "hội chiếu", "chiếu tới", "cùng chiếu về". Đừng viết "thủ mệnh", "chiếu mệnh".
+
+QUY TẮC HÌNH THỨC:
+1. Mỗi đoạn đúng 2 câu.
+2. Mỗi đoạn đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**    SAI: ==**Tham Lang (H)**==
+3. Chính tinh: mỗi sao một cặp ** RIÊNG, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+   Tuyệt đối đừng gộp nhiều chính tinh vào một cặp **.
+4. Phụ tinh gói theo vai: cả đoạn chỉ ĐÚNG MỘT cặp ** cho hung tinh và MỘT cặp ** cho cát tinh,
+   không trộn hung với cát, không kèm bậc. Phụ tinh nào sinh ra một mệnh đề thì được một cặp ** riêng.
+5. Không nhắc tên sao nào ngoài brief.
+6. anNgu khác null: giọng tiết chế, không tuyệt đối hoá. Không gọi tên "Tuần" hay "Triệt" trong bài.",
+    },
+    "diem-sang#1": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Thiên Di",
+  "chi": "Sửu",
+  "gioiTinh": "nu",
+  "chiNamSinh": "Mùi",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Liêm Trinh",
+      "bac": "Đ",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thất Sát",
+      "bac": "Đ",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Phủ",
+      "bac": "Đ",
+      "the": "xung chiếu"
+    },
+    {
+      "ten": "Vũ Khúc",
+      "bac": "H",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Phá Quân",
+      "bac": "H",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Tử Vi",
+      "bac": "B",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Tham Lang",
+      "bac": "H",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [],
+  "catTinh": [
+    {
+      "ten": "Hóa Khoa",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Hóa Lộc",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Thiên Việt",
+      "the": "tam hợp"
+    }
+  ],
+  "anNgu": null,
+  "luan": [
+    {
+      "y": "có tiếng tốt, công sức được ghi nhận",
+      "do": [
+        "Hóa Khoa"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "tiếng tốt",
+        "ghi nhận"
+      ]
+    },
+    {
+      "y": "tiền và cơ hội đến thuận, việc mới dễ có kết quả",
+      "do": [
+        "Hóa Lộc"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "cơ hội",
+        "kết quả"
+      ]
+    },
+    {
+      "y": "có người giúp đúng lúc, việc khó dễ tìm được lối ra",
+      "do": [
+        "Thiên Việt"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "người giúp",
+        "lối ra"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 73,
+    "tone": "khuyen",
+    "daiVanTuoi": "73–82 tuổi",
+    "namThuTrongVan": 1,
+    "cungDaiVan": "Tật Ách",
+    "cungTieuHan": "Thiên Di",
+    "chuDeVan": "mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền"
+  },
+  "muc": "diem-sang",
+  "tieuDe": "Điểm sáng trong năm",
+  "sourceCung": "Thiên Di · Sửu",
+  "duKien": []
+}",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan": {
+            "description": "Đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết một mục ngắn trong bài luận giải tử vi tiếng Việt.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+  Nói cái gì hay xảy ra và nó khiến người ta cảm thấy ra sao, đừng chấm điểm con người.
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Viết ĐÚNG 1 đoạn, ĐÚNG 2 câu, dựa hoàn toàn vào brief.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của nó, nguyên văn.
+B. MỌI dữ kiện trong duKien[] phải được dẫn ra — mốc tuổi ghi đúng con số, tên cách hay tên hoá gọi
+   đúng tên. Nhưng DẪN vào câu văn chứ đừng chép nguyên cụm, và tuyệt đối không chép dấu hai chấm.
+C. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+
+QUY TẮC HÌNH THỨC:
+1. Đúng 2 câu.
+2. Đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**
+3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+4. Phụ tinh không kèm bậc. Phụ tinh nào là sao sinh ra một mệnh đề (tên nó nằm trong do[]) thì được một
+   cặp ** riêng, đặt cùng câu với ý của nó. Các phụ tinh còn lại gói theo vai: hung tinh vào MỘT cặp **,
+   cát tinh vào MỘT cặp ** khác.
+4b. Mệnh đề không có sao sinh ra nó (do[] rỗng — tên một cách cục như "Sát Phá Tham", "Cơ Nguyệt Đồng Lương",
+   "Lộc Mã"; tên một hoá như "Hoá Kỵ", "Hoá Quyền"; tên án ngữ như "Tuần", "Triệt"): viết tên đó không bọc
+   trong cặp **, giữ nguyên chữ hoa đúng như trong brief, không gán cho một sao cụ thể nào.
+   Riêng hoá nào đã có tên trong catTinh hoặc hungTinh thì là phụ tinh: viết theo mục 4.
+5. Không nhắc tên sao nào ngoài brief.
+6. Sao đang xét ở cung Thiên Di, KHÔNG phải cung Mệnh — đừng viết "thủ mệnh", "chiếu mệnh".
+7. Chỉ sao có the="toạ thủ" mới được nói là đóng tại cung; sao ở thế khác thì viết "hội chiếu", "chiếu tới".
+
+Mục này đọc CUNG TIỂU HẠN của năm (trường cung): những sao chiếu vào cung ấy trong năm đang xem.
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.",
+    },
+    "diem-sang#2": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Thiên Di",
+  "chi": "Sửu",
+  "gioiTinh": "nu",
+  "chiNamSinh": "Mùi",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Liêm Trinh",
+      "bac": "Đ",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thất Sát",
+      "bac": "Đ",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Phủ",
+      "bac": "Đ",
+      "the": "xung chiếu"
+    },
+    {
+      "ten": "Vũ Khúc",
+      "bac": "H",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Phá Quân",
+      "bac": "H",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Tử Vi",
+      "bac": "B",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Tham Lang",
+      "bac": "H",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [],
+  "catTinh": [
+    {
+      "ten": "Hóa Khoa",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Hóa Lộc",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Thiên Việt",
+      "the": "tam hợp"
+    }
+  ],
+  "anNgu": null,
+  "luan": [
+    {
+      "y": "có tiếng tốt, công sức được ghi nhận",
+      "do": [
+        "Hóa Khoa"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "tiếng tốt",
+        "ghi nhận"
+      ]
+    },
+    {
+      "y": "tiền và cơ hội đến thuận, việc mới dễ có kết quả",
+      "do": [
+        "Hóa Lộc"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "cơ hội",
+        "kết quả"
+      ]
+    },
+    {
+      "y": "có người giúp đúng lúc, việc khó dễ tìm được lối ra",
+      "do": [
+        "Thiên Việt"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "người giúp",
+        "lối ra"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 73,
+    "tone": "khuyen",
+    "daiVanTuoi": "73–82 tuổi",
+    "namThuTrongVan": 1,
+    "cungDaiVan": "Tật Ách",
+    "cungTieuHan": "Thiên Di",
+    "chuDeVan": "mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền"
+  },
+  "muc": "diem-sang",
+  "tieuDe": "Điểm sáng trong năm",
+  "sourceCung": "Thiên Di · Sửu",
+  "duKien": []
+}",
+        },
+        {
+          "role": "model",
+          "text": "{"doan":"LẦN 1 mục. Câu hai."}",
+        },
+        {
+          "role": "user",
+          "text": "Bản trên vi phạm:
+- lỗi giả
+Viết lại cho đúng, giữ nguyên nội dung mệnh đề.",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan": {
+            "description": "Đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết một mục ngắn trong bài luận giải tử vi tiếng Việt.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+  Nói cái gì hay xảy ra và nó khiến người ta cảm thấy ra sao, đừng chấm điểm con người.
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Viết ĐÚNG 1 đoạn, ĐÚNG 2 câu, dựa hoàn toàn vào brief.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của nó, nguyên văn.
+B. MỌI dữ kiện trong duKien[] phải được dẫn ra — mốc tuổi ghi đúng con số, tên cách hay tên hoá gọi
+   đúng tên. Nhưng DẪN vào câu văn chứ đừng chép nguyên cụm, và tuyệt đối không chép dấu hai chấm.
+C. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+
+QUY TẮC HÌNH THỨC:
+1. Đúng 2 câu.
+2. Đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**
+3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+4. Phụ tinh không kèm bậc. Phụ tinh nào là sao sinh ra một mệnh đề (tên nó nằm trong do[]) thì được một
+   cặp ** riêng, đặt cùng câu với ý của nó. Các phụ tinh còn lại gói theo vai: hung tinh vào MỘT cặp **,
+   cát tinh vào MỘT cặp ** khác.
+4b. Mệnh đề không có sao sinh ra nó (do[] rỗng — tên một cách cục như "Sát Phá Tham", "Cơ Nguyệt Đồng Lương",
+   "Lộc Mã"; tên một hoá như "Hoá Kỵ", "Hoá Quyền"; tên án ngữ như "Tuần", "Triệt"): viết tên đó không bọc
+   trong cặp **, giữ nguyên chữ hoa đúng như trong brief, không gán cho một sao cụ thể nào.
+   Riêng hoá nào đã có tên trong catTinh hoặc hungTinh thì là phụ tinh: viết theo mục 4.
+5. Không nhắc tên sao nào ngoài brief.
+6. Sao đang xét ở cung Thiên Di, KHÔNG phải cung Mệnh — đừng viết "thủ mệnh", "chiếu mệnh".
+7. Chỉ sao có the="toạ thủ" mới được nói là đóng tại cung; sao ở thế khác thì viết "hội chiếu", "chiếu tới".
+
+Mục này đọc CUNG TIỂU HẠN của năm (trường cung): những sao chiếu vào cung ấy trong năm đang xem.
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.",
+    },
+    "dieu-can-giu#1": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Thiên Di",
+  "chi": "Sửu",
+  "gioiTinh": "nu",
+  "chiNamSinh": "Mùi",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Liêm Trinh",
+      "bac": "Đ",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thất Sát",
+      "bac": "Đ",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Phủ",
+      "bac": "Đ",
+      "the": "xung chiếu"
+    },
+    {
+      "ten": "Vũ Khúc",
+      "bac": "H",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Phá Quân",
+      "bac": "H",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Tử Vi",
+      "bac": "B",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Tham Lang",
+      "bac": "H",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [
+    {
+      "ten": "Thiên Hư",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Kình Dương",
+      "the": "xung chiếu"
+    }
+  ],
+  "catTinh": [
+    {
+      "ten": "Thái Tuế",
+      "the": "xung chiếu"
+    }
+  ],
+  "anNgu": null,
+  "luan": [
+    {
+      "y": "kế hoạch dễ hụt so với kỳ vọng, nên tính sẵn phần dự phòng",
+      "do": [
+        "Thiên Hư"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "kỳ vọng",
+        "dự phòng"
+      ]
+    },
+    {
+      "y": "dễ cạnh tranh gay gắt và lời qua tiếng lại, nên mềm mỏng hơn thường lệ",
+      "do": [
+        "Kình Dương"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "cạnh tranh",
+        "mềm mỏng"
+      ]
+    },
+    {
+      "y": "dễ vướng thị phi vì lời nói, nên nói chậm và giữ chữ tín",
+      "do": [
+        "Thái Tuế"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "thị phi",
+        "lời nói"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 73,
+    "tone": "khuyen",
+    "daiVanTuoi": "73–82 tuổi",
+    "namThuTrongVan": 1,
+    "cungDaiVan": "Tật Ách",
+    "cungTieuHan": "Thiên Di",
+    "chuDeVan": "mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền"
+  },
+  "muc": "dieu-can-giu",
+  "tieuDe": "Điều cần giữ",
+  "sourceCung": "Thiên Di · Sửu",
+  "duKien": []
+}",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan": {
+            "description": "Đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết một mục ngắn trong bài luận giải tử vi tiếng Việt.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+  Nói cái gì hay xảy ra và nó khiến người ta cảm thấy ra sao, đừng chấm điểm con người.
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Viết ĐÚNG 1 đoạn, ĐÚNG 2 câu, dựa hoàn toàn vào brief.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của nó, nguyên văn.
+B. MỌI dữ kiện trong duKien[] phải được dẫn ra — mốc tuổi ghi đúng con số, tên cách hay tên hoá gọi
+   đúng tên. Nhưng DẪN vào câu văn chứ đừng chép nguyên cụm, và tuyệt đối không chép dấu hai chấm.
+C. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+
+QUY TẮC HÌNH THỨC:
+1. Đúng 2 câu.
+2. Đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**
+3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+4. Phụ tinh không kèm bậc. Phụ tinh nào là sao sinh ra một mệnh đề (tên nó nằm trong do[]) thì được một
+   cặp ** riêng, đặt cùng câu với ý của nó. Các phụ tinh còn lại gói theo vai: hung tinh vào MỘT cặp **,
+   cát tinh vào MỘT cặp ** khác.
+4b. Mệnh đề không có sao sinh ra nó (do[] rỗng — tên một cách cục như "Sát Phá Tham", "Cơ Nguyệt Đồng Lương",
+   "Lộc Mã"; tên một hoá như "Hoá Kỵ", "Hoá Quyền"; tên án ngữ như "Tuần", "Triệt"): viết tên đó không bọc
+   trong cặp **, giữ nguyên chữ hoa đúng như trong brief, không gán cho một sao cụ thể nào.
+   Riêng hoá nào đã có tên trong catTinh hoặc hungTinh thì là phụ tinh: viết theo mục 4.
+5. Không nhắc tên sao nào ngoài brief.
+6. Sao đang xét ở cung Thiên Di, KHÔNG phải cung Mệnh — đừng viết "thủ mệnh", "chiếu mệnh".
+7. Chỉ sao có the="toạ thủ" mới được nói là đóng tại cung; sao ở thế khác thì viết "hội chiếu", "chiếu tới".
+
+Mục này đọc CUNG TIỂU HẠN của năm (trường cung): những sao chiếu vào cung ấy trong năm đang xem.
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.",
+    },
+    "dieu-can-giu#2": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Thiên Di",
+  "chi": "Sửu",
+  "gioiTinh": "nu",
+  "chiNamSinh": "Mùi",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Liêm Trinh",
+      "bac": "Đ",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thất Sát",
+      "bac": "Đ",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Phủ",
+      "bac": "Đ",
+      "the": "xung chiếu"
+    },
+    {
+      "ten": "Vũ Khúc",
+      "bac": "H",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Phá Quân",
+      "bac": "H",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Tử Vi",
+      "bac": "B",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Tham Lang",
+      "bac": "H",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [
+    {
+      "ten": "Thiên Hư",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Kình Dương",
+      "the": "xung chiếu"
+    }
+  ],
+  "catTinh": [
+    {
+      "ten": "Thái Tuế",
+      "the": "xung chiếu"
+    }
+  ],
+  "anNgu": null,
+  "luan": [
+    {
+      "y": "kế hoạch dễ hụt so với kỳ vọng, nên tính sẵn phần dự phòng",
+      "do": [
+        "Thiên Hư"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "kỳ vọng",
+        "dự phòng"
+      ]
+    },
+    {
+      "y": "dễ cạnh tranh gay gắt và lời qua tiếng lại, nên mềm mỏng hơn thường lệ",
+      "do": [
+        "Kình Dương"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "cạnh tranh",
+        "mềm mỏng"
+      ]
+    },
+    {
+      "y": "dễ vướng thị phi vì lời nói, nên nói chậm và giữ chữ tín",
+      "do": [
+        "Thái Tuế"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "thị phi",
+        "lời nói"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 73,
+    "tone": "khuyen",
+    "daiVanTuoi": "73–82 tuổi",
+    "namThuTrongVan": 1,
+    "cungDaiVan": "Tật Ách",
+    "cungTieuHan": "Thiên Di",
+    "chuDeVan": "mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền"
+  },
+  "muc": "dieu-can-giu",
+  "tieuDe": "Điều cần giữ",
+  "sourceCung": "Thiên Di · Sửu",
+  "duKien": []
+}",
+        },
+        {
+          "role": "model",
+          "text": "{"doan":"LẦN 1 mục. Câu hai."}",
+        },
+        {
+          "role": "user",
+          "text": "Bản trên vi phạm:
+- lỗi giả
+Viết lại cho đúng, giữ nguyên nội dung mệnh đề.",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan": {
+            "description": "Đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết một mục ngắn trong bài luận giải tử vi tiếng Việt.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+  Nói cái gì hay xảy ra và nó khiến người ta cảm thấy ra sao, đừng chấm điểm con người.
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Viết ĐÚNG 1 đoạn, ĐÚNG 2 câu, dựa hoàn toàn vào brief.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của nó, nguyên văn.
+B. MỌI dữ kiện trong duKien[] phải được dẫn ra — mốc tuổi ghi đúng con số, tên cách hay tên hoá gọi
+   đúng tên. Nhưng DẪN vào câu văn chứ đừng chép nguyên cụm, và tuyệt đối không chép dấu hai chấm.
+C. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+
+QUY TẮC HÌNH THỨC:
+1. Đúng 2 câu.
+2. Đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**
+3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+4. Phụ tinh không kèm bậc. Phụ tinh nào là sao sinh ra một mệnh đề (tên nó nằm trong do[]) thì được một
+   cặp ** riêng, đặt cùng câu với ý của nó. Các phụ tinh còn lại gói theo vai: hung tinh vào MỘT cặp **,
+   cát tinh vào MỘT cặp ** khác.
+4b. Mệnh đề không có sao sinh ra nó (do[] rỗng — tên một cách cục như "Sát Phá Tham", "Cơ Nguyệt Đồng Lương",
+   "Lộc Mã"; tên một hoá như "Hoá Kỵ", "Hoá Quyền"; tên án ngữ như "Tuần", "Triệt"): viết tên đó không bọc
+   trong cặp **, giữ nguyên chữ hoa đúng như trong brief, không gán cho một sao cụ thể nào.
+   Riêng hoá nào đã có tên trong catTinh hoặc hungTinh thì là phụ tinh: viết theo mục 4.
+5. Không nhắc tên sao nào ngoài brief.
+6. Sao đang xét ở cung Thiên Di, KHÔNG phải cung Mệnh — đừng viết "thủ mệnh", "chiếu mệnh".
+7. Chỉ sao có the="toạ thủ" mới được nói là đóng tại cung; sao ở thế khác thì viết "hội chiếu", "chiếu tới".
+
+Mục này đọc CUNG TIỂU HẠN của năm (trường cung): những sao chiếu vào cung ấy trong năm đang xem.
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.",
+    },
+  },
+}
+`;
+
+exports[`chương 06, lá số 1956-03-03 1h Nam ghi lại cả lượt sinh lại cho năm xem 2027 1`] = `
+{
+  "article": {
+    "closing": "Biết trước nhịp năm không phải để lo, mà để chọn đúng lúc dồn sức.",
+    "closingLabel": "Một lời dành cho bạn",
+    "eyebrow": "Vận hạn",
+    "paragraphs": [
+      "Năm Đinh Mùi 2027 bạn 72 tuổi âm, đang đi **đại vận 65–74 tuổi** ở cung Thiên Di, mười năm của đi xa, ra ngoài và những mối quan hệ ngoài xã hội. Đây là năm thứ 8 trong mười năm ấy, và tiểu hạn của năm đi qua cung Tài Bạch.",
+      "LẦN 2 đoạn một. Câu hai.",
+      "LẦN 2 đoạn hai. Câu hai.",
+    ],
+    "quote": "Năm tính chuyện tiền bạc",
+    "sections": [
+      {
+        "paragraphs": [
+          "LẦN 2 mục. Câu hai.",
+        ],
+        "slug": "diem-sang",
+        "sourceCung": "Tài Bạch · Dậu",
+        "title": "Điểm sáng trong năm",
+      },
+      {
+        "paragraphs": [
+          "LẦN 2 mục. Câu hai.",
+        ],
+        "slug": "dieu-can-giu",
+        "sourceCung": "Tài Bạch · Dậu",
+        "title": "Điều cần giữ",
+      },
+      {
+        "paragraphs": [
+          "Tiểu hạn năm Đinh Mùi 2027 rơi vào cung Tài Bạch, nên tiền bạc và thu nhập là ==lĩnh vực nổi bật nhất của năm==.",
+          "Lập quỹ dự phòng và cân nhắc kỹ trước những khoản chi hay khoản đầu tư lớn.",
+          "Muốn đọc kỹ hơn về tiền bạc và thu nhập, xem thêm chương “Tài bạch tiền tài”.",
+        ],
+        "slug": "linh-vuc",
+        "sourceCung": "Tài Bạch · Dậu",
+        "title": "Lĩnh vực nổi bật",
+      },
+      {
+        "paragraphs": [
+          "Từ năm 2030, khi bạn 75 tuổi âm, đại vận chuyển sang cung Tật Ách và kéo dài tới 84 tuổi.",
+          "Đó là mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền.",
+        ],
+        "slug": "van-ke-tiep",
+        "sourceCung": "Tật Ách · Thân",
+        "title": "Nhìn trước vận kế tiếp",
+      },
+      {
+        "paragraphs": [
+          "Theo cách xem dân gian, vốn khác với phép an sao tử vi ở trên, năm Đinh Mùi 2027 bạn 72 tuổi âm và có sao ==Mộc Đức chiếu mệnh==.",
+          "Mộc Đức là sao tốt, chủ hòa khí, có tin vui trong nhà và chuyện tình cảm thuận lợi.",
+          "Năm này bạn không phạm Tam Tai hay Kim Lâu.",
+        ],
+        "slug": "dan-gian",
+        "sourceCung": "Tuổi Thân",
+        "title": "Sao chiếu mệnh & hạn tuổi",
+      },
+    ],
+    "sourceCung": "Thiên Di",
+    "subheading": "Nam tuổi Thân – Vận hạn năm Đinh Mùi 2027",
+    "summary": "Một năm thuận hay nghịch **không quyết định thay bạn**: cùng một vận, người biết lúc nào nên tiến, lúc nào nên giữ sẽ đi qua nhẹ hơn. Điều đáng làm là ==dồn sức vào điểm sáng, giữ kỹ chỗ dễ vướng==.",
+    "title": "Vận hạn năm Đinh Mùi 2027",
+  },
+  "attempts": 2,
+  "requests": {
+    "chinh#1": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Thiên Di",
+  "chi": "Mùi",
+  "gioiTinh": "nam",
+  "chiNamSinh": "Thân",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Thái Dương",
+      "bac": "Đ",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thái Âm",
+      "bac": "Đ",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Lương",
+      "bac": "H",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [],
+  "catTinh": [
+    {
+      "ten": "Hồng Loan",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Nguyệt Đức",
+      "the": "xung chiếu"
+    }
+  ],
+  "anNgu": null,
+  "luan": [
+    {
+      "y": "nhiệt tình, sẵn lòng lo phần việc của người khác",
+      "do": [
+        "Thái Dương"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "nhiệt tình",
+        "lo phần việc"
+      ]
+    },
+    {
+      "y": "duyên đến rõ ràng, dễ có hôn sự đúng lúc",
+      "do": [
+        "Hồng Loan"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "duyên đến",
+        "hôn sự"
+      ]
+    },
+    {
+      "y": "phần thuận lợi bị vướng lại, muốn được việc thì cũng phải qua trắc trở",
+      "do": [
+        "Thái Âm"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "vướng lại",
+        "trắc trở"
+      ]
+    },
+    {
+      "y": "bộc trực, nói xong mới thấy mình lỡ lời",
+      "do": [
+        "Thái Dương"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "bộc trực",
+        "lỡ lời"
+      ]
+    },
+    {
+      "y": "có phúc đức che chở, gặp việc thường có người đỡ",
+      "do": [
+        "Nguyệt Đức"
+      ],
+      "sac": "hoa-giai",
+      "tuKhoa": [
+        "che chở",
+        "người đỡ"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 72,
+    "tone": "khuyen",
+    "daiVanTuoi": "65–74 tuổi",
+    "namThuTrongVan": 8,
+    "cungDaiVan": "Thiên Di",
+    "cungTieuHan": "Tài Bạch",
+    "chuDeVan": "mười năm của đi xa, ra ngoài và những mối quan hệ ngoài xã hội"
+  }
+}",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan1": {
+            "description": "Đoạn thuận, đúng hai câu",
+            "type": "string",
+          },
+          "doan2": {
+            "description": "Đoạn nghịch rồi hoá giải, đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan1",
+          "doan2",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết luận giải tử vi tiếng Việt cho một trang tra lá số. Bài này đọc VẬN HẠN của một năm.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Bài đọc CUNG ĐẠI VẬN (trường cung) như "cung Mệnh của mười năm": các sao ở cung ấy và ba cung chiếu tới nó
+cho biết mười năm này bạn sống và hành xử ra sao. Phần mở bài đã nêu mốc tuổi, năm và cung tiểu hạn — đừng
+nhắc lại các mốc ấy, hãy viết về NẾT CỦA MƯỜI NĂM qua các mệnh đề.
+
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.
+
+Viết ĐÚNG 2 đoạn, dựa hoàn toàn vào brief.
+
+Đoạn 1 — ĐÚNG 2 câu, dùng các mệnh đề sac="thuan". Mỗi câu dẫn đúng một mệnh đề cùng tên sao sinh ra nó —
+chính tinh thì kèm bậc, phụ tinh thì không. Hóa Lộc, Hóa Quyền, Hóa Khoa, Hóa Kỵ là phụ tinh: không kèm bậc.
+Câu 1 nối mệnh đề với chủ đề mười năm trong vanHan.chuDeVan. Cụm ==tô nền== nằm ở câu thứ hai.
+
+Đoạn 2 — ĐÚNG 2 câu:
+  · Câu 1: các mệnh đề sac="nghich". Mở bằng "Tuy nhiên" hoặc tương đương.
+  · Câu 2: GỘP hai việc vào MỘT câu — nêu mệnh đề sac="hoa-giai", nối bằng "vì vậy"/"nên" sang vế tái định khung theo đúng vanHan.tone. Cụm ==tô nền== nằm ở vế sau.
+  TUYỆT ĐỐI không tách thành câu thứ ba.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của chính nó, nguyên văn.
+B. Mỗi mệnh đề phải nằm CÙNG CÂU với ít nhất một sao trong do[] của nó.
+C. KHÔNG làm nhẹ mệnh đề sac="nghich". Viết đúng mức độ brief nêu.
+D. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+E. laVoChinhDieu=true nghĩa là cung đại vận KHÔNG có chính tinh nào toạ thủ: viết rõ là cung trống và sao chiếu tới.
+F. Chỉ sao the="toạ thủ" mới được nói là đóng tại cung. Sao "xung chiếu", "tam hợp", "nhị hợp" thì viết
+   "hội chiếu", "chiếu tới", "cùng chiếu về". Đừng viết "thủ mệnh", "chiếu mệnh".
+
+QUY TẮC HÌNH THỨC:
+1. Mỗi đoạn đúng 2 câu.
+2. Mỗi đoạn đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**    SAI: ==**Tham Lang (H)**==
+3. Chính tinh: mỗi sao một cặp ** RIÊNG, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+   Tuyệt đối đừng gộp nhiều chính tinh vào một cặp **.
+4. Phụ tinh gói theo vai: cả đoạn chỉ ĐÚNG MỘT cặp ** cho hung tinh và MỘT cặp ** cho cát tinh,
+   không trộn hung với cát, không kèm bậc. Phụ tinh nào sinh ra một mệnh đề thì được một cặp ** riêng.
+5. Không nhắc tên sao nào ngoài brief.
+6. anNgu khác null: giọng tiết chế, không tuyệt đối hoá. Không gọi tên "Tuần" hay "Triệt" trong bài.",
+    },
+    "chinh#2": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Thiên Di",
+  "chi": "Mùi",
+  "gioiTinh": "nam",
+  "chiNamSinh": "Thân",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Thái Dương",
+      "bac": "Đ",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thái Âm",
+      "bac": "Đ",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Lương",
+      "bac": "H",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [],
+  "catTinh": [
+    {
+      "ten": "Hồng Loan",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Nguyệt Đức",
+      "the": "xung chiếu"
+    }
+  ],
+  "anNgu": null,
+  "luan": [
+    {
+      "y": "nhiệt tình, sẵn lòng lo phần việc của người khác",
+      "do": [
+        "Thái Dương"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "nhiệt tình",
+        "lo phần việc"
+      ]
+    },
+    {
+      "y": "duyên đến rõ ràng, dễ có hôn sự đúng lúc",
+      "do": [
+        "Hồng Loan"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "duyên đến",
+        "hôn sự"
+      ]
+    },
+    {
+      "y": "phần thuận lợi bị vướng lại, muốn được việc thì cũng phải qua trắc trở",
+      "do": [
+        "Thái Âm"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "vướng lại",
+        "trắc trở"
+      ]
+    },
+    {
+      "y": "bộc trực, nói xong mới thấy mình lỡ lời",
+      "do": [
+        "Thái Dương"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "bộc trực",
+        "lỡ lời"
+      ]
+    },
+    {
+      "y": "có phúc đức che chở, gặp việc thường có người đỡ",
+      "do": [
+        "Nguyệt Đức"
+      ],
+      "sac": "hoa-giai",
+      "tuKhoa": [
+        "che chở",
+        "người đỡ"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 72,
+    "tone": "khuyen",
+    "daiVanTuoi": "65–74 tuổi",
+    "namThuTrongVan": 8,
+    "cungDaiVan": "Thiên Di",
+    "cungTieuHan": "Tài Bạch",
+    "chuDeVan": "mười năm của đi xa, ra ngoài và những mối quan hệ ngoài xã hội"
+  }
+}",
+        },
+        {
+          "role": "model",
+          "text": "{"doan1":"LẦN 1 đoạn một. Câu hai.","doan2":"LẦN 1 đoạn hai. Câu hai."}",
+        },
+        {
+          "role": "user",
+          "text": "Bản trên vi phạm:
+- lỗi giả
+Viết lại cho đúng, giữ nguyên nội dung mệnh đề.",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan1": {
+            "description": "Đoạn thuận, đúng hai câu",
+            "type": "string",
+          },
+          "doan2": {
+            "description": "Đoạn nghịch rồi hoá giải, đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan1",
+          "doan2",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết luận giải tử vi tiếng Việt cho một trang tra lá số. Bài này đọc VẬN HẠN của một năm.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Bài đọc CUNG ĐẠI VẬN (trường cung) như "cung Mệnh của mười năm": các sao ở cung ấy và ba cung chiếu tới nó
+cho biết mười năm này bạn sống và hành xử ra sao. Phần mở bài đã nêu mốc tuổi, năm và cung tiểu hạn — đừng
+nhắc lại các mốc ấy, hãy viết về NẾT CỦA MƯỜI NĂM qua các mệnh đề.
+
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.
+
+Viết ĐÚNG 2 đoạn, dựa hoàn toàn vào brief.
+
+Đoạn 1 — ĐÚNG 2 câu, dùng các mệnh đề sac="thuan". Mỗi câu dẫn đúng một mệnh đề cùng tên sao sinh ra nó —
+chính tinh thì kèm bậc, phụ tinh thì không. Hóa Lộc, Hóa Quyền, Hóa Khoa, Hóa Kỵ là phụ tinh: không kèm bậc.
+Câu 1 nối mệnh đề với chủ đề mười năm trong vanHan.chuDeVan. Cụm ==tô nền== nằm ở câu thứ hai.
+
+Đoạn 2 — ĐÚNG 2 câu:
+  · Câu 1: các mệnh đề sac="nghich". Mở bằng "Tuy nhiên" hoặc tương đương.
+  · Câu 2: GỘP hai việc vào MỘT câu — nêu mệnh đề sac="hoa-giai", nối bằng "vì vậy"/"nên" sang vế tái định khung theo đúng vanHan.tone. Cụm ==tô nền== nằm ở vế sau.
+  TUYỆT ĐỐI không tách thành câu thứ ba.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của chính nó, nguyên văn.
+B. Mỗi mệnh đề phải nằm CÙNG CÂU với ít nhất một sao trong do[] của nó.
+C. KHÔNG làm nhẹ mệnh đề sac="nghich". Viết đúng mức độ brief nêu.
+D. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+E. laVoChinhDieu=true nghĩa là cung đại vận KHÔNG có chính tinh nào toạ thủ: viết rõ là cung trống và sao chiếu tới.
+F. Chỉ sao the="toạ thủ" mới được nói là đóng tại cung. Sao "xung chiếu", "tam hợp", "nhị hợp" thì viết
+   "hội chiếu", "chiếu tới", "cùng chiếu về". Đừng viết "thủ mệnh", "chiếu mệnh".
+
+QUY TẮC HÌNH THỨC:
+1. Mỗi đoạn đúng 2 câu.
+2. Mỗi đoạn đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**    SAI: ==**Tham Lang (H)**==
+3. Chính tinh: mỗi sao một cặp ** RIÊNG, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+   Tuyệt đối đừng gộp nhiều chính tinh vào một cặp **.
+4. Phụ tinh gói theo vai: cả đoạn chỉ ĐÚNG MỘT cặp ** cho hung tinh và MỘT cặp ** cho cát tinh,
+   không trộn hung với cát, không kèm bậc. Phụ tinh nào sinh ra một mệnh đề thì được một cặp ** riêng.
+5. Không nhắc tên sao nào ngoài brief.
+6. anNgu khác null: giọng tiết chế, không tuyệt đối hoá. Không gọi tên "Tuần" hay "Triệt" trong bài.",
+    },
+    "diem-sang#1": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Tài Bạch",
+  "chi": "Dậu",
+  "gioiTinh": "nam",
+  "chiNamSinh": "Thân",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Thiên Cơ",
+      "bac": "M",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Cự Môn",
+      "bac": "M",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Đồng",
+      "bac": "Đ",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [],
+  "catTinh": [
+    {
+      "ten": "Hóa Lộc",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Hóa Khoa",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Việt",
+      "the": "toạ thủ"
+    }
+  ],
+  "anNgu": null,
+  "luan": [
+    {
+      "y": "tiền và cơ hội đến thuận, việc mới dễ có kết quả",
+      "do": [
+        "Hóa Lộc"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "cơ hội",
+        "kết quả"
+      ]
+    },
+    {
+      "y": "có tiếng tốt, công sức được ghi nhận",
+      "do": [
+        "Hóa Khoa"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "tiếng tốt",
+        "ghi nhận"
+      ]
+    },
+    {
+      "y": "có người giúp đúng lúc, việc khó dễ tìm được lối ra",
+      "do": [
+        "Thiên Việt"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "người giúp",
+        "lối ra"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 72,
+    "tone": "khuyen",
+    "daiVanTuoi": "65–74 tuổi",
+    "namThuTrongVan": 8,
+    "cungDaiVan": "Thiên Di",
+    "cungTieuHan": "Tài Bạch",
+    "chuDeVan": "mười năm của đi xa, ra ngoài và những mối quan hệ ngoài xã hội"
+  },
+  "muc": "diem-sang",
+  "tieuDe": "Điểm sáng trong năm",
+  "sourceCung": "Tài Bạch · Dậu",
+  "duKien": []
+}",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan": {
+            "description": "Đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết một mục ngắn trong bài luận giải tử vi tiếng Việt.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+  Nói cái gì hay xảy ra và nó khiến người ta cảm thấy ra sao, đừng chấm điểm con người.
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Viết ĐÚNG 1 đoạn, ĐÚNG 2 câu, dựa hoàn toàn vào brief.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của nó, nguyên văn.
+B. MỌI dữ kiện trong duKien[] phải được dẫn ra — mốc tuổi ghi đúng con số, tên cách hay tên hoá gọi
+   đúng tên. Nhưng DẪN vào câu văn chứ đừng chép nguyên cụm, và tuyệt đối không chép dấu hai chấm.
+C. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+
+QUY TẮC HÌNH THỨC:
+1. Đúng 2 câu.
+2. Đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**
+3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+4. Phụ tinh không kèm bậc. Phụ tinh nào là sao sinh ra một mệnh đề (tên nó nằm trong do[]) thì được một
+   cặp ** riêng, đặt cùng câu với ý của nó. Các phụ tinh còn lại gói theo vai: hung tinh vào MỘT cặp **,
+   cát tinh vào MỘT cặp ** khác.
+4b. Mệnh đề không có sao sinh ra nó (do[] rỗng — tên một cách cục như "Sát Phá Tham", "Cơ Nguyệt Đồng Lương",
+   "Lộc Mã"; tên một hoá như "Hoá Kỵ", "Hoá Quyền"; tên án ngữ như "Tuần", "Triệt"): viết tên đó không bọc
+   trong cặp **, giữ nguyên chữ hoa đúng như trong brief, không gán cho một sao cụ thể nào.
+   Riêng hoá nào đã có tên trong catTinh hoặc hungTinh thì là phụ tinh: viết theo mục 4.
+5. Không nhắc tên sao nào ngoài brief.
+6. Sao đang xét ở cung Tài Bạch, KHÔNG phải cung Mệnh — đừng viết "thủ mệnh", "chiếu mệnh".
+7. Chỉ sao có the="toạ thủ" mới được nói là đóng tại cung; sao ở thế khác thì viết "hội chiếu", "chiếu tới".
+
+Mục này đọc CUNG TIỂU HẠN của năm (trường cung): những sao chiếu vào cung ấy trong năm đang xem.
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.",
+    },
+    "diem-sang#2": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Tài Bạch",
+  "chi": "Dậu",
+  "gioiTinh": "nam",
+  "chiNamSinh": "Thân",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Thiên Cơ",
+      "bac": "M",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Cự Môn",
+      "bac": "M",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Đồng",
+      "bac": "Đ",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [],
+  "catTinh": [
+    {
+      "ten": "Hóa Lộc",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Hóa Khoa",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Việt",
+      "the": "toạ thủ"
+    }
+  ],
+  "anNgu": null,
+  "luan": [
+    {
+      "y": "tiền và cơ hội đến thuận, việc mới dễ có kết quả",
+      "do": [
+        "Hóa Lộc"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "cơ hội",
+        "kết quả"
+      ]
+    },
+    {
+      "y": "có tiếng tốt, công sức được ghi nhận",
+      "do": [
+        "Hóa Khoa"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "tiếng tốt",
+        "ghi nhận"
+      ]
+    },
+    {
+      "y": "có người giúp đúng lúc, việc khó dễ tìm được lối ra",
+      "do": [
+        "Thiên Việt"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "người giúp",
+        "lối ra"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 72,
+    "tone": "khuyen",
+    "daiVanTuoi": "65–74 tuổi",
+    "namThuTrongVan": 8,
+    "cungDaiVan": "Thiên Di",
+    "cungTieuHan": "Tài Bạch",
+    "chuDeVan": "mười năm của đi xa, ra ngoài và những mối quan hệ ngoài xã hội"
+  },
+  "muc": "diem-sang",
+  "tieuDe": "Điểm sáng trong năm",
+  "sourceCung": "Tài Bạch · Dậu",
+  "duKien": []
+}",
+        },
+        {
+          "role": "model",
+          "text": "{"doan":"LẦN 1 mục. Câu hai."}",
+        },
+        {
+          "role": "user",
+          "text": "Bản trên vi phạm:
+- lỗi giả
+Viết lại cho đúng, giữ nguyên nội dung mệnh đề.",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan": {
+            "description": "Đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết một mục ngắn trong bài luận giải tử vi tiếng Việt.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+  Nói cái gì hay xảy ra và nó khiến người ta cảm thấy ra sao, đừng chấm điểm con người.
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Viết ĐÚNG 1 đoạn, ĐÚNG 2 câu, dựa hoàn toàn vào brief.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của nó, nguyên văn.
+B. MỌI dữ kiện trong duKien[] phải được dẫn ra — mốc tuổi ghi đúng con số, tên cách hay tên hoá gọi
+   đúng tên. Nhưng DẪN vào câu văn chứ đừng chép nguyên cụm, và tuyệt đối không chép dấu hai chấm.
+C. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+
+QUY TẮC HÌNH THỨC:
+1. Đúng 2 câu.
+2. Đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**
+3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+4. Phụ tinh không kèm bậc. Phụ tinh nào là sao sinh ra một mệnh đề (tên nó nằm trong do[]) thì được một
+   cặp ** riêng, đặt cùng câu với ý của nó. Các phụ tinh còn lại gói theo vai: hung tinh vào MỘT cặp **,
+   cát tinh vào MỘT cặp ** khác.
+4b. Mệnh đề không có sao sinh ra nó (do[] rỗng — tên một cách cục như "Sát Phá Tham", "Cơ Nguyệt Đồng Lương",
+   "Lộc Mã"; tên một hoá như "Hoá Kỵ", "Hoá Quyền"; tên án ngữ như "Tuần", "Triệt"): viết tên đó không bọc
+   trong cặp **, giữ nguyên chữ hoa đúng như trong brief, không gán cho một sao cụ thể nào.
+   Riêng hoá nào đã có tên trong catTinh hoặc hungTinh thì là phụ tinh: viết theo mục 4.
+5. Không nhắc tên sao nào ngoài brief.
+6. Sao đang xét ở cung Tài Bạch, KHÔNG phải cung Mệnh — đừng viết "thủ mệnh", "chiếu mệnh".
+7. Chỉ sao có the="toạ thủ" mới được nói là đóng tại cung; sao ở thế khác thì viết "hội chiếu", "chiếu tới".
+
+Mục này đọc CUNG TIỂU HẠN của năm (trường cung): những sao chiếu vào cung ấy trong năm đang xem.
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.",
+    },
+    "dieu-can-giu#1": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Tài Bạch",
+  "chi": "Dậu",
+  "gioiTinh": "nam",
+  "chiNamSinh": "Thân",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Thiên Cơ",
+      "bac": "M",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Cự Môn",
+      "bac": "M",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Đồng",
+      "bac": "Đ",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [
+    {
+      "ten": "Hóa Kỵ",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Tang Môn",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Bạch Hổ",
+      "the": "xung chiếu"
+    }
+  ],
+  "catTinh": [],
+  "anNgu": null,
+  "luan": [
+    {
+      "y": "việc dễ vướng mắc và hiểu lầm, nên nói rõ từ đầu và kiên nhẫn",
+      "do": [
+        "Hóa Kỵ"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "vướng mắc",
+        "hiểu lầm"
+      ]
+    },
+    {
+      "y": "tâm trạng dễ nặng nề, chuyện nhà cần được quan tâm nhiều hơn",
+      "do": [
+        "Tang Môn"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "nặng nề",
+        "chuyện nhà"
+      ]
+    },
+    {
+      "y": "dễ va chạm và nóng vội, nên chậm lại trước các quyết định lớn",
+      "do": [
+        "Bạch Hổ"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "va chạm",
+        "nóng vội"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 72,
+    "tone": "khuyen",
+    "daiVanTuoi": "65–74 tuổi",
+    "namThuTrongVan": 8,
+    "cungDaiVan": "Thiên Di",
+    "cungTieuHan": "Tài Bạch",
+    "chuDeVan": "mười năm của đi xa, ra ngoài và những mối quan hệ ngoài xã hội"
+  },
+  "muc": "dieu-can-giu",
+  "tieuDe": "Điều cần giữ",
+  "sourceCung": "Tài Bạch · Dậu",
+  "duKien": []
+}",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan": {
+            "description": "Đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết một mục ngắn trong bài luận giải tử vi tiếng Việt.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+  Nói cái gì hay xảy ra và nó khiến người ta cảm thấy ra sao, đừng chấm điểm con người.
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Viết ĐÚNG 1 đoạn, ĐÚNG 2 câu, dựa hoàn toàn vào brief.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của nó, nguyên văn.
+B. MỌI dữ kiện trong duKien[] phải được dẫn ra — mốc tuổi ghi đúng con số, tên cách hay tên hoá gọi
+   đúng tên. Nhưng DẪN vào câu văn chứ đừng chép nguyên cụm, và tuyệt đối không chép dấu hai chấm.
+C. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+
+QUY TẮC HÌNH THỨC:
+1. Đúng 2 câu.
+2. Đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**
+3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+4. Phụ tinh không kèm bậc. Phụ tinh nào là sao sinh ra một mệnh đề (tên nó nằm trong do[]) thì được một
+   cặp ** riêng, đặt cùng câu với ý của nó. Các phụ tinh còn lại gói theo vai: hung tinh vào MỘT cặp **,
+   cát tinh vào MỘT cặp ** khác.
+4b. Mệnh đề không có sao sinh ra nó (do[] rỗng — tên một cách cục như "Sát Phá Tham", "Cơ Nguyệt Đồng Lương",
+   "Lộc Mã"; tên một hoá như "Hoá Kỵ", "Hoá Quyền"; tên án ngữ như "Tuần", "Triệt"): viết tên đó không bọc
+   trong cặp **, giữ nguyên chữ hoa đúng như trong brief, không gán cho một sao cụ thể nào.
+   Riêng hoá nào đã có tên trong catTinh hoặc hungTinh thì là phụ tinh: viết theo mục 4.
+5. Không nhắc tên sao nào ngoài brief.
+6. Sao đang xét ở cung Tài Bạch, KHÔNG phải cung Mệnh — đừng viết "thủ mệnh", "chiếu mệnh".
+7. Chỉ sao có the="toạ thủ" mới được nói là đóng tại cung; sao ở thế khác thì viết "hội chiếu", "chiếu tới".
+
+Mục này đọc CUNG TIỂU HẠN của năm (trường cung): những sao chiếu vào cung ấy trong năm đang xem.
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.",
+    },
+    "dieu-can-giu#2": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Tài Bạch",
+  "chi": "Dậu",
+  "gioiTinh": "nam",
+  "chiNamSinh": "Thân",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Thiên Cơ",
+      "bac": "M",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Cự Môn",
+      "bac": "M",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Đồng",
+      "bac": "Đ",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [
+    {
+      "ten": "Hóa Kỵ",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Tang Môn",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Bạch Hổ",
+      "the": "xung chiếu"
+    }
+  ],
+  "catTinh": [],
+  "anNgu": null,
+  "luan": [
+    {
+      "y": "việc dễ vướng mắc và hiểu lầm, nên nói rõ từ đầu và kiên nhẫn",
+      "do": [
+        "Hóa Kỵ"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "vướng mắc",
+        "hiểu lầm"
+      ]
+    },
+    {
+      "y": "tâm trạng dễ nặng nề, chuyện nhà cần được quan tâm nhiều hơn",
+      "do": [
+        "Tang Môn"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "nặng nề",
+        "chuyện nhà"
+      ]
+    },
+    {
+      "y": "dễ va chạm và nóng vội, nên chậm lại trước các quyết định lớn",
+      "do": [
+        "Bạch Hổ"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "va chạm",
+        "nóng vội"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 72,
+    "tone": "khuyen",
+    "daiVanTuoi": "65–74 tuổi",
+    "namThuTrongVan": 8,
+    "cungDaiVan": "Thiên Di",
+    "cungTieuHan": "Tài Bạch",
+    "chuDeVan": "mười năm của đi xa, ra ngoài và những mối quan hệ ngoài xã hội"
+  },
+  "muc": "dieu-can-giu",
+  "tieuDe": "Điều cần giữ",
+  "sourceCung": "Tài Bạch · Dậu",
+  "duKien": []
+}",
+        },
+        {
+          "role": "model",
+          "text": "{"doan":"LẦN 1 mục. Câu hai."}",
+        },
+        {
+          "role": "user",
+          "text": "Bản trên vi phạm:
+- lỗi giả
+Viết lại cho đúng, giữ nguyên nội dung mệnh đề.",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan": {
+            "description": "Đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết một mục ngắn trong bài luận giải tử vi tiếng Việt.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+  Nói cái gì hay xảy ra và nó khiến người ta cảm thấy ra sao, đừng chấm điểm con người.
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Viết ĐÚNG 1 đoạn, ĐÚNG 2 câu, dựa hoàn toàn vào brief.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của nó, nguyên văn.
+B. MỌI dữ kiện trong duKien[] phải được dẫn ra — mốc tuổi ghi đúng con số, tên cách hay tên hoá gọi
+   đúng tên. Nhưng DẪN vào câu văn chứ đừng chép nguyên cụm, và tuyệt đối không chép dấu hai chấm.
+C. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+
+QUY TẮC HÌNH THỨC:
+1. Đúng 2 câu.
+2. Đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**
+3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+4. Phụ tinh không kèm bậc. Phụ tinh nào là sao sinh ra một mệnh đề (tên nó nằm trong do[]) thì được một
+   cặp ** riêng, đặt cùng câu với ý của nó. Các phụ tinh còn lại gói theo vai: hung tinh vào MỘT cặp **,
+   cát tinh vào MỘT cặp ** khác.
+4b. Mệnh đề không có sao sinh ra nó (do[] rỗng — tên một cách cục như "Sát Phá Tham", "Cơ Nguyệt Đồng Lương",
+   "Lộc Mã"; tên một hoá như "Hoá Kỵ", "Hoá Quyền"; tên án ngữ như "Tuần", "Triệt"): viết tên đó không bọc
+   trong cặp **, giữ nguyên chữ hoa đúng như trong brief, không gán cho một sao cụ thể nào.
+   Riêng hoá nào đã có tên trong catTinh hoặc hungTinh thì là phụ tinh: viết theo mục 4.
+5. Không nhắc tên sao nào ngoài brief.
+6. Sao đang xét ở cung Tài Bạch, KHÔNG phải cung Mệnh — đừng viết "thủ mệnh", "chiếu mệnh".
+7. Chỉ sao có the="toạ thủ" mới được nói là đóng tại cung; sao ở thế khác thì viết "hội chiếu", "chiếu tới".
+
+Mục này đọc CUNG TIỂU HẠN của năm (trường cung): những sao chiếu vào cung ấy trong năm đang xem.
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.",
+    },
+  },
+}
+`;
+
+exports[`chương 06, lá số 1960-05-26 21h Nam ghi lại cả lượt sinh lại cho năm xem 2027 1`] = `
+{
+  "article": {
+    "closing": "Biết trước nhịp năm không phải để lo, mà để chọn đúng lúc dồn sức.",
+    "closingLabel": "Một lời dành cho bạn",
+    "eyebrow": "Vận hạn",
+    "paragraphs": [
+      "Năm Đinh Mùi 2027 bạn 68 tuổi âm, đang đi **đại vận 63–72 tuổi** ở cung Thiên Di, mười năm của đi xa, ra ngoài và những mối quan hệ ngoài xã hội. Đây là năm thứ 6 trong mười năm ấy, và tiểu hạn của năm đi qua cung Phu Thê.",
+      "LẦN 2 đoạn một. Câu hai.",
+      "LẦN 2 đoạn hai. Câu hai.",
+    ],
+    "quote": "Năm của tình duyên",
+    "sections": [
+      {
+        "paragraphs": [
+          "LẦN 2 mục. Câu hai.",
+        ],
+        "slug": "diem-sang",
+        "sourceCung": "Phu Thê · Tị",
+        "title": "Điểm sáng trong năm",
+      },
+      {
+        "paragraphs": [
+          "LẦN 2 mục. Câu hai.",
+        ],
+        "slug": "dieu-can-giu",
+        "sourceCung": "Phu Thê · Tị",
+        "title": "Điều cần giữ",
+      },
+      {
+        "paragraphs": [
+          "Tiểu hạn năm Đinh Mùi 2027 rơi vào cung Phu Thê, nên tình duyên và người đồng hành là ==lĩnh vực nổi bật nhất của năm==.",
+          "Dành thời gian lắng nghe người đồng hành và nói rõ điều mình mong muốn.",
+          "Muốn đọc kỹ hơn về tình duyên và người đồng hành, xem thêm chương “Tình duyên Gia đạo”.",
+        ],
+        "slug": "linh-vuc",
+        "sourceCung": "Phu Thê · Tị",
+        "title": "Lĩnh vực nổi bật",
+      },
+      {
+        "paragraphs": [
+          "Từ năm 2032, khi bạn 73 tuổi âm, đại vận chuyển sang cung Tật Ách và kéo dài tới 82 tuổi.",
+          "Đó là mười năm nên chăm lo sức khỏe, nhịp sống và cách giữ sức bền.",
+        ],
+        "slug": "van-ke-tiep",
+        "sourceCung": "Tật Ách · Dần",
+        "title": "Nhìn trước vận kế tiếp",
+      },
+      {
+        "paragraphs": [
+          "Theo cách xem dân gian, vốn khác với phép an sao tử vi ở trên, năm Đinh Mùi 2027 bạn 68 tuổi âm và có sao ==Thái Dương chiếu mệnh==.",
+          "Thái Dương là sao tốt, nhất là với nam giới, chủ công việc hanh thông và có tin vui.",
+          "Năm này bạn không phạm Tam Tai hay Kim Lâu.",
+        ],
+        "slug": "dan-gian",
+        "sourceCung": "Tuổi Tý",
+        "title": "Sao chiếu mệnh & hạn tuổi",
+      },
+    ],
+    "sourceCung": "Thiên Di",
+    "subheading": "Nam tuổi Tý – Vận hạn năm Đinh Mùi 2027",
+    "summary": "Một năm thuận hay nghịch **không quyết định thay bạn**: cùng một vận, người biết lúc nào nên tiến, lúc nào nên giữ sẽ đi qua nhẹ hơn. Điều đáng làm là ==dồn sức vào điểm sáng, giữ kỹ chỗ dễ vướng==.",
+    "title": "Vận hạn năm Đinh Mùi 2027",
+  },
+  "attempts": 2,
+  "requests": {
+    "chinh#1": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Thiên Di",
+  "chi": "Sửu",
+  "gioiTinh": "nam",
+  "chiNamSinh": "Tý",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Tử Vi",
+      "bac": "Đ",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Phá Quân",
+      "bac": "V",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Tướng",
+      "bac": "Đ",
+      "the": "xung chiếu"
+    },
+    {
+      "ten": "Liêm Trinh",
+      "bac": "H",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Tham Lang",
+      "bac": "H",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Vũ Khúc",
+      "bac": "Đ",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Thất Sát",
+      "bac": "H",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [],
+  "catTinh": [
+    {
+      "ten": "Thiên Đức",
+      "the": "tam hợp"
+    }
+  ],
+  "anNgu": null,
+  "luan": [
+    {
+      "y": "dám phá lệ, không ngại làm khác số đông",
+      "do": [
+        "Phá Quân"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "phá lệ",
+        "khác số đông"
+      ]
+    },
+    {
+      "y": "đứng ra gánh việc chung, người khác dễ trông vào",
+      "do": [
+        "Tử Vi"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "gánh việc chung",
+        "trông vào"
+      ]
+    },
+    {
+      "y": "đổi hướng liên tục, khó giữ mọi thứ ổn định",
+      "do": [
+        "Phá Quân"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "đổi hướng",
+        "ổn định"
+      ]
+    },
+    {
+      "y": "nặng thể diện, khó hạ mình nhận phần thiệt",
+      "do": [
+        "Tử Vi"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "thể diện",
+        "hạ mình"
+      ]
+    },
+    {
+      "y": "có đức che chở, hung hóa cát",
+      "do": [
+        "Thiên Đức"
+      ],
+      "sac": "hoa-giai",
+      "tuKhoa": [
+        "che chở",
+        "hung hóa cát"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 68,
+    "tone": "khuyen",
+    "daiVanTuoi": "63–72 tuổi",
+    "namThuTrongVan": 6,
+    "cungDaiVan": "Thiên Di",
+    "cungTieuHan": "Phu Thê",
+    "chuDeVan": "mười năm của đi xa, ra ngoài và những mối quan hệ ngoài xã hội"
+  }
+}",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan1": {
+            "description": "Đoạn thuận, đúng hai câu",
+            "type": "string",
+          },
+          "doan2": {
+            "description": "Đoạn nghịch rồi hoá giải, đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan1",
+          "doan2",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết luận giải tử vi tiếng Việt cho một trang tra lá số. Bài này đọc VẬN HẠN của một năm.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Bài đọc CUNG ĐẠI VẬN (trường cung) như "cung Mệnh của mười năm": các sao ở cung ấy và ba cung chiếu tới nó
+cho biết mười năm này bạn sống và hành xử ra sao. Phần mở bài đã nêu mốc tuổi, năm và cung tiểu hạn — đừng
+nhắc lại các mốc ấy, hãy viết về NẾT CỦA MƯỜI NĂM qua các mệnh đề.
+
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.
+
+Viết ĐÚNG 2 đoạn, dựa hoàn toàn vào brief.
+
+Đoạn 1 — ĐÚNG 2 câu, dùng các mệnh đề sac="thuan". Mỗi câu dẫn đúng một mệnh đề cùng tên sao sinh ra nó —
+chính tinh thì kèm bậc, phụ tinh thì không. Hóa Lộc, Hóa Quyền, Hóa Khoa, Hóa Kỵ là phụ tinh: không kèm bậc.
+Câu 1 nối mệnh đề với chủ đề mười năm trong vanHan.chuDeVan. Cụm ==tô nền== nằm ở câu thứ hai.
+
+Đoạn 2 — ĐÚNG 2 câu:
+  · Câu 1: các mệnh đề sac="nghich". Mở bằng "Tuy nhiên" hoặc tương đương.
+  · Câu 2: GỘP hai việc vào MỘT câu — nêu mệnh đề sac="hoa-giai", nối bằng "vì vậy"/"nên" sang vế tái định khung theo đúng vanHan.tone. Cụm ==tô nền== nằm ở vế sau.
+  TUYỆT ĐỐI không tách thành câu thứ ba.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của chính nó, nguyên văn.
+B. Mỗi mệnh đề phải nằm CÙNG CÂU với ít nhất một sao trong do[] của nó.
+C. KHÔNG làm nhẹ mệnh đề sac="nghich". Viết đúng mức độ brief nêu.
+D. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+E. laVoChinhDieu=true nghĩa là cung đại vận KHÔNG có chính tinh nào toạ thủ: viết rõ là cung trống và sao chiếu tới.
+F. Chỉ sao the="toạ thủ" mới được nói là đóng tại cung. Sao "xung chiếu", "tam hợp", "nhị hợp" thì viết
+   "hội chiếu", "chiếu tới", "cùng chiếu về". Đừng viết "thủ mệnh", "chiếu mệnh".
+
+QUY TẮC HÌNH THỨC:
+1. Mỗi đoạn đúng 2 câu.
+2. Mỗi đoạn đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**    SAI: ==**Tham Lang (H)**==
+3. Chính tinh: mỗi sao một cặp ** RIÊNG, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+   Tuyệt đối đừng gộp nhiều chính tinh vào một cặp **.
+4. Phụ tinh gói theo vai: cả đoạn chỉ ĐÚNG MỘT cặp ** cho hung tinh và MỘT cặp ** cho cát tinh,
+   không trộn hung với cát, không kèm bậc. Phụ tinh nào sinh ra một mệnh đề thì được một cặp ** riêng.
+5. Không nhắc tên sao nào ngoài brief.
+6. anNgu khác null: giọng tiết chế, không tuyệt đối hoá. Không gọi tên "Tuần" hay "Triệt" trong bài.",
+    },
+    "chinh#2": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Thiên Di",
+  "chi": "Sửu",
+  "gioiTinh": "nam",
+  "chiNamSinh": "Tý",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Tử Vi",
+      "bac": "Đ",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Phá Quân",
+      "bac": "V",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Tướng",
+      "bac": "Đ",
+      "the": "xung chiếu"
+    },
+    {
+      "ten": "Liêm Trinh",
+      "bac": "H",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Tham Lang",
+      "bac": "H",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Vũ Khúc",
+      "bac": "Đ",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Thất Sát",
+      "bac": "H",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [],
+  "catTinh": [
+    {
+      "ten": "Thiên Đức",
+      "the": "tam hợp"
+    }
+  ],
+  "anNgu": null,
+  "luan": [
+    {
+      "y": "dám phá lệ, không ngại làm khác số đông",
+      "do": [
+        "Phá Quân"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "phá lệ",
+        "khác số đông"
+      ]
+    },
+    {
+      "y": "đứng ra gánh việc chung, người khác dễ trông vào",
+      "do": [
+        "Tử Vi"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "gánh việc chung",
+        "trông vào"
+      ]
+    },
+    {
+      "y": "đổi hướng liên tục, khó giữ mọi thứ ổn định",
+      "do": [
+        "Phá Quân"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "đổi hướng",
+        "ổn định"
+      ]
+    },
+    {
+      "y": "nặng thể diện, khó hạ mình nhận phần thiệt",
+      "do": [
+        "Tử Vi"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "thể diện",
+        "hạ mình"
+      ]
+    },
+    {
+      "y": "có đức che chở, hung hóa cát",
+      "do": [
+        "Thiên Đức"
+      ],
+      "sac": "hoa-giai",
+      "tuKhoa": [
+        "che chở",
+        "hung hóa cát"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 68,
+    "tone": "khuyen",
+    "daiVanTuoi": "63–72 tuổi",
+    "namThuTrongVan": 6,
+    "cungDaiVan": "Thiên Di",
+    "cungTieuHan": "Phu Thê",
+    "chuDeVan": "mười năm của đi xa, ra ngoài và những mối quan hệ ngoài xã hội"
+  }
+}",
+        },
+        {
+          "role": "model",
+          "text": "{"doan1":"LẦN 1 đoạn một. Câu hai.","doan2":"LẦN 1 đoạn hai. Câu hai."}",
+        },
+        {
+          "role": "user",
+          "text": "Bản trên vi phạm:
+- lỗi giả
+Viết lại cho đúng, giữ nguyên nội dung mệnh đề.",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan1": {
+            "description": "Đoạn thuận, đúng hai câu",
+            "type": "string",
+          },
+          "doan2": {
+            "description": "Đoạn nghịch rồi hoá giải, đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan1",
+          "doan2",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết luận giải tử vi tiếng Việt cho một trang tra lá số. Bài này đọc VẬN HẠN của một năm.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Bài đọc CUNG ĐẠI VẬN (trường cung) như "cung Mệnh của mười năm": các sao ở cung ấy và ba cung chiếu tới nó
+cho biết mười năm này bạn sống và hành xử ra sao. Phần mở bài đã nêu mốc tuổi, năm và cung tiểu hạn — đừng
+nhắc lại các mốc ấy, hãy viết về NẾT CỦA MƯỜI NĂM qua các mệnh đề.
+
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.
+
+Viết ĐÚNG 2 đoạn, dựa hoàn toàn vào brief.
+
+Đoạn 1 — ĐÚNG 2 câu, dùng các mệnh đề sac="thuan". Mỗi câu dẫn đúng một mệnh đề cùng tên sao sinh ra nó —
+chính tinh thì kèm bậc, phụ tinh thì không. Hóa Lộc, Hóa Quyền, Hóa Khoa, Hóa Kỵ là phụ tinh: không kèm bậc.
+Câu 1 nối mệnh đề với chủ đề mười năm trong vanHan.chuDeVan. Cụm ==tô nền== nằm ở câu thứ hai.
+
+Đoạn 2 — ĐÚNG 2 câu:
+  · Câu 1: các mệnh đề sac="nghich". Mở bằng "Tuy nhiên" hoặc tương đương.
+  · Câu 2: GỘP hai việc vào MỘT câu — nêu mệnh đề sac="hoa-giai", nối bằng "vì vậy"/"nên" sang vế tái định khung theo đúng vanHan.tone. Cụm ==tô nền== nằm ở vế sau.
+  TUYỆT ĐỐI không tách thành câu thứ ba.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của chính nó, nguyên văn.
+B. Mỗi mệnh đề phải nằm CÙNG CÂU với ít nhất một sao trong do[] của nó.
+C. KHÔNG làm nhẹ mệnh đề sac="nghich". Viết đúng mức độ brief nêu.
+D. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+E. laVoChinhDieu=true nghĩa là cung đại vận KHÔNG có chính tinh nào toạ thủ: viết rõ là cung trống và sao chiếu tới.
+F. Chỉ sao the="toạ thủ" mới được nói là đóng tại cung. Sao "xung chiếu", "tam hợp", "nhị hợp" thì viết
+   "hội chiếu", "chiếu tới", "cùng chiếu về". Đừng viết "thủ mệnh", "chiếu mệnh".
+
+QUY TẮC HÌNH THỨC:
+1. Mỗi đoạn đúng 2 câu.
+2. Mỗi đoạn đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**    SAI: ==**Tham Lang (H)**==
+3. Chính tinh: mỗi sao một cặp ** RIÊNG, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+   Tuyệt đối đừng gộp nhiều chính tinh vào một cặp **.
+4. Phụ tinh gói theo vai: cả đoạn chỉ ĐÚNG MỘT cặp ** cho hung tinh và MỘT cặp ** cho cát tinh,
+   không trộn hung với cát, không kèm bậc. Phụ tinh nào sinh ra một mệnh đề thì được một cặp ** riêng.
+5. Không nhắc tên sao nào ngoài brief.
+6. anNgu khác null: giọng tiết chế, không tuyệt đối hoá. Không gọi tên "Tuần" hay "Triệt" trong bài.",
+    },
+    "diem-sang#1": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Phu Thê",
+  "chi": "Tị",
+  "gioiTinh": "nam",
+  "chiNamSinh": "Tý",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Liêm Trinh",
+      "bac": "H",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Tham Lang",
+      "bac": "H",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Vũ Khúc",
+      "bac": "Đ",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Thất Sát",
+      "bac": "H",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Tử Vi",
+      "bac": "Đ",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Phá Quân",
+      "bac": "V",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [],
+  "catTinh": [
+    {
+      "ten": "Hóa Quyền",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Mã",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Khôi",
+      "the": "xung chiếu"
+    }
+  ],
+  "anNgu": "Tuần",
+  "luan": [
+    {
+      "y": "có tiếng nói hơn, được giao thêm việc và quyền quyết",
+      "do": [
+        "Hóa Quyền"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "tiếng nói",
+        "quyền quyết"
+      ]
+    },
+    {
+      "y": "nhiều dịp đi lại, thay đổi chỗ làm hoặc chỗ ở mở ra cơ hội",
+      "do": [
+        "Thiên Mã"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "đi lại",
+        "cơ hội"
+      ]
+    },
+    {
+      "y": "gặp quý nhân là người lớn tuổi hoặc cấp trên nâng đỡ",
+      "do": [
+        "Thiên Khôi"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "quý nhân",
+        "nâng đỡ"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 68,
+    "tone": "khuyen",
+    "daiVanTuoi": "63–72 tuổi",
+    "namThuTrongVan": 6,
+    "cungDaiVan": "Thiên Di",
+    "cungTieuHan": "Phu Thê",
+    "chuDeVan": "mười năm của đi xa, ra ngoài và những mối quan hệ ngoài xã hội"
+  },
+  "muc": "diem-sang",
+  "tieuDe": "Điểm sáng trong năm",
+  "sourceCung": "Phu Thê · Tị",
+  "duKien": []
+}",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan": {
+            "description": "Đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết một mục ngắn trong bài luận giải tử vi tiếng Việt.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+  Nói cái gì hay xảy ra và nó khiến người ta cảm thấy ra sao, đừng chấm điểm con người.
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Viết ĐÚNG 1 đoạn, ĐÚNG 2 câu, dựa hoàn toàn vào brief.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của nó, nguyên văn.
+B. MỌI dữ kiện trong duKien[] phải được dẫn ra — mốc tuổi ghi đúng con số, tên cách hay tên hoá gọi
+   đúng tên. Nhưng DẪN vào câu văn chứ đừng chép nguyên cụm, và tuyệt đối không chép dấu hai chấm.
+C. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+
+QUY TẮC HÌNH THỨC:
+1. Đúng 2 câu.
+2. Đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**
+3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+4. Phụ tinh không kèm bậc. Phụ tinh nào là sao sinh ra một mệnh đề (tên nó nằm trong do[]) thì được một
+   cặp ** riêng, đặt cùng câu với ý của nó. Các phụ tinh còn lại gói theo vai: hung tinh vào MỘT cặp **,
+   cát tinh vào MỘT cặp ** khác.
+4b. Mệnh đề không có sao sinh ra nó (do[] rỗng — tên một cách cục như "Sát Phá Tham", "Cơ Nguyệt Đồng Lương",
+   "Lộc Mã"; tên một hoá như "Hoá Kỵ", "Hoá Quyền"; tên án ngữ như "Tuần", "Triệt"): viết tên đó không bọc
+   trong cặp **, giữ nguyên chữ hoa đúng như trong brief, không gán cho một sao cụ thể nào.
+   Riêng hoá nào đã có tên trong catTinh hoặc hungTinh thì là phụ tinh: viết theo mục 4.
+5. Không nhắc tên sao nào ngoài brief.
+6. Sao đang xét ở cung Phu Thê, KHÔNG phải cung Mệnh — đừng viết "thủ mệnh", "chiếu mệnh".
+7. Chỉ sao có the="toạ thủ" mới được nói là đóng tại cung; sao ở thế khác thì viết "hội chiếu", "chiếu tới".
+
+Mục này đọc CUNG TIỂU HẠN của năm (trường cung): những sao chiếu vào cung ấy trong năm đang xem.
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.",
+    },
+    "diem-sang#2": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Phu Thê",
+  "chi": "Tị",
+  "gioiTinh": "nam",
+  "chiNamSinh": "Tý",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Liêm Trinh",
+      "bac": "H",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Tham Lang",
+      "bac": "H",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Vũ Khúc",
+      "bac": "Đ",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Thất Sát",
+      "bac": "H",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Tử Vi",
+      "bac": "Đ",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Phá Quân",
+      "bac": "V",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [],
+  "catTinh": [
+    {
+      "ten": "Hóa Quyền",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Mã",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Thiên Khôi",
+      "the": "xung chiếu"
+    }
+  ],
+  "anNgu": "Tuần",
+  "luan": [
+    {
+      "y": "có tiếng nói hơn, được giao thêm việc và quyền quyết",
+      "do": [
+        "Hóa Quyền"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "tiếng nói",
+        "quyền quyết"
+      ]
+    },
+    {
+      "y": "nhiều dịp đi lại, thay đổi chỗ làm hoặc chỗ ở mở ra cơ hội",
+      "do": [
+        "Thiên Mã"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "đi lại",
+        "cơ hội"
+      ]
+    },
+    {
+      "y": "gặp quý nhân là người lớn tuổi hoặc cấp trên nâng đỡ",
+      "do": [
+        "Thiên Khôi"
+      ],
+      "sac": "thuan",
+      "tuKhoa": [
+        "quý nhân",
+        "nâng đỡ"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 68,
+    "tone": "khuyen",
+    "daiVanTuoi": "63–72 tuổi",
+    "namThuTrongVan": 6,
+    "cungDaiVan": "Thiên Di",
+    "cungTieuHan": "Phu Thê",
+    "chuDeVan": "mười năm của đi xa, ra ngoài và những mối quan hệ ngoài xã hội"
+  },
+  "muc": "diem-sang",
+  "tieuDe": "Điểm sáng trong năm",
+  "sourceCung": "Phu Thê · Tị",
+  "duKien": []
+}",
+        },
+        {
+          "role": "model",
+          "text": "{"doan":"LẦN 1 mục. Câu hai."}",
+        },
+        {
+          "role": "user",
+          "text": "Bản trên vi phạm:
+- lỗi giả
+Viết lại cho đúng, giữ nguyên nội dung mệnh đề.",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan": {
+            "description": "Đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết một mục ngắn trong bài luận giải tử vi tiếng Việt.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+  Nói cái gì hay xảy ra và nó khiến người ta cảm thấy ra sao, đừng chấm điểm con người.
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Viết ĐÚNG 1 đoạn, ĐÚNG 2 câu, dựa hoàn toàn vào brief.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của nó, nguyên văn.
+B. MỌI dữ kiện trong duKien[] phải được dẫn ra — mốc tuổi ghi đúng con số, tên cách hay tên hoá gọi
+   đúng tên. Nhưng DẪN vào câu văn chứ đừng chép nguyên cụm, và tuyệt đối không chép dấu hai chấm.
+C. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+
+QUY TẮC HÌNH THỨC:
+1. Đúng 2 câu.
+2. Đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**
+3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+4. Phụ tinh không kèm bậc. Phụ tinh nào là sao sinh ra một mệnh đề (tên nó nằm trong do[]) thì được một
+   cặp ** riêng, đặt cùng câu với ý của nó. Các phụ tinh còn lại gói theo vai: hung tinh vào MỘT cặp **,
+   cát tinh vào MỘT cặp ** khác.
+4b. Mệnh đề không có sao sinh ra nó (do[] rỗng — tên một cách cục như "Sát Phá Tham", "Cơ Nguyệt Đồng Lương",
+   "Lộc Mã"; tên một hoá như "Hoá Kỵ", "Hoá Quyền"; tên án ngữ như "Tuần", "Triệt"): viết tên đó không bọc
+   trong cặp **, giữ nguyên chữ hoa đúng như trong brief, không gán cho một sao cụ thể nào.
+   Riêng hoá nào đã có tên trong catTinh hoặc hungTinh thì là phụ tinh: viết theo mục 4.
+5. Không nhắc tên sao nào ngoài brief.
+6. Sao đang xét ở cung Phu Thê, KHÔNG phải cung Mệnh — đừng viết "thủ mệnh", "chiếu mệnh".
+7. Chỉ sao có the="toạ thủ" mới được nói là đóng tại cung; sao ở thế khác thì viết "hội chiếu", "chiếu tới".
+
+Mục này đọc CUNG TIỂU HẠN của năm (trường cung): những sao chiếu vào cung ấy trong năm đang xem.
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.",
+    },
+    "dieu-can-giu#1": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Phu Thê",
+  "chi": "Tị",
+  "gioiTinh": "nam",
+  "chiNamSinh": "Tý",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Liêm Trinh",
+      "bac": "H",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Tham Lang",
+      "bac": "H",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Vũ Khúc",
+      "bac": "Đ",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Thất Sát",
+      "bac": "H",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Tử Vi",
+      "bac": "Đ",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Phá Quân",
+      "bac": "V",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [
+    {
+      "ten": "Thiên Khốc",
+      "the": "xung chiếu"
+    },
+    {
+      "ten": "Tang Môn",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Thiên Hư",
+      "the": "tam hợp"
+    }
+  ],
+  "catTinh": [],
+  "anNgu": "Tuần",
+  "luan": [
+    {
+      "y": "dễ buồn lo, cần có chỗ để chia sẻ thay vì ôm một mình",
+      "do": [
+        "Thiên Khốc"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "buồn lo",
+        "chia sẻ"
+      ]
+    },
+    {
+      "y": "tâm trạng dễ nặng nề, chuyện nhà cần được quan tâm nhiều hơn",
+      "do": [
+        "Tang Môn"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "nặng nề",
+        "chuyện nhà"
+      ]
+    },
+    {
+      "y": "kế hoạch dễ hụt so với kỳ vọng, nên tính sẵn phần dự phòng",
+      "do": [
+        "Thiên Hư"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "kỳ vọng",
+        "dự phòng"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 68,
+    "tone": "khuyen",
+    "daiVanTuoi": "63–72 tuổi",
+    "namThuTrongVan": 6,
+    "cungDaiVan": "Thiên Di",
+    "cungTieuHan": "Phu Thê",
+    "chuDeVan": "mười năm của đi xa, ra ngoài và những mối quan hệ ngoài xã hội"
+  },
+  "muc": "dieu-can-giu",
+  "tieuDe": "Điều cần giữ",
+  "sourceCung": "Phu Thê · Tị",
+  "duKien": []
+}",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan": {
+            "description": "Đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết một mục ngắn trong bài luận giải tử vi tiếng Việt.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+  Nói cái gì hay xảy ra và nó khiến người ta cảm thấy ra sao, đừng chấm điểm con người.
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Viết ĐÚNG 1 đoạn, ĐÚNG 2 câu, dựa hoàn toàn vào brief.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của nó, nguyên văn.
+B. MỌI dữ kiện trong duKien[] phải được dẫn ra — mốc tuổi ghi đúng con số, tên cách hay tên hoá gọi
+   đúng tên. Nhưng DẪN vào câu văn chứ đừng chép nguyên cụm, và tuyệt đối không chép dấu hai chấm.
+C. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+
+QUY TẮC HÌNH THỨC:
+1. Đúng 2 câu.
+2. Đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**
+3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+4. Phụ tinh không kèm bậc. Phụ tinh nào là sao sinh ra một mệnh đề (tên nó nằm trong do[]) thì được một
+   cặp ** riêng, đặt cùng câu với ý của nó. Các phụ tinh còn lại gói theo vai: hung tinh vào MỘT cặp **,
+   cát tinh vào MỘT cặp ** khác.
+4b. Mệnh đề không có sao sinh ra nó (do[] rỗng — tên một cách cục như "Sát Phá Tham", "Cơ Nguyệt Đồng Lương",
+   "Lộc Mã"; tên một hoá như "Hoá Kỵ", "Hoá Quyền"; tên án ngữ như "Tuần", "Triệt"): viết tên đó không bọc
+   trong cặp **, giữ nguyên chữ hoa đúng như trong brief, không gán cho một sao cụ thể nào.
+   Riêng hoá nào đã có tên trong catTinh hoặc hungTinh thì là phụ tinh: viết theo mục 4.
+5. Không nhắc tên sao nào ngoài brief.
+6. Sao đang xét ở cung Phu Thê, KHÔNG phải cung Mệnh — đừng viết "thủ mệnh", "chiếu mệnh".
+7. Chỉ sao có the="toạ thủ" mới được nói là đóng tại cung; sao ở thế khác thì viết "hội chiếu", "chiếu tới".
+
+Mục này đọc CUNG TIỂU HẠN của năm (trường cung): những sao chiếu vào cung ấy trong năm đang xem.
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.",
+    },
+    "dieu-can-giu#2": {
+      "messages": [
+        {
+          "role": "user",
+          "text": "{
+  "cung": "Phu Thê",
+  "chi": "Tị",
+  "gioiTinh": "nam",
+  "chiNamSinh": "Tý",
+  "laVoChinhDieu": false,
+  "chinhTinh": [
+    {
+      "ten": "Liêm Trinh",
+      "bac": "H",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Tham Lang",
+      "bac": "H",
+      "the": "toạ thủ"
+    },
+    {
+      "ten": "Vũ Khúc",
+      "bac": "Đ",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Thất Sát",
+      "bac": "H",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Tử Vi",
+      "bac": "Đ",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Phá Quân",
+      "bac": "V",
+      "the": "tam hợp"
+    }
+  ],
+  "hungTinh": [
+    {
+      "ten": "Thiên Khốc",
+      "the": "xung chiếu"
+    },
+    {
+      "ten": "Tang Môn",
+      "the": "tam hợp"
+    },
+    {
+      "ten": "Thiên Hư",
+      "the": "tam hợp"
+    }
+  ],
+  "catTinh": [],
+  "anNgu": "Tuần",
+  "luan": [
+    {
+      "y": "dễ buồn lo, cần có chỗ để chia sẻ thay vì ôm một mình",
+      "do": [
+        "Thiên Khốc"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "buồn lo",
+        "chia sẻ"
+      ]
+    },
+    {
+      "y": "tâm trạng dễ nặng nề, chuyện nhà cần được quan tâm nhiều hơn",
+      "do": [
+        "Tang Môn"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "nặng nề",
+        "chuyện nhà"
+      ]
+    },
+    {
+      "y": "kế hoạch dễ hụt so với kỳ vọng, nên tính sẵn phần dự phòng",
+      "do": [
+        "Thiên Hư"
+      ],
+      "sac": "nghich",
+      "tuKhoa": [
+        "kỳ vọng",
+        "dự phòng"
+      ]
+    }
+  ],
+  "vanHan": {
+    "namXem": 2027,
+    "namCanChi": "Đinh Mùi",
+    "tuoi": 68,
+    "tone": "khuyen",
+    "daiVanTuoi": "63–72 tuổi",
+    "namThuTrongVan": 6,
+    "cungDaiVan": "Thiên Di",
+    "cungTieuHan": "Phu Thê",
+    "chuDeVan": "mười năm của đi xa, ra ngoài và những mối quan hệ ngoài xã hội"
+  },
+  "muc": "dieu-can-giu",
+  "tieuDe": "Điều cần giữ",
+  "sourceCung": "Phu Thê · Tị",
+  "duKien": []
+}",
+        },
+        {
+          "role": "model",
+          "text": "{"doan":"LẦN 1 mục. Câu hai."}",
+        },
+        {
+          "role": "user",
+          "text": "Bản trên vi phạm:
+- lỗi giả
+Viết lại cho đúng, giữ nguyên nội dung mệnh đề.",
+        },
+      ],
+      "schema": {
+        "properties": {
+          "doan": {
+            "description": "Đúng hai câu",
+            "type": "string",
+          },
+        },
+        "required": [
+          "doan",
+        ],
+        "type": "object",
+      },
+      "system": "Bạn viết một mục ngắn trong bài luận giải tử vi tiếng Việt.
+
+GIỌNG — quan trọng ngang nội dung:
+· Viết như đang nói với một người mình quý, không như đọc kết quả xét nghiệm.
+· Xưng hô với người đọc là "bạn". Dùng hình ảnh cụ thể thay cho từ trừu tượng.
+· Nói phần bất lợi thì nói thẳng nhưng không phán xét: tránh "kém", "xấu", "hỏng", "thất bại".
+  Nói cái gì hay xảy ra và nó khiến người ta cảm thấy ra sao, đừng chấm điểm con người.
+· Không doạ, không hứa. Không "chắc chắn", không "sẽ mất", không "phải cẩn thận kẻo".
+· Tránh lối văn hành chính ("khi xét qua", "bản mệnh", "sự hiện diện của", "bước vào cung").
+
+Viết ĐÚNG 1 đoạn, ĐÚNG 2 câu, dựa hoàn toàn vào brief.
+
+TRUNG THÀNH VỚI BRIEF:
+A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùng ít nhất một từ trong tuKhoa của nó, nguyên văn.
+B. MỌI dữ kiện trong duKien[] phải được dẫn ra — mốc tuổi ghi đúng con số, tên cách hay tên hoá gọi
+   đúng tên. Nhưng DẪN vào câu văn chứ đừng chép nguyên cụm, và tuyệt đối không chép dấu hai chấm.
+C. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
+
+QUY TẮC HÌNH THỨC:
+1. Đúng 2 câu.
+2. Đúng MỘT cụm ==tô nền==, ở câu thứ hai, bao quanh cụm từ ngắn tối đa 12 chữ.
+2b. KHÔNG lồng hai dấu vào nhau. SAI: **==nhẹ nhõm==**
+3. Chính tinh: mỗi sao một cặp ** riêng, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều kèm bậc.
+4. Phụ tinh không kèm bậc. Phụ tinh nào là sao sinh ra một mệnh đề (tên nó nằm trong do[]) thì được một
+   cặp ** riêng, đặt cùng câu với ý của nó. Các phụ tinh còn lại gói theo vai: hung tinh vào MỘT cặp **,
+   cát tinh vào MỘT cặp ** khác.
+4b. Mệnh đề không có sao sinh ra nó (do[] rỗng — tên một cách cục như "Sát Phá Tham", "Cơ Nguyệt Đồng Lương",
+   "Lộc Mã"; tên một hoá như "Hoá Kỵ", "Hoá Quyền"; tên án ngữ như "Tuần", "Triệt"): viết tên đó không bọc
+   trong cặp **, giữ nguyên chữ hoa đúng như trong brief, không gán cho một sao cụ thể nào.
+   Riêng hoá nào đã có tên trong catTinh hoặc hungTinh thì là phụ tinh: viết theo mục 4.
+5. Không nhắc tên sao nào ngoài brief.
+6. Sao đang xét ở cung Phu Thê, KHÔNG phải cung Mệnh — đừng viết "thủ mệnh", "chiếu mệnh".
+7. Chỉ sao có the="toạ thủ" mới được nói là đóng tại cung; sao ở thế khác thì viết "hội chiếu", "chiếu tới".
+
+Mục này đọc CUNG TIỂU HẠN của năm (trường cung): những sao chiếu vào cung ấy trong năm đang xem.
+NĂM ĐANG XEM — đọc trong trường vanHan của brief:
+· vanHan.tone="nhin-lai": năm đã qua. Viết như nhìn lại ("năm đó", "đã"), KHÔNG khuyên làm gì.
+· vanHan.tone="khuyen": năm hiện tại hoặc sắp tới. Viết thành lời khuyên người đọc làm được.
+· TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
+· Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
+· Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.",
+    },
+  },
+}
+`;

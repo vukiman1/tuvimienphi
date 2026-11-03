@@ -11,6 +11,18 @@ const HUA_HEN_VO_CAN_CU = [
   'luôn luôn',
 ] as const;
 
+const LOI_DOA = [
+  'tai nạn',
+  'bệnh nặng',
+  'qua đời',
+  'tử vong',
+  'mất mạng',
+  'kiện tụng',
+  'phá sản',
+  'tai hoạ',
+  'tai họa',
+] as const;
+
 const VAN_HANH_CHINH = [
   'bước vào cung',
   'sự hiện diện của',
@@ -40,6 +52,7 @@ export function checkForbiddenPhrases(brief: ChapterBrief, bai: BaiCanKiem): str
   const cumBiCam = tim(bai, [
     ...(brief.cung === 'Mệnh' ? [] : CHI_DUNG_O_CUNG_MENH),
     ...HUA_HEN_VO_CAN_CU,
+    ...LOI_DOA,
   ]);
   return brief.cung === 'Phu Thê' ? [...cumBiCam, ...timVoChong(bai)] : cumBiCam;
 }
