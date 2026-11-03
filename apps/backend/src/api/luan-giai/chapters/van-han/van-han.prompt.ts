@@ -6,7 +6,10 @@ const LUAT_NAM_XEM = `NĂM ĐANG XEM — đọc trong trường vanHan của bri
 · TUYỆT ĐỐI không thêm ngày, tháng, năm hay số tuổi nào ngoài những con số có trong brief.
 · Không đoán bệnh tật, tai nạn, kiện tụng, phá sản, mất mát người thân. Phần bất lợi là điều cần giữ, không phải lời phán.
 · Không dùng chữ "vợ", "chồng": nói "người đồng hành", "người bạn đời".
-· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.`;
+· Các sao trong brief gồm cả sao lưu niên của năm. Viết đúng tên sao như trong brief, KHÔNG thêm chữ "lưu" vào trong cặp **.
+· Cặp ** CHỈ bọc TÊN SAO có trong brief. Từ trong tuKhoa là chữ thường của câu văn: KHÔNG bọc **.
+  SAI: dễ có **cơ hội** mới    ĐÚNG: **Hóa Lộc** mở ra cơ hội mới
+· Không gọi tên "Tuần" hay "Triệt" trong bài.`;
 
 export const VAN_HAN_SYSTEM_PROMPT = `Bạn viết luận giải tử vi tiếng Việt cho một trang tra lá số. Bài này đọc VẬN HẠN của một năm.
 
