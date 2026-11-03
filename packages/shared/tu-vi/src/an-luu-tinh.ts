@@ -13,7 +13,7 @@ import type { SaoPlacement } from './sao-placement.js';
  * Mười lăm sao dùng lại đúng bảng an của tầng natal, chỉ thay can chi năm sinh bằng can chi năm
  * xem. Không sao nào cần bảng riêng — đó là lý do file này không chép thêm dữ liệu.
  */
-const REUSED_NAMES: ReadonlySet<PhuTinhName> = new Set<PhuTinhName>([
+const REUSED_NAMES = [
   'Thái Tuế',
   'Tang Môn',
   'Bạch Hổ',
@@ -29,7 +29,17 @@ const REUSED_NAMES: ReadonlySet<PhuTinhName> = new Set<PhuTinhName>([
   'Kình Dương',
   'Thiên Khôi',
   'Thiên Việt',
-]);
+] as const satisfies readonly PhuTinhName[];
+
+const REUSED_NAME_SET: ReadonlySet<PhuTinhName> = new Set(REUSED_NAMES);
+
+export const LUU_TINH_NAMES = [
+  ...REUSED_NAMES,
+  'Văn Xương',
+  'Văn Khúc',
+] as const satisfies readonly PhuTinhName[];
+
+export type LuuTinhName = (typeof LUU_TINH_NAMES)[number];
 
 /**
  * Văn Xương và Văn Khúc là hai sao duy nhất cần bảng riêng: tầng natal an chúng theo giờ sinh, còn
@@ -51,5 +61,5 @@ function xuongKhucAt(yearCan: number): readonly SaoPlacement<PhuTinhName>[] {
 
 /** Trụ năm của năm đang xem, không phải của năm sinh. */
 export function anLuuTinh(viewYear: CanChiIndex): readonly SaoPlacement<PhuTinhName>[] {
-  return [...anSaoTheoTru(REUSED_NAMES, viewYear), ...xuongKhucAt(viewYear.can)];
+  return [...anSaoTheoTru(REUSED_NAME_SET, viewYear), ...xuongKhucAt(viewYear.can)];
 }
