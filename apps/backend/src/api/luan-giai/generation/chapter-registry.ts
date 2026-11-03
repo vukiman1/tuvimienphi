@@ -6,11 +6,13 @@ import {
   CHAPTER_TAI_BACH,
   CHAPTER_THAN_CU,
   CHAPTER_TINH_DUYEN,
+  CHAPTER_VAN_HAN,
 } from '../luan-giai.constants';
 import { MENH_CHAPTER } from '../chapters/menh/menh.chapter';
 import { TAI_BACH_CHAPTER } from '../chapters/tai-bach/tai-bach.chapter';
 import { THAN_CU_CHAPTER } from '../chapters/than-cu/than-cu.chapter';
 import { TINH_DUYEN_CHAPTER } from '../chapters/tinh-duyen/tinh-duyen.chapter';
+import { VAN_HAN_CHAPTER } from '../chapters/van-han/van-han.chapter';
 
 export const CHAPTER_DEFINITIONS: ReadonlyMap<string, ChapterDefinition> = new Map<
   string,
@@ -21,4 +23,5 @@ export const CHAPTER_DEFINITIONS: ReadonlyMap<string, ChapterDefinition> = new M
   [CHAPTER_CONG_DANH, CONG_DANH_CHAPTER],
   [CHAPTER_TAI_BACH, TAI_BACH_CHAPTER],
   [CHAPTER_TINH_DUYEN, TINH_DUYEN_CHAPTER],
+  [CHAPTER_VAN_HAN, VAN_HAN_CHAPTER],
 ]);

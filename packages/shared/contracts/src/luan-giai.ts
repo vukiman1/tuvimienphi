@@ -51,3 +51,11 @@ export type LuanGiaiChapterResponse =
 export interface LuanGiaiChapterStatusMap {
   readonly chapters: Readonly<Record<string, LuanGiaiChapterStatus>>;
 }
+
+export const YEAR_DEPENDENT_CHAPTER_ORDERS: readonly string[] = ['06'];
+
+export const MAX_VIEW_YEAR = 2200;
+
+export function isYearDependentChapter(order: string): boolean {
+  return YEAR_DEPENDENT_CHAPTER_ORDERS.includes(order);
+}

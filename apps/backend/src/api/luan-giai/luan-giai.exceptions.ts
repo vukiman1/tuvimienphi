@@ -11,3 +11,15 @@ export class ChapterGenerationFailedException extends HttpException {
     super('Hệ thống đang bận, mời bạn thử lại sau ít phút.', HttpStatus.SERVICE_UNAVAILABLE);
   }
 }
+
+export class ViewYearRequiredException extends HttpException {
+  constructor(order: string) {
+    super(`Chương ${order} cần chọn năm xem.`, HttpStatus.BAD_REQUEST);
+  }
+}
+
+export class InvalidViewYearException extends HttpException {
+  constructor(viewYear: number) {
+    super(`Năm xem ${viewYear} nằm ngoài khoảng tra được.`, HttpStatus.BAD_REQUEST);
+  }
+}
