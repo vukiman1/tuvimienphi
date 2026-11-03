@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { MEDIA } from '@/config/media';
-import type { BirthInput } from '@org/shared-contracts';
+import { isYearDependentChapter, type BirthInput } from '@org/shared-contracts';
 import { luanGiaiQueries } from '@/features/la-so/luan-giai-queries';
 import type { LuanGiaiChapter } from '@/features/la-so/luan-giai-data';
 import { LuanGiaiChapterContent } from '@/features/la-so/components/luan-giai-chapter-content';
@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 
 interface LuanGiaiSectionProps {
   readonly birth: BirthInput;
+  readonly viewYear: number;
   readonly chapters: readonly LuanGiaiChapter[];
   readonly motto: readonly string[];
   readonly activeChapter: string;
@@ -61,6 +62,7 @@ function TitleOrnament({ side }: { readonly side: 'left' | 'right' }) {
 
 export function LuanGiaiSection({
   birth,
+  viewYear,
   chapters,
   motto,
   activeChapter,
@@ -71,7 +73,7 @@ export function LuanGiaiSection({
 
   // Hỏi trạng thái cả sáu chương một lượt ở đây, vì mục lục và phần thân đều cần: mục lục để biết
   // chương nào còn khoá, phần thân để mở thẳng chương đã có bài thay vì bắt bấm lại.
-  const { data: trangThai } = useQuery(luanGiaiQueries.statusMap(birth));
+  const { data: trangThai } = useQuery(luanGiaiQueries.statusMap(birth, viewYear));
 
   return (
     <section
@@ -105,10 +107,13 @@ export function LuanGiaiSection({
           {/* Khoá theo mục: React dùng lại instance khi đổi mục, nên không có khoá thì trạng thái
               đang sinh của mục này tràn sang mục vừa chuyển tới. */}
           <LuanGiaiChapterContent
-            key={chapter.order}
+            key={
+              isYearDependentChapter(chapter.order) ? `${chapter.order}:${viewYear}` : chapter.order
+            }
             birth={birth}
             chapter={chapter}
             status={trangThai?.chapters[chapter.order]}
+            viewYear={viewYear}
           />
         </div>
 
