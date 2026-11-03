@@ -91,7 +91,7 @@ function TopUpWaiting({ checkout, onGiftRedeemed }: TopUpWaitingProps) {
         <TopUpCopyRow label="Chủ tài khoản" value={checkout.accountName} />
         <TopUpCopyRow label="Nội dung chuyển khoản" value={checkout.transferContent} />
       </div>
-      <p className="font-body text-[14px] leading-[22px] text-[#6b6152]">
+      <p className="text-[14px] leading-[22px] text-[#6b6152]">
         Hệ thống tự cộng lượt sau khi nhận được tiền, thường trong vòng 1 phút.
       </p>
       <GiftCodeField onRedeemed={onGiftRedeemed} />
@@ -104,7 +104,7 @@ function TopUpSuccess({ onToppedUp }: TopUpSuccessProps) {
     <div className="flex flex-col items-center gap-5 py-4 text-center">
       <CircleCheck aria-hidden className="size-[56px] text-[#a8281c]" strokeWidth={1.5} />
       <button
-        className="rounded-full bg-[#a8281c] px-7 py-[10px] font-body text-[16px] leading-[24px] font-semibold text-[#f5e8d0] transition-colors outline-none hover:bg-[#8f2016] focus-visible:ring-2 focus-visible:ring-[#a8281c] focus-visible:ring-offset-2"
+        className="rounded-full bg-[#a8281c] px-7 py-[10px] text-[16px] leading-[24px] font-semibold text-[#f5e8d0] transition-colors outline-none hover:bg-[#8f2016] focus-visible:ring-2 focus-visible:ring-[#a8281c] focus-visible:ring-offset-2"
         onClick={onToppedUp}
         type="button"
       >
@@ -143,7 +143,7 @@ function TopUpBody({ topUpState, checkout, error, onGiftRedeemed, onToppedUp }: 
   if (error) {
     return (
       <div className="flex flex-col gap-4">
-        <p className="font-body text-[15px] leading-[24px] text-[#a8281c]">
+        <p className="text-[15px] leading-[24px] text-[#a8281c]">
           {errorMessage(error, CHECKOUT_ERROR_MESSAGE)}
         </p>
         <GiftCodeField onRedeemed={onGiftRedeemed} />

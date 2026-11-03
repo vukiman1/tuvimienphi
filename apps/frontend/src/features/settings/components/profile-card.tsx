@@ -42,9 +42,7 @@ export function ProfileCard() {
           <ProfileAvatar user={user} />
 
           <div className="min-w-0">
-            <h2 className="font-display text-xl font-bold text-[#1a1412]">
-              {user.displayName || user.email}
-            </h2>
+            <h2 className="text-xl font-bold text-[#1a1412]">{user.displayName || user.email}</h2>
             {user.displayName ? (
               <p className="mt-0.5 text-sm font-medium text-[#6b5a4e]">{user.email}</p>
             ) : null}

@@ -54,16 +54,13 @@ export function LuanGiaiSkeletonCard({ isWriting }: LuanGiaiSkeletonCardProps) {
       <div aria-label="Đang tải luận giải" role="status">
         {isWriting ? (
           <div className="mb-7">
-            <p
-              aria-live="polite"
-              className="text-center font-body text-[15px] leading-[24px] text-[#6b5a4e]"
-            >
+            <p aria-live="polite" className="text-center text-[15px] leading-[24px] text-[#6b5a4e]">
               Đang viết luận giải cho lá số của bạn
               {giay >= BAT_DAU_DEM_GIAY ? (
                 <span className="text-[#8a7a63]"> · {Math.round(giay)} giây rồi</span>
               ) : null}
             </p>
-            <p className="mt-1 text-center font-body text-[13px] text-[#8a7a63]">
+            <p className="mt-1 text-center text-[13px] text-[#8a7a63]">
               Mỗi bài viết riêng cho lá số này, thường mất 10–40 giây
             </p>
 

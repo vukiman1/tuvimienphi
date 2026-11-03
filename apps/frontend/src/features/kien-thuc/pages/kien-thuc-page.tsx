@@ -50,8 +50,7 @@ export function KienThucPage() {
   }, []);
 
   return (
-    <main className="font-body text-foreground">
-      {/* Serif display for headings (font-display), Noto Serif for body — the site's two-tier type. */}
+    <main className="text-foreground">
       <KienThucHero query={query} onQueryChange={changeQuery} />
 
       <div className="mx-auto w-full max-w-6xl px-4 md:px-6">
@@ -75,7 +74,7 @@ export function KienThucPage() {
                 </section>
               ) : (
                 <div className="rounded-2xl border border-dashed border-[#e0cfa5] bg-[#faf5ea] p-12 text-center">
-                  <p className="font-display text-[20px] font-semibold text-[#2a1f0e]">
+                  <p className="text-[20px] font-semibold text-[#2a1f0e]">
                     Chưa có bài viết phù hợp
                   </p>
                   <p className="mt-2 text-[13px] text-[#8d7a5c]">

@@ -45,8 +45,8 @@ export function VanHanPage() {
   }, [selectedChi]);
 
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-8 font-body md:px-6">
-      <h1 className="font-display text-3xl font-bold text-foreground">Vận Hạn</h1>
+    <main className="mx-auto w-full max-w-5xl px-4 py-8 md:px-6">
+      <h1 className="text-3xl font-bold text-foreground">Vận Hạn</h1>
       <p className="mt-1 text-sm text-muted-foreground">
         {current
           ? `Chọn con giáp để xem sao chiếu mệnh và vận hạn năm ${getYearCanChi(current.year)} ${current.year} theo tuổi.`

@@ -21,9 +21,7 @@ export function ThienBan({ meta }: ThienBanProps) {
     <div
       className={`flex h-full flex-col items-center justify-center gap-2 border px-3 py-2 ${CHART_RULE_CLASS.border} ${CUNG_SURFACE_CLASS.base}`}
     >
-      <p className="font-display text-[20px] leading-[26px] font-bold text-[#8a2b22]">
-        Lá Số Tử Vi
-      </p>
+      <p className="text-[20px] leading-[26px] font-bold text-[#8a2b22]">Lá Số Tử Vi</p>
 
       <div className="flex w-full max-w-[352px] flex-col">
         <Row label="Họ tên:" value={meta.fullName} />

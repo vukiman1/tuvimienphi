@@ -63,7 +63,7 @@ export function AuthMethodPanel({ copy, renderEmailForm, onBack }: AuthMethodPan
             <ArrowLeft className="size-4" />
           </button>
         )}
-        <DialogTitle className="px-8 font-display text-[1.75rem] leading-tight font-bold text-[#2b1d14]">
+        <DialogTitle className="px-8 text-[1.75rem] leading-tight font-bold text-[#2b1d14]">
           {step.title}
         </DialogTitle>
         <DialogDescription

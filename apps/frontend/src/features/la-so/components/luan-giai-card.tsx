@@ -44,9 +44,7 @@ export function LuanGiaiCardHeader({ order, title, eyebrow }: LuanGiaiCardHeader
           className="absolute inset-0 size-full select-none"
           src={MEDIA.laSo.badge}
         />
-        {/* lining-nums: Cormorant Garamond mặc định dùng chữ số kiểu cổ, cao bằng chữ thường nên
-            "01" đọc ra như "oi". */}
-        <span className="relative font-display text-[37px] leading-none font-bold text-[#f5e8d0] lining-nums md:text-[50px]">
+        <span className="relative text-[37px] leading-none font-bold text-[#f5e8d0] md:text-[50px]">
           {order}
         </span>
       </span>
@@ -56,7 +54,7 @@ export function LuanGiaiCardHeader({ order, title, eyebrow }: LuanGiaiCardHeader
             {eyebrow}
           </p>
         )}
-        <h3 className="font-display text-[24px] leading-[30px] font-bold tracking-wide text-[#7a1f15] uppercase md:text-[34px] md:leading-[42px]">
+        <h3 className="text-[24px] leading-[30px] font-bold tracking-wide text-[#7a1f15] uppercase md:text-[34px] md:leading-[42px]">
           {title}
         </h3>
       </div>

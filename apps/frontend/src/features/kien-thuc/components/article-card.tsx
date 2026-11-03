@@ -45,7 +45,7 @@ export const ArticleCard = memo(function ArticleCard({ article, index = 0 }: Art
       </div>
 
       <div className="flex flex-1 flex-col p-4">
-        <h3 className="font-display text-[17px] font-semibold leading-snug text-[#2a1f0e] transition-colors group-hover:text-[#9e2b1e]">
+        <h3 className="text-[17px] font-semibold leading-snug text-[#2a1f0e] transition-colors group-hover:text-[#9e2b1e]">
           {article.title}
         </h3>
         <div className="mt-auto flex items-center justify-between gap-3 pt-4 text-[13px] text-[#8d7a5c]">

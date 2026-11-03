@@ -111,7 +111,7 @@ function FeaturedSlide({ article }: { readonly article: Article }) {
           <span className="w-fit rounded-full bg-[#f0e2c8] px-3 py-1 text-[12px] font-bold tracking-wide text-[#8a5a1f] uppercase">
             {categoryLabel(article.category)}
           </span>
-          <h3 className="mt-4 font-display text-[22px] font-bold leading-snug text-[#2a1f0e] uppercase md:text-[26px]">
+          <h3 className="mt-4 text-[22px] font-bold leading-snug text-[#2a1f0e] uppercase md:text-[26px]">
             <Link
               to="/kien-thuc/$slug"
               params={{ slug: article.slug }}

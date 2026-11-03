@@ -60,7 +60,7 @@ export function SessionsCard() {
               <Monitor className="size-5 text-[#904423]" />
             </div>
             <div>
-              <h3 className="font-display text-lg font-semibold text-[#1a1412]">Phiên đăng nhập</h3>
+              <h3 className="text-lg font-semibold text-[#1a1412]">Phiên đăng nhập</h3>
               <p className="mt-1 text-sm text-[#6b5a4e]">
                 Các thiết bị đang truy cập tài khoản của bạn.
               </p>

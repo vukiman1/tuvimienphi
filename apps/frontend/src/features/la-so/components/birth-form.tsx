@@ -220,7 +220,7 @@ export function BirthForm() {
         children={(isSubmitting) => (
           <Button
             className={cn(
-              'mx-auto mt-2 flex aspect-[808/161] h-auto w-full max-w-[420px] items-center justify-center rounded-none bg-transparent p-0 font-display text-lg font-bold tracking-wide text-[#fdf3dc] uppercase [text-shadow:0_1px_3px_rgba(60,26,4,0.85)] hover:bg-transparent sm:text-2xl sm:tracking-wider',
+              'mx-auto mt-2 flex aspect-[808/161] h-auto w-full max-w-[420px] items-center justify-center rounded-none bg-transparent p-0 text-lg font-bold tracking-wide text-[#fdf3dc] uppercase [text-shadow:0_1px_3px_rgba(60,26,4,0.85)] hover:bg-transparent sm:text-2xl sm:tracking-wider',
               // Phóng bằng thuộc tính `scale` chứ không phải `transform` — xem ghi chú trong styles.css.
               'transition-[scale,filter] duration-200 ease-out hover:scale-[1.03] active:scale-[0.98]',
               // Quầng sáng vẽ bằng `drop-shadow` chứ không phải `box-shadow`: nền nút là ảnh PNG có

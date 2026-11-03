@@ -12,9 +12,7 @@ export function PhiTinhBoards({ boards }: PhiTinhBoardsProps) {
     <div className="rounded-xl border border-[#c9a15c]/40 bg-card p-3 shadow-md md:p-4">
       <div className="flex items-center justify-center gap-3 py-1">
         <span className="h-px max-w-24 flex-1 bg-gradient-to-r from-transparent to-[#c9a15c]/70" />
-        <p className="font-display text-lg font-bold whitespace-nowrap text-primary">
-          Cửu Cung Phi Tinh
-        </p>
+        <p className="text-lg font-bold whitespace-nowrap text-primary">Cửu Cung Phi Tinh</p>
         <span className="h-px max-w-24 flex-1 bg-gradient-to-l from-transparent to-[#c9a15c]/70" />
       </div>
 
@@ -41,7 +39,7 @@ export function PhiTinhBoards({ boards }: PhiTinhBoardsProps) {
                 {board.cells.map((cell, index) => (
                   <span
                     key={index}
-                    className={`flex aspect-square items-center justify-center border-[#c9a15c]/25 font-display text-lg font-bold [&:nth-child(-n+6)]:border-b [&:not(:nth-child(3n))]:border-r ${
+                    className={`flex aspect-square items-center justify-center border-[#c9a15c]/25 text-lg font-bold [&:nth-child(-n+6)]:border-b [&:not(:nth-child(3n))]:border-r ${
                       cell.isGood ? 'text-destructive' : 'text-foreground'
                     }`}
                   >

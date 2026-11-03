@@ -82,9 +82,7 @@ function BirthYearCard({
             />
           </span>
           <div className="min-w-0">
-            <p className={`font-display text-2xl leading-tight font-bold ${theme.title}`}>
-              {entry.canChi}
-            </p>
+            <p className={`text-2xl leading-tight font-bold ${theme.title}`}>{entry.canChi}</p>
             <p className="mt-0.5 text-sm text-muted-foreground">Sinh năm {entry.birthYear}</p>
             <span
               className={`mt-1.5 inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold ${theme.pill}`}
@@ -149,7 +147,7 @@ function AspectCard({ aspect, index }: { readonly aspect: VanHanAspect; readonly
       <div className="flex h-full flex-col rounded-xl border border-[#ece0c2] px-4 py-4">
         <div className="flex items-center gap-3">
           <img alt="" className="size-11 shrink-0 object-contain" src={theme.coin} />
-          <p className={`font-display text-lg font-bold tracking-wide uppercase ${theme.label}`}>
+          <p className={`text-lg font-bold tracking-wide uppercase ${theme.label}`}>
             {aspect.label}
           </p>
           <span className="ml-auto">
@@ -202,7 +200,7 @@ function SectionTitle({
       <div className="flex items-center gap-2.5 pt-4 pb-3">
         <span className="h-px w-10 bg-gradient-to-r from-transparent to-[#c9a15c]/70" />
         <span className="text-[0.6rem] text-[#c9a15c]">◆</span>
-        <p className="font-display text-lg font-bold whitespace-nowrap text-[#a8332a]">{title}</p>
+        <p className="text-lg font-bold whitespace-nowrap text-[#a8332a]">{title}</p>
         <span className="text-[0.6rem] text-[#c9a15c]">◆</span>
         <span className="h-px w-10 bg-gradient-to-l from-transparent to-[#c9a15c]/70" />
       </div>
@@ -214,7 +212,7 @@ function SectionTitle({
       <div className="flex items-center justify-center gap-2.5">
         <span className="h-px max-w-16 flex-1 bg-gradient-to-r from-transparent to-[#c9a15c]/70" />
         <span className="text-xs text-[#c9a15c]">❖</span>
-        <p className="font-display text-xl font-bold whitespace-nowrap text-[#a8332a]">{title}</p>
+        <p className="text-xl font-bold whitespace-nowrap text-[#a8332a]">{title}</p>
         <span className="text-xs text-[#c9a15c]">❖</span>
         <span className="h-px max-w-16 flex-1 bg-gradient-to-l from-transparent to-[#c9a15c]/70" />
       </div>
@@ -271,7 +269,7 @@ function HeroCard({
                 style={RED_ICON_STYLE}
               />
             </div>
-            <span className="absolute top-3 -left-1 flex flex-col items-center rounded-md bg-[#a8332a] px-1.5 py-1 font-display text-sm leading-tight font-bold text-[#f7e2b0] shadow">
+            <span className="absolute top-3 -left-1 flex flex-col items-center rounded-md bg-[#a8332a] px-1.5 py-1 text-sm leading-tight font-bold text-[#f7e2b0] shadow">
               <span>{HAN_BY_CHI[chi]}</span>
               <span>年</span>
             </span>
@@ -279,7 +277,7 @@ function HeroCard({
         )}
 
         <div className="min-w-0 flex-1 text-center sm:text-left">
-          <p className="font-display text-3xl font-bold text-[#a8332a]">Tuổi {chi}</p>
+          <p className="text-3xl font-bold text-[#a8332a]">Tuổi {chi}</p>
           <p className="mt-1 text-sm text-muted-foreground">
             Vận hạn năm {getYearCanChi(currentYear)} {currentYear}
           </p>
@@ -332,7 +330,7 @@ export function VanHanDetailEmpty({ chi }: { readonly chi: ZodiacChi }) {
   return (
     <div className="flex min-h-[240px] flex-col items-center justify-center gap-3 rounded-2xl border border-[#e2d3a6] bg-[#fdfbf4]/60 px-4 py-12">
       <span className="text-lg text-[#d9a441]">❖</span>
-      <p className="font-display text-lg font-bold text-[#a8332a]">Tuổi {chi}</p>
+      <p className="text-lg font-bold text-[#a8332a]">Tuổi {chi}</p>
       <p className="text-center text-sm text-muted-foreground">
         Vận hạn của tuổi {chi} chưa được cập nhật. Vui lòng quay lại sau.
       </p>
@@ -364,7 +362,7 @@ export function VanHanDetailLoader() {
           src={MEDIA.laSo.luopan}
         />
       </div>
-      <p className="font-display text-base font-semibold tracking-wide text-[#a8332a]">
+      <p className="text-base font-semibold tracking-wide text-[#a8332a]">
         Đang luận giải vận hạn…
       </p>
       <span className="text-sm tracking-[0.4em] text-[#c9a15c]">❖ ❖ ❖</span>

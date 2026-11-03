@@ -19,10 +19,10 @@ export function LuanGiaiPendingCard({ chapter }: LuanGiaiPendingCardProps) {
           ratio="1 / 1"
           src={chapter.iconUrl}
         />
-        <p className="font-display text-[22px] leading-[30px] font-semibold text-[#7a1f15]">
+        <p className="text-[22px] leading-[30px] font-semibold text-[#7a1f15]">
           Nội dung đang được biên soạn
         </p>
-        <p className="max-w-[46ch] font-body text-[16px] leading-[27px] text-[#6b6152]">
+        <p className="max-w-[46ch] text-[16px] leading-[27px] text-[#6b6152]">
           Phần luận giải cho mục này sẽ sớm có mặt. Trong lúc chờ, bạn có thể xem mục{' '}
           <span className="font-semibold text-[#2b2114]">Thân cư</span> hoặc rê chuột lên lá số để
           xem tam hợp và xung chiếu của từng cung.

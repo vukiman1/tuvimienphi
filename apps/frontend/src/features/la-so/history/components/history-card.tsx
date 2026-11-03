@@ -43,7 +43,7 @@ export function HistoryCard({ entry, onRemove }: HistoryCardProps) {
         />
 
         <div className="min-w-0">
-          <p className="truncate font-display text-2xl font-bold text-[#2f2117]">{name}</p>
+          <p className="truncate text-2xl font-bold text-[#2f2117]">{name}</p>
 
           <p className="mt-1 text-sm text-[#6b5b48]">
             {formatBirthDate(entry)}

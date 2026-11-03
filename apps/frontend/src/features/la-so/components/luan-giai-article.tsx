@@ -50,7 +50,7 @@ export function LuanGiaiArticleCard({ article, order, isFresh }: LuanGiaiArticle
       <div className="mt-4 flex items-center gap-6 md:pl-[12%]">
         <blockquote // Từ lg trở lên không cho co: còn chỗ thì trích dẫn phải nằm trọn một dòng.
           className={cn(
-            'font-display text-[21px] leading-[32px] font-bold text-[#2b2114] italic lg:shrink-0',
+            'text-[21px] leading-[32px] font-bold text-[#2b2114] italic lg:shrink-0',
             hienDan(0).className,
           )}
           style={hienDan(0).style}
@@ -78,7 +78,7 @@ export function LuanGiaiArticleCard({ article, order, isFresh }: LuanGiaiArticle
         <div className={cn('relative', article.illustrationUrl && 'md:ml-[36%]')}>
           <h4
             className={cn(
-              'font-display text-[23px] leading-[30px] font-bold text-[#7a1f15]',
+              'text-[23px] leading-[30px] font-bold text-[#7a1f15]',
               hienDan(1).className,
             )}
             style={hienDan(1).style}
@@ -90,7 +90,7 @@ export function LuanGiaiArticleCard({ article, order, isFresh }: LuanGiaiArticle
             <p
               key={paragraph.slice(0, 40)}
               className={cn(
-                'mt-4 font-body text-justify text-[17px] leading-[29px] text-[#2b2114]',
+                'mt-4 text-justify text-[17px] leading-[29px] text-[#2b2114]',
                 hienDan(2 + thuTu).className,
               )}
               style={hienDan(2 + thuTu).style}
@@ -112,7 +112,7 @@ export function LuanGiaiArticleCard({ article, order, isFresh }: LuanGiaiArticle
 
           <p
             className={cn(
-              'mt-5 border border-[#c9a15c]/70 bg-[#f4ecd9] px-6 py-5 text-center font-body text-[17px] leading-[29px] text-[#2b2114]',
+              'mt-5 border border-[#c9a15c]/70 bg-[#f4ecd9] px-6 py-5 text-center text-[17px] leading-[29px] text-[#2b2114]',
               hienDan(2 + article.paragraphs.length).className,
             )}
             style={hienDan(2 + article.paragraphs.length).style}
@@ -128,10 +128,10 @@ export function LuanGiaiArticleCard({ article, order, isFresh }: LuanGiaiArticle
             style={hienDan(3 + article.paragraphs.length).style}
           >
             <div className="min-w-0">
-              <p className="font-display text-[15px] leading-[20px] font-medium text-[#8d6f42] italic">
+              <p className="text-[15px] leading-[20px] font-medium text-[#8d6f42] italic">
                 {article.closingLabel}
               </p>
-              <p className="mt-1 font-display text-[21px] leading-[30px] font-semibold text-[#a8281c] italic">
+              <p className="mt-1 text-[21px] leading-[30px] font-semibold text-[#a8281c] italic">
                 {article.closing}
               </p>
             </div>

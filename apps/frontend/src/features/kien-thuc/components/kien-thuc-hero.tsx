@@ -75,7 +75,7 @@ export function KienThucHero({ query, onQueryChange }: KienThucHeroProps) {
 
       <div className="relative mx-auto w-full max-w-6xl px-4 pt-14 pb-28 md:px-6 md:pt-16 md:pb-32">
         <div className="mx-auto max-w-2xl animate-in text-center duration-700 fade-in slide-in-from-bottom-4 motion-reduce:animate-none">
-          <h1 className="font-display text-[32px] font-bold tracking-wide text-[#7a1f15] uppercase md:text-[42px]">
+          <h1 className="text-[32px] font-bold tracking-wide text-[#7a1f15] uppercase md:text-[42px]">
             Kiến thức tử vi
           </h1>
           <p className="mx-auto mt-4 max-w-lg text-[14px] leading-relaxed text-[#6b5b44] md:text-[15px]">
