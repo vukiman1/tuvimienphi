@@ -74,7 +74,7 @@ function GroupLabel({ isDark, text }: { readonly isDark: boolean; readonly text:
           src={isDark ? MEDIA.ngayTot.labelIconMoon : MEDIA.ngayTot.labelIconSun}
         />
         <span
-          className={`pl-6 font-display text-xs font-bold tracking-[0.14em] uppercase sm:text-sm ${
+          className={`pl-6 text-xs font-bold tracking-[0.14em] uppercase sm:text-sm ${
             isDark ? 'text-[#e8c987]' : 'text-primary'
           }`}
         >
@@ -124,9 +124,7 @@ function HourCard({
           {iconSrc && <img alt="" aria-hidden className="size-9 object-contain" src={iconSrc} />}
         </span>
 
-        <span
-          className={`font-display text-base font-bold ${isDark ? 'text-[#f3e6cd]' : 'text-foreground'}`}
-        >
+        <span className={`text-base font-bold ${isDark ? 'text-[#f3e6cd]' : 'text-foreground'}`}>
           {item.canChi}
         </span>
 
@@ -179,7 +177,7 @@ export function HourQualityList({ items, isToday }: HourQualityListProps) {
       />
 
       <div className="relative">
-        <h2 className="text-center font-display text-2xl font-bold tracking-wide text-primary uppercase md:text-3xl">
+        <h2 className="text-center text-2xl font-bold tracking-wide text-primary uppercase md:text-3xl">
           Giờ tốt xấu trong ngày
         </h2>
         <p className="mt-2 text-center text-sm text-muted-foreground">

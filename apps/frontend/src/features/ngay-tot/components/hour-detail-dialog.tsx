@@ -62,9 +62,7 @@ export function HourDetailDialog({ hour, onClose }: HourDetailDialogProps) {
                   )}
                 </span>
                 <div className="min-w-0">
-                  <DialogTitle className="font-display text-2xl font-bold">
-                    {hour.canChi}
-                  </DialogTitle>
+                  <DialogTitle className="text-2xl font-bold">{hour.canChi}</DialogTitle>
                   <DialogDescription className="mt-1">
                     {hour.range} · {hour.isHoangDao ? 'Hoàng đạo' : 'Hắc đạo'}
                   </DialogDescription>

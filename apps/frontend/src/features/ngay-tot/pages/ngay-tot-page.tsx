@@ -79,9 +79,7 @@ export function NgayTotPage() {
         {/* Header sits outside the grid so both cards start on the same line, as the design has it. */}
         <div className="flex flex-col gap-6">
           <div>
-            <h1 className="font-display text-4xl font-bold text-foreground md:text-5xl">
-              Ngày Tốt
-            </h1>
+            <h1 className="text-4xl font-bold text-foreground md:text-5xl">Ngày Tốt</h1>
             <p className="mt-2 text-sm text-muted-foreground md:text-base">
               Xem lịch âm dương trong tháng, ngày mùng 1 và ngày rằm.
             </p>

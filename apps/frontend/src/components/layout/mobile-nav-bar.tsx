@@ -85,7 +85,7 @@ function NavItem({ item, isActive }: { item: MobileNavItem; isActive: boolean })
         {item.icon}
       </span>
       <span
-        className={`font-body text-[10px] tracking-wide ${isActive ? 'font-semibold text-[#7a5228]' : 'font-medium text-[#a8957e]'}`}
+        className={`text-[10px] tracking-wide ${isActive ? 'font-semibold text-[#7a5228]' : 'font-medium text-[#a8957e]'}`}
       >
         {item.label}
       </span>
@@ -156,7 +156,7 @@ export function MobileNavBar() {
         </span>
         {/* Label gets a cream bg so it stays readable even over the transparent notch */}
         <span
-          className={`mt-1 rounded-sm px-1 font-body text-[10px] tracking-wide ${isActive('/la-so') ? 'font-bold text-[#7a5228]' : 'font-semibold text-[#a8957e]'}`}
+          className={`mt-1 rounded-sm px-1 text-[10px] tracking-wide ${isActive('/la-so') ? 'font-bold text-[#7a5228]' : 'font-semibold text-[#a8957e]'}`}
           style={{ backgroundColor: NAV_BAR_BG }}
         >
           Lập lá số

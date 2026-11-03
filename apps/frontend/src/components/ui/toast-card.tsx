@@ -47,7 +47,7 @@ export function ToastCard({
 
   return (
     <div
-      className="relative flex min-h-[72px] w-full items-center gap-3 overflow-hidden rounded-2xl border border-black/5 py-3 pr-12 pl-3.5 font-body shadow-[0_10px_28px_rgba(60,40,15,0.16)]"
+      className="relative flex min-h-[72px] w-full items-center gap-3 overflow-hidden rounded-2xl border border-black/5 py-3 pr-12 pl-3.5 shadow-[0_10px_28px_rgba(60,40,15,0.16)]"
       style={accentStyle}
     >
       <img
@@ -65,7 +65,7 @@ export function ToastCard({
       />
 
       <div className="relative min-w-0 flex-1">
-        <p className="truncate font-display text-sm leading-tight font-bold text-(--toast-accent)">
+        <p className="truncate text-sm leading-tight font-bold text-(--toast-accent)">
           {title ?? meta.title}
         </p>
         <p className="mt-0.5 text-[13px] leading-snug text-[#4a4235]">{message}</p>

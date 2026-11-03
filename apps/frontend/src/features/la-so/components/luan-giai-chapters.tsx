@@ -97,11 +97,11 @@ export function LuanGiaiChapters({
                 src={chapter.iconUrl}
               />
               <span className="min-w-0">
-                <span className="flex items-center gap-[6px] font-body text-[13px] leading-[17px] font-bold tracking-[0.08em] text-[#e2c186]">
+                <span className="flex items-center gap-[6px] text-[13px] leading-[17px] font-bold tracking-[0.08em] text-[#e2c186]">
                   {chapter.order}
                   {chuaMo ? <Lock aria-label="Chưa mở" className="size-[11px]" /> : null}
                 </span>
-                <span className="block font-body text-[15px] leading-[21px] font-medium text-[#f8efdb]">
+                <span className="block text-[15px] leading-[21px] font-medium text-[#f8efdb]">
                   {chapter.title}
                 </span>
               </span>

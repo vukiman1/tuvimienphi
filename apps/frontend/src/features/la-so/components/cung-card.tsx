@@ -97,11 +97,11 @@ export function CungCard({
         </span>
       ) : null}
       <span className={cn('flex h-full flex-col transition-opacity', isDimmed && 'opacity-30')}>
-        <div className="flex items-baseline justify-between gap-1">
+        <div className="flex items-baseline justify-between gap-1.5">
           <span className="shrink-0 text-[13px] leading-[17px] font-bold whitespace-nowrap text-[#17150f]">
             {cung.canChi}
           </span>
-          <span className="truncate text-[15px] leading-[19px] font-bold tracking-wide text-[#e08a0b]">
+          <span className="truncate text-[14px] leading-[19px] font-bold text-[#e08a0b]">
             {cung.name}
             {cung.isThan && <span className="text-[#17150f]">&lt;THÂN&gt;</span>}
           </span>
@@ -110,7 +110,7 @@ export function CungCard({
           </span>
         </div>
 
-        <div className="flex items-baseline justify-between gap-1">
+        <div className="flex items-baseline justify-between gap-1.5">
           <span className="shrink-0 text-[13px] leading-[17px] font-bold whitespace-nowrap text-[#17150f]">
             {cung.element}
           </span>
@@ -166,7 +166,7 @@ export function CungCard({
 
         {cung.daiVanTinh.length > 0 && <SaoRow prefix="ĐV." sao={cung.daiVanTinh} />}
 
-        <div className="mt-auto flex items-baseline justify-between gap-1 pt-[4px] text-[12px] leading-[16px] font-semibold text-[#17150f]">
+        <div className="mt-auto flex items-baseline justify-between gap-1.5 pt-[4px] text-[12px] leading-[16px] font-semibold text-[#17150f]">
           <span>{cung.daiVan}</span>
           <span className="font-bold">{cung.trangSinh}</span>
           <span>{cung.luuNien}</span>

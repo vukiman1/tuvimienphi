@@ -18,7 +18,7 @@ export const QuoteCard = memo(function QuoteCard() {
           className="pointer-events-none absolute right-0 bottom-0 h-20 w-auto opacity-20 [mask-image:linear-gradient(to_top,#000,transparent)]"
         />
         <Quote className="size-6 text-[#c9a15c]/60" />
-        <blockquote className="relative mt-2 font-display text-[15px] leading-relaxed text-[#3f3423] italic">
+        <blockquote className="relative mt-2 text-[15px] leading-relaxed text-[#3f3423] italic">
           {QUOTE.text}
         </blockquote>
         <figcaption className="relative mt-3 text-[13px] font-semibold text-[#8a5a1f]">

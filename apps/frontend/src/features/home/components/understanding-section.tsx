@@ -39,12 +39,12 @@ export function UnderstandingSection() {
       <div className="relative mx-auto w-full max-w-[1360px] px-4 py-[56px] md:px-6 md:py-[76px]">
         <Reveal>
           <h2
-            className="font-body text-[28px] leading-[38px] font-bold text-[#e8c887] md:text-[42px] md:leading-[54px]"
+            className="text-[28px] leading-[38px] font-bold text-[#e8c887] md:text-[42px] md:leading-[54px]"
             id={HEADING_ID}
           >
             {UNDERSTANDING_SECTION.title}
           </h2>
-          <p className="mt-3 max-w-[760px] font-ui text-[15px] leading-[24px] text-[#c3c9dd] md:text-[17px] md:leading-[27px]">
+          <p className="mt-3 max-w-[760px] text-[15px] leading-[24px] text-[#c3c9dd] md:text-[17px] md:leading-[27px]">
             {UNDERSTANDING_SECTION.subtitle}
           </p>
         </Reveal>
@@ -74,19 +74,18 @@ export function UnderstandingSection() {
                     src={homeIconUrl(point.icon)}
                   />
 
-                  <p className="mt-5 font-body text-[18px] leading-[26px] font-bold text-[#f3ead8] md:text-[19px] md:leading-[28px]">
+                  <p className="mt-5 text-[18px] leading-[26px] font-bold text-[#f3ead8] md:text-[19px] md:leading-[28px]">
                     {point.title}
                   </p>
-                  <p className="mt-2 font-ui text-[14px] leading-[22px] text-[#a9b0c9] md:text-[15px] md:leading-[24px]">
+                  <p className="mt-2 text-[14px] leading-[22px] text-[#a9b0c9] md:text-[15px] md:leading-[24px]">
                     {point.description}
                   </p>
 
                   <Link
-                    className="mt-auto inline-flex items-center gap-2 pt-6 font-ui text-[14px] leading-[20px] font-semibold text-[#e8c887] no-underline transition-colors outline-none hover:text-[#f7dda6] focus-visible:ring-2 focus-visible:ring-[#e8c887] md:text-[15px]"
+                    className="mt-auto inline-flex items-center gap-2 pt-6 text-[14px] leading-[20px] font-semibold text-[#e8c887] no-underline transition-colors outline-none hover:text-[#f7dda6] focus-visible:ring-2 focus-visible:ring-[#e8c887] md:text-[15px]"
                     to={point.to}
                   >
                     {point.linkLabel}
-                    {/* Cỡ ghi bằng px: root font-size 137.5% biến `size-4` thành 22px, to hơn hẳn chữ. */}
                     <ArrowRight
                       aria-hidden
                       className="size-[16px] transition-transform duration-200 ease-out group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"

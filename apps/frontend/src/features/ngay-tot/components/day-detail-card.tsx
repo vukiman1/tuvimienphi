@@ -27,8 +27,8 @@ function CanChiColumn({ label, value }: { readonly label: string; readonly value
       <p className="text-[0.6rem] font-semibold tracking-[0.18em] text-[#a89b83] uppercase">
         {label}
       </p>
-      <p className="font-display text-lg leading-none font-bold text-[#e8c987]">{can}</p>
-      <p className="font-display text-lg leading-none font-semibold text-[#f3e6cd]">{chi}</p>
+      <p className="text-lg leading-none font-bold text-[#e8c987]">{can}</p>
+      <p className="text-lg leading-none font-semibold text-[#f3e6cd]">{chi}</p>
     </div>
   );
 }
@@ -50,7 +50,7 @@ export function DayDetailCard({ date }: { readonly date: Date }) {
           <p className="text-[0.65rem] font-semibold tracking-[0.16em] text-[#c9a15c] uppercase">
             Tháng {date.getMonth() + 1} năm {date.getFullYear()}
           </p>
-          <p className="mt-1 font-display text-6xl leading-none font-bold text-[#e8c987] md:text-7xl">
+          <p className="mt-1 text-6xl leading-none font-bold text-[#e8c987] md:text-7xl">
             {date.getDate()}
           </p>
           <p className="mt-2 text-xs font-semibold tracking-[0.18em] text-[#d8cdb8] uppercase">

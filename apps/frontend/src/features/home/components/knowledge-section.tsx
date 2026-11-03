@@ -62,22 +62,21 @@ export function KnowledgeSection() {
           <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
             <div>
               <h2
-                className="font-body text-[28px] leading-[38px] font-bold text-[#2a1f0e] md:text-[42px] md:leading-[54px]"
+                className="text-[28px] leading-[38px] font-bold text-[#2a1f0e] md:text-[42px] md:leading-[54px]"
                 id={HEADING_ID}
               >
                 {KNOWLEDGE_SECTION.title}
               </h2>
-              <p className="mt-3 max-w-[720px] font-ui text-[15px] leading-[24px] text-[#6b5a44] md:text-[16px] md:leading-[26px]">
+              <p className="mt-3 max-w-[720px] text-[15px] leading-[24px] text-[#6b5a44] md:text-[16px] md:leading-[26px]">
                 {KNOWLEDGE_SECTION.subtitle}
               </p>
             </div>
 
             <Link
-              className="group inline-flex shrink-0 items-center gap-2 pt-1 font-ui text-[15px] leading-[22px] font-semibold text-[#8a6420] no-underline transition-colors outline-none hover:text-[#5f440f] focus-visible:ring-2 focus-visible:ring-[#8a6420]"
+              className="group inline-flex shrink-0 items-center gap-2 pt-1 text-[15px] leading-[22px] font-semibold text-[#8a6420] no-underline transition-colors outline-none hover:text-[#5f440f] focus-visible:ring-2 focus-visible:ring-[#8a6420]"
               to="/kien-thuc"
             >
               {KNOWLEDGE_SECTION.ctaLabel}
-              {/* Cỡ ghi bằng px: root font-size 137.5% biến `size-4` thành 22px, to hơn hẳn chữ. */}
               <ArrowRight
                 aria-hidden
                 className="size-[16px] transition-transform duration-200 ease-out group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
@@ -100,22 +99,20 @@ export function KnowledgeSection() {
                   loading="lazy"
                   src={MEDIA.laSo.historyPavilionPine}
                 />
-                <span className="absolute top-4 left-4 rounded-full bg-[linear-gradient(180deg,#f2d79f_0%,#dcb268_100%)] px-4 py-1.5 font-ui text-[13px] leading-[18px] font-bold text-[#3d2408]">
+                <span className="absolute top-4 left-4 rounded-full bg-[linear-gradient(180deg,#f2d79f_0%,#dcb268_100%)] px-4 py-1.5 text-[13px] leading-[18px] font-bold text-[#3d2408]">
                   {KNOWLEDGE_SECTION.featuredBadge}
                 </span>
               </span>
 
               <span className="flex min-w-0 flex-1 flex-col p-6 md:p-7">
-                <span className="block font-body text-[21px] leading-[30px] font-bold text-[#2a1f0e] md:text-[24px] md:leading-[34px]">
+                <span className="block text-[21px] leading-[30px] font-bold text-[#2a1f0e] md:text-[24px] md:leading-[34px]">
                   {featured.title}
                 </span>
-                <span className="mt-3 block font-ui text-[14px] leading-[22px] text-[#6b5a44] md:text-[15px] md:leading-[24px]">
+                <span className="mt-3 block text-[14px] leading-[22px] text-[#6b5a44] md:text-[15px] md:leading-[24px]">
                   {featured.excerpt}
                 </span>
                 <span className="mt-auto flex items-end justify-between gap-4 pt-6">
-                  <span className="font-ui text-[13px] leading-[20px] text-[#8b7a62]">
-                    {featured.date}
-                  </span>
+                  <span className="text-[13px] leading-[20px] text-[#8b7a62]">{featured.date}</span>
                   <ArrowRight
                     aria-hidden
                     className="size-[18px] shrink-0 text-[#8a6420] transition-transform duration-200 ease-out group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
@@ -143,10 +140,10 @@ export function KnowledgeSection() {
                       />
                     </span>
                     <span className="min-w-0">
-                      <span className="block font-body text-[15px] leading-[22px] font-semibold text-[#2a1f0e] md:text-[16px] md:leading-[23px]">
+                      <span className="block text-[15px] leading-[22px] font-semibold text-[#2a1f0e] md:text-[16px] md:leading-[23px]">
                         {item.title}
                       </span>
-                      <span className="mt-1 block font-ui text-[12px] leading-[18px] text-[#8b7a62]">
+                      <span className="mt-1 block text-[12px] leading-[18px] text-[#8b7a62]">
                         {item.date}
                       </span>
                     </span>

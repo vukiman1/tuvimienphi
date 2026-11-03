@@ -77,7 +77,6 @@ export function LuanGiaiSection({
 
   return (
     <section
-      // pt ghi bằng px: root font-size 137.5% biến `pt-16` thành 88px, cao hơn hẳn ý đồ.
       className="relative mt-24 bg-[#7a1f15] pt-[52px] pb-10 md:pt-[64px] md:pb-14"
       style={FULL_BLEED}
     >
@@ -85,7 +84,7 @@ export function LuanGiaiSection({
       <SeamCloud side="right" />
 
       <div className="relative mx-auto w-full max-w-[1400px] px-4 md:px-8">
-        <h2 className="mx-auto flex max-w-[1000px] items-center justify-center gap-5 font-display text-[30px] leading-[38px] font-bold tracking-[0.06em] text-[#e2c186] uppercase md:text-[36px] md:leading-[44px]">
+        <h2 className="mx-auto flex max-w-[1000px] items-center justify-center gap-5 text-[30px] leading-[38px] font-bold tracking-[0.06em] text-[#e2c186] uppercase md:text-[36px] md:leading-[44px]">
           <TitleOrnament side="left" />
           <span className="shrink-0">Luận giải lá số</span>
           <TitleOrnament side="right" />
@@ -121,7 +120,7 @@ export function LuanGiaiSection({
           Ba phần tử ngang hàng chứ không lồng nhau: khi hẹp thì thái cực tự xuống một hàng riêng và
           nằm giữa, thay vì bị dính vào vế sau.
         */}
-        <p className="mt-8 flex flex-wrap items-center justify-center gap-x-[10px] gap-y-2 text-center font-body text-[14px] leading-[21px] text-[#e8cd97]">
+        <p className="mt-8 flex flex-wrap items-center justify-center gap-x-[10px] gap-y-2 text-center text-[14px] leading-[21px] text-[#e8cd97]">
           {motto.map((line, index) => (
             <Fragment key={line}>
               {index > 0 && (

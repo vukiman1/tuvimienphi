@@ -46,7 +46,6 @@ function FeatureCard({ card, delay }: { readonly card: Card; readonly delay: num
     >
       <div className="group flex items-center gap-4 rounded-2xl border border-[#e0cba6] bg-[#fffdf7]/85 px-5 py-4 transition-[transform,border-color,box-shadow] duration-200 ease-out hover:-translate-y-1 hover:border-[#d0a75f] hover:shadow-[0_12px_26px_rgba(160,116,45,0.18)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 md:gap-4 md:px-5 md:py-5">
         <span className="flex size-14 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(150deg,#f7e6c4_0%,#eccf9a_100%)] transition-transform duration-200 ease-out group-hover:scale-110 motion-reduce:transition-none motion-reduce:group-hover:scale-100 md:size-[58px]">
-          {/* Cỡ ghi bằng px: root font-size 137.5% biến `size-8` thành 44px, tràn khỏi vòng tròn. */}
           <img
             alt=""
             aria-hidden
@@ -56,10 +55,10 @@ function FeatureCard({ card, delay }: { readonly card: Card; readonly delay: num
           />
         </span>
         <span className="min-w-0">
-          <span className="block font-body text-[19px] leading-[26px] font-bold text-[#2a1f0e] md:text-[20px] md:leading-[27px]">
+          <span className="block text-[19px] leading-[26px] font-bold text-[#2a1f0e] md:text-[20px] md:leading-[27px]">
             {card.title}
           </span>
-          <span className="mt-1.5 block font-body text-[13px] leading-[20px] text-[#6b5a44] md:text-[14px] md:leading-[21px]">
+          <span className="mt-1.5 block text-[13px] leading-[20px] text-[#6b5a44] md:text-[14px] md:leading-[21px]">
             {card.description}
           </span>
         </span>
@@ -164,11 +163,10 @@ export function ChartAnatomySection() {
 
         <Reveal className="mt-10 flex justify-center md:mt-14" delay={200}>
           <a
-            className="group inline-flex items-center gap-3 rounded-full border border-[#d8b26a] bg-[linear-gradient(180deg,#f2d79f_0%,#dcb268_52%,#c9994f_100%)] px-9 py-4 font-display text-base font-bold tracking-wide text-[#3d2408] no-underline shadow-[0_6px_18px_rgba(160,116,45,0.28)] transition-[transform,box-shadow,filter] duration-200 ease-out hover:-translate-y-0.5 hover:brightness-105 hover:shadow-[0_12px_26px_rgba(160,116,45,0.36)] focus-visible:ring-2 focus-visible:ring-[#8a6420] focus-visible:outline-none motion-reduce:transition-none motion-reduce:hover:translate-y-0 md:text-lg"
+            className="group inline-flex items-center gap-3 rounded-full border border-[#d8b26a] bg-[linear-gradient(180deg,#f2d79f_0%,#dcb268_52%,#c9994f_100%)] px-9 py-4 text-base font-bold tracking-wide text-[#3d2408] no-underline shadow-[0_6px_18px_rgba(160,116,45,0.28)] transition-[transform,box-shadow,filter] duration-200 ease-out hover:-translate-y-0.5 hover:brightness-105 hover:shadow-[0_12px_26px_rgba(160,116,45,0.36)] focus-visible:ring-2 focus-visible:ring-[#8a6420] focus-visible:outline-none motion-reduce:transition-none motion-reduce:hover:translate-y-0 md:text-lg"
             href={`#${HERO_SECTION_ID}`}
           >
             {CHART_ANATOMY_SECTION.ctaLabel}
-            {/* Cỡ ghi bằng px: root font-size 137.5% biến `size-4` thành 22px, to hơn hẳn chữ. */}
             <ArrowRight
               aria-hidden
               className="size-[18px] transition-transform duration-200 ease-out group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"

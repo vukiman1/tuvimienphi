@@ -98,7 +98,7 @@ export function HeroSection() {
 
       <div className="relative mx-auto w-full max-w-[920px] px-4 py-12 text-center md:px-6 md:py-16">
         <h1
-          className="bg-gradient-to-b from-[#fffaf0] via-[#f6e3b6] to-[#d9b063] bg-clip-text font-display text-4xl font-bold tracking-wide text-transparent uppercase [filter:drop-shadow(0_1px_2px_rgba(26,15,6,0.8))_drop-shadow(0_2px_8px_rgba(26,15,6,0.55))] sm:text-5xl md:text-6xl"
+          className="bg-gradient-to-b from-[#fffaf0] via-[#f6e3b6] to-[#d9b063] bg-clip-text text-4xl font-bold tracking-wide text-transparent uppercase [filter:drop-shadow(0_1px_2px_rgba(26,15,6,0.8))_drop-shadow(0_2px_8px_rgba(26,15,6,0.55))] sm:text-5xl md:text-6xl"
           id={HERO_TITLE_ID}
         >
           Lập lá số tử vi
@@ -126,7 +126,6 @@ export function HeroSection() {
               )}
               <span className="inline-flex items-center gap-[9px] rounded-full border border-[#c9a15c]/45 bg-black/30 py-[7px] pr-[16px] pl-[7px] backdrop-blur-[2px]">
                 <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-[#c9a15c]/70 text-[#e8c887]">
-                  {/* Cỡ ghi bằng px: root font-size 137.5% biến `size-4` thành 22px, tràn khỏi vòng tròn. */}
                   <Icon aria-hidden className="size-[15px]" />
                 </span>
                 <span className="text-[13px] leading-[18px] font-medium whitespace-nowrap text-[#f3e6cd]">

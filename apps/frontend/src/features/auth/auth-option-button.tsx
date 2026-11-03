@@ -15,7 +15,7 @@ export function AuthOptionButton({ icon, label, className, ...props }: AuthOptio
   return (
     <Button
       className={cn(
-        'relative h-[2.75rem] w-full rounded-xl border-[#e3d5c3] bg-white/60 px-14 font-display text-[1.05rem] font-semibold text-[#2b1d14] shadow-[0_1px_3px_rgba(60,40,15,0.08)] hover:border-[#c9a15c]/70 hover:bg-white/90 hover:text-[#2b1d14]',
+        'relative h-[2.75rem] w-full rounded-xl border-[#e3d5c3] bg-white/60 px-14 text-[1.05rem] font-semibold text-[#2b1d14] shadow-[0_1px_3px_rgba(60,40,15,0.08)] hover:border-[#c9a15c]/70 hover:bg-white/90 hover:text-[#2b1d14]',
         className,
       )}
       type="button"

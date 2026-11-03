@@ -15,7 +15,7 @@ export function SectionTitle({ title, icon, divider = true, className }: Section
   return (
     <div className={cn('flex items-center gap-3', className)}>
       {icon ?? <span aria-hidden className="size-2 shrink-0 rotate-45 bg-[#c9a15c]" />}
-      <h2 className="font-display text-[15px] font-semibold tracking-wide whitespace-nowrap text-[#2a1f0e] uppercase">
+      <h2 className="text-[15px] font-semibold tracking-wide whitespace-nowrap text-[#2a1f0e] uppercase">
         {title}
       </h2>
       {divider && (

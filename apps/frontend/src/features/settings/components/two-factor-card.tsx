@@ -76,7 +76,7 @@ export function TwoFactorCard() {
             <ShieldCheck className="size-5 text-[#904423]" />
           </div>
           <div>
-            <h3 className="font-display text-lg font-semibold text-[#1a1412]">Xác thực 2 bước</h3>
+            <h3 className="text-lg font-semibold text-[#1a1412]">Xác thực 2 bước</h3>
             <p className="mt-1 text-sm text-[#6b5a4e]">
               {status.enabled
                 ? 'Cần nhập mã từ ứng dụng xác thực để đăng nhập.'
