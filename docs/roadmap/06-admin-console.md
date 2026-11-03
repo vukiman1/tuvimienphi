@@ -47,7 +47,7 @@ Cả 5 query trong `apps/dashboard/src/features/admin/data/queries.ts` đều l�
 
 ---
 
-## 1. 🔴 Hạn tuyệt đối cho phiên
+## 1. ✅ Hạn tuyệt đối cho phiên
 
 **Vấn đề:** `rotateSession` cấp lại trọn TTL mỗi lần refresh → phiên còn hoạt động thì sống mãi. Không có cách nào bắt một phiên phải kết thúc.
 
@@ -67,7 +67,7 @@ Cả 5 query trong `apps/dashboard/src/features/admin/data/queries.ts` đều l�
 
 ---
 
-## 2. 🔴 Phiên biết mình thuộc về ai
+## 2. ✅ Phiên biết mình thuộc về ai
 
 **Vấn đề:** chỉ có một cặp cookie `access_token` / `sub` với `path: '/'`. Đăng nhập console sẽ ghi đè phiên trang công khai và ngược lại.
 
@@ -88,7 +88,7 @@ Cả 5 query trong `apps/dashboard/src/features/admin/data/queries.ts` đều l�
 
 ---
 
-## 3. 🔴 Xác thực vai + đường đăng nhập admin
+## 3. ✅ Xác thực vai + đường đăng nhập admin
 
 **Vấn đề:** không có `RolesGuard`, không có `@Roles()`. `MetadataKey.ROLE`, `StrategyKey.LOCAL.ADMIN`, `StrategyKey.JWT.ADMIN` đã khai báo trong [constants](../../packages/backend/constants/src/index.ts) nhưng **không ai dùng**.
 
@@ -111,7 +111,7 @@ Cả 5 query trong `apps/dashboard/src/features/admin/data/queries.ts` đều l�
 
 ---
 
-## 4. 🟡 Module `admin` và endpoint thật
+## 4. ✅ Module `admin` và endpoint thật
 
 **Quy tắc bắt buộc:**
 
@@ -141,7 +141,7 @@ Cả 5 query trong `apps/dashboard/src/features/admin/data/queries.ts` đều l�
 
 ---
 
-## 4b. 🔴 Cái bẫy của app hai transport
+## 4b. ✅ Cái bẫy của app hai transport
 
 Module `admin` phục vụ qua GraphQL, phần còn lại qua REST. Mọi thứ đăng ký **global** trong app này đều ngầm giả định có HTTP request, và dưới một resolver thì `switchToHttp()` **không báo lỗi** — nó trả về nhầm thứ:
 
@@ -207,7 +207,7 @@ Hậu quả nếu quên, theo từng thứ:
 
 ---
 
-## 6. 🔴 Nối console vào API thật
+## 6. ✅ Nối console vào API thật
 
 **Vấn đề:** `apps/dashboard/src/routes/__root.tsx` không có `beforeLoad`, không loader, không kiểm tra gì — render thẳng `<AdminLayout>`. Và `bootstrapAuth()` là **code chết**: chỉ `features/auth/route-guards.ts` tham chiếu, mà file đó không ai import. Nên `DEV_ADMIN` trong `features/auth/bootstrap.ts` **chưa bao giờ được gán**; store đứng yên ở `{ user: null }` và giao diện chạy bằng giá trị dự phòng viết cứng. `AccessDenied` viết xong nhưng không nơi nào render.
 

@@ -6,31 +6,32 @@ Quy ước ưu tiên: 🔴 nên làm sớm (bảo mật) · 🟡 nên làm (ch�
 
 ## Auth
 
-| #   | Việc                                         | Ưu tiên | Loại      | Chi tiết                                                     |
-| --- | -------------------------------------------- | ------- | --------- | ------------------------------------------------------------ |
-| 1   | Bịt account enumeration ở login              | 🔴      | Hardening | [01-auth-hardening.md](01-auth-hardening.md)                 |
-| 2   | Siết password policy (DTO)                   | 🟡      | Hardening | [01-auth-hardening.md](01-auth-hardening.md)                 |
-| 3   | Bỏ fallback secret hardcode (fail-fast)      | 🟡      | Hardening | [01-auth-hardening.md](01-auth-hardening.md)                 |
-| 4   | Forgot / reset password                      | 🟡      | Feature   | [02-auth-account-lifecycle.md](02-auth-account-lifecycle.md) |
-| 5   | Email verification                           | 🟡      | Feature   | [02-auth-account-lifecycle.md](02-auth-account-lifecycle.md) |
-| 6   | Change password endpoint (+ hash khi update) | 🟢      | Feature   | [02-auth-account-lifecycle.md](02-auth-account-lifecycle.md) |
-| 7   | Unit test SessionService / CryptoService     | 🟡      | Test      | [03-auth-tests.md](03-auth-tests.md)                         |
-| 8   | Redis cluster: hash-tag cho session keys     | 🟢      | Scaling   | [04-infra-scaling.md](04-infra-scaling.md)                   |
-| 9   | ~~Audit logging cho sự kiện auth~~ — đã có   | ✅      | Ops       | [10-activity-log.md](10-activity-log.md)                     |
-| 10  | CAPTCHA cho login                            | 🟢      | Hardening | [04-infra-scaling.md](04-infra-scaling.md)                   |
+| #   | Việc                                                 | Ưu tiên | Loại      | Chi tiết                                                     |
+| --- | ---------------------------------------------------- | ------- | --------- | ------------------------------------------------------------ |
+| 1   | ~~Bịt account enumeration ở login~~ — đã có          | ✅      | Hardening | [01-auth-hardening.md](01-auth-hardening.md)                 |
+| 2   | ~~Siết password policy (DTO)~~ — đã có               | ✅      | Hardening | [01-auth-hardening.md](01-auth-hardening.md)                 |
+| 3   | ~~Bỏ fallback secret hardcode~~ — đã có              | ✅      | Hardening | [01-auth-hardening.md](01-auth-hardening.md)                 |
+| 4   | ~~Forgot / reset password~~ — đã có                  | ✅      | Feature   | [02-auth-account-lifecycle.md](02-auth-account-lifecycle.md) |
+| 5   | ~~Email verification~~ — đã có                       | ✅      | Feature   | [02-auth-account-lifecycle.md](02-auth-account-lifecycle.md) |
+| 6   | ~~Change password endpoint~~ — đã có                 | ✅      | Feature   | [02-auth-account-lifecycle.md](02-auth-account-lifecycle.md) |
+| 7   | ~~Unit test SessionService / CryptoService~~ — đã có | ✅      | Test      | [03-auth-tests.md](03-auth-tests.md)                         |
+| 8   | Redis cluster: hash-tag cho session keys             | 🟢      | Scaling   | [04-infra-scaling.md](04-infra-scaling.md)                   |
+| 9   | ~~Audit logging cho sự kiện auth~~ — đã có           | ✅      | Ops       | [10-activity-log.md](10-activity-log.md)                     |
+| 10  | CAPTCHA cho login                                    | 🟢      | Hardening | [04-infra-scaling.md](04-infra-scaling.md)                   |
+| 11  | ~~Đăng nhập Google bỏ qua 2FA~~ — đã sửa (#162)      | ✅      | Hardening | [01-auth-hardening.md](01-auth-hardening.md)                 |
 
 ## Admin console
 
 | #   | Việc                                                      | Ưu tiên | Loại      | Chi tiết                                       |
 | --- | --------------------------------------------------------- | ------- | --------- | ---------------------------------------------- |
-| 1   | Hạn tuyệt đối cho phiên (`maxLifetime`)                   | 🔴      | Hardening | [06-admin-console.md](06-admin-console.md)     |
-| 2   | Phiên tách theo audience (user / admin)                   | 🔴      | Hardening | [06-admin-console.md](06-admin-console.md)     |
-| 3   | `RolesGuard` + đường đăng nhập admin                      | 🔴      | Feature   | [06-admin-console.md](06-admin-console.md)     |
-| 4   | Module `admin` và endpoint thật                           | 🟡      | Feature   | [06-admin-console.md](06-admin-console.md)     |
-| 4b  | Cái bẫy của app hai transport                             | 🔴      | Hardening | [06-admin-console.md](06-admin-console.md)     |
+| 1   | ~~Hạn tuyệt đối cho phiên (`maxLifetime`)~~ — đã có       | ✅      | Hardening | [06-admin-console.md](06-admin-console.md)     |
+| 2   | ~~Phiên tách theo audience (user / admin)~~ — đã có       | ✅      | Hardening | [06-admin-console.md](06-admin-console.md)     |
+| 3   | ~~`RolesGuard` + đường đăng nhập admin~~ — đã có          | ✅      | Feature   | [06-admin-console.md](06-admin-console.md)     |
+| 4   | ~~Module `admin` và endpoint thật~~ — đã có (GraphQL)     | ✅      | Feature   | [06-admin-console.md](06-admin-console.md)     |
+| 4b  | ~~Cái bẫy của app hai transport~~ — đã có                 | ✅      | Hardening | [06-admin-console.md](06-admin-console.md)     |
 | 4c  | Phân trang REST — quyết sau GraphQL                       | 🟡      | Refactor  | [06-admin-console.md](06-admin-console.md)     |
 | 5   | ~~`POST /van-han` đang mở cho mọi user~~ — đã đóng        | ✅      | Fix       | [13-van-han-console.md](13-van-han-console.md) |
-| 6   | Console chưa có lớp bảo vệ nào                            | 🔴      | Fix       | [06-admin-console.md](06-admin-console.md)     |
+| 6   | ~~Console chưa có lớp bảo vệ nào~~ — đã có                | ✅      | Fix       | [06-admin-console.md](06-admin-console.md)     |
 | 7   | ~~Nhật ký hoạt động query được~~ — đã có                  | ✅      | Feature   | [10-activity-log.md](10-activity-log.md)       |
 | 8   | ~~Soạn và xuất bản vận hạn theo năm~~ — đã có             | ✅      | Feature   | [13-van-han-console.md](13-van-han-console.md) |
 | 9   | AI soạn nội dung vận hạn (nút đang khoá)                  | 🟢      | Feature   | [13-van-han-console.md](13-van-han-console.md) |
@@ -54,19 +55,15 @@ Quy ước ưu tiên: 🔴 nên làm sớm (bảo mật) · 🟡 nên làm (ch�
 
 ## Lá số
 
-| #   | Việc                               | Ưu tiên | Loại     | Chi tiết                   |
-| --- | ---------------------------------- | ------- | -------- | -------------------------- |
-| 1   | Cho đổi năm xem                    | 🔴      | Feature  | [05-la-so.md](05-la-so.md) |
-| 2   | Bỏ lá số giả khi vào trang trần    | 🔴      | Fix      | [05-la-so.md](05-la-so.md) |
-| 3   | Dấu âm dương của chính tinh        | 🟡      | Feature  | [05-la-so.md](05-la-so.md) |
-| 4   | Nối luận giải vào lá số thật       | 🟡      | Feature  | [05-la-so.md](05-la-so.md) |
-| 5   | Lưu và xem lại lá số               | 🟡      | Feature  | [05-la-so.md](05-la-so.md) |
-| 6   | Nhãn lưu niên `LN.*` và lưu tinh   | 🟢      | Engine   | [05-la-so.md](05-la-so.md) |
-| 7   | Cân lượng, lai nhân cung           | 🟢      | Engine   | [05-la-so.md](05-la-so.md) |
-| 8   | Hai ô miếu vượng còn trống         | 🟢      | Engine   | [05-la-so.md](05-la-so.md) |
-| 9   | Lỗi lớp bắc cầu engine ↔ giao diện | 🔴      | Fix      | [05-la-so.md](05-la-so.md) |
-| 10  | Dọn engine cho dễ bảo trì          | 🟡      | Refactor | [05-la-so.md](05-la-so.md) |
-| 11  | Tầng `ĐV.*` lưu theo đại vận       | 🟡      | Engine   | [05-la-so.md](05-la-so.md) |
+Mọi mục trong [05-la-so.md](05-la-so.md) đã xong, kể cả hai mục phase sau (nối luận giải vào lá số thật, lưu và xem lại lá số).
+
+## Luận giải
+
+| #   | Việc                                            | Ưu tiên | Loại    | Chi tiết                                                      |
+| --- | ----------------------------------------------- | ------- | ------- | ------------------------------------------------------------- |
+| 1   | ~~Chương 06 Vận hạn theo năm xem~~ — đã có      | ✅      | Feature | PR #156–#161                                                  |
+| 2   | Soát nội dung bảng vận hạn với người biết tử vi | 🟡      | Content | `packages/shared/tu-vi/src/luan/bang/van-han/`                |
+| 3   | Nhãn Tuần / Triệt đè hàng nhãn ở ô nhiều sao    | 🟢      | Fix     | `apps/frontend/src/features/la-so/components/la-so-board.tsx` |
 
 ## Đã hoàn thành (ngữ cảnh)
 

@@ -4,7 +4,7 @@ Phần session/token chứa nhiều business logic nhưng chưa có unit test. �
 
 ---
 
-## 7. 🟡 Unit test SessionService / CryptoService
+## 7. ✅ Unit test SessionService / CryptoService
 
 **Vì sao:** `SessionService` là nơi tập trung toàn bộ logic phiên (create/rotate/revoke/enforce limit). Test được độc lập vì chỉ phụ thuộc 2 boundary: `RedisService` và `JwtService` — mock cả hai.
 
