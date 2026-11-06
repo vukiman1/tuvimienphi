@@ -1,16 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IsNull, Not, Repository } from 'typeorm';
+import { And, IsNull, LessThan, MoreThanOrEqual, Not, Repository } from 'typeorm';
 import { AuthProvider } from '@org/backend-enum';
 import { AuthIdentityEntity } from '../../auth/entities/auth-identity.entity';
 import { UserSessionEntity } from '../../auth/entities/user-session.entity';
 import { LaSoHistoryEntity } from '../../la-so/entities/la-so-history.entity';
+import { FunnelDailyEntity } from '../../funnel/entities/funnel-daily.entity';
 import { UserEntity } from '../../user/entities/user.entity';
 import { AdminOverview, DailyCount, LabelledCount, PeriodMetric } from './admin-overview.type';
 import { DEFAULT_RANGE_DAYS, MAX_RANGE_DAYS, OverviewArgs } from './dto/overview.args';
+import { funnelMetric, type FunnelDayRow } from './funnel-metrics';
+import { fillDays, isoDate, MS_PER_DAY, type Window } from './overview-window';
 
 const UNKNOWN_DEVICE = 'Không rõ';
-const MS_PER_DAY = 86_400_000;
 
 interface DailyRow {
   date: string;
@@ -20,12 +22,6 @@ interface DailyRow {
 interface LabelledRow {
   label: string | null;
   count: string;
-}
-
-interface Window {
-  start: Date;
-  end: Date;
-  days: number;
 }
 
 @Injectable()
@@ -39,6 +35,8 @@ export class AdminOverviewService {
     private readonly historyRepo: Repository<LaSoHistoryEntity>,
     @InjectRepository(AuthIdentityEntity)
     private readonly identityRepo: Repository<AuthIdentityEntity>,
+    @InjectRepository(FunnelDailyEntity)
+    private readonly funnelRepo: Repository<FunnelDailyEntity>,
   ) {}
 
   async summarise(args: OverviewArgs): Promise<AdminOverview> {
@@ -55,6 +53,7 @@ export class AdminOverviewService {
       newUsers,
       newCharts,
       devices,
+      funnelRows,
     ] = await Promise.all([
       this.userRepo.count(),
       this.identityRepo.count({ where: { provider: AuthProvider.GOOGLE } }),
@@ -85,6 +84,7 @@ export class AdminOverviewService {
         (w) => this.rowsPerDay(this.historyRepo, 'created_at', w),
       ),
       this.deviceBreakdown(current),
+      this.funnelDays(previous.start, current.end),
     ]);
 
     return {
@@ -99,6 +99,9 @@ export class AdminOverviewService {
       newUsers,
       newCharts,
       devices,
+      chartCasts: funnelMetric(funnelRows, 'chartCasts', current, previous),
+      chapterUnlocks: funnelMetric(funnelRows, 'chapterUnlocks', current, previous),
+      paidChapterUnlocks: funnelMetric(funnelRows, 'paidChapterUnlocks', current, previous),
     };
   }
 
@@ -137,7 +140,7 @@ export class AdminOverviewService {
       .orderBy('date', 'ASC')
       .getRawMany<DailyRow>();
 
-    return fillDays(rows, window);
+    return fillDays(countsByDate(rows), window);
   }
 
   private async countActiveUsers({ start, end }: Window): Promise<number> {
@@ -173,7 +176,13 @@ export class AdminOverviewService {
       .orderBy('date', 'ASC')
       .getRawMany<DailyRow>();
 
-    return fillDays(rows, window);
+    return fillDays(countsByDate(rows), window);
+  }
+
+  private async funnelDays(start: Date, end: Date): Promise<FunnelDayRow[]> {
+    return this.funnelRepo.find({
+      where: { day: And(MoreThanOrEqual(isoDate(start)), LessThan(isoDate(end))) },
+    });
   }
 
   private async deviceBreakdown({ start, end }: Window): Promise<LabelledCount[]> {
@@ -193,17 +202,8 @@ export class AdminOverviewService {
   }
 }
 
-function fillDays(rows: DailyRow[], { start, days }: Window): DailyCount[] {
-  const counts = new Map(rows.map(({ date, count }) => [date, Number(count)]));
-
-  return Array.from({ length: days }, (_, offset) => {
-    const date = isoDate(new Date(start.getTime() + offset * MS_PER_DAY));
-    return { date, count: counts.get(date) ?? 0 };
-  });
-}
-
-function isoDate(date: Date): string {
-  return date.toISOString().slice(0, 10);
+function countsByDate(rows: DailyRow[]): ReadonlyMap<string, number> {
+  return new Map(rows.map(({ date, count }) => [date, Number(count)]));
 }
 
 function parseDate(value: string | undefined): Date | null {

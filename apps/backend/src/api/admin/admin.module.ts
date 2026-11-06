@@ -7,6 +7,7 @@ import { ActivityLogEntity } from '../activity/entities/activity-log.entity';
 import { AuthIdentityEntity } from '../auth/entities/auth-identity.entity';
 import { CreditsModule } from '../credits/credits.module';
 import { UserSessionEntity } from '../auth/entities/user-session.entity';
+import { FunnelDailyEntity } from '../funnel/entities/funnel-daily.entity';
 import { LaSoHistoryEntity } from '../la-so/entities/la-so-history.entity';
 import { UserEntity } from '../user/entities/user.entity';
 import { VanHanModule } from '../van-han/van-han.module';
@@ -32,6 +33,7 @@ import { AdminVanHanResolver } from './van-han/admin-van-han.resolver';
       UserSessionEntity,
       LaSoHistoryEntity,
       AuthIdentityEntity,
+      FunnelDailyEntity,
       ActivityLogEntity,
     ]),
     GraphQLModule.forRoot(adminGraphqlOptions),
