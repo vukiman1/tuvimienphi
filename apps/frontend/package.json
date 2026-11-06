@@ -9,6 +9,38 @@
       "type:app"
     ],
     "targets": {
+      "build": {
+        "inputs": [
+          "production",
+          "^production",
+          {
+            "externalDependencies": [
+              "vite"
+            ]
+          },
+          {
+            "env": "VITE_API_BASE_URL"
+          },
+          {
+            "env": "VITE_APP_ENVIRONMENT"
+          },
+          {
+            "env": "VITE_CF_ANALYTICS_TOKEN"
+          },
+          {
+            "env": "VITE_GOOGLE_CLIENT_ID"
+          },
+          {
+            "env": "VITE_MEDIA_BASE_URL"
+          },
+          {
+            "env": "VITE_SENTRY_DSN"
+          },
+          {
+            "env": "VITE_SITE_URL"
+          }
+        ]
+      },
       "docker-build": {
         "dependsOn": [
           "build"
