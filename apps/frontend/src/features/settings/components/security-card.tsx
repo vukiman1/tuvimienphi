@@ -6,16 +6,21 @@ import { Card, CardContent } from '@/components/ui/card';
 import { notify } from '@/lib/toast';
 import { authService } from '@/services/auth-service';
 import { ChangePasswordDialog } from './change-password-dialog';
+import { SetPasswordDialog } from './set-password-dialog';
 
 export function SecurityCard() {
   const [isChanging, setIsChanging] = useState(false);
+  const [isSettingPassword, setIsSettingPassword] = useState(false);
 
   const meQuery = useQuery({ queryKey: ['auth', 'me'], queryFn: () => authService.getMe() });
   const user = meQuery.data?.user;
 
   const emailMutation = useMutation({
     mutationFn: (email: string) => authService.forgotPassword(email),
-    onSuccess: () => notify.success('Kiểm tra email của bạn để lấy liên kết.'),
+    onSuccess: (_response, email) => {
+      notify.success(`Đã gửi mã tới ${email}.`);
+      setIsSettingPassword(true);
+    },
     onError: () => notify.error('Không thể gửi email. Vui lòng thử lại.'),
   });
 
@@ -67,6 +72,11 @@ export function SecurityCard() {
       </CardContent>
 
       <ChangePasswordDialog onOpenChange={setIsChanging} open={isChanging} />
+      <SetPasswordDialog
+        email={user.email}
+        onOpenChange={setIsSettingPassword}
+        open={isSettingPassword}
+      />
     </Card>
   );
 }

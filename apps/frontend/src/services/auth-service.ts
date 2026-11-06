@@ -7,6 +7,7 @@ import type {
   LoginResponse,
   MessageResponse,
   ResetPasswordPayload,
+  SetPasswordPayload,
   LogoutResponse,
   MeResponse,
   RefreshTokenResponse,
@@ -85,6 +86,10 @@ export const authService = {
 
   resetPassword(payload: ResetPasswordPayload) {
     return httpRequest.post<MessageResponse>('/auth/reset-password', payload);
+  },
+
+  setPassword(payload: SetPasswordPayload) {
+    return httpRequest.post<MessageResponse>('/auth/set-password', payload);
   },
 
   requestTwoFactorRecovery(challengeToken: string) {

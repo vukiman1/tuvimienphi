@@ -1,8 +1,11 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { EMAIL_CODE_RESEND_COOLDOWN_SECONDS } from '@org/shared-contracts';
 import { RegisterForm } from './register-form';
 import { authService } from '@/services/auth-service';
 import { notify } from '@/lib/toast';
 import { ApiError } from '@/lib/api-error';
+
+const MS_PER_SECOND = 1000;
 
 jest.mock('@/services/auth-service', () => ({
   authService: { register: jest.fn(), resendVerification: jest.fn(), verifyEmail: jest.fn() },
@@ -42,6 +45,7 @@ function apiError(message: string, statusCode = 409) {
 
 describe('RegisterForm', () => {
   beforeEach(() => jest.clearAllMocks());
+  afterEach(() => jest.useRealTimers());
 
   it('applies the same password rule as the server before sending anything', async () => {
     render(<RegisterForm onVerified={mockOnVerified} />);
@@ -112,7 +116,20 @@ describe('RegisterForm', () => {
     expect(screen.queryByLabelText('Password')).toBeNull();
   });
 
-  it('can send another code to the same address', async () => {
+  it('waits a minute before another code can be sent', async () => {
+    jest
+      .mocked(authService.register)
+      .mockResolvedValue({ message: 'ok', email: 'new@example.com' });
+
+    render(<RegisterForm onVerified={mockOnVerified} />);
+    fill();
+
+    const resend = await screen.findByRole('button', { name: 'Send another code in 60s' });
+    expect(resend.hasAttribute('disabled')).toBe(true);
+  });
+
+  it('can send another code to the same address once the minute is up', async () => {
+    jest.useFakeTimers();
     jest
       .mocked(authService.register)
       .mockResolvedValue({ message: 'ok', email: 'new@example.com' });
@@ -120,7 +137,9 @@ describe('RegisterForm', () => {
 
     render(<RegisterForm onVerified={mockOnVerified} />);
     fill();
-    fireEvent.click(await screen.findByRole('button', { name: 'Send another code' }));
+    await screen.findByLabelText('Verification code');
+    act(() => jest.advanceTimersByTime(EMAIL_CODE_RESEND_COOLDOWN_SECONDS * MS_PER_SECOND));
+    fireEvent.click(screen.getByRole('button', { name: 'Send another code' }));
 
     await waitFor(() =>
       expect(authService.resendVerification).toHaveBeenCalledWith('new@example.com'),

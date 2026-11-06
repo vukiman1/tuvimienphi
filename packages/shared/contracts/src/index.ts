@@ -74,6 +74,8 @@ export interface ResetPasswordPayload {
   confirmPassword: string;
 }
 
+export type SetPasswordPayload = Omit<ResetPasswordPayload, 'email'>;
+
 export interface MessageResponse {
   message: string;
 }
