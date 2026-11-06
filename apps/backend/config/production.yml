@@ -15,6 +15,9 @@ db:
 redis:
   tls: true
 
+email:
+  from: 'Tử Vi Miễn Phí <no-reply@xemtuvimienphi.top>'
+
 cors:
   origins:
     - https://xemtuvimienphi.top
