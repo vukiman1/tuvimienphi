@@ -3,6 +3,7 @@ import { ArrowDownOutlined, ArrowUpOutlined, MinusOutlined } from '@ant-design/i
 import { Tiny } from '@ant-design/charts';
 import { Card, Flex, Statistic, theme } from 'antd';
 import type { StatAccent } from './stat-accent';
+import { StatUnit } from './stat-unit';
 import { formatNumber } from '@org/frontend-shared';
 
 const ICON_SIZE = 42;
@@ -16,6 +17,7 @@ const BODY_PADDING = 24;
 const COMPACT_BODY_PADDING = 16;
 const TREND_FONT_SIZE = 13;
 const PERCENT_BASE = 100;
+const NO_VALUE = '—';
 
 export interface Trend {
   readonly value: number;
@@ -31,6 +33,12 @@ interface StatTileProps {
   readonly series?: readonly { readonly date: string; readonly count: number }[];
   readonly loading?: boolean;
   readonly compact?: boolean;
+  readonly unit?: StatUnit;
+}
+
+function formatStatValue(value: number | undefined, unit: StatUnit): string {
+  if (unit === StatUnit.Count) return formatNumber(value ?? 0);
+  return value === undefined ? NO_VALUE : `${formatNumber(value)}%`;
 }
 
 export function StatTile({
@@ -42,6 +50,7 @@ export function StatTile({
   series,
   loading,
   compact,
+  unit = StatUnit.Count,
 }: StatTileProps) {
   return (
     <Card
@@ -71,7 +80,7 @@ export function StatTile({
         <Statistic
           title={title}
           value={value ?? 0}
-          formatter={(raw) => formatNumber(Number(raw))}
+          formatter={() => formatStatValue(value, unit)}
           suffix={trend ? <TrendBadge {...trend} /> : undefined}
           styles={{
             content: {

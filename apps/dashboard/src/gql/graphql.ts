@@ -237,7 +237,7 @@ export type AdminOverviewQueryVariables = Exact<{
 }>;
 
 
-export type AdminOverviewQuery = { overview: { from: string, to: string, totalUsers: number, googleUsers: number, passwordUsers: number, savedCharts: number, activeUsers: { value: number, previous: number, series: Array<{ date: string, count: number }> }, logins: { value: number, previous: number, series: Array<{ date: string, count: number }> }, newUsers: { value: number, previous: number, series: Array<{ date: string, count: number }> }, newCharts: { value: number, previous: number, series: Array<{ date: string, count: number }> }, devices: Array<{ label: string, count: number }> } };
+export type AdminOverviewQuery = { overview: { from: string, to: string, totalUsers: number, googleUsers: number, passwordUsers: number, savedCharts: number, activeUsers: { value: number, previous: number, series: Array<{ date: string, count: number }> }, logins: { value: number, previous: number, series: Array<{ date: string, count: number }> }, newUsers: { value: number, previous: number, series: Array<{ date: string, count: number }> }, newCharts: { value: number, previous: number, series: Array<{ date: string, count: number }> }, chartCasts: { value: number, previous: number, series: Array<{ date: string, count: number }> }, chapterUnlocks: { value: number, previous: number, series: Array<{ date: string, count: number }> }, paidChapterUnlocks: { value: number, previous: number, series: Array<{ date: string, count: number }> }, devices: Array<{ label: string, count: number }> } };
 
 export type AdminPaymentsQueryVariables = Exact<{
   page?: number | null | undefined;
@@ -616,6 +616,15 @@ export const AdminOverviewDocument = new TypedDocumentString(`
       ...MetricFields
     }
     newCharts {
+      ...MetricFields
+    }
+    chartCasts {
+      ...MetricFields
+    }
+    chapterUnlocks {
+      ...MetricFields
+    }
+    paidChapterUnlocks {
       ...MetricFields
     }
     devices {

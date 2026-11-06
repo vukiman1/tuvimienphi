@@ -32,6 +32,15 @@ export const adminOverviewDocument = graphql(`
       newCharts {
         ...MetricFields
       }
+      chartCasts {
+        ...MetricFields
+      }
+      chapterUnlocks {
+        ...MetricFields
+      }
+      paidChapterUnlocks {
+        ...MetricFields
+      }
       devices {
         label
         count
