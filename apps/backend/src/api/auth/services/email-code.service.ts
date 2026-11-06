@@ -28,20 +28,29 @@ interface CodeRecord {
 export class EmailCodeService {
   constructor(private readonly redisService: RedisService) {}
 
-  /**
-   * One live code per user per kind: issuing again replaces the previous one, so a second request
-   * cannot leave two working codes behind.
-   */
-  async issue(kind: EmailCodeKind, userId: string, ttlMs: number): Promise<string | null> {
+  async issue(
+    kind: EmailCodeKind,
+    userId: string,
+    ttlMs: number,
+    deliver: (code: string) => Promise<void>,
+  ): Promise<boolean> {
+    const cooldownKey = this.cooldownKey(kind, userId);
     const isOutsideCooldown = await this.redisService.setIfAbsent(
-      this.cooldownKey(kind, userId),
+      cooldownKey,
       COOLDOWN_MARKER,
       EMAIL_CODE_RESEND_COOLDOWN_SECONDS,
     );
-    if (!isOutsideCooldown) return null;
+    if (!isOutsideCooldown) return false;
+
     const code = String(randomInt(0, 10 ** CODE_DIGITS)).padStart(CODE_DIGITS, '0');
     await this.write(kind, userId, { userId, codeHash: hash(code), attempts: 0 }, ttlMs);
-    return code;
+    try {
+      await deliver(code);
+    } catch (error) {
+      await this.redisService.del(cooldownKey);
+      throw error;
+    }
+    return true;
   }
 
   /** Returns the user the code belongs to, or null. A correct code is spent either way. */

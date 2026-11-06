@@ -34,14 +34,19 @@ const TTL = 600_000;
 
 class NoCodeIssuedError extends Error {}
 
+const deliverNothing = async (): Promise<void> => undefined;
+
 async function issueCode(
   service: EmailCodeService,
   kind: EmailCodeKind,
   userId: string,
 ): Promise<string> {
-  const code = await service.issue(kind, userId, TTL);
-  if (code === null) throw new NoCodeIssuedError(`no ${kind} code issued for ${userId}`);
-  return code;
+  let delivered: string | null = null;
+  await service.issue(kind, userId, TTL, async (code) => {
+    delivered = code;
+  });
+  if (delivered === null) throw new NoCodeIssuedError(`no ${kind} code issued for ${userId}`);
+  return delivered;
 }
 
 describe('EmailCodeService', () => {
@@ -112,9 +117,28 @@ describe('EmailCodeService', () => {
 
     it('sends nothing within the cooldown and keeps the first code working', async () => {
       const first = await issueCode(service, KIND, 'u1');
+      const deliver = jest.fn(deliverNothing);
 
-      await expect(service.issue(KIND, 'u1', TTL)).resolves.toBeNull();
+      await expect(service.issue(KIND, 'u1', TTL, deliver)).resolves.toBe(false);
+      expect(deliver).not.toHaveBeenCalled();
       await expect(service.consume(KIND, 'u1', first)).resolves.toBe('u1');
+    });
+
+    it('lets the person ask again at once when the email could not be sent', async () => {
+      const queueDown = new Error('queue is down');
+      await expect(service.issue(KIND, 'u1', TTL, () => Promise.reject(queueDown))).rejects.toBe(
+        queueDown,
+      );
+
+      const deliver = jest.fn(deliverNothing);
+      await expect(service.issue(KIND, 'u1', TTL, deliver)).resolves.toBe(true);
+      expect(deliver).toHaveBeenCalledWith(expect.stringMatching(/^\d{6}$/));
+    });
+
+    it('cools down each person on their own', async () => {
+      await issueCode(service, KIND, 'u1');
+
+      await expect(issueCode(service, KIND, 'u2')).resolves.toMatch(/^\d{6}$/);
     });
 
     it('replaces the previous code once the cooldown has passed', async () => {
@@ -127,9 +151,9 @@ describe('EmailCodeService', () => {
     });
 
     it('cools down each kind on its own', async () => {
-      await service.issue(KIND, 'u1', TTL);
+      await issueCode(service, KIND, 'u1');
 
-      await expect(service.issue(EmailCodeKind.PASSWORD_RESET, 'u1', TTL)).resolves.toMatch(
+      await expect(issueCode(service, EmailCodeKind.PASSWORD_RESET, 'u1')).resolves.toMatch(
         /^\d{6}$/,
       );
     });

@@ -26,6 +26,8 @@ import { TwoFactorService } from './two-factor.service';
 import { TwoFactorChallengeService } from './two-factor-challenge.service';
 import { EmailCodeService } from './email-code.service';
 
+type DeliverCode = (code: string) => Promise<void>;
+
 const ACCESS_TTL_MS = 900_000;
 const REFRESH_TTL_MS = 86_400_000;
 
@@ -135,7 +137,15 @@ describe('AuthService', () => {
       recordFailure: jest.fn(),
       consume: jest.fn(),
     };
-    emailCode = { issue: jest.fn().mockResolvedValue('123456'), consume: jest.fn() };
+    emailCode = {
+      issue: jest.fn(
+        async (_kind: string, _userId: string, _ttlMs: number, deliver: DeliverCode) => {
+          await deliver('123456');
+          return true;
+        },
+      ),
+      consume: jest.fn(),
+    };
 
     // Real, over the same mocks: these keep asserting behaviour, not that a delegate was called.
     service = new AuthService(
@@ -185,6 +195,7 @@ describe('AuthService', () => {
         expect.stringContaining('EMAIL_CODE_VERIFY'),
         'user-1',
         expect.any(Number),
+        expect.any(Function),
       );
       expect(emailQueue.enqueue).toHaveBeenCalledWith({
         kind: EmailKind.EMAIL_VERIFICATION,
@@ -206,7 +217,7 @@ describe('AuthService', () => {
   describe('resendVerification', () => {
     it('emails nothing when a code was sent less than a minute ago', async () => {
       userService.getOne.mockResolvedValue({ id: 'user-1', isEmailVerified: false });
-      emailCode.issue.mockResolvedValue(null);
+      emailCode.issue.mockResolvedValue(false);
 
       await service.resendVerification('a@b.c');
 
@@ -287,6 +298,7 @@ describe('AuthService', () => {
         expect.stringContaining('EMAIL_CODE_PASSWORD_RESET'),
         'user-1',
         expect.any(Number),
+        expect.any(Function),
       );
       expect(emailQueue.enqueue).toHaveBeenCalledWith({
         kind: EmailKind.PASSWORD_RESET,
@@ -298,7 +310,7 @@ describe('AuthService', () => {
 
     it('emails nothing when a code was sent less than a minute ago', async () => {
       userService.getOne.mockResolvedValue({ id: 'user-1' });
-      emailCode.issue.mockResolvedValue(null);
+      emailCode.issue.mockResolvedValue(false);
 
       const result = await service.forgotPassword('a@b.c', request);
 
@@ -396,6 +408,7 @@ describe('AuthService', () => {
         '123456',
       );
       expect(userService.update).toHaveBeenCalledWith(googleOnlyUser, { password: 'newpass1' });
+      expect(sessionService.revokeOtherSessions).toHaveBeenCalledWith('user-1', 'jti-1');
       expect(userSessionService.revokeOtherSessions).toHaveBeenCalledWith(
         'user-1',
         'jti-1',

@@ -7,6 +7,8 @@ import { SessionRevokeReason } from '../enums/session-revoke-reason.enum';
 import { AuthEvent } from './auth-audit.service';
 import { EmailKind } from '../../../email/email-job';
 
+type DeliverCode = (code: string) => Promise<void>;
+
 const request = { headers: {} } as Request;
 
 describe('TwoFactorAccountService', () => {
@@ -30,7 +32,15 @@ describe('TwoFactorAccountService', () => {
       regenerateRecoveryCodes: jest.fn(),
     };
     challenge = { peek: jest.fn() };
-    emailCode = { issue: jest.fn().mockResolvedValue('123456'), consume: jest.fn() };
+    emailCode = {
+      issue: jest.fn(
+        async (_kind: string, _userId: string, _ttlMs: number, deliver: DeliverCode) => {
+          await deliver('123456');
+          return true;
+        },
+      ),
+      consume: jest.fn(),
+    };
     userService = { getOneOrFail: jest.fn() };
     emailQueue = { enqueue: jest.fn().mockResolvedValue(undefined) };
     sessions = { revokeAllSessions: jest.fn() };
@@ -99,7 +109,7 @@ describe('TwoFactorAccountService', () => {
     it('emails nothing when a recovery code was sent less than a minute ago', async () => {
       challenge.peek.mockResolvedValue({ userId: 'u1', rememberMe: false });
       userService.getOneOrFail.mockResolvedValue({ id: 'u1', email: 'a@b.c' });
-      emailCode.issue.mockResolvedValue(null);
+      emailCode.issue.mockResolvedValue(false);
 
       const result = await service.requestRecovery('challenge-1', request);
 

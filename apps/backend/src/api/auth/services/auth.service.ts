@@ -7,6 +7,7 @@ import {
   Logger,
   UnauthorizedException,
 } from '@nestjs/common';
+import type { MessageResponse } from '@org/shared-contracts';
 import { Request, Response } from 'express';
 import * as argon2 from 'argon2';
 import { RegisterDto } from '../dto/register.dto';
@@ -278,19 +279,24 @@ export class AuthService {
     return { message: 'If the email is registered, a code has been sent.' };
   }
 
-  private async sendPasswordResetCode(userId: string, email: string, request: Request) {
-    const code = await this.emailCodeService.issue(
+  private async sendPasswordResetCode(
+    userId: string,
+    email: string,
+    request: Request,
+  ): Promise<void> {
+    const isSent = await this.emailCodeService.issue(
       EmailCodeKind.PASSWORD_RESET,
       userId,
       PASSWORD_RESET_TTL_MS,
+      (code) =>
+        this.emailQueue.enqueue({
+          kind: EmailKind.PASSWORD_RESET,
+          to: email,
+          code,
+          expiryMinutes: toMinutes(PASSWORD_RESET_TTL_MS),
+        }),
     );
-    if (!code) return;
-    await this.emailQueue.enqueue({
-      kind: EmailKind.PASSWORD_RESET,
-      to: email,
-      code,
-      expiryMinutes: toMinutes(PASSWORD_RESET_TTL_MS),
-    });
+    if (!isSent) return;
     this.auditService.record(AuthEvent.PASSWORD_RESET_REQUESTED, { userId, email, request });
   }
 
@@ -328,7 +334,12 @@ export class AuthService {
     return { message: 'Password changed successfully' };
   }
 
-  async setPassword(user: UserEntity, jti: string, dto: SetPasswordDto, request: Request) {
+  async setPassword(
+    user: UserEntity,
+    jti: string,
+    dto: SetPasswordDto,
+    request: Request,
+  ): Promise<MessageResponse> {
     if (user.password) {
       throw new BadRequestException('This account already has a password; change it instead');
     }
@@ -448,18 +459,18 @@ export class AuthService {
   }
 
   private async sendVerification(userId: string, email: string): Promise<void> {
-    const code = await this.emailCodeService.issue(
+    await this.emailCodeService.issue(
       EmailCodeKind.EMAIL_VERIFY,
       userId,
       EMAIL_VERIFY_TTL_MS,
+      (code) =>
+        this.emailQueue.enqueue({
+          kind: EmailKind.EMAIL_VERIFICATION,
+          to: email,
+          code,
+          expiryMinutes: toMinutes(EMAIL_VERIFY_TTL_MS),
+        }),
     );
-    if (!code) return;
-    await this.emailQueue.enqueue({
-      kind: EmailKind.EMAIL_VERIFICATION,
-      to: email,
-      code,
-      expiryMinutes: toMinutes(EMAIL_VERIFY_TTL_MS),
-    });
   }
 
   private async queueWelcomeEmail(to: string): Promise<void> {
