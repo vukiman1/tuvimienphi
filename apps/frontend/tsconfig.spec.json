@@ -24,7 +24,8 @@
     "src/**/*.test.jsx",
     "src/**/*.spec.jsx",
     "src/**/*.d.ts",
-    "config/index.ts"
+    "config/index.ts",
+    "tools/**/*.ts"
   ],
   "references": [
     {

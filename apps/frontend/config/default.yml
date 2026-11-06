@@ -13,3 +13,6 @@ sentry:
 
 google:
   clientId: ''
+
+analytics:
+  cloudflareToken: ''

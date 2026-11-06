@@ -16,4 +16,7 @@ export interface FrontendPublicConfig {
   google: {
     clientId: string;
   };
+  analytics: {
+    cloudflareToken: string;
+  };
 }

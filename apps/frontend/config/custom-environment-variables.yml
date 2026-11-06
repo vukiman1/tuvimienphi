@@ -16,3 +16,6 @@ sentry:
 
 google:
   clientId: VITE_GOOGLE_CLIENT_ID
+
+analytics:
+  cloudflareToken: VITE_CF_ANALYTICS_TOKEN

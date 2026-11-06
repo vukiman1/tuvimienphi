@@ -44,6 +44,9 @@ const frontendPublicConfigSchema = z.object({
   google: z.object({
     clientId: z.string().default(''),
   }),
+  analytics: z.object({
+    cloudflareToken: z.string().default(''),
+  }),
 });
 
 const requireFromCwd = createRequire(join(process.cwd(), 'noop.js'));
