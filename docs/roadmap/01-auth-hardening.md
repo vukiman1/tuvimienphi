@@ -67,4 +67,4 @@ Config đã được zod validate nên runtime hiện luôn có giá trị, như
 
 **Đã làm (#162):** đăng nhập mật khẩu và Google đi chung một cổng. Vai console bắt buộc đã bật 2FA; ai đã bật 2FA thì nhận challenge thay vì phiên. Challenge ghi lại loại phiên cần cấp, nên qua mã xong phiên Google vẫn là phiên OAuth. Dashboard và website có bước nhập mã sau Google.
 
-**Lưu ý vận hành:** tài khoản console phải bật 2FA trước khi deploy bản này, nếu không sẽ không vào được console. Tài khoản chỉ dùng Google cần đặt mật khẩu trước (Cài đặt → Đặt mật khẩu) vì bật 2FA yêu cầu có mật khẩu.
+**Nới lại (2026-11-06):** console không còn bắt buộc 2FA. Trong giai đoạn beta, nhập mã mỗi lần vào console quá tốn thời gian, nên console đi theo cài đặt 2FA của chính tài khoản: đã bật thì hỏi mã (vẫn qua cổng chung của #162), chưa bật thì Google là đủ. Đánh đổi: tài khoản admin tắt 2FA thì lộ phiên Google là vào được console. Hết beta, bật lại 2FA trong Cài đặt của từng tài khoản admin.

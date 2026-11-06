@@ -590,13 +590,13 @@ describe('AuthService', () => {
       expect(sessionService.createSession).not.toHaveBeenCalled();
     });
 
-    it('refuses an admin who has not enrolled in two-factor', async () => {
+    it('lets in an admin who has not turned two-factor on, as their own settings say', async () => {
       twoFactorService.isEnabled.mockResolvedValue(false);
 
-      await expect(
-        service.login(admin as never, mockResponse(), request, false, 'admin'),
-      ).rejects.toBeInstanceOf(ForbiddenException);
-      expect(sessionService.createSession).not.toHaveBeenCalled();
+      await service.login(admin as never, mockResponse(), request, false, 'admin');
+
+      expect(twoFactorChallenge.issue).not.toHaveBeenCalled();
+      expect(sessionService.createSession).toHaveBeenCalled();
     });
 
     it('never issues a console session from the password alone', async () => {
@@ -738,16 +738,16 @@ describe('AuthService', () => {
       expect(response.cookie).not.toHaveBeenCalled();
     });
 
-    it('refuses a console role that has not enrolled in two-factor', async () => {
+    it('signs a console role without two-factor straight in with Google', async () => {
       const response = mockResponse();
       verifier.verify.mockResolvedValue(GOOGLE_IDENTITY);
       socialAuthService.findOrLinkIdentity.mockResolvedValue(GOOGLE_ADMIN);
       twoFactorService.isEnabled.mockResolvedValue(false);
 
-      await expect(
-        service.loginWithGoogle('cred', response, request, 'admin'),
-      ).rejects.toBeInstanceOf(ForbiddenException);
-      expect(sessionService.createSession).not.toHaveBeenCalled();
+      await service.loginWithGoogle('cred', response, request, 'admin');
+
+      expect(twoFactorChallenge.issue).not.toHaveBeenCalled();
+      expect(sessionService.createSession).toHaveBeenCalled();
     });
 
     it('asks a site user who enrolled in two-factor for the code too', async () => {

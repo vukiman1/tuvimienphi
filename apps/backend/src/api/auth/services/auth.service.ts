@@ -110,15 +110,10 @@ export class AuthService {
     request: Request,
     options: IssueSessionOptions,
   ) {
-    const twoFactorEnabled = await this.twoFactorService.isEnabled(user.id);
     if (options.audience === 'admin') {
       this.assertConsoleRole(user);
-      if (!twoFactorEnabled) {
-        throw new ForbiddenException(
-          'Enable two-factor authentication before signing in to the console',
-        );
-      }
     }
+    const twoFactorEnabled = await this.twoFactorService.isEnabled(user.id);
 
     // Issuing a session before the code would make the code optional: a caller could skip the
     // prompt and use the cookie straight away.
