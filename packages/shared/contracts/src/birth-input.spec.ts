@@ -1,9 +1,11 @@
 import {
+  BIRTH_HOUR_KEYS,
   BIRTH_HOURS,
   CalendarType,
   Gender,
   birthHourIndex,
   birthKey,
+  isBirthKey,
   type BirthInput,
 } from './birth-input.js';
 
@@ -50,4 +52,45 @@ describe('birthHourIndex', () => {
       BIRTH_HOURS.map((_, index) => index),
     );
   });
+});
+
+describe('isBirthKey', () => {
+  it('accepts every key birthKey() produces', () => {
+    for (const hour of BIRTH_HOUR_KEYS) {
+      expect(
+        isBirthKey(
+          birthKey({
+            day: 5,
+            month: 11,
+            year: 1990,
+            calendar: CalendarType.Lunar,
+            hour,
+            gender: Gender.Female,
+          }),
+        ),
+      ).toBe(true);
+    }
+  });
+
+  it.each(['1900-01-01-duong-h0-nam', '2200-12-31-am-h12-nu'])(
+    'accepts the edge of the stored ranges %p',
+    (value) => expect(isBirthKey(value)).toBe(true),
+  );
+
+  it.each([
+    '',
+    'abc',
+    '1990-11-05-am-h13-nu',
+    '1990-11-05-am-h01-nu',
+    '1990-11-05-xx-h1-nu',
+    '1990-11-05-am-h1-other',
+    '1990-1-5-am-h1-nu',
+    '1990-00-05-am-h1-nu',
+    '1990-13-05-am-h1-nu',
+    '1990-11-00-am-h1-nu',
+    '1990-11-32-am-h1-nu',
+    '1899-11-05-am-h1-nu',
+    '2201-11-05-am-h1-nu',
+    "1990-11-05-am-h1-nu'; drop",
+  ])('rejects %p', (value) => expect(isBirthKey(value)).toBe(false));
 });
