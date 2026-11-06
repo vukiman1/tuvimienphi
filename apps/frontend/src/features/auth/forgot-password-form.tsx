@@ -5,6 +5,7 @@ import { FormError } from '@/components/ui/form-error';
 import { FormField } from '@/components/ui/form-field';
 import { SubmitButton } from '@/components/ui/submit-button';
 import { useFormWithSubmitError } from '@/lib/use-form-with-submit-error';
+import { notify } from '@/lib/toast';
 import { authService } from '@/services/auth-service';
 import { ChooseNewPassword } from './choose-new-password';
 
@@ -28,7 +29,17 @@ export function ForgotPasswordForm({ onDone }: ForgotPasswordFormProps) {
   });
 
   if (sentTo) {
-    return <ChooseNewPassword email={sentTo} onDone={onDone} />;
+    return (
+      <ChooseNewPassword
+        email={sentTo}
+        submitLabel="Reset password"
+        onSave={async (values) => {
+          await authService.resetPassword({ email: sentTo, ...values });
+          notify.success('Password updated. Every device was signed out.');
+        }}
+        onDone={onDone}
+      />
+    );
   }
 
   return (

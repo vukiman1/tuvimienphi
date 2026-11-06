@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import type { SetPasswordPayload } from '@org/shared-contracts';
 import { z } from 'zod';
 import { FieldError } from '@/components/ui/field-error';
 import { Form } from '@/components/ui/form';
@@ -9,7 +11,9 @@ import { PasswordInput } from '@/components/ui/password-input';
 import { useFormWithSubmitError } from '@/lib/use-form-with-submit-error';
 import { notify } from '@/lib/toast';
 import { authService } from '@/services/auth-service';
+import { ResendCodeLink } from './resend-code-link';
 import { strongPassword } from './schemas';
+import { useResendCooldown } from './use-resend-cooldown';
 
 const CODE_LENGTH = 6;
 
@@ -26,21 +30,39 @@ const schema = fields.refine((values) => values.password === values.confirmPassw
   path: ['confirmPassword'],
 });
 
-/**
- * Code and new password on one screen. Splitting them would mean holding a verified code between
- * steps, which is a second thing to expire and get wrong.
- */
-export function ChooseNewPassword({ email, onDone }: { email: string; onDone: () => void }) {
+interface ChooseNewPasswordProps {
+  readonly email: string;
+  readonly submitLabel: string;
+  readonly onSave: (values: SetPasswordPayload) => Promise<void>;
+  readonly onDone: () => void;
+}
+
+export function ChooseNewPassword({ email, submitLabel, onSave, onDone }: ChooseNewPasswordProps) {
+  const cooldown = useResendCooldown();
+  const [isResending, setIsResending] = useState(false);
+
   const { form, submitError } = useFormWithSubmitError<ResetFormValues>({
     defaultValues: { code: '', password: '', confirmPassword: '' },
     schema,
-    fallbackError: 'Could not reset your password.',
+    fallbackError: 'Could not save your password.',
     onSubmit: async (values) => {
-      await authService.resetPassword({ email, ...values });
-      notify.success('Password updated. Every device was signed out.');
+      await onSave(values);
       onDone();
     },
   });
+
+  const resend = async (): Promise<void> => {
+    setIsResending(true);
+    try {
+      await authService.forgotPassword(email);
+      cooldown.restart();
+      notify.info('Another code is on its way.');
+    } catch {
+      notify.error('Could not send another code.');
+    } finally {
+      setIsResending(false);
+    }
+  };
 
   return (
     <Form className="grid gap-4" onSubmit={form.handleSubmit}>
@@ -102,7 +124,9 @@ export function ChooseNewPassword({ email, onDone }: { email: string; onDone: ()
         )}
       />
 
-      <SubmitButton form={form} label="Reset password" pendingLabel="Saving..." />
+      <SubmitButton form={form} label={submitLabel} pendingLabel="Saving..." />
+
+      <ResendCodeLink cooldown={cooldown} isSending={isResending} onResend={() => void resend()} />
     </Form>
   );
 }

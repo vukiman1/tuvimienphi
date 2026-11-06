@@ -40,6 +40,13 @@ export function ApiLogoutAll(userType: UserType) {
   );
 }
 
+export function ApiSetPassword(userType: UserType) {
+  return applyDecorators(
+    ApiOperation({ summary: 'Set a first password for a ' + userType + ' signed in with Google' }),
+    OkResponse(UserEntity),
+  );
+}
+
 export function ApiChangePassword(userType: UserType) {
   return applyDecorators(
     ApiOperation({ summary: 'Change password for ' + userType }),

@@ -3,9 +3,10 @@ import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { FormError } from '@/components/ui/form-error';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
-import { TextLink } from '@/components/ui/text-link';
 import { errorMessage } from '@/lib/api-error';
 import { notify } from '@/lib/toast';
+import { ResendCodeLink } from './resend-code-link';
+import { useResendCooldown } from './use-resend-cooldown';
 
 const CODE_LENGTH = 6;
 
@@ -27,6 +28,7 @@ export function VerificationCodeForm({
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isResending, setIsResending] = useState(false);
+  const cooldown = useResendCooldown();
 
   const submit = async (value: string) => {
     setIsSubmitting(true);
@@ -51,6 +53,7 @@ export function VerificationCodeForm({
 
     try {
       notify.info(await onResend());
+      cooldown.restart();
       setCode('');
     } catch {
       setError('Could not send another code.');
@@ -96,9 +99,11 @@ export function VerificationCodeForm({
       </Button>
 
       {onResend && (
-        <TextLink className="text-center" disabled={isResending} onClick={resend} tone="muted">
-          {isResending ? 'Sending...' : 'Send another code'}
-        </TextLink>
+        <ResendCodeLink
+          cooldown={cooldown}
+          isSending={isResending}
+          onResend={() => void resend()}
+        />
       )}
     </Form>
   );

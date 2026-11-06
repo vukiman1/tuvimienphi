@@ -12,6 +12,7 @@ const BACKEND_EVENTS = [
   'auth.password.reset_requested',
   'auth.password.reset',
   'auth.password.changed',
+  'auth.password.set',
   'auth.login.two_factor_required',
   'auth.login.two_factor_failed',
   'auth.two_factor.enabled',

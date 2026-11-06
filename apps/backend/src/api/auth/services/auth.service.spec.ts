@@ -26,6 +26,8 @@ import { TwoFactorService } from './two-factor.service';
 import { TwoFactorChallengeService } from './two-factor-challenge.service';
 import { EmailCodeService } from './email-code.service';
 
+type DeliverCode = (code: string) => Promise<void>;
+
 const ACCESS_TTL_MS = 900_000;
 const REFRESH_TTL_MS = 86_400_000;
 
@@ -135,7 +137,15 @@ describe('AuthService', () => {
       recordFailure: jest.fn(),
       consume: jest.fn(),
     };
-    emailCode = { issue: jest.fn().mockResolvedValue('123456'), consume: jest.fn() };
+    emailCode = {
+      issue: jest.fn(
+        async (_kind: string, _userId: string, _ttlMs: number, deliver: DeliverCode) => {
+          await deliver('123456');
+          return true;
+        },
+      ),
+      consume: jest.fn(),
+    };
 
     // Real, over the same mocks: these keep asserting behaviour, not that a delegate was called.
     service = new AuthService(
@@ -185,6 +195,7 @@ describe('AuthService', () => {
         expect.stringContaining('EMAIL_CODE_VERIFY'),
         'user-1',
         expect.any(Number),
+        expect.any(Function),
       );
       expect(emailQueue.enqueue).toHaveBeenCalledWith({
         kind: EmailKind.EMAIL_VERIFICATION,
@@ -200,6 +211,17 @@ describe('AuthService', () => {
         expect.objectContaining({ userId: 'user-1' }),
       );
       expect(result.email).toBe('a@b.c');
+    });
+  });
+
+  describe('resendVerification', () => {
+    it('emails nothing when a code was sent less than a minute ago', async () => {
+      userService.getOne.mockResolvedValue({ id: 'user-1', isEmailVerified: false });
+      emailCode.issue.mockResolvedValue(false);
+
+      await service.resendVerification('a@b.c');
+
+      expect(emailQueue.enqueue).not.toHaveBeenCalled();
     });
   });
 
@@ -276,6 +298,7 @@ describe('AuthService', () => {
         expect.stringContaining('EMAIL_CODE_PASSWORD_RESET'),
         'user-1',
         expect.any(Number),
+        expect.any(Function),
       );
       expect(emailQueue.enqueue).toHaveBeenCalledWith({
         kind: EmailKind.PASSWORD_RESET,
@@ -283,6 +306,16 @@ describe('AuthService', () => {
         code: '123456',
         expiryMinutes: 15,
       });
+    });
+
+    it('emails nothing when a code was sent less than a minute ago', async () => {
+      userService.getOne.mockResolvedValue({ id: 'user-1' });
+      emailCode.issue.mockResolvedValue(false);
+
+      const result = await service.forgotPassword('a@b.c', request);
+
+      expect(emailQueue.enqueue).not.toHaveBeenCalled();
+      expect(result.message).toBe('If the email is registered, a code has been sent.');
     });
 
     it('fails the request when its code cannot be queued, so the user is not told a code is on its way', async () => {
@@ -357,6 +390,52 @@ describe('AuthService', () => {
         'jti-1',
         'password_changed',
       );
+    });
+  });
+
+  describe('setPassword', () => {
+    const dto = { code: '123456', password: 'newpass1', confirmPassword: 'newpass1' };
+    const googleOnlyUser = { id: 'user-1', email: 'a@b.c', password: null };
+
+    it('sets the first password and signs out only the other devices', async () => {
+      emailCode.consume.mockResolvedValue('user-1');
+
+      await service.setPassword(googleOnlyUser as never, 'jti-1', dto, request);
+
+      expect(emailCode.consume).toHaveBeenCalledWith(
+        expect.stringContaining('EMAIL_CODE_PASSWORD_RESET'),
+        'user-1',
+        '123456',
+      );
+      expect(userService.update).toHaveBeenCalledWith(googleOnlyUser, { password: 'newpass1' });
+      expect(sessionService.revokeOtherSessions).toHaveBeenCalledWith('user-1', 'jti-1');
+      expect(userSessionService.revokeOtherSessions).toHaveBeenCalledWith(
+        'user-1',
+        'jti-1',
+        'password_set',
+      );
+      expect(audit.record).toHaveBeenCalledWith(
+        AuthEvent.PASSWORD_SET,
+        expect.objectContaining({ userId: 'user-1' }),
+      );
+    });
+
+    it('rejects a wrong or expired code and leaves the account without a password', async () => {
+      emailCode.consume.mockResolvedValue(null);
+
+      await expect(
+        service.setPassword(googleOnlyUser as never, 'jti-1', dto, request),
+      ).rejects.toBeInstanceOf(BadRequestException);
+      expect(userService.update).not.toHaveBeenCalled();
+    });
+
+    it('refuses an account that already has a password, which must be changed instead', async () => {
+      const userWithPassword = { ...googleOnlyUser, password: 'hash' };
+
+      await expect(
+        service.setPassword(userWithPassword as never, 'jti-1', dto, request),
+      ).rejects.toBeInstanceOf(BadRequestException);
+      expect(emailCode.consume).not.toHaveBeenCalled();
     });
   });
 

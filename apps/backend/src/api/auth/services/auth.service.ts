@@ -7,12 +7,14 @@ import {
   Logger,
   UnauthorizedException,
 } from '@nestjs/common';
+import type { MessageResponse } from '@org/shared-contracts';
 import { Request, Response } from 'express';
 import * as argon2 from 'argon2';
 import { RegisterDto } from '../dto/register.dto';
 import { ResetPasswordDto } from '../dto/reset-password.dto';
 import { VerifyEmailDto } from '../dto/verify-email.dto';
 import { ChangePasswordDto } from '../dto/change-password.dto';
+import { SetPasswordDto } from '../dto/set-password.dto';
 import { UserEntity } from '../../user/entities/user.entity';
 import { UserService } from '../../user/user.service';
 import { EmailKind } from '../../../email/email-job';
@@ -272,24 +274,30 @@ export class AuthService {
   async forgotPassword(email: string, request: Request) {
     const user = await this.userService.getOne({ email });
     if (user) {
-      const code = await this.emailCodeService.issue(
-        EmailCodeKind.PASSWORD_RESET,
-        user.id,
-        PASSWORD_RESET_TTL_MS,
-      );
-      await this.emailQueue.enqueue({
-        kind: EmailKind.PASSWORD_RESET,
-        to: email,
-        code,
-        expiryMinutes: toMinutes(PASSWORD_RESET_TTL_MS),
-      });
-      this.auditService.record(AuthEvent.PASSWORD_RESET_REQUESTED, {
-        userId: user.id,
-        email,
-        request,
-      });
+      await this.sendPasswordResetCode(user.id, email, request);
     }
     return { message: 'If the email is registered, a code has been sent.' };
+  }
+
+  private async sendPasswordResetCode(
+    userId: string,
+    email: string,
+    request: Request,
+  ): Promise<void> {
+    const isSent = await this.emailCodeService.issue(
+      EmailCodeKind.PASSWORD_RESET,
+      userId,
+      PASSWORD_RESET_TTL_MS,
+      (code) =>
+        this.emailQueue.enqueue({
+          kind: EmailKind.PASSWORD_RESET,
+          to: email,
+          code,
+          expiryMinutes: toMinutes(PASSWORD_RESET_TTL_MS),
+        }),
+    );
+    if (!isSent) return;
+    this.auditService.record(AuthEvent.PASSWORD_RESET_REQUESTED, { userId, email, request });
   }
 
   async resetPassword({ email, code, password }: ResetPasswordDto, request: Request) {
@@ -324,6 +332,39 @@ export class AuthService {
     });
 
     return { message: 'Password changed successfully' };
+  }
+
+  async setPassword(
+    user: UserEntity,
+    jti: string,
+    dto: SetPasswordDto,
+    request: Request,
+  ): Promise<MessageResponse> {
+    if (user.password) {
+      throw new BadRequestException('This account already has a password; change it instead');
+    }
+    const ownerId = await this.emailCodeService.consume(
+      EmailCodeKind.PASSWORD_RESET,
+      user.id,
+      dto.code,
+    );
+    if (!ownerId) {
+      throw new BadRequestException('That code is not valid or has expired');
+    }
+    await this.userService.update(user, { password: dto.password });
+    await this.sessionRevocationService.revokeOthers(
+      user.id,
+      jti,
+      SessionRevokeReason.PASSWORD_SET,
+    );
+    this.auditService.record(AuthEvent.PASSWORD_SET, {
+      userId: user.id,
+      email: user.email,
+      jti,
+      request,
+    });
+
+    return { message: 'Password set successfully' };
   }
 
   async logout(user: UserEntity, request: Request, response: Response, audience: UserType) {
@@ -418,17 +459,18 @@ export class AuthService {
   }
 
   private async sendVerification(userId: string, email: string): Promise<void> {
-    const code = await this.emailCodeService.issue(
+    await this.emailCodeService.issue(
       EmailCodeKind.EMAIL_VERIFY,
       userId,
       EMAIL_VERIFY_TTL_MS,
+      (code) =>
+        this.emailQueue.enqueue({
+          kind: EmailKind.EMAIL_VERIFICATION,
+          to: email,
+          code,
+          expiryMinutes: toMinutes(EMAIL_VERIFY_TTL_MS),
+        }),
     );
-    await this.emailQueue.enqueue({
-      kind: EmailKind.EMAIL_VERIFICATION,
-      to: email,
-      code,
-      expiryMinutes: toMinutes(EMAIL_VERIFY_TTL_MS),
-    });
   }
 
   private async queueWelcomeEmail(to: string): Promise<void> {

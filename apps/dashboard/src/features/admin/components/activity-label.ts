@@ -9,6 +9,7 @@ export const ACTIVITY_LABEL: Record<string, string> = {
   'auth.password.reset_requested': 'yêu cầu đặt lại mật khẩu',
   'auth.password.reset': 'đã đặt lại mật khẩu',
   'auth.password.changed': 'đã đổi mật khẩu',
+  'auth.password.set': 'đã đặt mật khẩu',
   'auth.login.two_factor_required': 'cần xác thực hai lớp',
   'auth.login.two_factor_failed': 'xác thực hai lớp thất bại',
   'auth.two_factor.enabled': 'đã bật xác thực hai lớp',
