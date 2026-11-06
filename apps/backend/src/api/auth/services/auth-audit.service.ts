@@ -13,6 +13,7 @@ export enum AuthEvent {
   PASSWORD_RESET_REQUESTED = 'auth.password.reset_requested',
   PASSWORD_RESET = 'auth.password.reset',
   PASSWORD_CHANGED = 'auth.password.changed',
+  PASSWORD_SET = 'auth.password.set',
   LOGIN_TWO_FACTOR_REQUIRED = 'auth.login.two_factor_required',
   LOGIN_TWO_FACTOR_FAILED = 'auth.login.two_factor_failed',
   TWO_FACTOR_ENABLED = 'auth.two_factor.enabled',

@@ -381,6 +381,51 @@ describe('AuthService', () => {
     });
   });
 
+  describe('setPassword', () => {
+    const dto = { code: '123456', password: 'newpass1', confirmPassword: 'newpass1' };
+    const googleOnlyUser = { id: 'user-1', email: 'a@b.c', password: null };
+
+    it('sets the first password and signs out only the other devices', async () => {
+      emailCode.consume.mockResolvedValue('user-1');
+
+      await service.setPassword(googleOnlyUser as never, 'jti-1', dto, request);
+
+      expect(emailCode.consume).toHaveBeenCalledWith(
+        expect.stringContaining('EMAIL_CODE_PASSWORD_RESET'),
+        'user-1',
+        '123456',
+      );
+      expect(userService.update).toHaveBeenCalledWith(googleOnlyUser, { password: 'newpass1' });
+      expect(userSessionService.revokeOtherSessions).toHaveBeenCalledWith(
+        'user-1',
+        'jti-1',
+        'password_set',
+      );
+      expect(audit.record).toHaveBeenCalledWith(
+        AuthEvent.PASSWORD_SET,
+        expect.objectContaining({ userId: 'user-1' }),
+      );
+    });
+
+    it('rejects a wrong or expired code and leaves the account without a password', async () => {
+      emailCode.consume.mockResolvedValue(null);
+
+      await expect(
+        service.setPassword(googleOnlyUser as never, 'jti-1', dto, request),
+      ).rejects.toBeInstanceOf(BadRequestException);
+      expect(userService.update).not.toHaveBeenCalled();
+    });
+
+    it('refuses an account that already has a password, which must be changed instead', async () => {
+      const userWithPassword = { ...googleOnlyUser, password: 'hash' };
+
+      await expect(
+        service.setPassword(userWithPassword as never, 'jti-1', dto, request),
+      ).rejects.toBeInstanceOf(BadRequestException);
+      expect(emailCode.consume).not.toHaveBeenCalled();
+    });
+  });
+
   describe('login', () => {
     it('creates a session, sets two cookies and returns the user', async () => {
       const response = mockResponse();

@@ -3,6 +3,7 @@ export enum SessionRevokeReason {
   LOGOUT_ALL = 'logout_all',
   PASSWORD_RESET = 'password_reset',
   PASSWORD_CHANGED = 'password_changed',
+  PASSWORD_SET = 'password_set',
   REVOKED_BY_USER = 'revoked_by_user',
   SESSION_LIMIT = 'session_limit',
   SECURITY = 'security',

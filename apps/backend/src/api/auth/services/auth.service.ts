@@ -13,6 +13,7 @@ import { RegisterDto } from '../dto/register.dto';
 import { ResetPasswordDto } from '../dto/reset-password.dto';
 import { VerifyEmailDto } from '../dto/verify-email.dto';
 import { ChangePasswordDto } from '../dto/change-password.dto';
+import { SetPasswordDto } from '../dto/set-password.dto';
 import { UserEntity } from '../../user/entities/user.entity';
 import { UserService } from '../../user/user.service';
 import { EmailKind } from '../../../email/email-job';
@@ -325,6 +326,34 @@ export class AuthService {
     });
 
     return { message: 'Password changed successfully' };
+  }
+
+  async setPassword(user: UserEntity, jti: string, dto: SetPasswordDto, request: Request) {
+    if (user.password) {
+      throw new BadRequestException('This account already has a password; change it instead');
+    }
+    const ownerId = await this.emailCodeService.consume(
+      EmailCodeKind.PASSWORD_RESET,
+      user.id,
+      dto.code,
+    );
+    if (!ownerId) {
+      throw new BadRequestException('That code is not valid or has expired');
+    }
+    await this.userService.update(user, { password: dto.password });
+    await this.sessionRevocationService.revokeOthers(
+      user.id,
+      jti,
+      SessionRevokeReason.PASSWORD_SET,
+    );
+    this.auditService.record(AuthEvent.PASSWORD_SET, {
+      userId: user.id,
+      email: user.email,
+      jti,
+      request,
+    });
+
+    return { message: 'Password set successfully' };
   }
 
   async logout(user: UserEntity, request: Request, response: Response, audience: UserType) {

@@ -20,12 +20,13 @@ import { AuthService } from '../services/auth.service';
 import { TwoFactorAccountService } from '../services/two-factor-account.service';
 import { AuthBaseController } from './auth.base.controller';
 import { requireSessionJti } from '../session-request';
-import { ApiChangePassword } from '../auth.swagger';
+import { ApiChangePassword, ApiSetPassword } from '../auth.swagger';
 import { UserEntity } from '../../user/entities/user.entity';
 import { RegisterDto } from '../dto/register.dto';
 import { ForgotPasswordDto } from '../dto/forgot-password.dto';
 import { ResetPasswordDto } from '../dto/reset-password.dto';
 import { ChangePasswordDto } from '../dto/change-password.dto';
+import { SetPasswordDto } from '../dto/set-password.dto';
 import { VerifyEmailDto } from '../dto/verify-email.dto';
 import { ResendVerificationDto } from '../dto/resend-verification.dto';
 import { GoogleOneTapDto } from '../dto/google-one-tap.dto';
@@ -96,6 +97,19 @@ export class AuthUserController extends AuthBaseController<UserEntity>(
   @Throttle(STRICT_THROTTLE)
   async resetPassword(@Body() body: ResetPasswordDto, @Req() request: Request) {
     return this.authService.resetPassword(body, request);
+  }
+
+  @Post('set-password')
+  @HttpCode(200)
+  @Throttle(STRICT_THROTTLE)
+  @ApiSetPassword('user')
+  @UseGuards(AuthGuard(StrategyKey.JWT.USER))
+  async setPassword(
+    @User() user: UserEntity,
+    @Body() body: SetPasswordDto,
+    @Req() request: Request,
+  ) {
+    return this.authService.setPassword(user, requireSessionJti(request), body, request);
   }
 
   @Post('change-password')
