@@ -1,0 +1,9 @@
+[Unit]
+Description=Compare the VPS clock with public HTTPS time and report drift to Zalo
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/tuvimienphi
+ExecStart=/opt/tuvimienphi/tools/vps/watch-clock.sh /opt/tuvimienphi

@@ -1,0 +1,11 @@
+[Unit]
+Description=Check the VPS clock every fifteen minutes
+
+[Timer]
+OnBootSec=3min
+OnUnitActiveSec=15min
+AccuracySec=1min
+Unit=tuvimienphi-clock.service
+
+[Install]
+WantedBy=timers.target
