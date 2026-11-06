@@ -87,23 +87,24 @@ export class TwoFactorAccountService {
     }
 
     const user = await this.userService.getOneOrFail({ id: claim.userId });
+    await this.sendRecoveryCode(user.id, user.email, request);
+    return { message: 'Check your inbox for a link to turn off two-factor authentication.' };
+  }
+
+  private async sendRecoveryCode(userId: string, email: string, request: Request) {
     const code = await this.emailCodeService.issue(
       EmailCodeKind.TWO_FACTOR_RECOVERY,
-      user.id,
+      userId,
       RECOVERY_TTL_MS,
     );
+    if (!code) return;
     await this.emailQueue.enqueue({
       kind: EmailKind.TWO_FACTOR_RECOVERY,
-      to: user.email,
+      to: email,
       code,
       expiryMinutes: Math.round(RECOVERY_TTL_MS / MS_PER_MINUTE),
     });
-    this.auditService.record(AuthEvent.TWO_FACTOR_RECOVERY_REQUESTED, {
-      userId: user.id,
-      request,
-    });
-
-    return { message: 'Check your inbox for a link to turn off two-factor authentication.' };
+    this.auditService.record(AuthEvent.TWO_FACTOR_RECOVERY_REQUESTED, { userId, request });
   }
 
   /**

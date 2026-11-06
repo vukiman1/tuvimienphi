@@ -272,24 +272,25 @@ export class AuthService {
   async forgotPassword(email: string, request: Request) {
     const user = await this.userService.getOne({ email });
     if (user) {
-      const code = await this.emailCodeService.issue(
-        EmailCodeKind.PASSWORD_RESET,
-        user.id,
-        PASSWORD_RESET_TTL_MS,
-      );
-      await this.emailQueue.enqueue({
-        kind: EmailKind.PASSWORD_RESET,
-        to: email,
-        code,
-        expiryMinutes: toMinutes(PASSWORD_RESET_TTL_MS),
-      });
-      this.auditService.record(AuthEvent.PASSWORD_RESET_REQUESTED, {
-        userId: user.id,
-        email,
-        request,
-      });
+      await this.sendPasswordResetCode(user.id, email, request);
     }
     return { message: 'If the email is registered, a code has been sent.' };
+  }
+
+  private async sendPasswordResetCode(userId: string, email: string, request: Request) {
+    const code = await this.emailCodeService.issue(
+      EmailCodeKind.PASSWORD_RESET,
+      userId,
+      PASSWORD_RESET_TTL_MS,
+    );
+    if (!code) return;
+    await this.emailQueue.enqueue({
+      kind: EmailKind.PASSWORD_RESET,
+      to: email,
+      code,
+      expiryMinutes: toMinutes(PASSWORD_RESET_TTL_MS),
+    });
+    this.auditService.record(AuthEvent.PASSWORD_RESET_REQUESTED, { userId, email, request });
   }
 
   async resetPassword({ email, code, password }: ResetPasswordDto, request: Request) {
@@ -423,6 +424,7 @@ export class AuthService {
       userId,
       EMAIL_VERIFY_TTL_MS,
     );
+    if (!code) return;
     await this.emailQueue.enqueue({
       kind: EmailKind.EMAIL_VERIFICATION,
       to: email,

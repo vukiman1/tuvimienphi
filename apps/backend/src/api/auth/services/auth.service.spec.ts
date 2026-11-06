@@ -203,6 +203,17 @@ describe('AuthService', () => {
     });
   });
 
+  describe('resendVerification', () => {
+    it('emails nothing when a code was sent less than a minute ago', async () => {
+      userService.getOne.mockResolvedValue({ id: 'user-1', isEmailVerified: false });
+      emailCode.issue.mockResolvedValue(null);
+
+      await service.resendVerification('a@b.c');
+
+      expect(emailQueue.enqueue).not.toHaveBeenCalled();
+    });
+  });
+
   describe('verifyEmail', () => {
     const dto = { email: 'a@b.c', code: '123456' };
 
@@ -283,6 +294,16 @@ describe('AuthService', () => {
         code: '123456',
         expiryMinutes: 15,
       });
+    });
+
+    it('emails nothing when a code was sent less than a minute ago', async () => {
+      userService.getOne.mockResolvedValue({ id: 'user-1' });
+      emailCode.issue.mockResolvedValue(null);
+
+      const result = await service.forgotPassword('a@b.c', request);
+
+      expect(emailQueue.enqueue).not.toHaveBeenCalled();
+      expect(result.message).toBe('If the email is registered, a code has been sent.');
     });
 
     it('fails the request when its code cannot be queued, so the user is not told a code is on its way', async () => {

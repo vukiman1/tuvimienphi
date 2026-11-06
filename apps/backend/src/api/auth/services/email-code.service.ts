@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { RedisService } from '@org/backend-redis';
+import { EMAIL_CODE_RESEND_COOLDOWN_SECONDS } from '@org/shared-contracts';
 import { createHash, randomInt, timingSafeEqual } from 'crypto';
 
 export enum EmailCodeKind {
@@ -9,6 +10,7 @@ export enum EmailCodeKind {
 }
 
 const CODE_DIGITS = 6;
+const COOLDOWN_MARKER = '1';
 
 /**
  * Six digits is a million possibilities. That is only safe because a code dies after this many
@@ -30,7 +32,13 @@ export class EmailCodeService {
    * One live code per user per kind: issuing again replaces the previous one, so a second request
    * cannot leave two working codes behind.
    */
-  async issue(kind: EmailCodeKind, userId: string, ttlMs: number): Promise<string> {
+  async issue(kind: EmailCodeKind, userId: string, ttlMs: number): Promise<string | null> {
+    const isOutsideCooldown = await this.redisService.setIfAbsent(
+      this.cooldownKey(kind, userId),
+      COOLDOWN_MARKER,
+      EMAIL_CODE_RESEND_COOLDOWN_SECONDS,
+    );
+    if (!isOutsideCooldown) return null;
     const code = String(randomInt(0, 10 ** CODE_DIGITS)).padStart(CODE_DIGITS, '0');
     await this.write(kind, userId, { userId, codeHash: hash(code), attempts: 0 }, ttlMs);
     return code;
@@ -94,6 +102,10 @@ export class EmailCodeService {
 
   private key(kind: EmailCodeKind, userId: string): string {
     return `${kind}:${userId}`;
+  }
+
+  private cooldownKey(kind: EmailCodeKind, userId: string): string {
+    return `${kind}:${userId}:cooldown`;
   }
 }
 

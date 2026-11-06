@@ -96,6 +96,17 @@ describe('TwoFactorAccountService', () => {
       expect(emailQueue.enqueue).not.toHaveBeenCalled();
     });
 
+    it('emails nothing when a recovery code was sent less than a minute ago', async () => {
+      challenge.peek.mockResolvedValue({ userId: 'u1', rememberMe: false });
+      userService.getOneOrFail.mockResolvedValue({ id: 'u1', email: 'a@b.c' });
+      emailCode.issue.mockResolvedValue(null);
+
+      const result = await service.requestRecovery('challenge-1', request);
+
+      expect(emailQueue.enqueue).not.toHaveBeenCalled();
+      expect(result.message).toMatch(/check your inbox/i);
+    });
+
     it('sends to the address on the account, never one supplied by the caller', async () => {
       challenge.peek.mockResolvedValue({ userId: 'u1', rememberMe: false });
       userService.getOneOrFail.mockResolvedValue({ id: 'u1', email: 'a@b.c' });
