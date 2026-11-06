@@ -4,6 +4,7 @@ jest.mock('@org/shared-tu-vi', () => ({
 }));
 
 import {
+  birthKey,
   CalendarType,
   Gender,
   LuanGiaiChapterStatus,
@@ -15,6 +16,7 @@ import type { Repository } from 'typeorm';
 import { currentAiCallContext, type AiCallContext } from '../../ai/port/ai-call-context';
 import { AllowanceSource } from '../credits/allowance-source.enum';
 import type { ChapterAllowanceService } from '../credits/chapter-allowance.service';
+import type { FunnelService } from '../funnel/funnel.service';
 import type { LuanGiaiChapterEntity } from './entities/luan-giai-chapter.entity';
 import {
   CHAPTER_CONG_DANH,
@@ -53,6 +55,7 @@ interface Overrides {
   readonly row?: LuanGiaiChapterEntity | null;
   readonly daCo?: readonly Pick<LuanGiaiChapterEntity, 'chapterOrder' | 'viewYear'>[];
   readonly conSuat?: boolean;
+  readonly nguon?: AllowanceSource;
   readonly sinh?: jest.Mock;
 }
 
@@ -65,22 +68,27 @@ function dungService(overrides?: Overrides) {
   const allowance = {
     consume: jest
       .fn()
-      .mockResolvedValue(overrides?.conSuat === false ? null : AllowanceSource.Daily),
+      .mockResolvedValue(
+        overrides?.conSuat === false ? null : (overrides?.nguon ?? AllowanceSource.Daily),
+      ),
     refund: jest.fn().mockResolvedValue(undefined),
   };
   const generator = {
     generate: overrides?.sinh ?? jest.fn().mockResolvedValue(KET),
   };
+  const funnel = { recordUnlock: jest.fn().mockResolvedValue(undefined) };
 
   return {
     service: new LuanGiaiService(
       repo as unknown as Repository<LuanGiaiChapterEntity>,
       allowance as unknown as ChapterAllowanceService,
       generator as unknown as ChapterGenerator,
+      funnel as unknown as FunnelService,
     ),
     repo,
     allowance,
     generator,
+    funnel,
   };
 }
 
@@ -257,6 +265,56 @@ function deferred<T>(): Deferred<T> {
   });
   return { promise, resolve, reject };
 }
+
+describe('LuanGiaiService funnel unlocks', () => {
+  beforeEach(() => {
+    dungBrief
+      .mockReset()
+      .mockReturnValue(
+        jest
+          .requireActual('@org/shared-tu-vi')
+          .buildThanCuBrief(
+            jest.requireActual('@org/shared-tu-vi').chartFromBirthInput(CO_BANG).chart,
+          ),
+      );
+  });
+
+  it('records an unlock with the allowance source after a chapter is saved', async () => {
+    const { service, funnel } = dungService({ nguon: AllowanceSource.Credit });
+
+    await service.request('u1', CO_BANG, CHAPTER_THAN_CU);
+
+    expect(funnel.recordUnlock).toHaveBeenCalledTimes(1);
+    expect(funnel.recordUnlock).toHaveBeenCalledWith(birthKey(CO_BANG), AllowanceSource.Credit);
+  });
+
+  it('does not record an unlock when generation is unavailable', async () => {
+    const { service, funnel } = dungService({ sinh: jest.fn().mockResolvedValue(null) });
+
+    await service.request('u1', CO_BANG, CHAPTER_THAN_CU);
+
+    expect(funnel.recordUnlock).not.toHaveBeenCalled();
+  });
+
+  it('does not record an unlock when generation fails', async () => {
+    const { service, funnel } = dungService({
+      sinh: jest.fn().mockRejectedValue(new Error('UNAVAILABLE')),
+    });
+
+    await expect(service.request('u1', CO_BANG, CHAPTER_THAN_CU)).rejects.toBeInstanceOf(
+      ChapterGenerationFailedException,
+    );
+    expect(funnel.recordUnlock).not.toHaveBeenCalled();
+  });
+
+  it('does not record an unlock when the chapter was already generated', async () => {
+    const { service, funnel } = dungService({ row: { article: BAI } as LuanGiaiChapterEntity });
+
+    await service.request('u1', CO_BANG, CHAPTER_THAN_CU);
+
+    expect(funnel.recordUnlock).not.toHaveBeenCalled();
+  });
+});
 
 describe('LuanGiaiService.request khi một chương đang được sinh dở', () => {
   beforeEach(() => {

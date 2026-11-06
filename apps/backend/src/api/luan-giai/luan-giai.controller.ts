@@ -13,6 +13,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { StrategyKey } from '@org/backend-constants';
 import { User } from '@org/backend-decorators';
 import type { LuanGiaiChapterResponse, LuanGiaiChapterStatusMap } from '@org/shared-contracts';
+import { FunnelService } from '../funnel/funnel.service';
 import { UserEntity } from '../user/entities/user.entity';
 import { LuanGiaiRequestDto } from './dto/luan-giai-request.dto';
 import { LuanGiaiService } from './luan-giai.service';
@@ -21,13 +22,17 @@ const VIEW_YEAR_QUERY = 'viewYear';
 
 @Controller('luan-giai')
 export class LuanGiaiController {
-  constructor(private readonly luanGiai: LuanGiaiService) {}
+  constructor(
+    private readonly luanGiai: LuanGiaiService,
+    private readonly funnel: FunnelService,
+  ) {}
 
   @Get(':birthKey')
   status(
     @Param('birthKey') birthKey: string,
     @Query(VIEW_YEAR_QUERY, new ParseIntPipe({ optional: true })) viewYear?: number,
   ): Promise<LuanGiaiChapterStatusMap> {
+    void this.funnel.recordCast(birthKey);
     return this.luanGiai.status(birthKey, viewYear);
   }
 
