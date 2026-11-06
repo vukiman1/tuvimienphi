@@ -8,7 +8,7 @@ Tài khoản admin dùng để gọi API `/api/admin/*` và query trên Apollo S
 
 Console **chỉ đăng nhập bằng Google**: `http://localhost:4300/admin/login` có đúng một nút Google, không có form email/password. Router đặt `basepath: '/admin'` nên `/login` trần không khớp route nào; vào `/admin` thì tự chuyển tới trang đăng nhập khi chưa có phiên.
 
-Đường này đi qua `POST /api/admin/auth/google/one-tap`: verify ID token của Google → `assertConsoleRole` → phát phiên `audience: 'admin'`. **Không có TOTP.** Lớp thứ hai của console là 2SV trên chính Google account, không phải TOTP của hệ thống này — khác với `/api/admin/auth/login` vẫn bắt buộc 2FA. `docs/roadmap/06-admin-console.md` viết trước quyết định này nên còn mô tả ràng buộc cũ.
+Đường này đi qua `POST /api/admin/auth/google/one-tap`: verify ID token của Google → `assertConsoleRole` → nếu tài khoản đã bật 2FA thì hỏi mã TOTP, chưa bật thì phát phiên `audience: 'admin'` ngay. Console đi theo cài đặt 2FA của chính tài khoản (Cài đặt → Xác thực 2 bước trên site), không bắt buộc riêng. `docs/roadmap/06-admin-console.md` viết trước quyết định này nên còn mô tả ràng buộc cũ.
 
 Google account phải có `role` là `ADMIN` hoặc `SUPER_ADMIN`; sai role thì endpoint trả 403 và không phát cookie nào.
 
@@ -84,10 +84,10 @@ Cả hai đều `SUPER_ADMIN`, email đã xác thực, 2FA đã enrol sẵn ở 
 | `admin@tuvi.local` | `TuviLocal@2026` | `J6BN4KX3BH6OYND2D6LGGYWQWQDN4JFT` |
 | `dev@tuvi.local`   | `DevAdmin@2026`  | `U4SKLKG3DOVNZQKTJUL6ZJIYNNXFU7KB` |
 
-Hai ràng buộc không bỏ được ở mức tài khoản, nên đều đã set sẵn khi tạo:
+Ràng buộc ở mức tài khoản, đã set sẵn khi tạo:
 
 - **Email phải verified.** `/api/admin/auth/login` dùng chung `UserLocalStrategy` với site công khai, strategy đó chặn email chưa verify trước cả khi xét `role`.
-- **2FA phải bật.** `/api/admin/auth/login` từ chối tài khoản chưa bật 2FA, nên tài khoản không có 2FA thì không đăng nhập được vào console.
+- **2FA đã bật thì sẽ bị hỏi mã.** Console không bắt buộc 2FA; tài khoản dev được bật sẵn để thử đúng luồng nhập mã.
 
 Secret nằm trong DB ở dạng mã hoá AES-256-GCM với khoá `sha256(SECRET_KEY)`. Nếu đổi `SECRET_KEY` trong `apps/backend/.env` thì secret cũ giải mã không ra — phải tạo lại enrolment theo mục cuối.
 
