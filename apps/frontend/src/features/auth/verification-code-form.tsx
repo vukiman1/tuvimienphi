@@ -98,7 +98,13 @@ export function VerificationCodeForm({
         {isSubmitting ? 'Checking...' : submitLabel}
       </Button>
 
-      {onResend && <ResendCodeLink cooldown={cooldown} isSending={isResending} onResend={resend} />}
+      {onResend && (
+        <ResendCodeLink
+          cooldown={cooldown}
+          isSending={isResending}
+          onResend={() => void resend()}
+        />
+      )}
     </Form>
   );
 }

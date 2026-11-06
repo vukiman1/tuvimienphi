@@ -117,6 +117,7 @@ describe('RegisterForm', () => {
   });
 
   it('waits a minute before another code can be sent', async () => {
+    jest.useFakeTimers();
     jest
       .mocked(authService.register)
       .mockResolvedValue({ message: 'ok', email: 'new@example.com' });

@@ -30,10 +30,6 @@ const schema = fields.refine((values) => values.password === values.confirmPassw
   path: ['confirmPassword'],
 });
 
-/**
- * Code and new password on one screen. Splitting them would mean holding a verified code between
- * steps, which is a second thing to expire and get wrong.
- */
 interface ChooseNewPasswordProps {
   readonly email: string;
   readonly submitLabel: string;

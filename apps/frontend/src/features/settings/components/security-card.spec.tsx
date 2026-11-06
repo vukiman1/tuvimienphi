@@ -128,6 +128,7 @@ describe('SecurityCard', () => {
   });
 
   it('waits a minute before another code can be sent', async () => {
+    jest.useFakeTimers();
     mockAccount(false, 'g@b.c');
     jest.mocked(authService.forgotPassword).mockResolvedValue({ message: 'ok' } as never);
 
