@@ -45,9 +45,19 @@ Lần chạy đầu tiên gửi một tin xác nhận đã bắt đầu theo dõ
 
 **Chỉ báo, không tự chữa.** `restart: unless-stopped` đã lo việc khởi động lại; thêm tự chữa nữa chỉ giấu vấn đề đi.
 
+## Đồng hồ VPS
+
+`tools/vps/watch-clock.sh`, chạy 15 phút một lần qua timer riêng. So giờ của VPS với header `Date` của Cloudflare, Google hoặc Apple qua HTTPS, báo Zalo khi lệch quá 5 giây và khi đúng trở lại.
+
+Đồng hồ lệch không làm container nào đỏ, nhưng làm hỏng 2FA: mã TOTP chỉ được chấp nhận trong ±30 giây. Ngày 2026-11-06 VPS chậm 80 giây, không ai bật được 2FA, và không có gì báo.
+
+**VPS chặn UDP**, nên NTP (`systemd-timesyncd`, UDP 123) không bao giờ nhận được phản hồi. Giờ được giữ bằng `htpdate`, lấy giờ từ header HTTP qua TCP. `timedatectl` vẫn báo `System clock synchronized: no` vì đó là trạng thái của timesyncd, không phải htpdate; `watch-clock.sh` mới là nguồn tin.
+
+Không đo được (mọi nguồn giờ đều không trả lời) thì script thoát mã 1 và không gửi gì: mất mạng thì Zalo cũng không tới, còn systemd vẫn ghi lại lần chạy hỏng.
+
 ## Script tự cập nhật theo deploy
 
-`deploy-backend.sh` tải `tools/notify-zalo.sh` và `tools/vps/watch-containers.sh` từ đúng commit đang deploy, cùng cơ chế nó vốn dùng cho `docker-compose.prod.yml`. Nên hai script không bao giờ lệch phiên bản với code — một bộ theo dõi cũ âm thầm là loại hỏng tệ nhất.
+`deploy-backend.sh` tải `tools/notify-zalo.sh`, `tools/vps/watch-containers.sh` và `tools/vps/watch-clock.sh` từ đúng commit đang deploy, cùng cơ chế nó vốn dùng cho `docker-compose.prod.yml`. Nên các script không bao giờ lệch phiên bản với code — một bộ theo dõi cũ âm thầm là loại hỏng tệ nhất.
 
 Nếu commit đang deploy chưa có hai file đó (rollback về bản cũ) thì deploy **vẫn chạy bình thường** và giữ nguyên bản đang có trên đĩa. Một bản theo dõi hơi cũ vẫn tốt hơn một lần rollback bị chặn.
 
@@ -71,14 +81,25 @@ Systemd chỉ phải cài một lần:
 Deploy chỉ tải script, không tải unit file, nên chép unit từ repo trên máy mình:
 
 ```bash
-for unit in tuvimienphi-watch.service tuvimienphi-watch.timer; do
+for unit in tuvimienphi-watch.service tuvimienphi-watch.timer \
+  tuvimienphi-clock.service tuvimienphi-clock.timer; do
   ssh root@<vps> "cat > /etc/systemd/system/$unit" < "tools/vps/$unit"
 done
 ssh root@<vps>
 sudo systemctl daemon-reload
-sudo systemctl enable --now tuvimienphi-watch.timer
-systemctl list-timers tuvimienphi-watch.timer
+sudo systemctl enable --now tuvimienphi-watch.timer tuvimienphi-clock.timer
+systemctl list-timers 'tuvimienphi-*'
 ```
+
+Giữ giờ đúng khi UDP bị chặn (một lần, trên VPS):
+
+```bash
+sudo apt-get install -y htpdate
+sudo systemctl enable --now htpdate
+journalctl -u htpdate -n 5
+```
+
+Dòng `Setting N seconds` trong journal là lần chỉnh đầu tiên.
 
 Chạy thử một lần bằng tay:
 

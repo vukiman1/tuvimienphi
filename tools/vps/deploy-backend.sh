@@ -9,7 +9,7 @@ readonly COMPOSE_FILE_NAME='docker-compose.prod.yml'
 readonly READINESS_TIMEOUT_SECONDS=180
 readonly READINESS_POLL_SECONDS=3
 readonly SOURCE_LABEL='org.opencontainers.image.source'
-readonly MONITORING_SCRIPTS=(tools/notify-zalo.sh tools/vps/watch-containers.sh)
+readonly MONITORING_SCRIPTS=(tools/notify-zalo.sh tools/vps/watch-containers.sh tools/vps/watch-clock.sh)
 readonly LIVE_ENV_FILE='.env'
 readonly NEXT_ENV_FILE='.env.next'
 
