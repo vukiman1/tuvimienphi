@@ -1,12 +1,15 @@
 import { Logger } from '@nestjs/common';
+import type { ConfigService } from '@nestjs/config';
 import type { RedisService } from '@org/backend-redis';
 import { AllowanceSource } from '../credits/allowance-source.enum';
 import type { FunnelDailyStore } from './funnel-daily.store';
-import type { FunnelKeyHasher } from './funnel-key-hasher';
+import { FunnelKeyHasher } from './funnel-key-hasher';
 import { FunnelMetric } from './funnel-metric.enum';
 import { FunnelService } from './funnel.service';
 
 const BIRTH_KEY = '1990-11-05-am-h3-nu';
+const OTHER_BIRTH_KEY = '1990-11-06-am-h3-nu';
+const SECRET = 'funnel-test-secret-key-at-least-32-chars';
 const MORNING = new Date('2026-11-05T01:00:00Z');
 
 class FakeRedis {
@@ -34,14 +37,16 @@ class FakeStore {
   }
 }
 
-const hasher = { hash: (birthKey: string): string => `hashed-${birthKey.length}` };
+const config = {
+  get: (key: string): string | undefined => (key === 'crypto.secretKey' ? SECRET : undefined),
+};
 
 function build(): { service: FunnelService; redis: FakeRedis; store: FakeStore } {
   const redis = new FakeRedis();
   const store = new FakeStore();
   const service = new FunnelService(
     redis as unknown as RedisService,
-    hasher as unknown as FunnelKeyHasher,
+    new FunnelKeyHasher(config as unknown as ConfigService),
     store as unknown as FunnelDailyStore,
   );
   return { service, redis, store };
@@ -57,6 +62,15 @@ describe('FunnelService', () => {
     await service.recordCast(BIRTH_KEY, MORNING);
 
     expect(store.count('2026-11-05', FunnelMetric.ChartCast)).toBe(1);
+  });
+
+  it('counts two different charts cast on the same day separately', async () => {
+    const { service, store } = build();
+
+    await service.recordCast(BIRTH_KEY, MORNING);
+    await service.recordCast(OTHER_BIRTH_KEY, MORNING);
+
+    expect(store.count('2026-11-05', FunnelMetric.ChartCast)).toBe(2);
   });
 
   it('counts the same chart again on the next UTC day', async () => {
