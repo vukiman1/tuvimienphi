@@ -55,6 +55,12 @@ export const MAX_NAME_LENGTH = 60;
 export const DAYS_IN_LONGEST_MONTH = 31;
 export const MONTHS_IN_YEAR = 12;
 
+const MAX_BIRTH_HOUR_INDEX = BIRTH_HOURS.length - 1;
+
+const BIRTH_KEY_PATTERN = new RegExp(
+  `^(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})-(?:${Object.values(CalendarType).join('|')})-h(?<hour>0|[1-9]\\d?)-(?:${Object.values(Gender).join('|')})$`,
+);
+
 export interface BirthInput {
   fullName?: string;
   day: number;
@@ -86,4 +92,19 @@ function pad2(value: number): string {
  */
 export function birthKey({ day, month, year, calendar, hour, gender }: BirthInput): string {
   return `${year}-${pad2(month)}-${pad2(day)}-${calendar}-h${birthHourIndex(hour)}-${gender}`;
+}
+
+function isWithin(value: number, min: number, max: number): boolean {
+  return value >= min && value <= max;
+}
+
+export function isBirthKey(value: string): boolean {
+  const parts = BIRTH_KEY_PATTERN.exec(value)?.groups;
+  if (!parts) return false;
+  return (
+    isWithin(Number(parts.year), MIN_BIRTH_YEAR, MAX_STORED_BIRTH_YEAR) &&
+    isWithin(Number(parts.month), 1, MONTHS_IN_YEAR) &&
+    isWithin(Number(parts.day), 1, DAYS_IN_LONGEST_MONTH) &&
+    isWithin(Number(parts.hour), 0, MAX_BIRTH_HOUR_INDEX)
+  );
 }

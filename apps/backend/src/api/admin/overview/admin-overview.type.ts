@@ -64,4 +64,13 @@ export class AdminOverview {
 
   @Field(() => [LabelledCount])
   devices: LabelledCount[];
+
+  @Field(() => PeriodMetric)
+  chartCasts: PeriodMetric;
+
+  @Field(() => PeriodMetric)
+  chapterUnlocks: PeriodMetric;
+
+  @Field(() => PeriodMetric)
+  paidChapterUnlocks: PeriodMetric;
 }

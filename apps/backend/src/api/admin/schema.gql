@@ -104,12 +104,15 @@ type AdminGiftCode {
 
 type AdminOverview {
   activeUsers: PeriodMetric!
+  chapterUnlocks: PeriodMetric!
+  chartCasts: PeriodMetric!
   devices: [LabelledCount!]!
   from: String!
   googleUsers: Int!
   logins: PeriodMetric!
   newCharts: PeriodMetric!
   newUsers: PeriodMetric!
+  paidChapterUnlocks: PeriodMetric!
   passwordUsers: Int!
   savedCharts: Int!
   to: String!

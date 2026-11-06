@@ -8,6 +8,7 @@ import { writeFileSync } from 'node:fs';
 import { fileURLToPath, URL } from 'node:url';
 import type { Plugin } from 'vite';
 import { loadFrontendConfig } from './config/index.ts';
+import { analyticsBeaconPlugin } from './tools/analytics-beacon.ts';
 import { getSeoRoutes } from './tools/seo-routes.mjs';
 
 const requireFromHere = createRequire(import.meta.url);
@@ -60,6 +61,7 @@ export default defineConfig(({ command, mode }) => {
       react(),
       tailwindcss(),
       sitemapPlugin(siteUrl),
+      analyticsBeaconPlugin(frontendConfig.analytics.cloudflareToken),
       isAnalyze &&
         visualizer({
           filename: './dist/stats.html',

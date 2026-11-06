@@ -15,6 +15,8 @@ import { preview } from 'vite';
 import { chromium } from 'playwright';
 import { getSeoRoutes } from './seo-routes.mjs';
 
+const ANALYTICS_BEACON_URLS = 'https://static.cloudflareinsights.com/**';
+
 const frontendRoot = fileURLToPath(new URL('..', import.meta.url));
 const distDir = join(frontendRoot, 'dist');
 
@@ -44,6 +46,7 @@ async function main() {
   try {
     for (const route of routes) {
       const page = await browser.newPage();
+      await page.route(ANALYTICS_BEACON_URLS, (route) => route.abort());
       try {
         await page.goto(baseUrl + route, { waitUntil: 'networkidle', timeout: 30_000 });
         // Wait for the client router to mount a visible content region (not just the invisible

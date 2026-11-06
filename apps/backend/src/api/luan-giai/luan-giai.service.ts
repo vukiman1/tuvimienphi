@@ -15,6 +15,7 @@ import { chartFromBirthInput, type NatalChart } from '@org/shared-tu-vi';
 import { Repository } from 'typeorm';
 import { runWithAiCallContext } from '../../ai/port/ai-call-context';
 import { ChapterAllowanceService } from '../credits/chapter-allowance.service';
+import { FunnelService } from '../funnel/funnel.service';
 import type { ChapterContext, ChapterDefinition } from './generation/chapter-definition';
 import { ChapterGenerator } from './generation/chapter-generator';
 import { CHAPTER_DEFINITIONS } from './generation/chapter-registry';
@@ -54,6 +55,7 @@ export class LuanGiaiService {
     private readonly repo: Repository<LuanGiaiChapterEntity>,
     private readonly allowance: ChapterAllowanceService,
     private readonly generator: ChapterGenerator,
+    private readonly funnel: FunnelService,
   ) {}
 
   async status(key: string, viewYear?: number): Promise<LuanGiaiChapterStatusMap> {
@@ -171,6 +173,7 @@ export class LuanGiaiService {
       }
 
       await this.save(slot, ket.article, ket.model, ket.attempts);
+      void this.funnel.recordUnlock(slot.birthKey, source);
       return { status: LuanGiaiChapterStatus.Ready, article: ket.article };
     } catch (error) {
       await this.allowance.refund(userId, source);

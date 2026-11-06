@@ -3,11 +3,15 @@ import { useQuery } from '@tanstack/react-query';
 import { Area, Pie } from '@ant-design/charts';
 import {
   DatabaseOutlined,
+  DollarOutlined,
   FileAddOutlined,
   GoogleOutlined,
   LockOutlined,
   LoginOutlined,
+  PercentageOutlined,
+  ProfileOutlined,
   TeamOutlined,
+  UnlockOutlined,
   UserAddOutlined,
   UserOutlined,
 } from '@ant-design/icons';
@@ -18,8 +22,10 @@ import { selectUser, useAuthStore } from '@/stores/auth-store';
 import { RecentActivityCard } from '../components/recent-activity-card';
 import { CHART_LINE_COLOR, STAT_ACCENT } from '../components/stat-accent';
 import { StatTile } from '../components/stat-tile';
+import { StatUnit } from '../components/stat-unit';
 import { activeUsersSeriesQuery } from '../data/active-users-series.query';
 import { OVERVIEW_DEFAULT_DAYS, adminOverviewQuery } from '../data/admin-overview.query';
+import { paidConversionPercent } from '../data/paid-conversion';
 
 const LOAD_FAILED = 'Không tải được số liệu tổng quan.';
 const CHART_HEIGHT = 260;
@@ -81,6 +87,31 @@ export function OverviewPage() {
       accent: STAT_ACCENT.amber,
     },
   ];
+
+  const funnelTiles = [
+    {
+      title: 'Lá số được lập',
+      metric: overview?.chartCasts,
+      icon: <ProfileOutlined />,
+      accent: STAT_ACCENT.blue,
+    },
+    {
+      title: 'Mở khoá luận giải',
+      metric: overview?.chapterUnlocks,
+      icon: <UnlockOutlined />,
+      accent: STAT_ACCENT.green,
+    },
+    {
+      title: 'Mở khoá trả phí',
+      metric: overview?.paidChapterUnlocks,
+      icon: <DollarOutlined />,
+      accent: STAT_ACCENT.amber,
+    },
+  ];
+
+  const paidConversion = overview
+    ? paidConversionPercent(overview.chartCasts.value, overview.paidChapterUnlocks.value)
+    : undefined;
 
   const totalTiles = [
     {
@@ -152,6 +183,36 @@ export function OverviewPage() {
             />
           </Col>
         ))}
+      </Row>
+
+      <Typography.Title level={4} style={{ margin: 0 }}>
+        Phễu lá số
+      </Typography.Title>
+
+      <Row gutter={[16, 16]}>
+        {funnelTiles.map((tile) => (
+          <Col key={tile.title} {...TILE_SPAN}>
+            <StatTile
+              title={tile.title}
+              value={tile.metric?.value}
+              icon={tile.icon}
+              accent={tile.accent}
+              trend={tile.metric}
+              series={tile.metric?.series}
+              loading={isPending}
+            />
+          </Col>
+        ))}
+        <Col {...TILE_SPAN}>
+          <StatTile
+            title="Tỷ lệ trả phí"
+            value={paidConversion}
+            icon={<PercentageOutlined />}
+            accent={STAT_ACCENT.purple}
+            unit={StatUnit.Percent}
+            loading={isPending}
+          />
+        </Col>
       </Row>
 
       <Row gutter={[16, 16]}>
@@ -228,6 +289,7 @@ export function OverviewPage() {
           <>
             &ldquo;Lượt đăng nhập&rdquo; đếm phiên đăng nhập, không phải lượt truy cập. &ldquo;Lá
             số&rdquo; chỉ tính lá số của người đã đăng nhập — khách vãng lai không được ghi nhận.
+            &ldquo;Lá số được lập&rdquo; thì tính cả khách, mỗi lá số một lần mỗi ngày.
           </>
         }
       />

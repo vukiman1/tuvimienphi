@@ -32,6 +32,7 @@ describe('frontend config', () => {
       media: { baseUrl: '' },
       sentry: { dsn: '' },
       google: { clientId: '' },
+      analytics: { cloudflareToken: '' },
     });
   });
 
@@ -43,6 +44,7 @@ describe('frontend config', () => {
       media: { baseUrl: '' },
       sentry: { dsn: '' },
       google: { clientId: '' },
+      analytics: { cloudflareToken: '' },
     }));
 
     const first = loadFrontendConfig('test', requireStub);
