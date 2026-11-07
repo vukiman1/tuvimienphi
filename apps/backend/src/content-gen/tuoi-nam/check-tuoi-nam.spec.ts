@@ -1,4 +1,4 @@
-import { tuoiNamFacts } from '@org/shared-tu-vi';
+import { HoangOc, tuoiNamFacts } from '@org/shared-tu-vi';
 import { checkTuoiNam } from './check-tuoi-nam';
 import { buildTuoiNamBrief } from './tuoi-nam.brief';
 import type { TuoiNamDraft } from './tuoi-nam.schema';
@@ -98,5 +98,89 @@ describe('checkTuoiNam', () => {
   it('rejects fewer than 3 FAQ entries', () => {
     const draft = withDraft({ faq: cleanDraft.faq.slice(0, 2) });
     expect(checkTuoiNam(draft, brief)).toHaveLength(1);
+  });
+
+  it('rejects the nữ sao in a nam FAQ answer', () => {
+    const faq = [
+      {
+        question: 'Nam 1986 năm 2027 sao gì chiếu mệnh?',
+        answer: `Nam 1986 gặp sao ${facts.nu.sao}.`,
+      },
+      ...cleanDraft.faq.slice(1),
+    ];
+    const violations = checkTuoiNam(withDraft({ faq }), brief);
+    expect(violations).toHaveLength(1);
+    expect(violations[0]).toContain('La Hầu');
+  });
+
+  it('rejects a star the brief did not compute in a FAQ answer', () => {
+    const faq = [
+      ...cleanDraft.faq.slice(0, 2),
+      { question: 'Tuổi 1986 nên làm gì năm 2027?', answer: 'Sao Kế Đô chiếu mệnh.' },
+    ];
+    const violations = checkTuoiNam(withDraft({ faq }), brief);
+    expect(violations).toHaveLength(1);
+    expect(violations[0]).toContain('Kế Đô');
+  });
+
+  it('rejects a Hoang ốc cung the brief did not compute', () => {
+    const wrongCung = Object.values(HoangOc).find((cung) => cung !== facts.hoangOc) as HoangOc;
+    const draft = withDraft({
+      cuoiNha: paragraphs(...cleanDraft.cuoiNha, `Có người lại nói cung ${wrongCung}.`),
+    });
+    const violations = checkTuoiNam(draft, brief);
+    expect(violations).toHaveLength(1);
+    expect(violations[0]).toContain(wrongCung);
+  });
+
+  it('rejects denying a Kim lâu the age falls in', () => {
+    const draft = withDraft({
+      cuoiNha: paragraphs(`Tuổi này không phạm Kim lâu ${facts.kimLau}.`, cleanDraft.cuoiNha[1]),
+    });
+    expect(checkTuoiNam(draft, brief).length).toBeGreaterThan(0);
+    expect(checkTuoiNam(draft, brief).some((m) => m.includes('Kim lâu'))).toBe(true);
+  });
+
+  it('rejects claiming a Kim lâu the age does not fall in', () => {
+    const freeFacts = tuoiNamFacts(1985, 2027);
+    const freeBrief = buildTuoiNamBrief(freeFacts);
+    const draft = withDraft({
+      cuoiNha: paragraphs(
+        'Tuổi này phạm Kim lâu thân, nên cân nhắc.',
+        'Tuổi này không phạm Kim lâu.',
+        `Hoang ốc rơi vào cung ${freeFacts.hoangOc}.`,
+      ),
+      saoHanNam: paragraphs(`Sao ${freeFacts.nam.sao}.`, `Hạn ${freeFacts.nam.han}.`),
+      saoHanNu: paragraphs(`Sao ${freeFacts.nu.sao}.`, `Hạn ${freeFacts.nu.han}.`),
+      tongQuan: paragraphs(`Tuổi ${freeFacts.giaiDoan}.`, 'Ổn định.'),
+      loiKhuyen: paragraphs(`Tuổi ${freeFacts.giaiDoan}.`, 'Nghỉ ngơi.'),
+      menh: paragraphs(`Quan hệ ${freeFacts.menhVoiNam}.`, 'Chỉ là nét chung.'),
+      faq: cleanDraft.faq.map((entry) => ({ ...entry, answer: 'Giữ nhịp sống ổn định.' })),
+    });
+    const violations = checkTuoiNam(draft, freeBrief);
+    expect(violations).toHaveLength(1);
+    expect(violations[0]).toContain('Kim lâu');
+  });
+
+  it('catches a star spelled with old-style tone marks in the wrong gender section', () => {
+    const draft = withDraft({
+      saoHanNam: paragraphs(...cleanDraft.saoHanNam, 'Còn sao Thuỷ Diệu nữa.'),
+    });
+    const violations = checkTuoiNam(draft, brief);
+    expect(violations).toHaveLength(1);
+    expect(violations[0]).toContain('Thủy Diệu');
+  });
+
+  it('resolves a spelling alias to the canonical name before the swap check', () => {
+    const draft = withDraft({
+      saoHanNam: paragraphs(...cleanDraft.saoHanNam, 'Còn sao La Hầu và Vân Hán.'),
+    });
+    expect(checkTuoiNam(draft, brief).some((m) => m.includes('La Hầu'))).toBe(true);
+    const aliasDraft = withDraft({
+      saoHanNu: paragraphs(...cleanDraft.saoHanNu, 'Nam mạng thì có Vân Hán.'),
+    });
+    const violations = checkTuoiNam(aliasDraft, brief);
+    expect(violations).toHaveLength(1);
+    expect(violations[0]).toContain('Vân Hớn');
   });
 });

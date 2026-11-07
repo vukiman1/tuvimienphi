@@ -1,4 +1,4 @@
-import { tuoiNamFacts } from '@org/shared-tu-vi';
+import { BAT_HAN_LOI, isHoangOcTot, tuoiNamFacts } from '@org/shared-tu-vi';
 import { buildTuoiNamBrief } from './tuoi-nam.brief';
 import { buildTuoiNamMessages } from './tuoi-nam.prompt';
 import {
@@ -42,6 +42,23 @@ describe('parseTuoiNamDraft', () => {
     const withoutMenh = { ...draft, menh: undefined };
     expect(() => parseTuoiNamDraft(JSON.stringify(withoutMenh))).toThrow(
       MalformedTuoiNamDraftError,
+    );
+  });
+});
+
+describe('buildTuoiNamMessages facts', () => {
+  const facts = tuoiNamFacts(1986, 2027);
+  const text = buildTuoiNamMessages(brief, [])[0].text;
+
+  it('gives the model the folk meaning of both hạn', () => {
+    expect(text).toContain(BAT_HAN_LOI[facts.nam.han]);
+    expect(text).toContain(BAT_HAN_LOI[facts.nu.han]);
+  });
+
+  it('states the Kim lâu and Hoang ốc verdicts', () => {
+    expect(text).toContain(`phạm Kim lâu ${facts.kimLau}`);
+    expect(text).toContain(
+      `cung ${facts.hoangOc}, là ${isHoangOcTot(facts.hoangOc) ? 'cung tốt' : 'cung xấu'}`,
     );
   });
 });

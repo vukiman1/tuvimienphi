@@ -1,4 +1,4 @@
-import { CUU_DIEU_LOI } from '@org/shared-tu-vi';
+import { BAT_HAN_LOI, CUU_DIEU_LOI, isHoangOcTot, KIM_LAU_LOI } from '@org/shared-tu-vi';
 import type { AiMessage } from '../../ai/port/ai.types';
 import type { LanThu } from '../../api/luan-giai/generation/sinh-voi-kiem';
 import { TuoiNamSection, type TuoiNamBrief } from './tuoi-nam.brief';
@@ -7,7 +7,7 @@ import type { TuoiNamDraft } from './tuoi-nam.schema';
 export const TUOI_NAM_SYSTEM_PROMPT = `Bạn viết một trang "Tử vi theo tuổi" cho người Việt, về một năm sinh âm lịch trong một năm xem cụ thể. Trang gộp cả nam mạng và nữ mạng của cùng năm sinh.
 
 Quy tắc bắt buộc:
-- Chỉ viết từ brief được đưa. Không thêm sao, hạn, cung hay kết luận nào brief không nêu. Mục nam mạng chỉ nhắc sao và hạn của nam; mục nữ mạng chỉ nhắc sao và hạn của nữ.
+- Chỉ viết từ brief được đưa. Ý nghĩa của sao, hạn, Kim lâu và cung Hoang ốc chỉ được giải thích dựa trên chính các dòng brief nêu; không tự bịa thêm ý nghĩa nào khác. Không thêm sao, hạn, cung hay kết luận nào brief không nêu. Mục nam mạng chỉ nhắc sao và hạn của nam; mục nữ mạng chỉ nhắc sao và hạn của nữ.
 - Mỗi mục phải dùng đúng nguyên văn các cụm trong danh sách "Phải nêu" của mục đó.
 - Giọng bình tĩnh, thực tế: dân gian nói gì, cần cẩn thận điều gì, nên làm gì. Không dọa, không nói giảm nhẹ quá mức, không dùng từ gây sợ hãi.
 - Không bán hàng, không khuyên cúng bái hay mua sắm. Không viết "phải cúng", "nên mua", "bắt buộc cúng".
@@ -31,13 +31,28 @@ const SECTION_BRIEFS: readonly { readonly section: TuoiNamSection; readonly titl
   { section: TuoiNamSection.LoiKhuyen, title: 'Lời khuyên cho năm (mục loiKhuyen)' },
 ];
 
+function describeKimLau(brief: TuoiNamBrief): string {
+  const { kimLau } = brief.facts;
+  const verdict =
+    kimLau === null ? 'Tuổi này không phạm Kim lâu' : `Tuổi này phạm Kim lâu ${kimLau}`;
+  return `Kim lâu: ${verdict}. ${KIM_LAU_LOI}`;
+}
+
+function describeHoangOc(brief: TuoiNamBrief): string {
+  const { hoangOc } = brief.facts;
+  const verdict = isHoangOcTot(hoangOc) ? 'cung tốt' : 'cung xấu';
+  return `Hoang ốc: tuổi này rơi vào cung ${hoangOc}, là ${verdict} theo cách xem làm nhà.`;
+}
+
 function describeFacts(brief: TuoiNamBrief): string {
   const { facts } = brief;
   return [
     `Năm sinh: ${facts.canChi} ${facts.birthYear}, năm xem: ${facts.viewYear}, tuổi mụ ${facts.tuoi}, giai đoạn đời: ${facts.giaiDoan}.`,
     `Mệnh năm sinh: ${facts.menh.name}. Mệnh năm xem: ${facts.menhNam.name}. Quan hệ: ${facts.menhVoiNam}.`,
-    `Nam mạng: sao ${facts.nam.sao} (${CUU_DIEU_LOI[facts.nam.sao]}), hạn ${facts.nam.han}.`,
-    `Nữ mạng: sao ${facts.nu.sao} (${CUU_DIEU_LOI[facts.nu.sao]}), hạn ${facts.nu.han}.`,
+    `Nam mạng: sao ${facts.nam.sao} (${CUU_DIEU_LOI[facts.nam.sao]}), hạn ${facts.nam.han} (${BAT_HAN_LOI[facts.nam.han]}).`,
+    `Nữ mạng: sao ${facts.nu.sao} (${CUU_DIEU_LOI[facts.nu.sao]}), hạn ${facts.nu.han} (${BAT_HAN_LOI[facts.nu.han]}).`,
+    describeKimLau(brief),
+    describeHoangOc(brief),
   ].join('\n');
 }
 
