@@ -1,5 +1,5 @@
 import { BAT_HAN, CUU_DIEU, HoangOc, KimLau } from '@org/shared-tu-vi';
-import { LOI_DOA } from '../../api/luan-giai/validate/check-forbidden-phrases';
+import { forbiddenPhraseViolations, mentions, normalize } from '../check-text';
 import { TuoiNamSection, type TuoiNamBrief } from './tuoi-nam.brief';
 import type { TuoiNamDraft } from './tuoi-nam.schema';
 
@@ -8,29 +8,7 @@ const MAX_PARAGRAPHS = 4;
 const MIN_FAQ_ENTRIES = 3;
 const MAX_FAQ_ENTRIES = 5;
 
-const LOI_DOA_TET = ['đại họa'] as const;
-const LOI_BAN_HANG = ['phải cúng', 'nên mua', 'bắt buộc cúng'] as const;
-const CUM_BI_CAM = [...LOI_DOA, ...LOI_DOA_TET, ...LOI_BAN_HANG] as const;
-
 const SECTIONS: readonly TuoiNamSection[] = Object.values(TuoiNamSection);
-
-const OLD_STYLE_TONE_MARKS: readonly (readonly [RegExp, string])[] = [
-  [/oà/g, 'òa'],
-  [/oá/g, 'óa'],
-  [/oả/g, 'ỏa'],
-  [/oã/g, 'õa'],
-  [/oạ/g, 'ọa'],
-  [/oè/g, 'òe'],
-  [/oé/g, 'óe'],
-  [/oẻ/g, 'ỏe'],
-  [/oẽ/g, 'õe'],
-  [/oẹ/g, 'ọe'],
-  [/uỳ/g, 'ùy'],
-  [/uý/g, 'úy'],
-  [/uỷ/g, 'ủy'],
-  [/uỹ/g, 'ũy'],
-  [/uỵ/g, 'ụy'],
-];
 
 const NAME_ALIASES: Readonly<Record<string, string>> = {
   'Vân Hán': 'Vân Hớn',
@@ -40,22 +18,6 @@ const NAME_ALIASES: Readonly<Record<string, string>> = {
 const VOCABULARY: readonly string[] = [...CUU_DIEU, ...BAT_HAN, ...Object.values(HoangOc)];
 const NO_KIM_LAU_PHRASE = 'không phạm kim lâu';
 const FAQ_GENDER_PREFIXES = { nam: 'nam', nu: 'nữ' } as const;
-
-function normalize(text: string): string {
-  return OLD_STYLE_TONE_MARKS.reduce(
-    (result, [pattern, replacement]) => result.replace(pattern, replacement),
-    text.normalize('NFC').toLowerCase(),
-  );
-}
-
-function escapeRegExp(text: string): string {
-  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
-function mentions(text: string, name: string): boolean {
-  const pattern = new RegExp(`(?<!\\p{L})${escapeRegExp(normalize(name))}(?!\\p{L})`, 'u');
-  return pattern.test(normalize(text));
-}
 
 function namesIn(text: string): readonly string[] {
   const aliased = Object.entries(NAME_ALIASES)
@@ -150,19 +112,12 @@ function checkKimLau(draft: TuoiNamDraft, brief: TuoiNamBrief): string[] {
   return [...denial, ...wrongKinds];
 }
 
-function checkForbiddenPhrases(draft: TuoiNamDraft): string[] {
-  const text = normalize(allText(draft));
-  return CUM_BI_CAM.filter((phrase) => text.includes(phrase)).map(
-    (phrase) => `dùng cụm bị cấm "${phrase}"`,
-  );
-}
-
 export function checkTuoiNam(draft: TuoiNamDraft, brief: TuoiNamBrief): readonly string[] {
   return [
     ...checkLength(draft),
     ...checkClaims(draft, brief),
     ...checkInventedFacts(draft, brief),
     ...checkKimLau(draft, brief),
-    ...checkForbiddenPhrases(draft),
+    ...forbiddenPhraseViolations(allText(draft)),
   ];
 }
