@@ -28,8 +28,8 @@ describe('batHan', () => {
 });
 
 describe('BAT_HAN_TRUYEN_THONG', () => {
-  it('is a single sentence', () => {
+  it('is two sentences', () => {
     expect(BAT_HAN_TRUYEN_THONG.trim().endsWith('.')).toBe(true);
-    expect(BAT_HAN_TRUYEN_THONG.slice(0, -1)).not.toContain('.');
+    expect(BAT_HAN_TRUYEN_THONG.slice(0, -1).split('. ')).toHaveLength(2);
   });
 });

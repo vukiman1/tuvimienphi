@@ -5,7 +5,7 @@ export const BAT_HAN = [
   'Tam Kheo',
   'Ngũ Mộ',
   'Thiên Tinh',
-  'Tán Tận',
+  'Toán Tận',
   'Thiên La',
   'Địa Võng',
   'Diêm Vương',
@@ -20,7 +20,7 @@ const AGES_PER_CYCLE = AGES_PER_BLOCK * BLOCKS_PER_CYCLE;
 const BAT_HAN_ORDER_BY_GENDER: Record<Gender, readonly BatHan[]> = {
   [Gender.Nam]: BAT_HAN,
   [Gender.Nu]: [
-    'Tán Tận',
+    'Toán Tận',
     'Thiên Tinh',
     'Ngũ Mộ',
     'Tam Kheo',
@@ -32,7 +32,7 @@ const BAT_HAN_ORDER_BY_GENDER: Record<Gender, readonly BatHan[]> = {
 };
 
 export const BAT_HAN_TRUYEN_THONG =
-  'Theo cách đếm phổ biến, mỗi chín tuổi mụ là một chặng đi hết tám hạn, nam bắt đầu từ Huỳnh Tuyền và nữ từ Tán Tận, một hạn được đếm hai năm liên tiếp và hạn đó dời sang hạn kế tiếp sau mỗi chặng, hết bảy mươi hai tuổi thì quay lại từ đầu.';
+  'Tuổi mụ chia thành từng chặng chín năm, mỗi chặng bắt đầu ở tuổi chia hết cho chín và đi qua tám hạn theo thứ tự, nam mở đầu bằng Huỳnh Tuyền còn nữ mở đầu bằng Toán Tận. Vì chín tuổi chỉ có tám hạn nên mỗi chặng có một hạn được tính hai năm liên tiếp, chặng đầu là hạn mở đầu, mỗi chặng sau chuyển sang hạn kế tiếp, và hết bảy mươi hai tuổi thì quay lại từ đầu.';
 
 export function batHan(tuoi: number, gender: Gender): BatHan {
   const ageInCycle = tuoi % AGES_PER_CYCLE;
