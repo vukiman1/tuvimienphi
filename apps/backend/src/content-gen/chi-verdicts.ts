@@ -29,12 +29,12 @@ export function checkTamTai(text: string, { tamTai }: ChiVerdicts): string[] {
     .filter((year) => mentions(text, tamTaiKeyword(year)))
     .map((year) =>
       tamTai === null
-        ? `nhắc "${tamTaiKeyword(year)}" nhưng brief tính tuổi này không phạm Tam tai`
-        : `nhắc "${tamTaiKeyword(year)}" nhưng brief tính tuổi này ở ${tamTaiKeyword(tamTai)}`,
+        ? `nhắc "${tamTaiKeyword(year)}" nhưng dữ kiện tính tuổi này không phạm Tam tai`
+        : `nhắc "${tamTaiKeyword(year)}" nhưng dữ kiện tính tuổi này ở ${tamTaiKeyword(tamTai)}`,
     );
   const denial =
     tamTai !== null && mentions(text, NO_TAM_TAI_KEYWORD)
-      ? [`nói "${NO_TAM_TAI_KEYWORD}" nhưng brief tính tuổi này ở ${tamTaiKeyword(tamTai)}`]
+      ? [`nói "${NO_TAM_TAI_KEYWORD}" nhưng dữ kiện tính tuổi này ở ${tamTaiKeyword(tamTai)}`]
       : [];
   return [...denial, ...wrongYears];
 }
@@ -42,10 +42,10 @@ export function checkTamTai(text: string, { tamTai }: ChiVerdicts): string[] {
 export function checkThaiTue(text: string, { thaiTue }: ChiVerdicts): string[] {
   const wrongRelations = THAI_TUE_RELATIONS.filter((relation) => !thaiTue.includes(relation))
     .filter((relation) => mentions(text, thaiTueKeyword(relation)))
-    .map((relation) => `nhắc "${thaiTueKeyword(relation)}" mà brief không tính cho tuổi này`);
+    .map((relation) => `nhắc "${thaiTueKeyword(relation)}" mà dữ kiện không tính cho tuổi này`);
   const denial =
     thaiTue.length > 0 && mentions(text, NO_THAI_TUE_KEYWORD)
-      ? [`nói "${NO_THAI_TUE_KEYWORD}" nhưng brief tính tuổi này có phạm Thái tuế`]
+      ? [`nói "${NO_THAI_TUE_KEYWORD}" nhưng dữ kiện tính tuổi này có phạm Thái tuế`]
       : [];
   return [...denial, ...wrongRelations];
 }

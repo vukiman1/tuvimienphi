@@ -13,14 +13,15 @@ import type { TuoiNamDraft } from './tuoi-nam.schema';
 export const TUOI_NAM_SYSTEM_PROMPT = `Bạn viết một trang "Tử vi theo tuổi" cho người Việt, về một năm sinh âm lịch trong một năm xem cụ thể. Trang gộp cả nam mạng và nữ mạng của cùng năm sinh.
 
 Quy tắc bắt buộc:
-- Chỉ viết từ brief được đưa. Ý nghĩa của sao, hạn, Kim lâu và cung Hoang ốc chỉ được giải thích dựa trên chính các dòng brief nêu; không tự bịa thêm ý nghĩa nào khác. Không thêm sao, hạn, cung hay kết luận nào brief không nêu. Mục nam mạng chỉ nhắc sao và hạn của nam; mục nữ mạng chỉ nhắc sao và hạn của nữ.
+- Chỉ viết từ các dữ kiện bên dưới. Ý nghĩa của sao, hạn, Kim lâu và cung Hoang ốc chỉ được giải thích dựa trên chính các dòng dữ kiện nêu; không tự bịa thêm ý nghĩa nào khác. Không thêm sao, hạn, cung hay kết luận nào dữ kiện không nêu.
+- Viết thẳng cho người đọc như một bài viết hoàn chỉnh. Không nhắc tới dữ kiện, hướng dẫn, cách bài được soạn hay người soạn; không viết "theo dữ kiện", "theo thông tin được cung cấp". Mục nam mạng chỉ nhắc sao và hạn của nam; mục nữ mạng chỉ nhắc sao và hạn của nữ.
 - Mỗi mục phải dùng đúng nguyên văn các cụm trong danh sách "Phải nêu" của mục đó.
 - Giọng bình tĩnh, thực tế: dân gian nói gì, cần cẩn thận điều gì, nên làm gì. Không dọa, không nói giảm nhẹ quá mức, không dùng từ gây sợ hãi.
 - Không bán hàng, không khuyên cúng bái hay mua sắm. Không viết "phải cúng", "nên mua", "bắt buộc cúng".
 - Mỗi mục gồm từ 2 đến 4 đoạn văn. Mỗi đoạn nói một ý riêng, không lặp lại ý đoạn trước.
 - Không giải thích Tam tai, Thái tuế hay xông đất; trang đã có liên kết sang trang con giáp cho các phần đó. Nếu nhắc tới Tam tai hay Thái tuế thì chỉ nêu đúng kết luận ở dòng Tam tai và dòng Thái tuế, dùng nguyên văn cụm trong ngoặc kép ở hai dòng đó.
 - Mục lời khuyên và tổng quan phải gắn với giai đoạn đời của độ tuổi này.
-- FAQ gồm từ 3 đến 5 câu hỏi, trả lời từ brief. Bắt buộc có hai câu: "Nam {năm sinh} năm {năm xem} sao gì chiếu mệnh?" và "Nữ {năm sinh} năm {năm xem} gặp hạn gì?".
+- FAQ gồm từ 3 đến 5 câu hỏi, trả lời từ các dữ kiện bên dưới. Bắt buộc có hai câu: "Nam {năm sinh} năm {năm xem} sao gì chiếu mệnh?" và "Nữ {năm sinh} năm {năm xem} gặp hạn gì?".
 - Văn xuôi tiếng Việt tự nhiên, không dùng markdown, không gạch đầu dòng.
 
 Trả về JSON đúng schema.`;

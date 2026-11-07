@@ -2,7 +2,19 @@ import { LOI_DOA } from '../api/luan-giai/validate/check-forbidden-phrases';
 
 const LOI_DOA_TET = ['đại họa'] as const;
 const LOI_BAN_HANG = ['phải cúng', 'nên mua', 'bắt buộc cúng'] as const;
-const CUM_BI_CAM = [...LOI_DOA, ...LOI_DOA_TET, ...LOI_BAN_HANG] as const;
+const LOI_NOI_VE_CACH_SOAN = [
+  'brief',
+  'prompt',
+  'json',
+  'schema',
+  'dữ kiện',
+  'dữ liệu được cung cấp',
+  'thông tin được cung cấp',
+  'dữ liệu đầu vào',
+  'mô hình ngôn ngữ',
+  'trí tuệ nhân tạo',
+] as const;
+const CUM_BI_CAM = [...LOI_DOA, ...LOI_DOA_TET, ...LOI_BAN_HANG, ...LOI_NOI_VE_CACH_SOAN] as const;
 
 const OLD_STYLE_TONE_MARKS: readonly (readonly [RegExp, string])[] = [
   [/oà/g, 'òa'],

@@ -57,7 +57,7 @@ function checkInventedChi(draft: ConGiapDraft, brief: ConGiapBrief): string[] {
   const allowed = new Set([chi, viewChi, ...xongDat.hop, ...xongDat.tranh]);
   const text = draft[ConGiapSection.XongDat].join('\n');
   return CHI.filter((name, index) => !allowed.has(index) && mentionsChi(text, name)).map(
-    (name) => `mục ${ConGiapSection.XongDat}: nhắc tuổi "${name}" mà brief không liệt kê`,
+    (name) => `mục ${ConGiapSection.XongDat}: nhắc tuổi "${name}" mà dữ kiện không liệt kê`,
   );
 }
 

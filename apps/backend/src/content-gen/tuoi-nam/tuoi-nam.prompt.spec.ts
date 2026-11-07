@@ -5,8 +5,9 @@ import {
   tamTaiKeyword,
   thaiTueKeyword,
 } from '../chi-verdicts';
+import { checkTuoiNam } from './check-tuoi-nam';
 import { buildTuoiNamBrief } from './tuoi-nam.brief';
-import { buildTuoiNamMessages } from './tuoi-nam.prompt';
+import { buildTuoiNamMessages, TUOI_NAM_SYSTEM_PROMPT } from './tuoi-nam.prompt';
 import {
   MalformedTuoiNamDraftError,
   parseTuoiNamDraft,
@@ -78,5 +79,17 @@ describe('buildTuoiNamMessages facts', () => {
       .text;
     expect(tamTaiText).toContain(tamTaiKeyword(3));
     expect(tamTaiText).toContain(thaiTueKeyword(ThaiTueRelation.Truc));
+  });
+});
+
+describe('wording the model can echo', () => {
+  it('never calls the input a brief in the prompt or the rewrite request', () => {
+    const violations = checkTuoiNam(draft, brief);
+    const messages = buildTuoiNamMessages(brief, [{ paragraph: draft, loi: violations }]);
+
+    expect(violations.length).toBeGreaterThan(0);
+    expect(
+      [TUOI_NAM_SYSTEM_PROMPT, ...messages.map((message) => message.text)].join('\n'),
+    ).not.toMatch(/brief/i);
   });
 });

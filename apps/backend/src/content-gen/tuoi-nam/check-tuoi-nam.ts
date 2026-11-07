@@ -128,13 +128,13 @@ function checkInventedFacts(draft: TuoiNamDraft, brief: TuoiNamBrief): string[] 
     const allowed = allowedNames(brief, section);
     return namesIn(draft[section].join('\n'))
       .filter((name) => !allowed.includes(name))
-      .map((name) => `mục ${section}: nhắc "${name}" mà brief không tính cho mục này`);
+      .map((name) => `mục ${section}: nhắc "${name}" mà dữ kiện không tính cho mục này`);
   });
   const faqViolations = draft.faq.flatMap(({ question, answer }, index) => {
     const allowed = [...genderNames(brief, faqGender(question)), brief.facts.hoangOc];
     return namesIn(`${question}\n${answer}`)
       .filter((name) => !allowed.includes(name))
-      .map((name) => `faq câu ${index + 1}: nhắc "${name}" mà brief không tính cho câu này`);
+      .map((name) => `faq câu ${index + 1}: nhắc "${name}" mà dữ kiện không tính cho câu này`);
   });
   return [...sectionViolations, ...faqViolations];
 }
@@ -146,12 +146,12 @@ function checkKimLau(draft: TuoiNamDraft, brief: TuoiNamBrief): string[] {
     .filter((kind) => kind !== kimLau && mentions(text, `kim lâu ${kind}`))
     .map((kind) =>
       kimLau === null
-        ? `nhắc "Kim lâu ${kind}" nhưng brief tính tuổi này không phạm Kim lâu`
-        : `nhắc "Kim lâu ${kind}" nhưng brief tính tuổi này phạm Kim lâu ${kimLau}`,
+        ? `nhắc "Kim lâu ${kind}" nhưng dữ kiện tính tuổi này không phạm Kim lâu`
+        : `nhắc "Kim lâu ${kind}" nhưng dữ kiện tính tuổi này phạm Kim lâu ${kimLau}`,
     );
   const denial =
     kimLau !== null && text.includes(NO_KIM_LAU_PHRASE)
-      ? [`nói "không phạm Kim lâu" nhưng brief tính tuổi này phạm Kim lâu ${kimLau}`]
+      ? [`nói "không phạm Kim lâu" nhưng dữ kiện tính tuổi này phạm Kim lâu ${kimLau}`]
       : [];
   const bareClaim =
     kimLau === null && wrongKinds.length === 0 && affirms(text, KIM_LAU_CLAIMS)
