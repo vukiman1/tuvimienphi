@@ -49,9 +49,6 @@ async function main(): Promise<void> {
       generateIntro: () => generateHubIntro(ai, pacer.beforeCall),
       loadArticles: () => readTuoiNamArticles(directory),
     });
-    if (failedSlugs.length > 0) {
-      logger.error(`${failedSlugs.length} step(s) failed: ${failedSlugs.join(', ')}`);
-    }
     if (failedSlugs.length > 0 || similarPairs.length > 0) process.exitCode = 1;
   } finally {
     await app.close();

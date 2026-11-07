@@ -109,6 +109,9 @@ export async function runTetHubGeneration(
   }
 
   await writeManifestFromDisk(directory);
+  if (failedSlugs.length > 0) {
+    logger.error(`${failedSlugs.length} step(s) failed: ${failedSlugs.join(', ')}`);
+  }
   const similarPairs = findTooSimilar(await loadArticles(), TUOI_NAM_SIMILARITY_THRESHOLD);
   similarPairs.forEach((pair) =>
     logger.error(`too similar ${pair.a} ~ ${pair.b}: ${pair.score.toFixed(SCORE_DECIMALS)}`),

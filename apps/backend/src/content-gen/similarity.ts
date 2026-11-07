@@ -14,7 +14,12 @@ export interface SimilarPair {
 }
 
 function toWords(text: string): readonly string[] {
-  return text.toLowerCase().replace(NON_WORD_CHARACTERS, ' ').split(' ').filter(Boolean);
+  return text
+    .normalize('NFC')
+    .toLowerCase()
+    .replace(NON_WORD_CHARACTERS, ' ')
+    .split(' ')
+    .filter(Boolean);
 }
 
 function toShingles(text: string, size: number): ReadonlySet<string> {

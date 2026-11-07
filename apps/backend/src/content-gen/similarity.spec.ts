@@ -1,8 +1,12 @@
 import type { TuoiNamArticle } from '@org/shared-contracts';
 import { tuoiNamSlug } from '@org/shared-tu-vi';
-import { findTooSimilar, shingleSimilarity, tuoiNamNeighbours } from './similarity';
+import {
+  findTooSimilar,
+  shingleSimilarity,
+  TUOI_NAM_SIMILARITY_THRESHOLD as THRESHOLD,
+  tuoiNamNeighbours,
+} from './similarity';
 
-const THRESHOLD = 0.35;
 const PARAGRAPH = 'Năm nay công việc ổn định, tài chính cần thận trọng, sức khỏe nên giữ nhịp đều.';
 
 function articleOf(birthYear: number, paragraphs: readonly string[]): TuoiNamArticle {
@@ -31,6 +35,19 @@ describe('shingleSimilarity', () => {
     expect(
       shingleSimilarity('một hai ba bốn năm sáu bảy', 'tám chín mười mười một mười hai mười ba'),
     ).toBe(0);
+  });
+
+  it('compares a text shorter than one shingle as a whole', () => {
+    expect(shingleSimilarity('Xin chào', 'xin chào!')).toBe(1);
+    expect(shingleSimilarity('Xin chào', 'Tạm biệt')).toBe(0);
+  });
+
+  it('treats composed and decomposed accents as the same text', () => {
+    expect(shingleSimilarity('tuổi mùi', 'tuổi mùi'.normalize('NFD'))).toBe(1);
+  });
+
+  it('scores two empty texts as 0', () => {
+    expect(shingleSimilarity('', '')).toBe(0);
   });
 
   it('ignores case and punctuation', () => {
