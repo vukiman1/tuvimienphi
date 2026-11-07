@@ -135,14 +135,19 @@ function checkInventedFacts(draft: TuoiNamDraft, brief: TuoiNamBrief): string[] 
 
 function checkKimLau(draft: TuoiNamDraft, brief: TuoiNamBrief): string[] {
   const text = normalize(allText(draft));
-  if (brief.facts.kimLau !== null) {
-    return text.includes(NO_KIM_LAU_PHRASE)
-      ? [`nói "không phạm Kim lâu" nhưng brief tính tuổi này phạm Kim lâu ${brief.facts.kimLau}`]
+  const { kimLau } = brief.facts;
+  const wrongKinds = Object.values(KimLau)
+    .filter((kind) => kind !== kimLau && mentions(text, `kim lâu ${kind}`))
+    .map((kind) =>
+      kimLau === null
+        ? `nhắc "Kim lâu ${kind}" nhưng brief tính tuổi này không phạm Kim lâu`
+        : `nhắc "Kim lâu ${kind}" nhưng brief tính tuổi này phạm Kim lâu ${kimLau}`,
+    );
+  const denial =
+    kimLau !== null && text.includes(NO_KIM_LAU_PHRASE)
+      ? [`nói "không phạm Kim lâu" nhưng brief tính tuổi này phạm Kim lâu ${kimLau}`]
       : [];
-  }
-  return Object.values(KimLau)
-    .filter((kind) => mentions(text, `kim lâu ${kind}`))
-    .map((kind) => `nhắc "Kim lâu ${kind}" nhưng brief tính tuổi này không phạm Kim lâu`);
+  return [...denial, ...wrongKinds];
 }
 
 function checkForbiddenPhrases(draft: TuoiNamDraft): string[] {

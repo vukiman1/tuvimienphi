@@ -1,4 +1,4 @@
-import { HoangOc, tuoiNamFacts } from '@org/shared-tu-vi';
+import { BAT_HAN_LOI, HoangOc, KimLau, tuoiNamFacts } from '@org/shared-tu-vi';
 import { checkTuoiNam } from './check-tuoi-nam';
 import { buildTuoiNamBrief } from './tuoi-nam.brief';
 import type { TuoiNamDraft } from './tuoi-nam.schema';
@@ -182,5 +182,24 @@ describe('checkTuoiNam', () => {
     const violations = checkTuoiNam(aliasDraft, brief);
     expect(violations).toHaveLength(1);
     expect(violations[0]).toContain('Vân Hớn');
+  });
+
+  it('rejects a different Kim lâu kind than the brief computed', () => {
+    const otherKind = Object.values(KimLau).find((kind) => kind !== facts.kimLau) as KimLau;
+    const draft = withDraft({
+      cuoiNha: paragraphs(...cleanDraft.cuoiNha, `Có sách nói là Kim lâu ${otherKind}.`),
+    });
+    const violations = checkTuoiNam(draft, brief);
+    expect(violations).toHaveLength(1);
+    expect(violations[0]).toContain(`Kim lâu ${otherKind}`);
+  });
+
+  it('keeps every folk hạn meaning clear of fear and sales language', () => {
+    for (const line of Object.values(BAT_HAN_LOI)) {
+      const draft = withDraft({ loiKhuyen: paragraphs(...cleanDraft.loiKhuyen, line) });
+      expect(
+        checkTuoiNam(draft, brief).filter((message) => message.includes('cụm bị cấm')),
+      ).toEqual([]);
+    }
   });
 });
