@@ -1,7 +1,8 @@
 import { CHI, TAM_TAI_LOI } from '@org/shared-tu-vi';
 import type { AiMessage } from '../../ai/port/ai.types';
 import type { LanThu } from '../../api/luan-giai/generation/sinh-voi-kiem';
-import { ConGiapSection, tamTaiKeyword, type ConGiapBrief } from './con-giap.brief';
+import { tamTaiKeyword } from '../chi-verdicts';
+import { ConGiapSection, type ConGiapBrief } from './con-giap.brief';
 import type { ConGiapDraft } from './con-giap.schema';
 
 export const CON_GIAP_SYSTEM_PROMPT = `Bạn viết một trang "Tử vi con giáp" cho người Việt, về một con giáp trong một năm xem cụ thể: Tam tai, quan hệ với Thái tuế và tuổi xông đất.

@@ -1,6 +1,7 @@
 import { CHI, ThaiTueRelation } from '@org/shared-tu-vi';
 import { checkConGiap } from './check-con-giap';
-import { buildConGiapBrief, conGiapFacts, tamTaiKeyword, thaiTueKeyword } from './con-giap.brief';
+import { tamTaiKeyword, thaiTueKeyword } from '../chi-verdicts';
+import { buildConGiapBrief, conGiapFacts } from './con-giap.brief';
 import type { ConGiapDraft } from './con-giap.schema';
 
 const VIEW_YEAR = 2027;

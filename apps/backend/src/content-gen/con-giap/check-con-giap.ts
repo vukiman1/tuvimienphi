@@ -1,4 +1,5 @@
-import { CHI, ThaiTueRelation } from '@org/shared-tu-vi';
+import { CHI } from '@org/shared-tu-vi';
+import { checkTamTai, checkThaiTue } from '../chi-verdicts';
 import {
   escapeRegExp,
   forbiddenPhraseViolations,
@@ -7,20 +8,10 @@ import {
   SECTION_MAX_PARAGRAPHS,
   SECTION_MIN_PARAGRAPHS,
 } from '../check-text';
-import {
-  ConGiapSection,
-  NO_TAM_TAI_KEYWORD,
-  NO_THAI_TUE_KEYWORD,
-  tamTaiKeyword,
-  type TamTaiYear,
-  thaiTueKeyword,
-  type ConGiapBrief,
-} from './con-giap.brief';
+import { ConGiapSection, type ConGiapBrief } from './con-giap.brief';
 import type { ConGiapDraft } from './con-giap.schema';
 
 const SECTIONS: readonly ConGiapSection[] = Object.values(ConGiapSection);
-const TAM_TAI_YEARS: readonly TamTaiYear[] = [1, 2, 3];
-const THAI_TUE_RELATIONS: readonly ThaiTueRelation[] = Object.values(ThaiTueRelation);
 const CHI_SPELLINGS: Readonly<Record<string, readonly string[]>> = { Tị: ['Tị', 'Tỵ'] };
 
 function chiSpellings(name: string): readonly string[] {
@@ -70,43 +61,13 @@ function checkInventedChi(draft: ConGiapDraft, brief: ConGiapBrief): string[] {
   );
 }
 
-function checkTamTai(draft: ConGiapDraft, brief: ConGiapBrief): string[] {
-  const text = allText(draft);
-  const { tamTai } = brief.facts;
-  const wrongYears = TAM_TAI_YEARS.filter((year) => year !== tamTai)
-    .filter((year) => mentions(text, tamTaiKeyword(year)))
-    .map((year) =>
-      tamTai === null
-        ? `nhắc "${tamTaiKeyword(year)}" nhưng brief tính tuổi này không phạm Tam tai`
-        : `nhắc "${tamTaiKeyword(year)}" nhưng brief tính tuổi này ở ${tamTaiKeyword(tamTai)}`,
-    );
-  const denial =
-    tamTai !== null && mentions(text, NO_TAM_TAI_KEYWORD)
-      ? [`nói "${NO_TAM_TAI_KEYWORD}" nhưng brief tính tuổi này ở ${tamTaiKeyword(tamTai)}`]
-      : [];
-  return [...denial, ...wrongYears];
-}
-
-function checkThaiTue(draft: ConGiapDraft, brief: ConGiapBrief): string[] {
-  const text = allText(draft);
-  const { thaiTue } = brief.facts;
-  const wrongRelations = THAI_TUE_RELATIONS.filter((relation) => !thaiTue.includes(relation))
-    .filter((relation) => mentions(text, thaiTueKeyword(relation)))
-    .map((relation) => `nhắc "${thaiTueKeyword(relation)}" mà brief không tính cho tuổi này`);
-  const denial =
-    thaiTue.length > 0 && mentions(text, NO_THAI_TUE_KEYWORD)
-      ? [`nói "${NO_THAI_TUE_KEYWORD}" nhưng brief tính tuổi này có phạm Thái tuế`]
-      : [];
-  return [...denial, ...wrongRelations];
-}
-
 export function checkConGiap(draft: ConGiapDraft, brief: ConGiapBrief): readonly string[] {
   return [
     ...checkLength(draft),
     ...checkClaims(draft, brief),
     ...checkInventedChi(draft, brief),
-    ...checkTamTai(draft, brief),
-    ...checkThaiTue(draft, brief),
+    ...checkTamTai(allText(draft), brief.facts),
+    ...checkThaiTue(allText(draft), brief.facts),
     ...forbiddenPhraseViolations(allText(draft)),
   ];
 }

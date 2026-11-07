@@ -4,9 +4,15 @@ import {
   tamTaiNamThu,
   tuoiXongDat,
   viewYearPillar,
-  type ThaiTueRelation,
   type XongDat,
 } from '@org/shared-tu-vi';
+import {
+  NO_TAM_TAI_KEYWORD,
+  NO_THAI_TUE_KEYWORD,
+  tamTaiKeyword,
+  thaiTueKeyword,
+  type ChiVerdicts,
+} from '../chi-verdicts';
 
 export enum ConGiapSection {
   TongQuan = 'tongQuan',
@@ -15,39 +21,21 @@ export enum ConGiapSection {
   XongDat = 'xongDat',
 }
 
-export type TamTaiYear = 1 | 2 | 3;
-
 export interface ConGiapClaim {
   readonly section: ConGiapSection;
   readonly keyword: string;
 }
 
-export interface ConGiapFacts {
+export interface ConGiapFacts extends ChiVerdicts {
   readonly chi: number;
   readonly viewYear: number;
   readonly viewChi: number;
-  readonly tamTai: TamTaiYear | null;
-  readonly thaiTue: readonly ThaiTueRelation[];
   readonly xongDat: XongDat;
 }
 
 export interface ConGiapBrief {
   readonly facts: ConGiapFacts;
   readonly claims: readonly ConGiapClaim[];
-}
-
-export const NO_TAM_TAI_KEYWORD = 'không phạm Tam tai';
-export const NO_THAI_TUE_KEYWORD = 'không phạm Thái tuế';
-export const THAI_TUE_SUFFIX = 'Thái tuế';
-
-const TAM_TAI_YEAR_WORDS = { 1: 'nhất', 2: 'hai', 3: 'ba' } as const;
-
-export function tamTaiKeyword(year: TamTaiYear): string {
-  return `năm thứ ${TAM_TAI_YEAR_WORDS[year]} của Tam tai`;
-}
-
-export function thaiTueKeyword(relation: ThaiTueRelation): string {
-  return `${relation} ${THAI_TUE_SUFFIX}`;
 }
 
 export function conGiapFacts(chi: number, viewYear: number): ConGiapFacts {

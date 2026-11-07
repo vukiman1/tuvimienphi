@@ -1,4 +1,5 @@
-import { buildConGiapBrief, conGiapFacts, tamTaiKeyword } from './con-giap.brief';
+import { tamTaiKeyword } from '../chi-verdicts';
+import { buildConGiapBrief, conGiapFacts } from './con-giap.brief';
 import { buildConGiapMessages } from './con-giap.prompt';
 
 const CHI_MUI = 7;
