@@ -1,6 +1,12 @@
 import { BAT_HAN_LOI, CUU_DIEU_LOI, isHoangOcTot, KIM_LAU_LOI } from '@org/shared-tu-vi';
 import type { AiMessage } from '../../ai/port/ai.types';
 import type { LanThu } from '../../api/luan-giai/generation/sinh-voi-kiem';
+import {
+  NO_TAM_TAI_KEYWORD,
+  NO_THAI_TUE_KEYWORD,
+  tamTaiKeyword,
+  thaiTueKeyword,
+} from '../chi-verdicts';
 import { TuoiNamSection, type TuoiNamBrief } from './tuoi-nam.brief';
 import type { TuoiNamDraft } from './tuoi-nam.schema';
 
@@ -12,7 +18,7 @@ Quy tắc bắt buộc:
 - Giọng bình tĩnh, thực tế: dân gian nói gì, cần cẩn thận điều gì, nên làm gì. Không dọa, không nói giảm nhẹ quá mức, không dùng từ gây sợ hãi.
 - Không bán hàng, không khuyên cúng bái hay mua sắm. Không viết "phải cúng", "nên mua", "bắt buộc cúng".
 - Mỗi mục gồm từ 2 đến 4 đoạn văn. Mỗi đoạn nói một ý riêng, không lặp lại ý đoạn trước.
-- Không giải thích Tam tai, Thái tuế hay xông đất; trang đã có liên kết sang trang con giáp cho các phần đó.
+- Không giải thích Tam tai, Thái tuế hay xông đất; trang đã có liên kết sang trang con giáp cho các phần đó. Nếu nhắc tới Tam tai hay Thái tuế thì chỉ nêu đúng kết luận ở dòng Tam tai và dòng Thái tuế, dùng nguyên văn cụm trong ngoặc kép ở hai dòng đó.
 - Mục lời khuyên và tổng quan phải gắn với giai đoạn đời của độ tuổi này.
 - FAQ gồm từ 3 đến 5 câu hỏi, trả lời từ brief. Bắt buộc có hai câu: "Nam {năm sinh} năm {năm xem} sao gì chiếu mệnh?" và "Nữ {năm sinh} năm {năm xem} gặp hạn gì?".
 - Văn xuôi tiếng Việt tự nhiên, không dùng markdown, không gạch đầu dòng.
@@ -44,6 +50,18 @@ function describeHoangOc(brief: TuoiNamBrief): string {
   return `Hoang ốc: tuổi này rơi vào cung ${hoangOc}, là ${verdict} theo cách xem làm nhà.`;
 }
 
+function describeTamTai(brief: TuoiNamBrief): string {
+  const { tamTai, viewYear } = brief.facts;
+  const keyword = tamTai === null ? NO_TAM_TAI_KEYWORD : tamTaiKeyword(tamTai);
+  return `Tam tai: năm ${viewYear} tuổi này "${keyword}".`;
+}
+
+function describeThaiTue(brief: TuoiNamBrief): string {
+  const { thaiTue } = brief.facts;
+  const keywords = thaiTue.length === 0 ? [NO_THAI_TUE_KEYWORD] : thaiTue.map(thaiTueKeyword);
+  return `Thái tuế: tuổi này ${keywords.map((keyword) => `"${keyword}"`).join(', ')}.`;
+}
+
 function describeFacts(brief: TuoiNamBrief): string {
   const { facts } = brief;
   return [
@@ -53,6 +71,8 @@ function describeFacts(brief: TuoiNamBrief): string {
     `Nữ mạng: sao ${facts.nu.sao} (${CUU_DIEU_LOI[facts.nu.sao]}), hạn ${facts.nu.han} (${BAT_HAN_LOI[facts.nu.han]}).`,
     describeKimLau(brief),
     describeHoangOc(brief),
+    describeTamTai(brief),
+    describeThaiTue(brief),
   ].join('\n');
 }
 

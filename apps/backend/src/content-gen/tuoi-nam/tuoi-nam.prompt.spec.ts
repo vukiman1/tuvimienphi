@@ -1,4 +1,10 @@
-import { BAT_HAN_LOI, isHoangOcTot, tuoiNamFacts } from '@org/shared-tu-vi';
+import { BAT_HAN_LOI, isHoangOcTot, ThaiTueRelation, tuoiNamFacts } from '@org/shared-tu-vi';
+import {
+  NO_TAM_TAI_KEYWORD,
+  NO_THAI_TUE_KEYWORD,
+  tamTaiKeyword,
+  thaiTueKeyword,
+} from '../chi-verdicts';
 import { buildTuoiNamBrief } from './tuoi-nam.brief';
 import { buildTuoiNamMessages } from './tuoi-nam.prompt';
 import {
@@ -60,5 +66,17 @@ describe('buildTuoiNamMessages facts', () => {
     expect(text).toContain(
       `cung ${facts.hoangOc}, là ${isHoangOcTot(facts.hoangOc) ? 'cung tốt' : 'cung xấu'}`,
     );
+  });
+
+  it('states that a birth year outside Tam tai and Thái tuế has neither, in the checked phrases', () => {
+    expect(text).toContain(NO_TAM_TAI_KEYWORD);
+    expect(text).toContain(NO_THAI_TUE_KEYWORD);
+  });
+
+  it('states the Tam tai year and Thái tuế relation of a birth year that has them', () => {
+    const tamTaiText = buildTuoiNamMessages(buildTuoiNamBrief(tuoiNamFacts(1991, 2027)), [])[0]
+      .text;
+    expect(tamTaiText).toContain(tamTaiKeyword(3));
+    expect(tamTaiText).toContain(thaiTueKeyword(ThaiTueRelation.Truc));
   });
 });
