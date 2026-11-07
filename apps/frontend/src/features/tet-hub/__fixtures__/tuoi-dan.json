@@ -1,0 +1,14 @@
+{
+  "slug": "tuoi-dan",
+  "chi": 2,
+  "viewYear": 2027,
+  "tongQuan": [
+    "Đoạn tổng quan mẫu cho tuổi Dần năm 2027, chỉ dùng trong kiểm thử.",
+    "Đoạn thứ hai của phần tổng quan mẫu."
+  ],
+  "tamTai": ["Đoạn mẫu về Tam tai của tuổi Dần."],
+  "thaiTue": ["Đoạn mẫu về Thái tuế của tuổi Dần."],
+  "xongDat": ["Đoạn mẫu về tuổi hợp xông đất của gia chủ tuổi Dần."],
+  "model": "fixture",
+  "generatedAt": "2026-11-01T00:00:00.000Z"
+}

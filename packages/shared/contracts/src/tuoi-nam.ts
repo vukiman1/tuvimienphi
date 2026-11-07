@@ -35,3 +35,7 @@ export interface TetHubManifest {
   readonly conGiap: readonly string[];
   readonly tuoiNam: readonly string[];
 }
+
+export interface TetHubIntro {
+  readonly intro: readonly string[];
+}

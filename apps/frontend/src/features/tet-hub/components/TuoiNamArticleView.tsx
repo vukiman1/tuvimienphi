@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from 'react';
+import type { ReactElement } from 'react';
 import { Link } from '@tanstack/react-router';
 import { CHI, conGiapSlug, getYearCanChi, type TuoiNamFacts } from '@org/shared-tu-vi';
 import type { TuoiNamArticle } from '@org/shared-contracts';
@@ -6,17 +6,12 @@ import { Gender } from '@/features/la-so/birth-input';
 import { NAM_MANG_ANCHOR, NU_MANG_ANCHOR, tetHubPagePath } from '../tet-hub-paths';
 import { tamTaiVerdict, thaiTueVerdict, xongDatVerdict } from '../tuoi-nam-verdicts';
 import { ArticleParagraphs } from './ArticleParagraphs';
+import { ArticleSection } from './ArticleSection';
 import { TetHubGenderCta } from './TetHubCta';
 
 interface TuoiNamArticleViewProps {
   readonly facts: TuoiNamFacts;
   readonly article: TuoiNamArticle;
-}
-
-interface ArticleSectionProps {
-  readonly id: string;
-  readonly title: string;
-  readonly children: ReactNode;
 }
 
 interface GenderSubsectionProps {
@@ -29,17 +24,6 @@ interface GenderSubsectionProps {
 interface VerdictProps {
   readonly label: string;
   readonly verdict: string;
-}
-
-function ArticleSection({ id, title, children }: ArticleSectionProps): ReactElement {
-  return (
-    <section id={id} aria-labelledby={`${id}-title`} className="scroll-mt-6">
-      <h2 id={`${id}-title`} className="text-[22px] leading-snug font-semibold text-[#2a1f0e]">
-        {title}
-      </h2>
-      <div className="mt-4">{children}</div>
-    </section>
-  );
 }
 
 function GenderSubsection({ id, title, gender, paragraphs }: GenderSubsectionProps): ReactElement {

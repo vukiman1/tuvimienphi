@@ -8,8 +8,9 @@ import {
 } from '@/features/tet-hub/tet-hub-slug-route';
 
 async function loadPage(slug: string): Promise<TetHubSlugPageData> {
-  const { loadTuoiNamArticle } = await import('@/features/tet-hub/tet-hub-content');
-  return loadTetHubSlugPage(slug, loadTuoiNamArticle);
+  const { loadConGiapArticle, loadTuoiNamArticle } =
+    await import('@/features/tet-hub/tet-hub-content');
+  return loadTetHubSlugPage(slug, { tuoiNam: loadTuoiNamArticle, conGiap: loadConGiapArticle });
 }
 
 function TetHubSlugRoute(): ReactElement {

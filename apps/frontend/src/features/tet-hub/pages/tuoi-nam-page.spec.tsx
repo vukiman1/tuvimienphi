@@ -22,6 +22,10 @@ function loadFixture(slug: string): Promise<TuoiNamArticle | undefined> {
   return Promise.resolve(slug === ARTICLE.slug ? ARTICLE : undefined);
 }
 
+function loadNone(): Promise<undefined> {
+  return Promise.resolve(undefined);
+}
+
 function RootLayout(): ReactElement {
   return (
     <>
@@ -36,7 +40,8 @@ function renderSlug(slug: string): void {
   const slugRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: SLUG_ROUTE_PATH,
-    loader: ({ params }) => loadTetHubSlugPage(params.slug, loadFixture),
+    loader: ({ params }) =>
+      loadTetHubSlugPage(params.slug, { tuoiNam: loadFixture, conGiap: loadNone }),
     head: ({ params, loaderData }) => tetHubSlugHead(params.slug, loaderData),
     component: SlugRoute,
   });
