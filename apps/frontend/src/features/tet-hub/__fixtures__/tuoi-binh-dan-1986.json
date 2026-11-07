@@ -42,7 +42,7 @@
     },
     {
       "question": "Mệnh tuổi Bính Dần 1986 có quan hệ thế nào với mệnh năm 2027?",
-      "answer": "Bính Dần 1986 có mệnh Lô Trung Hỏa, còn năm 2027 có mệnh Thiên Hà Thủy. Theo quan hệ trong brief, đây là năm khắc mệnh."
+      "answer": "Bính Dần 1986 có mệnh Lô Trung Hỏa, còn năm 2027 có mệnh Thiên Hà Thủy. Theo quan hệ giữa hai mệnh, đây là năm khắc mệnh."
     }
   ],
   "model": "gpt-6.1-sol",
