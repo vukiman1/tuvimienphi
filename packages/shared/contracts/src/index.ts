@@ -222,3 +222,4 @@ export * from './luan-giai.js';
 export * from './avatar.js';
 export * from './credits.js';
 export * from './email-code.js';
+export * from './tuoi-nam.js';
