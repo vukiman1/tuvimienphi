@@ -11,7 +11,7 @@ import {
 } from '@org/shared-tu-vi';
 import { AiClient } from '../ai/port/ai.client';
 import { generateHubIntro } from './hub-intro';
-import { PacedAiClient } from './paced-ai-client';
+import { AiCallPacer } from './ai-call-pacer';
 import { runTetHubGeneration, type PagePlan } from './run-tet-hub-generation';
 import { parseCliOptions } from './tet-hub-cli-options';
 import { TetHubGenModule } from './tet-hub-gen.module';
@@ -22,14 +22,14 @@ const PAUSE_BETWEEN_AI_CALLS_MS = 30_000;
 
 const logger = new Logger('GenerateTetHub');
 
-function allPagePlans(ai: AiClient): readonly PagePlan[] {
+function allPagePlans(ai: AiClient, pacer: AiCallPacer): readonly PagePlan[] {
   const conGiapPlans = CHI.map((_, chi): PagePlan => ({
     slug: conGiapSlug(chi),
-    generate: () => generateConGiapArticle(ai, chi),
+    generate: () => generateConGiapArticle(ai, chi, pacer.beforeCall),
   }));
   const tuoiNamPlans = tuoiNamBirthYears().map((birthYear): PagePlan => ({
     slug: tuoiNamSlug(birthYear),
-    generate: () => generateTuoiNamArticle(ai, birthYear),
+    generate: () => generateTuoiNamArticle(ai, birthYear, pacer.beforeCall),
   }));
   return [...conGiapPlans, ...tuoiNamPlans];
 }
@@ -38,12 +38,13 @@ async function main(): Promise<void> {
   const options = parseCliOptions(process.argv.slice(2));
   const app = await NestFactory.createApplicationContext(TetHubGenModule);
   try {
-    const ai = new PacedAiClient(app.get(AiClient), PAUSE_BETWEEN_AI_CALLS_MS);
+    const ai = app.get(AiClient);
+    const pacer = new AiCallPacer(PAUSE_BETWEEN_AI_CALLS_MS);
     const failedSlugs = await runTetHubGeneration({
       directory: join(process.cwd(), OUTPUT_DIRECTORY),
-      plans: allPagePlans(ai),
+      plans: allPagePlans(ai, pacer),
       options,
-      generateIntro: () => generateHubIntro(ai),
+      generateIntro: () => generateHubIntro(ai, pacer.beforeCall),
     });
     if (failedSlugs.length > 0) {
       logger.error(`${failedSlugs.length} step(s) failed: ${failedSlugs.join(', ')}`);

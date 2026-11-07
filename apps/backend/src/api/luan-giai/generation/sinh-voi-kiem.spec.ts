@@ -45,4 +45,34 @@ describe('sinhVoiKiem', () => {
     const secondRequest = ai.requests[1];
     expect(secondRequest.messages[secondRequest.messages.length - 1].text).toContain('xấu');
   });
+
+  describe('pause before an attempt', () => {
+    const PAUSE_MS = 30_000;
+
+    beforeEach(() => {
+      jest.useFakeTimers({ now: 0 });
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('does not charge the pause to the budget', async () => {
+      const ai = new ScriptedAiClient(['bad', 'bad', 'bad', 'good']);
+      const cach: CachSinh<string> = {
+        system: 'system',
+        schema: { type: 'string' },
+        messages: () => [{ role: 'user', text: 'brief' }],
+        parse: (text) => text,
+        check: (value) => (value === 'bad' ? ['xấu'] : []),
+      };
+      const pause = async (): Promise<void> => {
+        jest.setSystemTime(Date.now() + PAUSE_MS);
+      };
+
+      const ket = await sinhVoiKiem(ai, cach, BUDGET_MS, undefined, pause);
+
+      expect(ket.attempts).toBe(4);
+    });
+  });
 });

@@ -72,9 +72,12 @@ const HUB_INTRO_GENERATION: CachSinh<TetHubIntro> = {
   check: checkHubIntro,
 };
 
-export async function generateHubIntro(ai: AiClient): Promise<TetHubIntro> {
+export async function generateHubIntro(
+  ai: AiClient,
+  beforeAttempt: () => Promise<void>,
+): Promise<TetHubIntro> {
   const { value } = await runWithAiCallContext({ label: INTRO_LABEL }, () =>
-    sinhVoiKiem(ai, HUB_INTRO_GENERATION, INTRO_BUDGET_MS),
+    sinhVoiKiem(ai, HUB_INTRO_GENERATION, INTRO_BUDGET_MS, undefined, beforeAttempt),
   );
   return value;
 }

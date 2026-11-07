@@ -34,11 +34,16 @@ export async function sinhVoiKiem<T>(
   cach: CachSinh<T>,
   budgetMs: number,
   onReject?: (lan: number, model: string, loi: readonly string[]) => void,
+  beforeAttempt?: () => Promise<void>,
 ): Promise<KetSinh<T>> {
   const daThu: LanThu<T>[] = [];
-  const deadline = Date.now() + budgetMs;
+  let deadline = Date.now() + budgetMs;
 
   for (let lan = 1; lan <= MAX_ATTEMPTS; lan += 1) {
+    const pauseStartedAt = Date.now();
+    await beforeAttempt?.();
+    deadline += Date.now() - pauseStartedAt;
+
     const conLai = deadline - Date.now();
     if (conLai < MIN_ATTEMPT_MS) {
       throw new ChapterTimedOutError(lan - 1, daThu[daThu.length - 1]?.loi ?? []);

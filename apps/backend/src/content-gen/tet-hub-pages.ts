@@ -29,6 +29,7 @@ function logRejection(
 export async function generateTuoiNamArticle(
   ai: AiClient,
   birthYear: number,
+  beforeAttempt: () => Promise<void>,
 ): Promise<TuoiNamArticle> {
   const slug = tuoiNamSlug(birthYear);
   const brief = buildTuoiNamBrief(tuoiNamFacts(birthYear, TET_HUB_VIEW_YEAR));
@@ -40,7 +41,7 @@ export async function generateTuoiNamArticle(
     check: (draft) => checkTuoiNam(draft, brief),
   };
   const { value, model } = await runWithAiCallContext({ label: `${LABEL_PREFIX}:${slug}` }, () =>
-    sinhVoiKiem(ai, generation, PAGE_BUDGET_MS, logRejection(slug)),
+    sinhVoiKiem(ai, generation, PAGE_BUDGET_MS, logRejection(slug), beforeAttempt),
   );
   return {
     slug,
@@ -58,7 +59,11 @@ export async function generateTuoiNamArticle(
   };
 }
 
-export async function generateConGiapArticle(ai: AiClient, chi: number): Promise<ConGiapArticle> {
+export async function generateConGiapArticle(
+  ai: AiClient,
+  chi: number,
+  beforeAttempt: () => Promise<void>,
+): Promise<ConGiapArticle> {
   const slug = conGiapSlug(chi);
   const brief = buildConGiapBrief(conGiapFacts(chi, TET_HUB_VIEW_YEAR));
   const generation: CachSinh<ConGiapDraft> = {
@@ -69,7 +74,7 @@ export async function generateConGiapArticle(ai: AiClient, chi: number): Promise
     check: (draft) => checkConGiap(draft, brief),
   };
   const { value, model } = await runWithAiCallContext({ label: `${LABEL_PREFIX}:${slug}` }, () =>
-    sinhVoiKiem(ai, generation, PAGE_BUDGET_MS, logRejection(slug)),
+    sinhVoiKiem(ai, generation, PAGE_BUDGET_MS, logRejection(slug), beforeAttempt),
   );
   return {
     slug,
