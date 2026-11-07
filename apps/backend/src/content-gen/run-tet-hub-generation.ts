@@ -1,5 +1,5 @@
 import { Logger } from '@nestjs/common';
-import type { ConGiapArticle, TuoiNamArticle } from '@org/shared-contracts';
+import type { ConGiapArticle, TetHubIntro, TuoiNamArticle } from '@org/shared-contracts';
 import {
   CHI,
   conGiapSlug,
@@ -10,12 +10,7 @@ import {
 import type { CliOptions } from './tet-hub-cli-options';
 import { findTooSimilar, TUOI_NAM_SIMILARITY_THRESHOLD, type SimilarPair } from './similarity';
 import { introExists, pageExists } from './tet-hub-files';
-import {
-  writeTetHubIntro,
-  writeTetHubManifest,
-  writeTetHubPage,
-  type TetHubIntro,
-} from './tet-hub-writer';
+import { writeTetHubIntro, writeTetHubManifest, writeTetHubPage } from './tet-hub-writer';
 
 const INTRO_FAILURE_LABEL = 'hub-intro';
 

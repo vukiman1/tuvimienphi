@@ -1,11 +1,8 @@
 import { tuoiNamSlug, type TuoiNamFacts } from '@org/shared-tu-vi';
 import type { TuoiNamArticle } from '@org/shared-contracts';
-import { jsonLdMeta, seo } from '@/lib/seo';
+import { articlePageHead, faqPageJsonLd, type SeoHead } from './tet-hub-json-ld';
 import { tetHubPagePath } from './tet-hub-paths';
-import { articleJsonLd, breadcrumbJsonLd, faqPageJsonLd } from './tet-hub-json-ld';
 import { tuoiNamBreadcrumb } from './tuoi-nam-breadcrumb';
-
-type SeoHead = ReturnType<typeof seo>;
 
 function tuoiNamTitle(facts: TuoiNamFacts): string {
   return `Tử vi tuổi ${facts.canChi} ${facts.birthYear} năm ${facts.viewYear}: sao chiếu mệnh, hạn, Tam tai (nam & nữ)`;
@@ -16,27 +13,12 @@ function tuoiNamDescription(facts: TuoiNamFacts): string {
 }
 
 export function tuoiNamHead(facts: TuoiNamFacts, article: TuoiNamArticle): SeoHead {
-  const path = tetHubPagePath(tuoiNamSlug(facts.birthYear));
-  const base = seo({
+  return articlePageHead({
     title: tuoiNamTitle(facts),
     description: tuoiNamDescription(facts),
-    path,
-    type: 'article',
+    path: tetHubPagePath(tuoiNamSlug(facts.birthYear)),
+    generatedAt: article.generatedAt,
+    breadcrumb: tuoiNamBreadcrumb(facts),
+    extraJsonLd: [faqPageJsonLd(article.faq)],
   });
-  return {
-    ...base,
-    meta: [
-      ...base.meta,
-      jsonLdMeta(
-        articleJsonLd({
-          headline: tuoiNamTitle(facts),
-          description: tuoiNamDescription(facts),
-          path,
-          generatedAt: article.generatedAt,
-        }),
-      ),
-      jsonLdMeta(breadcrumbJsonLd(tuoiNamBreadcrumb(facts))),
-      jsonLdMeta(faqPageJsonLd(article.faq)),
-    ],
-  };
 }

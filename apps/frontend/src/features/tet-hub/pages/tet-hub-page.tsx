@@ -5,18 +5,15 @@ import { ArticleParagraphs } from '../components/ArticleParagraphs';
 import { ConGiapTiles } from '../components/ConGiapTiles';
 import { TetHubBreadcrumb } from '../components/TetHubBreadcrumb';
 import { TetHubCta } from '../components/TetHubCta';
-import { TET_HUB_BREADCRUMB } from '../tet-hub-head';
+import { TET_HUB_BREADCRUMB } from '../tet-hub-breadcrumb';
 
 const VAN_HAN_PATH = '/van-han';
-const NO_INTRO: readonly string[] = [];
 
 interface TetHubPageProps {
-  readonly intro: TetHubIntro | undefined;
+  readonly intro: TetHubIntro;
 }
 
 export function TetHubPage({ intro }: TetHubPageProps): ReactElement {
-  const paragraphs = intro?.intro ?? NO_INTRO;
-
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-8 md:px-6">
       <TetHubBreadcrumb items={TET_HUB_BREADCRUMB} />
@@ -24,9 +21,9 @@ export function TetHubPage({ intro }: TetHubPageProps): ReactElement {
         Tử vi 2027 theo tuổi
       </h1>
       <div className="mt-6 flex flex-col gap-10">
-        {paragraphs.length > 0 ? (
+        {intro.intro.length > 0 ? (
           <div className="text-[17px] leading-relaxed text-[#3b2d18]">
-            <ArticleParagraphs paragraphs={paragraphs} />
+            <ArticleParagraphs paragraphs={intro.intro} />
           </div>
         ) : null}
         <ConGiapTiles />

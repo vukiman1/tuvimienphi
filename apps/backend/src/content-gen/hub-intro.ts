@@ -3,13 +3,13 @@ import {
   TUOI_NAM_FIRST_BIRTH_YEAR,
   TUOI_NAM_LAST_BIRTH_YEAR,
 } from '@org/shared-tu-vi';
+import type { TetHubIntro } from '@org/shared-contracts';
 import type { AiClient } from '../ai/port/ai.client';
 import type { AiSchema } from '../ai/port/ai.types';
 import { runWithAiCallContext } from '../ai/port/ai-call-context';
 import { sinhVoiKiem, type CachSinh } from '../api/luan-giai/generation/sinh-voi-kiem';
 import { forbiddenPhraseViolations, paragraphCountViolations } from './check-text';
 import { isRecord, isStringArray } from './schema-guards';
-import type { TetHubIntro } from './tet-hub-writer';
 
 const MIN_PARAGRAPHS = 2;
 const MAX_PARAGRAPHS = 3;

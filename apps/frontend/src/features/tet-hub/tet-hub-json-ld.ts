@@ -1,5 +1,6 @@
+import type { TuoiNamArticle } from '@org/shared-contracts';
 import type { BreadcrumbItem } from './breadcrumb-item';
-import { SITE_NAME, absoluteUrl } from '@/lib/seo';
+import { SITE_NAME, absoluteUrl, jsonLdMeta, seo } from '@/lib/seo';
 
 const SCHEMA_CONTEXT = 'https://schema.org';
 const PUBLISHER_LOGO_PATH = '/brand/icon.png';
@@ -47,9 +48,7 @@ export function breadcrumbJsonLd(items: readonly BreadcrumbItem[]): Record<strin
   };
 }
 
-export function faqPageJsonLd(
-  faq: readonly { readonly question: string; readonly answer: string }[],
-): Record<string, unknown> {
+export function faqPageJsonLd(faq: TuoiNamArticle['faq']): Record<string, unknown> {
   return {
     '@context': SCHEMA_CONTEXT,
     '@type': 'FAQPage',
@@ -58,5 +57,33 @@ export function faqPageJsonLd(
       name: question,
       acceptedAnswer: { '@type': 'Answer', text: answer },
     })),
+  };
+}
+
+export type SeoHead = ReturnType<typeof seo>;
+
+interface ArticlePageHeadInput extends Omit<ArticleJsonLdInput, 'headline'> {
+  readonly title: string;
+  readonly breadcrumb: readonly BreadcrumbItem[];
+  readonly extraJsonLd?: readonly Record<string, unknown>[];
+}
+
+export function articlePageHead({
+  title,
+  description,
+  path,
+  generatedAt,
+  breadcrumb,
+  extraJsonLd = [],
+}: ArticlePageHeadInput): SeoHead {
+  const base = seo({ title, description, path, type: 'article' });
+  return {
+    ...base,
+    meta: [
+      ...base.meta,
+      jsonLdMeta(articleJsonLd({ headline: title, description, path, generatedAt })),
+      jsonLdMeta(breadcrumbJsonLd(breadcrumb)),
+      ...extraJsonLd.map(jsonLdMeta),
+    ],
   };
 }

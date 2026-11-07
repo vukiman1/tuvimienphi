@@ -7,12 +7,9 @@ import {
   getYearCanChi,
 } from '@org/shared-tu-vi';
 import type { ConGiapArticle } from '@org/shared-contracts';
-import { jsonLdMeta, seo } from '@/lib/seo';
 import { conGiapBreadcrumb } from './con-giap-breadcrumb';
-import { articleJsonLd, breadcrumbJsonLd } from './tet-hub-json-ld';
+import { articlePageHead, type SeoHead } from './tet-hub-json-ld';
 import { tetHubPagePath } from './tet-hub-paths';
-
-type SeoHead = ReturnType<typeof seo>;
 
 function conGiapTitle(chi: number): string {
   return `Tử vi tuổi ${CHI[chi]} năm ${TET_HUB_VIEW_YEAR}: Tam tai, Thái tuế, tuổi xông đất`;
@@ -23,26 +20,11 @@ function conGiapDescription(chi: number): string {
 }
 
 export function conGiapHead(chi: number, article: ConGiapArticle): SeoHead {
-  const path = tetHubPagePath(conGiapSlug(chi));
-  const base = seo({
+  return articlePageHead({
     title: conGiapTitle(chi),
     description: conGiapDescription(chi),
-    path,
-    type: 'article',
+    path: tetHubPagePath(conGiapSlug(chi)),
+    generatedAt: article.generatedAt,
+    breadcrumb: conGiapBreadcrumb(chi),
   });
-  return {
-    ...base,
-    meta: [
-      ...base.meta,
-      jsonLdMeta(
-        articleJsonLd({
-          headline: conGiapTitle(chi),
-          description: conGiapDescription(chi),
-          path,
-          generatedAt: article.generatedAt,
-        }),
-      ),
-      jsonLdMeta(breadcrumbJsonLd(conGiapBreadcrumb(chi))),
-    ],
-  };
 }

@@ -1,13 +1,14 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import type { ConGiapArticle, TetHubManifest, TuoiNamArticle } from '@org/shared-contracts';
+import type {
+  ConGiapArticle,
+  TetHubIntro,
+  TetHubManifest,
+  TuoiNamArticle,
+} from '@org/shared-contracts';
 import { INTRO_FILE, MANIFEST_FILE, pageFileName } from './tet-hub-files';
 
 const JSON_INDENT = 2;
-
-export interface TetHubIntro {
-  readonly intro: readonly string[];
-}
 
 async function writeJson(dir: string, fileName: string, value: unknown): Promise<void> {
   await mkdir(dir, { recursive: true });

@@ -41,7 +41,7 @@ export function ConGiapPage({ chi, article }: ConGiapPageProps): ReactElement {
             <ArticleParagraphs paragraphs={article.xongDat} />
           </ArticleSection>
         </article>
-        <ConGiapYearTiles chi={chi} chiName={chiName} />
+        <ConGiapYearTiles chi={chi} />
         <TetHubCta />
         <HowWeCount />
       </div>

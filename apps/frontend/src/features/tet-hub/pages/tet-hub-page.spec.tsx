@@ -16,6 +16,7 @@ import { tetHubHead } from '../tet-hub-head';
 import { TetHubPage } from './tet-hub-page';
 
 const INTRO: TetHubIntro = fixture;
+const EMPTY_INTRO: TetHubIntro = { intro: [] };
 const HUB_PATH = '/kien-thuc/tu-vi-2027';
 const HREF_BASE = 'https://x';
 
@@ -28,7 +29,7 @@ function RootLayout(): ReactElement {
   );
 }
 
-function renderHub(intro: TetHubIntro | undefined): void {
+function renderHub(intro: TetHubIntro): void {
   const rootRoute = createRootRoute({ component: RootLayout });
   const hubRoute = createRoute({
     getParentRoute: () => rootRoute,
@@ -63,8 +64,8 @@ describe('TetHubPage', () => {
     expect(screen.getByText(INTRO.intro[1])).toBeTruthy();
   });
 
-  it('still renders the tiles when the intro file is missing', async () => {
-    renderHub(undefined);
+  it('still renders the tiles when the intro is empty', async () => {
+    renderHub(EMPTY_INTRO);
 
     expect(await screen.findByRole('heading', { name: 'Tử vi 2027 theo tuổi' })).toBeTruthy();
     expect(screen.getAllByRole('link', { name: /^Tuổi / })).toHaveLength(12);

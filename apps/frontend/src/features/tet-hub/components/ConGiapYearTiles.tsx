@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import { TET_HUB_VIEW_YEAR, tuoiNamFacts, tuoiNamSlug } from '@org/shared-tu-vi';
+import { CHI, TET_HUB_VIEW_YEAR, tuoiNamFacts, tuoiNamSlug } from '@org/shared-tu-vi';
 import { birthYearsOfChi } from '../con-giap-years';
 import { tetHubPagePath } from '../tet-hub-paths';
 import { TetHubChip } from './TetHubChip';
@@ -9,14 +9,13 @@ const YEAR_TILES_TITLE_ID = 'con-giap-year-tiles-title';
 
 interface ConGiapYearTilesProps {
   readonly chi: number;
-  readonly chiName: string;
 }
 
-export function ConGiapYearTiles({ chi, chiName }: ConGiapYearTilesProps): ReactElement {
+export function ConGiapYearTiles({ chi }: ConGiapYearTilesProps): ReactElement {
   return (
     <section aria-labelledby={YEAR_TILES_TITLE_ID}>
       <h2 id={YEAR_TILES_TITLE_ID} className="text-[22px] font-semibold text-[#2a1f0e]">
-        Các năm sinh tuổi {chiName}
+        Các năm sinh tuổi {CHI[chi]}
       </h2>
       <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {birthYearsOfChi(chi).map((birthYear) => {

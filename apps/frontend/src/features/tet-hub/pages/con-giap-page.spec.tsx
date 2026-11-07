@@ -98,6 +98,8 @@ describe('TetHubSlugPage for a con giáp', () => {
 
     const article = within(await screen.findByRole('article'));
 
+    expect(article.getByRole('heading', { name: 'Tổng quan tuổi Dần năm 2027' })).toBeTruthy();
+    expect(article.getByText(ARTICLE.tongQuan[0])).toBeTruthy();
     expect(article.getByRole('heading', { name: 'Tam tai' })).toBeTruthy();
     expect(article.getByRole('heading', { name: 'Thái tuế' })).toBeTruthy();
     expect(article.getByText(ARTICLE.xongDat[0])).toBeTruthy();
