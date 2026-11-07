@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 import { Link } from '@tanstack/react-router';
-import type { BreadcrumbItem } from '../tuoi-nam-breadcrumb';
+import type { BreadcrumbItem } from '../breadcrumb-item';
 
 interface TetHubBreadcrumbProps {
   readonly items: readonly BreadcrumbItem[];

@@ -1,10 +1,6 @@
 import { CHI, conGiapSlug, tuoiNamSlug, type TuoiNamFacts } from '@org/shared-tu-vi';
+import type { BreadcrumbItem } from './breadcrumb-item';
 import { KIEN_THUC_PATH, TET_HUB_PATH, TET_HUB_TITLE, tetHubPagePath } from './tet-hub-paths';
-
-export interface BreadcrumbItem {
-  readonly name: string;
-  readonly path: string;
-}
 
 export function tuoiNamBreadcrumb(facts: TuoiNamFacts): readonly BreadcrumbItem[] {
   return [

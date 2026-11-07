@@ -6,6 +6,7 @@ import {
 } from '@org/shared-tu-vi';
 import type { TuoiNamArticle } from '@org/shared-contracts';
 import { seo } from '@/lib/seo';
+import { TET_HUB_NOT_FOUND_DESCRIPTION, TET_HUB_NOT_FOUND_TITLE } from './tet-hub-not-found-copy';
 import { tetHubPagePath } from './tet-hub-paths';
 import { tuoiNamHead } from './tuoi-nam-head';
 
@@ -49,8 +50,8 @@ export async function loadTetHubSlugPage(
 
 function notFoundHead(slug: string): ReturnType<typeof seo> {
   return seo({
-    title: 'Không tìm thấy trang',
-    description: 'Trang tử vi theo tuổi bạn tìm không tồn tại hoặc chưa được đăng.',
+    title: TET_HUB_NOT_FOUND_TITLE,
+    description: TET_HUB_NOT_FOUND_DESCRIPTION,
     path: tetHubPagePath(slug),
     noindex: true,
   });

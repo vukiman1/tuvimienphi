@@ -1,11 +1,10 @@
 import type { ReactElement } from 'react';
 import type { TuoiNamFacts, TuoiNamGenderFacts } from '@org/shared-tu-vi';
 import { cn } from '@/lib/utils';
-import { TAM_TAI_ORDINALS, THAI_TUE_LABELS } from '../tuoi-nam-verdicts';
+import { TAM_TAI_ORDINALS, thaiTueRelationsLabel } from '../tuoi-nam-labels';
 
 const SUMMARY_TITLE_ID = 'tuoi-nam-summary-title';
 const NOT_AFFECTED = 'Không phạm';
-const RELATION_SEPARATOR = ', ';
 
 interface TuoiNamSummaryProps {
   readonly facts: TuoiNamFacts;
@@ -30,7 +29,7 @@ function tamTaiValue(facts: TuoiNamFacts): string {
 
 function thaiTueValue(facts: TuoiNamFacts): string {
   if (facts.thaiTue.length === 0) return NOT_AFFECTED;
-  return `Phạm ${facts.thaiTue.map((relation) => THAI_TUE_LABELS[relation]).join(RELATION_SEPARATOR)}`;
+  return `Phạm ${thaiTueRelationsLabel(facts.thaiTue)}`;
 }
 
 function SummaryRow({ label, value }: SummaryRowProps): ReactElement {

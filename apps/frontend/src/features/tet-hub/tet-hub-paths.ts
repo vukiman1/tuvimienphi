@@ -8,3 +8,6 @@ export const TET_HUB_TITLE = `Tử vi ${TET_HUB_VIEW_YEAR}`;
 export function tetHubPagePath(slug: string): string {
   return `${TET_HUB_PATH}/${slug}`;
 }
+
+export const NAM_MANG_ANCHOR = 'nam-mang';
+export const NU_MANG_ANCHOR = 'nu-mang';

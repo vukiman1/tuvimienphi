@@ -48,11 +48,28 @@ function renderSlug(slug: string): void {
     history: createMemoryHistory({ initialEntries: [`/kien-thuc/tu-vi-2027/${slug}`] }),
   });
 
-  render(<RouterProvider router={router as never} />);
+  render(<RouterProvider router={router} />);
 }
 
 function robotsContent(): string | null | undefined {
   return document.querySelector('meta[name="robots"]')?.getAttribute('content');
+}
+
+function faqQuestionCount(): number | undefined {
+  for (const script of document.querySelectorAll('script[type="application/ld+json"]')) {
+    const data: unknown = JSON.parse(script.textContent ?? '');
+    if (
+      typeof data === 'object' &&
+      data !== null &&
+      '@type' in data &&
+      data['@type'] === 'FAQPage' &&
+      'mainEntity' in data &&
+      Array.isArray(data.mainEntity)
+    ) {
+      return data.mainEntity.length;
+    }
+  }
+  return undefined;
 }
 
 function linkUrl(link: HTMLElement): URL {
@@ -104,7 +121,11 @@ describe('TetHubSlugPage for a birth year', () => {
     expect(namUrl.searchParams.get('gender')).toBe('nam');
     expect(nuUrl.searchParams.get('gender')).toBe('nu');
     expect(namUrl.searchParams.get('viewYear')).toBe('2027');
+    expect(nuUrl.searchParams.get('viewYear')).toBe('2027');
+    expect(namUrl.searchParams.has('year')).toBe(false);
+    expect(nuUrl.searchParams.has('year')).toBe(false);
     expect(namUrl.hash).toBe('#lap-la-so');
+    expect(nuUrl.hash).toBe('#lap-la-so');
   });
 
   it('states the Tam tai, Thái tuế and xông đất verdicts from the facts', async () => {
@@ -112,6 +133,20 @@ describe('TetHubSlugPage for a birth year', () => {
 
     expect(await screen.findByText('Tuổi Dần không phạm Tam tai trong năm 2027.')).toBeTruthy();
     expect(screen.getByText('Tuổi Dần không phạm Thái tuế năm Đinh Mùi 2027.')).toBeTruthy();
+  });
+});
+
+describe('TetHubSlugPage head for a birth year', () => {
+  it('puts the title, an indexable robots tag and the FAQPage JSON-LD in the head', async () => {
+    renderSlug(ARTICLE.slug);
+
+    await waitFor(() =>
+      expect(document.title).toBe(
+        'Tử vi tuổi Bính Dần 1986 năm 2027: sao chiếu mệnh, hạn, Tam tai (nam & nữ) | Tử Vi Miễn Phí',
+      ),
+    );
+    expect(robotsContent()).toBe('index, follow');
+    expect(faqQuestionCount()).toBe(ARTICLE.faq.length);
   });
 });
 

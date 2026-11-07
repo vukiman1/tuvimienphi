@@ -3,7 +3,7 @@ import { Link } from '@tanstack/react-router';
 import { CHI, conGiapSlug, getYearCanChi, type TuoiNamFacts } from '@org/shared-tu-vi';
 import type { TuoiNamArticle } from '@org/shared-contracts';
 import { Gender } from '@/features/la-so/birth-input';
-import { tetHubPagePath } from '../tet-hub-paths';
+import { NAM_MANG_ANCHOR, NU_MANG_ANCHOR, tetHubPagePath } from '../tet-hub-paths';
 import { tamTaiVerdict, thaiTueVerdict, xongDatVerdict } from '../tuoi-nam-verdicts';
 import { ArticleParagraphs } from './ArticleParagraphs';
 import { TetHubGenderCta } from './TetHubCta';
@@ -80,13 +80,13 @@ export function TuoiNamArticleView({ facts, article }: TuoiNamArticleViewProps):
       <ArticleSection id="sao-han" title="Sao chiếu mệnh và hạn">
         <div className="flex flex-col gap-8">
           <GenderSubsection
-            id="nam-mang"
+            id={NAM_MANG_ANCHOR}
             title="Nam mạng"
             gender={Gender.Male}
             paragraphs={article.saoHanNam}
           />
           <GenderSubsection
-            id="nu-mang"
+            id={NU_MANG_ANCHOR}
             title="Nữ mạng"
             gender={Gender.Female}
             paragraphs={article.saoHanNu}
