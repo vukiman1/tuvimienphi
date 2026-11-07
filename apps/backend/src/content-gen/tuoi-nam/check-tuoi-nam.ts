@@ -1,11 +1,23 @@
-import { BAT_HAN, CUU_DIEU, HoangOc, KimLau } from '@org/shared-tu-vi';
 import {
+  BAT_HAN,
+  CUU_DIEU,
+  HoangOc,
+  isHoangOcTot,
+  KimLau,
+  MenhVoiNam,
+  NAP_AM_NAMES,
+} from '@org/shared-tu-vi';
+import { checkTamTai, checkThaiTue } from '../chi-verdicts';
+import {
+  affirms,
+  escapeRegExp,
   forbiddenPhraseViolations,
   mentions,
   normalize,
   paragraphCountViolations,
   SECTION_MAX_PARAGRAPHS,
   SECTION_MIN_PARAGRAPHS,
+  splitSentences,
 } from '../check-text';
 import { TuoiNamSection, type TuoiNamBrief } from './tuoi-nam.brief';
 import type { TuoiNamDraft } from './tuoi-nam.schema';
@@ -22,6 +34,31 @@ const NAME_ALIASES: Readonly<Record<string, string>> = {
 
 const VOCABULARY: readonly string[] = [...CUU_DIEU, ...BAT_HAN, ...Object.values(HoangOc)];
 const NO_KIM_LAU_PHRASE = 'không phạm kim lâu';
+const CLAIM_VERBS: readonly string[] = ['phạm', 'gặp', 'bị', 'vướng', 'dính', 'rơi vào'];
+const KIM_LAU_CLAIMS: readonly string[] = CLAIM_VERBS.map((verb) => `${verb} Kim lâu`);
+const TAM_TAI_CLAIMS: readonly string[] = [
+  ...CLAIM_VERBS.map((verb) => `${verb} Tam tai`),
+  'là năm Tam tai',
+];
+const THAI_TUE_CLAIMS: readonly string[] = CLAIM_VERBS.map((verb) => `${verb} Thái tuế`);
+const NAP_AM_VARIANT_SPELLINGS: Readonly<Record<string, string>> = {
+  'Lư Trung Hỏa': 'Lô Trung Hỏa',
+  'Phúc Đăng Hỏa': 'Phú Đăng Hỏa',
+  'Phích Lịch Hỏa': 'Tích Lịch Hỏa',
+  'Tang Đố Mộc': 'Tang Chá Mộc',
+  'Đại Trạch Thổ': 'Đại Dịch Thổ',
+};
+const TUOI_PATTERNS: readonly RegExp[] = [
+  /(?<!\p{L})tuổi (?:mụ|âm)(?: là)? (\d{1,3})(?!\d)/gu,
+  /(?<!\d)(\d{1,3}) tuổi (?:mụ|âm)(?!\p{L})/gu,
+];
+const HOANG_OC_VERDICTS = { tot: 'cung tốt', xau: 'cung xấu' } as const;
+const DIRECTIONAL_MENH_RELATIONS: readonly MenhVoiNam[] = [
+  MenhVoiNam.NamSinhMenh,
+  MenhVoiNam.MenhSinhNam,
+  MenhVoiNam.NamKhacMenh,
+  MenhVoiNam.MenhKhacNam,
+];
 const FAQ_GENDER_PREFIXES = { nam: 'nam', nu: 'nữ' } as const;
 
 function namesIn(text: string): readonly string[] {
@@ -116,7 +153,83 @@ function checkKimLau(draft: TuoiNamDraft, brief: TuoiNamBrief): string[] {
     kimLau !== null && text.includes(NO_KIM_LAU_PHRASE)
       ? [`nói "không phạm Kim lâu" nhưng brief tính tuổi này phạm Kim lâu ${kimLau}`]
       : [];
-  return [...denial, ...wrongKinds];
+  const bareClaim =
+    kimLau === null && wrongKinds.length === 0 && affirms(text, KIM_LAU_CLAIMS)
+      ? ['nói tuổi này phạm Kim lâu nhưng tuổi này không phạm Kim lâu']
+      : [];
+  return [...denial, ...wrongKinds, ...bareClaim];
+}
+
+function checkChiVerdicts(draft: TuoiNamDraft, brief: TuoiNamBrief): string[] {
+  const text = allText(draft);
+  const { tamTai, thaiTue } = brief.facts;
+  const bareTamTai =
+    tamTai === null && affirms(text, TAM_TAI_CLAIMS)
+      ? ['nói tuổi này phạm Tam tai nhưng tuổi này không phạm Tam tai']
+      : [];
+  const bareThaiTue =
+    thaiTue.length === 0 && affirms(text, THAI_TUE_CLAIMS)
+      ? ['nói tuổi này phạm Thái tuế nhưng tuổi này không phạm Thái tuế']
+      : [];
+  return [
+    ...checkTamTai(text, brief.facts),
+    ...checkThaiTue(text, brief.facts),
+    ...bareTamTai,
+    ...bareThaiTue,
+  ];
+}
+
+function checkNapAm(draft: TuoiNamDraft, brief: TuoiNamBrief): string[] {
+  const text = allText(draft);
+  const { menh, menhNam } = brief.facts;
+  const allowed = [menh.name, menhNam.name];
+  const variants = Object.entries(NAP_AM_VARIANT_SPELLINGS)
+    .filter(([variant]) => mentions(text, variant))
+    .map(([variant, canonical]) => `viết "${variant}", tên đúng là "${canonical}"`);
+  const wrongNames = NAP_AM_NAMES.filter(
+    (name) => !allowed.includes(name) && mentions(text, name),
+  ).map(
+    (name) =>
+      `nhắc mệnh "${name}" nhưng mệnh năm sinh là "${menh.name}" và mệnh năm xem là "${menhNam.name}"`,
+  );
+  return [...variants, ...wrongNames];
+}
+
+function checkTuoi(draft: TuoiNamDraft, brief: TuoiNamBrief): string[] {
+  const text = normalize(allText(draft));
+  const { tuoi, viewYear } = brief.facts;
+  return TUOI_PATTERNS.flatMap((pattern) => [...text.matchAll(pattern)])
+    .map((match) => Number(match[1]))
+    .filter((written) => written !== tuoi)
+    .map((written) => `viết tuổi mụ ${written} nhưng tuổi mụ năm ${viewYear} là ${tuoi}`);
+}
+
+function checkHoangOcVerdict(draft: TuoiNamDraft, brief: TuoiNamBrief): string[] {
+  const { hoangOc } = brief.facts;
+  const isTot = isHoangOcTot(hoangOc);
+  const right = isTot ? HOANG_OC_VERDICTS.tot : HOANG_OC_VERDICTS.xau;
+  const wrong = isTot ? HOANG_OC_VERDICTS.xau : HOANG_OC_VERDICTS.tot;
+  const isInverted = splitSentences(allText(draft)).some(
+    (sentence) =>
+      mentions(sentence, hoangOc) && mentions(sentence, wrong) && !mentions(sentence, right),
+  );
+  return isInverted ? [`gọi cung ${hoangOc} là ${wrong} nhưng đó là ${right}`] : [];
+}
+
+function mentionsRelation(text: string, relation: MenhVoiNam): boolean {
+  const pattern = new RegExp(
+    `(?<!\\p{L})${escapeRegExp(normalize(relation))}(?!\\p{L})(?!\\s*\\d)`,
+    'u',
+  );
+  return pattern.test(normalize(text));
+}
+
+function checkMenhRelation(draft: TuoiNamDraft, brief: TuoiNamBrief): string[] {
+  const text = allText(draft);
+  const { menhVoiNam } = brief.facts;
+  return DIRECTIONAL_MENH_RELATIONS.filter(
+    (relation) => relation !== menhVoiNam && mentionsRelation(text, relation),
+  ).map((relation) => `nói "${relation}" nhưng quan hệ mệnh với năm là "${menhVoiNam}"`);
 }
 
 export function checkTuoiNam(draft: TuoiNamDraft, brief: TuoiNamBrief): readonly string[] {
@@ -125,6 +238,11 @@ export function checkTuoiNam(draft: TuoiNamDraft, brief: TuoiNamBrief): readonly
     ...checkClaims(draft, brief),
     ...checkInventedFacts(draft, brief),
     ...checkKimLau(draft, brief),
+    ...checkChiVerdicts(draft, brief),
+    ...checkNapAm(draft, brief),
+    ...checkTuoi(draft, brief),
+    ...checkHoangOcVerdict(draft, brief),
+    ...checkMenhRelation(draft, brief),
     ...forbiddenPhraseViolations(allText(draft)),
   ];
 }
