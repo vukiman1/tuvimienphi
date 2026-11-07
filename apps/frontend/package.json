@@ -46,6 +46,12 @@
           "build"
         ],
         "executor": "nx:noop"
+      },
+      "tet-hub-preview": {
+        "command": "node tools/tet-hub-preview.mjs",
+        "options": {
+          "cwd": "{projectRoot}"
+        }
       }
     }
   },

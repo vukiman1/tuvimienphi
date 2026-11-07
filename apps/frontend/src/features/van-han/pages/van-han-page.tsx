@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { Link } from '@tanstack/react-router';
 import {
   VanHanDetail,
   VanHanDetailEmpty,
@@ -9,6 +10,7 @@ import { ZodiacPicker } from '@/features/van-han/components/zodiac-picker';
 import { resolveVanHanView } from '@/features/van-han/van-han-view';
 import { getYearCanChi } from '@org/shared-tu-vi';
 import { ZODIAC_CHI, type ZodiacChi } from '@/lib/zodiac-icons';
+import { TET_HUB_LINK_LABEL, TET_HUB_PATH } from '@/features/tet-hub/tet-hub-paths';
 import { vanHanQueries } from '@/services/van-han-service';
 
 const CHI_YEAR_OFFSET = 4;
@@ -52,6 +54,12 @@ export function VanHanPage() {
           ? `Chọn con giáp để xem sao chiếu mệnh và vận hạn năm ${getYearCanChi(current.year)} ${current.year} theo tuổi.`
           : 'Chọn con giáp để xem sao chiếu mệnh và vận hạn trong năm theo tuổi.'}
       </p>
+      <Link
+        className="mt-2 inline-block text-sm font-medium text-foreground underline underline-offset-4"
+        to={TET_HUB_PATH}
+      >
+        {TET_HUB_LINK_LABEL}
+      </Link>
 
       <div className="mt-6 flex flex-col gap-4">
         <ZodiacPicker onSelect={handleSelectChi} selectedChi={selectedChi} />
