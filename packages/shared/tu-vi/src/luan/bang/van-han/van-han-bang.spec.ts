@@ -3,7 +3,8 @@ import { CUU_DIEU } from '../../../dan-gian.js';
 import { CUNG_NAMES } from '../../../dia-ban.js';
 import { HOA_NAMES } from '../../../tu-hoa.js';
 import { Sac, type LuanDe } from '../../luan-de.js';
-import { CUU_DIEU_LOI, KIM_LAU_LOI, TAM_TAI_LOI } from './dan-gian-loi.js';
+import { BAT_HAN } from '../../../tuoi-nam/bat-han.js';
+import { BAT_HAN_LOI, CUU_DIEU_LOI, KIM_LAU_LOI, TAM_TAI_LOI } from './dan-gian-loi.js';
 import { DAI_VAN_CHU_DE } from './dai-van-chu-de.js';
 import { HOA_VAN_HAN_LUAN } from './hoa-van-han-luan.js';
 import { LINH_VUC } from './linh-vuc.js';
@@ -77,6 +78,7 @@ function allTexts(): string[] {
       entry.nhinLai,
     ]),
     ...Object.values(CUU_DIEU_LOI),
+    ...Object.values(BAT_HAN_LOI),
     TAM_TAI_LOI,
     KIM_LAU_LOI,
   ];
@@ -98,6 +100,13 @@ describe('vận hạn tables', () => {
 
   it('has a folk line for each of the nine Cửu Diệu stars', () => {
     expect(Object.keys(CUU_DIEU_LOI).sort()).toEqual([...CUU_DIEU].sort());
+  });
+
+  it('has a folk line opening with the name of each of the eight hạn', () => {
+    expect(Object.keys(BAT_HAN_LOI).sort()).toEqual([...BAT_HAN].sort());
+    for (const han of BAT_HAN) {
+      expect(BAT_HAN_LOI[han].startsWith(`${han} là hạn`)).toBe(true);
+    }
   });
 
   it('attributes each claim to the star it is keyed on', () => {

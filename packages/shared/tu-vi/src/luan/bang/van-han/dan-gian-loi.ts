@@ -1,4 +1,5 @@
 import type { CuuDieu } from '../../../dan-gian.js';
+import type { BatHan } from '../../../tuoi-nam/bat-han.js';
 
 export const CUU_DIEU_LOI: Readonly<Record<CuuDieu, string>> = {
   'La Hầu':
@@ -24,3 +25,22 @@ export const TAM_TAI_LOI =
 
 export const KIM_LAU_LOI =
   'Kim Lâu là cách dân gian xem tuổi khi cưới hỏi và làm nhà. Tuổi phạm Kim Lâu thường được khuyên dời việc cưới hay xây nhà sang năm khác, hoặc nhờ người hợp tuổi đứng ra làm thay.';
+
+export const BAT_HAN_LOI: Readonly<Record<BatHan, string>> = {
+  'Huỳnh Tuyền':
+    'Huỳnh Tuyền là hạn dân gian gắn với đi lại xa và chuyện sông nước. Người gặp hạn này thường được khuyên cẩn thận khi di chuyển và chuẩn bị chu đáo trước mỗi chuyến đi.',
+  'Tam Kheo':
+    'Tam Kheo là hạn dân gian gắn với chân tay mỏi mệt, đau nhức. Người gặp hạn này thường được khuyên giữ gìn sức khỏe, tránh làm việc quá sức.',
+  'Ngũ Mộ':
+    'Ngũ Mộ là hạn dân gian gắn với hao tốn tiền của và chuyện nhà cửa, mồ mả. Người gặp hạn này thường được khuyên chi tiêu dè dặt và lo việc gia đình chu đáo.',
+  'Thiên Tinh':
+    'Thiên Tinh là hạn dân gian gắn với thị phi, lời qua tiếng lại và giấy tờ. Người gặp hạn này thường được khuyên giữ lời nói và đọc kỹ giấy tờ trước khi ký.',
+  'Toán Tận':
+    'Toán Tận là hạn dân gian gắn với hao hụt tiền bạc và công việc dang dở. Người gặp hạn này thường được khuyên tính toán kỹ, không đầu tư vội và giữ khoản dự phòng.',
+  'Thiên La':
+    'Thiên La là hạn dân gian gắn với cảm giác vướng víu, công việc bị cản trở. Người gặp hạn này thường được khuyên kiên nhẫn, làm từng việc một và tránh quyết định nóng vội.',
+  'Địa Võng':
+    'Địa Võng là hạn dân gian gắn với chuyện ràng buộc, khó dứt ra được. Người gặp hạn này thường được khuyên cân nhắc kỹ khi cam kết và đọc kỹ điều khoản hợp đồng.',
+  'Diêm Vương':
+    'Diêm Vương là hạn dân gian gắn với sức khỏe và sự mệt mỏi. Người gặp hạn này thường được khuyên khám sức khỏe định kỳ, ăn ngủ điều độ và giữ tinh thần thoải mái.',
+};
