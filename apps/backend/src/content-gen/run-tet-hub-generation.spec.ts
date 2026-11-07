@@ -5,6 +5,7 @@ import type { ConGiapArticle, TuoiNamArticle } from '@org/shared-contracts';
 import { tuoiNamSlug } from '@org/shared-tu-vi';
 import {
   runTetHubGeneration,
+  TetHubPageExistsError,
   UnknownTetHubPageError,
   type PagePlan,
 } from './run-tet-hub-generation';
@@ -100,13 +101,44 @@ describe('runTetHubGeneration', () => {
         },
         okPlan('tuoi-mui'),
       ],
-      options: { only: null, isForced: true },
+      options,
       generateIntro: async () => INTRO,
       loadArticles: async () => [],
     });
 
     expect(failedSlugs).toEqual(['tuoi-suu']);
     await expect(readFile(join(directory, 'tuoi-mui.json'), 'utf8')).resolves.toBeDefined();
+  });
+
+  it('refuses to overwrite an existing page with --only alone', async () => {
+    await writeFile(join(directory, 'tuoi-mui.json'), '{"tay":true}\n');
+
+    await expect(
+      runTetHubGeneration({
+        directory,
+        plans: [okPlan('tuoi-mui')],
+        options: { only: 'tuoi-mui', isForced: false },
+        generateIntro: async () => INTRO,
+        loadArticles: async () => [],
+      }),
+    ).rejects.toThrow(TetHubPageExistsError);
+    expect(await readFile(join(directory, 'tuoi-mui.json'), 'utf8')).toBe('{"tay":true}\n');
+  });
+
+  it('overwrites an existing page with --only and --force', async () => {
+    await writeFile(join(directory, 'tuoi-mui.json'), '{"tay":true}\n');
+
+    await runTetHubGeneration({
+      directory,
+      plans: [okPlan('tuoi-mui')],
+      options: { only: 'tuoi-mui', isForced: true },
+      generateIntro: async () => INTRO,
+      loadArticles: async () => [],
+    });
+
+    expect(JSON.parse(await readFile(join(directory, 'tuoi-mui.json'), 'utf8'))).toEqual(
+      articleFor('tuoi-mui'),
+    );
   });
 
   it('rejects an --only slug that matches no page', async () => {

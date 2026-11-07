@@ -23,6 +23,13 @@ export class UnknownTetHubPageError extends Error {
   }
 }
 
+export class TetHubPageExistsError extends Error {
+  constructor(readonly slug: string) {
+    super(`the Tết hub page "${slug}" already exists; add --force to overwrite it`);
+    this.name = 'TetHubPageExistsError';
+  }
+}
+
 export interface PagePlan {
   readonly slug: string;
   readonly generate: () => Promise<TuoiNamArticle | ConGiapArticle>;
@@ -52,12 +59,13 @@ function selectPlans(
   options: CliOptions,
   directory: string,
 ): readonly PagePlan[] {
-  if (options.only !== null) {
-    const match = plans.find((plan) => plan.slug === options.only);
-    if (match === undefined) throw new UnknownTetHubPageError(options.only);
-    return [match];
+  if (options.only === null) return plans.filter((plan) => !pageExists(directory, plan.slug));
+  const match = plans.find((plan) => plan.slug === options.only);
+  if (match === undefined) throw new UnknownTetHubPageError(options.only);
+  if (!options.isForced && pageExists(directory, match.slug)) {
+    throw new TetHubPageExistsError(match.slug);
   }
-  return options.isForced ? plans : plans.filter((plan) => !pageExists(directory, plan.slug));
+  return [match];
 }
 
 async function writeManifestFromDisk(directory: string): Promise<void> {

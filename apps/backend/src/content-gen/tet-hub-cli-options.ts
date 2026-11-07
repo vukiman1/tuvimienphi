@@ -9,9 +9,18 @@ export interface CliOptions {
 export class InvalidTetHubArgumentError extends Error {
   constructor(readonly argument: string) {
     super(
-      `unknown argument "${argument}"; use --only=<slug> to regenerate one page or --force to regenerate all`,
+      `unknown argument "${argument}"; use --only=<slug> to generate one page, adding --force to overwrite it`,
     );
     this.name = 'InvalidTetHubArgumentError';
+  }
+}
+
+export class ForceWithoutOnlyError extends Error {
+  constructor() {
+    super(
+      '--force only overwrites the page named by --only=<slug>; it cannot regenerate every page',
+    );
+    this.name = 'ForceWithoutOnlyError';
   }
 }
 
@@ -30,5 +39,6 @@ export function parseCliOptions(args: readonly string[]): CliOptions {
     else if (argument === FORCE_FLAG) isForced = true;
     else throw new InvalidTetHubArgumentError(argument);
   }
+  if (isForced && only === null) throw new ForceWithoutOnlyError();
   return { only, isForced };
 }

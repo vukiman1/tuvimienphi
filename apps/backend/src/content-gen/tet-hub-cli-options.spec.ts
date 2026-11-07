@@ -1,4 +1,8 @@
-import { InvalidTetHubArgumentError, parseCliOptions } from './tet-hub-cli-options';
+import {
+  ForceWithoutOnlyError,
+  InvalidTetHubArgumentError,
+  parseCliOptions,
+} from './tet-hub-cli-options';
 
 describe('parseCliOptions', () => {
   it('defaults to generating every missing page', () => {
@@ -18,4 +22,8 @@ describe('parseCliOptions', () => {
       expect(() => parseCliOptions([argument])).toThrow(InvalidTetHubArgumentError);
     },
   );
+
+  it('rejects --force without --only so a run cannot overwrite every hand-edited page', () => {
+    expect(() => parseCliOptions(['--force'])).toThrow(ForceWithoutOnlyError);
+  });
 });
