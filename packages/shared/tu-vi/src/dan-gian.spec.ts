@@ -1,4 +1,4 @@
-import { type CuuDieu, isKimLau, isTamTai, saoChieuMenh } from './dan-gian.js';
+import { type CuuDieu, isKimLau, isTamTai, saoChieuMenh, tamTaiNamThu } from './dan-gian.js';
 import { Gender } from './van-han.js';
 
 const TY = 0;
@@ -168,5 +168,16 @@ describe('isTamTai', () => {
 
   it.each([HOI, TY, SUU])('hits a Dậu-born in view chi %i', (viewChi) => {
     expect(isTamTai(DAU, viewChi)).toBe(true);
+  });
+});
+
+describe('tamTaiNamThu', () => {
+  it.each([
+    [3, 7, 3],
+    [2, 7, null],
+    [11, 5, 1],
+    [0, 7, null],
+  ])('numbers the tam tai year for birth chi %i in view chi %i', (birthChi, viewChi, nam) => {
+    expect(tamTaiNamThu(birthChi, viewChi)).toBe(nam);
   });
 });

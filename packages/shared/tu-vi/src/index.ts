@@ -24,6 +24,10 @@ export * from './view-year.js';
 export * from './dan-gian.js';
 export * from './tuoi-nam/thai-tue.js';
 export * from './tuoi-nam/xong-dat.js';
+export * from './tuoi-nam/kim-lau.js';
+export * from './tuoi-nam/hoang-oc.js';
+export * from './tuoi-nam/menh-voi-nam.js';
+export * from './tuoi-nam/giai-doan-tuoi.js';
 export * from './tieu-han.js';
 export * from './luu-nien.js';
 

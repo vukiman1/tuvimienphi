@@ -2,7 +2,7 @@ import { mod12 } from './chi.js';
 import { Gender } from './van-han.js';
 
 const CUU_DIEU_CYCLE = 9;
-const TAM_TAI_SPAN = 3;
+const TAM_TAI_YEARS = [1, 2, 3] as const;
 const TAM_HOP_GROUPS = 4;
 const KIM_LAU_REMAINDERS: readonly number[] = [1, 3, 6, 8];
 
@@ -55,7 +55,12 @@ export function isKimLau(tuoi: number): boolean {
   return KIM_LAU_REMAINDERS.includes(tuoi % CUU_DIEU_CYCLE);
 }
 
-export function isTamTai(birthYearChi: number, viewYearChi: number): boolean {
+export function tamTaiNamThu(birthYearChi: number, viewYearChi: number): 1 | 2 | 3 | null {
   const firstChi = TAM_TAI_FIRST_CHI_BY_GROUP[birthYearChi % TAM_HOP_GROUPS];
-  return mod12(viewYearChi - firstChi) < TAM_TAI_SPAN;
+  const offset = mod12(viewYearChi - firstChi);
+  return offset < TAM_TAI_YEARS.length ? TAM_TAI_YEARS[offset] : null;
+}
+
+export function isTamTai(birthYearChi: number, viewYearChi: number): boolean {
+  return tamTaiNamThu(birthYearChi, viewYearChi) !== null;
 }
