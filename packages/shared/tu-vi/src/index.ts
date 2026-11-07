@@ -56,3 +56,6 @@ export * from './luan/bang/van-han/luu-tinh-luan.js';
 export * from './luan/bang/van-han/hoa-van-han-luan.js';
 export * from './luan/bang/van-han/linh-vuc.js';
 export * from './luan/bang/van-han/dan-gian-loi.js';
+export * from './tuoi-nam/tuoi-nam-range.js';
+export * from './tuoi-nam/tuoi-nam-slug.js';
+export * from './tuoi-nam/tuoi-nam-facts.js';
