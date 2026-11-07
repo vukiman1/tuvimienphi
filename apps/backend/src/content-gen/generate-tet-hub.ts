@@ -13,6 +13,7 @@ import { AiClient } from '../ai/port/ai.client';
 import { generateHubIntro } from './hub-intro';
 import { AiCallPacer } from './ai-call-pacer';
 import { runTetHubGeneration, type PagePlan } from './run-tet-hub-generation';
+import { readTuoiNamArticles } from './tet-hub-reader';
 import { parseCliOptions } from './tet-hub-cli-options';
 import { TetHubGenModule } from './tet-hub-gen.module';
 import { generateConGiapArticle, generateTuoiNamArticle } from './tet-hub-pages';
@@ -40,16 +41,18 @@ async function main(): Promise<void> {
   try {
     const ai = app.get(AiClient);
     const pacer = new AiCallPacer(PAUSE_BETWEEN_AI_CALLS_MS);
-    const failedSlugs = await runTetHubGeneration({
-      directory: join(process.cwd(), OUTPUT_DIRECTORY),
+    const directory = join(process.cwd(), OUTPUT_DIRECTORY);
+    const { failedSlugs, similarPairs } = await runTetHubGeneration({
+      directory,
       plans: allPagePlans(ai, pacer),
       options,
       generateIntro: () => generateHubIntro(ai, pacer.beforeCall),
+      loadArticles: () => readTuoiNamArticles(directory),
     });
     if (failedSlugs.length > 0) {
       logger.error(`${failedSlugs.length} step(s) failed: ${failedSlugs.join(', ')}`);
-      process.exitCode = 1;
     }
+    if (failedSlugs.length > 0 || similarPairs.length > 0) process.exitCode = 1;
   } finally {
     await app.close();
   }

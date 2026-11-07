@@ -45,7 +45,7 @@ function isFaqEntry(value: unknown): value is TuoiNamDraft['faq'][number] {
   return isRecord(value) && typeof value.question === 'string' && typeof value.answer === 'string';
 }
 
-function isTuoiNamDraft(value: unknown): value is TuoiNamDraft {
+export function isTuoiNamDraft(value: unknown): value is TuoiNamDraft {
   return (
     isRecord(value) &&
     SECTION_KEYS.every((key) => isStringArray(value[key])) &&

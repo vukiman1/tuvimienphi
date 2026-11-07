@@ -1,7 +1,8 @@
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import type { ConGiapArticle } from '@org/shared-contracts';
+import type { ConGiapArticle, TuoiNamArticle } from '@org/shared-contracts';
+import { tuoiNamSlug } from '@org/shared-tu-vi';
 import {
   runTetHubGeneration,
   UnknownTetHubPageError,
@@ -50,19 +51,21 @@ describe('runTetHubGeneration', () => {
       plans: [okPlan('tuoi-mui')],
       options,
       generateIntro: async () => INTRO,
+      loadArticles: async () => [],
     });
 
     expect(await readFile(join(directory, 'hub.json'), 'utf8')).toBe('{"intro":["tay"]}\n');
   });
 
   it('keeps going and writes the manifest when the hub intro fails', async () => {
-    const failedSlugs = await runTetHubGeneration({
+    const { failedSlugs } = await runTetHubGeneration({
       directory,
       plans: [okPlan('tuoi-mui')],
       options,
       generateIntro: async () => {
         throw new Error('intro rejected');
       },
+      loadArticles: async () => [],
     });
 
     expect(failedSlugs).toEqual(['hub-intro']);
@@ -79,13 +82,14 @@ describe('runTetHubGeneration', () => {
       plans: [okPlan('tuoi-mui')],
       options: { only: 'tuoi-mui', isForced: false },
       generateIntro,
+      loadArticles: async () => [],
     });
 
     expect(generateIntro).not.toHaveBeenCalled();
   });
 
   it('reports a failed page and still generates the others', async () => {
-    const failedSlugs = await runTetHubGeneration({
+    const { failedSlugs } = await runTetHubGeneration({
       directory,
       plans: [
         {
@@ -98,6 +102,7 @@ describe('runTetHubGeneration', () => {
       ],
       options: { only: null, isForced: true },
       generateIntro: async () => INTRO,
+      loadArticles: async () => [],
     });
 
     expect(failedSlugs).toEqual(['tuoi-suu']);
@@ -111,7 +116,39 @@ describe('runTetHubGeneration', () => {
         plans: [okPlan('tuoi-mui')],
         options: { only: 'tuoi-xyz', isForced: false },
         generateIntro: async () => INTRO,
+        loadArticles: async () => [],
       }),
     ).rejects.toThrow(UnknownTetHubPageError);
+  });
+
+  it('reports similar neighbours while keeping the written pages', async () => {
+    const paragraph =
+      'Năm nay công việc ổn định, tài chính cần thận trọng, sức khỏe nên giữ nhịp đều.';
+    const alike = (birthYear: number): TuoiNamArticle => ({
+      slug: tuoiNamSlug(birthYear),
+      birthYear,
+      viewYear: 2027,
+      tongQuan: [paragraph],
+      saoHanNam: [],
+      saoHanNu: [],
+      menh: [],
+      cuoiNha: [],
+      loiKhuyen: [],
+      faq: [],
+      model: 'test-model',
+      generatedAt: '2026-11-07T00:00:00.000Z',
+    });
+
+    const { similarPairs } = await runTetHubGeneration({
+      directory,
+      plans: [okPlan('tuoi-mui')],
+      options,
+      generateIntro: async () => INTRO,
+      loadArticles: async () => [alike(1986), alike(1987)],
+    });
+
+    expect(similarPairs).toEqual([{ a: tuoiNamSlug(1986), b: tuoiNamSlug(1987), score: 1 }]);
+    await expect(readFile(join(directory, 'tuoi-mui.json'), 'utf8')).resolves.toBeDefined();
+    await expect(readFile(join(directory, 'manifest.json'), 'utf8')).resolves.toBeDefined();
   });
 });

@@ -8,6 +8,7 @@ import {
   tuoiNamSlug,
 } from '@org/shared-tu-vi';
 import type { CliOptions } from './tet-hub-cli-options';
+import { findTooSimilar, TUOI_NAM_SIMILARITY_THRESHOLD, type SimilarPair } from './similarity';
 import { introExists, pageExists } from './tet-hub-files';
 import {
   writeTetHubIntro,
@@ -37,7 +38,15 @@ export interface TetHubGenerationRequest {
   readonly plans: readonly PagePlan[];
   readonly options: CliOptions;
   readonly generateIntro: () => Promise<TetHubIntro>;
+  readonly loadArticles: () => Promise<readonly TuoiNamArticle[]>;
 }
+
+export interface TetHubRunReport {
+  readonly failedSlugs: readonly string[];
+  readonly similarPairs: readonly SimilarPair[];
+}
+
+const SCORE_DECIMALS = 2;
 
 function describeError(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
@@ -79,8 +88,8 @@ async function runStep(label: string, work: () => Promise<void>): Promise<boolea
 
 export async function runTetHubGeneration(
   request: TetHubGenerationRequest,
-): Promise<readonly string[]> {
-  const { directory, options, generateIntro } = request;
+): Promise<TetHubRunReport> {
+  const { directory, options, generateIntro, loadArticles } = request;
   const plans = selectPlans(request.plans, options, directory);
   const needsIntro = options.only === null && !introExists(directory);
   const failedSlugs: string[] = [];
@@ -100,5 +109,9 @@ export async function runTetHubGeneration(
   }
 
   await writeManifestFromDisk(directory);
-  return failedSlugs;
+  const similarPairs = findTooSimilar(await loadArticles(), TUOI_NAM_SIMILARITY_THRESHOLD);
+  similarPairs.forEach((pair) =>
+    logger.error(`too similar ${pair.a} ~ ${pair.b}: ${pair.score.toFixed(SCORE_DECIMALS)}`),
+  );
+  return { failedSlugs, similarPairs };
 }
