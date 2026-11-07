@@ -4,10 +4,9 @@ import { BirthForm } from '@/features/la-so/components/birth-form';
 import type { Gender } from '@/features/la-so/birth-input';
 import { usePrefersReducedMotion } from '@/hooks/use-prefers-reduced-motion';
 import { MEDIA } from '@/config/media';
+import { HERO_SECTION_ID } from '@/features/home/home-anchors';
 
 const HERO_TITLE_ID = 'home-hero-title';
-
-export const HERO_SECTION_ID = 'lap-la-so';
 
 const BACKDROP_CLASS = 'absolute inset-0 h-full w-full object-cover';
 

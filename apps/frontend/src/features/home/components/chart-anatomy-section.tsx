@@ -1,6 +1,6 @@
 import { ArrowRight } from 'lucide-react';
 import { Reveal } from '@/components/reveal';
-import { HERO_SECTION_ID } from '@/features/home/components/hero-section';
+import { HERO_SECTION_ID } from '@/features/home/home-anchors';
 import { SectionHeading } from '@/features/home/components/section-heading';
 import { MEDIA, homeIconUrl } from '@/config/media';
 import { CHART_ANATOMY_SECTION } from '@/features/home/home-content';

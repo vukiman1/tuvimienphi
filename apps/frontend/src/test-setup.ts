@@ -44,6 +44,12 @@ class ResizeObserverStub {
 
 Object.assign(globalThis, { ResizeObserver: ResizeObserverStub });
 
+class ResponseStub {}
+
+if (typeof globalThis.Response === 'undefined') {
+  Object.assign(globalThis, { Response: ResponseStub });
+}
+
 // input-otp probes this to place its password-manager badge; jsdom does not implement it.
 Object.defineProperty(document, 'elementFromPoint', {
   value: () => null,
