@@ -2,9 +2,12 @@ import { hoangOc, HoangOc, isHoangOcTot, HOANG_OC_TRUYEN_THONG } from './hoang-o
 import { HOANG_OC_FIXTURE } from './hoang-oc.fixture.js';
 
 describe('hoangOc', () => {
-  it.each(HOANG_OC_FIXTURE)('at tuổi $tuoi follows $source', ({ tuoi, cung }) => {
-    expect(hoangOc(tuoi)).toBe(cung);
-  });
+  it.each(HOANG_OC_FIXTURE)(
+    'at tuổi $tuoi is $cung as printed by its sources',
+    ({ tuoi, cung }) => {
+      expect(hoangOc(tuoi)).toBe(cung);
+    },
+  );
 
   it('covers all six cung in the fixture', () => {
     const covered = new Set(HOANG_OC_FIXTURE.map((entry) => entry.cung));

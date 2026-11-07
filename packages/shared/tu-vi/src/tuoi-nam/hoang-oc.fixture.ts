@@ -3,7 +3,7 @@ import { HoangOc } from './hoang-oc.js';
 export interface HoangOcFixtureEntry {
   readonly tuoi: number;
   readonly cung: HoangOc;
-  readonly source: string;
+  readonly sources: readonly string[];
 }
 
 const DIEN_MAY_XANH_URL =
@@ -11,18 +11,16 @@ const DIEN_MAY_XANH_URL =
 const BAT_DONG_SAN_URL = 'https://wiki.batdongsan.com.vn/wiki/hoang-oc-la-gi-110059';
 
 export const HOANG_OC_FIXTURE: readonly HoangOcFixtureEntry[] = [
-  { tuoi: 18, cung: HoangOc.TamDiaSat, source: BAT_DONG_SAN_URL },
-  { tuoi: 20, cung: HoangOc.NhiNghi, source: DIEN_MAY_XANH_URL },
-  { tuoi: 25, cung: HoangOc.NhatCat, source: BAT_DONG_SAN_URL },
-  { tuoi: 33, cung: HoangOc.LucHoangOc, source: DIEN_MAY_XANH_URL },
-  { tuoi: 33, cung: HoangOc.LucHoangOc, source: BAT_DONG_SAN_URL },
-  { tuoi: 42, cung: HoangOc.LucHoangOc, source: BAT_DONG_SAN_URL },
-  { tuoi: 47, cung: HoangOc.NguThoTu, source: BAT_DONG_SAN_URL },
-  { tuoi: 50, cung: HoangOc.NguThoTu, source: BAT_DONG_SAN_URL },
-  { tuoi: 56, cung: HoangOc.NguThoTu, source: BAT_DONG_SAN_URL },
-  { tuoi: 61, cung: HoangOc.NhatCat, source: BAT_DONG_SAN_URL },
-  { tuoi: 64, cung: HoangOc.TuTanTai, source: DIEN_MAY_XANH_URL },
-  { tuoi: 70, cung: HoangOc.NhatCat, source: BAT_DONG_SAN_URL },
-  { tuoi: 73, cung: HoangOc.TuTanTai, source: BAT_DONG_SAN_URL },
-  { tuoi: 78, cung: HoangOc.TamDiaSat, source: BAT_DONG_SAN_URL },
+  { tuoi: 20, cung: HoangOc.NhiNghi, sources: [DIEN_MAY_XANH_URL, BAT_DONG_SAN_URL] },
+  { tuoi: 22, cung: HoangOc.TuTanTai, sources: [BAT_DONG_SAN_URL] },
+  { tuoi: 25, cung: HoangOc.NhatCat, sources: [BAT_DONG_SAN_URL] },
+  { tuoi: 33, cung: HoangOc.LucHoangOc, sources: [DIEN_MAY_XANH_URL, BAT_DONG_SAN_URL] },
+  { tuoi: 42, cung: HoangOc.LucHoangOc, sources: [BAT_DONG_SAN_URL] },
+  { tuoi: 47, cung: HoangOc.NguThoTu, sources: [BAT_DONG_SAN_URL] },
+  { tuoi: 50, cung: HoangOc.NguThoTu, sources: [BAT_DONG_SAN_URL] },
+  { tuoi: 56, cung: HoangOc.NguThoTu, sources: [BAT_DONG_SAN_URL] },
+  { tuoi: 63, cung: HoangOc.TamDiaSat, sources: [BAT_DONG_SAN_URL] },
+  { tuoi: 69, cung: HoangOc.TamDiaSat, sources: [BAT_DONG_SAN_URL] },
+  { tuoi: 70, cung: HoangOc.NhatCat, sources: [BAT_DONG_SAN_URL] },
+  { tuoi: 80, cung: HoangOc.NhiNghi, sources: [BAT_DONG_SAN_URL] },
 ];
