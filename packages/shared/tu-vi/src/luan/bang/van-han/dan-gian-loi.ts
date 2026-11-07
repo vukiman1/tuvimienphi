@@ -28,19 +28,19 @@ export const KIM_LAU_LOI =
 
 export const BAT_HAN_LOI: Readonly<Record<BatHan, string>> = {
   'Huỳnh Tuyền':
-    'Huỳnh Tuyền là hạn dân gian gắn với đi lại xa và chuyện sông nước. Người gặp hạn này thường được khuyên cẩn thận khi di chuyển và chuẩn bị chu đáo trước mỗi chuyến đi.',
+    'Huỳnh Tuyền là hạn dân gian gắn với sức khỏe, chuyện hao tài và việc làm ăn liên quan đến sông nước. Người gặp hạn này thường được khuyên chăm lo sức khỏe, chi tiêu dè dặt và cân nhắc kỹ những việc làm ăn trên sông nước.',
   'Tam Kheo':
     'Tam Kheo là hạn dân gian gắn với chân tay mỏi mệt, đau nhức. Người gặp hạn này thường được khuyên giữ gìn sức khỏe, tránh làm việc quá sức.',
   'Ngũ Mộ':
-    'Ngũ Mộ là hạn dân gian gắn với hao tốn tiền của và chuyện nhà cửa, mồ mả. Người gặp hạn này thường được khuyên chi tiêu dè dặt và lo việc gia đình chu đáo.',
+    'Ngũ Mộ là hạn dân gian gắn với chuyện tiền tài, hao tiền tốn của. Người gặp hạn này thường được khuyên chi tiêu dè dặt và cân nhắc trước các khoản chi lớn.',
   'Thiên Tinh':
-    'Thiên Tinh là hạn dân gian gắn với thị phi, lời qua tiếng lại và giấy tờ. Người gặp hạn này thường được khuyên giữ lời nói và đọc kỹ giấy tờ trước khi ký.',
+    'Thiên Tinh là hạn dân gian gắn với thị phi, tranh chấp và chuyện thưa kiện. Người gặp hạn này thường được khuyên giữ lời nói, tránh va chạm và đọc kỹ giấy tờ trước khi ký.',
   'Toán Tận':
-    'Toán Tận là hạn dân gian gắn với hao hụt tiền bạc và công việc dang dở. Người gặp hạn này thường được khuyên tính toán kỹ, không đầu tư vội và giữ khoản dự phòng.',
+    'Toán Tận là hạn dân gian gắn với sức khỏe kém và chuyện hao hụt tiền bạc. Người gặp hạn này thường được khuyên chăm lo sức khỏe, tính toán kỹ chi tiêu và giữ một khoản dự phòng.',
   'Thiên La':
-    'Thiên La là hạn dân gian gắn với cảm giác vướng víu, công việc bị cản trở. Người gặp hạn này thường được khuyên kiên nhẫn, làm từng việc một và tránh quyết định nóng vội.',
+    'Thiên La là hạn dân gian gắn với cảm giác bị quấy phá, cuộc sống khó được yên ổn. Người gặp hạn này thường được khuyên giữ nếp sống điều độ, kiên nhẫn và tránh quyết định nóng vội.',
   'Địa Võng':
-    'Địa Võng là hạn dân gian gắn với chuyện ràng buộc, khó dứt ra được. Người gặp hạn này thường được khuyên cân nhắc kỹ khi cam kết và đọc kỹ điều khoản hợp đồng.',
+    'Địa Võng là hạn dân gian gắn với tai tiếng và rắc rối liên quan đến pháp luật. Người gặp hạn này thường được khuyên giữ gìn uy tín, làm việc đúng quy định và đọc kỹ giấy tờ trước khi ký.',
   'Diêm Vương':
-    'Diêm Vương là hạn dân gian gắn với sức khỏe và sự mệt mỏi. Người gặp hạn này thường được khuyên khám sức khỏe định kỳ, ăn ngủ điều độ và giữ tinh thần thoải mái.',
+    'Diêm Vương là hạn dân gian gắn với tin không vui từ người ở xa. Người gặp hạn này thường được khuyên giữ liên lạc, hỏi han người thân ở xa và giữ tinh thần bình thản.',
 };
