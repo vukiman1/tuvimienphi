@@ -15,6 +15,8 @@ export enum ConGiapSection {
   XongDat = 'xongDat',
 }
 
+export type TamTaiYear = 1 | 2 | 3;
+
 export interface ConGiapClaim {
   readonly section: ConGiapSection;
   readonly keyword: string;
@@ -24,7 +26,7 @@ export interface ConGiapFacts {
   readonly chi: number;
   readonly viewYear: number;
   readonly viewChi: number;
-  readonly tamTai: 1 | 2 | 3 | null;
+  readonly tamTai: TamTaiYear | null;
   readonly thaiTue: readonly ThaiTueRelation[];
   readonly xongDat: XongDat;
 }
@@ -40,7 +42,7 @@ export const THAI_TUE_SUFFIX = 'Thái tuế';
 
 const TAM_TAI_YEAR_WORDS = { 1: 'nhất', 2: 'hai', 3: 'ba' } as const;
 
-export function tamTaiKeyword(year: 1 | 2 | 3): string {
+export function tamTaiKeyword(year: TamTaiYear): string {
   return `năm thứ ${TAM_TAI_YEAR_WORDS[year]} của Tam tai`;
 }
 

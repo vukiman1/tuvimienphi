@@ -1,10 +1,14 @@
-import { TET_HUB_VIEW_YEAR } from '@org/shared-tu-vi';
+import {
+  TET_HUB_VIEW_YEAR,
+  TUOI_NAM_FIRST_BIRTH_YEAR,
+  TUOI_NAM_LAST_BIRTH_YEAR,
+} from '@org/shared-tu-vi';
 import type { AiClient } from '../ai/port/ai.client';
 import type { AiSchema } from '../ai/port/ai.types';
 import { runWithAiCallContext } from '../ai/port/ai-call-context';
-import type { CachSinh } from '../api/luan-giai/generation/sinh-voi-kiem';
-import { sinhVoiKiem } from '../api/luan-giai/generation/sinh-voi-kiem';
-import { forbiddenPhraseViolations } from './check-text';
+import { sinhVoiKiem, type CachSinh } from '../api/luan-giai/generation/sinh-voi-kiem';
+import { forbiddenPhraseViolations, paragraphCountViolations } from './check-text';
+import { isRecord, isStringArray } from './schema-guards';
 import type { TetHubIntro } from './tet-hub-writer';
 
 const MIN_PARAGRAPHS = 2;
@@ -14,7 +18,7 @@ const INTRO_LABEL = 'tet-hub:hub-intro';
 
 const HUB_INTRO_SYSTEM_PROMPT = `Bạn viết đoạn giới thiệu cho trang tổng hợp "Tử vi ${TET_HUB_VIEW_YEAR} theo tuổi" của một website tử vi tiếng Việt.
 
-Phạm vi của trang tổng hợp: liên kết tới trang riêng cho từng năm sinh âm lịch từ 1950 đến 2010 (sao chiếu mệnh, hạn, Kim lâu, Hoang ốc, mệnh năm sinh với mệnh năm xem, lời khuyên theo giai đoạn đời) và tới trang cho từng con giáp (Tam tai, Thái tuế, tuổi hợp xông đất năm ${TET_HUB_VIEW_YEAR}).
+Phạm vi của trang tổng hợp: liên kết tới trang riêng cho từng năm sinh âm lịch từ ${TUOI_NAM_FIRST_BIRTH_YEAR} đến ${TUOI_NAM_LAST_BIRTH_YEAR} (sao chiếu mệnh, hạn, Kim lâu, Hoang ốc, mệnh năm sinh với mệnh năm xem, lời khuyên theo giai đoạn đời) và tới trang cho từng con giáp (Tam tai, Thái tuế, tuổi hợp xông đất năm ${TET_HUB_VIEW_YEAR}).
 
 Quy tắc bắt buộc:
 - Giọng bình tĩnh, thực tế, giải thích đây là cách xem của dân gian. Không dọa, không bán hàng, không khuyên cúng bái hay mua sắm. Không nhắc con số hay kết luận cụ thể nào cho từng tuổi.
@@ -44,9 +48,7 @@ export class MalformedHubIntroError extends Error {
 }
 
 function isTetHubIntro(value: unknown): value is TetHubIntro {
-  if (typeof value !== 'object' || value === null || !('intro' in value)) return false;
-  const { intro } = value;
-  return Array.isArray(intro) && intro.every((paragraph) => typeof paragraph === 'string');
+  return isRecord(value) && isStringArray(value.intro);
 }
 
 function parseHubIntro(text: string): TetHubIntro {
@@ -56,11 +58,10 @@ function parseHubIntro(text: string): TetHubIntro {
 }
 
 function checkHubIntro({ intro }: TetHubIntro): readonly string[] {
-  const lengthViolations =
-    intro.length < MIN_PARAGRAPHS || intro.length > MAX_PARAGRAPHS
-      ? [`intro: có ${intro.length} đoạn, cần từ ${MIN_PARAGRAPHS} đến ${MAX_PARAGRAPHS} đoạn`]
-      : [];
-  return [...lengthViolations, ...forbiddenPhraseViolations(intro.join('\n'))];
+  return [
+    ...paragraphCountViolations('intro', intro, MIN_PARAGRAPHS, MAX_PARAGRAPHS),
+    ...forbiddenPhraseViolations(intro.join('\n')),
+  ];
 }
 
 const HUB_INTRO_GENERATION: CachSinh<TetHubIntro> = {

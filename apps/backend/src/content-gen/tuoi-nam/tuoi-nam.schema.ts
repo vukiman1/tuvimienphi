@@ -1,5 +1,6 @@
 import type { TuoiNamArticle } from '@org/shared-contracts';
 import type { AiSchema } from '../../ai/port/ai.types';
+import { isRecord, isStringArray, PARAGRAPHS_SCHEMA } from '../schema-guards';
 
 export type TuoiNamDraft = Omit<
   TuoiNamArticle,
@@ -14,12 +15,6 @@ export class MalformedTuoiNamDraftError extends Error {
 }
 
 const SECTION_KEYS = ['tongQuan', 'saoHanNam', 'saoHanNu', 'menh', 'cuoiNha', 'loiKhuyen'] as const;
-
-const PARAGRAPHS_SCHEMA: AiSchema = {
-  type: 'array',
-  items: { type: 'string', description: 'Một đoạn văn' },
-  description: 'Từ 2 đến 4 đoạn văn',
-};
 
 export const TUOI_NAM_SCHEMA: AiSchema = {
   type: 'object',
@@ -45,14 +40,6 @@ export const TUOI_NAM_SCHEMA: AiSchema = {
   },
   required: [...SECTION_KEYS, 'faq'],
 };
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-function isStringArray(value: unknown): value is readonly string[] {
-  return Array.isArray(value) && value.every((item) => typeof item === 'string');
-}
 
 function isFaqEntry(value: unknown): value is TuoiNamDraft['faq'][number] {
   return isRecord(value) && typeof value.question === 'string' && typeof value.answer === 'string';

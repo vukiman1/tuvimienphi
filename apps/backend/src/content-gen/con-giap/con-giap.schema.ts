@@ -1,5 +1,6 @@
 import type { ConGiapArticle } from '@org/shared-contracts';
 import type { AiSchema } from '../../ai/port/ai.types';
+import { isRecord, isStringArray, PARAGRAPHS_SCHEMA } from '../schema-guards';
 
 export type ConGiapDraft = Omit<
   ConGiapArticle,
@@ -15,12 +16,6 @@ export class MalformedConGiapDraftError extends Error {
 
 const SECTION_KEYS = ['tongQuan', 'tamTai', 'thaiTue', 'xongDat'] as const;
 
-const PARAGRAPHS_SCHEMA: AiSchema = {
-  type: 'array',
-  items: { type: 'string', description: 'Một đoạn văn' },
-  description: 'Từ 2 đến 4 đoạn văn',
-};
-
 export const CON_GIAP_SCHEMA: AiSchema = {
   type: 'object',
   properties: {
@@ -31,14 +26,6 @@ export const CON_GIAP_SCHEMA: AiSchema = {
   },
   required: [...SECTION_KEYS],
 };
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-function isStringArray(value: unknown): value is readonly string[] {
-  return Array.isArray(value) && value.every((item) => typeof item === 'string');
-}
 
 function isConGiapDraft(value: unknown): value is ConGiapDraft {
   return isRecord(value) && SECTION_KEYS.every((key) => isStringArray(value[key]));

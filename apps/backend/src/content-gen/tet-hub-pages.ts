@@ -18,7 +18,9 @@ const LABEL_PREFIX = 'tet-hub';
 
 const logger = new Logger('TetHubPages');
 
-function logRejection(slug: string) {
+function logRejection(
+  slug: string,
+): (attempt: number, model: string, violations: readonly string[]) => void {
   return (attempt: number, model: string, violations: readonly string[]): void => {
     logger.warn(`${slug} attempt ${attempt} (${model}) rejected: ${violations.join('; ')}`);
   };

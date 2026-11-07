@@ -1,10 +1,9 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { ConGiapArticle, TetHubManifest, TuoiNamArticle } from '@org/shared-contracts';
+import { INTRO_FILE, MANIFEST_FILE, pageFileName } from './tet-hub-files';
 
 const JSON_INDENT = 2;
-const MANIFEST_FILE = 'manifest.json';
-const INTRO_FILE = 'hub.json';
 
 export interface TetHubIntro {
   readonly intro: readonly string[];
@@ -19,7 +18,7 @@ export function writeTetHubPage(
   dir: string,
   article: TuoiNamArticle | ConGiapArticle,
 ): Promise<void> {
-  return writeJson(dir, `${article.slug}.json`, article);
+  return writeJson(dir, pageFileName(article.slug), article);
 }
 
 export function writeTetHubManifest(dir: string, manifest: TetHubManifest): Promise<void> {

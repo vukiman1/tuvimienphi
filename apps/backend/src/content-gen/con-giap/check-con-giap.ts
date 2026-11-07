@@ -1,20 +1,25 @@
 import { CHI, ThaiTueRelation } from '@org/shared-tu-vi';
-import { forbiddenPhraseViolations, mentions, escapeRegExp } from '../check-text';
+import {
+  escapeRegExp,
+  forbiddenPhraseViolations,
+  mentions,
+  paragraphCountViolations,
+  SECTION_MAX_PARAGRAPHS,
+  SECTION_MIN_PARAGRAPHS,
+} from '../check-text';
 import {
   ConGiapSection,
   NO_TAM_TAI_KEYWORD,
   NO_THAI_TUE_KEYWORD,
   tamTaiKeyword,
+  type TamTaiYear,
   thaiTueKeyword,
   type ConGiapBrief,
 } from './con-giap.brief';
 import type { ConGiapDraft } from './con-giap.schema';
 
-const MIN_PARAGRAPHS = 2;
-const MAX_PARAGRAPHS = 4;
-
 const SECTIONS: readonly ConGiapSection[] = Object.values(ConGiapSection);
-const TAM_TAI_YEARS = [1, 2, 3] as const;
+const TAM_TAI_YEARS: readonly TamTaiYear[] = [1, 2, 3];
 const THAI_TUE_RELATIONS: readonly ThaiTueRelation[] = Object.values(ThaiTueRelation);
 const CHI_SPELLINGS: Readonly<Record<string, readonly string[]>> = { Tị: ['Tị', 'Tỵ'] };
 
@@ -40,11 +45,13 @@ function allText(draft: ConGiapDraft): string {
 }
 
 function checkLength(draft: ConGiapDraft): string[] {
-  return SECTIONS.filter(
-    (section) => draft[section].length < MIN_PARAGRAPHS || draft[section].length > MAX_PARAGRAPHS,
-  ).map(
-    (section) =>
-      `mục ${section}: có ${draft[section].length} đoạn, cần từ ${MIN_PARAGRAPHS} đến ${MAX_PARAGRAPHS} đoạn`,
+  return SECTIONS.flatMap((section) =>
+    paragraphCountViolations(
+      section,
+      draft[section],
+      SECTION_MIN_PARAGRAPHS,
+      SECTION_MAX_PARAGRAPHS,
+    ),
   );
 }
 

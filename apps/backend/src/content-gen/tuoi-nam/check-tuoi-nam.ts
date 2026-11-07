@@ -1,10 +1,15 @@
 import { BAT_HAN, CUU_DIEU, HoangOc, KimLau } from '@org/shared-tu-vi';
-import { forbiddenPhraseViolations, mentions, normalize } from '../check-text';
+import {
+  forbiddenPhraseViolations,
+  mentions,
+  normalize,
+  paragraphCountViolations,
+  SECTION_MAX_PARAGRAPHS,
+  SECTION_MIN_PARAGRAPHS,
+} from '../check-text';
 import { TuoiNamSection, type TuoiNamBrief } from './tuoi-nam.brief';
 import type { TuoiNamDraft } from './tuoi-nam.schema';
 
-const MIN_PARAGRAPHS = 2;
-const MAX_PARAGRAPHS = 4;
 const MIN_FAQ_ENTRIES = 3;
 const MAX_FAQ_ENTRIES = 5;
 
@@ -60,11 +65,13 @@ function allText(draft: TuoiNamDraft): string {
 }
 
 function checkLength(draft: TuoiNamDraft): string[] {
-  const sectionViolations = SECTIONS.filter(
-    (section) => draft[section].length < MIN_PARAGRAPHS || draft[section].length > MAX_PARAGRAPHS,
-  ).map(
-    (section) =>
-      `mục ${section}: có ${draft[section].length} đoạn, cần từ ${MIN_PARAGRAPHS} đến ${MAX_PARAGRAPHS} đoạn`,
+  const sectionViolations = SECTIONS.flatMap((section) =>
+    paragraphCountViolations(
+      section,
+      draft[section],
+      SECTION_MIN_PARAGRAPHS,
+      SECTION_MAX_PARAGRAPHS,
+    ),
   );
   const faqViolations =
     draft.faq.length < MIN_FAQ_ENTRIES || draft.faq.length > MAX_FAQ_ENTRIES

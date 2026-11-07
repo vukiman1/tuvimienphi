@@ -44,3 +44,16 @@ export function forbiddenPhraseViolations(text: string): string[] {
     (phrase) => `dùng cụm bị cấm "${phrase}"`,
   );
 }
+
+export const SECTION_MIN_PARAGRAPHS = 2;
+export const SECTION_MAX_PARAGRAPHS = 4;
+
+export function paragraphCountViolations(
+  label: string,
+  paragraphs: readonly string[],
+  min: number,
+  max: number,
+): string[] {
+  if (paragraphs.length >= min && paragraphs.length <= max) return [];
+  return [`mục ${label}: có ${paragraphs.length} đoạn, cần từ ${min} đến ${max} đoạn`];
+}

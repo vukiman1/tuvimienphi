@@ -2,7 +2,7 @@ import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import type { ConGiapArticle, TetHubManifest, TuoiNamArticle } from '@org/shared-contracts';
-import { writeTetHubManifest, writeTetHubPage } from './tet-hub-writer';
+import { writeTetHubIntro, writeTetHubManifest, writeTetHubPage } from './tet-hub-writer';
 
 const tuoiNamArticle: TuoiNamArticle = {
   slug: 'tuoi-binh-dan-1986',
@@ -69,6 +69,14 @@ describe('tet hub writer', () => {
 
     const raw = await readFile(join(dir, 'tuoi-mui.json'), 'utf8');
     expect(raw).toBe(`${JSON.stringify(conGiapArticle, null, 2)}\n`);
+  });
+
+  it('writes the hub intro as hub.json', async () => {
+    await writeTetHubIntro(dir, { intro: ['Một.', 'Hai.'] });
+
+    expect(JSON.parse(await readFile(join(dir, 'hub.json'), 'utf8'))).toEqual({
+      intro: ['Một.', 'Hai.'],
+    });
   });
 
   it('creates the output directory when it does not exist', async () => {
