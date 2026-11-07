@@ -15,7 +15,11 @@ const SEO_ROUTES_URL = pathToFileURL(join(__dirname, 'seo-routes.mjs')).href;
 const RUNNER_SCRIPT = `
 import { getArticleSlugs, getSeoRoutes } from ${JSON.stringify(SEO_ROUTES_URL)};
 const manifestPath = process.argv[1];
-console.log(JSON.stringify({ routes: getSeoRoutes({ manifestPath }), slugs: getArticleSlugs() }));
+try {
+  console.log(JSON.stringify({ routes: getSeoRoutes({ manifestPath }), slugs: getArticleSlugs() }));
+} catch (error) {
+  console.log(JSON.stringify({ failure: { name: error.name, message: error.message } }));
+}
 `;
 
 interface SeoRoutesRun {
@@ -23,15 +27,36 @@ interface SeoRoutesRun {
   readonly slugs: readonly string[];
 }
 
+interface SeoRoutesFailure {
+  readonly name: string;
+  readonly message: string;
+}
+
+interface SeoRoutesOutput extends Partial<SeoRoutesRun> {
+  readonly failure?: SeoRoutesFailure;
+}
+
 let directory: string;
 
-function runSeoRoutes(manifestPath: string): SeoRoutesRun {
+function runRunner(manifestPath: string): SeoRoutesOutput {
   const output = execFileSync(
     process.execPath,
     ['--input-type=module', '-e', RUNNER_SCRIPT, manifestPath],
     { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] },
   );
-  return JSON.parse(output) as SeoRoutesRun;
+  return JSON.parse(output) as SeoRoutesOutput;
+}
+
+function runSeoRoutes(manifestPath: string): SeoRoutesRun {
+  const { routes, slugs, failure } = runRunner(manifestPath);
+  if (!routes || !slugs) {
+    throw new Error(`seo-routes failed: ${failure?.message}`);
+  }
+  return { routes, slugs };
+}
+
+function runSeoRoutesFailure(manifestPath: string): SeoRoutesFailure | undefined {
+  return runRunner(manifestPath).failure;
 }
 
 function writeManifest(content: string): string {
@@ -77,13 +102,19 @@ describe('getSeoRoutes', () => {
   it('fails naming the file when the manifest is not valid JSON', () => {
     const manifestPath = writeManifest('{ not json');
 
-    expect(() => runSeoRoutes(manifestPath)).toThrow(manifestPath);
+    expect(runSeoRoutesFailure(manifestPath)).toEqual({
+      name: 'TetHubManifestError',
+      message: expect.stringContaining(manifestPath),
+    });
   });
 
   it('fails naming the file when the manifest lacks the slug lists', () => {
     const manifestPath = writeManifest(JSON.stringify({ viewYear: 2027 }));
 
-    expect(() => runSeoRoutes(manifestPath)).toThrow(manifestPath);
+    expect(runSeoRoutesFailure(manifestPath)).toEqual({
+      name: 'TetHubManifestError',
+      message: expect.stringContaining(`${manifestPath} is malformed: conGiap and tuoiNam`),
+    });
   });
 });
 

@@ -51,7 +51,10 @@
         "command": "node tools/tet-hub-preview.mjs",
         "options": {
           "cwd": "{projectRoot}"
-        }
+        },
+        "dependsOn": [
+          "^build"
+        ]
       }
     }
   },

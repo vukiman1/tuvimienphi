@@ -5,7 +5,8 @@ import { tuoiNamFacts } from '@org/shared-tu-vi';
 
 const FRONTEND_ROOT = fileURLToPath(new URL('..', import.meta.url));
 const DEFAULT_CONTENT_DIRECTORY = 'src/features/tet-hub/content/2027';
-const OUTPUT_FILE = join(FRONTEND_ROOT, 'tmp/tet-hub-preview.html');
+const DEFAULT_OUTPUT_FILE = 'tmp/tet-hub-preview.html';
+const MISSING_DIRECTORY_CODE = 'ENOENT';
 const YEAR_PAGE_FILE = /^tuoi-[a-z]+-[a-z]+-\d{4}\.json$/;
 const EMPTY_FACT = 'không';
 const ARTICLE_SECTIONS = [
@@ -71,8 +72,7 @@ function renderParagraphs(paragraphs) {
 }
 
 function renderSection(article, [key, title]) {
-  const paragraphs = article[key] ?? [];
-  return `<h3>${escapeHtml(title)}</h3>${renderParagraphs(paragraphs)}`;
+  return `<h3>${escapeHtml(title)}</h3>${renderParagraphs(article[key])}`;
 }
 
 function renderFaq(faq) {
@@ -84,7 +84,7 @@ function renderFaq(faq) {
 
 function renderPage(article) {
   const sections = ARTICLE_SECTIONS.map((section) => renderSection(article, section)).join('');
-  return `<section><h2>${escapeHtml(article.slug)}</h2>${renderFacts(article)}${sections}${renderFaq(article.faq ?? [])}</section>`;
+  return `<section><h2>${escapeHtml(article.slug)}</h2>${renderFacts(article)}${sections}${renderFaq(article.faq)}</section>`;
 }
 
 function renderDocument(articles) {
@@ -92,23 +92,65 @@ function renderDocument(articles) {
   return `<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>Tet hub preview</title><style>${PAGE_STYLE}</style></head><body><h1>Tử vi 2027 theo tuổi: ${articles.length} trang</h1>${pages}</body></html>`;
 }
 
+function isStringList(value) {
+  return Array.isArray(value) && value.every((item) => typeof item === 'string');
+}
+
+function isFaqList(value) {
+  return (
+    Array.isArray(value) &&
+    value.every((item) => typeof item?.question === 'string' && typeof item?.answer === 'string')
+  );
+}
+
+function findMissingField(article) {
+  if (typeof article?.slug !== 'string') return 'slug';
+  if (!Number.isInteger(article.birthYear)) return 'birthYear';
+  if (!Number.isInteger(article.viewYear)) return 'viewYear';
+  const missingSection = ARTICLE_SECTIONS.find(([key]) => !isStringList(article[key]));
+  if (missingSection) return missingSection[0];
+  return isFaqList(article.faq) ? undefined : 'faq';
+}
+
+async function readYearPage(filePath) {
+  let article;
+  try {
+    article = JSON.parse(await readFile(filePath, 'utf8'));
+  } catch (error) {
+    throw new TetHubPreviewError(`Cannot parse ${filePath}: ${error.message}`);
+  }
+  const missingField = findMissingField(article);
+  if (missingField) {
+    throw new TetHubPreviewError(`${filePath} is missing a valid "${missingField}"`);
+  }
+  return article;
+}
+
+async function listDirectory(directory) {
+  try {
+    return await readdir(directory);
+  } catch (error) {
+    if (error.code === MISSING_DIRECTORY_CODE) return [];
+    throw error;
+  }
+}
+
 async function readYearPages(contentDirectory) {
-  const entries = await readdir(contentDirectory).catch(() => []);
+  const entries = await listDirectory(contentDirectory);
   const fileNames = entries.filter((name) => YEAR_PAGE_FILE.test(name)).sort();
   if (fileNames.length === 0) {
     throw new TetHubPreviewError(`No year pages found in ${contentDirectory}`);
   }
-  return Promise.all(
-    fileNames.map(async (name) => JSON.parse(await readFile(join(contentDirectory, name), 'utf8'))),
-  );
+  return Promise.all(fileNames.map((name) => readYearPage(join(contentDirectory, name))));
 }
 
 async function main() {
   const contentDirectory = resolve(FRONTEND_ROOT, process.argv[2] ?? DEFAULT_CONTENT_DIRECTORY);
+  const outputFile = resolve(FRONTEND_ROOT, process.argv[3] ?? DEFAULT_OUTPUT_FILE);
   const articles = await readYearPages(contentDirectory);
-  await mkdir(dirname(OUTPUT_FILE), { recursive: true });
-  await writeFile(OUTPUT_FILE, renderDocument(articles), 'utf8');
-  console.log(`Wrote ${articles.length} year pages to ${OUTPUT_FILE}`);
+  await mkdir(dirname(outputFile), { recursive: true });
+  await writeFile(outputFile, renderDocument(articles), 'utf8');
+  console.log(`Wrote ${articles.length} year pages to ${outputFile}`);
 }
 
 main().catch((error) => {
