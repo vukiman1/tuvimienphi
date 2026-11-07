@@ -22,6 +22,8 @@ export { anTuHoaDaiVan } from './an-luu-dai-van.js';
 export * from './van-han.js';
 export * from './view-year.js';
 export * from './dan-gian.js';
+export * from './tuoi-nam/thai-tue.js';
+export * from './tuoi-nam/xong-dat.js';
 export * from './tieu-han.js';
 export * from './luu-nien.js';
 
