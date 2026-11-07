@@ -17,6 +17,7 @@ import { DOAN_CHINH_SCHEMA, MUC_SCHEMA, type DoanChinh, type MucParagraph } from
 import { mucSystemPrompt } from '../prompt/muc-prompt';
 import { sinhVoiKiem } from './sinh-voi-kiem';
 import { baiChinh, baiMuc } from '../validate/to-bai';
+import { checkParagraphs } from '../validate/check-paragraphs';
 
 const MUC_ERROR_PREVIEW_LENGTH = 140;
 
@@ -68,12 +69,12 @@ export class ChapterGenerator {
       sinhVoiKiem<DoanChinh>(
         this.ai,
         {
-          brief,
           system: chapter.systemPrompt,
           schema: DOAN_CHINH_SCHEMA,
           messages: (daThu) => buildMessages(brief, daThu),
           parse: parseDoanChinh,
-          toBai: baiChinh,
+          check: (value, conLuotDeSinhLai) =>
+            checkParagraphs(brief, baiChinh(value), conLuotDeSinhLai),
         },
         budgetMs,
         (lan, model, loi) =>
@@ -127,12 +128,12 @@ export class ChapterGenerator {
         const ket = await sinhVoiKiem<MucParagraph>(
           this.ai,
           {
-            brief,
             system: muc.systemPrompt ?? mucSystemPrompt(brief.cung),
             schema: MUC_SCHEMA,
             messages: (daThu) => buildMessages(brief, daThu),
             parse: parseMuc,
-            toBai: baiMuc,
+            check: (value, conLuotDeSinhLai) =>
+              checkParagraphs(brief, baiMuc(value), conLuotDeSinhLai),
           },
           budgetMs,
         );
@@ -142,12 +143,12 @@ export class ChapterGenerator {
         const ket = await sinhVoiKiem<DoanChinh>(
           this.ai,
           {
-            brief,
             system: muc.systemPrompt,
             schema: DOAN_CHINH_SCHEMA,
             messages: (daThu) => buildMessages(chiPhanCung(brief), daThu),
             parse: parseDoanChinh,
-            toBai: baiChinh,
+            check: (value, conLuotDeSinhLai) =>
+              checkParagraphs(brief, baiChinh(value), conLuotDeSinhLai),
           },
           budgetMs,
         );
