@@ -26,9 +26,9 @@ function readOutput(): string {
   return readFileSync(join(directory, OUTPUT_FILE_NAME), 'utf8');
 }
 
-function writePage(overrides: Record<string, unknown>): void {
+function writePage(overrides: Record<string, unknown>, fileName: string = PAGE_FILE_NAME): void {
   const page = JSON.parse(readFileSync(FIXTURE_FILE, 'utf8')) as Record<string, unknown>;
-  writeFileSync(join(directory, PAGE_FILE_NAME), JSON.stringify({ ...page, ...overrides }));
+  writeFileSync(join(directory, fileName), JSON.stringify({ ...page, ...overrides }));
 }
 
 beforeEach(() => {
@@ -58,6 +58,19 @@ describe('tet-hub-preview', () => {
 
     expect(readOutput()).not.toContain(SCRIPT_TAG);
     expect(readOutput()).toContain('&lt;script&gt;alert(1)&lt;/script&gt;');
+  });
+
+  it('orders year pages by birth year rather than by file name', () => {
+    writePage({ slug: 'tuoi-at-suu-1985', birthYear: 1985 }, 'tuoi-at-suu-1985.json');
+    writePage({ slug: 'tuoi-giap-ty-1984', birthYear: 1984 }, 'tuoi-giap-ty-1984.json');
+
+    runPreview();
+
+    const output = readOutput();
+    expect(output.indexOf('<h2>tuoi-giap-ty-1984</h2>')).toBeGreaterThan(-1);
+    expect(output.indexOf('<h2>tuoi-giap-ty-1984</h2>')).toBeLessThan(
+      output.indexOf('<h2>tuoi-at-suu-1985</h2>'),
+    );
   });
 
   it('exits non-zero when the directory has no year pages', () => {

@@ -137,11 +137,14 @@ async function listDirectory(directory) {
 
 async function readYearPages(contentDirectory) {
   const entries = await listDirectory(contentDirectory);
-  const fileNames = entries.filter((name) => YEAR_PAGE_FILE.test(name)).sort();
+  const fileNames = entries.filter((name) => YEAR_PAGE_FILE.test(name));
   if (fileNames.length === 0) {
     throw new TetHubPreviewError(`No year pages found in ${contentDirectory}`);
   }
-  return Promise.all(fileNames.map((name) => readYearPage(join(contentDirectory, name))));
+  const articles = await Promise.all(
+    fileNames.map((name) => readYearPage(join(contentDirectory, name))),
+  );
+  return articles.sort((first, second) => first.birthYear - second.birthYear);
 }
 
 async function main() {
