@@ -14,6 +14,12 @@ const KIM_LAU_BY_REMAINDER: ReadonlyMap<number, KimLau> = new Map([
   [8, KimLau.LucSuc],
 ]);
 
+export const KIM_LAU_TRUYEN_THONG = `Lấy tuổi mụ chia cho ${KIM_LAU_CYCLE}: ${[
+  ...KIM_LAU_BY_REMAINDER,
+]
+  .map(([remainder, kind]) => `dư ${remainder} là Kim lâu ${kind}`)
+  .join(', ')}; các số dư khác không phạm Kim lâu.`;
+
 export function kimLau(tuoi: number): KimLau | null {
   return KIM_LAU_BY_REMAINDER.get(tuoi % KIM_LAU_CYCLE) ?? null;
 }
