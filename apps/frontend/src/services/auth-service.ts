@@ -1,4 +1,4 @@
-import { httpRequest } from '@/lib/http-request';
+import { BACKGROUND_REQUEST, httpRequest } from '@/lib/http-request';
 import type {
   ChangePasswordPayload,
   ChangePasswordResponse,
@@ -42,7 +42,7 @@ export const authService = {
     return httpRequest.get<MeResponse>('/auth/me');
   },
   getSessionStatus() {
-    return httpRequest.get<SessionStatusResponse>('/auth/session');
+    return httpRequest.get<SessionStatusResponse>('/auth/session', BACKGROUND_REQUEST);
   },
   getSessions() {
     return httpRequest.get<UserLoginSessionsResponse>('/auth/sessions');

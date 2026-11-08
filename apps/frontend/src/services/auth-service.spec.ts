@@ -3,7 +3,20 @@ import { httpRequest } from '@/lib/http-request';
 
 jest.mock('@/lib/http-request', () => ({
   httpRequest: { post: jest.fn(), get: jest.fn(), delete: jest.fn() },
+  BACKGROUND_REQUEST: { isBackgroundRequest: true },
 }));
+
+describe('authService.getSessionStatus', () => {
+  beforeEach(() => jest.mocked(httpRequest.get).mockReset());
+
+  it('checks the session in the background, so a page load never toasts a server outage', async () => {
+    jest.mocked(httpRequest.get).mockResolvedValue({ user: null, canRefresh: false });
+
+    await authService.getSessionStatus();
+
+    expect(httpRequest.get).toHaveBeenCalledWith('/auth/session', { isBackgroundRequest: true });
+  });
+});
 
 describe('authService.googleOneTap', () => {
   beforeEach(() => jest.mocked(httpRequest.post).mockReset());
