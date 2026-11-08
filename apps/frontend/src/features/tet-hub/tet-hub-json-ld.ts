@@ -4,6 +4,7 @@ import { SITE_NAME, absoluteUrl, jsonLdMeta, seo } from '@/lib/seo';
 
 const SCHEMA_CONTEXT = 'https://schema.org';
 const PUBLISHER_LOGO_PATH = '/brand/icon.png';
+export const TET_HUB_PUBLISHED_AT = '2026-11-08';
 
 interface ArticleJsonLdInput {
   readonly headline: string;
@@ -24,7 +25,8 @@ export function articleJsonLd({
     '@type': 'Article',
     headline,
     description,
-    ...(generatedAt ? { datePublished: generatedAt, dateModified: generatedAt } : {}),
+    datePublished: TET_HUB_PUBLISHED_AT,
+    dateModified: generatedAt ?? TET_HUB_PUBLISHED_AT,
     inLanguage: 'vi',
     url: absoluteUrl(path),
     author: organization,
