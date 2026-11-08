@@ -2,6 +2,7 @@ import { CHI, TAM_TAI_LOI } from '@org/shared-tu-vi';
 import type { AiMessage } from '../../ai/port/ai.types';
 import type { LanThu } from '../../api/luan-giai/generation/sinh-voi-kiem';
 import { tamTaiKeyword } from '../chi-verdicts';
+import { rejectedAttemptMessages } from '../rejected-attempts';
 import { ConGiapSection, type ConGiapBrief } from './con-giap.brief';
 import type { ConGiapDraft } from './con-giap.schema';
 
@@ -73,19 +74,12 @@ function describeSections(brief: ConGiapBrief): string {
     .join('\n\n');
 }
 
-function rewriteRequest(violations: readonly string[]): string {
-  return `Bản trên vi phạm:\n${violations.map((violation) => `- ${violation}`).join('\n')}\nViết lại cho đúng, giữ nguyên nội dung các mệnh đề.`;
-}
-
 export function buildConGiapMessages(
   brief: ConGiapBrief,
   daThu: readonly LanThu<ConGiapDraft>[],
 ): AiMessage[] {
   return [
     { role: 'user', text: `${describeFacts(brief)}\n\n${describeSections(brief)}` },
-    ...daThu.flatMap((lan): AiMessage[] => [
-      { role: 'model', text: JSON.stringify(lan.paragraph) },
-      { role: 'user', text: rewriteRequest(lan.loi) },
-    ]),
+    ...rejectedAttemptMessages(daThu),
   ];
 }

@@ -1,4 +1,3 @@
-import { Logger } from '@nestjs/common';
 import type { ConGiapArticle, TuoiNamArticle } from '@org/shared-contracts';
 import { conGiapSlug, TET_HUB_VIEW_YEAR, tuoiNamFacts, tuoiNamSlug } from '@org/shared-tu-vi';
 import type { AiClient } from '../ai/port/ai.client';
@@ -12,19 +11,10 @@ import { checkTuoiNam } from './tuoi-nam/check-tuoi-nam';
 import { buildTuoiNamBrief } from './tuoi-nam/tuoi-nam.brief';
 import { buildTuoiNamMessages, TUOI_NAM_SYSTEM_PROMPT } from './tuoi-nam/tuoi-nam.prompt';
 import { parseTuoiNamDraft, TUOI_NAM_SCHEMA, type TuoiNamDraft } from './tuoi-nam/tuoi-nam.schema';
+import { logRejectedAttempt } from './rejected-attempts';
 
 const PAGE_BUDGET_MS = 120_000;
 const LABEL_PREFIX = 'tet-hub';
-
-const logger = new Logger('TetHubPages');
-
-function logRejection(
-  slug: string,
-): (attempt: number, model: string, violations: readonly string[]) => void {
-  return (attempt: number, model: string, violations: readonly string[]): void => {
-    logger.warn(`${slug} attempt ${attempt} (${model}) rejected: ${violations.join('; ')}`);
-  };
-}
 
 export async function generateTuoiNamArticle(
   ai: AiClient,
@@ -41,7 +31,7 @@ export async function generateTuoiNamArticle(
     check: (draft) => checkTuoiNam(draft, brief),
   };
   const { value, model } = await runWithAiCallContext({ label: `${LABEL_PREFIX}:${slug}` }, () =>
-    sinhVoiKiem(ai, generation, PAGE_BUDGET_MS, logRejection(slug), beforeAttempt),
+    sinhVoiKiem(ai, generation, PAGE_BUDGET_MS, logRejectedAttempt(slug), beforeAttempt),
   );
   return {
     slug,
@@ -74,7 +64,7 @@ export async function generateConGiapArticle(
     check: (draft) => checkConGiap(draft, brief),
   };
   const { value, model } = await runWithAiCallContext({ label: `${LABEL_PREFIX}:${slug}` }, () =>
-    sinhVoiKiem(ai, generation, PAGE_BUDGET_MS, logRejection(slug), beforeAttempt),
+    sinhVoiKiem(ai, generation, PAGE_BUDGET_MS, logRejectedAttempt(slug), beforeAttempt),
   );
   return {
     slug,

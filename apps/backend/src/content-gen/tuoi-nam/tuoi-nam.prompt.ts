@@ -7,6 +7,7 @@ import {
   tamTaiKeyword,
   thaiTueKeyword,
 } from '../chi-verdicts';
+import { rejectedAttemptMessages } from '../rejected-attempts';
 import { TuoiNamSection, type TuoiNamBrief } from './tuoi-nam.brief';
 import type { TuoiNamDraft } from './tuoi-nam.schema';
 
@@ -90,19 +91,9 @@ function serializeTuoiNamBrief(brief: TuoiNamBrief): string {
   return `${describeFacts(brief)}\n\n${describeSections(brief)}`;
 }
 
-function rewriteRequest(violations: readonly string[]): string {
-  return `Bản trên vi phạm:\n${violations.map((violation) => `- ${violation}`).join('\n')}\nViết lại cho đúng, giữ nguyên nội dung các mệnh đề.`;
-}
-
 export function buildTuoiNamMessages(
   brief: TuoiNamBrief,
   daThu: readonly LanThu<TuoiNamDraft>[],
 ): AiMessage[] {
-  return [
-    { role: 'user', text: serializeTuoiNamBrief(brief) },
-    ...daThu.flatMap((lan): AiMessage[] => [
-      { role: 'model', text: JSON.stringify(lan.paragraph) },
-      { role: 'user', text: rewriteRequest(lan.loi) },
-    ]),
-  ];
+  return [{ role: 'user', text: serializeTuoiNamBrief(brief) }, ...rejectedAttemptMessages(daThu)];
 }
