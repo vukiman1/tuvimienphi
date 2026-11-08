@@ -25,7 +25,7 @@ const METHOD_NOTES: readonly MethodNote[] = [
   },
   {
     label: 'Nguồn',
-    text: 'Các bảng theo cách tính bằng tuổi mụ phổ biến trong dân gian Việt Nam. Sao chiếu mệnh và hạn được đối chiếu với bảng sao hạn của dienmayxanh.com và quantrimang.com, Hoang ốc với dienmayxanh.com và wiki.batdongsan.com.vn. Chỗ nào các nguồn ghi khác nhau, chúng tôi theo cách được nhiều nguồn dùng hơn.',
+    text: 'Các bảng theo cách tính bằng tuổi mụ phổ biến trong dân gian Việt Nam. Sao chiếu mệnh, hạn và Hoang ốc được đối chiếu với các bảng phổ biến trên nhiều trang tử vi và phong thủy tiếng Việt. Chỗ nào các nguồn ghi khác nhau, chúng tôi theo cách được nhiều nguồn dùng hơn.',
   },
   { label: 'Hạn', text: BAT_HAN_TRUYEN_THONG },
   { label: 'Hoang ốc', text: HOANG_OC_TRUYEN_THONG },
