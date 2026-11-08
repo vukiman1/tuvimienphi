@@ -24,7 +24,7 @@ function mentionsChi(text: string, name: string): boolean {
 }
 
 function isChiName(keyword: string): boolean {
-  return (CHI as readonly string[]).includes(keyword);
+  return CHI.some((name) => name === keyword);
 }
 
 function mentionsKeyword(text: string, keyword: string): boolean {
