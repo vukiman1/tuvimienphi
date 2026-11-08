@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import fsPromises, { mkdtemp, readdir, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import type { ConGiapArticle, TetHubManifest, TuoiNamArticle } from '@org/shared-contracts';
@@ -87,5 +87,25 @@ describe('tet hub writer', () => {
     expect(JSON.parse(await readFile(join(nested, 'tuoi-mui.json'), 'utf8'))).toEqual(
       conGiapArticle,
     );
+  });
+
+  it('keeps the existing page whole when a write stops halfway', async () => {
+    await writeTetHubPage(dir, conGiapArticle);
+    const before = await readFile(join(dir, 'tuoi-mui.json'), 'utf8');
+    const realWriteFile = fsPromises.writeFile;
+    const interrupted = jest
+      .spyOn(fsPromises, 'writeFile')
+      .mockImplementation(async (path, data) => {
+        await realWriteFile(path, String(data).slice(0, 10));
+        throw new Error('write interrupted');
+      });
+
+    await expect(
+      writeTetHubPage(dir, { ...conGiapArticle, tongQuan: ['Khác.', 'Hẳn.'] }),
+    ).rejects.toThrow('write interrupted');
+    interrupted.mockRestore();
+
+    expect(await readFile(join(dir, 'tuoi-mui.json'), 'utf8')).toBe(before);
+    expect(await readdir(dir)).toEqual(['tuoi-mui.json']);
   });
 });
