@@ -6,15 +6,15 @@ import {
 } from '@org/shared-tu-vi';
 import { HowWeCount } from './HowWeCount';
 
-const CHECKED_SOURCES = ['dienmayxanh.com', 'quantrimang.com', 'wiki.batdongsan.com.vn'] as const;
+const DOMAIN_NAME = /\b[a-z0-9-]+\.(com|vn|net|org)\b/i;
 
 describe('HowWeCount', () => {
-  it('names the folk tradition and the sources the tables were checked against', () => {
+  it('names the folk tradition the tables follow without naming another site', () => {
     render(<HowWeCount />);
 
     const sources = screen.getByText('Nguồn').nextElementSibling?.textContent ?? '';
     expect(sources).toContain('tuổi mụ');
-    CHECKED_SOURCES.forEach((source) => expect(sources).toContain(source));
+    expect(sources).not.toMatch(DOMAIN_NAME);
   });
 
   it.each([
