@@ -1,5 +1,5 @@
 import { ThaiTueRelation } from '@org/shared-tu-vi';
-import { mentions } from './check-text';
+import { affirms, mentions } from './check-text';
 
 export type TamTaiYear = 1 | 2 | 3;
 
@@ -26,7 +26,7 @@ export function thaiTueKeyword(relation: ThaiTueRelation): string {
 
 export function checkTamTai(text: string, { tamTai }: ChiVerdicts): string[] {
   const wrongYears = TAM_TAI_YEARS.filter((year) => year !== tamTai)
-    .filter((year) => mentions(text, tamTaiKeyword(year)))
+    .filter((year) => affirms(text, [tamTaiKeyword(year)]))
     .map((year) =>
       tamTai === null
         ? `nhắc "${tamTaiKeyword(year)}" nhưng dữ kiện tính tuổi này không phạm Tam tai`
@@ -41,7 +41,7 @@ export function checkTamTai(text: string, { tamTai }: ChiVerdicts): string[] {
 
 export function checkThaiTue(text: string, { thaiTue }: ChiVerdicts): string[] {
   const wrongRelations = THAI_TUE_RELATIONS.filter((relation) => !thaiTue.includes(relation))
-    .filter((relation) => mentions(text, thaiTueKeyword(relation)))
+    .filter((relation) => affirms(text, [thaiTueKeyword(relation)]))
     .map((relation) => `nhắc "${thaiTueKeyword(relation)}" mà dữ kiện không tính cho tuổi này`);
   const denial =
     thaiTue.length > 0 && mentions(text, NO_THAI_TUE_KEYWORD)
