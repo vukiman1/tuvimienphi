@@ -12,10 +12,99 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { preview } from 'vite';
-import { chromium } from 'playwright';
+import { chromium, request as playwrightRequest } from 'playwright';
 import { getSeoRoutes } from './seo-routes.mjs';
 
 const ANALYTICS_BEACON_URLS = 'https://static.cloudflareinsights.com/**';
+const API_PATH_PREFIX = '/api';
+const DEFAULT_PRERENDER_API_BASE_URL = 'https://api.xemtuvimienphi.top/api';
+const PRERENDER_API_BASE_URL = process.env.PRERENDER_API_BASE_URL ?? DEFAULT_PRERENDER_API_BASE_URL;
+const READ_METHOD = 'GET';
+const UNREACHABLE_API_ERROR_CODE = 'connectionfailed';
+const FIRST_FAILING_STATUS = 400;
+const ERROR_TOAST_SELECTOR = '.Toastify__toast';
+const FAILURE_SEPARATOR = '; ';
+
+class PrerenderErrorToastError extends Error {
+  constructor(route, toastText) {
+    super(`${route} rendered an error toast instead of its content: ${toastText}`);
+    this.name = 'PrerenderErrorToastError';
+  }
+}
+
+class PrerenderApiError extends Error {
+  constructor(route, failures) {
+    super(`${route} needed API data the build could not get: ${failures.join(FAILURE_SEPARATOR)}`);
+    this.name = 'PrerenderApiError';
+  }
+}
+
+function isApiRequest(url) {
+  return url.pathname.startsWith(`${API_PATH_PREFIX}/`);
+}
+
+function productionApiUrl(requestUrl) {
+  const { pathname, search } = new URL(requestUrl);
+  return `${PRERENDER_API_BASE_URL}${pathname.slice(API_PATH_PREFIX.length)}${search}`;
+}
+
+function createApiReadCache(apiContext) {
+  const responses = new Map();
+  return (apiUrl) => {
+    if (!responses.has(apiUrl)) {
+      responses.set(
+        apiUrl,
+        apiContext.get(apiUrl).then(async (response) => ({
+          status: response.status(),
+          headers: response.headers(),
+          body: await response.body(),
+        })),
+      );
+    }
+    return responses.get(apiUrl);
+  };
+}
+
+function forwardApiReadsToProduction({ pageOrigin, readApiOnce, failures }) {
+  return async (route) => {
+    const request = route.request();
+    if (request.method() !== READ_METHOD) {
+      await route.abort();
+      return;
+    }
+    const apiUrl = productionApiUrl(request.url());
+    let response;
+    try {
+      response = await readApiOnce(apiUrl);
+    } catch (error) {
+      failures.push(`${apiUrl} unreachable (${error.message.split('\n')[0]})`);
+      await route.abort(UNREACHABLE_API_ERROR_CODE);
+      return;
+    }
+    if (response.status >= FIRST_FAILING_STATUS) {
+      failures.push(`${apiUrl} answered ${response.status}`);
+    }
+    await route.fulfill({
+      status: response.status,
+      body: response.body,
+      headers: {
+        ...response.headers,
+        'access-control-allow-origin': pageOrigin,
+        'access-control-allow-credentials': 'true',
+      },
+    });
+  };
+}
+
+async function assertRenderedFromApi(page, route, failures) {
+  if (failures.length > 0) {
+    throw new PrerenderApiError(route, failures);
+  }
+  const toasts = page.locator(ERROR_TOAST_SELECTOR);
+  if ((await toasts.count()) > 0) {
+    throw new PrerenderErrorToastError(route, (await toasts.allInnerTexts()).join(' | '));
+  }
+}
 
 const frontendRoot = fileURLToPath(new URL('..', import.meta.url));
 const distDir = join(frontendRoot, 'dist');
@@ -39,6 +128,8 @@ async function main() {
   console.log(`[prerender] preview at ${baseUrl}`);
 
   const browser = await chromium.launch();
+  const apiContext = await playwrightRequest.newContext();
+  const readApiOnce = createApiReadCache(apiContext);
   // Capture every route BEFORE writing anything: the preview server serves files from dist via the
   // SPA fallback, so writing a prerendered index.html mid-crawl would feed it back into later routes
   // (leaking one page's head tags/content into the next). Buffer here, flush after the crawl.
@@ -47,6 +138,11 @@ async function main() {
     for (const route of routes) {
       const page = await browser.newPage();
       await page.route(ANALYTICS_BEACON_URLS, (route) => route.abort());
+      const failures = [];
+      await page.route(
+        isApiRequest,
+        forwardApiReadsToProduction({ pageOrigin: baseUrl, readApiOnce, failures }),
+      );
       try {
         await page.goto(baseUrl + route, { waitUntil: 'networkidle', timeout: 30_000 });
         // Wait for the client router to mount a visible content region (not just the invisible
@@ -54,6 +150,7 @@ async function main() {
         await page.waitForSelector('#root main, #root h1', { state: 'visible', timeout: 15_000 });
         // Drop the loading splash so the saved HTML shows content, not the spinner.
         await page.evaluate(() => document.getElementById('app-splash')?.remove());
+        await assertRenderedFromApi(page, route, failures);
         // The router injects absolute preview-origin URLs for preloaded chunks (http://localhost:PORT/assets/…).
         // Rewrite them back to root-relative so the assets resolve in production.
         const raw = (await page.content()).replace(/^<!doctype html>/i, '');
@@ -67,6 +164,7 @@ async function main() {
       }
     }
   } finally {
+    await apiContext.dispose();
     await browser.close();
     await new Promise((resolve) => server.httpServer.close(resolve));
   }
