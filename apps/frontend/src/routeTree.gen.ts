@@ -25,6 +25,8 @@ import { Route as SiteKienThucIndexRouteImport } from './routes/_site/kien-thuc.
 import { Route as SiteKienThucSlugRouteImport } from './routes/_site/kien-thuc.$slug'
 import { Route as SiteLaSoIndexRouteImport } from './routes/_site/la-so.index'
 import { Route as SiteLaSoDetailRouteImport } from './routes/_site/la-so.detail'
+import { Route as SiteKienThucTuVi2027IndexRouteImport } from './routes/_site/kien-thuc.tu-vi-2027.index'
+import { Route as SiteKienThucTuVi2027SlugRouteImport } from './routes/_site/kien-thuc.tu-vi-2027.$slug'
 
 const SiteRoute = SiteRouteImport.update({
   id: '/_site',
@@ -105,6 +107,18 @@ const SiteLaSoDetailRoute = SiteLaSoDetailRouteImport.update({
   path: '/detail',
   getParentRoute: () => SiteLaSoRoute,
 } as any)
+const SiteKienThucTuVi2027IndexRoute =
+  SiteKienThucTuVi2027IndexRouteImport.update({
+    id: '/tu-vi-2027/',
+    path: '/tu-vi-2027/',
+    getParentRoute: () => SiteKienThucRoute,
+  } as any)
+const SiteKienThucTuVi2027SlugRoute =
+  SiteKienThucTuVi2027SlugRouteImport.update({
+    id: '/tu-vi-2027/$slug',
+    path: '/tu-vi-2027/$slug',
+    getParentRoute: () => SiteKienThucRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof SiteIndexRoute
@@ -122,6 +136,8 @@ export interface FileRoutesByFullPath {
   '/la-so/detail': typeof SiteLaSoDetailRoute
   '/kien-thuc/': typeof SiteKienThucIndexRoute
   '/la-so/': typeof SiteLaSoIndexRoute
+  '/kien-thuc/tu-vi-2027/$slug': typeof SiteKienThucTuVi2027SlugRoute
+  '/kien-thuc/tu-vi-2027/': typeof SiteKienThucTuVi2027IndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof authLoginRoute
@@ -136,6 +152,8 @@ export interface FileRoutesByTo {
   '/la-so/detail': typeof SiteLaSoDetailRoute
   '/kien-thuc': typeof SiteKienThucIndexRoute
   '/la-so': typeof SiteLaSoIndexRoute
+  '/kien-thuc/tu-vi-2027/$slug': typeof SiteKienThucTuVi2027SlugRoute
+  '/kien-thuc/tu-vi-2027': typeof SiteKienThucTuVi2027IndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -155,6 +173,8 @@ export interface FileRoutesById {
   '/_site/la-so/detail': typeof SiteLaSoDetailRoute
   '/_site/kien-thuc/': typeof SiteKienThucIndexRoute
   '/_site/la-so/': typeof SiteLaSoIndexRoute
+  '/_site/kien-thuc/tu-vi-2027/$slug': typeof SiteKienThucTuVi2027SlugRoute
+  '/_site/kien-thuc/tu-vi-2027/': typeof SiteKienThucTuVi2027IndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -174,6 +194,8 @@ export interface FileRouteTypes {
     | '/la-so/detail'
     | '/kien-thuc/'
     | '/la-so/'
+    | '/kien-thuc/tu-vi-2027/$slug'
+    | '/kien-thuc/tu-vi-2027/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -188,6 +210,8 @@ export interface FileRouteTypes {
     | '/la-so/detail'
     | '/kien-thuc'
     | '/la-so'
+    | '/kien-thuc/tu-vi-2027/$slug'
+    | '/kien-thuc/tu-vi-2027'
   id:
     | '__root__'
     | '/_site'
@@ -206,6 +230,8 @@ export interface FileRouteTypes {
     | '/_site/la-so/detail'
     | '/_site/kien-thuc/'
     | '/_site/la-so/'
+    | '/_site/kien-thuc/tu-vi-2027/$slug'
+    | '/_site/kien-thuc/tu-vi-2027/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -329,17 +355,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteLaSoDetailRouteImport
       parentRoute: typeof SiteLaSoRoute
     }
+    '/_site/kien-thuc/tu-vi-2027/': {
+      id: '/_site/kien-thuc/tu-vi-2027/'
+      path: '/tu-vi-2027'
+      fullPath: '/kien-thuc/tu-vi-2027/'
+      preLoaderRoute: typeof SiteKienThucTuVi2027IndexRouteImport
+      parentRoute: typeof SiteKienThucRoute
+    }
+    '/_site/kien-thuc/tu-vi-2027/$slug': {
+      id: '/_site/kien-thuc/tu-vi-2027/$slug'
+      path: '/tu-vi-2027/$slug'
+      fullPath: '/kien-thuc/tu-vi-2027/$slug'
+      preLoaderRoute: typeof SiteKienThucTuVi2027SlugRouteImport
+      parentRoute: typeof SiteKienThucRoute
+    }
   }
 }
 
 interface SiteKienThucRouteChildren {
   SiteKienThucSlugRoute: typeof SiteKienThucSlugRoute
   SiteKienThucIndexRoute: typeof SiteKienThucIndexRoute
+  SiteKienThucTuVi2027SlugRoute: typeof SiteKienThucTuVi2027SlugRoute
+  SiteKienThucTuVi2027IndexRoute: typeof SiteKienThucTuVi2027IndexRoute
 }
 
 const SiteKienThucRouteChildren: SiteKienThucRouteChildren = {
   SiteKienThucSlugRoute: SiteKienThucSlugRoute,
   SiteKienThucIndexRoute: SiteKienThucIndexRoute,
+  SiteKienThucTuVi2027SlugRoute: SiteKienThucTuVi2027SlugRoute,
+  SiteKienThucTuVi2027IndexRoute: SiteKienThucTuVi2027IndexRoute,
 }
 
 const SiteKienThucRouteWithChildren = SiteKienThucRoute._addFileChildren(

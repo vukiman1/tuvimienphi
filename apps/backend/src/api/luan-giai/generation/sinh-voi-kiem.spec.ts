@@ -1,0 +1,97 @@
+import { AiClient } from '../../../ai/port/ai.client';
+import type { AiRequest, AiResult } from '../../../ai/port/ai.types';
+import { MalformedChapterError } from '../luan-giai.errors';
+import { type CachSinh, sinhVoiKiem } from './sinh-voi-kiem';
+
+const BUDGET_MS = 60_000;
+const MODEL = 'fake-model';
+
+class ScriptedAiClient extends AiClient {
+  readonly requests: AiRequest[] = [];
+
+  constructor(private readonly replies: readonly string[]) {
+    super();
+  }
+
+  async generate(request: AiRequest): Promise<AiResult> {
+    this.requests.push(request);
+    return {
+      text: this.replies[this.requests.length - 1],
+      model: MODEL,
+      inputTokens: 0,
+      outputTokens: 0,
+      failedAttempts: [],
+      latencyMs: 0,
+    };
+  }
+}
+
+describe('sinhVoiKiem', () => {
+  it('retries with the violations the check reports, then returns the first clean value', async () => {
+    const ai = new ScriptedAiClient(['bad', 'good']);
+    const cach: CachSinh<string> = {
+      system: 'system',
+      schema: { type: 'string' },
+      messages: (daThu) => [
+        { role: 'user', text: 'brief' },
+        ...daThu.map((lanThu) => ({ role: 'model' as const, text: lanThu.loi.join('; ') })),
+      ],
+      parse: (text) => text,
+      check: (value) => (value === 'bad' ? ['xấu'] : []),
+    };
+
+    const ket = await sinhVoiKiem(ai, cach, BUDGET_MS);
+
+    expect(ket).toEqual({ value: 'good', model: MODEL, attempts: 2 });
+    const secondRequest = ai.requests[1];
+    expect(secondRequest.messages[secondRequest.messages.length - 1].text).toContain('xấu');
+  });
+
+  it('stops at the first unparseable reply and keeps the parse error as its cause', async () => {
+    const ai = new ScriptedAiClient(['{not json', 'good']);
+    const cach: CachSinh<unknown> = {
+      system: 'system',
+      schema: { type: 'string' },
+      messages: () => [{ role: 'user', text: 'brief' }],
+      parse: (text): unknown => JSON.parse(text),
+      check: () => [],
+    };
+
+    const failure = await sinhVoiKiem(ai, cach, BUDGET_MS).catch((error: unknown) => error);
+
+    expect(failure).toBeInstanceOf(MalformedChapterError);
+    expect(failure).toHaveProperty('raw', '{not json');
+    expect(failure).toHaveProperty('cause', expect.any(SyntaxError));
+    expect(ai.requests).toHaveLength(1);
+  });
+
+  describe('pause before an attempt', () => {
+    const PAUSE_MS = 30_000;
+
+    beforeEach(() => {
+      jest.useFakeTimers({ now: 0 });
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('does not charge the pause to the budget', async () => {
+      const ai = new ScriptedAiClient(['bad', 'bad', 'bad', 'good']);
+      const cach: CachSinh<string> = {
+        system: 'system',
+        schema: { type: 'string' },
+        messages: () => [{ role: 'user', text: 'brief' }],
+        parse: (text) => text,
+        check: (value) => (value === 'bad' ? ['xấu'] : []),
+      };
+      const pause = async (): Promise<void> => {
+        jest.setSystemTime(Date.now() + PAUSE_MS);
+      };
+
+      const ket = await sinhVoiKiem(ai, cach, BUDGET_MS, undefined, pause);
+
+      expect(ket.attempts).toBe(4);
+    });
+  });
+});

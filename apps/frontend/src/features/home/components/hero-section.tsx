@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { BadgeCheck, LayoutGrid, ShieldCheck, Sparkles } from 'lucide-react';
 import { BirthForm } from '@/features/la-so/components/birth-form';
+import type { Gender } from '@/features/la-so/birth-input';
 import { usePrefersReducedMotion } from '@/hooks/use-prefers-reduced-motion';
 import { MEDIA } from '@/config/media';
+import { HERO_SECTION_ID } from '@/features/home/home-anchors';
 
 const HERO_TITLE_ID = 'home-hero-title';
-
-export const HERO_SECTION_ID = 'lap-la-so';
 
 const BACKDROP_CLASS = 'absolute inset-0 h-full w-full object-cover';
 
@@ -38,7 +38,12 @@ const PANEL_WOOD = {
   backgroundColor: '#2a1a0e',
 } as const;
 
-export function HeroSection() {
+interface HeroSectionProps {
+  readonly initialGender?: Gender;
+  readonly viewYear?: number;
+}
+
+export function HeroSection({ initialGender, viewYear }: HeroSectionProps = {}) {
   const prefersReducedMotion = usePrefersReducedMotion();
   const [videoIndex, setVideoIndex] = useState(0);
   const video = HERO_VIDEOS[videoIndex];
@@ -113,7 +118,7 @@ export function HeroSection() {
           style={PANEL_WOOD}
         >
           <div className="rounded-xl border border-[#c9a15c]/45 px-4 py-5 text-left md:px-6 md:py-6">
-            <BirthForm />
+            <BirthForm initialGender={initialGender} viewYear={viewYear} />
           </div>
         </div>
 

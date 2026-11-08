@@ -1,0 +1,23 @@
+{
+  "slug": "tuoi-tuat",
+  "chi": 10,
+  "viewYear": 2027,
+  "tongQuan": [
+    "Năm 2027, tuổi Tuất không nằm trong ba năm Tam tai, nhưng có quan hệ phạm Thái tuế với năm Mùi. Khi xem tử vi dân gian cho năm này, bạn cần phân biệt hai cách xét ấy, không gộp Tam tai và Thái tuế thành một.",
+    "Với tuổi phạm Thái tuế, lời khuyên thường gặp là cẩn trọng và giữ mọi việc ở mức vừa phải. Bạn có thể lấy đó làm lời nhắc để cân nhắc kỹ trước khi quyết định, thay vì vội vàng."
+  ],
+  "tamTai": [
+    "Tuổi Tuất không phạm Tam tai trong năm 2027. Tam Tai là ba năm liền mà dân gian cho là dễ gặp trắc trở; tuổi nào cũng lần lượt đi qua giai đoạn này.",
+    "Người đang trong hạn Tam Tai thường được khuyên đừng khởi sự việc lớn một cách vội vàng và giữ mọi việc ở mức vừa phải. Với tuổi Tuất năm nay, cần phân biệt lời khuyên dành cho người trong hạn với tình trạng không nằm trong ba năm Tam tai của mình."
+  ],
+  "thaiTue": [
+    "Thái tuế là cách dân gian gọi vị thần trực năm. Năm 2027 là năm Mùi; tuổi Tuất phạm Thái tuế theo hai quan hệ là hình Thái tuế và phá Thái tuế.",
+    "Tuổi phạm Thái tuế thường được khuyên cẩn trọng và giữ mọi việc ở mức vừa phải. Đây là lời nhắc để bạn cân nhắc khi xử lý công việc và các quyết định trong năm."
+  ],
+  "xongDat": [
+    "Với nhà chủ tuổi Tuất, các tuổi hợp xông đất là Dần, Mão, Ngọ. Nếu chọn người xông đất theo quan niệm dân gian, bạn có thể tham khảo ba tuổi này.",
+    "Các tuổi nên tránh xông đất cho nhà chủ tuổi Tuất là Tý, Sửu, Thìn, Mùi, Dậu, Tuất. Khi dự định mời người đến xông đất đầu năm 2027, bạn nên đối chiếu tuổi của người được mời với danh sách này."
+  ],
+  "model": "gpt-6.1-sol",
+  "generatedAt": "2026-11-08T10:36:31.888Z"
+}

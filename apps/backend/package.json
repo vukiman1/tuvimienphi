@@ -117,6 +117,15 @@
         "options": {
           "command": "node tools/typeorm-migration.mjs show"
         }
+      },
+      "generate-tet-hub": {
+        "dependsOn": [
+          "^build"
+        ],
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "ts-node -P apps/backend/tsconfig.app.json apps/backend/src/content-gen/generate-tet-hub.ts"
+        }
       }
     }
   },

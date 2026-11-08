@@ -1,9 +1,17 @@
+import type { ReactElement } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import { HomePage } from '@/features/home/pages/home-page';
+import { validateHomeSearch } from '@/features/home/home-search';
 import { SITE_NAME, seo } from '@/lib/seo';
 
+function HomeRoute(): ReactElement {
+  const { gender, viewYear } = Route.useSearch();
+  return <HomePage initialGender={gender} viewYear={viewYear} />;
+}
+
 export const Route = createFileRoute('/_site/')({
-  component: HomePage,
+  component: HomeRoute,
+  validateSearch: validateHomeSearch,
   head: () =>
     seo({
       title: `${SITE_NAME} — Xem tử vi, lá số, ngày tốt online`,

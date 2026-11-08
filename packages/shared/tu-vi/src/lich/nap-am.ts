@@ -4,7 +4,7 @@ export type NguHanh = 'Kim' | 'Mộc' | 'Thủy' | 'Hỏa' | 'Thổ';
 
 // The 30 nạp âm names of the sexagenary cycle, in Giáp Tý order. Each entry
 // covers two consecutive can-chi pairs; the trailing word is its ngũ hành.
-const NAP_AM_NAMES = [
+export const NAP_AM_NAMES = [
   'Hải Trung Kim',
   'Lô Trung Hỏa',
   'Đại Lâm Mộc',

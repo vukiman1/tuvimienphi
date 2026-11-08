@@ -1,0 +1,23 @@
+{
+  "slug": "tuoi-ti",
+  "chi": 5,
+  "viewYear": 2027,
+  "tongQuan": [
+    "Năm 2027 là năm Mùi. Tuổi Tị không nằm trong ba năm Tam tai và không phạm Thái tuế trong năm này.",
+    "Với gia chủ tuổi Tị muốn chọn tuổi xông đất theo quan niệm dân gian, cần phân biệt tuổi hợp xông đất với các tuổi nên tránh. Đây là nội dung riêng với việc xem Tam tai và quan hệ với Thái tuế."
+  ],
+  "tamTai": [
+    "Tam Tai là ba năm liền mà dân gian cho là dễ gặp trắc trở, tuổi nào cũng lần lượt đi qua. Người đang trong hạn Tam Tai thường được khuyên đừng khởi sự việc lớn một cách vội vàng và giữ mọi việc ở mức vừa phải.",
+    "Năm 2027, tuổi Tị không phạm Tam tai, tức không nằm trong ba năm Tam tai. Vì vậy, lời khuyên dành riêng cho người đang trong hạn Tam Tai không phải là lời luận hạn của tuổi Tị trong năm này."
+  ],
+  "thaiTue": [
+    "Thái tuế là cách dân gian gọi vị thần trực năm. Tuổi phạm Thái tuế thường được khuyên cẩn trọng và giữ mọi việc ở mức vừa phải.",
+    "Năm 2027 là năm Mùi, tuổi Tị không phạm Thái tuế. Khi xem quan hệ với Thái tuế trong năm này, tuổi Tị không thuộc trường hợp nhận lời khuyên dành riêng cho tuổi phạm Thái tuế."
+  ],
+  "xongDat": [
+    "Với nhà chủ tuổi Tị, Dậu là tuổi hợp xông đất. Nếu chọn người xông đất theo tuổi trong năm 2027, gia chủ có thể chọn người tuổi Dậu.",
+    "Các tuổi nên tránh xông đất cho nhà chủ tuổi Tị là Tý, Sửu, Dần, Thân, Tuất, Hợi. Khi lựa chọn theo quan niệm này, gia chủ nên tránh các tuổi vừa nêu."
+  ],
+  "model": "gpt-6.1-sol",
+  "generatedAt": "2026-11-08T10:35:02.118Z"
+}

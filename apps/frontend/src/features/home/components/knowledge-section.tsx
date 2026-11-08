@@ -4,6 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import { Reveal } from '@/components/reveal';
 import { MEDIA } from '@/config/media';
 import { KNOWLEDGE_SECTION } from '@/features/home/home-content';
+import { TET_HUB_LINK_LABEL, TET_HUB_PATH } from '@/features/tet-hub/tet-hub-paths';
 
 const HEADING_ID = 'home-knowledge-title';
 
@@ -151,6 +152,18 @@ export function KnowledgeSection() {
                 </Reveal>
               </li>
             ))}
+            <li>
+              <Link
+                className="group inline-flex items-center gap-2 pt-2 text-[15px] leading-[22px] font-semibold text-[#8a6420] no-underline transition-colors outline-none hover:text-[#5f440f] focus-visible:ring-2 focus-visible:ring-[#8a6420]"
+                to={TET_HUB_PATH}
+              >
+                {TET_HUB_LINK_LABEL}
+                <ArrowRight
+                  aria-hidden
+                  className="size-[16px] transition-transform duration-200 ease-out group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
+                />
+              </Link>
+            </li>
           </ul>
         </div>
       </div>

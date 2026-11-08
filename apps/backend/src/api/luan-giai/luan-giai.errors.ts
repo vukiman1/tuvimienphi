@@ -1,6 +1,9 @@
 export class MalformedChapterError extends Error {
-  constructor(readonly raw: string) {
-    super('model returned something that is not the expected two-paragraph object');
+  constructor(
+    readonly raw: string,
+    options?: ErrorOptions,
+  ) {
+    super('model returned something that is not the expected two-paragraph object', options);
     this.name = 'MalformedChapterError';
   }
 }

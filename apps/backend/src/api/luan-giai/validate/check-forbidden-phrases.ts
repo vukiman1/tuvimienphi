@@ -11,7 +11,7 @@ const HUA_HEN_VO_CAN_CU = [
   'luôn luôn',
 ] as const;
 
-const LOI_DOA = [
+export const LOI_DOA = [
   'tai nạn',
   'bệnh nặng',
   'qua đời',

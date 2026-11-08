@@ -1,0 +1,23 @@
+{
+  "slug": "tuoi-suu",
+  "chi": 1,
+  "viewYear": 2027,
+  "tongQuan": [
+    "Năm 2027, tuổi Sửu không nằm trong ba năm Tam tai, nhưng có quan hệ xung và hình với Thái tuế trong năm Mùi. Đây là hai nội dung cần phân biệt khi xem tử vi dân gian cho năm này.",
+    "Với tuổi phạm Thái tuế, lời khuyên dân gian là cẩn trọng và giữ mọi việc ở mức vừa phải. Người tuổi Sửu có thể lấy đó làm lời nhắc cân nhắc kỹ trước khi quyết định, thay vì vội vàng."
+  ],
+  "tamTai": [
+    "Tuổi Sửu không phạm Tam tai trong năm 2027. Năm này không nằm trong ba năm Tam tai của tuổi Sửu.",
+    "Tam Tai là ba năm liền mà dân gian cho là dễ gặp trắc trở, tuổi nào cũng lần lượt đi qua. Người đang trong hạn thường được khuyên đừng khởi sự việc lớn một cách vội vàng và giữ mọi việc ở mức vừa phải; tuổi Sửu năm 2027 không thuộc trường hợp này."
+  ],
+  "thaiTue": [
+    "Thái tuế là cách dân gian gọi vị thần trực năm. Năm 2027 là năm Mùi; tuổi Sửu phạm Thái tuế theo hai quan hệ: xung Thái tuế và hình Thái tuế.",
+    "Theo quan niệm dân gian, tuổi phạm Thái tuế thường được khuyên cẩn trọng và giữ mọi việc ở mức vừa phải. Với người tuổi Sửu, lời khuyên này là một lời nhắc giữ sự chừng mực khi tính toán và quyết định công việc trong năm."
+  ],
+  "xongDat": [
+    "Với nhà chủ tuổi Sửu, tuổi hợp xông đất năm 2027 là Tị và Dậu. Khi chọn người xông đất theo quan niệm dân gian, gia chủ có thể cân nhắc hai tuổi này.",
+    "Các tuổi nên tránh xông đất cho nhà chủ tuổi Sửu trong năm này là Tý, Sửu, Ngọ, Mùi và Tuất. Nếu lựa chọn theo tuổi xông đất, gia chủ nên phân biệt rõ nhóm hợp và nhóm nên tránh để thuận tiện sắp xếp."
+  ],
+  "model": "gpt-6.1-sol",
+  "generatedAt": "2026-11-08T10:33:47.027Z"
+}

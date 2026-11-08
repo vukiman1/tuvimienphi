@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { Link } from '@tanstack/react-router';
+import { ArrowRight, ChevronDown } from 'lucide-react';
 import { ARTICLES } from '@/features/kien-thuc/kien-thuc-data';
 import { KienThucHero } from '@/features/kien-thuc/components/kien-thuc-hero';
 import { ALL_FILTER, CategoryNav, type Filter } from '@/features/kien-thuc/components/category-nav';
@@ -11,6 +12,7 @@ import { Handbook } from '@/features/kien-thuc/components/handbook';
 import { QuoteCard } from '@/features/kien-thuc/components/quote-card';
 import { SocialFollow } from '@/features/kien-thuc/components/social-follow';
 import { Reveal } from '@/components/reveal';
+import { TET_HUB_LINK_LABEL, TET_HUB_PATH } from '@/features/tet-hub/tet-hub-paths';
 
 const PAGE_SIZE = 6;
 
@@ -61,6 +63,17 @@ export function KienThucPage() {
 
         <div className="mt-9 grid gap-8 pb-16 lg:grid-cols-[minmax(0,3fr)_minmax(0,1fr)]">
           <div className="min-w-0">
+            <Link
+              className="group mb-6 inline-flex items-center gap-2 text-[15px] leading-[22px] font-semibold text-[#8a6420] no-underline transition-colors outline-none hover:text-[#5f440f] focus-visible:ring-2 focus-visible:ring-[#8a6420]"
+              to={TET_HUB_PATH}
+            >
+              {TET_HUB_LINK_LABEL}
+              <ArrowRight
+                aria-hidden
+                className="size-[16px] transition-transform duration-200 ease-out group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
+              />
+            </Link>
+
             <Reveal>
               {featuredPool.length > 0 ? (
                 <section>

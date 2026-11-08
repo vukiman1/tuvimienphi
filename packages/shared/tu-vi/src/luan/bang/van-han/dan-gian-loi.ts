@@ -1,4 +1,5 @@
 import type { CuuDieu } from '../../../dan-gian.js';
+import type { BatHan } from '../../../tuoi-nam/bat-han.js';
 
 export const CUU_DIEU_LOI: Readonly<Record<CuuDieu, string>> = {
   'La Hầu':
@@ -24,3 +25,22 @@ export const TAM_TAI_LOI =
 
 export const KIM_LAU_LOI =
   'Kim Lâu là cách dân gian xem tuổi khi cưới hỏi và làm nhà. Tuổi phạm Kim Lâu thường được khuyên dời việc cưới hay xây nhà sang năm khác, hoặc nhờ người hợp tuổi đứng ra làm thay.';
+
+export const BAT_HAN_LOI: Readonly<Record<BatHan, string>> = {
+  'Huỳnh Tuyền':
+    'Huỳnh Tuyền là hạn dân gian gắn với sức khỏe, chuyện hao tài và việc làm ăn liên quan đến sông nước. Người gặp hạn này thường được khuyên chăm lo sức khỏe, chi tiêu dè dặt và cân nhắc kỹ những việc làm ăn trên sông nước.',
+  'Tam Kheo':
+    'Tam Kheo là hạn dân gian gắn với chân tay mỏi mệt, đau nhức. Người gặp hạn này thường được khuyên giữ gìn sức khỏe, tránh làm việc quá sức.',
+  'Ngũ Mộ':
+    'Ngũ Mộ là hạn dân gian gắn với chuyện tiền tài, hao tiền tốn của. Người gặp hạn này thường được khuyên chi tiêu dè dặt và cân nhắc trước các khoản chi lớn.',
+  'Thiên Tinh':
+    'Thiên Tinh là hạn dân gian gắn với thị phi, tranh chấp và chuyện thưa kiện. Người gặp hạn này thường được khuyên giữ lời nói, tránh va chạm và đọc kỹ giấy tờ trước khi ký.',
+  'Toán Tận':
+    'Toán Tận là hạn dân gian gắn với sức khỏe kém và chuyện hao hụt tiền bạc. Người gặp hạn này thường được khuyên chăm lo sức khỏe, tính toán kỹ chi tiêu và giữ một khoản dự phòng.',
+  'Thiên La':
+    'Thiên La là hạn dân gian gắn với cảm giác bị quấy phá, cuộc sống khó được yên ổn. Người gặp hạn này thường được khuyên giữ nếp sống điều độ, kiên nhẫn và tránh quyết định nóng vội.',
+  'Địa Võng':
+    'Địa Võng là hạn dân gian gắn với tai tiếng và rắc rối liên quan đến pháp luật. Người gặp hạn này thường được khuyên giữ gìn uy tín, làm việc đúng quy định và đọc kỹ giấy tờ trước khi ký.',
+  'Diêm Vương':
+    'Diêm Vương là hạn dân gian gắn với tin không vui từ người ở xa. Người gặp hạn này thường được khuyên giữ liên lạc, hỏi han người thân ở xa và giữ tinh thần bình thản.',
+};

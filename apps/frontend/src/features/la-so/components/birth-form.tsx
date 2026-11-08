@@ -16,6 +16,7 @@ import {
   MONTH_OPTIONS,
   YEAR_OPTIONS,
 } from '@/features/la-so/components/birth-form.constants';
+import type { Gender } from '@/features/la-so/birth-input';
 import {
   EMPTY_BIRTH_FORM,
   birthFieldSchemas,
@@ -58,15 +59,26 @@ function SelectChevron() {
   );
 }
 
-export function BirthForm() {
+interface BirthFormProps {
+  readonly initialGender?: Gender;
+  readonly viewYear?: number;
+}
+
+export function BirthForm({ initialGender, viewYear }: BirthFormProps = {}) {
   const navigate = useNavigate();
 
   const { form, submitError } = useFormWithSubmitError<BirthFormValues>({
-    defaultValues: EMPTY_BIRTH_FORM,
+    defaultValues: { ...EMPTY_BIRTH_FORM, gender: initialGender ?? EMPTY_BIRTH_FORM.gender },
     schema: birthFormSchema,
     fallbackError: 'Không mở được lá số. Thử lại sau ít phút.',
     onSubmit: async (values) => {
-      await navigate({ to: '/la-so/detail', search: toBirthSearch(values) });
+      await navigate({
+        to: '/la-so/detail',
+        search: {
+          ...toBirthSearch(values),
+          ...(viewYear === undefined ? {} : { viewYear }),
+        },
+      });
     },
   });
 

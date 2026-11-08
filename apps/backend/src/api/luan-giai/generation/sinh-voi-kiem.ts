@@ -1,4 +1,3 @@
-import type { ChapterBrief } from '@org/shared-tu-vi';
 import type { AiClient } from '../../../ai/port/ai.client';
 import type { AiMessage, AiSchema } from '../../../ai/port/ai.types';
 import {
@@ -6,8 +5,6 @@ import {
   ChapterTimedOutError,
   MalformedChapterError,
 } from '../luan-giai.errors';
-import type { BaiCanKiem } from '../validate/bai-can-kiem';
-import { checkParagraphs } from '../validate/check-paragraphs';
 
 export const MAX_ATTEMPTS = 5;
 
@@ -25,12 +22,11 @@ export interface LanThu<T> {
 }
 
 export interface CachSinh<T> {
-  readonly brief: ChapterBrief;
   readonly system: string;
   readonly schema: AiSchema;
   readonly messages: (daThu: readonly LanThu<T>[]) => AiMessage[];
   readonly parse: (text: string) => T;
-  readonly toBai: (value: T) => BaiCanKiem;
+  readonly check: (value: T, conLuotDeSinhLai: boolean) => readonly string[];
 }
 
 export async function sinhVoiKiem<T>(
@@ -38,11 +34,16 @@ export async function sinhVoiKiem<T>(
   cach: CachSinh<T>,
   budgetMs: number,
   onReject?: (lan: number, model: string, loi: readonly string[]) => void,
+  beforeAttempt?: () => Promise<void>,
 ): Promise<KetSinh<T>> {
   const daThu: LanThu<T>[] = [];
-  const deadline = Date.now() + budgetMs;
+  let deadline = Date.now() + budgetMs;
 
   for (let lan = 1; lan <= MAX_ATTEMPTS; lan += 1) {
+    const pauseStartedAt = Date.now();
+    await beforeAttempt?.();
+    deadline += Date.now() - pauseStartedAt;
+
     const conLai = deadline - Date.now();
     if (conLai < MIN_ATTEMPT_MS) {
       throw new ChapterTimedOutError(lan - 1, daThu[daThu.length - 1]?.loi ?? []);
@@ -58,11 +59,11 @@ export async function sinhVoiKiem<T>(
     let paragraph: T;
     try {
       paragraph = cach.parse(result.text);
-    } catch {
-      throw new MalformedChapterError(result.text);
+    } catch (parseError) {
+      throw new MalformedChapterError(result.text, { cause: parseError });
     }
 
-    const loi = checkParagraphs(cach.brief, cach.toBai(paragraph), lan < MAX_ATTEMPTS);
+    const loi = cach.check(paragraph, lan < MAX_ATTEMPTS);
     if (loi.length === 0) {
       return { value: paragraph, model: result.model, attempts: lan };
     }
