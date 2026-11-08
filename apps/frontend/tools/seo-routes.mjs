@@ -1,4 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 /**
@@ -11,6 +13,11 @@ const STATIC_PATHS = ['/', '/kien-thuc', '/ngay-tot', '/van-han', '/la-so', TET_
 const TET_HUB_MANIFEST_PATH = fileURLToPath(
   new URL('../src/features/tet-hub/content/2027/manifest.json', import.meta.url),
 );
+const TET_HUB_ENGINE = '@org/shared-tu-vi';
+const PAGE_FILE_EXTENSION = '.json';
+const PROBLEM_SEPARATOR = '; ';
+const SLUG_SEPARATOR = ', ';
+const requireFromHere = createRequire(import.meta.url);
 
 export class TetHubManifestError extends Error {
   constructor(manifestPath, reason) {
@@ -31,6 +38,43 @@ function parseManifest(manifestPath) {
   }
 }
 
+function expectedTetHubSlugs() {
+  const { CHI, conGiapSlug, tuoiNamBirthYears, tuoiNamSlug } = requireFromHere(TET_HUB_ENGINE);
+  return {
+    conGiap: CHI.map((_, chi) => conGiapSlug(chi)),
+    tuoiNam: tuoiNamBirthYears().map(tuoiNamSlug),
+  };
+}
+
+function listProblems(kind, listed, expected) {
+  const missing = expected.filter((slug) => !listed.includes(slug));
+  const unknown = listed.filter((slug) => !expected.includes(slug));
+  return [
+    ...(missing.length > 0 ? [`${kind} is missing ${missing.join(SLUG_SEPARATOR)}`] : []),
+    ...(unknown.length > 0 ? [`${kind} lists unknown slugs ${unknown.join(SLUG_SEPARATOR)}`] : []),
+  ];
+}
+
+function missingFileProblems(manifestPath, slugs) {
+  const directory = dirname(manifestPath);
+  const missing = slugs.filter(
+    (slug) => !existsSync(join(directory, `${slug}${PAGE_FILE_EXTENSION}`)),
+  );
+  return missing.length > 0 ? [`no page file for ${missing.join(SLUG_SEPARATOR)}`] : [];
+}
+
+function assertCompleteManifest(manifestPath, manifest) {
+  const expected = expectedTetHubSlugs();
+  const problems = [
+    ...listProblems('conGiap', manifest.conGiap, expected.conGiap),
+    ...listProblems('tuoiNam', manifest.tuoiNam, expected.tuoiNam),
+    ...missingFileProblems(manifestPath, [...manifest.conGiap, ...manifest.tuoiNam]),
+  ];
+  if (problems.length > 0) {
+    throw new TetHubManifestError(manifestPath, problems.join(PROBLEM_SEPARATOR));
+  }
+}
+
 function getTetHubSlugs(manifestPath) {
   if (!existsSync(manifestPath)) {
     return [];
@@ -39,6 +83,7 @@ function getTetHubSlugs(manifestPath) {
   if (!isStringList(manifest?.conGiap) || !isStringList(manifest?.tuoiNam)) {
     throw new TetHubManifestError(manifestPath, 'conGiap and tuoiNam must be lists of slugs');
   }
+  assertCompleteManifest(manifestPath, manifest);
   return [...manifest.conGiap, ...manifest.tuoiNam];
 }
 

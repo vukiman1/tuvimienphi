@@ -3,13 +3,26 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { CHI, conGiapSlug, tuoiNamBirthYears, tuoiNamSlug } from '@org/shared-tu-vi';
 import { TET_HUB_PATH, TET_HUB_SLUG, tetHubPagePath } from '../src/features/tet-hub/tet-hub-paths';
 
 const MANIFEST_FILE_NAME = 'manifest.json';
-const MANIFEST = {
+const CON_GIAP_SLUGS: readonly string[] = CHI.map((_, chi) => conGiapSlug(chi));
+const TUOI_NAM_SLUGS: readonly string[] = tuoiNamBirthYears().map(tuoiNamSlug);
+const MISSING_CON_GIAP_SLUG = 'tuoi-ti';
+const MISSING_TUOI_NAM_SLUG = 'tuoi-binh-dan-1986';
+const UNKNOWN_SLUG = 'tuoi-binh-dan-1926';
+
+interface ManifestContent {
+  readonly viewYear: number;
+  readonly conGiap: readonly string[];
+  readonly tuoiNam: readonly string[];
+}
+
+const MANIFEST: ManifestContent = {
   viewYear: 2027,
-  conGiap: ['tuoi-dan', 'tuoi-ty'],
-  tuoiNam: ['tuoi-binh-dan-1986'],
+  conGiap: CON_GIAP_SLUGS,
+  tuoiNam: TUOI_NAM_SLUGS,
 };
 const SEO_ROUTES_URL = pathToFileURL(join(__dirname, 'seo-routes.mjs')).href;
 const RUNNER_SCRIPT = `
@@ -65,6 +78,19 @@ function writeManifest(content: string): string {
   return manifestPath;
 }
 
+function writePages(slugs: readonly string[]): void {
+  slugs.forEach((slug) => writeFileSync(join(directory, `${slug}.json`), '{}'));
+}
+
+function writeContent(manifest: ManifestContent): string {
+  writePages([...manifest.conGiap, ...manifest.tuoiNam]);
+  return writeManifest(JSON.stringify(manifest));
+}
+
+function without(slugs: readonly string[], dropped: string): readonly string[] {
+  return slugs.filter((slug) => slug !== dropped);
+}
+
 beforeEach(() => {
   directory = mkdtempSync(join(tmpdir(), 'seo-routes-'));
 });
@@ -74,17 +100,14 @@ afterEach(() => {
 });
 
 describe('getSeoRoutes', () => {
-  it('lists the hub and every manifest slug', () => {
-    const { routes } = runSeoRoutes(writeManifest(JSON.stringify(MANIFEST)));
+  it('lists the hub and every con giáp and birth-year page of a complete manifest', () => {
+    const { routes } = runSeoRoutes(writeContent(MANIFEST));
 
-    expect(routes).toEqual(
-      expect.arrayContaining([
-        TET_HUB_PATH,
-        tetHubPagePath('tuoi-dan'),
-        tetHubPagePath('tuoi-ty'),
-        tetHubPagePath('tuoi-binh-dan-1986'),
-      ]),
-    );
+    expect(routes.filter((route) => route.startsWith(TET_HUB_PATH))).toEqual([
+      TET_HUB_PATH,
+      ...CON_GIAP_SLUGS.map(tetHubPagePath),
+      ...TUOI_NAM_SLUGS.map(tetHubPagePath),
+    ]);
   });
 
   it('lists only the hub when the manifest has not been generated yet', () => {
@@ -94,7 +117,7 @@ describe('getSeoRoutes', () => {
   });
 
   it('has no duplicate routes', () => {
-    const { routes } = runSeoRoutes(writeManifest(JSON.stringify(MANIFEST)));
+    const { routes } = runSeoRoutes(writeContent(MANIFEST));
 
     expect(new Set(routes).size).toBe(routes.length);
   });
@@ -114,6 +137,59 @@ describe('getSeoRoutes', () => {
     expect(runSeoRoutesFailure(manifestPath)).toEqual({
       name: 'TetHubManifestError',
       message: expect.stringContaining(`${manifestPath} is malformed: conGiap and tuoiNam`),
+    });
+  });
+});
+
+describe('getSeoRoutes with an incomplete Tết hub', () => {
+  it('fails naming the con giáp page the manifest does not list', () => {
+    const manifestPath = writeContent({
+      ...MANIFEST,
+      conGiap: without(CON_GIAP_SLUGS, MISSING_CON_GIAP_SLUG),
+    });
+
+    expect(runSeoRoutesFailure(manifestPath)).toEqual({
+      name: 'TetHubManifestError',
+      message: expect.stringContaining(
+        `${manifestPath} is malformed: conGiap is missing ${MISSING_CON_GIAP_SLUG}`,
+      ),
+    });
+  });
+
+  it('fails naming the birth-year page the manifest does not list', () => {
+    const manifestPath = writeContent({
+      ...MANIFEST,
+      tuoiNam: without(TUOI_NAM_SLUGS, MISSING_TUOI_NAM_SLUG),
+    });
+
+    expect(runSeoRoutesFailure(manifestPath)).toEqual({
+      name: 'TetHubManifestError',
+      message: expect.stringContaining(
+        `${manifestPath} is malformed: tuoiNam is missing ${MISSING_TUOI_NAM_SLUG}`,
+      ),
+    });
+  });
+
+  it('fails naming a slug that is not a page of the hub', () => {
+    const manifestPath = writeContent({ ...MANIFEST, tuoiNam: [...TUOI_NAM_SLUGS, UNKNOWN_SLUG] });
+
+    expect(runSeoRoutesFailure(manifestPath)).toEqual({
+      name: 'TetHubManifestError',
+      message: expect.stringContaining(
+        `${manifestPath} is malformed: tuoiNam lists unknown slugs ${UNKNOWN_SLUG}`,
+      ),
+    });
+  });
+
+  it('fails naming a listed page whose file is not next to the manifest', () => {
+    writePages([...CON_GIAP_SLUGS, ...without(TUOI_NAM_SLUGS, MISSING_TUOI_NAM_SLUG)]);
+    const manifestPath = writeManifest(JSON.stringify(MANIFEST));
+
+    expect(runSeoRoutesFailure(manifestPath)).toEqual({
+      name: 'TetHubManifestError',
+      message: expect.stringContaining(
+        `${manifestPath} is malformed: no page file for ${MISSING_TUOI_NAM_SLUG}`,
+      ),
     });
   });
 });
