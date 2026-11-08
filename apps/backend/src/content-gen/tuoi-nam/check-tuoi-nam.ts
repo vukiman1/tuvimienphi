@@ -83,8 +83,9 @@ function sectionGender(section: TuoiNamSection): 'nam' | 'nu' | null {
 }
 
 function allowedNames(brief: TuoiNamBrief, section: TuoiNamSection): readonly string[] {
-  const names = genderNames(brief, sectionGender(section));
-  return section === TuoiNamSection.CuoiNha ? [...names, brief.facts.hoangOc] : names;
+  const gender = sectionGender(section);
+  const names = genderNames(brief, gender);
+  return gender === null ? [...names, brief.facts.hoangOc] : names;
 }
 
 function faqGender(question: string): 'nam' | 'nu' | null {

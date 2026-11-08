@@ -165,6 +165,33 @@ describe('checkTuoiNam', () => {
     expect(violations[0]).toContain(wrongCung);
   });
 
+  it('accepts the computed Hoang ốc cung in the overview and the advice', () => {
+    const draft = withDraft({
+      tongQuan: paragraphs(...cleanDraft.tongQuan, `Năm nay tuổi này vào cung ${facts.hoangOc}.`),
+      loiKhuyen: paragraphs(...cleanDraft.loiKhuyen, `Cung ${facts.hoangOc} nhắc việc làm nhà.`),
+    });
+    expect(checkTuoiNam(draft, brief)).toEqual([]);
+  });
+
+  it('rejects a Hoang ốc cung the brief did not compute in the overview', () => {
+    const wrongCung = facts.hoangOc === HoangOc.NhatCat ? HoangOc.NhiNghi : HoangOc.NhatCat;
+    const draft = withDraft({
+      tongQuan: paragraphs(...cleanDraft.tongQuan, `Năm nay tuổi này vào cung ${wrongCung}.`),
+    });
+    const violations = checkTuoiNam(draft, brief);
+    expect(violations).toHaveLength(1);
+    expect(violations[0]).toContain(`mục tongQuan: nhắc "${wrongCung}"`);
+  });
+
+  it('rejects the Hoang ốc cung inside a gender subsection', () => {
+    const draft = withDraft({
+      saoHanNam: paragraphs(...cleanDraft.saoHanNam, `Nam mạng vào cung ${facts.hoangOc}.`),
+    });
+    const violations = checkTuoiNam(draft, brief);
+    expect(violations).toHaveLength(1);
+    expect(violations[0]).toContain(`mục saoHanNam: nhắc "${facts.hoangOc}"`);
+  });
+
   it('rejects denying a Kim lâu the age falls in', () => {
     const draft = withDraft({
       cuoiNha: paragraphs(`Tuổi này không phạm Kim lâu ${facts.kimLau}.`, cleanDraft.cuoiNha[1]),
