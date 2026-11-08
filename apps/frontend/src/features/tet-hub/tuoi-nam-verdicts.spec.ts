@@ -35,9 +35,9 @@ describe('thaiTueVerdict', () => {
 });
 
 describe('xongDatVerdict', () => {
-  it('names the chi that suit the house and the chi to avoid', () => {
+  it('names the chi that suit the house and the chi clashing with the house or the year', () => {
     expect(xongDatVerdict(BINH_DAN)).toBe(
-      'Tết Đinh Mùi 2027, gia chủ tuổi Dần hợp người tuổi Ngọ và Hợi xông đất, nên tránh người tuổi Tị và Thân.',
+      'Tết Đinh Mùi 2027, gia chủ tuổi Dần hợp người tuổi Ngọ và Hợi xông đất, nên tránh người tuổi Tý, Sửu, Tị, Thân và Tuất.',
     );
   });
 
@@ -45,7 +45,7 @@ describe('xongDatVerdict', () => {
     const facts = { ...BINH_DAN, xongDat: { hop: [], tranh: BINH_DAN.xongDat.tranh } };
 
     expect(xongDatVerdict(facts)).toBe(
-      'Tết Đinh Mùi 2027, không có tuổi tam hợp hay lục hợp nào vừa hợp gia chủ tuổi Dần vừa hợp năm mới; nên tránh người tuổi Tị và Thân xông đất.',
+      'Tết Đinh Mùi 2027, không có tuổi tam hợp hay lục hợp nào vừa hợp gia chủ tuổi Dần vừa hợp năm mới; nên tránh người tuổi Tý, Sửu, Tị, Thân và Tuất xông đất.',
     );
   });
 });

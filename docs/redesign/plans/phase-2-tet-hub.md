@@ -77,7 +77,7 @@ it('Tý and Mão punish each other without breaking', () =>
   expect(phamThaiTue(3, 0)).toEqual([ThaiTueRelation.Hinh]));
 
 it('picks first-footers for a Dần house in a Mùi year', () =>
-  expect(tuoiXongDat(2, 7)).toEqual({ hop: [6, 11], tranh: [5, 8] }));
+  expect(tuoiXongDat(2, 7)).toEqual({ hop: [6, 11], tranh: [0, 1, 5, 8, 10] }));
 ```
 
 - [ ] **Step 2: Run** `pnpm nx test shared-tu-vi --testPathPatterns='thai-tue|xong-dat'`. Expected: FAIL, modules missing.

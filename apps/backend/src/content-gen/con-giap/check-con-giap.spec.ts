@@ -49,6 +49,17 @@ describe('checkConGiap', () => {
     },
   );
 
+  it('accepts a Dần house warning against the chi that clash with the Mùi year', () => {
+    const draft = {
+      ...cleanDraftFor(CHI_DAN),
+      xongDat: paragraphs(
+        ...cleanDraftFor(CHI_DAN).xongDat,
+        'Năm Mùi cũng nên tránh người tuổi Sửu và Tuất.',
+      ),
+    };
+    expect(checkConGiap(draft, briefFor(CHI_DAN))).toEqual([]);
+  });
+
   it('rejects a chi in the xông đất section that the brief did not list', () => {
     const brief = briefFor(CHI_MUI);
     const draft = {

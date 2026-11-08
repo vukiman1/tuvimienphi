@@ -24,11 +24,16 @@ function chiClashingWith(targetChi: number): readonly number[] {
   );
 }
 
+function ascending(first: number, second: number): number {
+  return first - second;
+}
+
 export function tuoiXongDat(houseChi: number, viewYearChi: number): XongDat {
-  const tranh = chiClashingWith(houseChi);
-  const clashingWithYear = chiClashingWith(viewYearChi);
+  const tranh = [...new Set([...chiClashingWith(houseChi), ...chiClashingWith(viewYearChi)])].sort(
+    ascending,
+  );
   const hop = [...tamHopIndexes(houseChi), nhiHopIndex(houseChi)]
-    .filter((chi) => !tranh.includes(chi) && !clashingWithYear.includes(chi))
-    .sort((first, second) => first - second);
+    .filter((chi) => !tranh.includes(chi))
+    .sort(ascending);
   return { hop, tranh };
 }

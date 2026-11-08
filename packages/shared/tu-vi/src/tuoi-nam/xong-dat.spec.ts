@@ -4,8 +4,8 @@ const DAN = 2;
 const MUI = 7;
 
 describe('tuoiXongDat', () => {
-  it('picks first-footers for a Dần house in a Mùi year', () => {
-    expect(tuoiXongDat(DAN, MUI)).toEqual({ hop: [6, 11], tranh: [5, 8] });
+  it('avoids the chi clashing with the Dần house and the chi clashing with the Mùi year', () => {
+    expect(tuoiXongDat(DAN, MUI)).toEqual({ hop: [6, 11], tranh: [0, 1, 5, 8, 10] });
   });
 });
 
