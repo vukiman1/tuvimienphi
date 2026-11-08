@@ -1,6 +1,6 @@
 import { getYearCanChi, getYearPillar } from '../lich/lunar-calendar.js';
 import { getNapAm, type NapAm } from '../lich/nap-am.js';
-import { saoChieuMenh, tamTaiNamThu, type CuuDieu } from '../dan-gian.js';
+import { saoChieuMenh, tamTaiNamThu, type CuuDieu, type TamTaiNamThu } from '../dan-gian.js';
 import { ageInYear, Gender } from '../van-han.js';
 import { viewYearPillar } from '../view-year.js';
 import { batHan, type BatHan } from './bat-han.js';
@@ -25,7 +25,7 @@ export interface TuoiNamFacts {
   readonly menh: NapAm;
   readonly menhNam: NapAm;
   readonly menhVoiNam: MenhVoiNam;
-  readonly tamTai: 1 | 2 | 3 | null;
+  readonly tamTai: TamTaiNamThu | null;
   readonly thaiTue: readonly ThaiTueRelation[];
   readonly kimLau: KimLau | null;
   readonly hoangOc: HoangOc;

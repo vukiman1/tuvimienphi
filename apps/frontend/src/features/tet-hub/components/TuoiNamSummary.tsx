@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
-import type { TuoiNamFacts, TuoiNamGenderFacts } from '@org/shared-tu-vi';
+import { TAM_TAI_ORDINALS, type TuoiNamFacts, type TuoiNamGenderFacts } from '@org/shared-tu-vi';
 import { cn } from '@/lib/utils';
-import { TAM_TAI_ORDINALS, thaiTueRelationsLabel } from '../tuoi-nam-labels';
+import { thaiTueRelationsLabel } from '../tuoi-nam-labels';
 
 const SUMMARY_TITLE_ID = 'tuoi-nam-summary-title';
 const NOT_AFFECTED = 'Không phạm';

@@ -1,10 +1,13 @@
-import { ThaiTueRelation } from '@org/shared-tu-vi';
+import {
+  TAM_TAI_ORDINALS,
+  TAM_TAI_YEARS,
+  ThaiTueRelation,
+  type TamTaiNamThu,
+} from '@org/shared-tu-vi';
 import { affirms, mentions } from './check-text';
 
-export type TamTaiYear = 1 | 2 | 3;
-
 export interface ChiVerdicts {
-  readonly tamTai: TamTaiYear | null;
+  readonly tamTai: TamTaiNamThu | null;
   readonly thaiTue: readonly ThaiTueRelation[];
 }
 
@@ -12,12 +15,10 @@ export const NO_TAM_TAI_KEYWORD = 'không phạm Tam tai';
 export const NO_THAI_TUE_KEYWORD = 'không phạm Thái tuế';
 export const THAI_TUE_SUFFIX = 'Thái tuế';
 
-const TAM_TAI_YEAR_WORDS = { 1: 'nhất', 2: 'hai', 3: 'ba' } as const;
-const TAM_TAI_YEARS: readonly TamTaiYear[] = [1, 2, 3];
 const THAI_TUE_RELATIONS: readonly ThaiTueRelation[] = Object.values(ThaiTueRelation);
 
-export function tamTaiKeyword(year: TamTaiYear): string {
-  return `năm thứ ${TAM_TAI_YEAR_WORDS[year]} của Tam tai`;
+export function tamTaiKeyword(year: TamTaiNamThu): string {
+  return `năm ${TAM_TAI_ORDINALS[year]} của Tam tai`;
 }
 
 export function thaiTueKeyword(relation: ThaiTueRelation): string {

@@ -1,5 +1,5 @@
-import { CHI, getYearCanChi, type TuoiNamFacts } from '@org/shared-tu-vi';
-import { TAM_TAI_ORDINALS, chiNamesLabel, thaiTueRelationsLabel } from './tuoi-nam-labels';
+import { CHI, getYearCanChi, TAM_TAI_ORDINALS, type TuoiNamFacts } from '@org/shared-tu-vi';
+import { chiNamesLabel, thaiTueRelationsLabel } from './tuoi-nam-labels';
 
 export function tamTaiVerdict(facts: TuoiNamFacts): string {
   const chi = CHI[facts.chi];

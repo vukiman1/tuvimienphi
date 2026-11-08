@@ -1,11 +1,5 @@
 import { CHI, ThaiTueRelation } from '@org/shared-tu-vi';
 
-export const TAM_TAI_ORDINALS: Readonly<Record<1 | 2 | 3, string>> = {
-  1: 'thứ nhất',
-  2: 'thứ hai',
-  3: 'thứ ba',
-};
-
 const THAI_TUE_LABELS: Readonly<Record<ThaiTueRelation, string>> = {
   [ThaiTueRelation.Truc]: 'trực (năm tuổi)',
   [ThaiTueRelation.Xung]: 'xung',
