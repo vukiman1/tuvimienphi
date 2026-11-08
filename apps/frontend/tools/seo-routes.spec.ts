@@ -179,6 +179,16 @@ describe('getSeoRoutes', () => {
   });
 });
 
+describe('getSeoRoutes for Vận hạn', () => {
+  it('lists a Vận hạn page for every con giáp', () => {
+    const { routes } = runSeoRoutes(join(directory, MANIFEST_FILE_NAME));
+
+    expect(routes.filter((route) => route.startsWith('/van-han/'))).toEqual(
+      CON_GIAP_SLUGS.map((slug) => `/van-han/${slug}`),
+    );
+  });
+});
+
 describe('getSeoRoutes with an incomplete Tết hub', () => {
   it('fails naming the con giáp page the manifest does not list', () => {
     const manifestPath = writeContent({

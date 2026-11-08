@@ -8,8 +8,9 @@ import { fileURLToPath } from 'node:url';
  * (vite.config.mts) and the prerender step (prerender.mjs). Personalised/auth routes (la-so/detail,
  * dashboard, login, register) are intentionally excluded: they are noindex and have nothing to crawl.
  */
-const STATIC_PATHS = ['/', '/kien-thuc', '/ngay-tot', '/van-han', '/la-so'];
-const TET_HUB_ENGINE = '@org/shared-tu-vi';
+const VAN_HAN_PATH = '/van-han';
+const STATIC_PATHS = ['/', '/kien-thuc', '/ngay-tot', VAN_HAN_PATH, '/la-so'];
+const TU_VI_ENGINE = '@org/shared-tu-vi';
 const PAGE_FILE_EXTENSION = '.json';
 const PROBLEM_SEPARATOR = '; ';
 const SLUG_SEPARATOR = ', ';
@@ -35,7 +36,7 @@ function parseManifest(manifestPath) {
 }
 
 function tetHubViewYear() {
-  return requireFromHere(TET_HUB_ENGINE).TET_HUB_VIEW_YEAR;
+  return requireFromHere(TU_VI_ENGINE).TET_HUB_VIEW_YEAR;
 }
 
 function tetHubPath() {
@@ -48,8 +49,13 @@ function defaultManifestPath() {
   );
 }
 
+function vanHanZodiacPaths() {
+  const { CHI, conGiapSlug } = requireFromHere(TU_VI_ENGINE);
+  return CHI.map((_, chi) => `${VAN_HAN_PATH}/${conGiapSlug(chi)}`);
+}
+
 function expectedTetHubSlugs() {
-  const { CHI, conGiapSlug, tuoiNamBirthYears, tuoiNamSlug } = requireFromHere(TET_HUB_ENGINE);
+  const { CHI, conGiapSlug, tuoiNamBirthYears, tuoiNamSlug } = requireFromHere(TU_VI_ENGINE);
   return {
     conGiap: CHI.map((_, chi) => conGiapSlug(chi)),
     tuoiNam: tuoiNamBirthYears().map(tuoiNamSlug),
@@ -126,6 +132,7 @@ export function getSeoRoutes({ manifestPath = defaultManifestPath() } = {}) {
   const hubPath = tetHubPath();
   return [
     ...STATIC_PATHS,
+    ...vanHanZodiacPaths(),
     hubPath,
     ...getArticleSlugs().map((slug) => `/kien-thuc/${slug}`),
     ...getTetHubSlugs(manifestPath).map((slug) => `${hubPath}/${slug}`),
