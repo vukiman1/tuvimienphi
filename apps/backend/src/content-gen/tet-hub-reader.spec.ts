@@ -76,7 +76,9 @@ describe('readTuoiNamArticles', () => {
     const error: unknown = await readTuoiNamArticles(directory).catch((caught: unknown) => caught);
 
     expect(error).toBeInstanceOf(MalformedTuoiNamArticleError);
-    expect((error as MalformedTuoiNamArticleError).cause).toBeInstanceOf(SyntaxError);
-    expect((error as MalformedTuoiNamArticleError).fileName).toBe(`${tuoiNamSlug(1986)}.json`);
+    expect(error).toMatchObject({
+      cause: expect.any(SyntaxError),
+      fileName: `${tuoiNamSlug(1986)}.json`,
+    });
   });
 });

@@ -25,6 +25,10 @@ function genderSelect(): HTMLSelectElement {
   return screen.getByRole('combobox', { name: 'Giới tính' });
 }
 
+function yearSelect(): HTMLSelectElement {
+  return screen.getByRole('combobox', { name: 'Năm sinh' });
+}
+
 describe('BirthForm', () => {
   beforeEach(() => {
     mockNavigate.mockReset();
@@ -35,9 +39,7 @@ describe('BirthForm', () => {
     render(<BirthForm initialGender={Gender.Female} />);
 
     expect(genderSelect().value).toBe(Gender.Female);
-    expect((screen.getByRole('combobox', { name: 'Năm sinh' }) as HTMLSelectElement).value).toBe(
-      '',
-    );
+    expect(yearSelect().value).toBe('');
   });
 
   it('starts with no gender chosen when none was given', () => {

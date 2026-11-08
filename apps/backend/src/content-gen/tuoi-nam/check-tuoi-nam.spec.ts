@@ -156,7 +156,7 @@ describe('checkTuoiNam', () => {
   });
 
   it('rejects a Hoang ốc cung the brief did not compute', () => {
-    const wrongCung = Object.values(HoangOc).find((cung) => cung !== facts.hoangOc) as HoangOc;
+    const wrongCung = facts.hoangOc === HoangOc.NhatCat ? HoangOc.NhiNghi : HoangOc.NhatCat;
     const draft = withDraft({
       cuoiNha: paragraphs(...cleanDraft.cuoiNha, `Có người lại nói cung ${wrongCung}.`),
     });
@@ -217,7 +217,7 @@ describe('checkTuoiNam', () => {
   });
 
   it('rejects a different Kim lâu kind than the brief computed', () => {
-    const otherKind = Object.values(KimLau).find((kind) => kind !== facts.kimLau) as KimLau;
+    const otherKind = facts.kimLau === KimLau.Than ? KimLau.The : KimLau.Than;
     const draft = withDraft({
       cuoiNha: paragraphs(...cleanDraft.cuoiNha, `Có sách nói là Kim lâu ${otherKind}.`),
     });
