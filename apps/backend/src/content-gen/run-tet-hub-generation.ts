@@ -51,7 +51,9 @@ export interface TetHubRunReport {
 const SCORE_DECIMALS = 2;
 
 function describeError(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
+  if (!(error instanceof Error)) return String(error);
+  if (!(error.cause instanceof Error)) return error.message;
+  return `${error.message} (cause: ${error.cause.name}: ${error.cause.message})`;
 }
 
 function selectPlans(

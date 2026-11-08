@@ -59,8 +59,8 @@ export async function sinhVoiKiem<T>(
     let paragraph: T;
     try {
       paragraph = cach.parse(result.text);
-    } catch {
-      throw new MalformedChapterError(result.text);
+    } catch (parseError) {
+      throw new MalformedChapterError(result.text, { cause: parseError });
     }
 
     const loi = cach.check(paragraph, lan < MAX_ATTEMPTS);

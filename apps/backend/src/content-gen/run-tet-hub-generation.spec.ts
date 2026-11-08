@@ -1,6 +1,7 @@
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { Logger } from '@nestjs/common';
 import type { ConGiapArticle, TuoiNamArticle } from '@org/shared-contracts';
 import { tuoiNamSlug } from '@org/shared-tu-vi';
 import {
@@ -9,6 +10,7 @@ import {
   UnknownTetHubPageError,
   type PagePlan,
 } from './run-tet-hub-generation';
+import { MalformedChapterError } from '../api/luan-giai/luan-giai.errors';
 
 const INTRO = { intro: ['Một.', 'Hai.'] };
 
@@ -108,6 +110,32 @@ describe('runTetHubGeneration', () => {
 
     expect(failedSlugs).toEqual(['tuoi-suu']);
     await expect(readFile(join(directory, 'tuoi-mui.json'), 'utf8')).resolves.toBeDefined();
+  });
+
+  it('logs the parse error behind a malformed page', async () => {
+    const logError = jest.spyOn(Logger.prototype, 'error').mockImplementation(() => undefined);
+    const parseError = new SyntaxError('Unexpected token } in JSON at position 7');
+
+    await runTetHubGeneration({
+      directory,
+      plans: [
+        {
+          slug: 'tuoi-suu',
+          generate: async () => {
+            throw new MalformedChapterError('{"tay":}', { cause: parseError });
+          },
+        },
+      ],
+      options,
+      generateIntro: async () => INTRO,
+      loadArticles: async () => [],
+    });
+
+    const pageFailure = logError.mock.calls.find(([message]) =>
+      String(message).startsWith('failed tuoi-suu'),
+    );
+    logError.mockRestore();
+    expect(pageFailure?.[0]).toContain(`SyntaxError: ${parseError.message}`);
   });
 
   it('refuses to overwrite an existing page with --only alone', async () => {

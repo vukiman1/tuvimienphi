@@ -1,5 +1,6 @@
 import { AiClient } from '../../../ai/port/ai.client';
 import type { AiRequest, AiResult } from '../../../ai/port/ai.types';
+import { MalformedChapterError } from '../luan-giai.errors';
 import { type CachSinh, sinhVoiKiem } from './sinh-voi-kiem';
 
 const BUDGET_MS = 60_000;
@@ -44,6 +45,24 @@ describe('sinhVoiKiem', () => {
     expect(ket).toEqual({ value: 'good', model: MODEL, attempts: 2 });
     const secondRequest = ai.requests[1];
     expect(secondRequest.messages[secondRequest.messages.length - 1].text).toContain('xấu');
+  });
+
+  it('stops at the first unparseable reply and keeps the parse error as its cause', async () => {
+    const ai = new ScriptedAiClient(['{not json', 'good']);
+    const cach: CachSinh<unknown> = {
+      system: 'system',
+      schema: { type: 'string' },
+      messages: () => [{ role: 'user', text: 'brief' }],
+      parse: (text): unknown => JSON.parse(text),
+      check: () => [],
+    };
+
+    const failure = await sinhVoiKiem(ai, cach, BUDGET_MS).catch((error: unknown) => error);
+
+    expect(failure).toBeInstanceOf(MalformedChapterError);
+    expect(failure).toHaveProperty('raw', '{not json');
+    expect(failure).toHaveProperty('cause', expect.any(SyntaxError));
+    expect(ai.requests).toHaveLength(1);
   });
 
   describe('pause before an attempt', () => {
