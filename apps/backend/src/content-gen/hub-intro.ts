@@ -9,12 +9,14 @@ import type { AiSchema } from '../ai/port/ai.types';
 import { runWithAiCallContext } from '../ai/port/ai-call-context';
 import { sinhVoiKiem, type CachSinh } from '../api/luan-giai/generation/sinh-voi-kiem';
 import { forbiddenPhraseViolations, paragraphCountViolations } from './check-text';
+import { logRejectedAttempt, rejectedAttemptMessages } from './rejected-attempts';
 import { isRecord, isStringArray } from './schema-guards';
 
 const MIN_PARAGRAPHS = 2;
 const MAX_PARAGRAPHS = 3;
 const INTRO_BUDGET_MS = 120_000;
-const INTRO_LABEL = 'tet-hub:hub-intro';
+const INTRO_LOG_LABEL = 'hub-intro';
+const INTRO_LABEL = `tet-hub:${INTRO_LOG_LABEL}`;
 
 const HUB_INTRO_SYSTEM_PROMPT = `Bạn viết đoạn giới thiệu cho trang tổng hợp "Tử vi ${TET_HUB_VIEW_YEAR} theo tuổi" của một website tử vi tiếng Việt.
 
@@ -67,7 +69,10 @@ function checkHubIntro({ intro }: TetHubIntro): readonly string[] {
 const HUB_INTRO_GENERATION: CachSinh<TetHubIntro> = {
   system: HUB_INTRO_SYSTEM_PROMPT,
   schema: HUB_INTRO_SCHEMA,
-  messages: () => [{ role: 'user', text: HUB_INTRO_REQUEST }],
+  messages: (daThu) => [
+    { role: 'user', text: HUB_INTRO_REQUEST },
+    ...rejectedAttemptMessages(daThu),
+  ],
   parse: parseHubIntro,
   check: checkHubIntro,
 };
@@ -77,7 +82,13 @@ export async function generateHubIntro(
   beforeAttempt: () => Promise<void>,
 ): Promise<TetHubIntro> {
   const { value } = await runWithAiCallContext({ label: INTRO_LABEL }, () =>
-    sinhVoiKiem(ai, HUB_INTRO_GENERATION, INTRO_BUDGET_MS, undefined, beforeAttempt),
+    sinhVoiKiem(
+      ai,
+      HUB_INTRO_GENERATION,
+      INTRO_BUDGET_MS,
+      logRejectedAttempt(INTRO_LOG_LABEL),
+      beforeAttempt,
+    ),
   );
   return value;
 }
