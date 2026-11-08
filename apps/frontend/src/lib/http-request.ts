@@ -18,6 +18,16 @@ const REFRESH_PATH = '/auth/refresh-token';
 const LOGIN_PATH = '/auth/login';
 const REGISTER_PATH = '/auth/register';
 
+declare module 'axios' {
+  interface AxiosRequestConfig {
+    isBackgroundRequest?: boolean;
+  }
+}
+
+export const BACKGROUND_REQUEST = {
+  isBackgroundRequest: true,
+} as const satisfies AxiosRequestConfig;
+
 type RetriableConfig = InternalAxiosRequestConfig & { _retry?: boolean };
 
 const instance: AxiosInstance = axios.create({
@@ -58,7 +68,9 @@ instance.interceptors.response.use(
       }
     }
 
-    reportInfrastructureFailure(error);
+    if (!originalRequest?.isBackgroundRequest) {
+      reportInfrastructureFailure(error);
+    }
     return Promise.reject(toApiError(error));
   },
 );
