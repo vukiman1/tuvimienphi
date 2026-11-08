@@ -1,0 +1,23 @@
+{
+  "slug": "tuoi-dau",
+  "chi": 9,
+  "viewYear": 2027,
+  "tongQuan": [
+    "Trong năm 2027, tuổi Dậu không nằm trong ba năm Tam tai và không phạm Thái tuế. Đây là hai điểm chính khi xem các hạn dân gian của tuổi Dậu trong năm này.",
+    "Với việc xông đất, nhà chủ tuổi Dậu có nhóm tuổi hợp và nhóm tuổi nên tránh riêng. Khi chọn người xông đất đầu năm, bạn có thể tham khảo các tuổi này theo quan niệm dân gian."
+  ],
+  "tamTai": [
+    "Năm 2027, tuổi Dậu không phạm Tam tai, tức không nằm trong ba năm Tam tai của tuổi mình.",
+    "Tam Tai là ba năm liên tiếp mà dân gian cho là dễ gặp trắc trở, tuổi nào cũng lần lượt đi qua. Người đang trong hạn này thường được khuyên không khởi sự việc lớn một cách vội vàng và giữ mọi việc ở mức vừa phải."
+  ],
+  "thaiTue": [
+    "Năm 2027 là năm Mùi; tuổi Dậu không phạm Thái tuế trong năm này. Thái tuế là cách dân gian gọi vị thần trực năm.",
+    "Trong quan niệm dân gian, tuổi phạm Thái tuế thường được khuyên cẩn trọng và giữ mọi việc ở mức vừa phải. Tuổi Dậu không thuộc trường hợp phạm Thái tuế trong năm 2027."
+  ],
+  "xongDat": [
+    "Với nhà chủ tuổi Dậu, các tuổi hợp xông đất là Thìn và Tị. Nếu chọn người xông đất theo tuổi trong năm 2027, bạn có thể tham khảo hai tuổi này.",
+    "Các tuổi nên tránh xông đất cho nhà chủ tuổi Dậu là Tý, Sửu, Mão, Dậu và Tuất. Đây là nhóm tuổi cần lưu ý khi lựa chọn theo quan niệm xông đất dân gian."
+  ],
+  "model": "gpt-6.1-sol",
+  "generatedAt": "2026-11-08T10:36:13.891Z"
+}

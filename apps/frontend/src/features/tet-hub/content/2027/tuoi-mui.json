@@ -1,0 +1,23 @@
+{
+  "slug": "tuoi-mui",
+  "chi": 7,
+  "viewYear": 2027,
+  "tongQuan": [
+    "Năm 2027 là năm Mùi. Với người tuổi Mùi, những điểm cần lưu ý trong quan niệm dân gian là hạn Tam tai, quan hệ với Thái tuế và việc chọn tuổi xông đất.",
+    "Trong năm, bạn nên giữ mọi việc ở mức vừa phải, cân nhắc kỹ trước khi khởi sự việc lớn thay vì quyết định vội vàng."
+  ],
+  "tamTai": [
+    "Năm 2027 của tuổi Mùi là năm thứ ba của Tam tai. Tam tai là ba năm liền mà dân gian cho là dễ gặp trắc trở, tuổi nào cũng lần lượt đi qua.",
+    "Người trong hạn Tam tai thường được khuyên đừng khởi sự việc lớn một cách vội vàng. Với những dự định quan trọng, bạn nên cân nhắc thận trọng và giữ mọi việc ở mức vừa phải."
+  ],
+  "thaiTue": [
+    "Thái tuế là cách dân gian gọi vị thần trực năm. Năm 2027 là năm Mùi, nên tuổi Mùi phạm Thái tuế theo quan hệ trực Thái tuế.",
+    "Theo quan niệm dân gian, tuổi phạm Thái tuế thường được khuyên cẩn trọng và giữ mọi việc ở mức vừa phải."
+  ],
+  "xongDat": [
+    "Với nhà chủ tuổi Mùi, các tuổi hợp xông đất năm 2027 là Mão, Ngọ, Hợi. Nếu chọn người xông đất theo tuổi, bạn có thể cân nhắc những tuổi này.",
+    "Các tuổi nên tránh xông đất cho nhà chủ tuổi Mùi là Tý, Sửu, Tuất. Khi sắp xếp người xông đất, bạn nên lưu ý nhóm tuổi này."
+  ],
+  "model": "gpt-6.1-sol",
+  "generatedAt": "2026-11-08T10:35:36.314Z"
+}

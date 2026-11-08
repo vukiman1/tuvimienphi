@@ -1,0 +1,23 @@
+{
+  "slug": "tuoi-dan",
+  "chi": 2,
+  "viewYear": 2027,
+  "tongQuan": [
+    "Năm 2027, tuổi Dần không nằm trong ba năm Tam tai. Khi xem chuyện khởi sự, lời khuyên dân gian dành cho người trong hạn Tam Tai không phải là lời khuyên riêng cho tuổi Dần trong năm này.",
+    "Năm xem là năm Mùi, tuổi Dần không phạm Thái tuế. Với việc chọn người xông đất, gia chủ tuổi Dần có thể tham khảo các tuổi hợp và tuổi nên tránh trong phần dưới."
+  ],
+  "tamTai": [
+    "Tam Tai là ba năm liền mà dân gian cho là dễ gặp trắc trở, tuổi nào cũng lần lượt đi qua. Người trong hạn Tam Tai thường được khuyên đừng khởi sự việc lớn một cách vội vàng và giữ mọi việc ở mức vừa phải.",
+    "Năm 2027, tuổi Dần không phạm Tam tai, tức không nằm trong ba năm Tam tai. Vì vậy, không cần lấy hạn Tam tai làm lý do để hạn chế việc khởi sự trong năm này."
+  ],
+  "thaiTue": [
+    "Năm 2027 là năm Mùi; tuổi Dần không phạm Thái tuế.",
+    "Thái tuế là cách dân gian gọi vị thần trực năm. Tuổi phạm Thái tuế thường được khuyên cẩn trọng và giữ mọi việc ở mức vừa phải; tuổi Dần không thuộc trường hợp đó trong năm 2027."
+  ],
+  "xongDat": [
+    "Với nhà chủ tuổi Dần, tuổi hợp xông đất năm 2027 là Ngọ và Hợi. Gia chủ có thể tham khảo hai tuổi này khi chọn người xông đất.",
+    "Các tuổi nên tránh xông đất cho nhà chủ tuổi Dần trong năm này là Tý, Sửu, Tị, Thân và Tuất."
+  ],
+  "model": "gpt-6.1-sol",
+  "generatedAt": "2026-11-08T10:34:05.087Z"
+}

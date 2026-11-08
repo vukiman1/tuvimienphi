@@ -1,0 +1,23 @@
+{
+  "slug": "tuoi-hoi",
+  "chi": 11,
+  "viewYear": 2027,
+  "tongQuan": [
+    "Năm 2027, tuổi Hợi ở năm thứ ba của Tam tai, đồng thời không phạm Thái tuế. Đây là hai điểm cần phân biệt khi xem các quan niệm dân gian về tuổi Hợi trong năm này.",
+    "Trong công việc và những dự định lớn, bạn nên cân nhắc kỹ trước khi bắt đầu, tránh khởi sự vội vàng và giữ mọi việc ở mức vừa phải. Đó cũng là lời khuyên dân gian thường dành cho người đang trong hạn Tam tai."
+  ],
+  "tamTai": [
+    "Tam Tai là ba năm liền mà dân gian cho là dễ gặp trắc trở, tuổi nào cũng lần lượt đi qua. Với tuổi Hợi, năm 2027 là năm thứ ba của Tam tai.",
+    "Trong thời gian này, lời khuyên thường gặp là đừng khởi sự việc lớn một cách vội vàng. Bạn nên xem xét kỹ những việc định làm và giữ mọi việc ở mức vừa phải."
+  ],
+  "thaiTue": [
+    "Thái tuế là cách dân gian gọi vị thần trực năm. Năm 2027 là năm Mùi; tuổi Hợi không phạm Thái tuế.",
+    "Trong quan niệm dân gian, tuổi phạm Thái tuế thường được khuyên cẩn trọng và giữ mọi việc ở mức vừa phải. Với tuổi Hợi trong năm này, cần phân biệt việc không phạm Thái tuế với việc vẫn đang ở năm thứ ba của Tam tai."
+  ],
+  "xongDat": [
+    "Với nhà chủ tuổi Hợi, các tuổi hợp xông đất là Dần, Mão, Mùi. Nếu chọn người xông đất theo quan niệm dân gian về con giáp, bạn có thể cân nhắc người thuộc những tuổi này.",
+    "Các tuổi nên tránh xông đất cho nhà chủ tuổi Hợi là Tý, Sửu, Tị, Thân, Tuất, Hợi. Khi sắp xếp người đến xông đất, bạn nên lưu ý nhóm tuổi này."
+  ],
+  "model": "gpt-6.1-sol",
+  "generatedAt": "2026-11-08T10:36:49.057Z"
+}

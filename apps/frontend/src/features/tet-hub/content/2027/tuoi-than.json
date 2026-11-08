@@ -1,0 +1,23 @@
+{
+  "slug": "tuoi-than",
+  "chi": 8,
+  "viewYear": 2027,
+  "tongQuan": [
+    "Năm 2027, tuổi Thân không nằm trong ba năm Tam tai và không phạm Thái tuế. Đây là hai điểm cần phân biệt khi xem những lưu ý dân gian dành cho tuổi Thân trong năm.",
+    "Về xông đất, gia chủ tuổi Thân có tuổi hợp là Thìn. Nếu chọn người xông đất theo quan niệm dân gian, bạn cần xem riêng tuổi hợp và các tuổi nên tránh."
+  ],
+  "tamTai": [
+    "Tam Tai là ba năm liền mà dân gian cho là dễ gặp trắc trở, tuổi nào cũng lần lượt đi qua. Người trong hạn Tam Tai thường được khuyên đừng khởi sự việc lớn một cách vội vàng và giữ mọi việc ở mức vừa phải.",
+    "Năm 2027, tuổi Thân không phạm Tam tai, tức không nằm trong ba năm của hạn này. Vì vậy, lời khuyên dành riêng cho người đang trong hạn Tam Tai không phải là lưu ý về hạn của tuổi Thân trong năm nay."
+  ],
+  "thaiTue": [
+    "Thái tuế là cách dân gian gọi vị thần trực năm. Năm xem 2027 là năm Mùi; tuổi Thân không phạm Thái tuế trong năm này.",
+    "Trong quan niệm dân gian, tuổi phạm Thái tuế thường được khuyên cẩn trọng và giữ mọi việc ở mức vừa phải. Tuổi Thân không thuộc trường hợp đó trong năm 2027."
+  ],
+  "xongDat": [
+    "Với nhà chủ tuổi Thân, tuổi hợp xông đất năm 2027 là Thìn. Nếu gia đình chọn tuổi xông đất theo quan niệm dân gian, đây là tuổi phù hợp để cân nhắc.",
+    "Các tuổi nên tránh xông đất cho gia chủ tuổi Thân trong năm này là Tý, Sửu, Dần, Tị, Tuất, Hợi. Khi sắp xếp người đến xông đất, gia đình có thể đối chiếu danh sách này để lựa chọn."
+  ],
+  "model": "gpt-6.1-sol",
+  "generatedAt": "2026-11-08T10:35:55.953Z"
+}

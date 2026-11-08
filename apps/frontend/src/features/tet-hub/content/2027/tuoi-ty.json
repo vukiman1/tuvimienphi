@@ -1,0 +1,23 @@
+{
+  "slug": "tuoi-ty",
+  "chi": 0,
+  "viewYear": 2027,
+  "tongQuan": [
+    "Năm 2027, tuổi Tý không nằm trong ba năm Tam tai. Vì vậy, khi xem tử vi dân gian cho năm này, cần phân biệt rõ hạn Tam tai với quan hệ Thái tuế, không gộp hai điều thành một.",
+    "Trong năm Mùi 2027, tuổi Tý có quan hệ hại với Thái tuế. Lời khuyên dành cho tuổi phạm Thái tuế là cẩn trọng và giữ mọi việc ở mức vừa phải."
+  ],
+  "tamTai": [
+    "Tuổi Tý không phạm Tam tai trong năm 2027, tức năm này không nằm trong ba năm Tam tai của tuổi.",
+    "Tam Tai là ba năm liền mà dân gian cho là dễ gặp trắc trở, tuổi nào cũng lần lượt đi qua. Người đang trong hạn thường được khuyên đừng khởi sự việc lớn một cách vội vàng và giữ mọi việc ở mức vừa phải; đây là lời khuyên dành cho người trong hạn, không phải xác nhận tuổi Tý gặp hạn này vào năm 2027."
+  ],
+  "thaiTue": [
+    "Năm 2027 là năm Mùi, tuổi Tý phạm Thái tuế theo quan hệ hại, gọi là hại Thái tuế.",
+    "Thái tuế là cách dân gian gọi vị thần trực năm. Với tuổi phạm Thái tuế, lời khuyên thường là cẩn trọng và giữ mọi việc ở mức vừa phải."
+  ],
+  "xongDat": [
+    "Với nhà chủ tuổi Tý, các tuổi hợp xông đất năm 2027 là Thìn và Thân. Đây là hai tuổi để gia chủ cân nhắc khi chọn người xông đất theo quan niệm dân gian.",
+    "Các tuổi nên tránh xông đất cho nhà chủ tuổi Tý trong năm này là Tý, Sửu, Mão, Ngọ, Mùi và Tuất."
+  ],
+  "model": "gpt-6.1-sol",
+  "generatedAt": "2026-11-08T10:33:31.314Z"
+}
