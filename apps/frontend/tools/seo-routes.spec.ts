@@ -110,10 +110,48 @@ describe('getSeoRoutes', () => {
     ]);
   });
 
-  it('lists only the hub when the manifest has not been generated yet', () => {
+  it('lists only the hub when the content directory is empty', () => {
     const { routes } = runSeoRoutes(join(directory, MANIFEST_FILE_NAME));
 
     expect(routes.filter((route) => route.startsWith(TET_HUB_PATH))).toEqual([TET_HUB_PATH]);
+  });
+
+  it('lists only the hub when the content directory does not exist', () => {
+    const { routes } = runSeoRoutes(join(directory, 'not-generated', MANIFEST_FILE_NAME));
+
+    expect(routes.filter((route) => route.startsWith(TET_HUB_PATH))).toEqual([TET_HUB_PATH]);
+  });
+
+  it('lists only the hub when the content directory holds only the hub intro', () => {
+    writeFileSync(join(directory, 'hub.json'), '{}');
+
+    const { routes } = runSeoRoutes(join(directory, MANIFEST_FILE_NAME));
+
+    expect(routes.filter((route) => route.startsWith(TET_HUB_PATH))).toEqual([TET_HUB_PATH]);
+  });
+
+  it('fails when a birth-year page exists without a manifest', () => {
+    writePages([MISSING_TUOI_NAM_SLUG]);
+    const manifestPath = join(directory, MANIFEST_FILE_NAME);
+
+    expect(runSeoRoutesFailure(manifestPath)).toEqual({
+      name: 'TetHubManifestError',
+      message: expect.stringContaining(
+        `${manifestPath} is malformed: pages without a manifest (${MISSING_TUOI_NAM_SLUG})`,
+      ),
+    });
+  });
+
+  it('fails when a con giáp page exists without a manifest', () => {
+    writePages([MISSING_CON_GIAP_SLUG]);
+    const manifestPath = join(directory, MANIFEST_FILE_NAME);
+
+    expect(runSeoRoutesFailure(manifestPath)).toEqual({
+      name: 'TetHubManifestError',
+      message: expect.stringContaining(
+        `${manifestPath} is malformed: pages without a manifest (${MISSING_CON_GIAP_SLUG})`,
+      ),
+    });
   });
 
   it('has no duplicate routes', () => {

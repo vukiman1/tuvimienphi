@@ -55,11 +55,14 @@ function listProblems(kind, listed, expected) {
   ];
 }
 
-function missingFileProblems(manifestPath, slugs) {
+function pageSlugsOnDisk(manifestPath, slugs) {
   const directory = dirname(manifestPath);
-  const missing = slugs.filter(
-    (slug) => !existsSync(join(directory, `${slug}${PAGE_FILE_EXTENSION}`)),
-  );
+  return slugs.filter((slug) => existsSync(join(directory, `${slug}${PAGE_FILE_EXTENSION}`)));
+}
+
+function missingFileProblems(manifestPath, slugs) {
+  const onDisk = pageSlugsOnDisk(manifestPath, slugs);
+  const missing = slugs.filter((slug) => !onDisk.includes(slug));
   return missing.length > 0 ? [`no page file for ${missing.join(SLUG_SEPARATOR)}`] : [];
 }
 
@@ -75,8 +78,20 @@ function assertCompleteManifest(manifestPath, manifest) {
   }
 }
 
+function assertNoPagesWithoutManifest(manifestPath) {
+  const expected = expectedTetHubSlugs();
+  const orphans = pageSlugsOnDisk(manifestPath, [...expected.conGiap, ...expected.tuoiNam]);
+  if (orphans.length > 0) {
+    throw new TetHubManifestError(
+      manifestPath,
+      `pages without a manifest (${orphans.join(SLUG_SEPARATOR)})`,
+    );
+  }
+}
+
 function getTetHubSlugs(manifestPath) {
   if (!existsSync(manifestPath)) {
+    assertNoPagesWithoutManifest(manifestPath);
     return [];
   }
   const manifest = parseManifest(manifestPath);
