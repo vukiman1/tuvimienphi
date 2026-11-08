@@ -1,10 +1,10 @@
 import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { tuoiNamFacts } from '@org/shared-tu-vi';
+import { TET_HUB_VIEW_YEAR, tuoiNamFacts } from '@org/shared-tu-vi';
 
 const FRONTEND_ROOT = fileURLToPath(new URL('..', import.meta.url));
-const DEFAULT_CONTENT_DIRECTORY = 'src/features/tet-hub/content/2027';
+const DEFAULT_CONTENT_DIRECTORY = `src/features/tet-hub/content/${TET_HUB_VIEW_YEAR}`;
 const DEFAULT_OUTPUT_FILE = 'tmp/tet-hub-preview.html';
 const MISSING_DIRECTORY_CODE = 'ENOENT';
 const YEAR_PAGE_FILE = /^tuoi-[a-z]+-[a-z]+-\d{4}\.json$/;
@@ -89,7 +89,7 @@ function renderPage(article) {
 
 function renderDocument(articles) {
   const pages = articles.map(renderPage).join('');
-  return `<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>Tet hub preview</title><style>${PAGE_STYLE}</style></head><body><h1>Tử vi 2027 theo tuổi: ${articles.length} trang</h1>${pages}</body></html>`;
+  return `<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>Tet hub preview</title><style>${PAGE_STYLE}</style></head><body><h1>Tử vi ${TET_HUB_VIEW_YEAR} theo tuổi: ${articles.length} trang</h1>${pages}</body></html>`;
 }
 
 function isStringList(value) {

@@ -6,6 +6,7 @@ import { ConGiapTiles } from '../components/ConGiapTiles';
 import { TetHubBreadcrumb } from '../components/TetHubBreadcrumb';
 import { TetHubCta } from '../components/TetHubCta';
 import { TET_HUB_BREADCRUMB } from '../tet-hub-breadcrumb';
+import { TET_HUB_LINK_LABEL } from '../tet-hub-paths';
 
 const VAN_HAN_PATH = '/van-han';
 
@@ -18,7 +19,7 @@ export function TetHubPage({ intro }: TetHubPageProps): ReactElement {
     <main className="mx-auto w-full max-w-4xl px-4 py-8 md:px-6">
       <TetHubBreadcrumb items={TET_HUB_BREADCRUMB} />
       <h1 className="mt-4 text-[26px] leading-tight font-semibold text-[#2a1f0e] md:text-[30px]">
-        Tử vi 2027 theo tuổi
+        {TET_HUB_LINK_LABEL}
       </h1>
       <div className="mt-6 flex flex-col gap-10">
         {intro.intro.length > 0 ? (

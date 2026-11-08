@@ -8,11 +8,7 @@ import { fileURLToPath } from 'node:url';
  * (vite.config.mts) and the prerender step (prerender.mjs). Personalised/auth routes (la-so/detail,
  * dashboard, login, register) are intentionally excluded: they are noindex and have nothing to crawl.
  */
-const TET_HUB_PATH = '/kien-thuc/tu-vi-2027';
-const STATIC_PATHS = ['/', '/kien-thuc', '/ngay-tot', '/van-han', '/la-so', TET_HUB_PATH];
-const TET_HUB_MANIFEST_PATH = fileURLToPath(
-  new URL('../src/features/tet-hub/content/2027/manifest.json', import.meta.url),
-);
+const STATIC_PATHS = ['/', '/kien-thuc', '/ngay-tot', '/van-han', '/la-so'];
 const TET_HUB_ENGINE = '@org/shared-tu-vi';
 const PAGE_FILE_EXTENSION = '.json';
 const PROBLEM_SEPARATOR = '; ';
@@ -36,6 +32,20 @@ function parseManifest(manifestPath) {
   } catch (error) {
     throw new TetHubManifestError(manifestPath, error.message);
   }
+}
+
+function tetHubViewYear() {
+  return requireFromHere(TET_HUB_ENGINE).TET_HUB_VIEW_YEAR;
+}
+
+function tetHubPath() {
+  return `/kien-thuc/tu-vi-${tetHubViewYear()}`;
+}
+
+function defaultManifestPath() {
+  return fileURLToPath(
+    new URL(`../src/features/tet-hub/content/${tetHubViewYear()}/manifest.json`, import.meta.url),
+  );
 }
 
 function expectedTetHubSlugs() {
@@ -112,10 +122,12 @@ export function getArticleSlugs() {
 }
 
 /** All public routes, e.g. `['/', '/kien-thuc', …, '/kien-thuc/tu-vi-la-gi', …]`. */
-export function getSeoRoutes({ manifestPath = TET_HUB_MANIFEST_PATH } = {}) {
+export function getSeoRoutes({ manifestPath = defaultManifestPath() } = {}) {
+  const hubPath = tetHubPath();
   return [
     ...STATIC_PATHS,
+    hubPath,
     ...getArticleSlugs().map((slug) => `/kien-thuc/${slug}`),
-    ...getTetHubSlugs(manifestPath).map((slug) => `${TET_HUB_PATH}/${slug}`),
+    ...getTetHubSlugs(manifestPath).map((slug) => `${hubPath}/${slug}`),
   ];
 }
