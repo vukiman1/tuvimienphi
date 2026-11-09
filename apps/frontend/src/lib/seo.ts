@@ -8,7 +8,7 @@
 /**
  * Canonical production origin (no trailing slash). Deliberately a constant, not env-derived:
  * canonical + Open Graph URLs must always point at production, never at a localhost or preview host.
- * The sitemap generator in `vite.config.mts` keeps the same default (overridable there via env).
+ * The sitemap generator in `tools/prerender.mjs` keeps the same default (overridable there via env).
  */
 export const SITE_URL = 'https://xemtuvimienphi.top';
 

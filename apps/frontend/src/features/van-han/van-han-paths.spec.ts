@@ -1,5 +1,11 @@
 import { ZODIAC_CHI } from '@/lib/zodiac-icons';
-import { vanHanZodiacPath, vanHanZodiacSlug, zodiacChiFromVanHanSlug } from './van-han-paths';
+import {
+  parseVanHanYear,
+  vanHanYearZodiacPath,
+  vanHanZodiacPath,
+  vanHanZodiacSlug,
+  zodiacChiFromVanHanSlug,
+} from './van-han-paths';
 
 describe('vanHanZodiacPath', () => {
   it('gives each con giáp its own page under Vận hạn', () => {
@@ -24,5 +30,22 @@ describe('zodiacChiFromVanHanSlug', () => {
 
   it('knows no con giáp for a slug that is not one of the 12 pages', () => {
     expect(zodiacChiFromVanHanSlug('tuoi-meo')).toBeUndefined();
+  });
+});
+
+describe('vanHanYearZodiacPath', () => {
+  it('puts the year of the reading in front of the con giáp', () => {
+    expect(vanHanYearZodiacPath(2026, 'Tý')).toBe('/van-han/2026/tuoi-ty');
+    expect(vanHanYearZodiacPath(2027, 'Hợi')).toBe('/van-han/2027/tuoi-hoi');
+  });
+});
+
+describe('parseVanHanYear', () => {
+  it('reads the year from the address', () => {
+    expect(parseVanHanYear('2027')).toBe(2027);
+  });
+
+  it.each(['abc', '2026.5', '-2026', '02026', ''])('knows no year in %j', (value) => {
+    expect(parseVanHanYear(value)).toBeUndefined();
   });
 });

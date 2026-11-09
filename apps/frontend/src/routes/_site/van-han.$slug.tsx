@@ -6,16 +6,19 @@ import { vanHanZodiacHead } from '@/features/van-han/van-han-zodiac-head';
 import { vanHanQueries } from '@/services/van-han-service';
 
 function VanHanZodiacRoute(): ReactElement {
-  const { chi, current } = Route.useLoaderData();
-  return <VanHanZodiacPage chi={chi} current={current} />;
+  const { chi, current, publishedYears } = Route.useLoaderData();
+  return <VanHanZodiacPage chi={chi} current={current} publishedYears={publishedYears} />;
 }
 
 export const Route = createFileRoute('/_site/van-han/$slug')({
   loader: async ({ params, context }) => {
     const chi = zodiacChiFromVanHanSlug(params.slug);
     if (!chi) throw notFound();
-    const current = await context.queryClient.ensureQueryData(vanHanQueries.current());
-    return { chi, current };
+    const [current, publishedYears] = await Promise.all([
+      context.queryClient.ensureQueryData(vanHanQueries.current()),
+      context.queryClient.ensureQueryData(vanHanQueries.publishedYears()),
+    ]);
+    return { chi, current, publishedYears };
   },
   head: ({ loaderData }) =>
     loaderData ? vanHanZodiacHead(loaderData.chi, loaderData.current) : {},

@@ -18,6 +18,13 @@ export function findVanHanEntry(
   return current?.entries.find((item) => item.zodiacOrder === orderOfChi(chi));
 }
 
+export function publishedYearOf(
+  year: number,
+  entries: readonly VanHanEntry[],
+): VanHanCurrent | null {
+  return entries.length > 0 ? { year, entries: [...entries] } : null;
+}
+
 export function resolveVanHanView(
   current: VanHanCurrent | null | undefined,
   chi: ZodiacChi,

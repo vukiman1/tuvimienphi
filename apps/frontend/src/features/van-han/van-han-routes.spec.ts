@@ -18,4 +18,8 @@ describe('Vận hạn routes', () => {
   it('gives a con giáp page its own route', () => {
     expect(leafRouteId('/van-han/tuoi-ty')).toBe('/_site/van-han/$slug');
   });
+
+  it('gives a con giáp page of a given year its own route', () => {
+    expect(leafRouteId('/van-han/2026/tuoi-ty')).toBe('/_site/van-han/$year/$slug');
+  });
 });

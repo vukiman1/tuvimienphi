@@ -25,8 +25,15 @@ describe('vanHanZodiacHead', () => {
     expect(description.endsWith('…')).toBe(true);
   });
 
-  it('is canonical to the con giáp page', () => {
+  it('is canonical to the con giáp page of the year it shows', () => {
     expect(vanHanZodiacHead('Tý', VAN_HAN_CURRENT).links).toContainEqual({
+      rel: 'canonical',
+      href: 'https://xemtuvimienphi.top/van-han/2026/tuoi-ty',
+    });
+  });
+
+  it('stays canonical to the con giáp page while no year is published', () => {
+    expect(vanHanZodiacHead('Tý', null).links).toContainEqual({
       rel: 'canonical',
       href: 'https://xemtuvimienphi.top/van-han/tuoi-ty',
     });

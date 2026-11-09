@@ -1,5 +1,5 @@
 import type { VanHanCurrent, VanHanEntry } from '@org/shared-contracts';
-import { orderOfChi, resolveVanHanView } from './van-han-view';
+import { orderOfChi, publishedYearOf, resolveVanHanView } from './van-han-view';
 
 function entry(zodiacOrder: number, luuNien: string): VanHanEntry {
   return {
@@ -54,5 +54,17 @@ describe('resolveVanHanView', () => {
 
   it('has nothing to show for a zodiac the published year does not cover', () => {
     expect(resolveVanHanView(PUBLISHED, 'Mùi')).toBeNull();
+  });
+});
+
+describe('publishedYearOf', () => {
+  it('groups the readings of a published year under that year', () => {
+    const readings = [entry(7, 'Năm nay hanh thông.')];
+
+    expect(publishedYearOf(2027, readings)).toEqual({ year: 2027, entries: readings });
+  });
+
+  it('treats a year with no readings as not published', () => {
+    expect(publishedYearOf(2031, [])).toBeNull();
   });
 });
