@@ -63,6 +63,11 @@ export class VanHanService {
     return { year: latest.year, entries: await this.findEntries(latest.year) };
   }
 
+  async findPublishedYears(): Promise<number[]> {
+    const published = await this.publishedYears.find({ order: { year: 'DESC' } });
+    return published.map((row) => row.year);
+  }
+
   async findPublishedByYear(year: number): Promise<VanHanEntity[]> {
     const published = await this.publishedYears.findOneBy({ year });
     return published ? this.findEntries(year) : [];

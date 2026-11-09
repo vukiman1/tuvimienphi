@@ -25,6 +25,13 @@ describe('Vận hạn, as a visitor', () => {
     }
   });
 
+  it('lists the published years so the site can build a page for each', async () => {
+    const res = await axios.get('/api/van-han/years');
+
+    expect(res.status).toBe(200);
+    expect(res.data.data).toEqual([SEEDED_YEAR]);
+  });
+
   it('answers a year nobody published with an empty list', async () => {
     const res = await axios.get('/api/van-han', { params: { year: SEEDED_YEAR - 1 } });
 

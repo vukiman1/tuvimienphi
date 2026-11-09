@@ -308,6 +308,17 @@ describe('VanHanService, as the public site sees it', () => {
     expect(withdrawn.entries).toHaveLength(12);
     expect((await service.findCurrent())?.year).toBe(2026);
   });
+
+  it('lists only the published years, newest first', async () => {
+    const { service } = setup();
+    await writeWholeYear(service, 2026);
+    await service.publishYear(2026);
+    await writeWholeYear(service, 2027);
+    await service.publishYear(2027);
+    await service.saveEntry(completeInput(2028, NGO));
+
+    expect(await service.findPublishedYears()).toEqual([2027, 2026]);
+  });
 });
 
 describe('VanHanService.listYears', () => {
