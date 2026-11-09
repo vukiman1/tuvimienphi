@@ -4,8 +4,8 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 /**
- * Single source of truth for the public, indexable routes — consumed by both the sitemap generator
- * (vite.config.mts) and the prerender step (prerender.mjs). Personalised/auth routes (la-so/detail,
+ * Single source of truth for the public, indexable routes — consumed by the prerender step
+ * (prerender.mjs), which also writes the sitemap from them. Personalised/auth routes (la-so/detail,
  * dashboard, login, register) are intentionally excluded: they are noindex and have nothing to crawl.
  */
 const VAN_HAN_PATH = '/van-han';
@@ -56,9 +56,13 @@ function defaultManifestPath() {
   );
 }
 
-function vanHanZodiacPaths() {
+function vanHanZodiacPaths(prefix) {
   const { CHI, conGiapSlug } = requireFromHere(TU_VI_ENGINE);
-  return CHI.map((_, chi) => `${VAN_HAN_PATH}/${conGiapSlug(chi)}`);
+  return CHI.map((_, chi) => `${prefix}/${conGiapSlug(chi)}`);
+}
+
+function vanHanYearZodiacPaths(vanHanYears) {
+  return vanHanYears.flatMap((year) => vanHanZodiacPaths(`${VAN_HAN_PATH}/${year}`));
 }
 
 function expectedTetHubSlugs() {
@@ -149,18 +153,23 @@ export function getArticleSlugs() {
 }
 
 /** All public routes, e.g. `['/', '/kien-thuc', …, '/kien-thuc/tu-vi-la-gi', …]`. */
-export function getSeoRoutes({ manifestPath = defaultManifestPath() } = {}) {
+export function getSeoRoutes({ manifestPath = defaultManifestPath(), vanHanYears }) {
   const hubPath = tetHubPath();
   return [
     ...STATIC_PATHS,
-    ...vanHanZodiacPaths(),
+    ...vanHanZodiacPaths(VAN_HAN_PATH),
+    ...vanHanYearZodiacPaths(vanHanYears),
     hubPath,
     ...getArticleSlugs().map((slug) => `/kien-thuc/${slug}`),
     ...getTetHubSlugs(manifestPath).map((slug) => `${hubPath}/${slug}`),
   ];
 }
 
-export function getSitemapEntries({ manifestPath = defaultManifestPath() } = {}) {
+function isCanonicalElsewhere(path, vanHanYears) {
+  return vanHanYears.length > 0 && vanHanZodiacPaths(VAN_HAN_PATH).includes(path);
+}
+
+export function getSitemapEntries({ manifestPath = defaultManifestPath(), vanHanYears }) {
   const hubPath = tetHubPath();
   const lastModifiedByPath = new Map(
     getTetHubSlugs(manifestPath).map((slug) => [
@@ -168,7 +177,11 @@ export function getSitemapEntries({ manifestPath = defaultManifestPath() } = {})
       tetHubPageGeneratedAt(manifestPath, slug),
     ]),
   );
-  return getSeoRoutes({ manifestPath }).map((path) =>
-    lastModifiedByPath.has(path) ? { path, lastModified: lastModifiedByPath.get(path) } : { path },
-  );
+  return getSeoRoutes({ manifestPath, vanHanYears })
+    .filter((path) => !isCanonicalElsewhere(path, vanHanYears))
+    .map((path) =>
+      lastModifiedByPath.has(path)
+        ? { path, lastModified: lastModifiedByPath.get(path) }
+        : { path },
+    );
 }

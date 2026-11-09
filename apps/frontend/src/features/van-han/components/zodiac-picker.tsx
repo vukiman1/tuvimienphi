@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import { Link } from '@tanstack/react-router';
 import { ZODIAC_CHI, zodiacIconPath } from '@/lib/zodiac-icons';
 import { RED_ICON_STYLE } from '@/features/van-han/van-han-theme';
-import { vanHanZodiacPath } from '@/features/van-han/van-han-paths';
+import { vanHanYearZodiacPath, vanHanZodiacPath } from '@/features/van-han/van-han-paths';
 
 const PICKER_LABEL = 'Chọn con giáp';
 
@@ -27,7 +27,11 @@ function Sparkle({ className }: { readonly className: string }) {
   );
 }
 
-export function ZodiacPicker(): ReactElement {
+interface ZodiacPickerProps {
+  readonly year?: number;
+}
+
+export function ZodiacPicker({ year }: ZodiacPickerProps): ReactElement {
   return (
     <nav aria-label={PICKER_LABEL}>
       <ul className="grid grid-cols-6 justify-items-center gap-x-2 gap-y-3 md:grid-cols-12">
@@ -35,7 +39,11 @@ export function ZodiacPicker(): ReactElement {
           <li key={entry.chi}>
             <Link
               className="group flex flex-col items-center gap-1.5 no-underline outline-none"
-              to={vanHanZodiacPath(entry.chi)}
+              to={
+                year === undefined
+                  ? vanHanZodiacPath(entry.chi)
+                  : vanHanYearZodiacPath(year, entry.chi)
+              }
             >
               {({ isActive }) => (
                 <>

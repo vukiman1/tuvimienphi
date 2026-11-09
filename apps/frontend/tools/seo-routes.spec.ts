@@ -13,6 +13,8 @@ const MISSING_CON_GIAP_SLUG = 'tuoi-ti';
 const MISSING_TUOI_NAM_SLUG = 'tuoi-binh-dan-1986';
 const UNKNOWN_SLUG = 'tuoi-binh-dan-1926';
 const GENERATED_AT = '2026-11-08T08:45:17.999Z';
+const PUBLISHED_VAN_HAN_YEARS: readonly number[] = [2027, 2026];
+const VAN_HAN_ZODIAC_PATHS: readonly string[] = CON_GIAP_SLUGS.map((slug) => `/van-han/${slug}`);
 
 interface ManifestContent {
   readonly viewYear: number;
@@ -29,8 +31,11 @@ const SEO_ROUTES_URL = pathToFileURL(join(__dirname, 'seo-routes.mjs')).href;
 const RUNNER_SCRIPT = `
 import { getArticleSlugs, getSeoRoutes } from ${JSON.stringify(SEO_ROUTES_URL)};
 const manifestPath = process.argv[1];
+const vanHanYears = JSON.parse(process.argv[2]);
 try {
-  console.log(JSON.stringify({ routes: getSeoRoutes({ manifestPath }), slugs: getArticleSlugs() }));
+  console.log(
+    JSON.stringify({ routes: getSeoRoutes({ manifestPath, vanHanYears }), slugs: getArticleSlugs() }),
+  );
 } catch (error) {
   console.log(JSON.stringify({ failure: { name: error.name, message: error.message } }));
 }
@@ -38,8 +43,11 @@ try {
 
 const SITEMAP_RUNNER_SCRIPT = `
 import { getSitemapEntries } from ${JSON.stringify(SEO_ROUTES_URL)};
+const vanHanYears = JSON.parse(process.argv[2]);
 try {
-  console.log(JSON.stringify({ entries: getSitemapEntries({ manifestPath: process.argv[1] }) }));
+  console.log(
+    JSON.stringify({ entries: getSitemapEntries({ manifestPath: process.argv[1], vanHanYears }) }),
+  );
 } catch (error) {
   console.log(JSON.stringify({ failure: { name: error.name, message: error.message } }));
 }
@@ -71,10 +79,10 @@ interface SeoRoutesOutput extends Partial<SeoRoutesRun> {
 
 let directory: string;
 
-function runScript(script: string, manifestPath: string): unknown {
+function runScript(script: string, manifestPath: string, vanHanYears: readonly number[]): unknown {
   const output = execFileSync(
     process.execPath,
-    ['--input-type=module', '-e', script, manifestPath],
+    ['--input-type=module', '-e', script, manifestPath, JSON.stringify(vanHanYears)],
     {
       encoding: 'utf8',
       stdio: ['ignore', 'pipe', 'pipe'],
@@ -83,16 +91,16 @@ function runScript(script: string, manifestPath: string): unknown {
   return JSON.parse(output);
 }
 
-function runRunner(manifestPath: string): SeoRoutesOutput {
-  return runScript(RUNNER_SCRIPT, manifestPath) as SeoRoutesOutput;
+function runRunner(manifestPath: string, vanHanYears: readonly number[] = []): SeoRoutesOutput {
+  return runScript(RUNNER_SCRIPT, manifestPath, vanHanYears) as SeoRoutesOutput;
 }
 
-function runSitemap(manifestPath: string): SitemapOutput {
-  return runScript(SITEMAP_RUNNER_SCRIPT, manifestPath) as SitemapOutput;
+function runSitemap(manifestPath: string, vanHanYears: readonly number[] = []): SitemapOutput {
+  return runScript(SITEMAP_RUNNER_SCRIPT, manifestPath, vanHanYears) as SitemapOutput;
 }
 
-function runSeoRoutes(manifestPath: string): SeoRoutesRun {
-  const { routes, slugs, failure } = runRunner(manifestPath);
+function runSeoRoutes(manifestPath: string, vanHanYears: readonly number[] = []): SeoRoutesRun {
+  const { routes, slugs, failure } = runRunner(manifestPath, vanHanYears);
   if (!routes || !slugs) {
     throw new Error(`seo-routes failed: ${failure?.message}`);
   }
@@ -220,9 +228,17 @@ describe('getSeoRoutes for Vận hạn', () => {
   it('lists a Vận hạn page for every con giáp', () => {
     const { routes } = runSeoRoutes(join(directory, MANIFEST_FILE_NAME));
 
-    expect(routes.filter((route) => route.startsWith('/van-han/'))).toEqual(
-      CON_GIAP_SLUGS.map((slug) => `/van-han/${slug}`),
-    );
+    expect(routes.filter((route) => route.startsWith('/van-han/'))).toEqual(VAN_HAN_ZODIAC_PATHS);
+  });
+
+  it('adds a page for every con giáp in every published year', () => {
+    const { routes } = runSeoRoutes(join(directory, MANIFEST_FILE_NAME), PUBLISHED_VAN_HAN_YEARS);
+
+    expect(routes.filter((route) => route.startsWith('/van-han/'))).toEqual([
+      ...VAN_HAN_ZODIAC_PATHS,
+      ...CON_GIAP_SLUGS.map((slug) => `/van-han/2027/${slug}`),
+      ...CON_GIAP_SLUGS.map((slug) => `/van-han/2026/${slug}`),
+    ]);
   });
 });
 
@@ -316,6 +332,21 @@ describe('getSitemapEntries', () => {
     const { entries = [] } = runSitemap(manifestPath);
 
     expect(entries.map((entry) => entry.path)).toEqual(runSeoRoutes(manifestPath).routes);
+  });
+
+  it('lists the con giáp pages of each year instead of the ones without a year, which point to them', () => {
+    writeGeneratedPages([...CON_GIAP_SLUGS, ...TUOI_NAM_SLUGS]);
+    const manifestPath = writeManifest(JSON.stringify(MANIFEST));
+
+    const paths = (runSitemap(manifestPath, PUBLISHED_VAN_HAN_YEARS).entries ?? []).map(
+      (entry) => entry.path,
+    );
+
+    expect(paths.filter((path) => path.startsWith('/van-han/'))).toEqual([
+      ...CON_GIAP_SLUGS.map((slug) => `/van-han/2027/${slug}`),
+      ...CON_GIAP_SLUGS.map((slug) => `/van-han/2026/${slug}`),
+    ]);
+    expect(paths).toContain('/van-han');
   });
 
   it('fails naming the page file that has no generation time', () => {

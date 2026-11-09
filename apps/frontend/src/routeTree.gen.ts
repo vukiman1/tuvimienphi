@@ -28,6 +28,7 @@ import { Route as SiteVanHanIndexRouteImport } from './routes/_site/van-han.inde
 import { Route as SiteVanHanSlugRouteImport } from './routes/_site/van-han.$slug'
 import { Route as SiteKienThucTuVi2027IndexRouteImport } from './routes/_site/kien-thuc.tu-vi-2027.index'
 import { Route as SiteKienThucTuVi2027SlugRouteImport } from './routes/_site/kien-thuc.tu-vi-2027.$slug'
+import { Route as SiteVanHanYearSlugRouteImport } from './routes/_site/van-han.$year.$slug'
 
 const SiteRoute = SiteRouteImport.update({
   id: '/_site',
@@ -125,6 +126,11 @@ const SiteKienThucTuVi2027SlugRoute =
     path: '/tu-vi-2027/$slug',
     getParentRoute: () => SiteKienThucRoute,
   } as any)
+const SiteVanHanYearSlugRoute = SiteVanHanYearSlugRouteImport.update({
+  id: '/van-han/$year/$slug',
+  path: '/van-han/$year/$slug',
+  getParentRoute: () => SiteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof SiteIndexRoute
@@ -144,6 +150,7 @@ export interface FileRoutesByFullPath {
   '/la-so/': typeof SiteLaSoIndexRoute
   '/van-han/': typeof SiteVanHanIndexRoute
   '/kien-thuc/tu-vi-2027/$slug': typeof SiteKienThucTuVi2027SlugRoute
+  '/van-han/$year/$slug': typeof SiteVanHanYearSlugRoute
   '/kien-thuc/tu-vi-2027/': typeof SiteKienThucTuVi2027IndexRoute
 }
 export interface FileRoutesByTo {
@@ -161,6 +168,7 @@ export interface FileRoutesByTo {
   '/la-so': typeof SiteLaSoIndexRoute
   '/van-han': typeof SiteVanHanIndexRoute
   '/kien-thuc/tu-vi-2027/$slug': typeof SiteKienThucTuVi2027SlugRoute
+  '/van-han/$year/$slug': typeof SiteVanHanYearSlugRoute
   '/kien-thuc/tu-vi-2027': typeof SiteKienThucTuVi2027IndexRoute
 }
 export interface FileRoutesById {
@@ -183,6 +191,7 @@ export interface FileRoutesById {
   '/_site/la-so/': typeof SiteLaSoIndexRoute
   '/_site/van-han/': typeof SiteVanHanIndexRoute
   '/_site/kien-thuc/tu-vi-2027/$slug': typeof SiteKienThucTuVi2027SlugRoute
+  '/_site/van-han/$year/$slug': typeof SiteVanHanYearSlugRoute
   '/_site/kien-thuc/tu-vi-2027/': typeof SiteKienThucTuVi2027IndexRoute
 }
 export interface FileRouteTypes {
@@ -205,6 +214,7 @@ export interface FileRouteTypes {
     | '/la-so/'
     | '/van-han/'
     | '/kien-thuc/tu-vi-2027/$slug'
+    | '/van-han/$year/$slug'
     | '/kien-thuc/tu-vi-2027/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -222,6 +232,7 @@ export interface FileRouteTypes {
     | '/la-so'
     | '/van-han'
     | '/kien-thuc/tu-vi-2027/$slug'
+    | '/van-han/$year/$slug'
     | '/kien-thuc/tu-vi-2027'
   id:
     | '__root__'
@@ -243,6 +254,7 @@ export interface FileRouteTypes {
     | '/_site/la-so/'
     | '/_site/van-han/'
     | '/_site/kien-thuc/tu-vi-2027/$slug'
+    | '/_site/van-han/$year/$slug'
     | '/_site/kien-thuc/tu-vi-2027/'
   fileRoutesById: FileRoutesById
 }
@@ -388,6 +400,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteKienThucTuVi2027SlugRouteImport
       parentRoute: typeof SiteKienThucRoute
     }
+    '/_site/van-han/$year/$slug': {
+      id: '/_site/van-han/$year/$slug'
+      path: '/van-han/$year/$slug'
+      fullPath: '/van-han/$year/$slug'
+      preLoaderRoute: typeof SiteVanHanYearSlugRouteImport
+      parentRoute: typeof SiteRoute
+    }
   }
 }
 
@@ -430,6 +449,7 @@ interface SiteRouteChildren {
   SiteIndexRoute: typeof SiteIndexRoute
   SiteVanHanSlugRoute: typeof SiteVanHanSlugRoute
   SiteVanHanIndexRoute: typeof SiteVanHanIndexRoute
+  SiteVanHanYearSlugRoute: typeof SiteVanHanYearSlugRoute
 }
 
 const SiteRouteChildren: SiteRouteChildren = {
@@ -439,6 +459,7 @@ const SiteRouteChildren: SiteRouteChildren = {
   SiteIndexRoute: SiteIndexRoute,
   SiteVanHanSlugRoute: SiteVanHanSlugRoute,
   SiteVanHanIndexRoute: SiteVanHanIndexRoute,
+  SiteVanHanYearSlugRoute: SiteVanHanYearSlugRoute,
 }
 
 const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)

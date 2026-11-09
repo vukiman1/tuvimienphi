@@ -13,12 +13,17 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { preview } from 'vite';
 import { chromium, request as playwrightRequest } from 'playwright';
-import { getSeoRoutes } from './seo-routes.mjs';
+import { getSeoRoutes, getSitemapEntries } from './seo-routes.mjs';
+import { renderSitemap } from './sitemap.mjs';
+import { fetchPublishedVanHanYears } from './van-han-years.mjs';
 
 const ANALYTICS_BEACON_URLS = 'https://static.cloudflareinsights.com/**';
 const API_PATH_PREFIX = '/api';
 const DEFAULT_PRERENDER_API_BASE_URL = 'https://api.xemtuvimienphi.top/api';
 const PRERENDER_API_BASE_URL = process.env.PRERENDER_API_BASE_URL ?? DEFAULT_PRERENDER_API_BASE_URL;
+const DEFAULT_SITE_URL = 'https://xemtuvimienphi.top';
+const SITE_URL = (process.env.VITE_SITE_URL ?? DEFAULT_SITE_URL).replace(/\/$/, '');
+const SITEMAP_FILE_NAME = 'sitemap.xml';
 const READ_METHOD = 'GET';
 const UNREACHABLE_API_ERROR_CODE = 'connectionfailed';
 const FIRST_FAILING_STATUS = 400;
@@ -116,8 +121,9 @@ function outputFileFor(route) {
 }
 
 async function main() {
-  const routes = getSeoRoutes();
-  console.log(`[prerender] ${routes.length} routes`);
+  const vanHanYears = await fetchPublishedVanHanYears(PRERENDER_API_BASE_URL);
+  const routes = getSeoRoutes({ vanHanYears });
+  console.log(`[prerender] ${routes.length} routes (Vận hạn years: ${vanHanYears.join(', ')})`);
 
   const server = await preview({
     root: frontendRoot,
@@ -175,7 +181,15 @@ async function main() {
     await writeFile(outFile, html, 'utf8');
   }
 
+  const sitemapEntries = getSitemapEntries({ vanHanYears });
+  await writeFile(
+    join(distDir, SITEMAP_FILE_NAME),
+    renderSitemap(SITE_URL, sitemapEntries),
+    'utf8',
+  );
+
   console.log(`[prerender] wrote ${captured.length}/${routes.length} routes to dist/`);
+  console.log(`[prerender] wrote ${sitemapEntries.length} URLs to dist/${SITEMAP_FILE_NAME}`);
   if (captured.length < routes.length) process.exitCode = 1;
 }
 

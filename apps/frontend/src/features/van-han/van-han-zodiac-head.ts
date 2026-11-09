@@ -1,7 +1,7 @@
 import type { VanHanCurrent } from '@org/shared-contracts';
 import type { ZodiacChi } from '@/lib/zodiac-icons';
 import { seo } from '@/lib/seo';
-import { vanHanZodiacPath } from './van-han-paths';
+import { vanHanYearZodiacPath, vanHanZodiacPath } from './van-han-paths';
 import { findVanHanEntry } from './van-han-view';
 
 const SNIPPET_MAX_LENGTH = 160;
@@ -32,7 +32,7 @@ export function vanHanZodiacHead(chi: ZodiacChi, current: VanHanCurrent | null):
   return seo({
     title: vanHanZodiacTitle(chi, current),
     description: entry ? searchSnippet(entry.luuNien) : unpublishedDescription(chi),
-    path: vanHanZodiacPath(chi),
+    path: current ? vanHanYearZodiacPath(current.year, chi) : vanHanZodiacPath(chi),
     type: 'article',
   });
 }
