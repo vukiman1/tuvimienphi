@@ -11,6 +11,11 @@ export class VanHanController {
     return this.vanHan.findCurrent();
   }
 
+  @Get('years')
+  async publishedYears(): Promise<number[]> {
+    return this.vanHan.findPublishedYears();
+  }
+
   @Get()
   async listByYear(@Query('year') year?: string): Promise<VanHanEntity[]> {
     const parsed = Number(year);
