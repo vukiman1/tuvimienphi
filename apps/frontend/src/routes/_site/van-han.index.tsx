@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { VanHanPage } from '@/features/van-han/pages/van-han-page';
 import { seo } from '@/lib/seo';
 
-export const Route = createFileRoute('/_site/van-han')({
+export const Route = createFileRoute('/_site/van-han/')({
   component: VanHanPage,
   head: () =>
     seo({
