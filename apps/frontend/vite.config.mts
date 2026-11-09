@@ -9,7 +9,7 @@ import { fileURLToPath, URL } from 'node:url';
 import type { Plugin } from 'vite';
 import { loadFrontendConfig } from './config/index.ts';
 import { analyticsBeaconPlugin } from './tools/analytics-beacon.ts';
-import { getSeoRoutes } from './tools/seo-routes.mjs';
+import { getSitemapEntries } from './tools/seo-routes.mjs';
 
 const requireFromHere = createRequire(import.meta.url);
 const isAnalyze = process.env.ANALYZE === 'true';
@@ -23,8 +23,11 @@ function sitemapPlugin(siteUrl: string): Plugin {
     name: 'generate-sitemap',
     apply: 'build',
     closeBundle() {
-      const urls = getSeoRoutes()
-        .map((path) => `  <url>\n    <loc>${siteUrl}${path}</loc>\n  </url>`)
+      const urls = getSitemapEntries()
+        .map(({ path, lastModified }) => {
+          const lastModifiedTag = lastModified ? `\n    <lastmod>${lastModified}</lastmod>` : '';
+          return `  <url>\n    <loc>${siteUrl}${path}</loc>${lastModifiedTag}\n  </url>`;
+        })
         .join('\n');
       const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
       writeFileSync(fileURLToPath(new URL('./dist/sitemap.xml', import.meta.url)), xml);

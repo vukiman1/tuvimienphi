@@ -12,6 +12,7 @@ const TUOI_NAM_SLUGS: readonly string[] = tuoiNamBirthYears().map(tuoiNamSlug);
 const MISSING_CON_GIAP_SLUG = 'tuoi-ti';
 const MISSING_TUOI_NAM_SLUG = 'tuoi-binh-dan-1986';
 const UNKNOWN_SLUG = 'tuoi-binh-dan-1926';
+const GENERATED_AT = '2026-11-08T08:45:17.999Z';
 
 interface ManifestContent {
   readonly viewYear: number;
@@ -35,6 +36,25 @@ try {
 }
 `;
 
+const SITEMAP_RUNNER_SCRIPT = `
+import { getSitemapEntries } from ${JSON.stringify(SEO_ROUTES_URL)};
+try {
+  console.log(JSON.stringify({ entries: getSitemapEntries({ manifestPath: process.argv[1] }) }));
+} catch (error) {
+  console.log(JSON.stringify({ failure: { name: error.name, message: error.message } }));
+}
+`;
+
+interface SitemapEntry {
+  readonly path: string;
+  readonly lastModified?: string;
+}
+
+interface SitemapOutput {
+  readonly entries?: readonly SitemapEntry[];
+  readonly failure?: SeoRoutesFailure;
+}
+
 interface SeoRoutesRun {
   readonly routes: readonly string[];
   readonly slugs: readonly string[];
@@ -51,13 +71,24 @@ interface SeoRoutesOutput extends Partial<SeoRoutesRun> {
 
 let directory: string;
 
-function runRunner(manifestPath: string): SeoRoutesOutput {
+function runScript(script: string, manifestPath: string): unknown {
   const output = execFileSync(
     process.execPath,
-    ['--input-type=module', '-e', RUNNER_SCRIPT, manifestPath],
-    { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] },
+    ['--input-type=module', '-e', script, manifestPath],
+    {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'pipe'],
+    },
   );
-  return JSON.parse(output) as SeoRoutesOutput;
+  return JSON.parse(output);
+}
+
+function runRunner(manifestPath: string): SeoRoutesOutput {
+  return runScript(RUNNER_SCRIPT, manifestPath) as SeoRoutesOutput;
+}
+
+function runSitemap(manifestPath: string): SitemapOutput {
+  return runScript(SITEMAP_RUNNER_SCRIPT, manifestPath) as SitemapOutput;
 }
 
 function runSeoRoutes(manifestPath: string): SeoRoutesRun {
@@ -80,6 +111,12 @@ function writeManifest(content: string): string {
 
 function writePages(slugs: readonly string[]): void {
   slugs.forEach((slug) => writeFileSync(join(directory, `${slug}.json`), '{}'));
+}
+
+function writeGeneratedPages(slugs: readonly string[]): void {
+  slugs.forEach((slug) =>
+    writeFileSync(join(directory, `${slug}.json`), JSON.stringify({ generatedAt: GENERATED_AT })),
+  );
 }
 
 function writeContent(manifest: ManifestContent): string {
@@ -247,5 +284,46 @@ describe('getArticleSlugs', () => {
     const { slugs } = runSeoRoutes(join(directory, MANIFEST_FILE_NAME));
 
     expect(slugs).not.toContain(TET_HUB_SLUG);
+  });
+});
+
+describe('getSitemapEntries', () => {
+  it('dates every Tết hub page by when its content was generated', () => {
+    writeGeneratedPages([...CON_GIAP_SLUGS, ...TUOI_NAM_SLUGS]);
+    const { entries = [] } = runSitemap(writeManifest(JSON.stringify(MANIFEST)));
+
+    const hubPages = entries.filter((entry) => entry.path.startsWith(`${TET_HUB_PATH}/`));
+    expect(hubPages).toHaveLength(CON_GIAP_SLUGS.length + TUOI_NAM_SLUGS.length);
+    expect(hubPages).toContainEqual({
+      path: tetHubPagePath(MISSING_TUOI_NAM_SLUG),
+      lastModified: GENERATED_AT,
+    });
+    hubPages.forEach((entry) => expect(entry.lastModified).toBe(GENERATED_AT));
+  });
+
+  it('leaves a route with no known change date undated', () => {
+    writeGeneratedPages([...CON_GIAP_SLUGS, ...TUOI_NAM_SLUGS]);
+    const { entries = [] } = runSitemap(writeManifest(JSON.stringify(MANIFEST)));
+
+    expect(entries).toContainEqual({ path: '/' });
+    expect(entries).toContainEqual({ path: TET_HUB_PATH });
+  });
+
+  it('lists the same routes as getSeoRoutes', () => {
+    writeGeneratedPages([...CON_GIAP_SLUGS, ...TUOI_NAM_SLUGS]);
+    const manifestPath = writeManifest(JSON.stringify(MANIFEST));
+
+    const { entries = [] } = runSitemap(manifestPath);
+
+    expect(entries.map((entry) => entry.path)).toEqual(runSeoRoutes(manifestPath).routes);
+  });
+
+  it('fails naming the page file that has no generation time', () => {
+    const manifestPath = writeContent(MANIFEST);
+
+    expect(runSitemap(manifestPath).failure).toEqual({
+      name: 'TetHubPageError',
+      message: expect.stringContaining(join(directory, `${CON_GIAP_SLUGS[0]}.json`)),
+    });
   });
 });

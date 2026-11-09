@@ -23,6 +23,13 @@ export class TetHubManifestError extends Error {
   }
 }
 
+export class TetHubPageError extends Error {
+  constructor(pagePath, reason) {
+    super(`Tet hub page ${pagePath} is malformed: ${reason}`);
+    this.name = 'TetHubPageError';
+  }
+}
+
 function isStringList(value) {
   return Array.isArray(value) && value.every((item) => typeof item === 'string');
 }
@@ -118,6 +125,20 @@ function getTetHubSlugs(manifestPath) {
   return [...manifest.conGiap, ...manifest.tuoiNam];
 }
 
+function tetHubPageGeneratedAt(manifestPath, slug) {
+  const pagePath = join(dirname(manifestPath), `${slug}${PAGE_FILE_EXTENSION}`);
+  let page;
+  try {
+    page = JSON.parse(readFileSync(pagePath, 'utf8'));
+  } catch (error) {
+    throw new TetHubPageError(pagePath, error.message);
+  }
+  if (typeof page?.generatedAt !== 'string') {
+    throw new TetHubPageError(pagePath, 'generatedAt must be a string');
+  }
+  return page.generatedAt;
+}
+
 /** Read article slugs straight from the data file (regex, not import — see the note in vite.config.mts). */
 export function getArticleSlugs() {
   const dataFile = fileURLToPath(
@@ -137,4 +158,17 @@ export function getSeoRoutes({ manifestPath = defaultManifestPath() } = {}) {
     ...getArticleSlugs().map((slug) => `/kien-thuc/${slug}`),
     ...getTetHubSlugs(manifestPath).map((slug) => `${hubPath}/${slug}`),
   ];
+}
+
+export function getSitemapEntries({ manifestPath = defaultManifestPath() } = {}) {
+  const hubPath = tetHubPath();
+  const lastModifiedByPath = new Map(
+    getTetHubSlugs(manifestPath).map((slug) => [
+      `${hubPath}/${slug}`,
+      tetHubPageGeneratedAt(manifestPath, slug),
+    ]),
+  );
+  return getSeoRoutes({ manifestPath }).map((path) =>
+    lastModifiedByPath.has(path) ? { path, lastModified: lastModifiedByPath.get(path) } : { path },
+  );
 }
