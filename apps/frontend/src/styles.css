@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'react-toastify/dist/ReactToastify.css';
+@import './design-system/fonts.css';
 
 @custom-variant dark (&:is(.dark *));
 

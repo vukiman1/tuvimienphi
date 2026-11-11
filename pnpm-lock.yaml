@@ -643,6 +643,9 @@ importers:
 
   apps/frontend:
     dependencies:
+      '@fontsource/be-vietnam-pro':
+        specifier: ^5.3.0
+        version: 5.3.0
       '@org/frontend-shared':
         specifier: workspace:*
         version: link:../../packages/shared/frontend
@@ -2217,6 +2220,9 @@ packages:
 
   '@floating-ui/utils@0.2.12':
     resolution: {integrity: sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww==}
+
+  '@fontsource/be-vietnam-pro@5.3.0':
+    resolution: {integrity: sha512-xhAQBGHDxP5BF8IJxedy5MoWUmc1DlPCcZbMLhvnPkf8TaYCbbUVs3LjpuJ4BYdTrdiCLaewNaY8z+owq/FqFw==}
 
   '@google/genai@2.21.0':
     resolution: {integrity: sha512-+PDtco2/Z0ONdzCGekCoCT+O1VJS9xJQNN4XzQpXG/t3El/SWWMkCWlFRO1KmivOHPa4Q0VjUYu1HBKCZ/v33Q==}
@@ -14895,6 +14901,8 @@ snapshots:
     dependencies:
       tslib: 2.8.1
     optional: true
+
+  '@fontsource/be-vietnam-pro@5.3.0': {}
 
   '@emnapi/wasi-threads@1.2.3':
     dependencies:
