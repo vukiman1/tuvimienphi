@@ -2,8 +2,7 @@
 @import 'tw-animate-css';
 @import 'react-toastify/dist/ReactToastify.css';
 @import './design-system/fonts.css';
-
-@custom-variant dark (&:is(.dark *));
+@import './design-system/tokens.css';
 
 @theme inline {
   --color-background: var(--background);
@@ -24,7 +23,6 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --font-sans: 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -70,33 +68,6 @@
   /* Lines and focus */
   --border: oklch(0.9 0.008 var(--brand-hue));
   --input: var(--border);
-  --ring: var(--primary);
-}
-
-.dark {
-  --background: oklch(0.16 0.012 var(--brand-hue));
-  --foreground: oklch(0.97 0.004 var(--brand-hue));
-  --card: oklch(0.21 0.014 var(--brand-hue));
-  --card-foreground: var(--foreground);
-  --popover: var(--card);
-  --popover-foreground: var(--foreground);
-
-  /* Lighter than the light-mode brand, so it reads against a dark surface. That flips the text on
-     it to dark: white would drop to 2.99:1. */
-  --primary: oklch(0.68 0.12 48);
-  --primary-foreground: oklch(0.16 0.012 var(--brand-hue));
-
-  --secondary: oklch(0.26 0.016 var(--brand-hue));
-  --secondary-foreground: var(--foreground);
-  --muted: var(--secondary);
-  --muted-foreground: oklch(0.72 0.015 var(--brand-hue));
-  --accent: oklch(0.3 0.02 var(--brand-hue));
-  --accent-foreground: var(--foreground);
-
-  --destructive: oklch(0.704 0.191 22.216);
-
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 16%);
   --ring: var(--primary);
 }
 
@@ -249,12 +220,9 @@
 }
 
 /* react-toastify ships its own palette; point it at the app tokens so toasts follow the theme. */
-:root,
-.dark {
+:root {
   --toastify-color-light: var(--background);
-  --toastify-color-dark: var(--background);
   --toastify-text-color-light: var(--foreground);
-  --toastify-text-color-dark: var(--foreground);
   --toastify-color-success: var(--primary);
   --toastify-color-error: var(--destructive);
   --toastify-font-family: inherit;

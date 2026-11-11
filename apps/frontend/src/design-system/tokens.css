@@ -1,0 +1,30 @@
+@theme {
+  --color-night: #0e1222;
+  --color-deep: #1b2a4a;
+  --color-dusk: #6b3a4d;
+  --color-ember: #d9623b;
+  --color-dawn: #f2c879;
+  --color-day: #f7f2e7;
+  --color-day-200: #ede6d6;
+  --color-ink: #15131a;
+  --color-gold: #f2b441;
+  --color-ink-soft: #5b5458;
+  --color-day-soft: #c9c2b4;
+
+  --color-hanh-kim: #6f6a5e;
+  --color-hanh-moc: #0b7a33;
+  --color-hanh-thuy: #17150f;
+  --color-hanh-hoa: #c62828;
+  --color-hanh-tho: #8a6508;
+  --color-chart-block: #17150f;
+
+  --font-sans: 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Inter Tight', 'Be Vietnam Pro', sans-serif;
+  --font-emphasis: 'Playfair Display', serif;
+
+  --tracking-display: -0.045em;
+
+  --text-reading: 1.0625rem;
+  --leading-reading: 1.7;
+  --container-reading: 68ch;
+}
