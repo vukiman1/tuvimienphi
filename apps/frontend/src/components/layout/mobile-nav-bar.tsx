@@ -79,13 +79,13 @@ function NavItem({ item, isActive }: { item: MobileNavItem; isActive: boolean })
       {/* key remounts the span each time this tab becomes active → replays spring */}
       <span
         key={isActive ? 'active' : 'idle'}
-        className={`flex items-center justify-center overflow-visible ${isActive ? 'nav-icon-spring text-[#7a5228]' : 'text-[#a8957e]'}`}
+        className={`flex items-center justify-center overflow-visible ${isActive ? 'nav-icon-spring text-[#7a5228]' : 'text-[#7a6a50]'}`}
         style={{ width: 18, height: 18 }}
       >
         {item.icon}
       </span>
       <span
-        className={`text-[10px] tracking-wide ${isActive ? 'font-semibold text-[#7a5228]' : 'font-medium text-[#a8957e]'}`}
+        className={`text-[10px] tracking-wide ${isActive ? 'font-semibold text-[#7a5228]' : 'font-medium text-[#7a6a50]'}`}
       >
         {item.label}
       </span>
@@ -156,7 +156,7 @@ export function MobileNavBar() {
         </span>
         {/* Label gets a cream bg so it stays readable even over the transparent notch */}
         <span
-          className={`mt-1 rounded-sm px-1 text-[10px] tracking-wide ${isActive('/la-so') ? 'font-bold text-[#7a5228]' : 'font-semibold text-[#a8957e]'}`}
+          className={`mt-1 rounded-sm px-1 text-[10px] tracking-wide ${isActive('/la-so') ? 'font-bold text-[#7a5228]' : 'font-semibold text-[#7a6a50]'}`}
           style={{ backgroundColor: NAV_BAR_BG }}
         >
           Lập lá số
