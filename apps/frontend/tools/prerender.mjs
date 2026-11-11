@@ -16,6 +16,7 @@ import { chromium, request as playwrightRequest } from 'playwright';
 import { getSeoRoutes, getSitemapEntries } from './seo-routes.mjs';
 import { renderSitemap } from './sitemap.mjs';
 import { stripGoogleIdentityTags } from './strip-google-identity-tags.mjs';
+import { stripModulePreloadLinks } from './strip-modulepreload-links.mjs';
 import { fetchPublishedVanHanYears } from './van-han-years.mjs';
 
 const ANALYTICS_BEACON_URLS = 'https://static.cloudflareinsights.com/**';
@@ -161,7 +162,9 @@ async function main() {
         // The router injects absolute preview-origin URLs for preloaded chunks (http://localhost:PORT/assets/…).
         // Rewrite them back to root-relative so the assets resolve in production.
         const raw = (await page.content()).replace(/^<!doctype html>/i, '');
-        const html = '<!doctype html>\n' + stripGoogleIdentityTags(raw.split(baseUrl).join(''));
+        const html =
+          '<!doctype html>\n' +
+          stripModulePreloadLinks(stripGoogleIdentityTags(raw.split(baseUrl).join('')));
         captured.push({ route, html });
         console.log(`[prerender] ✓ ${route}`);
       } catch (error) {
