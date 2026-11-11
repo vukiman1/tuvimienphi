@@ -2,7 +2,7 @@ import nx from '@nx/eslint-plugin';
 import baseConfig from '../../eslint.config.mjs';
 import noAdHocStyle from './eslint-rules/no-ad-hoc-style.mjs';
 
-const MIGRATED_FILES = [];
+const MIGRATED_FILES = ['src/components/layout/**', 'src/components/ui/**'];
 const DESIGN_SYSTEM_FILES = ['src/design-system/**'];
 
 const adHocStyleGuard =

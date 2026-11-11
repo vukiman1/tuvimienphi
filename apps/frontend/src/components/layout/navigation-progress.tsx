@@ -50,7 +50,7 @@ export function NavigationProgress() {
       aria-label="Đang chuyển trang"
       className="absolute inset-x-0 bottom-0 h-0.5 overflow-hidden"
     >
-      <div className="h-full w-1/3 rounded-full bg-gradient-to-r from-transparent via-[#e8c987] to-[#c9a15c] animate-[nav-progress_1.2s_ease-in-out_infinite] motion-reduce:animate-none" />
+      <div className="h-full w-1/3 rounded-full bg-gold animate-[nav-progress_1.2s_ease-in-out_infinite] motion-reduce:animate-none" />
     </div>
   );
 }

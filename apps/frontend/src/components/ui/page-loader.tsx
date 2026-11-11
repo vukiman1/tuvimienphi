@@ -1,4 +1,4 @@
-import { MEDIA } from '@/config/media';
+import { LogoMark } from '@/design-system';
 
 export function PageLoader() {
   return (
@@ -7,11 +7,7 @@ export function PageLoader() {
       aria-label="Đang tải"
       className="flex flex-col items-center justify-center gap-4 py-24"
     >
-      <img
-        src={MEDIA.brand.icon}
-        alt=""
-        className="size-12 animate-spin [animation-duration:6s] motion-reduce:animate-none"
-      />
+      <LogoMark className="size-12 animate-spin [animation-duration:6s] motion-reduce:animate-none" />
       <span className="text-sm text-muted-foreground">Đang tải...</span>
     </main>
   );

@@ -1,0 +1,24 @@
+import type { ReactElement } from 'react';
+import { Outlet } from '@tanstack/react-router';
+import { MobileNavBar } from '@/components/layout/mobile-nav-bar';
+import { SiteFooter } from '@/components/layout/site-footer';
+import { SiteHeader } from '@/components/layout/site-header';
+import { StoryProvider } from '@/design-system';
+
+export function SiteLayout(): ReactElement {
+  return (
+    <StoryProvider>
+      <div className="flex min-h-screen flex-col overflow-x-clip bg-muted/40">
+        <SiteHeader />
+        <div className="flex-1">
+          <Outlet />
+        </div>
+        <div className="hidden md:block">
+          <SiteFooter />
+        </div>
+        <MobileNavBar />
+        <div className="h-[calc(4rem+env(safe-area-inset-bottom))] md:hidden" aria-hidden />
+      </div>
+    </StoryProvider>
+  );
+}

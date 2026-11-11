@@ -31,51 +31,38 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/*
- * One hue drives the whole palette. The neutrals carry a trace of it rather than being pure grey,
- * so surfaces sit with the brand colour instead of looking washed against it.
- *
- * Every foreground/background pair here was measured against WCAG AA (4.5:1), muted text included
- * — that is the pair usually left failing.
- */
 :root {
-  --brand-hue: 45;
   --radius: 0.5rem;
 
   --site-header-height: 90px;
 
-  /* Surfaces */
-  --background: oklch(0.99 0.004 var(--brand-hue));
-  --foreground: oklch(0.16 0.01 var(--brand-hue));
-  --card: oklch(1 0.002 var(--brand-hue));
-  --card-foreground: var(--foreground);
+  --background: var(--color-day);
+  --foreground: var(--color-ink);
+  --card: var(--color-day);
+  --card-foreground: var(--color-ink);
   --popover: var(--card);
   --popover-foreground: var(--foreground);
 
-  /* Brand */
-  --primary: oklch(0.52 0.13 var(--brand-hue));
-  --primary-foreground: oklch(0.99 0 0);
+  --primary: var(--color-ink);
+  --primary-foreground: var(--color-day);
 
-  /* Supporting surfaces */
-  --secondary: oklch(0.96 0.008 var(--brand-hue));
-  --secondary-foreground: oklch(0.28 0.03 var(--brand-hue));
-  --muted: var(--secondary);
-  --muted-foreground: oklch(0.52 0.02 var(--brand-hue));
-  --accent: oklch(0.95 0.015 var(--brand-hue));
-  --accent-foreground: var(--secondary-foreground);
+  --secondary: var(--color-night);
+  --secondary-foreground: var(--color-day);
+  --muted: var(--color-day-200);
+  --muted-foreground: var(--color-ink-soft);
+  --accent: var(--color-dawn);
+  --accent-foreground: var(--color-ink);
 
-  /* Feedback */
-  --destructive: oklch(0.577 0.245 27.325);
+  --destructive: var(--color-danger);
 
-  /* Lines and focus */
-  --border: oklch(0.9 0.008 var(--brand-hue));
+  --border: color-mix(in srgb, var(--color-ink) 18%, transparent);
   --input: var(--border);
-  --ring: var(--primary);
+  --ring: var(--color-ink);
 }
 
 @media (min-width: 48rem) {
   :root {
-    --site-header-height: 57px;
+    --site-header-height: 53px;
   }
 }
 
@@ -424,22 +411,8 @@
   animation: nav-icon-spring 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
-@keyframes nav-bagua-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.nav-bagua-spin {
-  animation: nav-bagua-spin 18s linear infinite;
-  will-change: transform;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .nav-icon-spring {
-    animation: none;
-  }
-  .nav-bagua-spin {
     animation: none;
   }
 }

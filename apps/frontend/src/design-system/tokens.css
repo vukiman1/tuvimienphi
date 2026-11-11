@@ -10,6 +10,7 @@
   --color-gold: #f2b441;
   --color-ink-soft: #5b5458;
   --color-day-soft: #c9c2b4;
+  --color-danger: #b42318;
 
   --color-hanh-kim: #6f6a5e;
   --color-hanh-moc: #0b7a33;
@@ -24,6 +25,7 @@
 
   --tracking-display: -0.045em;
 
+  --text-2xs: 0.625rem;
   --text-reading: 1.0625rem;
   --leading-reading: 1.7;
   --container-reading: 68ch;

@@ -27,6 +27,23 @@ function readColorTokens(): ReadonlyMap<string, string> {
 }
 
 const TOKENS = readColorTokens();
+const SEMANTIC_TOKEN = /^\s*--([\w-]+):\s*var\(--color-([\w-]+)\);/gm;
+
+function readSemanticTokens(): ReadonlyMap<string, string> {
+  const css = readFileSync(join(__dirname, '..', 'styles.css'), 'utf8');
+  const rootBlock = css.slice(css.indexOf(':root {'), css.indexOf('}', css.indexOf(':root {')));
+  return new Map([...rootBlock.matchAll(SEMANTIC_TOKEN)].map(([, name, colour]) => [name, colour]));
+}
+
+const SEMANTIC = readSemanticTokens();
+
+function semantic(name: string): string {
+  const colour = SEMANTIC.get(name);
+  if (colour === undefined) {
+    throw new Error(`styles.css :root does not map --${name} onto a palette token`);
+  }
+  return token(colour);
+}
 
 function token(name: string): string {
   const value = TOKENS.get(name);
@@ -112,6 +129,36 @@ describe('design tokens', () => {
     expect(chartTokens.length).toBe(6);
     for (const [, value] of chartTokens) {
       expect(contrastRatio(value, token('day'))).toBeGreaterThanOrEqual(AA_NORMAL_TEXT);
+    }
+  });
+});
+
+describe('semantic tokens', () => {
+  it('primary text is readable on the page', () => {
+    expect(contrastRatio(semantic('primary'), semantic('background'))).toBeGreaterThanOrEqual(
+      AA_NORMAL_TEXT,
+    );
+  });
+
+  it('primary fills carry readable text', () => {
+    expect(
+      contrastRatio(semantic('primary-foreground'), semantic('primary')),
+    ).toBeGreaterThanOrEqual(AA_NORMAL_TEXT);
+  });
+
+  it('error text is readable on the page and on muted surfaces', () => {
+    for (const surface of ['background', 'muted']) {
+      expect(contrastRatio(semantic('destructive'), semantic(surface))).toBeGreaterThanOrEqual(
+        AA_NORMAL_TEXT,
+      );
+    }
+  });
+
+  it('muted text is readable on the page and on muted surfaces', () => {
+    for (const surface of ['background', 'muted']) {
+      expect(contrastRatio(semantic('muted-foreground'), semantic(surface))).toBeGreaterThanOrEqual(
+        AA_NORMAL_TEXT,
+      );
     }
   });
 });
