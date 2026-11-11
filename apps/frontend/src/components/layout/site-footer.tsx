@@ -1,21 +1,16 @@
 import { Link } from '@tanstack/react-router';
 import { NAV_ITEMS } from '@/components/layout/nav-items';
 import { appConfig } from '@/config/app-config';
-import { MEDIA } from '@/config/media';
-
-const FOOTER_GRADIENT = 'linear-gradient(110deg, #17171a 0%, #2b2925 55%, #131315 100%)';
+import { FOCUS_RING_CLASS, Logo, LogoTone } from '@/design-system';
+import { cn } from '@/lib/utils';
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-[#c9a15c]/25" style={{ background: FOOTER_GRADIENT }}>
+    <footer className="border-t border-ink/10 bg-day text-ink">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 md:px-6">
         <div className="flex flex-col items-center gap-5 md:flex-row md:justify-between">
-          <Link
-            className="flex shrink-0 items-center no-underline"
-            to="/"
-            aria-label={appConfig.app.name}
-          >
-            <img src={MEDIA.brand.logo} alt="" className="h-8 w-auto" />
+          <Link className={cn('flex shrink-0 items-center no-underline', FOCUS_RING_CLASS)} to="/">
+            <Logo tone={LogoTone.OnLight} className="text-xl" />
           </Link>
 
           <nav
@@ -26,7 +21,10 @@ export function SiteFooter() {
               <Link
                 key={item.href}
                 to={item.href}
-                className="text-sm font-medium tracking-wide text-[#a6a6ab] no-underline transition-colors hover:text-[#e5c886]"
+                className={cn(
+                  'text-sm font-medium tracking-wide text-ink-soft no-underline transition-colors hover:text-ink',
+                  FOCUS_RING_CLASS,
+                )}
               >
                 {item.label}
               </Link>
@@ -34,11 +32,11 @@ export function SiteFooter() {
           </nav>
         </div>
 
-        <div className="flex flex-col items-center gap-1 border-t border-[#c9a15c]/15 pt-4 text-center md:flex-row md:justify-between">
-          <p className="text-xs text-[#8b8b90]">
+        <div className="flex flex-col items-center gap-1 border-t border-ink/10 pt-4 text-center md:flex-row md:justify-between">
+          <p className="text-xs text-ink-soft">
             © {new Date().getFullYear()} {appConfig.app.name}
           </p>
-          <p className="text-xs text-[#8b8b90]">Nội dung chỉ mang tính chất tham khảo.</p>
+          <p className="text-xs text-ink-soft">Nội dung chỉ mang tính chất tham khảo.</p>
         </div>
       </div>
     </footer>

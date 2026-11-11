@@ -1,9 +1,8 @@
 import type { TuoiNamArticle } from '@org/shared-contracts';
 import type { BreadcrumbItem } from './breadcrumb-item';
-import { SITE_NAME, absoluteUrl, jsonLdMeta, seo } from '@/lib/seo';
+import { SITE_LOGO_PATH, SITE_NAME, absoluteUrl, jsonLdMeta, seo } from '@/lib/seo';
 
 const SCHEMA_CONTEXT = 'https://schema.org';
-const PUBLISHER_LOGO_PATH = '/brand/icon.png';
 export const TET_HUB_PUBLISHED_AT = '2026-11-08';
 
 interface ArticleJsonLdInput {
@@ -32,7 +31,7 @@ export function articleJsonLd({
     author: organization,
     publisher: {
       ...organization,
-      logo: { '@type': 'ImageObject', url: absoluteUrl(PUBLISHER_LOGO_PATH) },
+      logo: { '@type': 'ImageObject', url: absoluteUrl(SITE_LOGO_PATH) },
     },
   };
 }

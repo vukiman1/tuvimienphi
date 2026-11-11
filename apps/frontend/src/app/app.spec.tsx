@@ -23,9 +23,10 @@ describe('App', () => {
   });
 
   it('renders the home page header with auth actions', async () => {
-    const { findByAltText, findByRole } = render(<App />);
+    const { findByRole } = render(<App />);
 
-    expect(await findByAltText('Tử Vi Miễn Phí')).toBeTruthy();
+    const banner = await findByRole('banner');
+    expect(within(banner).getByRole('img', { name: 'Tử Vi Miễn Phí' })).toBeTruthy();
     const primaryNav = await findByRole('navigation', { name: 'Primary' });
     expect(within(primaryNav).getByRole('link', { name: 'Lá Số' })).toBeTruthy();
     expect(await findByRole('button', { name: /đăng nhập/i })).toBeTruthy();

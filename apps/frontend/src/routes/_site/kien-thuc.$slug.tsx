@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { ArticlePage } from '@/features/kien-thuc/pages/article-page';
 import { findArticle } from '@/features/kien-thuc/kien-thuc-data';
-import { SITE_NAME, absoluteUrl, jsonLdMeta, seo } from '@/lib/seo';
+import { SITE_LOGO_PATH, SITE_NAME, absoluteUrl, jsonLdMeta, seo } from '@/lib/seo';
 
 export const Route = createFileRoute('/_site/kien-thuc/$slug')({
   component: ArticleRoute,
@@ -38,7 +38,7 @@ export const Route = createFileRoute('/_site/kien-thuc/$slug')({
           publisher: {
             '@type': 'Organization',
             name: SITE_NAME,
-            logo: { '@type': 'ImageObject', url: absoluteUrl('/brand/icon.png') },
+            logo: { '@type': 'ImageObject', url: absoluteUrl(SITE_LOGO_PATH) },
           },
         }),
       ],

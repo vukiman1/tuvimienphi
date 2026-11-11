@@ -10,8 +10,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { FOCUS_RING_CLASS } from '@/design-system';
 import { endSession } from '@/features/auth/session';
 import { notify } from '@/lib/toast';
+import { cn } from '@/lib/utils';
 import { authService } from '@/services/auth-service';
 import { userQueries } from '@/services/user-service';
 import { selectUser, useAuthStore } from '@/stores/auth-store';
@@ -54,12 +56,17 @@ export function UserMenu() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="group inline-flex items-center gap-2 rounded-xl p-1 text-sm outline-none transition-colors hover:bg-white/5 focus-visible:ring-[3px] focus-visible:ring-[#c9a15c]/50 md:gap-3">
+      <DropdownMenuTrigger
+        className={cn(
+          'group inline-flex items-center gap-2 rounded-xl p-1 text-sm transition-colors hover:bg-current/5 md:gap-3',
+          FOCUS_RING_CLASS,
+        )}
+      >
         <Avatar user={user} />
-        <span className="hidden max-w-40 truncate font-medium tracking-wide text-[#e5c886] md:inline">
+        <span className="hidden max-w-40 truncate font-medium tracking-wide text-current md:inline">
           {user.displayName ?? user.email}
         </span>
-        <ChevronDown className="size-4 text-[#c9a15c] transition-transform group-data-[state=open]:rotate-180" />
+        <ChevronDown className="size-4 text-current transition-transform group-data-[state=open]:rotate-180" />
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
@@ -101,7 +108,7 @@ export function UserMenu() {
 
 function Avatar({ user }: { user: { email: string; avatar?: string | null } }) {
   return (
-    <span className="flex size-7 items-center justify-center overflow-hidden rounded-lg border-[1.5px] border-[#c9a15c] bg-white/5 text-[#e5c886] md:size-8">
+    <span className="flex size-7 items-center justify-center overflow-hidden rounded-lg border-2 border-current bg-current/5 text-current md:size-8">
       {user.avatar ? (
         <img alt={user.email} className="size-full object-cover" src={user.avatar} />
       ) : (

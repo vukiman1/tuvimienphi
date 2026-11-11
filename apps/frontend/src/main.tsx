@@ -8,6 +8,8 @@ import { dismissSplash } from '@/lib/splash';
 
 void initErrorReporting();
 
+document.documentElement.dataset.motion = 'ready';
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(

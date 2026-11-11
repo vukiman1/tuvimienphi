@@ -15,7 +15,8 @@ export const SITE_URL = 'https://xemtuvimienphi.top';
 export const SITE_NAME = 'Tử Vi Miễn Phí';
 
 /** Default social share image, served from `public/`. */
-const DEFAULT_OG_IMAGE = '/brand/icon.png';
+const DEFAULT_OG_IMAGE = '/brand/og-default.jpg';
+export const SITE_LOGO_PATH = '/brand/icon-512.png';
 
 /** Build an absolute URL from a site-relative path (`/kien-thuc` → `https://…/kien-thuc`). */
 export function absoluteUrl(path: string): string {
@@ -112,6 +113,6 @@ export function organizationJsonLd(): Record<string, unknown> {
     '@type': 'Organization',
     name: SITE_NAME,
     url: SITE_URL,
-    logo: absoluteUrl('/brand/icon.png'),
+    logo: absoluteUrl(SITE_LOGO_PATH),
   };
 }
