@@ -12,7 +12,7 @@ export function TetHubBreadcrumb({ items }: TetHubBreadcrumbProps): ReactElement
 
   return (
     <nav aria-label="Đường dẫn">
-      <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] text-[#8d7a5c]">
+      <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] text-[#6b5a4e]">
         {ancestors.map(({ name, path }) => (
           <li key={path} className="flex items-center gap-2">
             <Link to={path} className="no-underline transition-colors hover:text-[#9e2b1e]">
