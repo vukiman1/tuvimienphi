@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test('opens the sign-in modal without leaving the page', async ({ page }) => {
   await page.goto('/');
 
-  await expect(page.locator('header').getByAltText('Tử Vi Miễn Phí')).toBeVisible();
+  await expect(page.locator('header').getByRole('img', { name: 'Tử Vi Miễn Phí' })).toBeVisible();
   await page.getByRole('button', { name: /đăng nhập/i }).click();
 
   const dialog = page.getByRole('dialog');
