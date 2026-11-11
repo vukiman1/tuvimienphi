@@ -29,7 +29,7 @@ const CUNG_ILLUSTRATIONS: Partial<Record<string, string>> = {
 
 export const MEDIA = {
   navBar: {
-    bagua: '/nav_bar/04_bagua.png',
+    bagua: '/nav_bar/04_bagua.webp',
   },
   auth: {
     panelTop: mediaUrl('/auth/panel-top.webp'),
@@ -37,7 +37,7 @@ export const MEDIA = {
     panelBottom: mediaUrl('/auth/panel-bottom.webp'),
   },
   brand: {
-    logo: mediaUrl('/brand/logo.png'),
+    logo: mediaUrl('/brand/logo.webp'),
     icon: mediaUrl('/brand/icon.png'),
   },
   home: {
