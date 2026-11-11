@@ -1,3 +1,6 @@
+export { Logo } from './brand/Logo';
+export { LogoTone } from './brand/logo-tone';
+export { LogoMark } from './brand/LogoMark';
 export { CHAPTER_TONE_CLASS, ChapterTone, isDarkTone } from './chapter-tone';
 export { ChapterRail } from './ChapterRail';
 export { Chip } from './Chip';
