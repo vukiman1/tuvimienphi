@@ -17,6 +17,7 @@ import { getSeoRoutes, getSitemapEntries } from './seo-routes.mjs';
 import { renderSitemap } from './sitemap.mjs';
 import { stripGoogleIdentityTags } from './strip-google-identity-tags.mjs';
 import { stripModulePreloadLinks } from './strip-modulepreload-links.mjs';
+import { stripMotionReady } from './strip-motion-ready.mjs';
 import { fetchPublishedVanHanYears } from './van-han-years.mjs';
 
 const ANALYTICS_BEACON_URLS = 'https://static.cloudflareinsights.com/**';
@@ -164,7 +165,9 @@ async function main() {
         const raw = (await page.content()).replace(/^<!doctype html>/i, '');
         const html =
           '<!doctype html>\n' +
-          stripModulePreloadLinks(stripGoogleIdentityTags(raw.split(baseUrl).join('')));
+          stripMotionReady(
+            stripModulePreloadLinks(stripGoogleIdentityTags(raw.split(baseUrl).join(''))),
+          );
         captured.push({ route, html });
         console.log(`[prerender] ✓ ${route}`);
       } catch (error) {

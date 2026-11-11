@@ -4,6 +4,8 @@
 @import './design-system/fonts.css';
 @import './design-system/tokens.css';
 
+@custom-variant motion-ready (html[data-motion='ready'] &);
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

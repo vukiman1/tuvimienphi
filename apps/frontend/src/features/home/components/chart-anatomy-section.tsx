@@ -1,5 +1,6 @@
 import { ArrowRight } from 'lucide-react';
 import { Reveal } from '@/components/reveal';
+import { REVEAL_TRANSITION_CLASS, revealStateClass } from '@/components/reveal-classes';
 import { HERO_SECTION_ID } from '@/features/home/home-anchors';
 import { SectionHeading } from '@/features/home/components/section-heading';
 import { MEDIA, homeIconUrl } from '@/config/media';
@@ -36,11 +37,7 @@ function FeatureCard({ card, delay }: { readonly card: Card; readonly delay: num
 
   return (
     <li
-      className={cn(
-        'transition-[opacity,transform] duration-700 ease-out will-change-transform',
-        'motion-reduce:!translate-y-0 motion-reduce:!opacity-100 motion-reduce:transition-none',
-        revealed ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0',
-      )}
+      className={cn(REVEAL_TRANSITION_CLASS, revealStateClass(revealed))}
       ref={ref}
       style={{ transitionDelay: `${delay}ms` }}
     >
