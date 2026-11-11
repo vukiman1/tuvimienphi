@@ -1,0 +1,320 @@
+import type { ReactElement } from 'react';
+import {
+  RouterProvider,
+  createMemoryHistory,
+  createRootRoute,
+  createRouter,
+} from '@tanstack/react-router';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import {
+  CHAPTER_TONE_CLASS,
+  type ChapterAnchor,
+  ChapterRail,
+  ChapterTone,
+  CtaButton,
+  CtaTone,
+  DisplaySize,
+  DisplayTitle,
+  FOCUS_RING_CLASS,
+  ReadingZone,
+  StickyCta,
+  StoryChapter,
+  StoryProvider,
+  TextLink,
+  Tile,
+  useChapterAt,
+} from '.';
+
+const DARK_TONES = [ChapterTone.Night, ChapterTone.Deep, ChapterTone.Dusk] as const;
+const LIGHT_TONES = [ChapterTone.Ember, ChapterTone.Dawn, ChapterTone.Day] as const;
+
+async function renderInRouter(element: ReactElement): Promise<void> {
+  const rootRoute = createRootRoute({ component: () => element });
+  const router = createRouter({
+    routeTree: rootRoute,
+    history: createMemoryHistory({ initialEntries: ['/'] }),
+  });
+  await router.load();
+  render(<RouterProvider router={router} />);
+}
+
+const HEADER_PROBE: ChapterAnchor = () => 60;
+
+function rectAt(top: number): DOMRect {
+  return {
+    top,
+    bottom: top + 800,
+    left: 0,
+    right: 100,
+    width: 100,
+    height: 800,
+    x: 0,
+    y: top,
+    toJSON: () => ({}),
+  };
+}
+
+function setChapterTops(tops: Readonly<Record<string, number>>): void {
+  for (const [id, top] of Object.entries(tops)) {
+    const section = document.getElementById(id);
+    if (section === null) {
+      throw new Error(`No chapter section with id ${id}`);
+    }
+    jest.spyOn(section, 'getBoundingClientRect').mockReturnValue(rectAt(top));
+  }
+}
+
+async function scrollTo(tops: Readonly<Record<string, number>>): Promise<void> {
+  setChapterTops(tops);
+  await act(async () => {
+    window.dispatchEvent(new Event('scroll'));
+    await new Promise((resolve) => window.requestAnimationFrame(resolve));
+  });
+}
+
+function HeaderProbe(): ReactElement {
+  return <output aria-label="header chapter">{useChapterAt(HEADER_PROBE)?.id ?? 'none'}</output>;
+}
+
+function Story({
+  lastTone = ChapterTone.Day,
+  showFirst = true,
+  showLast = true,
+}: {
+  readonly lastTone?: ChapterTone;
+  readonly showFirst?: boolean;
+  readonly showLast?: boolean;
+}): ReactElement {
+  return (
+    <StoryProvider>
+      <ChapterRail />
+      <HeaderProbe />
+      {showFirst ? (
+        <StoryChapter id="mo-dau" tone={ChapterTone.Night} label="Mở đầu">
+          Mở đầu
+        </StoryChapter>
+      ) : null}
+      <StoryChapter id="hieu-dung" tone={ChapterTone.Ember} label="Hiểu đúng">
+        Hiểu đúng
+      </StoryChapter>
+      {showLast ? (
+        <StoryChapter id="cau-chuyen" tone={lastTone} label="Câu chuyện của bạn">
+          Câu chuyện của bạn
+        </StoryChapter>
+      ) : null}
+    </StoryProvider>
+  );
+}
+
+function rail(): HTMLElement {
+  return screen.getByRole('navigation', { name: 'Các chương' });
+}
+
+function currentRailLink(): HTMLElement | undefined {
+  return within(rail())
+    .getAllByRole('link')
+    .find((link) => link.getAttribute('aria-current') === 'location');
+}
+
+describe('StoryChapter', () => {
+  it('renders a section with its id and tone', () => {
+    const { container } = render(
+      <StoryChapter id="mo-dau" tone={ChapterTone.Night} label="Mở đầu">
+        Mở đầu
+      </StoryChapter>,
+    );
+    const section = container.querySelector('section');
+
+    expect(section?.id).toBe('mo-dau');
+    expect(section?.dataset.tone).toBe(ChapterTone.Night);
+    expect(section?.className).toContain('bg-night');
+  });
+
+  it('pairs every tone with readable text', () => {
+    for (const tone of DARK_TONES) {
+      expect(CHAPTER_TONE_CLASS[tone]).toContain('text-day');
+    }
+    for (const tone of LIGHT_TONES) {
+      expect(CHAPTER_TONE_CLASS[tone]).toContain('text-ink');
+    }
+  });
+});
+
+describe('ChapterRail', () => {
+  it('lists the chapters as labelled links in document order', () => {
+    const { rerender } = render(<Story showFirst={false} />);
+    rerender(<Story />);
+
+    const links = within(rail()).getAllByRole('link');
+    expect(links.map((link) => link.getAttribute('href'))).toEqual([
+      '#mo-dau',
+      '#hieu-dung',
+      '#cau-chuyen',
+    ]);
+    expect(within(rail()).getByRole('link', { name: 'Hiểu đúng' })).toBeTruthy();
+  });
+
+  it('drops a chapter that unmounts', () => {
+    const { rerender } = render(<Story />);
+    rerender(<Story showLast={false} />);
+
+    expect(within(rail()).getAllByRole('link')).toHaveLength(2);
+  });
+
+  it('marks the chapter under the viewport centre and follows scrolling', async () => {
+    render(<Story />);
+
+    await scrollTo({ 'mo-dau': -900, 'hieu-dung': -100, 'cau-chuyen': 900 });
+    expect(currentRailLink()?.getAttribute('href')).toBe('#hieu-dung');
+
+    await scrollTo({ 'mo-dau': -1700, 'hieu-dung': -900, 'cau-chuyen': -100 });
+    expect(currentRailLink()?.getAttribute('href')).toBe('#cau-chuyen');
+  });
+
+  it('lets the header probe a different line than the rail', async () => {
+    render(<Story />);
+
+    await scrollTo({ 'mo-dau': -700, 'hieu-dung': 100, 'cau-chuyen': 900 });
+
+    expect(screen.getByLabelText('header chapter').textContent).toBe('mo-dau');
+    expect(currentRailLink()?.getAttribute('href')).toBe('#hieu-dung');
+  });
+
+  it('uses ink dots and an ink active dot over a light chapter', async () => {
+    render(<Story lastTone={ChapterTone.Day} />);
+
+    await scrollTo({ 'mo-dau': -1700, 'hieu-dung': -900, 'cau-chuyen': -100 });
+
+    expect(rail().className).toContain('text-ink');
+    expect(currentRailLink()?.firstElementChild?.className).toContain(
+      'group-aria-[current=location]:bg-current',
+    );
+  });
+
+  it('uses day dots and a gold active dot over a dark chapter', async () => {
+    render(<Story lastTone={ChapterTone.Deep} />);
+
+    await scrollTo({ 'mo-dau': -1700, 'hieu-dung': -900, 'cau-chuyen': -100 });
+
+    expect(rail().className).toContain('text-day');
+    expect(currentRailLink()?.firstElementChild?.className).toContain(
+      'group-aria-[current=location]:bg-gold',
+    );
+  });
+
+  it('gives every dot the two-tone focus ring and stays below dialogs', () => {
+    render(<Story />);
+
+    expect(rail().className).toContain('z-40');
+    for (const link of within(rail()).getAllByRole('link')) {
+      expect(link.className).toContain(FOCUS_RING_CLASS);
+    }
+  });
+});
+
+describe('StickyCta', () => {
+  it('is a link with the two-tone focus ring', async () => {
+    await renderInRouter(<StickyCta to="/">Lập lá số</StickyCta>);
+
+    expect((await screen.findByRole('link', { name: 'Lập lá số' })).className).toContain(
+      FOCUS_RING_CLASS,
+    );
+  });
+
+  it('hides where the mobile nav bar shows and stays below dialogs', async () => {
+    await renderInRouter(<StickyCta to="/">Lập lá số</StickyCta>);
+
+    const { className } = await screen.findByRole('link', { name: 'Lập lá số' });
+    expect(className).toContain('md:inline-flex');
+    expect(className).toContain('z-40');
+  });
+});
+
+describe('TextLink', () => {
+  it('has the two-tone focus ring', async () => {
+    await renderInRouter(<TextLink to="/">Xem tất cả</TextLink>);
+
+    expect((await screen.findByRole('link', { name: 'Xem tất cả' })).className).toContain(
+      FOCUS_RING_CLASS,
+    );
+  });
+});
+
+describe('DisplayTitle', () => {
+  it('renders the requested heading level', () => {
+    render(
+      <DisplayTitle as="h1" size={DisplaySize.Hero}>
+        Lập lá số tử vi
+      </DisplayTitle>,
+    );
+
+    expect(screen.getByRole('heading', { level: 1, name: 'Lập lá số tử vi' })).toBeTruthy();
+  });
+
+  it('never sets a line height that clips stacked Vietnamese marks', () => {
+    for (const size of Object.values(DisplaySize)) {
+      const { unmount } = render(<DisplayTitle size={size}>LẬP LÁ SỐ CỦA BẠN</DisplayTitle>);
+
+      expect(screen.getByRole('heading').className).not.toMatch(
+        /leading-none|leading-\[1\]|leading-\[1\.1\]/,
+      );
+      unmount();
+    }
+  });
+});
+
+describe('CtaButton', () => {
+  it('is a link when it has a destination', async () => {
+    await renderInRouter(
+      <CtaButton tone={CtaTone.Gold} to="/">
+        LẬP LÁ SỐ CỦA BẠN
+      </CtaButton>,
+    );
+
+    expect(await screen.findByRole('link', { name: 'LẬP LÁ SỐ CỦA BẠN' })).toBeTruthy();
+    expect(screen.queryByRole('button')).toBeNull();
+  });
+
+  it('is a non-submitting button that fires its handler without a destination', () => {
+    const onClick = jest.fn();
+    render(
+      <CtaButton tone={CtaTone.Outline} onClick={onClick}>
+        Tạo lá số của tôi
+      </CtaButton>,
+    );
+    const button = screen.getByRole('button', { name: 'Tạo lá số của tôi' });
+
+    fireEvent.click(button);
+
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(button.getAttribute('type')).toBe('button');
+    expect(button.className).toContain(FOCUS_RING_CLASS);
+  });
+});
+
+describe('Tile', () => {
+  it('marks only the active tile as current', () => {
+    render(
+      <>
+        <Tile title="Tý" caption="23h–1h" isActive />
+        <Tile title="Sửu" caption="1h–3h" />
+      </>,
+    );
+
+    expect(screen.getByText('Tý').closest('[aria-current]')?.getAttribute('aria-current')).toBe(
+      'true',
+    );
+    expect(screen.getByText('Sửu').closest('[aria-current]')).toBeNull();
+  });
+});
+
+describe('ReadingZone', () => {
+  it('sets reading size, line height and measure on its content', () => {
+    render(<ReadingZone>Tử vi 2027 tuổi Ất Hợi</ReadingZone>);
+
+    const { className } = screen.getByText('Tử vi 2027 tuổi Ất Hợi');
+    expect(className).toContain('text-reading');
+    expect(className).toContain('leading-reading');
+    expect(className).toContain('max-w-reading');
+  });
+});
