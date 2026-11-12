@@ -5,7 +5,7 @@ export { CHAPTER_TONE_CLASS, ChapterTone, isDarkTone } from './chapter-tone';
 export { ChapterRail } from './ChapterRail';
 export { Chip } from './Chip';
 export { CtaButton, CtaTone, type CtaButtonProps } from './CtaButton';
-export { DisplaySize, DisplayTitle, Emphasis } from './DisplayTitle';
+export { DisplaySize, DisplayTitle, Emphasis, TitleFace } from './DisplayTitle';
 export { Eyebrow } from './Eyebrow';
 export { FOCUS_RING_CLASS } from './focus-ring';
 export { GiantNumeral } from './geometry/GiantNumeral';

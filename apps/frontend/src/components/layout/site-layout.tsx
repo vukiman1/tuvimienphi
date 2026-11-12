@@ -18,7 +18,7 @@ export function SiteLayout(): ReactElement {
           <Outlet />
         </div>
         <div className="hidden md:block">
-          <SiteFooter />
+          <SiteFooter isStoryPage={isStoryPage} />
         </div>
         <MobileNavBar />
         <div className="h-[calc(4rem+env(safe-area-inset-bottom))] md:hidden" aria-hidden />

@@ -5,7 +5,7 @@
 @import './design-system/tokens.css';
 
 @custom-variant motion-ready (html[data-motion='ready'] &);
-@custom-variant pinned (@media (width >= 48rem) and (height >= 50rem) and (prefers-reduced-motion: no-preference));
+@custom-variant pinned (@media (width >= 64rem) and (height >= 50rem) and (prefers-reduced-motion: no-preference));
 
 @theme inline {
   --color-background: var(--background);

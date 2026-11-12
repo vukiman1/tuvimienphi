@@ -1,11 +1,11 @@
 import type { CungName } from '@org/shared-tu-vi';
 
 export const CHAPTER_LABELS = {
-  opening: 'Mở đầu',
+  opening: 'Khởi đầu',
   moment: 'Khoảnh khắc',
   map: 'Lá số',
-  turn: 'Hiểu đúng',
-  truths: 'Ba góc nhìn',
+  turn: 'Nhận thức',
+  truths: 'Ba sự thật',
   knowledge: 'Kiến thức',
   yourStory: 'Câu chuyện của bạn',
 } as const;
@@ -28,28 +28,40 @@ export const MOMENT = {
   caption: 'Một ngày. Một giờ. Một điểm bắt đầu.',
 } as const;
 
+export enum StatementIcon {
+  Person = 'person',
+  Palaces = 'palaces',
+  Stars = 'stars',
+  Love = 'love',
+  Career = 'career',
+  Timeline = 'timeline',
+}
+
 interface MapStatement {
   readonly title: string;
   readonly description: string;
+  readonly icon: StatementIcon;
   readonly highlights: readonly CungName[];
 }
 
 export const MAP = {
   eyebrow: '03 / Bản đồ cuộc đời',
-  title: 'Lá số của bạn có gì?',
-  subtitle: 'Một lá số – nhiều góc nhìn về cuộc đời',
-  boardCentre: '12 cung · 1 lá số',
+  title: 'Lá số của bạn',
+  emphasis: 'có gì?',
+  subtitle: 'Một lá số – nhiều góc nhìn về cuộc đời.',
   boardLabel: 'Sơ đồ 12 cung tử vi',
   ctaLabel: 'Tạo lá số của tôi',
   statements: [
     {
       title: 'Mệnh & tính cách',
       description: 'Hiểu những đặc điểm nổi bật trong bản mệnh của bạn.',
+      icon: StatementIcon.Person,
       highlights: ['Mệnh'],
     },
     {
       title: '12 cung trong lá số',
       description: 'Khám phá ý nghĩa của 12 cung Mệnh, Tài Bạch, Quan Lộc...',
+      icon: StatementIcon.Palaces,
       highlights: [
         'Mệnh',
         'Phụ Mẫu',
@@ -68,35 +80,52 @@ export const MAP = {
     {
       title: 'Hệ thống sao',
       description: 'Phân tích sự kết hợp của chính tinh và phụ tinh tại từng cung.',
+      icon: StatementIcon.Stars,
       highlights: ['Mệnh', 'Tài Bạch', 'Quan Lộc'],
     },
     {
       title: 'Tình duyên & gia đạo',
       description: 'Nhìn nhận xu hướng trong các mối quan hệ, hôn nhân, gia đình.',
+      icon: StatementIcon.Love,
       highlights: ['Phu Thê', 'Tử Tức', 'Điền Trạch', 'Phụ Mẫu'],
     },
     {
       title: 'Công danh & tài lộc',
       description: 'Phân tích công việc, năng lực và tài chính.',
+      icon: StatementIcon.Career,
       highlights: ['Quan Lộc', 'Tài Bạch'],
     },
     {
       title: 'Đại vận & vận hạn',
       description: 'Theo dõi những giai đoạn quan trọng trong cuộc đời.',
+      icon: StatementIcon.Timeline,
       highlights: ['Mệnh', 'Thiên Di'],
     },
   ] satisfies readonly MapStatement[],
 } as const;
 
+interface TurnPhrase {
+  readonly text: string;
+  readonly isEmphasis: boolean;
+}
+
+const TURN_PHRASES = [
+  { text: 'Tử vi không phải để định đoán, mà để', isEmphasis: false },
+  { text: 'hiểu mình', isEmphasis: true },
+  { text: 'và', isEmphasis: false },
+  { text: 'chủ động hơn', isEmphasis: true },
+  { text: 'trong cuộc sống.', isEmphasis: false },
+] as const satisfies readonly TurnPhrase[];
+
 export const TURN = {
-  eyebrow: '04 / Hiểu đúng về tử vi',
-  sentence: 'Tử vi không phải để định đoán, mà để hiểu mình và chủ động hơn trong cuộc sống.',
+  eyebrow: 'Hiểu đúng về tử vi',
+  phrases: TURN_PHRASES,
+  sentence: TURN_PHRASES.map((phrase) => phrase.text).join(' '),
 } as const;
 
 export const TRUTHS = {
-  eyebrow: '05 / Ba góc nhìn',
-  title: 'Hiểu để',
-  emphasis: 'chủ động.',
+  eyebrow: '05 / Ba sự thật',
+  title: 'Ba sự thật về tử vi',
   points: [
     {
       title: 'Tử vi không quyết định số phận',
@@ -121,12 +150,10 @@ export const TRUTHS = {
 
 export const KNOWLEDGE = {
   eyebrow: '06 / Kiến thức',
-  title: 'Khám phá kiến thức',
-  emphasis: 'tử vi',
+  title: 'Khám phá kiến thức tử vi',
   subtitle: 'Những bài viết giúp bạn hiểu sâu hơn về tử vi dưới góc nhìn hiện đại.',
   ctaLabel: 'Xem tất cả',
   featuredBadge: 'Nổi bật',
-  featuredNumeral: '06',
   featured: {
     title: 'Thân cư là gì? 6 vị trí Thân cư nói lên điều gì?',
     excerpt:

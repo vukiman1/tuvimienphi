@@ -12,7 +12,7 @@ const DOT_ACTIVE_ON_DARK_CLASS =
   'group-hover:border-gold group-hover:bg-gold group-aria-[current=location]:border-gold group-aria-[current=location]:bg-gold';
 const DOT_ACTIVE_ON_LIGHT_CLASS = 'group-hover:bg-current group-aria-[current=location]:bg-current';
 const TEXT_CLASS =
-  'flex items-center gap-1 rounded-full px-2 py-0.5 text-2xs font-semibold whitespace-nowrap backdrop-blur-sm';
+  'flex max-w-28 items-start gap-1 rounded-2xl px-2 py-0.5 text-right text-2xs font-semibold';
 const NAME_HIDDEN_CLASS = 'hidden group-hover:inline group-focus-visible:inline';
 
 export function ChapterRail(): ReactElement | null {
@@ -43,7 +43,7 @@ export function ChapterRail(): ReactElement | null {
           >
             <span
               aria-hidden="true"
-              className={cn(TEXT_CLASS, isOverDark ? 'bg-night/60' : 'bg-day/60')}
+              className={cn(TEXT_CLASS, isOverDark ? 'bg-night/80' : 'bg-day/85')}
             >
               <span>{index + 1}.</span>
               <span className={isCurrent ? undefined : NAME_HIDDEN_CLASS}>{chapter.label}</span>

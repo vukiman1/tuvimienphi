@@ -114,6 +114,50 @@ describe('HomePage', () => {
     }
   });
 
+  it('emphasises "hiểu mình" and "chủ động hơn" in the turning-point sentence', async () => {
+    await renderHome();
+
+    const heading = screen.getByRole('heading', { name: TURN.sentence });
+    const emphasised = [...heading.querySelectorAll('.italic')].map((word) => word.textContent);
+    expect(emphasised).toEqual(['hiểu', 'mình', 'chủ', 'động', 'hơn']);
+  });
+
+  it('lets a keyboard user skip the story before reaching the hero CTA', async () => {
+    await renderHome();
+
+    const skip = screen.getByRole('link', { name: /Bỏ qua câu chuyện/ });
+    const cta = screen.getByRole('link', { name: /LẬP LÁ SỐ CỦA BẠN/ });
+    expect(skip.compareDocumentPosition(cta) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it.each(['mo-dau', 'khoanh-khac', 'la-so', 'hieu-dung', 'kien-thuc', 'lap-la-so'])(
+    'paints chapter %s as decoration that never competes for loading',
+    async (chapterId) => {
+      await renderHome();
+
+      const painting = document.querySelector<HTMLImageElement>(`#${chapterId} img`);
+      expect(painting?.getAttribute('alt')).toBe('');
+      expect(painting?.getAttribute('fetchpriority')).toBe('low');
+      expect(painting?.getAttribute('srcset')).toContain('768w');
+    },
+  );
+
+  it('loads the hero painting straight away and every later painting only near the viewport', async () => {
+    await renderHome();
+
+    expect(document.querySelector('#mo-dau img')?.getAttribute('loading')).toBeNull();
+    for (const chapterId of ['khoanh-khac', 'la-so', 'hieu-dung', 'kien-thuc', 'lap-la-so']) {
+      expect(document.querySelector(`#${chapterId} img`)?.getAttribute('loading')).toBe('lazy');
+    }
+  });
+
+  it('illustrates the featured article with a decorative painting', async () => {
+    await renderHome();
+
+    const featured = screen.getByRole('link', { name: /Thân cư là gì\?/ });
+    expect(featured.querySelector('img')?.getAttribute('alt')).toBe('');
+  });
+
   it('shows the birth date assembled before any scrolling', async () => {
     await renderHome();
 

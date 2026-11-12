@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import { ChapterRail, StickyCta } from '@/design-system';
+import { GoldIconGradient } from '@/features/home/components/story/GoldIconGradient';
 import { KnowledgeChapter } from '@/features/home/components/story/KnowledgeChapter';
 import { MapChapter } from '@/features/home/components/story/MapChapter';
 import { MomentChapter } from '@/features/home/components/story/MomentChapter';
@@ -19,6 +20,7 @@ interface HomePageProps {
 export function HomePage({ initialGender, viewYear }: HomePageProps = {}): ReactElement {
   return (
     <main>
+      <GoldIconGradient />
       <ChapterRail />
       <StickyCta to="/" hash={BIRTH_FORM_ANCHOR}>
         {OPENING.stickyLabel} <span aria-hidden="true">↗</span>

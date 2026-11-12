@@ -15,6 +15,7 @@ import {
   CtaTone,
   DisplaySize,
   DisplayTitle,
+  Emphasis,
   FOCUS_RING_CLASS,
   ReadingZone,
   StickyCta,
@@ -22,6 +23,7 @@ import {
   StoryProvider,
   TextLink,
   Tile,
+  TitleFace,
   useChapterAt,
 } from '.';
 
@@ -145,6 +147,35 @@ describe('StoryChapter', () => {
   });
 });
 
+describe('DisplayTitle', () => {
+  it('sets a title in the serif face when asked, and in Inter Tight otherwise', () => {
+    render(
+      <>
+        <DisplayTitle size={DisplaySize.Card} face={TitleFace.Serif}>
+          Lá số của bạn
+        </DisplayTitle>
+        <DisplayTitle size={DisplaySize.Card}>Lập lá số</DisplayTitle>
+      </>,
+    );
+
+    expect(screen.getByRole('heading', { name: 'Lá số của bạn' }).className).toContain(
+      'font-emphasis',
+    );
+    expect(screen.getByRole('heading', { name: 'Lập lá số' }).className).toContain('font-display');
+  });
+
+  it('paints accent emphasis in dawn gold and plain emphasis in the surrounding colour', () => {
+    render(
+      <p>
+        <Emphasis isAccent>có gì?</Emphasis> <Emphasis>bắt đầu</Emphasis>
+      </p>,
+    );
+
+    expect(screen.getByText('có gì?').className).toContain('text-dawn');
+    expect(screen.getByText('bắt đầu').className).not.toContain('text-dawn');
+  });
+});
+
 describe('ChapterRail', () => {
   it('lists the chapters as labelled links in document order', () => {
     const { rerender } = render(<Story showFirst={false} />);
@@ -225,6 +256,14 @@ describe('ChapterRail', () => {
     const { className } = within(rail()).getByText('Mở đầu');
     expect(className).toContain('group-hover:inline');
     expect(className).toContain('group-focus-visible:inline');
+  });
+
+  it('keeps the fixed rail free of backdrop blur', () => {
+    render(<Story />);
+
+    for (const element of rail().querySelectorAll('*')) {
+      expect(element.getAttribute('class') ?? '').not.toContain('backdrop-blur');
+    }
   });
 
   it('gives every dot the two-tone focus ring and stays below dialogs', () => {
