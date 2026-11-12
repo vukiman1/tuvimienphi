@@ -54,6 +54,8 @@ Re-add the build plugin that preloads the Latin and Vietnamese Inter Tight 800 f
 
 Measured: without it, the fallback font wraps the hero h1 onto a second line until Inter Tight arrives (CLS 0.046). Preloading Inter Tight 800 leaves 0.0008 from the Playfair "tử vi", so the Playfair 600 italic Latin and Vietnamese files are preloaded too. Result: CLS 0, FCP 5.0 s → 4.7 s locally.
 
+Production after #185 and #186: Performance median 92.5, then 94, below the gate, with simulated LCP varying from 1.8 s to 5.1 s. The four preloaded files (about 56 KB) compete with CSS and JS on the simulated slow link, so the Playfair preload is dropped. It only saved a CLS of about 0.001.
+
 ### Verification
 
 Build and prerender; `/` HTML contains every chapter's text with no `data-motion`; `scrollWidth === 320` at 320 px; screenshots at 390 and 1440 px; local Lighthouse on `/`.

@@ -11,11 +11,9 @@ import { preloadFontsPlugin } from './tools/preload-fonts.ts';
 
 const requireFromHere = createRequire(import.meta.url);
 const isAnalyze = process.env.ANALYZE === 'true';
-const HEADING_FONT_FILES: readonly RegExp[] = [
+const HERO_FONT_FILES: readonly RegExp[] = [
   /inter-tight-latin-800-normal-[\w-]+\.woff2$/,
   /inter-tight-vietnamese-800-normal-[\w-]+\.woff2$/,
-  /playfair-display-latin-600-italic-[\w-]+\.woff2$/,
-  /playfair-display-vietnamese-600-italic-[\w-]+\.woff2$/,
 ];
 
 export default defineConfig(({ command, mode }) => {
@@ -45,7 +43,7 @@ export default defineConfig(({ command, mode }) => {
       react(),
       tailwindcss(),
       analyticsBeaconPlugin(frontendConfig.analytics.cloudflareToken),
-      preloadFontsPlugin(HEADING_FONT_FILES),
+      preloadFontsPlugin(HERO_FONT_FILES),
       isAnalyze &&
         visualizer({
           filename: './dist/stats.html',
