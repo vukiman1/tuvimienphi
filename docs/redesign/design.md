@@ -75,7 +75,7 @@ No other hues. The **chart data colours** for the ngũ hành stars and the Tuầ
 
 Contrast rules, from measured ratios:
 
-- Night, Deep and Dusk take Day text (8.05:1 or more). Gold text is allowed on them.
+- Night, Deep and Dusk take Day text (8.05:1 or more). Gold and dawn text are allowed on them.
 - Ember takes Ink text only (5.05:1). Day on Ember is 3.27:1 and is not allowed.
 - Dawn and Day take Ink text. Gold is never text on Dawn or Day (1.65:1). It is a fill with Ink text on top (9.98:1).
 
@@ -88,20 +88,33 @@ Contrast rules, from measured ratios:
 - Heading line height is never below 1.15, so stacked Vietnamese diacritics never collide.
 - No Chinese characters anywhere, as text or as artwork.
 
-**Geometry kit.** Ornament is drawn in code, not imported: orbit rings, points on a circle, crosshair lines, ruled grids and giant numerals. Strokes are Gold or Day at reduced opacity on dark chapters and Ink at reduced opacity on light ones. There are no raster ornaments and no gradients.
+**Geometry kit.** Ornament is drawn in code, not imported: orbit rings, points on a circle, crosshair lines, ruled grids and giant numerals. Strokes are Gold or Day at reduced opacity on dark chapters and Ink at reduced opacity on light ones. There are no raster ornaments.
+
+Light is part of the kit, as tokens rather than one-off values:
+
+- `shadow-glow-gold` and `shadow-glow-gold-strong` for glowing frames and active cells;
+- `drop-shadow-glow-gold` for glowing SVG points.
+
+Gradients appear in three places only:
+
+- the shared gold icon gradient (`GoldIconGradient`), mounted once per page;
+- washes and fades over paintings;
+- fades that join neighbouring chapters.
 
 **Story system.**
 
 - **Chapters.** A page is a sequence of chapters, each with a tone (Night, Deep, Dusk, Ember, Dawn or Day). The header and the chapter rail switch between light and dark text with the chapter under them.
+- **Story header and footer.** On a story page the header is fixed and tinted with the tone of the chapter under it (90% on dark tones). It never uses `backdrop-blur`: re-blurring every frame over a painting stalled WebKit (#189) and costs slow phones the same. The footer is Night.
 - **The reader is never forced through the story.** A sticky "Lập lá số" button is visible from the first second, and a "Bỏ qua câu chuyện" link jumps to the form. Below 768 px the mobile nav bar's centre button "Lập lá số" plays the sticky button's role, so the two never overlap.
-- **Chapter rail.** On screens 900 px and wider, a slim rail of dots on the right lists the chapters. Each dot is a link with a label.
+- **Chapter rail.** On screens 900 px and wider, a numbered rail on the right lists the chapters: a dot per chapter, joined by a line, with its number always shown. The current chapter also shows its name; other names appear on hover or keyboard focus. Long names wrap, and three-column layouts keep a right gutter so the rail never covers content.
 - **Motion rules:**
   - Native scrolling only. No scroll-jacking and no snapping.
   - Animate only `transform`, `opacity` and SVG `stroke-dashoffset`. CLS stays at 0.
   - Reveals take 400–800 ms with an ease-out curve. Nothing bounces, and nothing loops on reading text.
   - Every word exists in the prerendered HTML and is readable without JavaScript. Motion only ever hides content after the script has started.
   - Under `prefers-reduced-motion`, every chapter shows its final state, with no pinning and no scroll-linked motion.
-  - Pinned chapters are about half as long on mobile.
+  - Pinned chapters are about half as long on mobile. A chapter whose content is taller than the viewport pins only from 64rem wide and 50rem tall (the `pinned` variant).
+  - Scroll-driven entrances (slide, fade or scale as an element enters) were tried on the home page on 2026-11-12 and shelved. They need `overflow: clip` instead of `hidden` on every ancestor, and they freeze inside pinned chapters. The plan is kept in `plans/phase-3-home-motion.md`.
 
 **Two zones per page.**
 
@@ -114,13 +127,14 @@ The current ~346 images (about 60 MB in `apps/frontend/public`) are replaced pag
 
 1. **Ornament.** The geometry kit above, built as SVG and CSS in `design-system/`. No vector pack is bought, and the OpenAI ornament samples from 2026-11-11 are discarded.
 2. **Large illustrations are optional.** Painted night-to-dawn scenes, like the ones in Kim An's AI mockup, are added to a page only after it ships and passes the quality gates without them. Each one:
-   - is generated with the OpenAI image API from one fixed prompt template, kept in `docs/redesign/illustration-guide.md`, which is written when the first illustration is needed;
+   - is generated with the OpenAI image API from one fixed prompt template, kept in [illustration-guide.md](illustration-guide.md);
    - is approved by Kim An, and the first approved image becomes the reference for every later one;
-   - is AVIF or WebP, at most 120 KB on desktop and 60 KB on mobile;
-   - is loaded lazily, below the fold, and is never the LCP element.
+   - is WebP at 768 and 1536 px wide, at most 120 KB on desktop and 60 KB on mobile;
+   - is decorative (`alt=""`), and is never the LCP element. A painting behind the hero loads with `fetchpriority="low"`; every other painting loads with `loading="lazy"`;
+   - gets a tinted wash or a fade wherever text sits on it, checked by sampling the painting behind the text.
 3. **Hand-built in code.** The lá số board, data tables and icons stay as code or icon-font components, not images, so they stay crisp and accessible.
 
-**A new logo in D3** (Kim An's decision). It replaces `/brand/logo.png` and `/brand/icon.png` everywhere: header, footer, splash, page loader, favicon and default OG image. It is the wordmark "Tử Vi Miễn Phí" set in Inter Tight 800, paired with a mark drawn from the geometry kit, and built as SVG in code. The first version is drawn in Phase 1 and needs Kim An's sign-off before the shared shell ships. The favicon and app icon are derived from the mark.
+**A new logo in D3** (Kim An's decision). It replaces `/brand/logo.png` and `/brand/icon.png` everywhere: header, footer, splash, page loader, favicon and default OG image. It is the wordmark "Tử Vi Miễn Phí" set in Inter Tight 800, paired with a golden yin-yang mark with tường vân clouds. Hand-drawn SVG versions read as plainer than Kim An's mock, so the approved mark was generated from that mock with the OpenAI image API. It ships as raster (`logo-mark-128.webp` and `-256.webp`), and the favicon, app icons and default OG image are derived from it. It is the one place gradients appear inside an asset.
 
 **Shipping without an illustration is valid.** Old images are never kept as a stopgap.
 
