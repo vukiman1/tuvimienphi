@@ -20,6 +20,7 @@ const CTA_TONE_CLASS: Readonly<Record<CtaTone, string>> = {
 interface CtaBaseProps {
   readonly tone: CtaTone;
   readonly children: ReactNode;
+  readonly isFullWidth?: boolean;
 }
 
 interface CtaLinkProps extends CtaBaseProps {
@@ -29,7 +30,7 @@ interface CtaLinkProps extends CtaBaseProps {
 }
 
 interface CtaActionProps extends CtaBaseProps {
-  readonly onClick: () => void;
+  readonly onClick?: () => void;
   readonly type?: 'button' | 'submit';
 }
 
@@ -40,7 +41,12 @@ function isLinkCta(props: CtaButtonProps): props is CtaLinkProps {
 }
 
 export function CtaButton(props: CtaButtonProps): ReactElement {
-  const className = cn(CTA_BASE_CLASS, FOCUS_RING_CLASS, CTA_TONE_CLASS[props.tone]);
+  const className = cn(
+    CTA_BASE_CLASS,
+    FOCUS_RING_CLASS,
+    CTA_TONE_CLASS[props.tone],
+    props.isFullWidth === true && 'w-full',
+  );
   if (isLinkCta(props)) {
     return (
       <Link

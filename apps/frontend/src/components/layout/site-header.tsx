@@ -90,7 +90,7 @@ export function SiteHeader({ isStoryPage = false }: SiteHeaderProps): ReactEleme
           : 'relative border-b border-ink/10 bg-day text-ink'
       }
     >
-      <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-1 px-4 py-2 md:px-6">
+      <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-1 px-4 py-2 md:gap-x-9 md:px-6">
         <Link className={cn('flex shrink-0 items-center no-underline', FOCUS_RING_CLASS)} to="/">
           <Logo
             tone={isOverDark ? LogoTone.OnDark : LogoTone.OnLight}
@@ -99,7 +99,7 @@ export function SiteHeader({ isStoryPage = false }: SiteHeaderProps): ReactEleme
         </Link>
 
         <nav
-          className="order-last flex w-full items-center justify-between gap-4 overflow-x-auto border-t border-current/15 px-1 pt-2 pb-1 md:order-none md:w-auto md:justify-start md:gap-9 md:overflow-visible md:border-t-0 md:p-0"
+          className="order-last flex w-full items-center justify-between gap-4 overflow-x-auto border-t border-current/15 px-1 pt-2 pb-1 md:order-none md:ml-auto md:w-auto md:justify-start md:gap-9 md:overflow-visible md:border-t-0 md:p-0"
           aria-label="Primary"
         >
           {NAV_ITEMS.map((item) => (

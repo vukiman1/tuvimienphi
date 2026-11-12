@@ -1,3 +1,4 @@
+import { ChevronDown } from 'lucide-react';
 import { FieldError } from '@/components/ui/field-error';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
@@ -43,36 +44,42 @@ export function SelectField<TValue extends string>({
       <Label className={isLabelHidden ? 'sr-only' : undefined} htmlFor={field.name}>
         {label}
       </Label>
-      <select
-        aria-describedby={errorId}
-        aria-invalid={field.state.meta.errors.length > 0}
-        className={cn(
-          'h-9 w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow] md:text-sm',
-          'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
-          className,
-        )}
-        id={field.name}
-        name={field.name}
-        onBlur={field.handleBlur}
-        onChange={(event) => {
-          const selected = options.find((option) => option.value === event.target.value);
-          if (selected) {
-            field.handleChange(selected.value);
-          }
-        }}
-        value={field.state.value}
-      >
-        {placeholder !== undefined && (
-          <option disabled value="">
-            {placeholder}
-          </option>
-        )}
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+      <div className="relative">
+        <select
+          aria-describedby={errorId}
+          aria-invalid={field.state.meta.errors.length > 0}
+          className={cn(
+            'h-9 w-full min-w-0 appearance-none rounded-md border border-input bg-transparent py-1 pr-8 pl-3 text-base shadow-xs outline-none transition-[color,box-shadow] md:text-sm',
+            'focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
+            className,
+          )}
+          id={field.name}
+          name={field.name}
+          onBlur={field.handleBlur}
+          onChange={(event) => {
+            const selected = options.find((option) => option.value === event.target.value);
+            if (selected) {
+              field.handleChange(selected.value);
+            }
+          }}
+          value={field.state.value}
+        >
+          {placeholder !== undefined && (
+            <option disabled value="">
+              {placeholder}
+            </option>
+          )}
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+        <ChevronDown
+          aria-hidden
+          className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-ink-soft"
+        />
+      </div>
       <FieldError errors={field.state.meta.errors} id={errorId} />
     </div>
   );

@@ -1,13 +1,11 @@
-import { ChevronDown } from 'lucide-react';
+import type { ReactElement } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { Form } from '@/components/ui/form';
 import { FormError } from '@/components/ui/form-error';
 import { FormField } from '@/components/ui/form-field';
 import { SelectField } from '@/components/ui/select-field';
-import { Button } from '@/components/ui/button';
-import { MEDIA } from '@/config/media';
+import { CtaButton, CtaTone } from '@/design-system';
 import { useFormWithSubmitError } from '@/lib/use-form-with-submit-error';
-import { cn } from '@/lib/utils';
 import { CalendarToggle } from '@/features/la-so/components/calendar-toggle';
 import {
   DAY_OPTIONS,
@@ -25,46 +23,17 @@ import {
   type BirthFormValues,
 } from '@/features/la-so/birth-form-schema';
 
-const FIELD_CLASS = [
-  'h-10 w-full rounded-lg border-0 bg-white px-3 text-sm text-[#2a1f0e] shadow-md',
-  'placeholder:text-[#7a6a55] focus-visible:outline-none',
-  'transition-[box-shadow,color] duration-150 ease-out motion-reduce:transition-none',
-  // Sáu ô này trước đó không có phản hồi rê chuột nào; viền vàng mảnh là đủ để biết bấm được.
-  'hover:shadow-lg hover:ring-1 hover:ring-[#e0bd76]/60',
-  // Lúc đang nhập phải nổi hơn hẳn lúc rê chuột, nếu không hai trạng thái lẫn vào nhau.
-  'focus-visible:ring-2 focus-visible:ring-[#e0bd76] focus-visible:shadow-[0_0_16px_rgba(224,189,118,0.45)]',
-].join(' ');
+const FIELD_CLASS =
+  'h-11 w-full rounded-lg border border-ink/20 bg-day px-3 text-sm text-ink placeholder:text-ink-soft transition-[border-color,box-shadow] duration-150 hover:border-ink/40 focus-visible:border-ink focus-visible:ring-2 focus-visible:ring-gold focus-visible:outline-none motion-reduce:transition-none';
 
-/* The plate is a transparent PNG: set it as an inline background so no `bg-*` utility can win
-   the merge and paint a colour behind its cut corners. */
-const SUBMIT_PLATE_STYLE = {
-  backgroundImage: `url(${MEDIA.home.ctaPlate})`,
-  backgroundSize: '100% 100%',
-  backgroundRepeat: 'no-repeat',
-} as const;
-
-/**
- * `<select>` gốc không có `::placeholder`, nên chưa chọn gì thì chữ "Ngày" trông đậm y như "12" đã
- * chọn — nhìn vào không biết còn thiếu ô nào. `:has()` bắt đúng lúc option rỗng đang được chọn để
- * hạ chữ xuống màu mờ, khỏi phải nhớ trạng thái bằng JS.
- */
-const SELECT_CLASS = `${FIELD_CLASS} appearance-none pr-8 [&:has(option[value='']:checked)]:text-[#7a6a55]`;
-
-function SelectChevron() {
-  return (
-    <ChevronDown
-      aria-hidden
-      className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-[#7a6a55]"
-    />
-  );
-}
+const SELECT_CLASS = `${FIELD_CLASS} [&:has(option[value='']:checked)]:text-ink-soft`;
 
 interface BirthFormProps {
   readonly initialGender?: Gender;
   readonly viewYear?: number;
 }
 
-export function BirthForm({ initialGender, viewYear }: BirthFormProps = {}) {
+export function BirthForm({ initialGender, viewYear }: BirthFormProps = {}): ReactElement {
   const navigate = useNavigate();
 
   const { form, submitError } = useFormWithSubmitError<BirthFormValues>({
@@ -83,169 +52,112 @@ export function BirthForm({ initialGender, viewYear }: BirthFormProps = {}) {
   });
 
   return (
-    <Form className="grid gap-3" onSubmit={form.handleSubmit}>
+    <Form className="grid gap-4 text-ink" onSubmit={form.handleSubmit}>
       <FormError message={submitError} />
 
-      <div className="relative">
+      <form.Field
+        name="calendar"
+        children={(field) => (
+          <CalendarToggle onChange={field.handleChange} value={field.state.value} />
+        )}
+      />
+
+      <form.Field
+        name="fullName"
+        validators={{
+          onChange: birthFieldSchemas.fullName,
+          onBlur: birthFieldSchemas.fullName,
+          onSubmit: birthFieldSchemas.fullName,
+        }}
+        children={(field) => (
+          <FormField
+            autoComplete="name"
+            className={FIELD_CLASS}
+            field={field}
+            label="Họ & Tên"
+            placeholder="Nhập họ và tên của bạn"
+          />
+        )}
+      />
+
+      <div className="grid grid-cols-3 gap-3">
         <form.Field
-          name="fullName"
-          validators={{
-            onChange: birthFieldSchemas.fullName,
-            onBlur: birthFieldSchemas.fullName,
-            onSubmit: birthFieldSchemas.fullName,
-          }}
+          name="day"
+          validators={{ onChange: birthFieldSchemas.day, onSubmit: birthFieldSchemas.day }}
           children={(field) => (
-            <FormField
-              autoComplete="name"
-              className={FIELD_CLASS}
+            <SelectField
+              className={SELECT_CLASS}
               field={field}
-              isLabelHidden
-              label="Họ & Tên"
-              placeholder="Họ & Tên"
+              label="Ngày sinh"
+              options={DAY_OPTIONS}
+              placeholder="Ngày"
             />
           )}
         />
-      </div>
-
-      <div className="flex flex-wrap items-start gap-3">
-        <div className="grid min-w-[240px] flex-1 grid-cols-2 gap-3 sm:grid-cols-3">
-          <div className="relative">
-            <form.Field
-              name="day"
-              validators={{
-                onChange: birthFieldSchemas.day,
-                onSubmit: birthFieldSchemas.day,
-              }}
-              children={(field) => (
-                <SelectField
-                  className={SELECT_CLASS}
-                  field={field}
-                  isLabelHidden
-                  label="Ngày sinh"
-                  options={DAY_OPTIONS}
-                  placeholder="Ngày"
-                />
-              )}
-            />
-            <SelectChevron />
-          </div>
-
-          <div className="relative">
-            <form.Field
-              name="month"
-              validators={{
-                onChange: birthFieldSchemas.month,
-                onSubmit: birthFieldSchemas.month,
-              }}
-              children={(field) => (
-                <SelectField
-                  className={SELECT_CLASS}
-                  field={field}
-                  isLabelHidden
-                  label="Tháng sinh"
-                  options={MONTH_OPTIONS}
-                  placeholder="Tháng"
-                />
-              )}
-            />
-            <SelectChevron />
-          </div>
-
-          <div className="relative col-span-2 sm:col-span-1">
-            <form.Field
-              name="year"
-              validators={{
-                onChange: birthFieldSchemas.year,
-                onSubmit: birthFieldSchemas.year,
-              }}
-              children={(field) => (
-                <SelectField
-                  className={SELECT_CLASS}
-                  field={field}
-                  isLabelHidden
-                  label="Năm sinh"
-                  options={YEAR_OPTIONS}
-                  placeholder="Năm"
-                />
-              )}
-            />
-            <SelectChevron />
-          </div>
-        </div>
-
         <form.Field
-          name="calendar"
+          name="month"
+          validators={{ onChange: birthFieldSchemas.month, onSubmit: birthFieldSchemas.month }}
           children={(field) => (
-            <CalendarToggle onChange={field.handleChange} value={field.state.value} />
+            <SelectField
+              className={SELECT_CLASS}
+              field={field}
+              label="Tháng sinh"
+              options={MONTH_OPTIONS}
+              placeholder="Tháng"
+            />
+          )}
+        />
+        <form.Field
+          name="year"
+          validators={{ onChange: birthFieldSchemas.year, onSubmit: birthFieldSchemas.year }}
+          children={(field) => (
+            <SelectField
+              className={SELECT_CLASS}
+              field={field}
+              label="Năm sinh"
+              options={YEAR_OPTIONS}
+              placeholder="Năm"
+            />
           )}
         />
       </div>
 
-      <div className="flex flex-wrap gap-3">
-        <div className="relative min-w-44 flex-1">
-          <form.Field
-            name="hour"
-            validators={{
-              onChange: birthFieldSchemas.hour,
-              onSubmit: birthFieldSchemas.hour,
-            }}
-            children={(field) => (
-              <SelectField
-                className={SELECT_CLASS}
-                field={field}
-                isLabelHidden
-                label="Giờ sinh"
-                options={HOUR_OPTIONS}
-                placeholder="Giờ sinh"
-              />
-            )}
-          />
-          <SelectChevron />
-        </div>
-
-        <div className="relative min-w-40 flex-1">
-          <form.Field
-            name="gender"
-            validators={{
-              onChange: birthFieldSchemas.gender,
-              onSubmit: birthFieldSchemas.gender,
-            }}
-            children={(field) => (
-              <SelectField
-                className={SELECT_CLASS}
-                field={field}
-                isLabelHidden
-                label="Giới tính"
-                options={GENDER_OPTIONS}
-                placeholder="Giới tính  Nam/Nữ"
-              />
-            )}
-          />
-          <SelectChevron />
-        </div>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <form.Field
+          name="hour"
+          validators={{ onChange: birthFieldSchemas.hour, onSubmit: birthFieldSchemas.hour }}
+          children={(field) => (
+            <SelectField
+              className={SELECT_CLASS}
+              field={field}
+              label="Giờ sinh"
+              options={HOUR_OPTIONS}
+              placeholder="Chọn giờ sinh"
+            />
+          )}
+        />
+        <form.Field
+          name="gender"
+          validators={{ onChange: birthFieldSchemas.gender, onSubmit: birthFieldSchemas.gender }}
+          children={(field) => (
+            <SelectField
+              className={SELECT_CLASS}
+              field={field}
+              label="Giới tính"
+              options={GENDER_OPTIONS}
+              placeholder="Chọn giới tính"
+            />
+          )}
+        />
       </div>
 
-      {/* Never disabled: TanStack Form keeps a form-level onSubmit error until the next submit, so a
-          disabled button would lock the form after the first failed attempt. */}
       <form.Subscribe
         selector={({ isSubmitting }) => isSubmitting}
         children={(isSubmitting) => (
-          <Button
-            className={cn(
-              'mx-auto mt-2 flex aspect-[808/161] h-auto w-full max-w-[420px] items-center justify-center rounded-none bg-transparent p-0 text-lg font-bold tracking-wide text-[#fdf3dc] uppercase [text-shadow:0_1px_3px_rgba(60,26,4,0.85)] hover:bg-transparent sm:text-2xl sm:tracking-wider',
-              // Phóng bằng thuộc tính `scale` chứ không phải `transform` — xem ghi chú trong styles.css.
-              'transition-[scale,filter] duration-200 ease-out hover:scale-[1.03] active:scale-[0.98]',
-              // Quầng sáng vẽ bằng `drop-shadow` chứ không phải `box-shadow`: nền nút là ảnh PNG có
-              // góc cắt, `box-shadow` sẽ đổ bóng theo hình chữ nhật chứ không theo dáng nút.
-              'hover:brightness-110 hover:drop-shadow-[0_0_18px_rgba(224,189,118,0.55)]',
-              'focus-visible:brightness-110 focus-visible:drop-shadow-[0_0_18px_rgba(224,189,118,0.55)]',
-              'motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100',
-            )}
-            style={SUBMIT_PLATE_STYLE}
-            type="submit"
-          >
-            {isSubmitting ? 'Đang mở lá số...' : 'Lập lá số của tôi'}
-          </Button>
+          <CtaButton isFullWidth tone={CtaTone.Gold} type="submit">
+            {isSubmitting ? 'Đang mở lá số...' : 'Lập lá số của tôi'}{' '}
+            <span aria-hidden="true">→</span>
+          </CtaButton>
         )}
       />
     </Form>

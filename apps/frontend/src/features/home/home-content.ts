@@ -150,16 +150,26 @@ export const KNOWLEDGE = {
   ],
 } as const;
 
+export enum AssuranceIcon {
+  Accuracy = 'accuracy',
+  Clarity = 'clarity',
+  Privacy = 'privacy',
+  Free = 'free',
+}
+
+interface Assurance {
+  readonly label: string;
+  readonly icon: AssuranceIcon;
+}
+
 export const YOUR_STORY = {
   eyebrow: '07 / Câu chuyện của bạn',
-  titleStart: 'Câu chuyện của',
-  emphasis: 'bạn',
-  titleEnd: 'bắt đầu từ đây',
-  formHeading: 'Khoảnh khắc bạn sinh ra',
+  titleStart: 'Câu chuyện của bạn',
+  emphasis: 'bắt đầu từ đây',
   assurances: [
-    'Chính xác & khoa học',
-    'Dễ hiểu & trực quan',
-    'Bảo mật thông tin',
-    'Miễn phí trọn đời',
-  ],
+    { label: 'Chính xác & khoa học', icon: AssuranceIcon.Accuracy },
+    { label: 'Dễ hiểu & trực quan', icon: AssuranceIcon.Clarity },
+    { label: 'Bảo mật thông tin', icon: AssuranceIcon.Privacy },
+    { label: 'Miễn phí trọn đời', icon: AssuranceIcon.Free },
+  ] satisfies readonly Assurance[],
 } as const;

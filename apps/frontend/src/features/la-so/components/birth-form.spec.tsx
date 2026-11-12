@@ -66,6 +66,43 @@ describe('BirthForm', () => {
     });
   });
 
+  it('shows a visible label above every field', () => {
+    render(<BirthForm />);
+
+    for (const label of [
+      'Họ & Tên',
+      'Ngày sinh',
+      'Tháng sinh',
+      'Năm sinh',
+      'Giờ sinh',
+      'Giới tính',
+    ]) {
+      expect(screen.getByText(label).className).not.toMatch(/(^|\s)sr-only(\s|$)/);
+    }
+  });
+
+  it('offers solar and lunar as two choices, solar first and chosen', () => {
+    render(<BirthForm />);
+
+    expect(
+      screen.getAllByRole('radio').map((choice) => choice.closest('label')?.textContent),
+    ).toEqual(['Dương lịch', 'Âm lịch']);
+    expect(screen.getByRole<HTMLInputElement>('radio', { name: 'Dương lịch' }).checked).toBe(true);
+  });
+
+  it('opens the chart on the lunar calendar once lunar is chosen', async () => {
+    render(<BirthForm initialGender={Gender.Male} />);
+    fillBirthDetails();
+
+    fireEvent.click(screen.getByRole('radio', { name: 'Âm lịch' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Lập lá số của tôi' }));
+
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalledTimes(1));
+    expect(mockNavigate.mock.calls[0][0].search).toEqual(
+      expect.objectContaining({ calendar: CalendarType.Lunar }),
+    );
+  });
+
   it('opens the chart without a view year when none was given', async () => {
     render(<BirthForm initialGender={Gender.Male} />);
     fillBirthDetails();
