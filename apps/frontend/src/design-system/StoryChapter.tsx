@@ -1,4 +1,4 @@
-import { type ReactElement, type ReactNode, useEffect, useRef } from 'react';
+import { type ReactElement, type ReactNode, useLayoutEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { CHAPTER_TONE_CLASS, type ChapterTone } from './chapter-tone';
 import { useStoryRegistration } from './StoryProvider';
@@ -21,7 +21,7 @@ export function StoryChapter({
   const ref = useRef<HTMLElement>(null);
   const register = useStoryRegistration();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const element = ref.current;
     if (register === null || element === null) {
       return;
@@ -34,7 +34,8 @@ export function StoryChapter({
       ref={ref}
       id={id}
       data-tone={tone}
-      className={cn('relative isolate', CHAPTER_TONE_CLASS[tone], className)}
+      tabIndex={-1}
+      className={cn('relative isolate focus:outline-none', CHAPTER_TONE_CLASS[tone], className)}
     >
       {children}
     </section>

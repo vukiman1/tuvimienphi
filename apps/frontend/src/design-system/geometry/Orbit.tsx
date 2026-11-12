@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react';
+import type { CSSProperties, ReactElement } from 'react';
 import { pointsOnCircle } from './points-on-circle';
 
 const VIEW_BOX = '-50 -50 100 100';
@@ -11,15 +11,27 @@ interface OrbitProps {
   readonly rings?: number;
   readonly points?: number;
   readonly className?: string;
+  readonly style?: CSSProperties;
 }
 
-export function Orbit({ rings = DEFAULT_RINGS, points = 0, className }: OrbitProps): ReactElement {
+export function Orbit({
+  rings = DEFAULT_RINGS,
+  points = 0,
+  className,
+  style,
+}: OrbitProps): ReactElement {
   const ringRadii = Array.from(
     { length: rings },
     (_, index) => OUTER_RADIUS * (1 - index * RING_STEP),
   );
   return (
-    <svg viewBox={VIEW_BOX} aria-hidden="true" focusable="false" className={className}>
+    <svg
+      viewBox={VIEW_BOX}
+      aria-hidden="true"
+      focusable="false"
+      className={className}
+      style={style}
+    >
       {ringRadii.map((radius) => (
         <circle
           key={radius}

@@ -51,7 +51,7 @@ function mockHeaderBottom(bottom: number): void {
 function StoryPage(): ReactElement {
   return (
     <StoryProvider>
-      <SiteHeader />
+      <SiteHeader isStoryPage />
       <StoryChapter id="mo-dau" tone={ChapterTone.Night} label="Mở đầu">
         Mở đầu
       </StoryChapter>
@@ -124,6 +124,20 @@ describe('SiteHeader', () => {
 
     await scrollTo({ 'mo-dau': -1700, 'hieu-dung': -900, 'cau-chuyen': 0 });
     expect(screen.getByRole('banner').className).toContain('text-ink');
+  });
+
+  it('paints the background of the chapter under it, so chapter text never shows through', async () => {
+    await renderAt('/', StoryPage);
+    mockHeaderBottom(50);
+
+    await scrollTo({ 'mo-dau': -100, 'hieu-dung': 700, 'cau-chuyen': 1500 });
+    expect(screen.getByRole('banner').className).toContain('bg-night');
+
+    await scrollTo({ 'mo-dau': -900, 'hieu-dung': -100, 'cau-chuyen': 700 });
+    expect(screen.getByRole('banner').className).toContain('bg-ember');
+
+    await scrollTo({ 'mo-dau': -2500, 'hieu-dung': -1700, 'cau-chuyen': -900 });
+    expect(screen.getByRole('banner').className).toContain('bg-day');
   });
 
   it('takes its tone from the chapter under its bottom edge', async () => {

@@ -2,11 +2,16 @@ import { type RefObject, useEffect, useState } from 'react';
 import { usePrefersReducedMotion } from '@/hooks/use-prefers-reduced-motion';
 import { sectionProgress } from './scroll-progress';
 
-const FINAL_PROGRESS = 1;
+export interface SectionProgress {
+  readonly progress: number;
+  readonly isLive: boolean;
+}
 
-export function useSectionProgress(ref: RefObject<HTMLElement | null>): number {
+const STILL: SectionProgress = { progress: 1, isLive: false };
+
+export function useSectionProgress(ref: RefObject<HTMLElement | null>): SectionProgress {
   const prefersReducedMotion = usePrefersReducedMotion();
-  const [progress, setProgress] = useState<number | null>(null);
+  const [measured, setMeasured] = useState<SectionProgress>(STILL);
 
   useEffect(() => {
     if (prefersReducedMotion) {
@@ -20,7 +25,7 @@ export function useSectionProgress(ref: RefObject<HTMLElement | null>): number {
         return;
       }
       const { top, height } = element.getBoundingClientRect();
-      setProgress(sectionProgress(top, height, window.innerHeight));
+      setMeasured({ progress: sectionProgress(top, height, window.innerHeight), isLive: true });
     };
     const schedule = (): void => {
       if (frame === 0) {
@@ -36,5 +41,5 @@ export function useSectionProgress(ref: RefObject<HTMLElement | null>): number {
     };
   }, [prefersReducedMotion, ref]);
 
-  return prefersReducedMotion || progress === null ? FINAL_PROGRESS : progress;
+  return prefersReducedMotion ? STILL : measured;
 }

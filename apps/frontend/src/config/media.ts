@@ -34,20 +34,9 @@ export const MEDIA = {
     panelBottom: mediaUrl('/auth/panel-bottom.webp'),
   },
   home: {
-    heroVideo: mediaUrl('/home/hero-video.mp4'),
-    heroVideoCalm: mediaUrl('/home/hero-video-calm.mp4'),
-    heroPoster: mediaUrl('/home/hero-poster.webp'),
     heroAmDuong: mediaUrl('/home/hero-am-duong.webp'),
     ctaPlate: mediaUrl('/home/cta-plate.webp'),
-    laSoDemo: mediaUrl('/home/la-so-demo.webp'),
-    chartScreen: mediaUrl('/home/chart-screen.webp'),
-    decorMountainLeft: mediaUrl('/home/decor-mountain-left.webp'),
-    decorMountainRight: mediaUrl('/home/decor-mountain-right.webp'),
-    decorCrane: mediaUrl('/home/decor-crane.webp'),
-    woodPanel: mediaUrl('/home/wood-panel.webp'),
     readerGalaxy: mediaUrl('/home/reader-galaxy.webp'),
-    understandingSky: mediaUrl('/home/understanding-sky.webp'),
-    knowledgePaper: mediaUrl('/home/knowledge-paper.webp'),
     decorPhongCanh: mediaUrl('/home/decor-phong-canh.webp'),
   },
   laSo: {
@@ -105,10 +94,6 @@ export function xuatHanhIconUrl(slug: string): string {
 }
 
 /** Named separately from MEDIA because the file is picked at runtime, not known upfront. */
-export function homeIconUrl(name: string): string {
-  return mediaUrl(`/home/icons/${name}.webp`);
-}
-
 export function zodiacIconUrl(fileName: string): string {
   return mediaUrl(`/zodiac/${fileName}.png`);
 }

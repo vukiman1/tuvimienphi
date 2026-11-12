@@ -88,10 +88,10 @@ describe('useSectionProgress', () => {
       window.dispatchEvent(new Event('scroll'));
     });
 
-    expect(result.current).toBe(1);
+    expect(result.current).toEqual({ progress: 1, isLive: false });
   });
 
-  it('reports the final state until the reader scrolls, so prerendered markup is complete', () => {
+  it('reports a still, complete state until the reader scrolls, so prerendered markup is complete', () => {
     const element = document.createElement('div');
     jest
       .spyOn(element, 'getBoundingClientRect')
@@ -99,7 +99,7 @@ describe('useSectionProgress', () => {
 
     const { result } = renderHook(() => useSectionProgress({ current: element }));
 
-    expect(result.current).toBe(1);
+    expect(result.current).toEqual({ progress: 1, isLive: false });
   });
 
   it('follows the scroll position once the reader scrolls', async () => {
@@ -114,6 +114,6 @@ describe('useSectionProgress', () => {
       await new Promise((resolve) => window.requestAnimationFrame(resolve));
     });
 
-    expect(result.current).toBe(0.5);
+    expect(result.current).toEqual({ progress: 0.5, isLive: true });
   });
 });

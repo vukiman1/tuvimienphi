@@ -4,7 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
+  useLayoutEffect,
   useMemo,
   useState,
 } from 'react';
@@ -70,7 +70,7 @@ export function useChapterAt(anchor: ChapterAnchor): ChapterSummary | null {
   const chapters = useContext(StoryContext)?.chapters ?? NO_CHAPTERS;
   const [activeId, setActiveId] = useState<string | null>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (chapters.length === 0) {
       return;
     }

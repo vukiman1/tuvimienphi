@@ -13,7 +13,7 @@ export { Orbit } from './geometry/Orbit';
 export { pointsOnCircle, type CirclePoint } from './geometry/points-on-circle';
 export { chapterIndexAt, type ChapterBounds } from './motion/active-chapter';
 export { sectionProgress } from './motion/scroll-progress';
-export { useSectionProgress } from './motion/use-section-progress';
+export { useSectionProgress, type SectionProgress } from './motion/use-section-progress';
 export { ReadingZone } from './ReadingZone';
 export { StickyCta } from './StickyCta';
 export { StoryChapter } from './StoryChapter';
