@@ -258,6 +258,14 @@ describe('ChapterRail', () => {
     expect(className).toContain('group-focus-visible:inline');
   });
 
+  it('keeps the fixed rail free of backdrop blur', () => {
+    render(<Story />);
+
+    for (const element of rail().querySelectorAll('*')) {
+      expect(element.getAttribute('class') ?? '').not.toContain('backdrop-blur');
+    }
+  });
+
   it('gives every dot the two-tone focus ring and stays below dialogs', () => {
     render(<Story />);
 

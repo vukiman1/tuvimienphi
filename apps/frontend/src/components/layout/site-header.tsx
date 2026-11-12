@@ -17,12 +17,12 @@ import { cn } from '@/lib/utils';
 import { selectIsInitializing, selectUser, useAuthStore } from '@/stores/auth-store';
 
 const STORY_HEADER_TONE_CLASS: Readonly<Record<ChapterTone, string>> = {
-  [ChapterTone.Night]: 'bg-night/50 text-day',
-  [ChapterTone.Deep]: 'bg-deep/50 text-day',
-  [ChapterTone.Dusk]: 'bg-dusk/60 text-day',
-  [ChapterTone.Ember]: 'bg-ember/60 text-ink',
-  [ChapterTone.Dawn]: 'bg-dawn/60 text-ink',
-  [ChapterTone.Day]: 'bg-day/85 text-ink',
+  [ChapterTone.Night]: 'bg-night/90 text-day',
+  [ChapterTone.Deep]: 'bg-deep/90 text-day',
+  [ChapterTone.Dusk]: 'bg-dusk/90 text-day',
+  [ChapterTone.Ember]: 'bg-ember/90 text-ink',
+  [ChapterTone.Dawn]: 'bg-dawn/90 text-ink',
+  [ChapterTone.Day]: 'bg-day/90 text-ink',
 };
 
 const NAV_LINK_CLASS =
@@ -92,7 +92,7 @@ export function SiteHeader({ isStoryPage = false }: SiteHeaderProps): ReactEleme
       className={
         isStoryPage
           ? cn(
-              'fixed inset-x-0 top-0 z-30 backdrop-blur-md transition-colors duration-500 motion-reduce:transition-none',
+              'fixed inset-x-0 top-0 z-30 transition-colors duration-500 motion-reduce:transition-none',
               STORY_HEADER_TONE_CLASS[storyTone],
             )
           : 'relative border-b border-ink/10 bg-day text-ink'

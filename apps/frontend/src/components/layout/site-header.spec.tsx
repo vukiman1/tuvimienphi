@@ -140,7 +140,7 @@ describe('SiteHeader', () => {
     expect(screen.getByRole('banner').className).toContain('bg-day');
   });
 
-  it('lets the chapter painting show through a blurred, tinted header', async () => {
+  it('tints the fixed header over a painting without a backdrop blur', async () => {
     await renderAt('/', StoryPage);
     mockHeaderBottom(50);
 
@@ -148,7 +148,7 @@ describe('SiteHeader', () => {
 
     const { className } = screen.getByRole('banner');
     expect(className).toMatch(/(^|\s)bg-night\/\d+(\s|$)/);
-    expect(className).toContain('backdrop-blur');
+    expect(className).not.toContain('backdrop-blur');
   });
 
   it('takes its tone from the chapter under its bottom edge', async () => {
