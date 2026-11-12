@@ -11,6 +11,7 @@ function HomeRoute(): ReactElement {
 
 export const Route = createFileRoute('/_site/')({
   component: HomeRoute,
+  staticData: { isStoryPage: true },
   validateSearch: validateHomeSearch,
   head: () =>
     seo({

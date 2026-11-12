@@ -27,7 +27,7 @@ export function DisplayTitle({
   return (
     <Heading
       className={cn(
-        'font-display leading-[1.17] font-extrabold tracking-display [word-spacing:0.12em]',
+        'font-display leading-[1.17] font-extrabold tracking-display text-balance [word-spacing:0.12em]',
         DISPLAY_SIZE_CLASS[size],
       )}
     >

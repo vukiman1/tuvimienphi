@@ -1,1 +1,1 @@
-export const HERO_SECTION_ID = 'lap-la-so';
+export const BIRTH_FORM_ANCHOR = 'lap-la-so';

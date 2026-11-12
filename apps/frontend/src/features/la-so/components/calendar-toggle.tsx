@@ -15,7 +15,7 @@ export function CalendarToggle({ value, onChange }: CalendarToggleProps) {
 
   return (
     <div className="flex shrink-0 items-center gap-2 text-sm font-medium">
-      <span className={isLunar ? 'text-[#f3e6cd]/45' : 'text-[#f6e3b6]'}>
+      <span className={isLunar ? 'text-[#f3e6cd]/70' : 'text-[#f6e3b6]'}>
         {CALENDAR_LABELS[CalendarType.Solar]}
       </span>
 
@@ -40,7 +40,7 @@ export function CalendarToggle({ value, onChange }: CalendarToggleProps) {
         />
       </button>
 
-      <span className={isLunar ? 'text-[#f6e3b6]' : 'text-[#f3e6cd]/45'}>
+      <span className={isLunar ? 'text-[#f6e3b6]' : 'text-[#f3e6cd]/70'}>
         {CALENDAR_LABELS[CalendarType.Lunar]}
       </span>
     </div>

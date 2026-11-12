@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 import { Link } from '@tanstack/react-router';
 import { TET_HUB_VIEW_YEAR } from '@org/shared-tu-vi';
 import { Gender } from '@/features/la-so/birth-input';
-import { HERO_SECTION_ID } from '@/features/home/home-anchors';
+import { BIRTH_FORM_ANCHOR } from '@/features/home/home-anchors';
 
 const CTA_COPY = `Tuổi chỉ cho biết nét chung. Nhập ngày giờ sinh để xem vận hạn ${TET_HUB_VIEW_YEAR} theo lá số của riêng bạn.`;
 
@@ -25,7 +25,7 @@ export function TetHubCta(): ReactElement {
       <Link
         to="/"
         search={{ viewYear: TET_HUB_VIEW_YEAR }}
-        hash={HERO_SECTION_ID}
+        hash={BIRTH_FORM_ANCHOR}
         className={`${CTA_LINK_CLASS} mt-4`}
       >
         Lập lá số của bạn
@@ -39,7 +39,7 @@ export function TetHubGenderCta({ gender }: TetHubGenderCtaProps): ReactElement 
     <Link
       to="/"
       search={{ viewYear: TET_HUB_VIEW_YEAR, gender }}
-      hash={HERO_SECTION_ID}
+      hash={BIRTH_FORM_ANCHOR}
       className="inline-flex items-center gap-1 text-[15px] font-semibold text-[#9e2b1e] underline-offset-4 hover:underline"
     >
       {GENDER_CTA_LABELS[gender]}

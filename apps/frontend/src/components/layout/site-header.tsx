@@ -1,9 +1,10 @@
-import { useCallback, useRef } from 'react';
+import { type ReactElement, useCallback, useRef } from 'react';
 import { Link, useRouterState } from '@tanstack/react-router';
 import { NAV_ITEMS, type NavItem } from '@/components/layout/nav-items';
 import { NavigationProgress } from '@/components/layout/navigation-progress';
 import { UserMenu } from '@/components/layout/user-menu';
 import {
+  CHAPTER_TONE_CLASS,
   type ChapterAnchor,
   ChapterTone,
   FOCUS_RING_CLASS,
@@ -11,7 +12,6 @@ import {
   LogoTone,
   isDarkTone,
   useChapterAt,
-  useStoryChapters,
 } from '@/design-system';
 import { useAuthModal } from '@/features/auth/use-auth-modal';
 import { cn } from '@/lib/utils';
@@ -56,18 +56,23 @@ function NavLink({ item, isActive, isOverDark, mutedClass }: NavLinkProps) {
   );
 }
 
-export function SiteHeader() {
+interface SiteHeaderProps {
+  readonly isStoryPage?: boolean;
+}
+
+export function SiteHeader({ isStoryPage = false }: SiteHeaderProps): ReactElement {
   const { open: openAuth } = useAuthModal();
   const user = useAuthStore(selectUser);
   const isInitializing = useAuthStore(selectIsInitializing);
   const pathname = useRouterState({ select: (state) => state.location.pathname });
-  const isOverStory = useStoryChapters().length > 0;
   const headerRef = useRef<HTMLElement>(null);
   const probeUnderHeader = useCallback<ChapterAnchor>(
     () => headerRef.current?.getBoundingClientRect().bottom ?? 0,
     [],
   );
-  const tone = useChapterAt(probeUnderHeader)?.tone ?? null;
+  const chapterUnderHeader = useChapterAt(probeUnderHeader);
+  const storyTone = chapterUnderHeader?.tone ?? ChapterTone.Day;
+  const tone = isStoryPage ? storyTone : null;
   const isOverDark = tone !== null && isDarkTone(tone);
   const mutedClass = mutedTextClass(tone);
 
@@ -76,12 +81,14 @@ export function SiteHeader() {
   return (
     <header
       ref={headerRef}
-      className={cn(
-        isOverStory
-          ? 'fixed inset-x-0 top-0 z-30 bg-transparent'
-          : 'relative border-b border-ink/10 bg-day',
-        isOverDark ? 'text-day' : 'text-ink',
-      )}
+      className={
+        isStoryPage
+          ? cn(
+              'fixed inset-x-0 top-0 z-30 transition-colors duration-500 motion-reduce:transition-none',
+              CHAPTER_TONE_CLASS[storyTone],
+            )
+          : 'relative border-b border-ink/10 bg-day text-ink'
+      }
     >
       <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-1 px-4 py-2 md:px-6">
         <Link className={cn('flex shrink-0 items-center no-underline', FOCUS_RING_CLASS)} to="/">

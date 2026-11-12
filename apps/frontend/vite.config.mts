@@ -7,9 +7,16 @@ import { createRequire } from 'node:module';
 import { fileURLToPath, URL } from 'node:url';
 import { loadFrontendConfig } from './config/index.ts';
 import { analyticsBeaconPlugin } from './tools/analytics-beacon.ts';
+import { preloadFontsPlugin } from './tools/preload-fonts.ts';
 
 const requireFromHere = createRequire(import.meta.url);
 const isAnalyze = process.env.ANALYZE === 'true';
+const HEADING_FONT_FILES: readonly RegExp[] = [
+  /inter-tight-latin-800-normal-[\w-]+\.woff2$/,
+  /inter-tight-vietnamese-800-normal-[\w-]+\.woff2$/,
+  /playfair-display-latin-600-italic-[\w-]+\.woff2$/,
+  /playfair-display-vietnamese-600-italic-[\w-]+\.woff2$/,
+];
 
 export default defineConfig(({ command, mode }) => {
   const frontendConfig = loadFrontendConfig(mode, requireFromHere);
@@ -38,6 +45,7 @@ export default defineConfig(({ command, mode }) => {
       react(),
       tailwindcss(),
       analyticsBeaconPlugin(frontendConfig.analytics.cloudflareToken),
+      preloadFontsPlugin(HEADING_FONT_FILES),
       isAnalyze &&
         visualizer({
           filename: './dist/stats.html',

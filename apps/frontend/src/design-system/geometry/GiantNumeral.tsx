@@ -1,13 +1,19 @@
-import type { ReactElement } from 'react';
+import type { CSSProperties, ReactElement } from 'react';
 import { cn } from '@/lib/utils';
 
 interface GiantNumeralProps {
-  readonly value: string;
+  readonly parts: readonly string[];
   readonly label: string;
+  readonly partStyles?: readonly CSSProperties[];
   readonly className?: string;
 }
 
-export function GiantNumeral({ value, label, className }: GiantNumeralProps): ReactElement {
+export function GiantNumeral({
+  parts,
+  label,
+  partStyles,
+  className,
+}: GiantNumeralProps): ReactElement {
   return (
     <p
       role="img"
@@ -17,7 +23,11 @@ export function GiantNumeral({ value, label, className }: GiantNumeralProps): Re
         className,
       )}
     >
-      {value}
+      {parts.map((part, index) => (
+        <span key={`${index}:${part}`} className="inline-block" style={partStyles?.[index]}>
+          {index === 0 ? part : ` ${part}`}
+        </span>
+      ))}
     </p>
   );
 }

@@ -60,7 +60,7 @@ describe('Orbit', () => {
 
 describe('GiantNumeral', () => {
   it('is announced by its label', () => {
-    render(<GiantNumeral value="12 · 03 · 1995" label="12 tháng 03 năm 1995" />);
+    render(<GiantNumeral parts={['12', '·', '03', '·', '1995']} label="12 tháng 03 năm 1995" />);
 
     expect(screen.getByLabelText('12 tháng 03 năm 1995').textContent).toBe('12 · 03 · 1995');
   });
