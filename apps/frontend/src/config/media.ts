@@ -34,8 +34,6 @@ export const MEDIA = {
     panelBottom: mediaUrl('/auth/panel-bottom.webp'),
   },
   home: {
-    heroAmDuong: mediaUrl('/home/hero-am-duong.webp'),
-    ctaPlate: mediaUrl('/home/cta-plate.webp'),
     readerGalaxy: mediaUrl('/home/reader-galaxy.webp'),
     decorPhongCanh: mediaUrl('/home/decor-phong-canh.webp'),
   },

@@ -2,7 +2,13 @@ import nx from '@nx/eslint-plugin';
 import baseConfig from '../../eslint.config.mjs';
 import noAdHocStyle from './eslint-rules/no-ad-hoc-style.mjs';
 
-const MIGRATED_FILES = ['src/components/layout/**', 'src/components/ui/**', 'src/features/home/**'];
+const MIGRATED_FILES = [
+  'src/components/layout/**',
+  'src/components/ui/**',
+  'src/features/home/**',
+  'src/features/la-so/components/birth-form.tsx',
+  'src/features/la-so/components/calendar-toggle.tsx',
+];
 const DESIGN_SYSTEM_FILES = ['src/design-system/**'];
 
 const adHocStyleGuard =

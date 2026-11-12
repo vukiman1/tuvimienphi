@@ -25,6 +25,7 @@ import {
   useChapterAt,
 } from '.';
 
+const HIDDEN_TOKEN = /(^|\s)hidden(\s|$)/;
 const DARK_TONES = [ChapterTone.Night, ChapterTone.Deep, ChapterTone.Dusk] as const;
 const LIGHT_TONES = [ChapterTone.Ember, ChapterTone.Dawn, ChapterTone.Day] as const;
 
@@ -116,6 +117,10 @@ function currentRailLink(): HTMLElement | undefined {
     .find((link) => link.getAttribute('aria-current') === 'location');
 }
 
+function currentRailDot(): Element | null | undefined {
+  return currentRailLink()?.querySelector('[data-rail-dot]');
+}
+
 describe('StoryChapter', () => {
   it('renders a section with its id and tone', () => {
     const { container } = render(
@@ -186,9 +191,7 @@ describe('ChapterRail', () => {
     await scrollTo({ 'mo-dau': -1700, 'hieu-dung': -900, 'cau-chuyen': -100 });
 
     expect(rail().className).toContain('text-ink');
-    expect(currentRailLink()?.firstElementChild?.className).toContain(
-      'group-aria-[current=location]:bg-current',
-    );
+    expect(currentRailDot()?.className).toContain('group-aria-[current=location]:bg-current');
   });
 
   it('uses day dots and a gold active dot over a dark chapter', async () => {
@@ -197,9 +200,31 @@ describe('ChapterRail', () => {
     await scrollTo({ 'mo-dau': -1700, 'hieu-dung': -900, 'cau-chuyen': -100 });
 
     expect(rail().className).toContain('text-day');
-    expect(currentRailLink()?.firstElementChild?.className).toContain(
-      'group-aria-[current=location]:bg-gold',
-    );
+    expect(currentRailDot()?.className).toContain('group-aria-[current=location]:bg-gold');
+  });
+
+  it('numbers every chapter and spells out only the current one', async () => {
+    render(<Story />);
+
+    await scrollTo({ 'mo-dau': -900, 'hieu-dung': -100, 'cau-chuyen': 900 });
+
+    const [opening, turn, story] = within(rail()).getAllByRole('link');
+    expect(within(opening).getByText('1.')).toBeTruthy();
+    expect(within(turn).getByText('2.')).toBeTruthy();
+    expect(within(story).getByText('3.')).toBeTruthy();
+    expect(within(turn).getByText('Hiểu đúng').className).not.toMatch(HIDDEN_TOKEN);
+    expect(within(opening).getByText('Mở đầu').className).toMatch(HIDDEN_TOKEN);
+    expect(within(story).getByText('Câu chuyện của bạn').className).toMatch(HIDDEN_TOKEN);
+  });
+
+  it('spells out a chapter name on hover and keyboard focus', async () => {
+    render(<Story />);
+
+    await scrollTo({ 'mo-dau': -900, 'hieu-dung': -100, 'cau-chuyen': 900 });
+
+    const { className } = within(rail()).getByText('Mở đầu');
+    expect(className).toContain('group-hover:inline');
+    expect(className).toContain('group-focus-visible:inline');
   });
 
   it('gives every dot the two-tone focus ring and stays below dialogs', () => {

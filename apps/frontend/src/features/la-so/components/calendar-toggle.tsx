@@ -1,48 +1,43 @@
+import type { ReactElement } from 'react';
 import { CALENDAR_LABELS, CalendarType } from '@/features/la-so/birth-input';
-import { MEDIA } from '@/config/media';
+import { cn } from '@/lib/utils';
 
-/** Track width minus knob width minus the padding on both sides — how far the knob travels. */
-const KNOB_TRAVEL = 'translate-x-[30px]';
+const CALENDAR_ORDER = [CalendarType.Solar, CalendarType.Lunar] as const;
+
+const CHOICE_CLASS =
+  'cursor-pointer rounded-full px-4 py-2 text-center text-sm font-semibold transition-colors motion-reduce:transition-none has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-ink';
 
 interface CalendarToggleProps {
   readonly value: CalendarType;
   readonly onChange: (value: CalendarType) => void;
 }
 
-/** Solar on the left, lunar on the right — the two calendars a birth date can be given in. */
-export function CalendarToggle({ value, onChange }: CalendarToggleProps) {
-  const isLunar = value === CalendarType.Lunar;
-
+export function CalendarToggle({ value, onChange }: CalendarToggleProps): ReactElement {
   return (
-    <div className="flex shrink-0 items-center gap-2 text-sm font-medium">
-      <span className={isLunar ? 'text-[#f3e6cd]/70' : 'text-[#f6e3b6]'}>
-        {CALENDAR_LABELS[CalendarType.Solar]}
-      </span>
-
-      <button
-        aria-checked={isLunar}
-        aria-label="Dùng lịch âm"
-        className={`relative h-[34px] w-[64px] shrink-0 rounded-full border transition-colors focus-visible:ring-2 focus-visible:ring-[#e0bd76] focus-visible:outline-none ${
-          isLunar ? 'border-[#c9a15c] bg-[#1c1309]' : 'border-[#d9b063] bg-[#ecd9a8]'
-        }`}
-        onClick={() => onChange(isLunar ? CalendarType.Solar : CalendarType.Lunar)}
-        role="switch"
-        type="button"
-      >
-        {/* A full turn rather than a partial one: the disc reads as rolling to the other side. */}
-        <img
-          alt=""
-          aria-hidden
-          className={`absolute top-[2px] left-[2px] size-[28px] transition-transform duration-300 ease-out motion-reduce:transition-none ${
-            isLunar ? `${KNOB_TRAVEL} rotate-[360deg]` : 'translate-x-0 rotate-[0deg]'
-          }`}
-          src={MEDIA.home.heroAmDuong}
-        />
-      </button>
-
-      <span className={isLunar ? 'text-[#f6e3b6]' : 'text-[#f3e6cd]/70'}>
-        {CALENDAR_LABELS[CalendarType.Lunar]}
-      </span>
-    </div>
+    <fieldset className="grid w-full max-w-xs grid-cols-2 justify-self-center rounded-full border border-ink/15 bg-day-200 p-1">
+      <legend className="sr-only">Loại lịch</legend>
+      {CALENDAR_ORDER.map((calendar) => {
+        const isChosen = value === calendar;
+        return (
+          <label
+            key={calendar}
+            className={cn(
+              CHOICE_CLASS,
+              isChosen ? 'bg-gold text-ink shadow-sm' : 'text-ink-soft hover:text-ink',
+            )}
+          >
+            <input
+              checked={isChosen}
+              className="sr-only"
+              name="calendar"
+              onChange={() => onChange(calendar)}
+              type="radio"
+              value={calendar}
+            />
+            {CALENDAR_LABELS[calendar]} lịch
+          </label>
+        );
+      })}
+    </fieldset>
   );
 }
