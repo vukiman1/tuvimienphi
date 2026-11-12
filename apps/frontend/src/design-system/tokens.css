@@ -29,4 +29,9 @@
   --text-reading: 1.0625rem;
   --leading-reading: 1.7;
   --container-reading: 68ch;
+
+  --shadow-glow-gold: 0 0 0.75rem rgb(242 180 65 / 0.45), 0 0 0.125rem rgb(242 180 65 / 0.8);
+  --shadow-glow-gold-strong:
+    inset 0 0 1.25rem rgb(242 180 65 / 0.35), 0 0 1rem rgb(242 180 65 / 0.6);
+  --drop-shadow-glow-gold: 0 0 0.375rem rgb(242 180 65 / 0.9);
 }

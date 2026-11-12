@@ -140,6 +140,17 @@ describe('SiteHeader', () => {
     expect(screen.getByRole('banner').className).toContain('bg-day');
   });
 
+  it('lets the chapter painting show through a blurred, tinted header', async () => {
+    await renderAt('/', StoryPage);
+    mockHeaderBottom(50);
+
+    await scrollTo({ 'mo-dau': -100, 'hieu-dung': 700, 'cau-chuyen': 1500 });
+
+    const { className } = screen.getByRole('banner');
+    expect(className).toMatch(/(^|\s)bg-night\/\d+(\s|$)/);
+    expect(className).toContain('backdrop-blur');
+  });
+
   it('takes its tone from the chapter under its bottom edge', async () => {
     await renderAt('/', StoryPage);
     mockHeaderBottom(90);

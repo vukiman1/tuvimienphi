@@ -83,6 +83,7 @@ Contrast rules, from measured ratios:
 
 - **Display:** Inter Tight. Headings at 600–800 with tight tracking; giant numerals at 300.
 - **Emphasis:** Playfair Display Italic 600, for at most one emphasised word or phrase per heading.
+- **Serif titles:** Playfair Display 700 for chapter and section titles below the hero, and for statement-style sentences (Kim An's mock, 2026-11-12). Page heroes stay Inter Tight. Accent emphasis is dawn gold (#f2c879) and appears only on dark surfaces: Night, Deep and Dusk, or a painting darkened behind the text. On lighter tones it stays ink. Text over a painting is checked by sampling the painting behind the text, and must reach at least 3:1 for large text.
 - **Everything else:** Be Vietnam Pro, weights 400–700.
 - Heading line height is never below 1.15, so stacked Vietnamese diacritics never collide.
 - No Chinese characters anywhere, as text or as artwork.
@@ -139,7 +140,7 @@ An asset is accepted only if it:
 - **Lint guard.** An ESLint rule rejects hex colours and arbitrary `[Npx]` values in `className` and `style` outside `design-system/`. Each migrated page is checked under this rule; the rule becomes global when the last page migrates.
 - **Fonts.**
   - Self-host Inter Tight, Playfair Display Italic 600 and Be Vietnam Pro, subset to Latin and Vietnamese, with `font-display: swap`. Be Vietnam Pro is already self-hosted (#182).
-  - Preload only the Inter Tight face used by the home heading, from Phase 3, and only if it improves FCP.
+  - Preload the Inter Tight 800 and Playfair Italic 600 files (Latin + Vietnamese) used by the home h1. Both are load-bearing: dropping either regressed CLS or LCP (#187, reverted in #188).
   - This replaces the Google Fonts `<link>`, cutting a third-party round trip.
 - **SEO plumbing that stays:** `src/lib/seo.ts`, the prerender step and `tools/seo-routes.mjs`. Each redesigned page keeps its title, description, canonical and Open Graph tags. Pages gain JSON-LD where it fits (`Article` on kiến thức, `BreadcrumbList` site-wide, `FAQPage` where real Q&A exists). Each page also gets a designed OG image in the D3 style.
 - **Measurement (Phase 0).**

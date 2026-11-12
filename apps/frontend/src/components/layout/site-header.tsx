@@ -4,7 +4,6 @@ import { NAV_ITEMS, type NavItem } from '@/components/layout/nav-items';
 import { NavigationProgress } from '@/components/layout/navigation-progress';
 import { UserMenu } from '@/components/layout/user-menu';
 import {
-  CHAPTER_TONE_CLASS,
   type ChapterAnchor,
   ChapterTone,
   FOCUS_RING_CLASS,
@@ -16,6 +15,15 @@ import {
 import { useAuthModal } from '@/features/auth/use-auth-modal';
 import { cn } from '@/lib/utils';
 import { selectIsInitializing, selectUser, useAuthStore } from '@/stores/auth-store';
+
+const STORY_HEADER_TONE_CLASS: Readonly<Record<ChapterTone, string>> = {
+  [ChapterTone.Night]: 'bg-night/50 text-day',
+  [ChapterTone.Deep]: 'bg-deep/50 text-day',
+  [ChapterTone.Dusk]: 'bg-dusk/60 text-day',
+  [ChapterTone.Ember]: 'bg-ember/60 text-ink',
+  [ChapterTone.Dawn]: 'bg-dawn/60 text-ink',
+  [ChapterTone.Day]: 'bg-day/85 text-ink',
+};
 
 const NAV_LINK_CLASS =
   'relative shrink-0 pb-1 text-xs tracking-wide whitespace-nowrap no-underline transition-colors md:text-sm after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:transition-transform after:duration-300 hover:after:scale-x-100 motion-reduce:after:transition-none';
@@ -84,8 +92,8 @@ export function SiteHeader({ isStoryPage = false }: SiteHeaderProps): ReactEleme
       className={
         isStoryPage
           ? cn(
-              'fixed inset-x-0 top-0 z-30 transition-colors duration-500 motion-reduce:transition-none',
-              CHAPTER_TONE_CLASS[storyTone],
+              'fixed inset-x-0 top-0 z-30 backdrop-blur-md transition-colors duration-500 motion-reduce:transition-none',
+              STORY_HEADER_TONE_CLASS[storyTone],
             )
           : 'relative border-b border-ink/10 bg-day text-ink'
       }

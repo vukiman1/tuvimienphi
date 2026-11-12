@@ -78,6 +78,16 @@ describe('SiteLayout', () => {
     expect(screen.getByRole('banner').className).toContain('fixed');
   });
 
+  it('closes a story page with a night footer', async () => {
+    await renderPage(true);
+    expect(screen.getByRole('contentinfo').className).toContain('bg-night');
+  });
+
+  it('keeps the day footer on routes that are not a story', async () => {
+    await renderPage(false);
+    expect(screen.getByRole('contentinfo').className).toContain('bg-day');
+  });
+
   it('keeps the solid header on other routes, even if they render chapters', async () => {
     await renderPage(false);
     await scrollNightChapterUnderHeader();

@@ -44,8 +44,28 @@ describe('Orbit', () => {
   it('draws the requested rings and points', () => {
     const { container } = render(<Orbit rings={2} points={12} />);
 
-    expect(container.querySelectorAll('circle[fill="none"]')).toHaveLength(2);
+    expect(container.querySelectorAll('ellipse[fill="none"]')).toHaveLength(2);
     expect(container.querySelectorAll('circle[fill="currentColor"]')).toHaveLength(12);
+  });
+
+  it('flattens its rings and points into an ellipse', () => {
+    const { container } = render(<Orbit rings={1} points={4} verticalScale={0.5} />);
+    const ring = container.querySelector('ellipse[fill="none"]');
+    const pointYs = [...container.querySelectorAll('circle[fill="currentColor"]')].map((point) =>
+      Number(point.getAttribute('cy')),
+    );
+
+    expect(Number(ring?.getAttribute('ry'))).toBeCloseTo(Number(ring?.getAttribute('rx')) / 2);
+    expect(Math.min(...pointYs)).toBeCloseTo(-Number(ring?.getAttribute('ry')));
+    expect(container.querySelector('svg')?.getAttribute('viewBox')).toBe('-50 -25 100 50');
+  });
+
+  it('draws its points at the requested size', () => {
+    const { container } = render(<Orbit rings={1} points={3} pointRadius={0.5} />);
+
+    for (const point of container.querySelectorAll('circle[fill="currentColor"]')) {
+      expect(point.getAttribute('r')).toBe('0.5');
+    }
   });
 
   it('takes its colour from the text colour only', () => {
