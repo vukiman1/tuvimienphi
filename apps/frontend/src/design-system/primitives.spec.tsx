@@ -17,6 +17,7 @@ import {
   DisplayTitle,
   Emphasis,
   FOCUS_RING_CLASS,
+  PageHero,
   ReadingZone,
   StickyCta,
   StoryChapter,
@@ -302,6 +303,115 @@ describe('TextLink', () => {
       FOCUS_RING_CLASS,
     );
   });
+
+  it('forwards search params to the destination', async () => {
+    await renderInRouter(
+      <TextLink to="/" search={{ gender: 'nam' }}>
+        Lập lá số cho nam mạng
+      </TextLink>,
+    );
+
+    expect(
+      (await screen.findByRole('link', { name: 'Lập lá số cho nam mạng' })).getAttribute('href'),
+    ).toContain('gender=nam');
+  });
+});
+
+describe('TextLink with route params', () => {
+  it('fills the route params into the destination', async () => {
+    await renderInRouter(
+      <TextLink to="/kien-thuc/tu-vi-2027/$slug" params={{ slug: 'tuoi-dan' }}>
+        Xem đầy đủ về tuổi Dần năm 2027
+      </TextLink>,
+    );
+
+    expect(
+      (await screen.findByRole('link', { name: 'Xem đầy đủ về tuổi Dần năm 2027' })).getAttribute(
+        'href',
+      ),
+    ).toBe('/kien-thuc/tu-vi-2027/tuoi-dan');
+  });
+});
+
+describe('PageHero', () => {
+  const LONGEST_HUB_TITLE = 'Tử vi tuổi Canh Thìn 2000 năm 2027';
+
+  function renderHero(): HTMLElement {
+    render(
+      <PageHero
+        breadcrumb={<nav aria-label="Đường dẫn">Kiến thức</nav>}
+        eyebrow="Tết 2027 · năm Đinh Mùi"
+        title={LONGEST_HUB_TITLE}
+        lead="Tuổi chỉ cho biết nét chung."
+      />,
+    );
+    return screen.getByRole('heading', { level: 1 });
+  }
+
+  it('renders a Night band with the title as the only h1', () => {
+    const title = renderHero();
+
+    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
+    expect(title.textContent).toBe(LONGEST_HUB_TITLE);
+    const band = title.closest('section');
+    expect(band?.className).toContain('bg-night');
+    expect(band?.className).toContain('text-day');
+    expect(within(band as HTMLElement).getByRole('navigation', { name: 'Đường dẫn' })).toBeTruthy();
+  });
+
+  it('hides its ornament from assistive tech', () => {
+    const band = renderHero().closest('section') as HTMLElement;
+
+    const ornament = band.querySelector('svg');
+    expect(ornament?.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('sets the title in the preloaded sans face', () => {
+    const title = renderHero();
+
+    expect(title.className).toContain('font-display');
+    expect(title.className).not.toContain('font-emphasis');
+  });
+
+  it('shows its ornament only where it clears the capped title column', () => {
+    const title = renderHero();
+    const ornament = (title.closest('section') as HTMLElement).querySelector('svg');
+
+    expect(ornament?.getAttribute('class')).toMatch(/(^|\s)hidden(\s|$)/);
+    expect(ornament?.getAttribute('class')).toContain('xl:block');
+    expect(title.parentElement?.className).toContain('max-w-2xl');
+  });
+
+  it('paints its background only from tablet width, lazily, so phones never fetch it', () => {
+    render(
+      <PageHero
+        breadcrumb={<nav aria-label="Đường dẫn">Kiến thức</nav>}
+        eyebrow="Tết 2027 · năm Đinh Mùi"
+        title={LONGEST_HUB_TITLE}
+        painting={{ small: '/tet/hero-night-768.webp', large: '/tet/hero-night-1536.webp' }}
+      />,
+    );
+    const band = screen.getByRole('heading', { level: 1 }).closest('section') as HTMLElement;
+    const painting = band.querySelector('img');
+
+    expect(painting?.getAttribute('alt')).toBe('');
+    expect(painting?.getAttribute('fetchpriority')).toBe('low');
+    expect(painting?.getAttribute('loading')).toBe('lazy');
+    expect(painting?.getAttribute('class')).toMatch(/(^|\s)hidden(\s|$)/);
+    expect(painting?.getAttribute('class')).toContain('md:block');
+    expect(painting?.getAttribute('srcset')).toBe(
+      '/tet/hero-night-768.webp 768w, /tet/hero-night-1536.webp 1536w',
+    );
+    expect(band.querySelector('svg')).toBeNull();
+  });
+
+  it('lets the longest hub title wrap instead of overflowing', () => {
+    const title = renderHero();
+
+    expect(title.className).toContain('text-balance');
+    expect(title.parentElement?.className).toContain('min-w-0');
+    expect(title.parentElement?.className).toContain('break-words');
+  });
 });
 
 describe('DisplayTitle', () => {
@@ -313,6 +423,18 @@ describe('DisplayTitle', () => {
     );
 
     expect(screen.getByRole('heading', { level: 1, name: 'Lập lá số tử vi' })).toBeTruthy();
+  });
+
+  it('names the section that points at its id', () => {
+    render(
+      <section aria-labelledby="tam-tai-title">
+        <DisplayTitle id="tam-tai-title" size={DisplaySize.Card}>
+          Tam tai
+        </DisplayTitle>
+      </section>,
+    );
+
+    expect(screen.getByRole('region', { name: 'Tam tai' })).toBeTruthy();
   });
 
   it('never sets a line height that clips stacked Vietnamese marks', () => {

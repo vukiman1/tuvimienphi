@@ -42,16 +42,16 @@ export function HowWeCount(): ReactElement {
   return (
     <section
       aria-labelledby={HOW_WE_COUNT_TITLE_ID}
-      className="rounded-2xl border border-[#e7d9bf] bg-card px-6 py-5"
+      className="rounded-2xl bg-day-200 px-6 py-6 text-ink"
     >
-      <h2 id={HOW_WE_COUNT_TITLE_ID} className="text-[18px] font-semibold text-[#2a1f0e]">
+      <h2 id={HOW_WE_COUNT_TITLE_ID} className="text-xl font-bold">
         Cách chúng tôi tính
       </h2>
-      <dl className="mt-3 flex flex-col gap-3 text-[15px] leading-relaxed text-[#3b2d18]">
+      <dl className="mt-4 flex flex-col gap-3 text-base leading-relaxed">
         {METHOD_NOTES.map(({ label, text }) => (
           <div key={label}>
-            <dt className="font-semibold text-[#2a1f0e]">{label}</dt>
-            <dd>{text}</dd>
+            <dt className="font-bold">{label}</dt>
+            <dd className="text-ink-soft">{text}</dd>
           </div>
         ))}
       </dl>

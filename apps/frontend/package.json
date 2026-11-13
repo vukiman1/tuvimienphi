@@ -44,6 +44,15 @@
         ],
         "executor": "nx:noop"
       },
+      "tet-hub-og": {
+        "command": "node tools/tet-hub-og.mjs",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "dependsOn": [
+          "^build"
+        ]
+      },
       "tet-hub-preview": {
         "command": "node tools/tet-hub-preview.mjs",
         "options": {

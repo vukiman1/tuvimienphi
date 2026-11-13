@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
-import { Link } from '@tanstack/react-router';
 import { TET_HUB_VIEW_YEAR } from '@org/shared-tu-vi';
+import { CtaButton, CtaTone, TextLink } from '@/design-system';
 import { Gender } from '@/features/la-so/birth-input';
 import { BIRTH_FORM_ANCHOR } from '@/features/home/home-anchors';
 
@@ -11,39 +11,31 @@ const GENDER_CTA_LABELS: Readonly<Record<Gender, string>> = {
   [Gender.Female]: 'Lập lá số cho nữ mạng',
 };
 
-const CTA_LINK_CLASS =
-  'inline-flex items-center gap-2 rounded-full bg-[#9e2b1e] px-6 py-2.5 text-[13px] font-semibold tracking-wide text-[#fdf3dc] no-underline transition-colors hover:bg-[#8a2318] focus-visible:ring-2 focus-visible:ring-[#e0bd76] focus-visible:outline-none';
-
 interface TetHubGenderCtaProps {
   readonly gender: Gender;
 }
 
 export function TetHubCta(): ReactElement {
   return (
-    <section className="rounded-2xl border border-[#e0cfa5] bg-[#faf5ea] px-6 py-6 text-center">
-      <p className="text-[17px] leading-relaxed text-[#2a1f0e]">{CTA_COPY}</p>
-      <Link
+    <section className="flex flex-col items-center gap-5 rounded-2xl bg-deep px-6 py-8 text-center text-day">
+      <p className="text-reading leading-reading">{CTA_COPY}</p>
+      <CtaButton
         to="/"
         search={{ viewYear: TET_HUB_VIEW_YEAR }}
         hash={BIRTH_FORM_ANCHOR}
-        className={`${CTA_LINK_CLASS} mt-4`}
+        tone={CtaTone.Gold}
       >
         Lập lá số của bạn
-      </Link>
+      </CtaButton>
     </section>
   );
 }
 
 export function TetHubGenderCta({ gender }: TetHubGenderCtaProps): ReactElement {
   return (
-    <Link
-      to="/"
-      search={{ viewYear: TET_HUB_VIEW_YEAR, gender }}
-      hash={BIRTH_FORM_ANCHOR}
-      className="inline-flex items-center gap-1 text-[15px] font-semibold text-[#9e2b1e] underline-offset-4 hover:underline"
-    >
+    <TextLink to="/" search={{ viewYear: TET_HUB_VIEW_YEAR, gender }} hash={BIRTH_FORM_ANCHOR}>
       {GENDER_CTA_LABELS[gender]}
-      <span aria-hidden>→</span>
-    </Link>
+      <span aria-hidden>&nbsp;→</span>
+    </TextLink>
   );
 }

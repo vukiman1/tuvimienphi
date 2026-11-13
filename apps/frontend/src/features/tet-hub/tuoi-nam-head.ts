@@ -1,7 +1,7 @@
 import { tuoiNamSlug, type TuoiNamFacts } from '@org/shared-tu-vi';
 import type { TuoiNamArticle } from '@org/shared-contracts';
 import { articlePageHead, faqPageJsonLd, type SeoHead } from './tet-hub-json-ld';
-import { tetHubPagePath } from './tet-hub-paths';
+import { tetHubPagePath, tetHubShareImagePath } from './tet-hub-paths';
 import { tuoiNamBreadcrumb } from './tuoi-nam-breadcrumb';
 
 function tuoiNamTitle(facts: TuoiNamFacts): string {
@@ -17,6 +17,7 @@ export function tuoiNamHead(facts: TuoiNamFacts, article: TuoiNamArticle): SeoHe
     title: tuoiNamTitle(facts),
     description: tuoiNamDescription(facts),
     path: tetHubPagePath(tuoiNamSlug(facts.birthYear)),
+    image: tetHubShareImagePath(tuoiNamSlug(facts.birthYear)),
     generatedAt: article.generatedAt,
     breadcrumb: tuoiNamBreadcrumb(facts),
     extraJsonLd: [faqPageJsonLd(article.faq)],
