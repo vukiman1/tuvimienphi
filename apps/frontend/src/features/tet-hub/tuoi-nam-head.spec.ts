@@ -30,6 +30,15 @@ describe('tuoiNamHead', () => {
     });
   });
 
+  it('shares the page with its own card image', () => {
+    const head = tuoiNamHead(FACTS, ARTICLE);
+
+    expect(head.meta).toContainEqual({
+      property: 'og:image',
+      content: 'https://xemtuvimienphi.top/tet/og/tuoi-binh-dan-1986.jpg',
+    });
+  });
+
   it('is canonical to its own path under the hub', () => {
     const head = tuoiNamHead(FACTS, ARTICLE);
 

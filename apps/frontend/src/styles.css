@@ -6,6 +6,7 @@
 
 @custom-variant motion-ready (html[data-motion='ready'] &);
 @custom-variant pinned (@media (width >= 64rem) and (height >= 50rem) and (prefers-reduced-motion: no-preference));
+@custom-variant tall-lg (@media (width >= 64rem) and (height >= 50rem));
 
 @theme inline {
   --color-background: var(--background);

@@ -65,6 +65,7 @@ export type SeoHead = ReturnType<typeof seo>;
 
 interface ArticlePageHeadInput extends Omit<ArticleJsonLdInput, 'headline'> {
   readonly title: string;
+  readonly image: string;
   readonly breadcrumb: readonly BreadcrumbItem[];
   readonly extraJsonLd?: readonly Record<string, unknown>[];
 }
@@ -73,11 +74,12 @@ export function articlePageHead({
   title,
   description,
   path,
+  image,
   generatedAt,
   breadcrumb,
   extraJsonLd = [],
 }: ArticlePageHeadInput): SeoHead {
-  const base = seo({ title, description, path, type: 'article' });
+  const base = seo({ title, description, path, image, type: 'article' });
   return {
     ...base,
     meta: [

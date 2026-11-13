@@ -49,6 +49,10 @@ export const MEDIA = {
     starChartSmall: mediaUrl('/story/star-chart-400.webp'),
     starChartLarge: mediaUrl('/story/star-chart-800.webp'),
   },
+  tetHub: {
+    nightSmall: mediaUrl('/tet/hero-night-768.webp'),
+    nightLarge: mediaUrl('/tet/hero-night-1536.webp'),
+  },
   home: {
     readerGalaxy: mediaUrl('/home/reader-galaxy.webp'),
     decorPhongCanh: mediaUrl('/home/decor-phong-canh.webp'),
@@ -125,4 +129,12 @@ export function toastIconUrl(type: string): string {
 /** Nền panel (có cảnh núi/mây) cho toast theo loại. */
 export function toastPanelUrl(type: string): string {
   return mediaUrl(`/toast/panel-${type}.webp`);
+}
+
+export function conGiapPaintingUrl(conGiapSlug: string, width: number): string {
+  return mediaUrl(`/tet/con-giap/${conGiapSlug}-${width}.webp`);
+}
+
+export function conGiapEmblemUrl(conGiapSlug: string): string {
+  return mediaUrl(`/tet/emblem/${conGiapSlug}-128.webp`);
 }

@@ -9,7 +9,7 @@ import {
 import type { ConGiapArticle } from '@org/shared-contracts';
 import { conGiapBreadcrumb } from './con-giap-breadcrumb';
 import { articlePageHead, type SeoHead } from './tet-hub-json-ld';
-import { tetHubPagePath } from './tet-hub-paths';
+import { tetHubPagePath, tetHubShareImagePath } from './tet-hub-paths';
 
 function conGiapTitle(chi: number): string {
   return `Tử vi tuổi ${CHI[chi]} năm ${TET_HUB_VIEW_YEAR}: Tam tai, Thái tuế, tuổi xông đất`;
@@ -24,6 +24,7 @@ export function conGiapHead(chi: number, article: ConGiapArticle): SeoHead {
     title: conGiapTitle(chi),
     description: conGiapDescription(chi),
     path: tetHubPagePath(conGiapSlug(chi)),
+    image: tetHubShareImagePath(conGiapSlug(chi)),
     generatedAt: article.generatedAt,
     breadcrumb: conGiapBreadcrumb(chi),
   });

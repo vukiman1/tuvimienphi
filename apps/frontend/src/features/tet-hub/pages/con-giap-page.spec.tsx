@@ -106,6 +106,68 @@ describe('TetHubSlugPage for a con giáp', () => {
     expect(screen.getByRole('link', { name: 'Lập lá số của bạn' })).toBeTruthy();
   });
 
+  it('shares the con giáp page with its own card image', async () => {
+    renderSlug(ARTICLE.slug);
+
+    await waitFor(() =>
+      expect(document.querySelector('meta[property="og:image"]')?.getAttribute('content')).toBe(
+        'https://xemtuvimienphi.top/tet/og/tuoi-dan.jpg',
+      ),
+    );
+  });
+
+  it('emphasises the con giáp in an unchanged h1', async () => {
+    renderSlug(ARTICLE.slug);
+
+    const title = await screen.findByRole('heading', { level: 1 });
+
+    expect(title.textContent).toBe('Tử vi tuổi Dần năm 2027');
+    expect(title.querySelector('.italic')?.textContent).toBe('Dần');
+  });
+
+  it('sets the article in the reading zone', async () => {
+    renderSlug(ARTICLE.slug);
+
+    const article = await screen.findByRole('article');
+
+    expect(article.closest('.max-w-reading')).not.toBeNull();
+  });
+
+  it('keeps the CTA and the method notes as wide as the article', async () => {
+    renderSlug(ARTICLE.slug);
+
+    const article = await screen.findByRole('article');
+    const cta = screen.getByRole('link', { name: 'Lập lá số của bạn' });
+    const methodNotes = screen.getByRole('region', { name: 'Cách chúng tôi tính' });
+    const articleColumnClass = article.closest('.max-w-reading')?.className;
+
+    expect(cta.closest('.max-w-reading')?.className).toBe(articleColumnClass);
+    expect(methodNotes.closest('.max-w-reading')?.className).toBe(articleColumnClass);
+  });
+
+  it('paints the hero with the con giáp painting', async () => {
+    renderSlug(ARTICLE.slug);
+
+    const hero = (await screen.findByRole('heading', { level: 1 })).closest('section');
+
+    expect(hero?.querySelector('img')?.getAttribute('src')).toContain(
+      '/tet/con-giap/tuoi-dan-1536.webp',
+    );
+  });
+
+  it('titles every article section in the serif face', async () => {
+    renderSlug(ARTICLE.slug);
+
+    const sectionTitles = within(await screen.findByRole('article')).getAllByRole('heading', {
+      level: 2,
+    });
+
+    expect(sectionTitles).toHaveLength(4);
+    for (const sectionTitle of sectionTitles) {
+      expect(sectionTitle.className).toContain('font-emphasis');
+    }
+  });
+
   it('the con giáp head is canonical to its own path', async () => {
     renderSlug(ARTICLE.slug);
 

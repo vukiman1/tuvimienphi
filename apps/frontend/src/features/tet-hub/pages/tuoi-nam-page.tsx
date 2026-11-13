@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import type { TuoiNamFacts } from '@org/shared-tu-vi';
 import type { TuoiNamArticle } from '@org/shared-contracts';
+import { Emphasis, PageHero } from '@/design-system';
 import { HowWeCount } from '../components/HowWeCount';
 import { TetHubBreadcrumb } from '../components/TetHubBreadcrumb';
 import { TetHubCta } from '../components/TetHubCta';
@@ -8,6 +9,8 @@ import { TuoiNamArticleView } from '../components/TuoiNamArticleView';
 import { TuoiNamFaq } from '../components/TuoiNamFaq';
 import { TuoiNamRelated } from '../components/TuoiNamRelated';
 import { TuoiNamSummary } from '../components/TuoiNamSummary';
+import { TET_HUB_EYEBROW } from '../tet-hub-eyebrow';
+import { conGiapPainting } from '../tet-hub-paintings';
 import { tuoiNamBreadcrumb } from '../tuoi-nam-breadcrumb';
 
 interface TuoiNamPageProps {
@@ -17,17 +20,27 @@ interface TuoiNamPageProps {
 
 export function TuoiNamPage({ facts, article }: TuoiNamPageProps): ReactElement {
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-8 md:px-6">
-      <TetHubBreadcrumb items={tuoiNamBreadcrumb(facts)} />
-      <h1 className="mt-4 text-[26px] leading-tight font-semibold text-[#2a1f0e] md:text-[30px]">
-        Tử vi tuổi {facts.canChi} {facts.birthYear} năm {facts.viewYear}
-      </h1>
-      <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
+    <main className="w-full bg-day">
+      <PageHero
+        breadcrumb={<TetHubBreadcrumb items={tuoiNamBreadcrumb(facts)} />}
+        eyebrow={TET_HUB_EYEBROW}
+        painting={conGiapPainting(facts.chi)}
+        title={
+          <>
+            Tử vi tuổi{' '}
+            <Emphasis isAccent>
+              {facts.canChi} {facts.birthYear}
+            </Emphasis>{' '}
+            năm {facts.viewYear}
+          </>
+        }
+      />
+      <div className="mx-auto grid w-full max-w-reading gap-10 px-4 py-10 md:px-6 md:py-14 lg:max-w-6xl lg:grid-cols-[minmax(0,1fr)_20rem]">
         <TuoiNamSummary
           facts={facts}
-          className="lg:sticky lg:top-6 lg:col-start-2 lg:row-start-1 lg:self-start"
+          className="tall-lg:sticky tall-lg:top-6 lg:col-start-2 lg:row-start-1 lg:self-start"
         />
-        <div className="flex min-w-0 flex-col gap-10 lg:col-start-1 lg:row-start-1">
+        <div className="flex min-w-0 flex-col gap-12 lg:col-start-1 lg:row-start-1">
           <TuoiNamArticleView facts={facts} article={article} />
           <TetHubCta />
           <HowWeCount />

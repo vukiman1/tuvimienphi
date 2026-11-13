@@ -1,11 +1,13 @@
 import type { ReactElement } from 'react';
-import { Link } from '@tanstack/react-router';
 import type { TetHubIntro } from '@org/shared-contracts';
+import { PageHero, ReadingZone, TextLink } from '@/design-system';
 import { ArticleParagraphs } from '../components/ArticleParagraphs';
 import { ConGiapTiles } from '../components/ConGiapTiles';
 import { TetHubBreadcrumb } from '../components/TetHubBreadcrumb';
 import { TetHubCta } from '../components/TetHubCta';
 import { TET_HUB_BREADCRUMB } from '../tet-hub-breadcrumb';
+import { TET_HUB_EYEBROW } from '../tet-hub-eyebrow';
+import { TET_EVE_PAINTING } from '../tet-hub-paintings';
 import { TET_HUB_LINK_LABEL } from '../tet-hub-paths';
 
 const VAN_HAN_PATH = '/van-han';
@@ -16,28 +18,26 @@ interface TetHubPageProps {
 
 export function TetHubPage({ intro }: TetHubPageProps): ReactElement {
   return (
-    <main className="mx-auto w-full max-w-4xl px-4 py-8 md:px-6">
-      <TetHubBreadcrumb items={TET_HUB_BREADCRUMB} />
-      <h1 className="mt-4 text-[26px] leading-tight font-semibold text-[#2a1f0e] md:text-[30px]">
-        {TET_HUB_LINK_LABEL}
-      </h1>
-      <div className="mt-6 flex flex-col gap-10">
-        {intro.intro.length > 0 ? (
-          <div className="text-[17px] leading-relaxed text-[#3b2d18]">
-            <ArticleParagraphs paragraphs={intro.intro} />
-          </div>
-        ) : null}
+    <main className="w-full bg-day">
+      <PageHero
+        breadcrumb={<TetHubBreadcrumb items={TET_HUB_BREADCRUMB} />}
+        eyebrow={TET_HUB_EYEBROW}
+        title={TET_HUB_LINK_LABEL}
+        painting={TET_EVE_PAINTING}
+      >
         <ConGiapTiles />
-        <p className="text-[15px] text-[#3b2d18]">
-          Muốn xem vận hạn theo con giáp qua các năm?{' '}
-          <Link
-            to={VAN_HAN_PATH}
-            className="font-semibold text-[#9e2b1e] underline-offset-4 hover:underline"
-          >
-            Xem vận hạn theo con giáp
-          </Link>
-        </p>
-        <TetHubCta />
+      </PageHero>
+      <div className="px-4 py-10 md:px-6 md:py-14">
+        <ReadingZone>
+          <div className="flex flex-col gap-10">
+            {intro.intro.length > 0 ? <ArticleParagraphs paragraphs={intro.intro} /> : null}
+            <p>
+              Muốn xem vận hạn theo con giáp qua các năm?{' '}
+              <TextLink to={VAN_HAN_PATH}>Xem vận hạn theo con giáp</TextLink>
+            </p>
+            <TetHubCta />
+          </div>
+        </ReadingZone>
       </div>
     </main>
   );

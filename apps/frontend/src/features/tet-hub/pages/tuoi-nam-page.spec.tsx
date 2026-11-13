@@ -12,6 +12,7 @@ import {
 import type { TuoiNamArticle } from '@org/shared-contracts';
 import fixture from '../__fixtures__/tuoi-binh-dan-1986.json';
 import { loadTetHubSlugPage, tetHubSlugHead } from '../tet-hub-slug-route';
+import { FOCUS_RING_CLASS } from '@/design-system';
 import { TetHubSlugPage } from './tet-hub-slug-page';
 
 const ARTICLE: TuoiNamArticle = fixture;
@@ -100,6 +101,64 @@ describe('TetHubSlugPage for a birth year', () => {
     expect(
       summary.compareDocumentPosition(firstArticleHeading) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
+  });
+
+  it('emphasises the can chi and birth year in an unchanged h1', async () => {
+    renderSlug(ARTICLE.slug);
+
+    const title = await screen.findByRole('heading', { level: 1 });
+
+    expect(title.textContent).toBe('Tử vi tuổi Bính Dần 1986 năm 2027');
+    expect(title.querySelector('.italic')?.textContent).toBe('Bính Dần 1986');
+  });
+
+  it('paints the hero with the painting of the birth year con giáp', async () => {
+    renderSlug(ARTICLE.slug);
+
+    const hero = (await screen.findByRole('heading', { level: 1 })).closest('section');
+
+    expect(hero?.querySelector('img')?.getAttribute('src')).toContain(
+      '/tet/con-giap/tuoi-dan-1536.webp',
+    );
+  });
+
+  it('shows the summary as a Night panel with a gold frame', async () => {
+    renderSlug(ARTICLE.slug);
+
+    const summary = await screen.findByRole('complementary', { name: /Bính Dần 1986/ });
+
+    expect(summary.className).toContain('bg-night');
+    expect(summary.className).toContain('text-day');
+    expect(summary.className).toContain('border-gold/40');
+  });
+
+  it('keeps the summary sticky only on screens tall enough to show all of it', async () => {
+    renderSlug(ARTICLE.slug);
+
+    const summary = await screen.findByRole('complementary', { name: /Bính Dần 1986/ });
+
+    expect(summary.className).toContain('tall-lg:sticky');
+    expect(summary.className).not.toMatch(/(^|\s)lg:sticky/);
+  });
+
+  it('keeps the page body in one reading column until the summary moves to the side', async () => {
+    renderSlug(ARTICLE.slug);
+
+    const summary = await screen.findByRole('complementary', { name: /Bính Dần 1986/ });
+    const body = summary.parentElement as HTMLElement;
+
+    expect(body.className).toContain('max-w-reading');
+    expect(body.className).toContain('lg:max-w-6xl');
+  });
+
+  it('gives every related link the two-tone focus ring', async () => {
+    renderSlug(ARTICLE.slug);
+
+    const related = within(await screen.findByRole('navigation', { name: 'Xem thêm' }));
+
+    for (const link of related.getAllByRole('link')) {
+      expect(link.className).toContain(FOCUS_RING_CLASS);
+    }
   });
 
   it('links the CTA to the form with the view year and no birth year', async () => {

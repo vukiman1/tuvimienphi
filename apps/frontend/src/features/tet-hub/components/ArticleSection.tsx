@@ -1,4 +1,5 @@
 import type { ReactElement, ReactNode } from 'react';
+import { DisplaySize, DisplayTitle, TitleFace } from '@/design-system';
 
 interface ArticleSectionProps {
   readonly id: string;
@@ -9,9 +10,9 @@ interface ArticleSectionProps {
 export function ArticleSection({ id, title, children }: ArticleSectionProps): ReactElement {
   return (
     <section id={id} aria-labelledby={`${id}-title`} className="scroll-mt-6">
-      <h2 id={`${id}-title`} className="text-[22px] leading-snug font-semibold text-[#2a1f0e]">
+      <DisplayTitle id={`${id}-title`} size={DisplaySize.Card} face={TitleFace.Serif}>
         {title}
-      </h2>
+      </DisplayTitle>
       <div className="mt-4">{children}</div>
     </section>
   );

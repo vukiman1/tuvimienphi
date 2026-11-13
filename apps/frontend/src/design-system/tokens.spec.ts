@@ -112,6 +112,10 @@ describe('design tokens', () => {
     }
   });
 
+  it('dawn eyebrows and labels are readable on night', () => {
+    expect(contrastRatio(token('dawn'), token('night'))).toBeGreaterThanOrEqual(AA_NORMAL_TEXT);
+  });
+
   it('the two-tone focus ring stays visible on every chapter tone', () => {
     for (const tone of ['ember', 'dawn', 'day']) {
       expect(contrastRatio(token('ink'), token(tone))).toBeGreaterThanOrEqual(AA_NON_TEXT);

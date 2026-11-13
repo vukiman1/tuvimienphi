@@ -1,9 +1,9 @@
 import type { ReactElement } from 'react';
-import { Link } from '@tanstack/react-router';
 import { CHI, conGiapSlug, getYearCanChi, type TuoiNamFacts } from '@org/shared-tu-vi';
 import type { TuoiNamArticle } from '@org/shared-contracts';
+import { ReadingZone, TextLink } from '@/design-system';
 import { Gender } from '@/features/la-so/birth-input';
-import { NAM_MANG_ANCHOR, NU_MANG_ANCHOR, tetHubPagePath } from '../tet-hub-paths';
+import { NAM_MANG_ANCHOR, NU_MANG_ANCHOR, TET_HUB_SLUG_ROUTE } from '../tet-hub-paths';
 import { tamTaiVerdict, thaiTueVerdict, xongDatVerdict } from '../tuoi-nam-verdicts';
 import { ArticleParagraphs } from './ArticleParagraphs';
 import { ArticleSection } from './ArticleSection';
@@ -29,7 +29,7 @@ interface VerdictProps {
 function GenderSubsection({ id, title, gender, paragraphs }: GenderSubsectionProps): ReactElement {
   return (
     <section id={id} aria-labelledby={`${id}-title`} className="scroll-mt-6">
-      <h3 id={`${id}-title`} className="text-[18px] font-semibold text-[#2a1f0e]">
+      <h3 id={`${id}-title`} className="font-display text-xl font-bold">
         {title}
       </h3>
       <div className="mt-3">
@@ -45,7 +45,7 @@ function GenderSubsection({ id, title, gender, paragraphs }: GenderSubsectionPro
 function Verdict({ label, verdict }: VerdictProps): ReactElement {
   return (
     <div>
-      <dt className="font-semibold text-[#2a1f0e]">{label}</dt>
+      <dt className="font-bold">{label}</dt>
       <dd className="mt-1">{verdict}</dd>
     </div>
   );
@@ -56,56 +56,57 @@ export function TuoiNamArticleView({ facts, article }: TuoiNamArticleViewProps):
   const viewYearCanChi = getYearCanChi(facts.viewYear);
 
   return (
-    <article className="flex flex-col gap-10 rounded-2xl border border-[#e7d9bf] bg-[#fffaf0] px-5 py-7 text-[17px] leading-relaxed text-[#3b2d18] md:px-8">
-      <ArticleSection id="tong-quan" title={`Tổng quan năm ${facts.viewYear}`}>
-        <ArticleParagraphs paragraphs={article.tongQuan} />
-      </ArticleSection>
+    <ReadingZone>
+      <article className="flex flex-col gap-10">
+        <ArticleSection id="tong-quan" title={`Tổng quan năm ${facts.viewYear}`}>
+          <ArticleParagraphs paragraphs={article.tongQuan} />
+        </ArticleSection>
 
-      <ArticleSection id="sao-han" title="Sao chiếu mệnh và hạn">
-        <div className="flex flex-col gap-8">
-          <GenderSubsection
-            id={NAM_MANG_ANCHOR}
-            title="Nam mạng"
-            gender={Gender.Male}
-            paragraphs={article.saoHanNam}
-          />
-          <GenderSubsection
-            id={NU_MANG_ANCHOR}
-            title="Nữ mạng"
-            gender={Gender.Female}
-            paragraphs={article.saoHanNu}
-          />
-        </div>
-      </ArticleSection>
+        <ArticleSection id="sao-han" title="Sao chiếu mệnh và hạn">
+          <div className="flex flex-col gap-8">
+            <GenderSubsection
+              id={NAM_MANG_ANCHOR}
+              title="Nam mạng"
+              gender={Gender.Male}
+              paragraphs={article.saoHanNam}
+            />
+            <GenderSubsection
+              id={NU_MANG_ANCHOR}
+              title="Nữ mạng"
+              gender={Gender.Female}
+              paragraphs={article.saoHanNu}
+            />
+          </div>
+        </ArticleSection>
 
-      <ArticleSection
-        id="menh"
-        title={`Mệnh ${facts.menh.name} và năm ${viewYearCanChi} (${facts.menhNam.name})`}
-      >
-        <ArticleParagraphs paragraphs={article.menh} />
-      </ArticleSection>
-
-      <ArticleSection id="cuoi-hoi-lam-nha" title="Cưới hỏi, làm nhà">
-        <ArticleParagraphs paragraphs={article.cuoiNha} />
-      </ArticleSection>
-
-      <ArticleSection id="loi-khuyen" title={`Lời khuyên cho năm ${facts.viewYear}`}>
-        <ArticleParagraphs paragraphs={article.loiKhuyen} />
-      </ArticleSection>
-
-      <ArticleSection id="tam-tai-thai-tue-xong-dat" title="Tam tai, Thái tuế, xông đất">
-        <dl className="flex flex-col gap-4">
-          <Verdict label="Tam tai" verdict={tamTaiVerdict(facts)} />
-          <Verdict label="Thái tuế" verdict={thaiTueVerdict(facts)} />
-          <Verdict label="Xông đất" verdict={xongDatVerdict(facts)} />
-        </dl>
-        <Link
-          to={tetHubPagePath(conGiapSlug(facts.chi))}
-          className="mt-4 inline-block font-semibold text-[#9e2b1e] underline-offset-4 hover:underline"
+        <ArticleSection
+          id="menh"
+          title={`Mệnh ${facts.menh.name} và năm ${viewYearCanChi} (${facts.menhNam.name})`}
         >
-          Xem đầy đủ về tuổi {chi} năm {facts.viewYear}
-        </Link>
-      </ArticleSection>
-    </article>
+          <ArticleParagraphs paragraphs={article.menh} />
+        </ArticleSection>
+
+        <ArticleSection id="cuoi-hoi-lam-nha" title="Cưới hỏi, làm nhà">
+          <ArticleParagraphs paragraphs={article.cuoiNha} />
+        </ArticleSection>
+
+        <ArticleSection id="loi-khuyen" title={`Lời khuyên cho năm ${facts.viewYear}`}>
+          <ArticleParagraphs paragraphs={article.loiKhuyen} />
+        </ArticleSection>
+
+        <ArticleSection id="tam-tai-thai-tue-xong-dat" title="Tam tai, Thái tuế, xông đất">
+          <dl className="flex flex-col gap-4">
+            <Verdict label="Tam tai" verdict={tamTaiVerdict(facts)} />
+            <Verdict label="Thái tuế" verdict={thaiTueVerdict(facts)} />
+            <Verdict label="Xông đất" verdict={xongDatVerdict(facts)} />
+          </dl>
+          <div className="mt-4">
+            <TextLink to={TET_HUB_SLUG_ROUTE} params={{ slug: conGiapSlug(facts.chi) }}>
+              Xem đầy đủ về tuổi {chi} năm {facts.viewYear}
+            </TextLink>
+          </div>
+        </ArticleSection>
+      </article>
+    </ReadingZone>
   );
 }

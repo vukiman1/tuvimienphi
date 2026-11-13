@@ -34,9 +34,9 @@ function thaiTueValue(facts: TuoiNamFacts): string {
 
 function SummaryRow({ label, value }: SummaryRowProps): ReactElement {
   return (
-    <div className="flex items-baseline justify-between gap-4 border-b border-[#c9a15c]/20 py-2 last:border-b-0">
-      <dt className="text-[13px] text-[#e0bd76]">{label}</dt>
-      <dd className="text-right text-[15px] font-semibold">{value}</dd>
+    <div className="flex items-baseline justify-between gap-4 border-b border-day/15 py-2 last:border-b-0">
+      <dt className="text-sm text-dawn">{label}</dt>
+      <dd className="text-right text-base font-semibold">{value}</dd>
     </div>
   );
 }
@@ -46,9 +46,9 @@ function GenderRow({ titleId, title, facts }: GenderRowProps): ReactElement {
     <div
       role="group"
       aria-labelledby={titleId}
-      className="rounded-xl border border-[#c9a15c]/30 bg-[#fdf3dc]/5 px-4 py-3"
+      className="rounded-xl border border-gold/30 bg-deep/60 px-4 py-3"
     >
-      <h3 id={titleId} className="text-[13px] font-semibold tracking-wide text-[#e0bd76] uppercase">
+      <h3 id={titleId} className="text-sm font-bold tracking-wide text-dawn uppercase">
         {title}
       </h3>
       <dl className="mt-1">
@@ -64,11 +64,11 @@ export function TuoiNamSummary({ facts, className }: TuoiNamSummaryProps): React
     <aside
       aria-labelledby={SUMMARY_TITLE_ID}
       className={cn(
-        'rounded-2xl border border-[#c9a15c]/40 bg-gradient-to-b from-[#3a2412] to-[#2a1a0e] px-5 py-5 text-[#fdf3dc] shadow-md',
+        'rounded-2xl border border-gold/40 bg-night px-5 py-5 text-day shadow-glow-gold',
         className,
       )}
     >
-      <h2 id={SUMMARY_TITLE_ID} className="text-[18px] font-semibold">
+      <h2 id={SUMMARY_TITLE_ID} className="font-display text-xl font-bold">
         {facts.canChi} {facts.birthYear} · Năm {facts.viewYear}
       </h2>
       <dl className="mt-3">
