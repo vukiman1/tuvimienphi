@@ -23,7 +23,7 @@ export function LoginForm({ onForgotPassword }: LoginFormProps) {
   const setChallengeToken = usePendingTwoFactor((state) => state.setChallengeToken);
 
   const { form, submitError } = useFormWithSubmitError<LoginFormValues>({
-    defaultValues: { email: 'user@example.com', password: 'Local1234', rememberMe: false },
+    defaultValues: { email: '', password: '', rememberMe: false },
     schema: loginSchema,
     fallbackError: UNREACHABLE_SERVER_MESSAGE,
     onSubmit: async (values) => {

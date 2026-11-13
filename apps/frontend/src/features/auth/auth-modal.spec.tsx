@@ -20,6 +20,11 @@ jest.mock('./google-sign-in-button', () => ({
   GoogleSignInButton: () => null,
 }));
 
+function fillCredentials(): void {
+  fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'reader@example.com' } });
+  fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'Reader1234' } });
+}
+
 function renderAt(initialEntry: string) {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   const rootRoute = createRootRoute({
@@ -139,6 +144,7 @@ describe('AuthModal', () => {
     await screen.findByRole('dialog');
     fireEvent.click(screen.getByRole('button', { name: /tiếp tục với email/i }));
     await screen.findByLabelText('Email');
+    fillCredentials();
 
     fireEvent.click(screen.getByRole('button', { name: /^sign in$/i }));
 
@@ -151,6 +157,7 @@ describe('AuthModal', () => {
     await screen.findByRole('dialog');
     fireEvent.click(screen.getByRole('button', { name: /tiếp tục với email/i }));
     await screen.findByLabelText('Email');
+    fillCredentials();
 
     fireEvent.click(screen.getByRole('button', { name: /^sign in$/i }));
 

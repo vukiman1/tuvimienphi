@@ -28,10 +28,23 @@ async function renderLoginForm(): Promise<void> {
   await screen.findByRole('button', { name: 'Sign in' });
 }
 
+function fillCredentials(): void {
+  fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'reader@example.com' } });
+  fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'Reader1234' } });
+}
+
 describe('LoginForm', () => {
+  it('opens with an empty email and password', async () => {
+    await renderLoginForm();
+
+    expect(screen.getByLabelText('Email')).toHaveProperty('value', '');
+    expect(screen.getByLabelText('Password')).toHaveProperty('value', '');
+  });
+
   it('asks the person to check their network when the server cannot be reached', async () => {
     jest.mocked(authService.login).mockRejectedValue(new Error('Network Error'));
     await renderLoginForm();
+    fillCredentials();
 
     fireEvent.click(screen.getByRole('button', { name: 'Sign in' }));
 
