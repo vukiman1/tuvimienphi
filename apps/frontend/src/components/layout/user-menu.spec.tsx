@@ -71,7 +71,7 @@ describe('UserMenu', () => {
     renderMenu();
 
     await screen.findByText('jane@example.com');
-    expect(screen.queryByRole('menuitem', { name: 'Settings' })).toBeNull();
+    expect(screen.queryByRole('menuitem', { name: 'Cài đặt' })).toBeNull();
   });
 
   it('opens the menu with settings and logout', async () => {
@@ -81,8 +81,8 @@ describe('UserMenu', () => {
       key: 'Enter',
     });
 
-    expect(await screen.findByRole('menuitem', { name: 'Settings' })).toBeTruthy();
-    expect(screen.getByRole('menuitem', { name: 'Logout' })).toBeTruthy();
+    expect(await screen.findByRole('menuitem', { name: 'Cài đặt' })).toBeTruthy();
+    expect(screen.getByRole('menuitem', { name: 'Đăng xuất' })).toBeTruthy();
   });
 
   it('logs out and clears the stored user', async () => {
@@ -92,7 +92,7 @@ describe('UserMenu', () => {
     fireEvent.keyDown(await screen.findByRole('button', { name: /jane@example.com/ }), {
       key: 'Enter',
     });
-    fireEvent.click(await screen.findByRole('menuitem', { name: 'Logout' }));
+    fireEvent.click(await screen.findByRole('menuitem', { name: 'Đăng xuất' }));
 
     await waitFor(() => expect(authService.logout).toHaveBeenCalled());
     await waitFor(() => expect(useAuthStore.getState().user).toBeNull());
@@ -105,7 +105,7 @@ describe('UserMenu', () => {
     fireEvent.keyDown(await screen.findByRole('button', { name: /jane@example.com/ }), {
       key: 'Enter',
     });
-    fireEvent.click(await screen.findByRole('menuitem', { name: 'Logout' }));
+    fireEvent.click(await screen.findByRole('menuitem', { name: 'Đăng xuất' }));
 
     await waitFor(() => expect(useAuthStore.getState().user).toBeNull());
   });
@@ -114,7 +114,7 @@ describe('UserMenu', () => {
     renderMenu();
     const trigger = await screen.findByRole('button', { name: /jane@example.com/ });
     fireEvent.keyDown(trigger, { key: 'Enter' });
-    await screen.findByRole('menuitem', { name: 'Settings' });
+    await screen.findByRole('menuitem', { name: 'Cài đặt' });
 
     fireEvent.keyDown(document.activeElement ?? document.body, { key: 'Escape' });
 

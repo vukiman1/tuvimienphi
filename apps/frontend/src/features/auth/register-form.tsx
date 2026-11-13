@@ -7,6 +7,7 @@ import { PasswordInput } from '@/components/ui/password-input';
 import { useFormWithSubmitError } from '@/lib/use-form-with-submit-error';
 import { notify } from '@/lib/toast';
 import { authService } from '@/services/auth-service';
+import { EMAIL_PLACEHOLDER } from './auth-copy';
 import { registerFieldSchemas, registerSchema, type RegisterFormValues } from './schemas';
 import { VerificationCodeForm } from './verification-code-form';
 
@@ -27,7 +28,7 @@ export function RegisterForm({ onVerified }: RegisterFormProps) {
   const { form, submitError } = useFormWithSubmitError<RegisterFormValues>({
     defaultValues: EMPTY_FORM,
     schema: registerSchema,
-    fallbackError: 'Could not create your account.',
+    fallbackError: 'Chưa tạo được tài khoản. Bạn thử lại nhé.',
     onSubmit: async (values) => {
       const { email } = await authService.register(values);
       setRegisteredEmail(email);
@@ -37,14 +38,16 @@ export function RegisterForm({ onVerified }: RegisterFormProps) {
   if (registeredEmail) {
     return (
       <VerificationCodeForm
-        onResend={async () => (await authService.resendVerification(registeredEmail)).message}
+        onResend={async () => {
+          await authService.resendVerification(registeredEmail);
+        }}
         onSubmit={async (code) => {
           await authService.verifyEmail(registeredEmail, code);
           notify.success('Đã xác nhận email. Bạn có thể đăng nhập ngay.');
           onVerified();
         }}
         sentTo={registeredEmail}
-        submitLabel="Confirm email"
+        submitLabel="Xác nhận email"
       />
     );
   }
@@ -60,7 +63,12 @@ export function RegisterForm({ onVerified }: RegisterFormProps) {
           onSubmit: registerFieldSchemas.displayName,
         }}
         children={(field) => (
-          <FormField autoComplete="name" field={field} label="Your name" placeholder="Jane Doe" />
+          <FormField
+            autoComplete="name"
+            field={field}
+            label="Tên của bạn"
+            placeholder="Nguyễn Văn A"
+          />
         )}
       />
 
@@ -75,7 +83,7 @@ export function RegisterForm({ onVerified }: RegisterFormProps) {
             autoComplete="email"
             field={field}
             label="Email"
-            placeholder="you@example.com"
+            placeholder={EMAIL_PLACEHOLDER}
             type="email"
           />
         )}
@@ -92,7 +100,7 @@ export function RegisterForm({ onVerified }: RegisterFormProps) {
             autoComplete="new-password"
             control={PasswordInput}
             field={field}
-            label="Password"
+            label="Mật khẩu"
           />
         )}
       />
@@ -108,12 +116,12 @@ export function RegisterForm({ onVerified }: RegisterFormProps) {
             autoComplete="new-password"
             control={PasswordInput}
             field={field}
-            label="Confirm password"
+            label="Nhập lại mật khẩu"
           />
         )}
       />
 
-      <SubmitButton form={form} label="Create account" pendingLabel="Creating account..." />
+      <SubmitButton form={form} label="Tạo tài khoản" pendingLabel="Đang tạo tài khoản..." />
     </Form>
   );
 }

@@ -7,7 +7,6 @@ interface RecoveryCodesDialogProps {
   onClose: () => void;
 }
 
-/** Shown exactly once: only hashes are stored, so there is no way to bring these back. */
 export function RecoveryCodesDialog({ codes, onClose }: RecoveryCodesDialogProps) {
   const copy = async () => {
     if (!codes) {
@@ -25,8 +24,8 @@ export function RecoveryCodesDialog({ codes, onClose }: RecoveryCodesDialogProps
     <TitledDialog
       onOpenChange={(open) => !open && onClose()}
       open={Boolean(codes)}
-      title="Save your recovery codes"
-      description="Each code works once, and this is the only time they are shown. Keep them somewhere you can reach without your phone."
+      title="Lưu mã phục hồi"
+      description="Mỗi mã chỉ dùng được một lần, và đây là lần duy nhất các mã được hiển thị. Bạn hãy cất chúng ở nơi lấy được mà không cần điện thoại."
     >
       <ul className="grid grid-cols-2 gap-2 rounded-md border bg-muted/40 p-4 font-mono text-sm">
         {(codes ?? []).map((code) => (
@@ -36,10 +35,10 @@ export function RecoveryCodesDialog({ codes, onClose }: RecoveryCodesDialogProps
 
       <div className="flex flex-wrap gap-3">
         <Button onClick={copy} type="button" variant="outline">
-          Copy codes
+          Sao chép mã
         </Button>
         <Button onClick={onClose} type="button">
-          I have saved them
+          Đã lưu xong
         </Button>
       </div>
     </TitledDialog>

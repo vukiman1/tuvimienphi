@@ -32,7 +32,7 @@ export function ProfileCard() {
       <div className="absolute right-0 top-0 h-full w-1/3 opacity-30 pointer-events-none">
         <img
           src={MEDIA.vanHan.decorCloud}
-          alt="Decor"
+          alt=""
           className="h-full w-full object-cover object-right"
         />
       </div>

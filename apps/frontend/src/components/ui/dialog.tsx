@@ -35,7 +35,7 @@ const DialogContent = React.forwardRef<
         )}
       >
         <X className="size-5" />
-        <span className="sr-only">Close</span>
+        <span className="sr-only">Đóng</span>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
   </DialogPrimitive.Portal>

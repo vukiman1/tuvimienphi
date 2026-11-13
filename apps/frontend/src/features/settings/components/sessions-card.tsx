@@ -8,6 +8,8 @@ import { authService } from '@/services/auth-service';
 import type { UserLoginSession } from '@org/shared-contracts';
 import { cn } from '@/lib/utils';
 
+const UNKNOWN_LABEL = 'Không rõ';
+
 export function SessionsCard() {
   const queryClient = useQueryClient();
   const confirm = useConfirm();
@@ -67,7 +69,7 @@ export function SessionsCard() {
             </div>
           </div>
           <Button
-            aria-label="Refresh sessions"
+            aria-label="Làm mới phiên đăng nhập"
             disabled={sessionsQuery.isFetching}
             onClick={() => sessionsQuery.refetch()}
             variant="outline"
@@ -174,7 +176,7 @@ function SessionRow({ session, isRevoking, onRevoke }: SessionRowProps) {
               )}
             </div>
             <p className="mt-0.5 text-xs text-[#6b5a4e]">
-              {session.userAgent ?? 'Unknown user agent'}
+              {session.userAgent ?? 'Không rõ trình duyệt'}
             </p>
           </div>
         </div>
@@ -189,7 +191,7 @@ function SessionRow({ session, isRevoking, onRevoke }: SessionRowProps) {
             <span className="inline-block size-4 rounded-[2px] bg-muted" />
           )}
           <span className="text-sm font-medium text-[#6b5a4e]">
-            {session.ipAddress ?? 'Unknown'}
+            {session.ipAddress ?? UNKNOWN_LABEL}
           </span>
         </div>
         <p className="text-xs text-[#904423]/70">{sessionLocation(session)}</p>
@@ -243,10 +245,10 @@ function SessionListItem({ session, isRevoking, onRevoke }: SessionRowProps) {
                 </span>
               )}
             </div>
-            <p className="mt-1 text-xs text-[#6b5a4e]">{session.userAgent ?? 'Unknown'}</p>
+            <p className="mt-1 text-xs text-[#6b5a4e]">{session.userAgent ?? UNKNOWN_LABEL}</p>
             <div className="mt-2 space-y-1">
               <p className="text-xs text-[#6b5a4e]">
-                <span className="font-medium">IP:</span> {session.ipAddress ?? 'Unknown'}
+                <span className="font-medium">IP:</span> {session.ipAddress ?? UNKNOWN_LABEL}
               </p>
               <p className="text-xs text-[#6b5a4e]">
                 <span className="font-medium">Vị trí:</span> {sessionLocation(session)}
@@ -284,13 +286,13 @@ function sessionName(session: UserLoginSession): string {
 
 function sessionLocation(session: UserLoginSession): string {
   const parts = [session.city, session.country].filter(Boolean);
-  return parts.length > 0 ? parts.join(', ') : 'Không rõ';
+  return parts.length > 0 ? parts.join(', ') : UNKNOWN_LABEL;
 }
 
 function formatDateDateOnly(value: string | null): string {
   if (!value) return 'Không bao giờ';
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return 'Không rõ';
+  if (Number.isNaN(date.getTime())) return UNKNOWN_LABEL;
 
   return new Intl.DateTimeFormat('vi-VN', {
     day: 'numeric',
@@ -314,7 +316,7 @@ function formatDateTimeOnly(value: string | null): string {
 function formatDate(value: string | null): string {
   if (!value) return 'Không bao giờ';
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return 'Không rõ';
+  if (Number.isNaN(date.getTime())) return UNKNOWN_LABEL;
   return new Intl.DateTimeFormat('vi-VN', {
     dateStyle: 'medium',
     timeStyle: 'short',

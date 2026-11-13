@@ -24,7 +24,7 @@ function BalanceRow() {
   return (
     <div className="flex items-center gap-2 px-2 py-1.5 text-sm text-muted-foreground">
       <Wallet className="size-4" />
-      {isError ? 'Balance unavailable' : credit ? `Balance: ${credit.balance}` : 'Loading...'}
+      {isError ? 'Chưa tải được số dư' : credit ? `Số dư: ${credit.balance}` : 'Đang tải...'}
     </div>
   );
 }
@@ -95,11 +95,11 @@ export function UserMenu() {
         <DropdownMenuSeparator />
         <DropdownMenuItem onSelect={() => navigate({ to: '/dashboard/settings' })}>
           <Settings />
-          Settings
+          Cài đặt
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={handleLogout}>
           <LogOut />
-          Logout
+          Đăng xuất
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

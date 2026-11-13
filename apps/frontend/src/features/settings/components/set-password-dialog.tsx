@@ -22,7 +22,7 @@ export function SetPasswordDialog({ email, open, onOpenChange }: SetPasswordDial
     >
       <ChooseNewPassword
         email={email}
-        submitLabel="Set password"
+        submitLabel="Đặt mật khẩu"
         onSave={async (values) => {
           await authService.setPassword(values);
           notify.success('Đã đặt mật khẩu. Các thiết bị khác đã được đăng xuất.');

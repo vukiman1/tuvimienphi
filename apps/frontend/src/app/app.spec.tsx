@@ -41,8 +41,8 @@ describe('App', () => {
     expect(await findByRole('dialog')).toBeTruthy();
     expect(await findByRole('heading', { name: /đăng nhập bằng email/i })).toBeTruthy();
     expect(await findByLabelText('Email')).toBeTruthy();
-    expect(await findByLabelText('Password')).toBeTruthy();
-    expect(await findByRole('button', { name: /^sign in$/i })).toBeTruthy();
+    expect(await findByLabelText('Mật khẩu')).toBeTruthy();
+    expect(await findByRole('button', { name: /^đăng nhập$/i })).toBeTruthy();
     expect(window.location.pathname).toBe('/');
   });
 
@@ -53,14 +53,14 @@ describe('App', () => {
     fireEvent.click(await findByRole('button', { name: /tiếp tục với email/i }));
 
     const emailInput = await findByLabelText('Email');
-    const passwordInput = await findByLabelText('Password');
+    const passwordInput = await findByLabelText('Mật khẩu');
     fireEvent.change(emailInput, { target: { value: '' } });
     fireEvent.change(passwordInput, { target: { value: '' } });
 
-    fireEvent.click(await findByRole('button', { name: /^sign in$/i }));
+    fireEvent.click(await findByRole('button', { name: /^đăng nhập$/i }));
 
-    expect(await findByText('Enter a valid email address.')).toBeTruthy();
-    expect(await findByText('Enter your password.')).toBeTruthy();
+    expect(await findByText('Email chưa hợp lệ.')).toBeTruthy();
+    expect(await findByText('Bạn chưa nhập mật khẩu.')).toBeTruthy();
   });
 
   it('switches from sign-in to register inside the modal', async () => {
@@ -73,6 +73,6 @@ describe('App', () => {
 
     // Register opens on the same provider choice as sign-in; the fields are one step in.
     fireEvent.click(await findByRole('button', { name: /tiếp tục với email/i }));
-    expect(await findByLabelText('Confirm password')).toBeTruthy();
+    expect(await findByLabelText('Nhập lại mật khẩu')).toBeTruthy();
   });
 });

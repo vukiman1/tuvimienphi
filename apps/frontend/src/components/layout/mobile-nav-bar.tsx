@@ -88,7 +88,7 @@ function BirthFormAction(): ReactElement {
 export function MobileNavBar(): ReactElement {
   return (
     <nav
-      aria-label="Mobile navigation"
+      aria-label="Điều hướng chính"
       className="fixed inset-x-0 bottom-0 z-50 bg-day/97 pb-[env(safe-area-inset-bottom)] shadow-bottom-bar md:hidden"
     >
       <div className="grid h-17 grid-cols-5 border-t border-ink/10 px-1">

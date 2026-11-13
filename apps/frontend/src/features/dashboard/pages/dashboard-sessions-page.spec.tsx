@@ -25,6 +25,6 @@ describe('DashboardSessionsPage', () => {
 
     renderPage();
 
-    expect(await screen.findByRole('button', { name: 'Refresh sessions' })).toBeTruthy();
+    expect(await screen.findByRole('button', { name: 'Làm mới phiên đăng nhập' })).toBeTruthy();
   });
 });

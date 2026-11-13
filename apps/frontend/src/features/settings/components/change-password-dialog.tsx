@@ -6,7 +6,7 @@ import { Form } from '@/components/ui/form';
 import { FormError } from '@/components/ui/form-error';
 import { FormField } from '@/components/ui/form-field';
 import { SubmitButton } from '@/components/ui/submit-button';
-import { ApiError } from '@/lib/api-error';
+import { errorMessage } from '@/lib/api-error';
 import { notify } from '@/lib/toast';
 import { authService } from '@/services/auth-service';
 import {
@@ -31,11 +31,9 @@ export function ChangePasswordDialog({ open, onOpenChange }: ChangePasswordDialo
     <TitledDialog
       onOpenChange={onOpenChange}
       open={open}
-      title="Change password"
-      description="Changing it signs out every other device."
+      title="Đổi mật khẩu"
+      description="Đổi mật khẩu sẽ đăng xuất mọi thiết bị khác."
     >
-      {/* Lives inside the content so Radix unmounts it on close, which clears the typed
-          passwords without any reset logic of its own. */}
       <ChangePasswordForm onDone={() => onOpenChange(false)} />
     </TitledDialog>
   );
@@ -53,11 +51,7 @@ function ChangePasswordForm({ onDone }: { onDone: () => void }) {
       await queryClient.invalidateQueries({ queryKey: ['auth', 'sessions'] });
     },
     onError: (error: unknown) =>
-      setSubmitError(
-        error instanceof ApiError || error instanceof Error
-          ? error.message
-          : 'Could not update the password.',
-      ),
+      setSubmitError(errorMessage(error, 'Chưa đổi được mật khẩu. Bạn thử lại nhé.')),
   });
 
   const form = useForm({
@@ -80,7 +74,7 @@ function ChangePasswordForm({ onDone }: { onDone: () => void }) {
           <FormField
             autoComplete="current-password"
             field={field}
-            label="Current password"
+            label="Mật khẩu hiện tại"
             type="password"
           />
         )}
@@ -93,7 +87,7 @@ function ChangePasswordForm({ onDone }: { onDone: () => void }) {
           <FormField
             autoComplete="new-password"
             field={field}
-            label="New password"
+            label="Mật khẩu mới"
             type="password"
           />
         )}
@@ -106,13 +100,13 @@ function ChangePasswordForm({ onDone }: { onDone: () => void }) {
           <FormField
             autoComplete="new-password"
             field={field}
-            label="Confirm new password"
+            label="Nhập lại mật khẩu mới"
             type="password"
           />
         )}
       />
 
-      <SubmitButton form={form} label="Change password" pendingLabel="Saving..." />
+      <SubmitButton form={form} label="Đổi mật khẩu" pendingLabel="Đang lưu..." />
     </Form>
   );
 }

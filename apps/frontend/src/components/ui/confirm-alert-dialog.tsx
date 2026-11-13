@@ -30,7 +30,7 @@ export function ConfirmAlertDialog({
         <AlertDialogFooter>
           <AlertDialogCancel asChild>
             <Button onClick={() => onSettle(false)} type="button" variant="ghost">
-              {options.cancelLabel ?? 'Cancel'}
+              {options.cancelLabel ?? 'Hủy'}
             </Button>
           </AlertDialogCancel>
           <AlertDialogAction asChild>
@@ -39,7 +39,7 @@ export function ConfirmAlertDialog({
               type="button"
               variant={options.destructive ? 'destructive' : 'default'}
             >
-              {options.confirmLabel ?? 'Confirm'}
+              {options.confirmLabel ?? 'Xác nhận'}
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>

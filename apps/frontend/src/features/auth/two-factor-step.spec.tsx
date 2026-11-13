@@ -3,6 +3,7 @@ import { TwoFactorStep } from './two-factor-step';
 import { authService } from '@/services/auth-service';
 import { startSession } from './session';
 import { ApiError } from '@/lib/api-error';
+import { notify } from '@/lib/toast';
 
 jest.mock('@/services/auth-service', () => ({
   authService: { verifyTwoFactor: jest.fn(), requestTwoFactorRecovery: jest.fn() },
@@ -21,8 +22,8 @@ function renderStep(onExpired = jest.fn()) {
 }
 
 function submitCode(code: string) {
-  fireEvent.change(screen.getByLabelText('Verification code'), { target: { value: code } });
-  fireEvent.click(screen.getByRole('button', { name: 'Verify' }));
+  fireEvent.change(screen.getByLabelText('Mã xác thực'), { target: { value: code } });
+  fireEvent.click(screen.getByRole('button', { name: 'Xác thực' }));
 }
 
 function apiError(message: string, statusCode = 401) {
@@ -79,13 +80,16 @@ describe('TwoFactorStep', () => {
       .mockResolvedValue({ message: 'Check your inbox.' });
 
     renderStep();
-    const link = screen.getByRole('button', { name: /Lost your device/i });
+    const link = screen.getByRole('button', { name: 'Mất thiết bị và mã phục hồi?' });
     fireEvent.click(link);
 
     await waitFor(() =>
       expect(authService.requestTwoFactorRecovery).toHaveBeenCalledWith('challenge-1'),
     );
-    expect(await screen.findByText(/Check your inbox for the recovery link/i)).toBeTruthy();
+    expect(await screen.findByText('Đã gửi liên kết vào email của bạn')).toBeTruthy();
+    expect(notify.info).toHaveBeenCalledWith(
+      'Đã gửi email. Bạn mở liên kết trong thư để tắt xác thực 2 bước.',
+    );
   });
 
   it('sends the user back to the password step if the challenge died while asking', async () => {
@@ -94,7 +98,7 @@ describe('TwoFactorStep', () => {
       .mockRejectedValue(apiError('That sign-in attempt has expired.', 410));
     const onExpired = renderStep();
 
-    fireEvent.click(screen.getByRole('button', { name: /Lost your device/i }));
+    fireEvent.click(screen.getByRole('button', { name: 'Mất thiết bị và mã phục hồi?' }));
 
     await waitFor(() => expect(onExpired).toHaveBeenCalled());
   });

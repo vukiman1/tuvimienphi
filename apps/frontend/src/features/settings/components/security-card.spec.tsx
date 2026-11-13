@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SecurityCard } from './security-card';
 import { authService } from '@/services/auth-service';
 import { notify } from '@/lib/toast';
+import { ApiError } from '@/lib/api-error';
 
 jest.mock('@/services/auth-service', () => ({
   authService: {
@@ -35,27 +36,27 @@ function mockAccount(hasPassword: boolean, email = 'a@b.c') {
 
 async function openChangeForm() {
   fireEvent.click(await screen.findByRole('button', { name: 'Đổi mật khẩu' }));
-  return screen.findByLabelText('Current password');
+  return screen.findByLabelText('Mật khẩu hiện tại');
 }
 
 async function fillAndSubmit() {
   fireEvent.change(await openChangeForm(), { target: { value: 'old-one' } });
-  fireEvent.change(screen.getByLabelText('New password'), { target: { value: STRONG_PASSWORD } });
-  fireEvent.change(screen.getByLabelText('Confirm new password'), {
+  fireEvent.change(screen.getByLabelText('Mật khẩu mới'), { target: { value: STRONG_PASSWORD } });
+  fireEvent.change(screen.getByLabelText('Nhập lại mật khẩu mới'), {
     target: { value: STRONG_PASSWORD },
   });
-  fireEvent.click(screen.getByRole('button', { name: 'Change password' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Đổi mật khẩu' }));
 }
 
 async function startSettingPassword() {
   fireEvent.click(await screen.findByRole('button', { name: 'Đặt mật khẩu' }));
-  return screen.findByLabelText('Verification code');
+  return screen.findByLabelText('Mã xác nhận');
 }
 
 function fillCodeAndPassword(code: string) {
-  fireEvent.change(screen.getByLabelText('Verification code'), { target: { value: code } });
-  fireEvent.change(screen.getByLabelText('New password'), { target: { value: STRONG_PASSWORD } });
-  fireEvent.change(screen.getByLabelText('Confirm new password'), {
+  fireEvent.change(screen.getByLabelText('Mã xác nhận'), { target: { value: code } });
+  fireEvent.change(screen.getByLabelText('Mật khẩu mới'), { target: { value: STRONG_PASSWORD } });
+  fireEvent.change(screen.getByLabelText('Nhập lại mật khẩu mới'), {
     target: { value: STRONG_PASSWORD },
   });
 }
@@ -70,7 +71,7 @@ describe('SecurityCard', () => {
     renderCard();
 
     expect(await screen.findByRole('button', { name: 'Đổi mật khẩu' })).toBeTruthy();
-    expect(screen.queryByLabelText('Current password')).toBeNull();
+    expect(screen.queryByLabelText('Mật khẩu hiện tại')).toBeNull();
   });
 
   it('opens the form in a dialog', async () => {
@@ -111,7 +112,7 @@ describe('SecurityCard', () => {
     renderCard();
     await startSettingPassword();
     fillCodeAndPassword('123456');
-    fireEvent.click(screen.getByRole('button', { name: 'Set password' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Đặt mật khẩu' }));
 
     await waitFor(() =>
       expect(authService.setPassword).toHaveBeenCalledWith({
@@ -137,7 +138,7 @@ describe('SecurityCard', () => {
     renderCard();
     await startSettingPassword();
 
-    const resend = screen.getByRole('button', { name: 'Send another code in 60s' });
+    const resend = screen.getByRole('button', { name: 'Gửi lại mã sau 60 giây' });
     expect(resend.hasAttribute('disabled')).toBe(true);
   });
 
@@ -149,7 +150,7 @@ describe('SecurityCard', () => {
     renderCard();
     await startSettingPassword();
     act(() => jest.advanceTimersByTime(EMAIL_CODE_RESEND_COOLDOWN_SECONDS * MS_PER_SECOND));
-    fireEvent.click(screen.getByRole('button', { name: 'Send another code' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Gửi lại mã' }));
 
     await waitFor(() => expect(authService.forgotPassword).toHaveBeenCalledTimes(2));
     expect(authService.forgotPassword).toHaveBeenLastCalledWith('g@b.c');
@@ -157,15 +158,30 @@ describe('SecurityCard', () => {
 
   it('shows the server message in the dialog when the current password is wrong', async () => {
     mockAccount(true);
-    jest
-      .mocked(authService.changePassword)
-      .mockRejectedValue(new Error('Current password is incorrect'));
+    jest.mocked(authService.changePassword).mockRejectedValue(
+      new ApiError({
+        statusCode: 400,
+        success: false,
+        errors: { message: 'Mật khẩu hiện tại không đúng.' },
+      } as never),
+    );
 
     renderCard();
     await fillAndSubmit();
 
-    expect(await screen.findByText('Current password is incorrect')).toBeTruthy();
+    expect(await screen.findByText('Mật khẩu hiện tại không đúng.')).toBeTruthy();
     expect(screen.getByRole('dialog')).toBeTruthy();
+  });
+
+  it('shows its own message instead of the raw error when the request itself fails', async () => {
+    mockAccount(true);
+    jest.mocked(authService.changePassword).mockRejectedValue(new Error('Network Error'));
+
+    renderCard();
+    await fillAndSubmit();
+
+    expect(await screen.findByText('Chưa đổi được mật khẩu. Bạn thử lại nhé.')).toBeTruthy();
+    expect(screen.queryByText('Network Error')).toBeNull();
   });
 
   it('closes the dialog and reports success after a change', async () => {

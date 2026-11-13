@@ -7,9 +7,9 @@ import { SubmitButton } from '@/components/ui/submit-button';
 import { useFormWithSubmitError } from '@/lib/use-form-with-submit-error';
 import { notify } from '@/lib/toast';
 import { authService } from '@/services/auth-service';
+import { EMAIL_PLACEHOLDER, EMAIL_SEND_FAILED_MESSAGE } from './auth-copy';
 import { ChooseNewPassword } from './choose-new-password';
-
-const emailSchema = z.email('Enter a valid email address.');
+import { emailAddress } from './schemas';
 
 interface ForgotPasswordFormProps {
   onDone: () => void;
@@ -20,8 +20,8 @@ export function ForgotPasswordForm({ onDone }: ForgotPasswordFormProps) {
 
   const { form, submitError } = useFormWithSubmitError({
     defaultValues: { email: '' },
-    schema: z.object({ email: emailSchema }),
-    fallbackError: 'Could not send the email.',
+    schema: z.object({ email: emailAddress }),
+    fallbackError: EMAIL_SEND_FAILED_MESSAGE,
     onSubmit: async ({ email }) => {
       await authService.forgotPassword(email);
       setSentTo(email);
@@ -32,7 +32,7 @@ export function ForgotPasswordForm({ onDone }: ForgotPasswordFormProps) {
     return (
       <ChooseNewPassword
         email={sentTo}
-        submitLabel="Reset password"
+        submitLabel="Đặt lại mật khẩu"
         onSave={async (values) => {
           await authService.resetPassword({ email: sentTo, ...values });
           notify.success('Đã đổi mật khẩu. Mọi thiết bị đã được đăng xuất.');
@@ -48,20 +48,20 @@ export function ForgotPasswordForm({ onDone }: ForgotPasswordFormProps) {
 
       <form.Field
         name="email"
-        validators={{ onBlur: emailSchema, onSubmit: emailSchema }}
+        validators={{ onBlur: emailAddress, onSubmit: emailAddress }}
         children={(field) => (
           <FormField
             autoComplete="email"
             autoFocus
             field={field}
-            label="Email address"
-            placeholder="you@example.com"
+            label="Email"
+            placeholder={EMAIL_PLACEHOLDER}
             type="email"
           />
         )}
       />
 
-      <SubmitButton form={form} label="Send reset link" pendingLabel="Sending..." />
+      <SubmitButton form={form} label="Gửi mã" pendingLabel="Đang gửi..." />
     </Form>
   );
 }

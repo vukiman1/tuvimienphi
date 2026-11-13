@@ -28,7 +28,7 @@ async function renderAt(path: string): Promise<HTMLElement> {
   });
   await router.load();
   render(<RouterProvider router={router} />);
-  return screen.findByRole('navigation', { name: 'Mobile navigation' });
+  return screen.findByRole('navigation', { name: 'Điều hướng chính' });
 }
 
 describe('MobileNavBar', () => {
