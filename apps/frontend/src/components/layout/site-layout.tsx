@@ -17,11 +17,9 @@ export function SiteLayout(): ReactElement {
         <div className="flex-1">
           <Outlet />
         </div>
-        <div className="hidden md:block">
-          <SiteFooter isStoryPage={isStoryPage} />
-        </div>
+        <SiteFooter isStoryPage={isStoryPage} />
         <MobileNavBar />
-        <div className="h-[calc(4rem+env(safe-area-inset-bottom))] md:hidden" aria-hidden />
+        <div className="box-content h-17 pb-[env(safe-area-inset-bottom)] md:hidden" aria-hidden />
       </div>
     </StoryProvider>
   );

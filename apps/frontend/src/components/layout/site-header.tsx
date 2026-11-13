@@ -36,7 +36,7 @@ function importUserMenu(): Promise<UserMenuModule> {
 const UserMenu = lazyRouteComponent(importUserMenu, 'UserMenu');
 
 const NAV_LINK_CLASS =
-  'relative shrink-0 pb-1 text-xs tracking-wide whitespace-nowrap no-underline transition-colors md:text-sm after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:transition-transform after:duration-300 hover:after:scale-x-100 motion-reduce:after:transition-none';
+  'relative shrink-0 pb-1 text-sm tracking-wide whitespace-nowrap no-underline transition-colors after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:transition-transform after:duration-300 hover:after:scale-x-100 motion-reduce:after:transition-none';
 
 function mutedTextClass(tone: ChapterTone | null): string {
   if (tone === null) {
@@ -120,7 +120,7 @@ export function SiteHeader({ isStoryPage = false }: SiteHeaderProps): ReactEleme
           : 'relative border-b border-ink/10 bg-day text-ink'
       }
     >
-      <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-1 px-4 py-2 md:gap-x-9 md:px-6">
+      <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-3 gap-y-1 px-4 py-2 md:gap-x-9 md:px-6">
         <Link className={cn('flex shrink-0 items-center no-underline', FOCUS_RING_CLASS)} to="/">
           <Logo
             tone={isOverDark ? LogoTone.OnDark : LogoTone.OnLight}
@@ -128,10 +128,7 @@ export function SiteHeader({ isStoryPage = false }: SiteHeaderProps): ReactEleme
           />
         </Link>
 
-        <nav
-          className="order-last flex w-full items-center justify-between gap-4 overflow-x-auto border-t border-current/15 px-1 pt-2 pb-1 md:order-none md:ml-auto md:w-auto md:justify-start md:gap-9 md:overflow-visible md:border-t-0 md:p-0"
-          aria-label="Primary"
-        >
+        <nav className="hidden items-center gap-9 md:ml-auto md:flex" aria-label="Primary">
           {NAV_ITEMS.map((item) => (
             <NavLink
               key={item.href}
