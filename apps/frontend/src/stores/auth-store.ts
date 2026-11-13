@@ -1,7 +1,8 @@
-import { create } from 'zustand';
+import { type StateCreator, type StoreApi, type UseBoundStore, create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import { appConfig } from '@/config/app-config';
 import type { User } from '@org/shared-contracts';
+
+const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
 
 interface AuthState {
   user: User | null;
@@ -22,22 +23,17 @@ const initialState: AuthState = {
   isInitializing: true,
 };
 
-export const useAuthStore = create<AuthStore>()(
-  devtools(
-    (set) => ({
-      ...initialState,
-      setUser: (user) => set({ user }, false, 'auth/setUser'),
-      clearUser: () => set({ user: null }, false, 'auth/clearUser'),
-      setInitializing: (isInitializing) =>
-        set({ isInitializing }, false, 'auth/setInitializing'),
-      reset: () => set(initialState, false, 'auth/reset'),
-    }),
-    {
-      name: 'auth',
-      enabled: appConfig.app.environment !== 'production',
-    },
-  ),
-);
+const createAuthState: StateCreator<AuthStore> = (set) => ({
+  ...initialState,
+  setUser: (user) => set({ user }),
+  clearUser: () => set({ user: null }),
+  setInitializing: (isInitializing) => set({ isInitializing }),
+  reset: () => set(initialState),
+});
+
+export const useAuthStore: UseBoundStore<StoreApi<AuthStore>> = IS_DEVELOPMENT
+  ? create<AuthStore>()(devtools(createAuthState, { name: 'auth' }))
+  : create<AuthStore>()(createAuthState);
 
 // Selectors — use with `useAuthStore(selectUser)` so the component
 // only re-renders when that slice changes.

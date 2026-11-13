@@ -4,7 +4,7 @@ import type { QueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
 import { ErrorPage } from '@/features/error/error-page';
 import { NotFoundPage } from '@/features/error/not-found-page';
-import { AuthModal } from '@/features/auth/auth-modal';
+import { LazyAuthModal } from '@/features/auth/lazy-auth-modal';
 import { GoogleOneTap } from '@/features/auth/google-one-tap';
 import { useSyncLaSoHistoryOnLogin } from '@/features/la-so/history/use-sync-on-login';
 import { SITE_NAME, jsonLdMeta, organizationJsonLd, seo } from '@/lib/seo';
@@ -66,7 +66,7 @@ function RootRoute() {
     <>
       <HeadContent />
       <GoogleOneTap />
-      <AuthModal />
+      <LazyAuthModal />
       <Outlet />
       {isDesktop && (
         <Suspense>
