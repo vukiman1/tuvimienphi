@@ -93,6 +93,14 @@ describe('TetHubPage', () => {
     expect(cta.hash).toBe('#lap-la-so');
   });
 
+  it('puts the Vận hạn link on its own line under the sentence, not inside the prose', async () => {
+    renderHub(INTRO);
+
+    const vanHan = await screen.findByRole('link', { name: 'Xem vận hạn theo con giáp' });
+
+    expect(vanHan.closest('p')).toBeNull();
+  });
+
   it('opens with a Night hero holding the breadcrumb and the h1', async () => {
     renderHub(INTRO);
 
