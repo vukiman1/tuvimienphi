@@ -15,9 +15,9 @@ export function RecoveryCodesDialog({ codes, onClose }: RecoveryCodesDialogProps
     }
     try {
       await navigator.clipboard.writeText(codes.join('\n'));
-      notify.success('Recovery codes copied.');
+      notify.success('Đã sao chép mã phục hồi.');
     } catch {
-      notify.error('Could not copy. Please write them down instead.');
+      notify.error('Chưa sao chép được. Bạn hãy chép tay các mã này nhé.');
     }
   };
 

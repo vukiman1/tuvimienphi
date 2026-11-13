@@ -49,7 +49,7 @@ export function UserMenu() {
       console.warn('Logout request failed; clearing the local session anyway', error);
     } finally {
       endSession();
-      notify.success('Signed out.');
+      notify.success('Bạn đã đăng xuất.');
       await navigate({ to: '/' });
     }
   };

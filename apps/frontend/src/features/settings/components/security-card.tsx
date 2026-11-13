@@ -21,7 +21,7 @@ export function SecurityCard() {
       notify.success(`Đã gửi mã tới ${email}.`);
       setIsSettingPassword(true);
     },
-    onError: () => notify.error('Không thể gửi email. Vui lòng thử lại.'),
+    onError: () => notify.error('Chưa gửi được email. Bạn thử lại nhé.'),
   });
 
   if (!user) {

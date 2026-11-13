@@ -45,7 +45,7 @@ export function TwoFactorCard() {
       setFreshCodes(recoveryCodes);
       await invalidate();
     },
-    onError: () => notify.error('Không thể tạo mã phục hồi mới.'),
+    onError: () => notify.error('Chưa tạo được mã phục hồi mới. Bạn thử lại nhé.'),
   });
 
   const status = statusQuery.data;

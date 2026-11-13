@@ -35,7 +35,7 @@ export function ForgotPasswordForm({ onDone }: ForgotPasswordFormProps) {
         submitLabel="Reset password"
         onSave={async (values) => {
           await authService.resetPassword({ email: sentTo, ...values });
-          notify.success('Password updated. Every device was signed out.');
+          notify.success('Đã đổi mật khẩu. Mọi thiết bị đã được đăng xuất.');
         }}
         onDone={onDone}
       />

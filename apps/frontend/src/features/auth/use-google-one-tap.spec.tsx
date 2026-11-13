@@ -78,7 +78,7 @@ describe('useGoogleOneTap', () => {
 
     expect(authService.googleOneTap).toHaveBeenCalledWith('cred-1');
     expect(useAuthStore.getState().user).toEqual({ email: 'jane@example.com' });
-    expect(notify.success).toHaveBeenCalledWith('Signed in.');
+    expect(notify.success).toHaveBeenCalledWith('Đăng nhập thành công.');
     await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith({ to: '/' }));
   });
 

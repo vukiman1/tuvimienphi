@@ -1,55 +1,37 @@
-import { toast } from 'react-toastify/unstyled';
-import { ToastCard, type ToastVariant } from '@/components/ui/toast-card';
+import type { ReactElement } from 'react';
+import { toast, type ToastContentProps } from 'react-toastify/unstyled';
+import { ToastCard, ToastVariant } from '@/components/ui/toast-card';
 
-const AUTO_CLOSE_MS = 4000;
+export const TOAST_DURATION_MS = {
+  [ToastVariant.Success]: 4000,
+  [ToastVariant.Info]: 4000,
+  [ToastVariant.Error]: 8000,
+} as const satisfies Readonly<Record<ToastVariant, number>>;
 
-interface NotifyOptions {
-  /** Ghi đè tiêu đề mặc định của loại toast. */
-  readonly title?: string;
-  readonly autoClose?: number;
-}
-
-function show(variant: ToastVariant, message: string, options?: NotifyOptions) {
-  const autoCloseMs = options?.autoClose ?? AUTO_CLOSE_MS;
+function show(variant: ToastVariant, message: string, title?: string): void {
   toast(
-    ({ closeToast, isPaused }) => (
+    ({ closeToast, toastProps }: ToastContentProps): ReactElement => (
       <ToastCard
-        autoCloseMs={autoCloseMs}
-        isPaused={isPaused}
         message={message}
         onClose={closeToast}
-        title={options?.title}
+        onFocusEnter={() => toast.pause({ id: toastProps.toastId })}
+        onFocusLeave={() => toast.play({ id: toastProps.toastId })}
+        title={title}
         variant={variant}
       />
     ),
-    {
-      autoClose: autoCloseMs,
-      icon: false,
-      closeButton: false,
-      className: 'ec-toast',
-    },
+    { autoClose: TOAST_DURATION_MS[variant], closeButton: false, icon: false },
   );
 }
 
-/**
- * One place to raise user-facing feedback, so callers do not each pick their own wording style or
- * duration. Errors stay up longer than confirmations because they usually need reading twice.
- */
 export const notify = {
-  success(message: string, title?: string) {
-    show('success', message, { title, autoClose: AUTO_CLOSE_MS });
+  success(message: string, title?: string): void {
+    show(ToastVariant.Success, message, title);
   },
-  error(message: string, title?: string) {
-    show('error', message, { title, autoClose: AUTO_CLOSE_MS * 2 });
+  error(message: string, title?: string): void {
+    show(ToastVariant.Error, message, title);
   },
-  info(message: string, title?: string) {
-    show('info', message, { title });
-  },
-  warning(message: string, title?: string) {
-    show('warning', message, { title });
-  },
-  /** Thông báo đặc biệt (cuộn lá số) — ví dụ "Lá số đã sẵn sàng". */
-  laso(message: string, title?: string) {
-    show('scroll', message, { title });
+  info(message: string, title?: string): void {
+    show(ToastVariant.Info, message, title);
   },
 };

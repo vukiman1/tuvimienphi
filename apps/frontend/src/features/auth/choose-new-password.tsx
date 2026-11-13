@@ -56,9 +56,9 @@ export function ChooseNewPassword({ email, submitLabel, onSave, onDone }: Choose
     try {
       await authService.forgotPassword(email);
       cooldown.restart();
-      notify.info('Another code is on its way.');
+      notify.info('Đã gửi lại mã. Bạn kiểm tra email nhé.');
     } catch {
-      notify.error('Could not send another code.');
+      notify.error('Chưa gửi lại được mã. Bạn thử lại sau ít phút.');
     } finally {
       setIsResending(false);
     }

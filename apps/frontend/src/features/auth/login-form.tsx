@@ -32,7 +32,7 @@ export function LoginForm({ onForgotPassword }: LoginFormProps) {
         return;
       }
       startSession(result.user);
-      notify.success('Signed in.');
+      notify.success('Đăng nhập thành công.');
       await finish();
     },
   });

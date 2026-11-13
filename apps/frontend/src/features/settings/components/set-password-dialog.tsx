@@ -25,7 +25,7 @@ export function SetPasswordDialog({ email, open, onOpenChange }: SetPasswordDial
         submitLabel="Set password"
         onSave={async (values) => {
           await authService.setPassword(values);
-          notify.success('Password set. Other devices were signed out.');
+          notify.success('Đã đặt mật khẩu. Các thiết bị khác đã được đăng xuất.');
         }}
         onDone={() => {
           onOpenChange(false);

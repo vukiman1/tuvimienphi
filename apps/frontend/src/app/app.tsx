@@ -1,9 +1,9 @@
 import { RouterProvider } from '@tanstack/react-router';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { ToastContainer } from 'react-toastify/unstyled';
 import { ConfirmProvider } from '@/components/ui/confirm-dialog';
 import { useAuthBootstrap } from '@/features/auth/use-auth-bootstrap';
 import { queryClient } from '@/lib/query-client';
+import { AppToastContainer } from './app-toast-container';
 import { router } from './router';
 
 export function App() {
@@ -13,14 +13,7 @@ export function App() {
       <ConfirmProvider>
         <RouterProvider router={router} />
       </ConfirmProvider>
-      <ToastContainer
-        autoClose={4000}
-        closeOnClick
-        hideProgressBar
-        newestOnTop
-        position="top-right"
-        theme="light"
-      />
+      <AppToastContainer />
     </QueryClientProvider>
   );
 }
