@@ -8,12 +8,6 @@ export interface LuanGiaiSection {
   readonly paragraphs: readonly string[];
 }
 
-/**
- * Một bài luận giải. `**đậm**` bọc tên sao, `==tô nền==` bọc cụm chốt ý — xem `RichText` ở frontend.
- *
- * `illustrationUrl` và `sealUrl` là chuyện trình bày nên API không trả về; frontend tự gắn theo
- * `sourceCung`. Để optional ở đây để một kiểu dùng được cho cả hai phía.
- */
 export interface LuanGiaiArticle {
   readonly eyebrow: string;
   readonly title: string;
@@ -26,8 +20,6 @@ export interface LuanGiaiArticle {
   readonly summary: string;
   readonly closingLabel: string;
   readonly closing: string;
-  readonly illustrationUrl?: string;
-  readonly sealUrl?: string;
 }
 
 export enum LuanGiaiChapterStatus {

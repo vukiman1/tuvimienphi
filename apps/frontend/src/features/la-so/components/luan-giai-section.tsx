@@ -1,12 +1,11 @@
-import { Fragment } from 'react';
+import { Fragment, type ReactElement } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { MEDIA } from '@/config/media';
 import { isYearDependentChapter, type BirthInput } from '@org/shared-contracts';
+import { DisplaySize, DisplayTitle, Orbit, ReadingZone, TitleFace } from '@/design-system';
 import { luanGiaiQueries } from '@/features/la-so/luan-giai-queries';
 import type { LuanGiaiChapter } from '@/features/la-so/luan-giai-data';
 import { LuanGiaiChapterContent } from '@/features/la-so/components/luan-giai-chapter-content';
 import { LuanGiaiChapters } from '@/features/la-so/components/luan-giai-chapters';
-import { cn } from '@/lib/utils';
 
 interface LuanGiaiSectionProps {
   readonly birth: BirthInput;
@@ -17,48 +16,7 @@ interface LuanGiaiSectionProps {
   readonly onSelectChapter: (order: string) => void;
 }
 
-/** Dải đỏ chạy hết bề ngang màn hình, thoát khỏi lề của `main`. Phần thừa do `100vw` tính cả thanh
- *  cuộn được `overflow-x: clip` ở gốc layout `_site` cắt đi. */
-const FULL_BLEED = { marginLeft: 'calc(50% - 50vw)', width: '100vw' } as const;
-
-/**
- * Hai cụm mây nhỏ nép sát mép trái và mép phải, cưỡi lên đường nối hai nền cho chỗ giáp ranh đỡ
- * cắt ngang phè. Cụm bên phải là chính ảnh đó lật ngang, khỏi phải xuất thêm file.
- */
-function SeamCloud({ side }: { readonly side: 'left' | 'right' }) {
-  return (
-    <img
-      alt=""
-      aria-hidden
-      className={cn(
-        'pointer-events-none absolute top-0 w-[16%] max-w-[260px] min-w-[150px] -translate-y-1/2 select-none',
-        side === 'left' ? 'left-0' : 'right-0 -scale-x-100',
-      )}
-      src={MEDIA.laSo.cloudDivider}
-    />
-  );
-}
-
-/**
- * Ảnh gốc có hình thoi bên trái và đường vuốt chạy sang phải, nên vế trái của tiêu đề phải lật
- * ngang để hình thoi luôn nằm sát chữ còn đường vuốt hướng ra ngoài.
- */
-function TitleOrnament({ side }: { readonly side: 'left' | 'right' }) {
-  return (
-    <span aria-hidden className="hidden min-w-0 flex-1 sm:block">
-      <img
-        alt=""
-        // Ảnh tỉ lệ 3:1 nhưng nét vẽ chỉ chiếm phần giữa; để `h-auto` thì hàng tiêu đề cao 104px
-        // toàn khoảng trong suốt. `object-cover` xén phần rỗng trên dưới, giữ nguyên bề ngang nét.
-        className={cn(
-          'h-[44px] w-full object-cover select-none',
-          side === 'left' && '-scale-x-100',
-        )}
-        src={MEDIA.laSo.headerOrnament}
-      />
-    </span>
-  );
-}
+const MOTTO_ORBIT_RINGS = 2;
 
 export function LuanGiaiSection({
   birth,
@@ -67,32 +25,19 @@ export function LuanGiaiSection({
   motto,
   activeChapter,
   onSelectChapter,
-}: LuanGiaiSectionProps) {
-  // Mục lục và nội dung luôn khớp nhau: khoá lạ thì rơi về mục đầu chứ không để trống thân trang.
+}: LuanGiaiSectionProps): ReactElement {
   const chapter = chapters.find((item) => item.order === activeChapter) ?? chapters[0];
-
-  // Hỏi trạng thái cả sáu chương một lượt ở đây, vì mục lục và phần thân đều cần: mục lục để biết
-  // chương nào còn khoá, phần thân để mở thẳng chương đã có bài thay vì bắt bấm lại.
   const { data: trangThai } = useQuery(luanGiaiQueries.statusMap(birth, viewYear));
 
   return (
-    <section
-      className="relative mt-24 bg-[#7a1f15] pt-[52px] pb-10 md:pt-[64px] md:pb-14"
-      style={FULL_BLEED}
-    >
-      <SeamCloud side="left" />
-      <SeamCloud side="right" />
-
-      <div className="relative mx-auto w-full max-w-[1400px] px-4 md:px-8">
-        <h2 className="mx-auto flex max-w-[1000px] items-center justify-center gap-5 text-[30px] leading-[38px] font-bold tracking-[0.06em] text-[#e2c186] uppercase md:text-[36px] md:leading-[44px]">
-          <TitleOrnament side="left" />
-          <span className="shrink-0">Luận giải lá số</span>
-          <TitleOrnament side="right" />
-        </h2>
-
-        {/* Mục lục đặt ngay dưới tiêu đề: người đọc thấy có những gì rồi mới chọn, thay vì phải
-            lướt hết bài mới tới chỗ đổi mục. */}
-        <div className="mx-auto mt-8 max-w-[1100px]">
+    <section className="bg-deep text-day">
+      <div className="mx-auto max-w-6xl px-4 pt-12 pb-8 md:px-6">
+        <div className="text-center">
+          <DisplayTitle as="h2" face={TitleFace.Serif} size={DisplaySize.Card}>
+            Luận giải lá số
+          </DisplayTitle>
+        </div>
+        <div className="mt-8">
           <LuanGiaiChapters
             activeOrder={activeChapter}
             chapters={chapters}
@@ -100,11 +45,10 @@ export function LuanGiaiSection({
             onSelect={onSelectChapter}
           />
         </div>
+      </div>
 
-        {/* Giới hạn bề ngang: dòng chữ dài quá 90 ký tự là mất mạch đọc. */}
-        <div className="mx-auto mt-6 max-w-[1100px]">
-          {/* Khoá theo mục: React dùng lại instance khi đổi mục, nên không có khoá thì trạng thái
-              đang sinh của mục này tràn sang mục vừa chuyển tới. */}
+      <div className="bg-day px-4 py-10 md:px-6">
+        <ReadingZone>
           <LuanGiaiChapterContent
             key={
               isYearDependentChapter(chapter.order) ? `${chapter.order}:${viewYear}` : chapter.order
@@ -114,26 +58,16 @@ export function LuanGiaiSection({
             status={trangThai?.chapters[chapter.order]}
             viewYear={viewYear}
           />
-        </div>
+        </ReadingZone>
+      </div>
 
-        {/*
-          Ba phần tử ngang hàng chứ không lồng nhau: khi hẹp thì thái cực tự xuống một hàng riêng và
-          nằm giữa, thay vì bị dính vào vế sau.
-        */}
-        <p className="mt-8 flex flex-wrap items-center justify-center gap-x-[10px] gap-y-2 text-center text-[14px] leading-[21px] text-[#e8cd97]">
+      <div className="mx-auto max-w-6xl px-4 py-12 md:px-6">
+        <p className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-center text-sm text-day-soft">
           {motto.map((line, index) => (
             <Fragment key={line}>
               {index > 0 && (
-                // `basis-full` đặt ở khung bọc chứ không đặt lên ảnh: đặt thẳng lên ảnh thì nó ép
-                // bề rộng ảnh bằng cả hàng và kéo thái cực dẹt ra.
                 <span className="flex basis-full justify-center md:basis-auto">
-                  <img
-                    alt=""
-                    aria-hidden
-                    // Chiều rộng để `auto`: ảnh đã cắt sát nét nên tự ra đúng tỉ lệ, khỏi lo méo.
-                    className="h-[62px] w-auto select-none md:h-[76px]"
-                    src={MEDIA.laSo.taiji}
-                  />
+                  <Orbit rings={MOTTO_ORBIT_RINGS} className="size-8 text-gold/60" />
                 </span>
               )}
               <span>{line}</span>

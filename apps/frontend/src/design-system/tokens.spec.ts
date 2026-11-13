@@ -7,6 +7,11 @@ const AA_NON_TEXT = 3;
 const COLOR_TOKEN = /--color-([\w-]+):\s*(#[0-9a-fA-F]{6})/g;
 const CHART_TOKEN_PREFIXES = ['hanh-', 'chart-block'] as const;
 const DARK_TONES = ['night', 'deep', 'dusk'] as const;
+const SPOTLIGHT_TINT_ALPHA = 0.1;
+const TAB_TRACK_ALPHA = 0.4;
+const UNAVAILABLE_TAB_ALPHA = 0.55;
+const KEY_PHRASE_WASH_ALPHA = 0.6;
+const BOARD_GRAPHIC_TOKENS = ['deep', 'ember', 'ink'] as const;
 const TOAST_ICON_TINTS = [
   { icon: 'hanh-tho', tint: 'gold', alpha: 0.2 },
   { icon: 'danger', tint: 'ember', alpha: 0.15 },
@@ -153,6 +158,58 @@ describe('design tokens', () => {
       const tintOnDay = compositeOver(token(tint), alpha, token('day'));
       expect(contrastRatio(token(icon), tintOnDay)).toBeGreaterThanOrEqual(AA_NON_TEXT);
     }
+  });
+
+  it('every chart data colour passes AA on the spotlight tint', () => {
+    const tint = compositeOver(token('gold'), SPOTLIGHT_TINT_ALPHA, token('day'));
+    const hanhTokens = [...TOKENS].filter(([name]) => name.startsWith('hanh-'));
+
+    expect(hanhTokens.length).toBe(5);
+    for (const [, value] of hanhTokens) {
+      expect(contrastRatio(value, tint)).toBeGreaterThanOrEqual(AA_NORMAL_TEXT);
+    }
+  });
+
+  it('board labels stay readable on the spotlight tint', () => {
+    const tint = compositeOver(token('gold'), SPOTLIGHT_TINT_ALPHA, token('day'));
+
+    for (const label of ['ink', 'ink-soft', 'dusk']) {
+      expect(contrastRatio(token(label), tint)).toBeGreaterThanOrEqual(AA_NORMAL_TEXT);
+    }
+  });
+
+  it('Tuần, Triệt and Tiểu hạn labels read day on the chart block', () => {
+    expect(contrastRatio(token('day'), token('chart-block'))).toBeGreaterThanOrEqual(
+      AA_NORMAL_TEXT,
+    );
+  });
+
+  it('board lines and the picked ring stay visible on every cung surface', () => {
+    const tint = compositeOver(token('gold'), SPOTLIGHT_TINT_ALPHA, token('day'));
+
+    for (const graphic of BOARD_GRAPHIC_TOKENS) {
+      for (const surface of [token('day'), tint]) {
+        expect(contrastRatio(token(graphic), surface)).toBeGreaterThanOrEqual(AA_NON_TEXT);
+      }
+    }
+  });
+
+  it('chapter tabs read on their track, even when the chapter is not written yet', () => {
+    const track = compositeOver(token('night'), TAB_TRACK_ALPHA, token('deep'));
+    const fadedDay = compositeOver(token('day'), UNAVAILABLE_TAB_ALPHA, track);
+
+    expect(contrastRatio(token('day'), track)).toBeGreaterThanOrEqual(AA_NORMAL_TEXT);
+    expect(contrastRatio(fadedDay, track)).toBeGreaterThanOrEqual(AA_NORMAL_TEXT);
+  });
+
+  it('key phrases stay readable on the dawn wash', () => {
+    const wash = compositeOver(token('dawn'), KEY_PHRASE_WASH_ALPHA, token('day'));
+
+    expect(contrastRatio(token('ink'), wash)).toBeGreaterThanOrEqual(AA_NORMAL_TEXT);
+  });
+
+  it('progress fill is visible on the skeleton track', () => {
+    expect(contrastRatio(token('dusk'), token('day-200'))).toBeGreaterThanOrEqual(AA_NON_TEXT);
   });
 
   it('every chart data colour passes AA on day', () => {

@@ -12,21 +12,6 @@ function mediaUrl(path: string): string {
   return `${appConfig.media.baseUrl}${path}`;
 }
 
-/**
- * One illustration per palace, reused by whichever chapter reads that palace. A palace with no
- * artwork yet is simply absent: the article then lays its text across the full width.
- *
- * Phúc Đức and Thiên Di have no artwork of their own yet, so they borrow another palace's.
- */
-const CUNG_ILLUSTRATIONS: Partial<Record<string, string>> = {
-  Mệnh: mediaUrl('/la-so/than-cu/menh.webp'),
-  'Phúc Đức': mediaUrl('/la-so/than-cu/dien-trach.webp'),
-  'Quan Lộc': mediaUrl('/la-so/than-cu/quan-loc.webp'),
-  'Thiên Di': mediaUrl('/la-so/than-cu/menh.webp'),
-  'Tài Bạch': mediaUrl('/la-so/than-cu/tai-bach.webp'),
-  'Phu Thê': mediaUrl('/la-so/than-cu/phu-the.webp'),
-};
-
 export const MEDIA = {
   auth: {
     panelTop: mediaUrl('/auth/panel-top.webp'),
@@ -61,17 +46,8 @@ export const MEDIA = {
     decorLeft: mediaUrl('/la-so/left.webp'),
     decorRight: mediaUrl('/la-so/right.webp'),
     illustrationCrane: mediaUrl('/la-so/crane-pine.webp'),
-    cungIllustrations: CUNG_ILLUSTRATIONS,
-    seal: mediaUrl('/la-so/seal.webp'),
     sealSmall: mediaUrl('/la-so/seal-sm.webp'),
-    cloudDivider: mediaUrl('/la-so/cloud-divider.webp'),
     luopan: mediaUrl('/la-so/luopan.webp'),
-    headerOrnament: mediaUrl('/la-so/header-ornament.webp'),
-    taiji: mediaUrl('/la-so/taiji.webp'),
-    badge: mediaUrl('/la-so/badge.webp'),
-    historyCraneSun: mediaUrl('/la-so/history/crane-sun.webp'),
-    historyPavilionPine: mediaUrl('/la-so/history/pavilion-pine.webp'),
-    historyBagua: mediaUrl('/la-so/history/bagua.webp'),
   },
   ngayTot: {
     lichBackground: mediaUrl('/ngay-tot/lich-bg.svg'),
@@ -99,11 +75,6 @@ export function vanHanHeroUrl(slug: string): string {
 /** Đồng xu ngũ hành cho card năm sinh, theo slug hành (thuy/hoa/tho/moc/kim). */
 export function vanHanCoinUrl(slug: string): string {
   return mediaUrl(`/van-han/coin-${slug}.png`);
-}
-
-/** Huy hiệu của từng mục luận giải. Tách riêng vì tên file được chọn lúc chạy, không cố định. */
-export function laSoIconUrl(name: string): string {
-  return mediaUrl(`/la-so/icons/${name}.webp`);
 }
 
 /** The six Lục Diệu discs, keyed by the slot's slug. */

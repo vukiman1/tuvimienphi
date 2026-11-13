@@ -7,6 +7,11 @@ export interface GridPosition {
   readonly column: number;
 }
 
+export interface BoardPoint {
+  readonly x: number;
+  readonly y: number;
+}
+
 export const BOARD_SIZE = 4;
 
 /** Khoá theo index địa chi (0 = Tý … 11 = Hợi). */
@@ -39,7 +44,7 @@ function clampToCenterEdge(value: number): number {
  * thiên bàn. Thiên bàn là hình lồi nên mọi đường nối hai neo đều nằm trọn bên trong nó — không bị
  * cắt cụt ở mép, cũng không chọc sang che chữ trong các cung. Đây cũng là chỗ đặt nhãn địa chi.
  */
-export function centerAnchor(cungIndex: number): { readonly x: number; readonly y: number } {
+export function centerAnchor(cungIndex: number): BoardPoint {
   const { row, column } = CUNG_GRID_POSITIONS[cungIndex];
   return { x: clampToCenterEdge(column - 0.5), y: clampToCenterEdge(row - 0.5) };
 }

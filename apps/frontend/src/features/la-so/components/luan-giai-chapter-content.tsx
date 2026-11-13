@@ -9,7 +9,6 @@ import {
 import { TopUpDialog } from '@/features/credits/components/top-up-dialog';
 import { isOutOfLuot } from '@/features/credits/credits-queries';
 import type { LuanGiaiChapter } from '@/features/la-so/luan-giai-data';
-import { articleMedia } from '@/features/la-so/luan-giai-media';
 import { luanGiaiQueries, requestChapter } from '@/features/la-so/luan-giai-queries';
 import { LuanGiaiArticleCard } from '@/features/la-so/components/luan-giai-article';
 import { LuanGiaiPendingCard } from '@/features/la-so/components/luan-giai-pending';
@@ -101,11 +100,7 @@ export function LuanGiaiChapterContent({
 
   if (data?.status === LuanGiaiChapterStatus.Ready) {
     return (
-      <LuanGiaiArticleCard
-        article={{ ...data.article, ...articleMedia(data.article) }}
-        isFresh={xin.isSuccess}
-        order={chapter.order}
-      />
+      <LuanGiaiArticleCard article={data.article} isFresh={xin.isSuccess} order={chapter.order} />
     );
   }
 

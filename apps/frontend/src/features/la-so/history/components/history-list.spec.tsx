@@ -7,6 +7,7 @@ import {
   createRouter,
 } from '@tanstack/react-router';
 import { CalendarType, Gender, type BirthInput } from '@org/shared-contracts';
+import { FOCUS_RING_CLASS } from '@/design-system';
 import { recordLocalHistory } from '../local-history-store';
 import { HistoryList } from './history-list';
 
@@ -36,6 +37,10 @@ function renderList() {
   );
 }
 
+function classTokens(element: Element | null): readonly string[] {
+  return element?.getAttribute('class')?.split(/\s+/) ?? [];
+}
+
 beforeEach(() => {
   window.localStorage.clear();
 });
@@ -54,5 +59,38 @@ describe('HistoryList', () => {
 
     await waitFor(() => expect(screen.getByText('Nguyễn Văn A')).toBeTruthy());
     expect(screen.queryByText(/Chưa có lá số nào/)).toBeNull();
+  });
+
+  it('shows each chart as a Day tile with the focus ring', async () => {
+    recordLocalHistory(ENTRY);
+
+    renderList();
+
+    const card = (await screen.findByText('Nguyễn Văn A')).closest('a');
+    expect(classTokens(card)).toEqual(
+      expect.arrayContaining(['bg-day', 'border-ink/15', ...FOCUS_RING_CLASS.split(' ')]),
+    );
+  });
+
+  it('gives the remove button a 44 px target', async () => {
+    recordLocalHistory(ENTRY);
+
+    renderList();
+
+    const remove = await screen.findByRole('button', {
+      name: 'Xoá lá số Nguyễn Văn A khỏi lịch sử',
+    });
+    expect(classTokens(remove)).toEqual(
+      expect.arrayContaining(['size-11', ...FOCUS_RING_CLASS.split(' ')]),
+    );
+  });
+
+  it('shows no icon image on a card', async () => {
+    recordLocalHistory(ENTRY);
+
+    const { container } = renderList();
+
+    await screen.findByText('Nguyễn Văn A');
+    expect(container.querySelectorAll('ul img')).toHaveLength(0);
   });
 });
