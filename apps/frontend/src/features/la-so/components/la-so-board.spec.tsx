@@ -26,7 +26,11 @@ const TY = 0;
 const TY_RELATED = [4, 8, 6, 1] as const;
 const SPOTLIGHT_CLASS = 'bg-gold/10';
 const DIMMED_CLASS = 'opacity-30';
-const RELATED_MARKER = 'ring-1';
+const PICKED_MARK = ['inset-ring-2', 'inset-ring-ink'] as const;
+const FOCUSED_MARK = ['inset-ring-2', 'inset-ring-gold'] as const;
+const RELATED_MARK = ['inset-ring-1', 'inset-ring-gold'] as const;
+const FOCUS_RING_TOKENS = FOCUS_RING_CLASS.split(' ');
+const OUTER_RING_STATE = /^ring-/;
 
 const HANH_CLASS: Readonly<Record<NguHanh, string>> = {
   Kim: 'text-hanh-kim',
@@ -152,7 +156,7 @@ function markedCungIndexes(): readonly number[] {
   return CHART.cungs
     .filter((cung) => {
       const tokens = classTokens(cungButton(cung));
-      return tokens.includes(RELATED_MARKER) && tokens.includes('ring-gold');
+      return RELATED_MARK.every((mark) => tokens.includes(mark));
     })
     .map((cung) => cung.index)
     .sort(byIndex);
@@ -173,6 +177,12 @@ function elementReading(container: HTMLElement, text: string): HTMLElement | und
 
 function classTokens(element: Element | undefined): readonly string[] {
   return element?.getAttribute('class')?.split(/\s+/) ?? [];
+}
+
+function expectStateMarkBesideFocusRing(button: HTMLElement, mark: readonly string[]): void {
+  const tokens = classTokens(button);
+  expect(tokens).toEqual(expect.arrayContaining([...mark, ...FOCUS_RING_TOKENS]));
+  expect(tokens.filter((token) => OUTER_RING_STATE.test(token))).toEqual([]);
 }
 
 afterEach(() => {
@@ -205,7 +215,7 @@ describe('LaSoBoard on a wide container', () => {
     renderBoard();
     const pressed = screen
       .getAllByRole('button', { name: /^Cung / })
-      .filter((button) => classTokens(button).includes('ring-ink'));
+      .filter((button) => classTokens(button).includes('inset-ring-ink'));
 
     expect(pressed).toEqual([cungButton(MENH)]);
     expect(cungButton(MENH).getAttribute('aria-pressed')).toBe('true');
@@ -218,7 +228,7 @@ describe('LaSoBoard on a wide container', () => {
     fireEvent.mouseEnter(cungButton(hovered));
 
     expect(classTokens(cungButton(hovered))).toEqual(
-      expect.arrayContaining(['ring-gold', SPOTLIGHT_CLASS]),
+      expect.arrayContaining([...FOCUSED_MARK, SPOTLIGHT_CLASS]),
     );
     for (const index of TY_RELATED) {
       expect(classTokens(cungButton(CHART.cungs[index]))).toContain(SPOTLIGHT_CLASS);
@@ -304,8 +314,23 @@ describe('LaSoBoard on a wide container', () => {
     expect(buttons).toHaveLength(CHART.cungs.length);
     for (const button of buttons) {
       expect(classTokens(button)).toEqual(
-        expect.arrayContaining([...FOCUS_RING_CLASS.split(' '), 'focus-visible:z-30']),
+        expect.arrayContaining([...FOCUS_RING_TOKENS, 'focus-visible:z-30']),
       );
+    }
+  });
+
+  it('keeps the picked, focused and related marks beside the focus ring', () => {
+    renderBoard();
+
+    fireEvent.mouseEnter(cungButton(CHART.cungs[TY]));
+
+    const marked = [
+      { button: cungButton(MENH), mark: PICKED_MARK },
+      { button: cungButton(CHART.cungs[TY]), mark: FOCUSED_MARK },
+      { button: cungButton(CHART.cungs[TY_RELATED[0]]), mark: RELATED_MARK },
+    ];
+    for (const { button, mark } of marked) {
+      expectStateMarkBesideFocusRing(button, mark);
     }
   });
 });
@@ -348,7 +373,7 @@ describe('LaSoBoard on a phone-width container', () => {
     fireEvent.click(cungButton(tapped));
 
     expect(cungButton(tapped).getAttribute('aria-pressed')).toBe('true');
-    expect(classTokens(cungButton(tapped))).toContain('ring-ink');
+    expect(classTokens(cungButton(tapped))).toEqual(expect.arrayContaining([...PICKED_MARK]));
     for (const index of [4, 8]) {
       expect(classTokens(cungButton(CHART.cungs[index]))).toContain(SPOTLIGHT_CLASS);
     }
@@ -368,6 +393,20 @@ describe('LaSoBoard on a phone-width container', () => {
     fireEvent.click(cungButton(CHART.cungs[TY]));
 
     expect(markedCungIndexes()).toEqual([...TY_RELATED].sort(byIndex));
+  });
+
+  it('keeps the tapped and related marks beside the focus ring', () => {
+    renderBoard();
+
+    fireEvent.click(cungButton(CHART.cungs[TY]));
+
+    const marked = [
+      { button: cungButton(CHART.cungs[TY]), mark: PICKED_MARK },
+      { button: cungButton(CHART.cungs[TY_RELATED[0]]), mark: RELATED_MARK },
+    ];
+    for (const { button, mark } of marked) {
+      expectStateMarkBesideFocusRing(button, mark);
+    }
   });
 
   it('shows every star of the picked cung in a panel below the board', () => {
