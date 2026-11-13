@@ -1,7 +1,6 @@
 import type { ReactElement, ReactNode } from 'react';
 import { Link, type LinkProps } from '@tanstack/react-router';
 import { cn } from '@/lib/utils';
-import { focusHashTarget } from './focus-hash-target';
 import { FOCUS_RING_CLASS } from './focus-ring';
 
 interface TextLinkProps {
@@ -19,7 +18,6 @@ export function TextLink({ to, params, search, hash, children }: TextLinkProps):
       params={params}
       search={search}
       hash={hash}
-      onClick={() => focusHashTarget(hash)}
       className={cn(
         'inline-flex min-h-11 items-center border-b border-current text-sm font-bold no-underline',
         FOCUS_RING_CLASS,

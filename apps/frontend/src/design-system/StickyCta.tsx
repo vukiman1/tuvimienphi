@@ -1,7 +1,6 @@
 import type { ReactElement, ReactNode } from 'react';
 import { Link, type LinkProps } from '@tanstack/react-router';
 import { cn } from '@/lib/utils';
-import { focusHashTarget } from './focus-hash-target';
 import { FOCUS_RING_CLASS } from './focus-ring';
 
 interface StickyCtaProps {
@@ -15,7 +14,6 @@ export function StickyCta({ to, hash, children }: StickyCtaProps): ReactElement 
     <Link
       to={to}
       hash={hash}
-      onClick={() => focusHashTarget(hash)}
       className={cn(
         'fixed right-7 bottom-6 z-40 hidden items-center rounded-full bg-gold px-6 py-4 text-sm font-bold text-ink no-underline shadow-lg md:inline-flex',
         FOCUS_RING_CLASS,

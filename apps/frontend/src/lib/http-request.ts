@@ -17,6 +17,9 @@ import { notify } from './toast';
 const REFRESH_PATH = '/auth/refresh-token';
 const LOGIN_PATH = '/auth/login';
 const REGISTER_PATH = '/auth/register';
+export const UNREACHABLE_SERVER_MESSAGE =
+  'Chưa kết nối được tới máy chủ. Bạn kiểm tra mạng rồi thử lại nhé.';
+const SERVER_FAILURE_MESSAGE = 'Máy chủ đang gặp sự cố. Bạn thử lại sau ít phút nhé.';
 
 declare module 'axios' {
   interface AxiosRequestConfig {
@@ -75,16 +78,12 @@ instance.interceptors.response.use(
   },
 );
 
-/**
- * Only failures no screen can act on. Business errors already appear inline on the form, and
- * toasting those too would say the same thing twice.
- */
 export function infrastructureFailureMessage(status: number | undefined): string | null {
   if (status === undefined) {
-    return 'Could not reach the server. Check your connection and try again.';
+    return UNREACHABLE_SERVER_MESSAGE;
   }
   if (status >= 500) {
-    return 'Something went wrong on our side. Please try again.';
+    return SERVER_FAILURE_MESSAGE;
   }
   return null;
 }

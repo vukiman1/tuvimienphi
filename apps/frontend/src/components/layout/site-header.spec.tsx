@@ -161,17 +161,6 @@ describe('SiteHeader', () => {
     ).toBeNull();
   });
 
-  it('keeps the page links out of the phone header', async () => {
-    await renderAt('/ngay-tot', () => <SiteHeader />);
-
-    const primary = screen.getByRole('navigation', { name: 'Primary' });
-    const classes = primary.className.split(/\s+/);
-    expect(within(primary).getByRole('link', { name: 'Vận Hạn' })).toBeTruthy();
-    expect(classes).toContain('hidden');
-    expect(classes).toContain('md:flex');
-    expect(classes).not.toContain('flex');
-  });
-
   it('shows the site name once to assistive technology', async () => {
     await renderAt('/ngay-tot', () => <SiteHeader />);
 

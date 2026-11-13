@@ -4,7 +4,8 @@ import { notify } from './toast';
 
 jest.mock('./toast', () => ({ notify: { error: jest.fn() } }));
 
-const UNREACHABLE_MESSAGE = 'Could not reach the server. Check your connection and try again.';
+const UNREACHABLE_MESSAGE = 'Chưa kết nối được tới máy chủ. Bạn kiểm tra mạng rồi thử lại nhé.';
+const SERVER_FAILURE_MESSAGE = 'Máy chủ đang gặp sự cố. Bạn thử lại sau ít phút nhé.';
 
 function unreachableServer(config: InternalAxiosRequestConfig): Promise<never> {
   return Promise.reject(new AxiosError('Network Error', AxiosError.ERR_NETWORK, config));
@@ -16,8 +17,8 @@ describe('infrastructureFailureMessage', () => {
   });
 
   it('speaks up when the server broke on its own', () => {
-    expect(infrastructureFailureMessage(500)).toBeTruthy();
-    expect(infrastructureFailureMessage(503)).toBeTruthy();
+    expect(infrastructureFailureMessage(500)).toBe(SERVER_FAILURE_MESSAGE);
+    expect(infrastructureFailureMessage(503)).toBe(SERVER_FAILURE_MESSAGE);
   });
 
   it('stays quiet for errors a screen shows inline', () => {

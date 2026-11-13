@@ -8,7 +8,6 @@ export { Chip } from './Chip';
 export { CtaButton, CtaTone, type CtaButtonProps } from './CtaButton';
 export { DisplaySize, DisplayTitle, Emphasis, TitleFace } from './DisplayTitle';
 export { Eyebrow } from './Eyebrow';
-export { focusHashTarget } from './focus-hash-target';
 export { FOCUS_RING_CLASS } from './focus-ring';
 export { GiantNumeral } from './geometry/GiantNumeral';
 export { Orbit } from './geometry/Orbit';
