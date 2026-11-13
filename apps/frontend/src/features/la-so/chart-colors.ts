@@ -6,9 +6,9 @@ export const CUNG_SURFACE_CLASS = {
 } as const;
 
 export const CUNG_STATE_CLASS = {
-  focused: 'ring-2 ring-inset ring-gold',
-  picked: 'ring-2 ring-inset ring-ink',
-  related: 'ring-1 ring-inset ring-gold',
+  focused: 'inset-ring-2 inset-ring-gold',
+  picked: 'inset-ring-2 inset-ring-ink',
+  related: 'inset-ring-1 inset-ring-gold',
 } as const;
 
 export function cungStateClass(
