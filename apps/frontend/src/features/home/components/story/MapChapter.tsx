@@ -143,7 +143,7 @@ export function MapChapter(): ReactElement {
                       />
                     </span>
                     <div className="flex flex-col">
-                      <h3 className="font-display text-lg font-bold">{statement.title}</h3>
+                      <h3 className="font-display text-lg font-extrabold">{statement.title}</h3>
                       <p className="text-sm">{statement.description}</p>
                     </div>
                   </li>

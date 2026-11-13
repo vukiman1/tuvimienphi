@@ -29,7 +29,7 @@ interface VerdictProps {
 function GenderSubsection({ id, title, gender, paragraphs }: GenderSubsectionProps): ReactElement {
   return (
     <section id={id} aria-labelledby={`${id}-title`} className="scroll-mt-6">
-      <h3 id={`${id}-title`} className="font-display text-xl font-bold">
+      <h3 id={`${id}-title`} className="font-display text-xl font-extrabold">
         {title}
       </h3>
       <div className="mt-3">
