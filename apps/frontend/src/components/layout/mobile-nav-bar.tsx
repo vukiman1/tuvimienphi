@@ -1,172 +1,101 @@
-import { Link, useRouterState } from '@tanstack/react-router';
-import { Home, MessageSquare, Search, UserRound } from 'lucide-react';
-import { FOCUS_RING_CLASS, LogoMark } from '@/design-system';
+import type { ReactElement } from 'react';
+import { Link, type LinkProps } from '@tanstack/react-router';
+import { Bookmark, CalendarCheck, ChartSpline, House, type LucideIcon } from 'lucide-react';
+import { FOCUS_RING_CLASS, LaSoBoardIcon, focusHashTarget } from '@/design-system';
+import { BIRTH_FORM_ANCHOR } from '@/features/home/home-anchors';
 import { cn } from '@/lib/utils';
 
-const BAR_H = 64;
-const SVG_W = 390;
-const CIRCLE_R = 32;
-const CX = SVG_W / 2;
+const TAB_ICON_STROKE_WIDTH = 1.75;
+const BIRTH_FORM_ACTIVE_OPTIONS = { exact: true, includeHash: true } as const;
 
-/*
- * NOTCH_R > CIRCLE_R: a single arc centred at bar-top (y = 0) and radius NOTCH_R.
- * Because the centre is at y = 0, the arc is tangent to the flat bar edge at both
- * end-points — no Q-bezier corners, no "cloud" bumps. The extra (NOTCH_R - CIRCLE_R)
- * pixels on each side are the visible "wings" that show the bar curving down.
- *
- * NOTCH_R is capped so the arc deepest point (y = NOTCH_R) stays above the label
- * (y ≈ CIRCLE_R + 14 = 46 px), leaving the label on solid cream.
- */
-const NOTCH_R = 40; // wings = 40 - 32 = 8 px each side
-const CIRCLE_TOP = -CIRCLE_R; // = -32 px — circle centre sits exactly at bar top
+interface MobileTab {
+  readonly label: string;
+  readonly href: LinkProps['to'];
+  readonly Icon: LucideIcon;
+  readonly isExactMatch?: boolean;
+}
 
-const NOTCH_FILL = [
-  `M 0 0`,
-  `L ${CX - NOTCH_R} 0`,
-  `A ${NOTCH_R} ${NOTCH_R} 0 0 1 ${CX + NOTCH_R} 0`,
-  `L ${SVG_W} 0`,
-  `L ${SVG_W} ${BAR_H}`,
-  `L 0 ${BAR_H}`,
-  `Z`,
-].join(' ');
-
-// Same path without the rectangle fill — drawn as a stroke so the curve stays
-// visible regardless of what the page renders behind the transparent notch.
-const NOTCH_STROKE = [
-  `M 0 0`,
-  `L ${CX - NOTCH_R} 0`,
-  `A ${NOTCH_R} ${NOTCH_R} 0 0 1 ${CX + NOTCH_R} 0`,
-  `L ${SVG_W} 0`,
-].join(' ');
-
-type MobileNavItem = { label: string; href: string; icon: React.ReactNode };
-
-const LEFT_ITEMS: MobileNavItem[] = [
-  { label: 'Trang chủ', href: '/', icon: <Home strokeWidth={1.5} className="size-4.5" /> },
-  {
-    label: 'Khám phá',
-    href: '/kien-thuc',
-    icon: <Search strokeWidth={1.5} className="size-4.5" />,
-  },
+const LEADING_TABS: readonly MobileTab[] = [
+  { label: 'Trang chủ', href: '/', Icon: House, isExactMatch: true },
+  { label: 'Vận hạn', href: '/van-han', Icon: ChartSpline },
 ];
 
-const RIGHT_ITEMS: MobileNavItem[] = [
-  {
-    label: 'Thông báo',
-    href: '/thong-bao',
-    icon: (
-      <span className="relative">
-        <MessageSquare strokeWidth={1.5} className="size-4.5" />
-        <span className="absolute -top-0.5 -right-0.5 size-1.5 rounded-full bg-ember" />
-      </span>
-    ),
-  },
-  {
-    label: 'Cá nhân',
-    href: '/dashboard/settings',
-    icon: <UserRound strokeWidth={1.5} className="size-4.5" />,
-  },
+const TRAILING_TABS: readonly MobileTab[] = [
+  { label: 'Ngày tốt', href: '/ngay-tot', Icon: CalendarCheck },
+  { label: 'Lá số của tôi', href: '/la-so', Icon: Bookmark },
 ];
 
-function NavItem({ item, isActive }: { item: MobileNavItem; isActive: boolean }) {
+const LABEL_CLASS = 'text-2xs leading-none whitespace-nowrap';
+
+interface TabLinkProps {
+  readonly tab: MobileTab;
+}
+
+function TabLink({ tab }: TabLinkProps): ReactElement {
+  const { Icon } = tab;
   return (
     <Link
-      to={item.href}
-      aria-current={isActive ? 'page' : undefined}
+      to={tab.href}
+      activeOptions={{ exact: tab.isExactMatch === true }}
       className={cn(
-        'flex flex-1 flex-col items-center justify-center gap-0.75 no-underline transition-colors',
+        'relative flex min-h-11 flex-col items-center gap-1 pt-2.5 no-underline',
         FOCUS_RING_CLASS,
       )}
-      style={{ height: BAR_H }}
     >
-      {/* key remounts the span each time this tab becomes active → replays spring */}
-      <span
-        key={isActive ? 'active' : 'idle'}
-        className={cn(
-          'flex items-center justify-center overflow-visible',
-          isActive ? 'nav-icon-spring text-ink' : 'text-ink-soft',
-        )}
-        style={{ width: 18, height: 18 }}
-      >
-        {item.icon}
-      </span>
-      <span
-        className={cn(
-          'text-2xs tracking-wide',
-          isActive ? 'font-semibold text-ink' : 'font-medium text-ink-soft',
-        )}
-      >
-        {item.label}
-      </span>
-      <span
-        className={cn(
-          'size-1 rounded-full transition-colors',
-          isActive ? 'bg-gold' : 'bg-transparent',
-        )}
-        aria-hidden
-      />
+      {({ isActive }) => (
+        <>
+          {isActive && <span aria-hidden className="absolute top-0 h-0.75 w-7 rounded-b bg-gold" />}
+          <Icon
+            aria-hidden
+            strokeWidth={TAB_ICON_STROKE_WIDTH}
+            className={cn('size-5.5', isActive ? 'text-ink' : 'text-ink-soft')}
+          />
+          <span
+            className={cn(
+              LABEL_CLASS,
+              isActive ? 'font-semibold text-ink' : 'font-medium text-ink-soft',
+            )}
+          >
+            {tab.label}
+          </span>
+        </>
+      )}
     </Link>
   );
 }
 
-export function MobileNavBar() {
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
-
+function BirthFormAction(): ReactElement {
   return (
-    <nav aria-label="Mobile navigation" className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
-      <div className="relative" style={{ height: BAR_H }}>
-        <svg
-          className="pointer-events-none absolute inset-0 h-full w-full drop-shadow-sm"
-          viewBox={`0 0 ${SVG_W} ${BAR_H}`}
-          preserveAspectRatio="none"
-        >
-          <path d={NOTCH_FILL} className="fill-day" />
-          <path d={NOTCH_STROKE} fill="none" className="stroke-ink/10" strokeWidth="1.5" />
-        </svg>
+    <Link
+      to="/"
+      hash={BIRTH_FORM_ANCHOR}
+      activeOptions={BIRTH_FORM_ACTIVE_OPTIONS}
+      onClick={() => focusHashTarget(BIRTH_FORM_ANCHOR)}
+      className={cn('flex flex-col items-center gap-1 text-ink no-underline', FOCUS_RING_CLASS)}
+    >
+      <span className="-mt-6.5 flex size-13 items-center justify-center rounded-full bg-gold text-ink shadow-lg ring-4 ring-day">
+        <LaSoBoardIcon className="size-6" />
+      </span>
+      <span className={cn(LABEL_CLASS, 'font-semibold')}>Lập lá số</span>
+    </Link>
+  );
+}
 
-        <div className="relative flex h-full items-stretch">
-          <div className="flex flex-1">
-            {LEFT_ITEMS.map((item) => (
-              <NavItem key={item.href} item={item} isActive={isActive(item.href)} />
-            ))}
-          </div>
-          <div style={{ width: CIRCLE_R * 2 }} className="shrink-0" />
-          <div className="flex flex-1">
-            {RIGHT_ITEMS.map((item) => (
-              <NavItem key={item.href} item={item} isActive={isActive(item.href)} />
-            ))}
-          </div>
-        </div>
+export function MobileNavBar(): ReactElement {
+  return (
+    <nav
+      aria-label="Mobile navigation"
+      className="fixed inset-x-0 bottom-0 z-50 bg-day/97 pb-[env(safe-area-inset-bottom)] shadow-bottom-bar md:hidden"
+    >
+      <div className="grid h-17 grid-cols-5 items-end border-t border-ink/10 px-1 pb-2">
+        {LEADING_TABS.map((tab) => (
+          <TabLink key={tab.label} tab={tab} />
+        ))}
+        <BirthFormAction />
+        {TRAILING_TABS.map((tab) => (
+          <TabLink key={tab.label} tab={tab} />
+        ))}
       </div>
-
-      <div className="h-[env(safe-area-inset-bottom)] bg-day" />
-
-      <Link
-        to="/la-so"
-        aria-label="Lập lá số"
-        className={cn(
-          'absolute left-1/2 flex -translate-x-1/2 flex-col items-center no-underline',
-          FOCUS_RING_CLASS,
-        )}
-        style={{ top: CIRCLE_TOP }}
-      >
-        <span
-          className="flex items-center justify-center rounded-full bg-night shadow-lg ring-3 ring-day"
-          style={{ width: CIRCLE_R * 2, height: CIRCLE_R * 2 }}
-        >
-          <LogoMark className="size-12" />
-        </span>
-        {/* Label gets a cream bg so it stays readable even over the transparent notch */}
-        <span
-          className={cn(
-            'mt-1 rounded-sm bg-day px-1 text-2xs tracking-wide',
-            isActive('/la-so') ? 'font-bold text-ink' : 'font-semibold text-ink-soft',
-          )}
-        >
-          Lập lá số
-        </span>
-      </Link>
     </nav>
   );
 }

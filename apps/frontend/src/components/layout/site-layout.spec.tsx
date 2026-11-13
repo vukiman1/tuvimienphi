@@ -88,6 +88,29 @@ describe('SiteLayout', () => {
     expect(screen.getByRole('contentinfo').className).toContain('bg-day');
   });
 
+  it('shows the footer and its Kiến Thức link on phones too', async () => {
+    await renderPage(false);
+
+    const footer = screen.getByRole('contentinfo');
+    const hiddenAncestor = footer.closest('.hidden');
+
+    expect(hiddenAncestor).toBeNull();
+    expect(
+      within(screen.getByRole('navigation', { name: 'Footer' })).getByRole('link', {
+        name: 'Kiến Thức',
+      }),
+    ).toBeTruthy();
+  });
+
+  it('keeps the phone header on one row with a tighter gap', async () => {
+    await renderPage(false);
+
+    const row = screen.getByRole('banner').querySelector('div');
+
+    expect(row?.className).toContain('gap-x-3');
+    expect(row?.className).not.toMatch(/(^|\s)gap-x-6(\s|$)/);
+  });
+
   it('keeps the solid header on other routes, even if they render chapters', async () => {
     await renderPage(false);
     await scrollNightChapterUnderHeader();
