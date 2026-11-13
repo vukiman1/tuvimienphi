@@ -26,7 +26,7 @@ export function DashboardPage() {
 
         <div className="mt-8">
           <Button asChild variant="outline">
-            <Link to="/dashboard/settings">Open settings</Link>
+            <Link to="/dashboard/settings">Mở cài đặt</Link>
           </Button>
         </div>
       </section>

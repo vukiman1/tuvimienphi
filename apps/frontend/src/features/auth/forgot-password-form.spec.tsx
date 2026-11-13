@@ -14,9 +14,9 @@ const EMAIL = 'person@example.com';
 const STRONG_PASSWORD = 'Str0ngPass!';
 
 async function requestCode(): Promise<void> {
-  fireEvent.change(screen.getByLabelText('Email address'), { target: { value: EMAIL } });
-  fireEvent.click(screen.getByRole('button', { name: 'Send reset link' }));
-  await screen.findByLabelText('Verification code');
+  fireEvent.change(screen.getByLabelText('Email'), { target: { value: EMAIL } });
+  fireEvent.click(screen.getByRole('button', { name: 'Gửi mã' }));
+  await screen.findByLabelText('Mã xác nhận');
 }
 
 describe('ForgotPasswordForm', () => {
@@ -29,12 +29,12 @@ describe('ForgotPasswordForm', () => {
 
     render(<ForgotPasswordForm onDone={onDone} />);
     await requestCode();
-    fireEvent.change(screen.getByLabelText('Verification code'), { target: { value: '123456' } });
-    fireEvent.change(screen.getByLabelText('New password'), { target: { value: STRONG_PASSWORD } });
-    fireEvent.change(screen.getByLabelText('Confirm new password'), {
+    fireEvent.change(screen.getByLabelText('Mã xác nhận'), { target: { value: '123456' } });
+    fireEvent.change(screen.getByLabelText('Mật khẩu mới'), { target: { value: STRONG_PASSWORD } });
+    fireEvent.change(screen.getByLabelText('Nhập lại mật khẩu mới'), {
       target: { value: STRONG_PASSWORD },
     });
-    fireEvent.click(screen.getByRole('button', { name: 'Reset password' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Đặt lại mật khẩu' }));
 
     await waitFor(() =>
       expect(authService.resetPassword).toHaveBeenCalledWith({

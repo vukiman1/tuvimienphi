@@ -8,10 +8,13 @@ import { TextLink } from '@/components/ui/text-link';
 import { ApiError, errorMessage } from '@/lib/api-error';
 import { notify } from '@/lib/toast';
 import { authService } from '@/services/auth-service';
+import { EMAIL_SEND_FAILED_MESSAGE } from './auth-copy';
 import { startSession } from './session';
 import { useAuthModal } from './use-auth-modal';
 
 const CHALLENGE_GONE = 410;
+const RECOVERY_EMAIL_SENT_MESSAGE =
+  'Đã gửi email. Bạn mở liên kết trong thư để tắt xác thực 2 bước.';
 
 interface TwoFactorStepProps {
   challengeToken: string;
@@ -39,10 +42,7 @@ export function TwoFactorStep({ challengeToken, onExpired }: TwoFactorStepProps)
       notify.success('Đăng nhập thành công.');
       await finish();
     } catch (caught) {
-      const message = errorMessage(caught, 'Could not verify that code.');
-      setError(message);
-      // 410 means the challenge is gone, not that the code was wrong: the only way on is the
-      // password step.
+      setError(errorMessage(caught, 'Chưa xác thực được mã. Bạn thử lại nhé.'));
       if (caught instanceof ApiError && caught.statusCode === CHALLENGE_GONE) {
         onExpired();
       }
@@ -57,15 +57,15 @@ export function TwoFactorStep({ challengeToken, onExpired }: TwoFactorStepProps)
     setError(null);
 
     try {
-      const { message } = await authService.requestTwoFactorRecovery(challengeToken);
+      await authService.requestTwoFactorRecovery(challengeToken);
       setRecoverySent(true);
-      notify.info(message);
+      notify.info(RECOVERY_EMAIL_SENT_MESSAGE);
     } catch (caught) {
       if (caught instanceof ApiError && caught.statusCode === CHALLENGE_GONE) {
         onExpired();
         return;
       }
-      setError(errorMessage(caught, 'Could not send the email.'));
+      setError(errorMessage(caught, EMAIL_SEND_FAILED_MESSAGE));
     } finally {
       setIsRecovering(false);
     }
@@ -74,13 +74,13 @@ export function TwoFactorStep({ challengeToken, onExpired }: TwoFactorStepProps)
   return (
     <Form className="grid gap-4" onSubmit={() => void submit()}>
       <p className="text-sm text-muted-foreground">
-        Enter the six-digit code from your authenticator app, or one of your recovery codes.
+        Nhập mã 6 chữ số trong ứng dụng xác thực, hoặc một mã phục hồi của bạn.
       </p>
 
       <FormError message={error} />
 
       <div className="grid gap-2">
-        <Label htmlFor="two-factor-code">Verification code</Label>
+        <Label htmlFor="two-factor-code">Mã xác thực</Label>
         <Input
           autoComplete="one-time-code"
           autoFocus
@@ -93,17 +93,15 @@ export function TwoFactorStep({ challengeToken, onExpired }: TwoFactorStepProps)
       </div>
 
       <Button disabled={isSubmitting || code.trim().length < 6} type="submit">
-        {isSubmitting ? 'Verifying...' : 'Verify'}
+        {isSubmitting ? 'Đang xác thực...' : 'Xác thực'}
       </Button>
 
       <div className="grid gap-2 text-center text-sm text-muted-foreground">
         <TextLink disabled={isRecovering || recoverySent} onClick={requestRecovery} tone="muted">
-          {recoverySent
-            ? 'Check your inbox for the recovery link'
-            : 'Lost your device and recovery codes?'}
+          {recoverySent ? 'Đã gửi liên kết vào email của bạn' : 'Mất thiết bị và mã phục hồi?'}
         </TextLink>
         <TextLink onClick={onExpired} tone="muted">
-          Back to sign in
+          Quay lại đăng nhập
         </TextLink>
       </div>
     </Form>

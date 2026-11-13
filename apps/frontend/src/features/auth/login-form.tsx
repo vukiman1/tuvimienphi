@@ -9,6 +9,7 @@ import { UNREACHABLE_SERVER_MESSAGE } from '@/lib/http-request';
 import { useFormWithSubmitError } from '@/lib/use-form-with-submit-error';
 import { notify } from '@/lib/toast';
 import { authService } from '@/services/auth-service';
+import { EMAIL_PLACEHOLDER } from './auth-copy';
 import { startSession } from './session';
 import { usePendingTwoFactor } from './pending-two-factor-store';
 import { loginSchema, type LoginFormValues } from './schemas';
@@ -54,7 +55,7 @@ export function LoginForm({ onForgotPassword }: LoginFormProps) {
               autoComplete="email"
               field={field}
               label="Email"
-              placeholder="you@example.com"
+              placeholder={EMAIL_PLACEHOLDER}
               type="email"
             />
           )}
@@ -71,8 +72,8 @@ export function LoginForm({ onForgotPassword }: LoginFormProps) {
               autoComplete="current-password"
               control={PasswordInput}
               field={field}
-              label="Password"
-              placeholder="Enter your password"
+              label="Mật khẩu"
+              placeholder="Nhập mật khẩu"
             />
           )}
         />
@@ -87,19 +88,19 @@ export function LoginForm({ onForgotPassword }: LoginFormProps) {
                   name={field.name}
                   onChange={(event) => field.handleChange(event.target.checked)}
                 />
-                Remember me
+                Ghi nhớ đăng nhập
               </label>
             )}
           />
 
           <TextLink className="text-sm" onClick={onForgotPassword}>
-            Forgot password?
+            Quên mật khẩu?
           </TextLink>
         </div>
       </div>
 
       <div className="grid gap-4">
-        <SubmitButton form={form} label="Sign in" pendingLabel="Signing in..." />
+        <SubmitButton form={form} label="Đăng nhập" pendingLabel="Đang đăng nhập..." />
       </div>
     </Form>
   );

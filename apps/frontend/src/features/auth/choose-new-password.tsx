@@ -11,22 +11,23 @@ import { PasswordInput } from '@/components/ui/password-input';
 import { useFormWithSubmitError } from '@/lib/use-form-with-submit-error';
 import { notify } from '@/lib/toast';
 import { authService } from '@/services/auth-service';
+import { CODE_RESEND_FAILED_MESSAGE, CODE_RESENT_MESSAGE, EMAIL_CODE_LABEL } from './auth-copy';
 import { ResendCodeLink } from './resend-code-link';
-import { strongPassword } from './schemas';
+import { CONFIRM_NEW_PASSWORD_MESSAGE, PASSWORD_MISMATCH_MESSAGE, strongPassword } from './schemas';
 import { useResendCooldown } from './use-resend-cooldown';
 
 const CODE_LENGTH = 6;
 
 const fields = z.object({
-  code: z.string().regex(/^\d{6}$/, 'Enter the six-digit code.'),
+  code: z.string().regex(/^\d{6}$/, `Bạn nhập đủ ${CODE_LENGTH} chữ số của mã.`),
   password: strongPassword,
-  confirmPassword: z.string().min(1, 'Confirm your new password.'),
+  confirmPassword: z.string().min(1, CONFIRM_NEW_PASSWORD_MESSAGE),
 });
 
 type ResetFormValues = z.infer<typeof fields>;
 
 const schema = fields.refine((values) => values.password === values.confirmPassword, {
-  message: 'Passwords do not match.',
+  message: PASSWORD_MISMATCH_MESSAGE,
   path: ['confirmPassword'],
 });
 
@@ -44,7 +45,7 @@ export function ChooseNewPassword({ email, submitLabel, onSave, onDone }: Choose
   const { form, submitError } = useFormWithSubmitError<ResetFormValues>({
     defaultValues: { code: '', password: '', confirmPassword: '' },
     schema,
-    fallbackError: 'Could not save your password.',
+    fallbackError: 'Chưa lưu được mật khẩu. Bạn thử lại nhé.',
     onSubmit: async (values) => {
       await onSave(values);
       onDone();
@@ -56,9 +57,9 @@ export function ChooseNewPassword({ email, submitLabel, onSave, onDone }: Choose
     try {
       await authService.forgotPassword(email);
       cooldown.restart();
-      notify.info('Đã gửi lại mã. Bạn kiểm tra email nhé.');
+      notify.info(CODE_RESENT_MESSAGE);
     } catch {
-      notify.error('Chưa gửi lại được mã. Bạn thử lại sau ít phút.');
+      notify.error(CODE_RESEND_FAILED_MESSAGE);
     } finally {
       setIsResending(false);
     }
@@ -67,8 +68,8 @@ export function ChooseNewPassword({ email, submitLabel, onSave, onDone }: Choose
   return (
     <Form className="grid gap-4" onSubmit={form.handleSubmit}>
       <p className="text-center text-sm text-muted-foreground">
-        Enter the code sent to <span className="font-medium text-foreground">{email}</span> and pick
-        a new password.
+        Nhập mã đã gửi tới <span className="font-medium text-foreground">{email}</span> và chọn mật
+        khẩu mới.
       </p>
 
       <FormError message={submitError} />
@@ -80,7 +81,7 @@ export function ChooseNewPassword({ email, submitLabel, onSave, onDone }: Choose
           <div className="grid gap-2">
             <div className="flex justify-center">
               <InputOTP
-                aria-label="Verification code"
+                aria-label={EMAIL_CODE_LABEL}
                 autoFocus
                 maxLength={CODE_LENGTH}
                 onChange={field.handleChange}
@@ -106,7 +107,7 @@ export function ChooseNewPassword({ email, submitLabel, onSave, onDone }: Choose
             autoComplete="new-password"
             control={PasswordInput}
             field={field}
-            label="New password"
+            label="Mật khẩu mới"
           />
         )}
       />
@@ -119,12 +120,12 @@ export function ChooseNewPassword({ email, submitLabel, onSave, onDone }: Choose
             autoComplete="new-password"
             control={PasswordInput}
             field={field}
-            label="Confirm new password"
+            label="Nhập lại mật khẩu mới"
           />
         )}
       />
 
-      <SubmitButton form={form} label={submitLabel} pendingLabel="Saving..." />
+      <SubmitButton form={form} label={submitLabel} pendingLabel="Đang lưu..." />
 
       <ResendCodeLink cooldown={cooldown} isSending={isResending} onResend={() => void resend()} />
     </Form>

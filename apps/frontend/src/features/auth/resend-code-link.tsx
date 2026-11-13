@@ -8,9 +8,9 @@ interface ResendCodeLinkProps {
 }
 
 function resendLabel(cooldown: ResendCooldown, isSending: boolean): string {
-  if (isSending) return 'Sending...';
-  if (!cooldown.canResend) return `Send another code in ${cooldown.secondsLeft}s`;
-  return 'Send another code';
+  if (isSending) return 'Đang gửi...';
+  if (!cooldown.canResend) return `Gửi lại mã sau ${cooldown.secondsLeft} giây`;
+  return 'Gửi lại mã';
 }
 
 export function ResendCodeLink({ cooldown, isSending, onResend }: ResendCodeLinkProps) {

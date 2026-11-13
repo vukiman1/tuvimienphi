@@ -115,7 +115,7 @@ export function TwoFactorCard() {
             <div className="grid gap-3">
               {!hasPassword && (
                 <p className="text-sm text-[#6b5a4e]">
-                  Vui lòng đặt mật khẩu trước - bạn sẽ cần dùng nó để tắt tính năng này.
+                  Bạn cần đặt mật khẩu trước, vì sau này phải dùng nó để tắt xác thực 2 bước.
                 </p>
               )}
               <div>

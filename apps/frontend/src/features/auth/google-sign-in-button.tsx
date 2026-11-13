@@ -61,7 +61,7 @@ export function GoogleSignInButton() {
           size: 'large',
           text: 'continue_with',
           width: renderWidth,
-          locale: 'en',
+          locale: 'vi',
         });
       }
     });

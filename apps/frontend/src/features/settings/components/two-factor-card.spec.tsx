@@ -45,7 +45,7 @@ describe('TwoFactorCard', () => {
       name: 'Bật xác thực 2 bước',
     })) as HTMLButtonElement;
     expect(button.disabled).toBe(true);
-    expect(screen.getByText(/Vui lòng đặt mật khẩu trước/)).toBeTruthy();
+    expect(screen.getByText(/Bạn cần đặt mật khẩu trước/)).toBeTruthy();
   });
 
   it('offers to set it up when it is off', async () => {
@@ -85,7 +85,7 @@ describe('TwoFactorCard', () => {
     renderCard();
     fireEvent.click(await screen.findByRole('button', { name: 'Tắt' }));
 
-    expect(await screen.findByLabelText('Current password')).toBeTruthy();
+    expect(await screen.findByLabelText('Mật khẩu hiện tại')).toBeTruthy();
     expect(authService.disableTwoFactor).not.toHaveBeenCalled();
   });
 
@@ -97,10 +97,10 @@ describe('TwoFactorCard', () => {
 
     renderCard();
     fireEvent.click(await screen.findByRole('button', { name: 'Tắt' }));
-    fireEvent.change(await screen.findByLabelText('Current password'), {
+    fireEvent.change(await screen.findByLabelText('Mật khẩu hiện tại'), {
       target: { value: 'hunter2' },
     });
-    fireEvent.click(screen.getByRole('button', { name: 'Turn off' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Tắt' }));
 
     await waitFor(() => expect(authService.disableTwoFactor).toHaveBeenCalledWith('hunter2'));
   });
@@ -117,6 +117,6 @@ describe('TwoFactorCard', () => {
     fireEvent.click(await screen.findByRole('button', { name: 'Tạo mã phục hồi mới' }));
 
     expect(await screen.findByText('aaaa111122')).toBeTruthy();
-    expect(await screen.findByText(/only time they are shown/i)).toBeTruthy();
+    expect(await screen.findByText(/lần duy nhất các mã được hiển thị/)).toBeTruthy();
   });
 });

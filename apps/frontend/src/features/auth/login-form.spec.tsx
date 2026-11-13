@@ -25,12 +25,12 @@ async function renderLoginForm(): Promise<void> {
   });
   await router.load();
   render(<RouterProvider router={router} />);
-  await screen.findByRole('button', { name: 'Sign in' });
+  await screen.findByRole('button', { name: 'Đăng nhập' });
 }
 
 function fillCredentials(): void {
   fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'reader@example.com' } });
-  fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'Reader1234' } });
+  fireEvent.change(screen.getByLabelText('Mật khẩu'), { target: { value: 'Reader1234' } });
 }
 
 describe('LoginForm', () => {
@@ -38,7 +38,7 @@ describe('LoginForm', () => {
     await renderLoginForm();
 
     expect(screen.getByLabelText('Email')).toHaveProperty('value', '');
-    expect(screen.getByLabelText('Password')).toHaveProperty('value', '');
+    expect(screen.getByLabelText('Mật khẩu')).toHaveProperty('value', '');
   });
 
   it('asks the person to check their network when the server cannot be reached', async () => {
@@ -46,7 +46,7 @@ describe('LoginForm', () => {
     await renderLoginForm();
     fillCredentials();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Sign in' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Đăng nhập' }));
 
     expect(
       await screen.findByText('Chưa kết nối được tới máy chủ. Bạn kiểm tra mạng rồi thử lại nhé.'),

@@ -30,13 +30,13 @@ function fill({
   ...rest
 }: FillOptions = {}) {
   const confirmPassword = rest.confirmPassword ?? password;
-  fireEvent.change(screen.getByLabelText('Your name'), { target: { value: displayName } });
+  fireEvent.change(screen.getByLabelText('Tên của bạn'), { target: { value: displayName } });
   fireEvent.change(screen.getByLabelText('Email'), { target: { value: email } });
-  fireEvent.change(screen.getByLabelText('Password'), { target: { value: password } });
-  fireEvent.change(screen.getByLabelText('Confirm password'), {
+  fireEvent.change(screen.getByLabelText('Mật khẩu'), { target: { value: password } });
+  fireEvent.change(screen.getByLabelText('Nhập lại mật khẩu'), {
     target: { value: confirmPassword },
   });
-  fireEvent.click(screen.getByRole('button', { name: 'Create account' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Tạo tài khoản' }));
 }
 
 function apiError(message: string, statusCode = 409) {
@@ -52,7 +52,7 @@ describe('RegisterForm', () => {
 
     fill({ password: 'allletters' });
 
-    expect(await screen.findByText(/at least one letter and one number/i)).toBeTruthy();
+    expect(await screen.findByText('Mật khẩu cần có cả chữ và số.')).toBeTruthy();
     expect(authService.register).not.toHaveBeenCalled();
   });
 
@@ -61,7 +61,7 @@ describe('RegisterForm', () => {
 
     fill({ password: 'Str0ngPass', confirmPassword: 'Str0ngPas5' });
 
-    expect(await screen.findByText('Passwords do not match.')).toBeTruthy();
+    expect(await screen.findByText('Hai mật khẩu chưa khớp.')).toBeTruthy();
     expect(authService.register).not.toHaveBeenCalled();
   });
 
@@ -70,7 +70,7 @@ describe('RegisterForm', () => {
 
     fill({ displayName: '' });
 
-    expect(await screen.findByText('Enter your name.')).toBeTruthy();
+    expect(await screen.findByText('Bạn chưa nhập tên.')).toBeTruthy();
     expect(authService.register).not.toHaveBeenCalled();
   });
 
@@ -81,7 +81,7 @@ describe('RegisterForm', () => {
     // submission first. What the form has to catch is an empty field.
     fill({ email: '' });
 
-    expect(await screen.findByText('Enter a valid email address.')).toBeTruthy();
+    expect(await screen.findByText('Email chưa hợp lệ.')).toBeTruthy();
     expect(authService.register).not.toHaveBeenCalled();
   });
 
@@ -111,9 +111,9 @@ describe('RegisterForm', () => {
     render(<RegisterForm onVerified={mockOnVerified} />);
     fill();
 
-    expect(await screen.findByLabelText('Verification code')).toBeTruthy();
+    expect(await screen.findByLabelText('Mã xác nhận')).toBeTruthy();
     expect(screen.getByText('new@example.com')).toBeTruthy();
-    expect(screen.queryByLabelText('Password')).toBeNull();
+    expect(screen.queryByLabelText('Mật khẩu')).toBeNull();
   });
 
   it('waits a minute before another code can be sent', async () => {
@@ -125,7 +125,7 @@ describe('RegisterForm', () => {
     render(<RegisterForm onVerified={mockOnVerified} />);
     fill();
 
-    const resend = await screen.findByRole('button', { name: 'Send another code in 60s' });
+    const resend = await screen.findByRole('button', { name: 'Gửi lại mã sau 60 giây' });
     expect(resend.hasAttribute('disabled')).toBe(true);
   });
 
@@ -138,14 +138,16 @@ describe('RegisterForm', () => {
 
     render(<RegisterForm onVerified={mockOnVerified} />);
     fill();
-    await screen.findByLabelText('Verification code');
+    await screen.findByLabelText('Mã xác nhận');
     act(() => jest.advanceTimersByTime(EMAIL_CODE_RESEND_COOLDOWN_SECONDS * MS_PER_SECOND));
-    fireEvent.click(screen.getByRole('button', { name: 'Send another code' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Gửi lại mã' }));
 
     await waitFor(() =>
       expect(authService.resendVerification).toHaveBeenCalledWith('new@example.com'),
     );
-    await waitFor(() => expect(notify.info).toHaveBeenCalledWith('Sent again.'));
+    await waitFor(() =>
+      expect(notify.info).toHaveBeenCalledWith('Đã gửi lại mã. Bạn kiểm tra email nhé.'),
+    );
   });
 
   it('shows the server message when the address is already taken', async () => {

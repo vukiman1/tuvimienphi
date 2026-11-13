@@ -10,6 +10,8 @@ import { Label } from '@/components/ui/label';
 import { errorMessage } from '@/lib/api-error';
 import { authService } from '@/services/auth-service';
 
+const SETUP_FAILED_MESSAGE = 'Chưa tạo được mã QR. Bạn đóng hộp thoại rồi thử lại nhé.';
+
 interface TwoFactorSetupDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -21,11 +23,9 @@ export function TwoFactorSetupDialog({ open, onOpenChange, onEnabled }: TwoFacto
     <TitledDialog
       onOpenChange={onOpenChange}
       open={open}
-      title="Set up two-factor authentication"
-      description="Scan this with an authenticator app, then enter the code it shows."
+      title="Bật xác thực 2 bước"
+      description="Quét mã QR bằng ứng dụng xác thực, rồi nhập mã mà ứng dụng hiển thị."
     >
-      {/* Inside the content so Radix unmounts it on close: a half-finished setup should not
-          survive to the next time the dialog opens. */}
       {open && <SetupSteps onEnabled={onEnabled} />}
     </TitledDialog>
   );
@@ -49,7 +49,8 @@ function SetupSteps({ onEnabled }: Pick<TwoFactorSetupDialogProps, 'onEnabled'>)
   const confirmMutation = useMutation({
     mutationFn: () => authService.confirmTwoFactorSetup(code.trim()),
     onSuccess: ({ recoveryCodes }) => onEnabled(recoveryCodes),
-    onError: (caught: unknown) => setError(errorMessage(caught, 'That code is not valid.')),
+    onError: (caught: unknown) =>
+      setError(errorMessage(caught, 'Chưa bật được xác thực 2 bước. Bạn thử lại nhé.')),
   });
 
   const { data } = setupQuery;
@@ -68,27 +69,25 @@ function SetupSteps({ onEnabled }: Pick<TwoFactorSetupDialogProps, 'onEnabled'>)
         confirmMutation.mutate();
       }}
     >
-      <FormError
-        message={error ?? (setupQuery.isError ? 'Could not start setup. Please try again.' : null)}
-      />
+      <FormError message={error ?? (setupQuery.isError ? SETUP_FAILED_MESSAGE : null)} />
 
       <div className="flex justify-center">
         {qrDataUrl ? (
-          <img alt="Two-factor setup QR code" className="rounded-md border" src={qrDataUrl} />
+          <img alt="Mã QR để bật xác thực 2 bước" className="rounded-md border" src={qrDataUrl} />
         ) : (
-          <p className="py-10 text-sm text-muted-foreground">Preparing your code...</p>
+          <p className="py-10 text-sm text-muted-foreground">Đang tạo mã QR...</p>
         )}
       </div>
 
       {data?.otpauthUri && (
         <details className="text-sm text-muted-foreground">
-          <summary className="cursor-pointer">Cannot scan it?</summary>
+          <summary className="cursor-pointer">Không quét được?</summary>
           <p className="mt-2 wrap-break-words font-mono text-xs">{data.otpauthUri}</p>
         </details>
       )}
 
       <div className="grid gap-2">
-        <Label htmlFor="setup-code">Code from your app</Label>
+        <Label htmlFor="setup-code">Mã trong ứng dụng</Label>
         <Input
           autoComplete="one-time-code"
           id="setup-code"
@@ -100,7 +99,7 @@ function SetupSteps({ onEnabled }: Pick<TwoFactorSetupDialogProps, 'onEnabled'>)
       </div>
 
       <Button disabled={confirmMutation.isPending || code.trim().length !== 6} type="submit">
-        {confirmMutation.isPending ? 'Verifying...' : 'Turn on'}
+        {confirmMutation.isPending ? 'Đang xác thực...' : 'Bật'}
       </Button>
     </Form>
   );

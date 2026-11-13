@@ -38,7 +38,7 @@ describe('GoogleSignInButton', () => {
 
     await waitFor(() => expect(mockRenderButton).toHaveBeenCalled());
     // A narrower overlay would leave a strip of the visible button that swallows clicks.
-    expect(mockRenderButton.mock.calls[0][1]).toMatchObject({ width: 320, locale: 'en' });
+    expect(mockRenderButton.mock.calls[0][1]).toMatchObject({ width: 320, locale: 'vi' });
   });
 
   it('stretches the real button over all of a visible button larger than Google will draw', async () => {

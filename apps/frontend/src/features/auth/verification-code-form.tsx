@@ -5,17 +5,17 @@ import { FormError } from '@/components/ui/form-error';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import { errorMessage } from '@/lib/api-error';
 import { notify } from '@/lib/toast';
+import { CODE_RESEND_FAILED_MESSAGE, CODE_RESENT_MESSAGE, EMAIL_CODE_LABEL } from './auth-copy';
 import { ResendCodeLink } from './resend-code-link';
 import { useResendCooldown } from './use-resend-cooldown';
 
 const CODE_LENGTH = 6;
 
 interface VerificationCodeFormProps {
-  /** Shown above the boxes so the person knows which inbox to look in. */
   sentTo: string;
   submitLabel: string;
   onSubmit: (code: string) => Promise<void>;
-  onResend?: () => Promise<string>;
+  onResend?: () => Promise<void>;
 }
 
 export function VerificationCodeForm({
@@ -37,7 +37,7 @@ export function VerificationCodeForm({
     try {
       await onSubmit(value);
     } catch (caught) {
-      setError(errorMessage(caught, 'Could not check that code.'));
+      setError(errorMessage(caught, 'Chưa kiểm tra được mã. Bạn thử lại nhé.'));
       setCode('');
     } finally {
       setIsSubmitting(false);
@@ -52,11 +52,12 @@ export function VerificationCodeForm({
     setError(null);
 
     try {
-      notify.info(await onResend());
+      await onResend();
+      notify.info(CODE_RESENT_MESSAGE);
       cooldown.restart();
       setCode('');
     } catch {
-      setError('Could not send another code.');
+      setError(CODE_RESEND_FAILED_MESSAGE);
     } finally {
       setIsResending(false);
     }
@@ -65,7 +66,7 @@ export function VerificationCodeForm({
   return (
     <Form className="grid gap-4" onSubmit={() => void submit(code)}>
       <p className="text-center text-sm text-muted-foreground">
-        Enter the {CODE_LENGTH}-digit code sent to{' '}
+        Nhập mã {CODE_LENGTH} chữ số đã gửi tới{' '}
         <span className="font-medium text-foreground">{sentTo}</span>.
       </p>
 
@@ -74,7 +75,7 @@ export function VerificationCodeForm({
       <div className="flex justify-center">
         <InputOTP
           autoFocus
-          aria-label="Verification code"
+          aria-label={EMAIL_CODE_LABEL}
           disabled={isSubmitting}
           maxLength={CODE_LENGTH}
           onChange={(value) => {
@@ -95,7 +96,7 @@ export function VerificationCodeForm({
       </div>
 
       <Button disabled={isSubmitting || code.length < CODE_LENGTH} type="submit">
-        {isSubmitting ? 'Checking...' : submitLabel}
+        {isSubmitting ? 'Đang kiểm tra...' : submitLabel}
       </Button>
 
       {onResend && (

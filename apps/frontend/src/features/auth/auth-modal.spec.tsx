@@ -22,7 +22,7 @@ jest.mock('./google-sign-in-button', () => ({
 
 function fillCredentials(): void {
   fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'reader@example.com' } });
-  fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'Reader1234' } });
+  fireEvent.change(screen.getByLabelText('Mật khẩu'), { target: { value: 'Reader1234' } });
 }
 
 function renderAt(initialEntry: string) {
@@ -71,13 +71,13 @@ describe('AuthModal', () => {
 
     renderAt('/?auth=login');
 
-    expect(await screen.findByLabelText('Verification code')).toBeTruthy();
+    expect(await screen.findByLabelText('Mã xác thực')).toBeTruthy();
   });
 
   it('forgets a pending challenge once the modal closes', async () => {
     usePendingTwoFactor.setState({ challengeToken: 'challenge-1' });
     const router = renderAt('/?auth=login');
-    await screen.findByLabelText('Verification code');
+    await screen.findByLabelText('Mã xác thực');
 
     await router.navigate({ to: '/', search: {} });
 
@@ -105,7 +105,7 @@ describe('AuthModal', () => {
     fireEvent.click(screen.getByRole('button', { name: /tiếp tục với email/i }));
 
     expect(await screen.findByLabelText('Email')).toBeTruthy();
-    expect(screen.getByLabelText('Password')).toBeTruthy();
+    expect(screen.getByLabelText('Mật khẩu')).toBeTruthy();
   });
 
   it('goes back to the provider choice from the password form', async () => {
@@ -117,7 +117,7 @@ describe('AuthModal', () => {
     fireEvent.click(screen.getByRole('button', { name: /quay lại các lựa chọn khác/i }));
 
     expect(await screen.findByRole('button', { name: /tiếp tục với email/i })).toBeTruthy();
-    expect(screen.queryByLabelText('Password')).toBeNull();
+    expect(screen.queryByLabelText('Mật khẩu')).toBeNull();
   });
 
   it('does not open for someone already signed in', async () => {
@@ -133,7 +133,7 @@ describe('AuthModal', () => {
     const router = renderAt('/?auth=login');
     await screen.findByRole('dialog');
 
-    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Đóng' }));
 
     await waitFor(() => expect(router.state.location.search).toEqual({}));
   });
@@ -146,7 +146,7 @@ describe('AuthModal', () => {
     await screen.findByLabelText('Email');
     fillCredentials();
 
-    fireEvent.click(screen.getByRole('button', { name: /^sign in$/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^đăng nhập$/i }));
 
     await waitFor(() => expect(router.state.location.pathname).toBe('/dashboard/settings'));
   });
@@ -159,7 +159,7 @@ describe('AuthModal', () => {
     await screen.findByLabelText('Email');
     fillCredentials();
 
-    fireEvent.click(screen.getByRole('button', { name: /^sign in$/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^đăng nhập$/i }));
 
     await waitFor(() => expect(router.state.location.search).toEqual({}));
     expect(router.state.location.pathname).toBe('/');

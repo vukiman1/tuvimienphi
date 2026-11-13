@@ -98,7 +98,7 @@ describe('LazyAuthModal', () => {
     const router = renderAt('/?auth=login');
     await screen.findByRole('dialog');
 
-    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Đóng' }));
 
     await waitFor(() => expect(router.state.location.search).toEqual({}));
     await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
@@ -112,7 +112,7 @@ describe('LazyAuthModal', () => {
     const router = renderAt('/?auth=login');
     await screen.findByRole('dialog');
 
-    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Đóng' }));
     await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
     await router.navigate({ to: '/', search: { auth: 'login' } });
 

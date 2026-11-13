@@ -25,8 +25,8 @@ export function DisableTwoFactorDialog({
     <TitledDialog
       onOpenChange={onOpenChange}
       open={open}
-      title="Turn off two-factor authentication?"
-      description="Your account will be protected by its password alone."
+      title="Tắt xác thực 2 bước?"
+      description="Tài khoản của bạn sẽ chỉ còn mật khẩu bảo vệ."
     >
       {open && <ConfirmForm error={error} isPending={isPending} onConfirm={onConfirm} />}
     </TitledDialog>
@@ -45,7 +45,7 @@ function ConfirmForm({
       <FormError message={error} />
 
       <div className="grid gap-2">
-        <Label htmlFor="disable-2fa-password">Current password</Label>
+        <Label htmlFor="disable-2fa-password">Mật khẩu hiện tại</Label>
         <Input
           autoComplete="current-password"
           id="disable-2fa-password"
@@ -56,7 +56,7 @@ function ConfirmForm({
       </div>
 
       <Button disabled={isPending || !password} type="submit" variant="destructive">
-        {isPending ? 'Turning off...' : 'Turn off'}
+        {isPending ? 'Đang tắt...' : 'Tắt'}
       </Button>
     </Form>
   );
