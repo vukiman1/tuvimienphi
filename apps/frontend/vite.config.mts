@@ -8,6 +8,7 @@ import { fileURLToPath, URL } from 'node:url';
 import { loadFrontendConfig } from './config/index.ts';
 import { analyticsBeaconPlugin } from './tools/analytics-beacon.ts';
 import { preloadFontsPlugin } from './tools/preload-fonts.ts';
+import { spaShellPlugin } from './tools/spa-shell.ts';
 
 const requireFromHere = createRequire(import.meta.url);
 const isAnalyze = process.env.ANALYZE === 'true';
@@ -52,6 +53,7 @@ export default defineConfig(({ command, mode }) => {
       tailwindcss(),
       analyticsBeaconPlugin(frontendConfig.analytics.cloudflareToken),
       preloadFontsPlugin(HEADING_FONT_FILES),
+      spaShellPlugin(),
       isAnalyze &&
         visualizer({
           filename: './dist/stats.html',
