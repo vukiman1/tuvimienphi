@@ -8,6 +8,7 @@ const MIGRATED_FILES = [
   'src/features/home/**',
   'src/features/tet-hub/**',
   'src/features/la-so/**',
+  'src/features/ngay-tot/**',
 ];
 const DESIGN_SYSTEM_FILES = ['src/design-system/**'];
 
