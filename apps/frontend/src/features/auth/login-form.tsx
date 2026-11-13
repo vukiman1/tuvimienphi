@@ -5,6 +5,7 @@ import { FormField } from '@/components/ui/form-field';
 import { SubmitButton } from '@/components/ui/submit-button';
 import { PasswordInput } from '@/components/ui/password-input';
 import { TextLink } from '@/components/ui/text-link';
+import { UNREACHABLE_SERVER_MESSAGE } from '@/lib/http-request';
 import { useFormWithSubmitError } from '@/lib/use-form-with-submit-error';
 import { notify } from '@/lib/toast';
 import { authService } from '@/services/auth-service';
@@ -24,7 +25,7 @@ export function LoginForm({ onForgotPassword }: LoginFormProps) {
   const { form, submitError } = useFormWithSubmitError<LoginFormValues>({
     defaultValues: { email: 'user@example.com', password: 'Local1234', rememberMe: false },
     schema: loginSchema,
-    fallbackError: 'Could not reach the server. Please try again.',
+    fallbackError: UNREACHABLE_SERVER_MESSAGE,
     onSubmit: async (values) => {
       const result = await authService.login(values);
       if ('twoFactorRequired' in result) {

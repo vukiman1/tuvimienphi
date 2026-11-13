@@ -1,7 +1,6 @@
 import type { ReactElement, ReactNode } from 'react';
 import { Link, type LinkProps } from '@tanstack/react-router';
 import { cn } from '@/lib/utils';
-import { focusHashTarget } from './focus-hash-target';
 import { FOCUS_RING_CLASS } from './focus-ring';
 
 export enum CtaTone {
@@ -49,13 +48,7 @@ export function CtaButton(props: CtaButtonProps): ReactElement {
   );
   if (isLinkCta(props)) {
     return (
-      <Link
-        to={props.to}
-        search={props.search}
-        hash={props.hash}
-        onClick={() => focusHashTarget(props.hash)}
-        className={className}
-      >
+      <Link to={props.to} search={props.search} hash={props.hash} className={className}>
         {props.children}
       </Link>
     );

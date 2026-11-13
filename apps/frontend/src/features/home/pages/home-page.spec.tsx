@@ -6,6 +6,7 @@ import {
   createRootRoute,
   createRouter,
 } from '@tanstack/react-router';
+import { focusHashTargetOnRender } from '@/app/focus-hash-target-on-render';
 import { StoryProvider } from '@/design-system';
 import { CHAPTER_LABELS, KNOWLEDGE, MAP, TRUTHS, TURN } from '@/features/home/home-content';
 import { TET_HUB_LINK_LABEL } from '@/features/tet-hub/tet-hub-paths';
@@ -25,6 +26,7 @@ async function renderHome(): Promise<void> {
     routeTree: rootRoute,
     history: createMemoryHistory({ initialEntries: ['/'] }),
   });
+  focusHashTargetOnRender(router);
   await router.load();
   render(
     <QueryClientProvider client={new QueryClient()}>

@@ -8,6 +8,17 @@ import {
 } from '@tanstack/react-router';
 import { MobileNavBar } from './mobile-nav-bar';
 
+function currentLinkNames(nav: HTMLElement): readonly string[] {
+  return within(nav)
+    .getAllByRole('link')
+    .filter((link) => link.getAttribute('aria-current') === 'page')
+    .map((link) => link.textContent ?? '');
+}
+
+function searchOf(link: HTMLElement): URLSearchParams {
+  return new URL(link.getAttribute('href') ?? '', 'https://tuvi.test').searchParams;
+}
+
 async function renderAt(path: string): Promise<HTMLElement> {
   const rootRoute = createRootRoute({ component: MobileNavBar });
   const pageRoute = createRoute({ getParentRoute: () => rootRoute, path: '$' });
@@ -74,5 +85,34 @@ describe('MobileNavBar', () => {
 
     expect(centre.querySelector('img')).toBeNull();
     expect(centre.querySelector('svg')).not.toBeNull();
+  });
+
+  it('keeps the chart year and gender when the birth form is opened from home', async () => {
+    const nav = await renderAt('/?viewYear=2027&gender=nam');
+    const centre = within(nav).getByRole('link', { name: 'Lập lá số' });
+
+    expect(searchOf(centre).get('viewYear')).toBe('2027');
+    expect(searchOf(centre).get('gender')).toBe('nam');
+    expect(new URL(centre.getAttribute('href') ?? '', 'https://tuvi.test').hash).toBe('#lap-la-so');
+  });
+
+  it('does not carry another page’s search into the birth form', async () => {
+    const nav = await renderAt('/van-han?year=2027');
+
+    expect(within(nav).getByRole('link', { name: 'Lập lá số' }).getAttribute('href')).toBe(
+      '/#lap-la-so',
+    );
+  });
+
+  it('marks only Trang chủ as current at the birth form', async () => {
+    const nav = await renderAt('/#lap-la-so');
+
+    expect(currentLinkNames(nav)).toEqual(['Trang chủ']);
+  });
+
+  it('marks Trang chủ as current when home carries a search', async () => {
+    const nav = await renderAt('/?viewYear=2027&gender=nam');
+
+    expect(currentLinkNames(nav)).toEqual(['Trang chủ']);
   });
 });
