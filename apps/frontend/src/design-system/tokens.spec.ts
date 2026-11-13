@@ -116,6 +116,14 @@ describe('design tokens', () => {
     expect(contrastRatio(token('dawn'), token('night'))).toBeGreaterThanOrEqual(AA_NORMAL_TEXT);
   });
 
+  it('dawn text is readable on deep', () => {
+    expect(contrastRatio(token('dawn'), token('deep'))).toBeGreaterThanOrEqual(AA_NORMAL_TEXT);
+  });
+
+  it('ink text is readable on the day-200 surface', () => {
+    expect(contrastRatio(token('ink'), token('day-200'))).toBeGreaterThanOrEqual(AA_NORMAL_TEXT);
+  });
+
   it('the two-tone focus ring stays visible on every chapter tone', () => {
     for (const tone of ['ember', 'dawn', 'day']) {
       expect(contrastRatio(token('ink'), token(tone))).toBeGreaterThanOrEqual(AA_NON_TEXT);

@@ -10,9 +10,9 @@ import {
   createRouter,
 } from '@tanstack/react-router';
 import type { TuoiNamArticle } from '@org/shared-contracts';
+import { FOCUS_RING_CLASS } from '@/design-system';
 import fixture from '../__fixtures__/tuoi-binh-dan-1986.json';
 import { loadTetHubSlugPage, tetHubSlugHead } from '../tet-hub-slug-route';
-import { FOCUS_RING_CLASS } from '@/design-system';
 import { TetHubSlugPage } from './tet-hub-slug-page';
 
 const ARTICLE: TuoiNamArticle = fixture;
@@ -220,6 +220,15 @@ describe('TetHubSlugPage not found', () => {
 
     expect(await screen.findByRole('heading', { name: 'Không tìm thấy trang' })).toBeTruthy();
     await waitFor(() => expect(robotsContent()).toContain('noindex'));
+  });
+
+  it('titles the not-found state in the serif face on the day surface', async () => {
+    renderSlug('tuoi-binh-dan-1987');
+
+    const title = await screen.findByRole('heading', { level: 1, name: 'Không tìm thấy trang' });
+
+    expect(title.className).toContain('font-emphasis');
+    expect(title.closest('main')?.className).toContain('bg-day');
   });
 
   it('shows the not-found state for a birth year whose article is not generated yet', async () => {

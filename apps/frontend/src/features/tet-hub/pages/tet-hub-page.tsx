@@ -31,10 +31,12 @@ export function TetHubPage({ intro }: TetHubPageProps): ReactElement {
         <ReadingZone>
           <div className="flex flex-col gap-10">
             {intro.intro.length > 0 ? <ArticleParagraphs paragraphs={intro.intro} /> : null}
-            <p>
-              Muốn xem vận hạn theo con giáp qua các năm?{' '}
-              <TextLink to={VAN_HAN_PATH}>Xem vận hạn theo con giáp</TextLink>
-            </p>
+            <div>
+              <p>Muốn xem vận hạn theo con giáp qua các năm?</p>
+              <div className="mt-4">
+                <TextLink to={VAN_HAN_PATH}>Xem vận hạn theo con giáp</TextLink>
+              </div>
+            </div>
             <TetHubCta />
           </div>
         </ReadingZone>
