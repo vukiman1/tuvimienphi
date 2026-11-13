@@ -68,7 +68,7 @@ export function TuoiNamSummary({ facts, className }: TuoiNamSummaryProps): React
         className,
       )}
     >
-      <h2 id={SUMMARY_TITLE_ID} className="font-display text-xl font-bold">
+      <h2 id={SUMMARY_TITLE_ID} className="font-display text-xl font-extrabold">
         {facts.canChi} {facts.birthYear} · Năm {facts.viewYear}
       </h2>
       <dl className="mt-3">

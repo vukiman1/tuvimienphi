@@ -16,7 +16,7 @@ export function Tile({ title, caption, isActive = false }: TileProps): ReactElem
         isActive ? 'border-gold bg-gold text-ink' : 'border-current',
       )}
     >
-      <span className="font-display text-lg font-bold">{title}</span>
+      <span className="font-display text-lg font-extrabold">{title}</span>
       {caption === undefined ? null : <span className="text-sm">{caption}</span>}
     </div>
   );

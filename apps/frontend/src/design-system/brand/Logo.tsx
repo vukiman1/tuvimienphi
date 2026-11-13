@@ -4,6 +4,8 @@ import { cn } from '@/lib/utils';
 import { LOGO_WORDMARK_CLASS, type LogoTone } from './logo-tone';
 import { LogoMark } from './LogoMark';
 
+const WORDMARK_MARK_DISPLAY_SIZE = '2rem';
+
 interface LogoProps {
   readonly tone: LogoTone;
   readonly className?: string;
@@ -20,7 +22,7 @@ export function Logo({ tone, className }: LogoProps): ReactElement {
         className,
       )}
     >
-      <LogoMark className="size-[1.3em] shrink-0" />
+      <LogoMark className="size-[1.3em] shrink-0" displaySize={WORDMARK_MARK_DISPLAY_SIZE} />
       <span>{SITE_NAME}</span>
     </span>
   );

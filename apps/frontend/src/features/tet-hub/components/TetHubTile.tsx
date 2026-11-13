@@ -57,7 +57,7 @@ export function TetHubTile({
           className="size-14 rounded-full"
         />
       )}
-      <span className="font-display text-lg font-bold">{title}</span>
+      <span className="font-display text-lg font-extrabold">{title}</span>
       {subtitle === undefined ? null : (
         <span className={cn('text-sm', SUBTITLE_SURFACE_CLASS[surface])}>{subtitle}</span>
       )}
