@@ -30,7 +30,7 @@ const SITEMAP_FILE_NAME = 'sitemap.xml';
 const READ_METHOD = 'GET';
 const UNREACHABLE_API_ERROR_CODE = 'connectionfailed';
 const FIRST_FAILING_STATUS = 400;
-const ERROR_TOAST_SELECTOR = '.Toastify__toast';
+const ERROR_TOAST_SELECTOR = '.Toastify [role="alert"]';
 const FAILURE_SEPARATOR = '; ';
 
 class PrerenderErrorToastError extends Error {

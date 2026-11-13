@@ -144,7 +144,7 @@ describe('ProfileCard', () => {
       new File([new Uint8Array(AVATAR_MAX_BYTES + 1)], 'big.png', { type: 'image/png' }),
     );
 
-    expect(notify.error).toHaveBeenCalledWith('Ảnh phải nhỏ hơn 2MB.');
+    expect(notify.error).toHaveBeenCalledWith('Ảnh cần nhỏ hơn 2MB.');
     expect(userService.uploadAvatar).not.toHaveBeenCalled();
   });
 
@@ -157,7 +157,7 @@ describe('ProfileCard', () => {
 
     chooseAvatarFile(new File(['<svg/>'], 'logo.svg', { type: 'image/svg+xml' }));
 
-    expect(notify.error).toHaveBeenCalledWith('Chỉ hỗ trợ ảnh JPG, PNG hoặc WebP.');
+    expect(notify.error).toHaveBeenCalledWith('Ảnh cần ở dạng JPG, PNG hoặc WebP.');
     expect(userService.uploadAvatar).not.toHaveBeenCalled();
   });
 });

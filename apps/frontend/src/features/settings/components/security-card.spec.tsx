@@ -121,7 +121,9 @@ describe('SecurityCard', () => {
       }),
     );
     await waitFor(() =>
-      expect(notify.success).toHaveBeenCalledWith('Password set. Other devices were signed out.'),
+      expect(notify.success).toHaveBeenCalledWith(
+        'Đã đặt mật khẩu. Các thiết bị khác đã được đăng xuất.',
+      ),
     );
     await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
     await waitFor(() => expect(authService.getMe).toHaveBeenCalledTimes(2));
@@ -175,7 +177,7 @@ describe('SecurityCard', () => {
 
     await waitFor(() =>
       expect(notify.success).toHaveBeenCalledWith(
-        'Password updated. Other devices were signed out.',
+        'Đã đổi mật khẩu. Các thiết bị khác đã được đăng xuất.',
       ),
     );
     await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());

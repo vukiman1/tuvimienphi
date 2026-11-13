@@ -31,16 +31,16 @@ export function useAvatarUpload(): AvatarUpload {
       }
       notify.success('Đã cập nhật ảnh đại diện.');
     },
-    onError: () => notify.error('Không thể tải ảnh lên. Vui lòng thử lại.'),
+    onError: () => notify.error('Chưa tải ảnh lên được. Bạn thử lại nhé.'),
   });
 
   const upload = (file: File): void => {
     if (!ACCEPTED_AVATAR_TYPES.includes(file.type)) {
-      notify.error('Chỉ hỗ trợ ảnh JPG, PNG hoặc WebP.');
+      notify.error('Ảnh cần ở dạng JPG, PNG hoặc WebP.');
       return;
     }
     if (file.size > AVATAR_MAX_BYTES) {
-      notify.error(`Ảnh phải nhỏ hơn ${AVATAR_MAX_BYTES / BYTES_PER_MEGABYTE}MB.`);
+      notify.error(`Ảnh cần nhỏ hơn ${AVATAR_MAX_BYTES / BYTES_PER_MEGABYTE}MB.`);
       return;
     }
     uploadMutation.mutate(file);

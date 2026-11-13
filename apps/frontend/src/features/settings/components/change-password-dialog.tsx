@@ -48,7 +48,7 @@ function ChangePasswordForm({ onDone }: { onDone: () => void }) {
   const changeMutation = useMutation({
     mutationFn: (values: ChangePasswordFormValues) => authService.changePassword(values),
     onSuccess: async () => {
-      notify.success('Password updated. Other devices were signed out.');
+      notify.success('Đã đổi mật khẩu. Các thiết bị khác đã được đăng xuất.');
       onDone();
       await queryClient.invalidateQueries({ queryKey: ['auth', 'sessions'] });
     },

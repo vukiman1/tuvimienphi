@@ -24,7 +24,7 @@ export function SessionsCard() {
       notify.success('Đã đăng xuất thiết bị.');
       await invalidate();
     },
-    onError: () => notify.error('Không thể đăng xuất thiết bị này.'),
+    onError: () => notify.error('Chưa đăng xuất được thiết bị này. Bạn thử lại nhé.'),
   });
   const revokeOthersMutation = useMutation({
     mutationFn: () => authService.revokeOtherSessions(),
@@ -32,7 +32,7 @@ export function SessionsCard() {
       notify.success('Đã đăng xuất khỏi tất cả thiết bị khác.');
       await invalidate();
     },
-    onError: () => notify.error('Không thể đăng xuất các thiết bị khác.'),
+    onError: () => notify.error('Chưa đăng xuất được các thiết bị khác. Bạn thử lại nhé.'),
   });
 
   const askThenRevokeOthers = async () => {

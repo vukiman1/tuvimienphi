@@ -36,7 +36,7 @@ export function useGoogleOneTap(): void {
         }
         startSession(result.user);
         // Same confirmation the email and 2FA sign-in paths already show.
-        notify.success('Signed in.');
+        notify.success('Đăng nhập thành công.');
         await navigate({ to: '/' });
       } catch (error) {
         console.error('Google One Tap sign-in failed', error);

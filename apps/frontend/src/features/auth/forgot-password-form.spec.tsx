@@ -44,7 +44,7 @@ describe('ForgotPasswordForm', () => {
         confirmPassword: STRONG_PASSWORD,
       }),
     );
-    expect(notify.success).toHaveBeenCalledWith('Password updated. Every device was signed out.');
+    expect(notify.success).toHaveBeenCalledWith('Đã đổi mật khẩu. Mọi thiết bị đã được đăng xuất.');
     expect(onDone).toHaveBeenCalled();
   });
 });

@@ -40,7 +40,7 @@ export function RegisterForm({ onVerified }: RegisterFormProps) {
         onResend={async () => (await authService.resendVerification(registeredEmail)).message}
         onSubmit={async (code) => {
           await authService.verifyEmail(registeredEmail, code);
-          notify.success('Email confirmed. You can sign in now.');
+          notify.success('Đã xác nhận email. Bạn có thể đăng nhập ngay.');
           onVerified();
         }}
         sentTo={registeredEmail}

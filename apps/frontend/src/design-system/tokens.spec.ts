@@ -1,12 +1,17 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { contrastRatio } from './contrast';
+import { compositeOver, contrastRatio } from './contrast';
 
 const AA_NORMAL_TEXT = 4.5;
 const AA_NON_TEXT = 3;
 const COLOR_TOKEN = /--color-([\w-]+):\s*(#[0-9a-fA-F]{6})/g;
 const CHART_TOKEN_PREFIXES = ['hanh-', 'chart-block'] as const;
 const DARK_TONES = ['night', 'deep', 'dusk'] as const;
+const TOAST_ICON_TINTS = [
+  { icon: 'hanh-tho', tint: 'gold', alpha: 0.2 },
+  { icon: 'danger', tint: 'ember', alpha: 0.15 },
+  { icon: 'deep', tint: 'deep', alpha: 0.1 },
+] as const;
 
 const SPECIFIED_PALETTE = {
   night: '#0e1222',
@@ -64,6 +69,16 @@ describe('contrastRatio', () => {
 
   it('does not depend on which colour is the foreground', () => {
     expect(contrastRatio('#d9623b', '#15131a')).toBe(contrastRatio('#15131a', '#d9623b'));
+  });
+});
+
+describe('compositeOver', () => {
+  it('blends a translucent colour over an opaque one', () => {
+    expect(compositeOver('#ffffff', 0.5, '#000000')).toBe('#808080');
+  });
+
+  it('keeps the background when the colour is fully transparent', () => {
+    expect(compositeOver('#d9623b', 0, '#f7f2e7')).toBe('#f7f2e7');
   });
 });
 
@@ -130,6 +145,13 @@ describe('design tokens', () => {
     }
     for (const tone of DARK_TONES) {
       expect(contrastRatio(token('day'), token(tone))).toBeGreaterThanOrEqual(AA_NON_TEXT);
+    }
+  });
+
+  it('toast icons stand out from their tint on day', () => {
+    for (const { icon, tint, alpha } of TOAST_ICON_TINTS) {
+      const tintOnDay = compositeOver(token(tint), alpha, token('day'));
+      expect(contrastRatio(token(icon), tintOnDay)).toBeGreaterThanOrEqual(AA_NON_TEXT);
     }
   });
 

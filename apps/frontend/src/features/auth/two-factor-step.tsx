@@ -36,7 +36,7 @@ export function TwoFactorStep({ challengeToken, onExpired }: TwoFactorStepProps)
         throw new Error('Unexpected response');
       }
       startSession(result.user);
-      notify.success('Signed in.');
+      notify.success('Đăng nhập thành công.');
       await finish();
     } catch (caught) {
       const message = errorMessage(caught, 'Could not verify that code.');
