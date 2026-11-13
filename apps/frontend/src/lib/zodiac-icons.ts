@@ -24,14 +24,11 @@ export function normalizeChi(chi: string): ZodiacChi | null {
   return ZODIAC_CHI.some((entry) => entry.chi === normalized) ? (normalized as ZodiacChi) : null;
 }
 
-export function zodiacIconPath(
-  chi: string,
-  variant: 'default' | 'gold' = 'default',
-): string | null {
+export function zodiacIconPath(chi: string): string | null {
   const normalized = normalizeChi(chi);
   const entry = ZODIAC_CHI.find((item) => item.chi === normalized);
   if (!entry) {
     return null;
   }
-  return zodiacIconUrl(`${entry.icon}${variant === 'gold' ? '-gold' : ''}`);
+  return zodiacIconUrl(entry.icon);
 }

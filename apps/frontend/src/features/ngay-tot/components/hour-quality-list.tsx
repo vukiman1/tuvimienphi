@@ -1,237 +1,159 @@
-import { useState } from 'react';
+import { useRef, useState, type ReactElement } from 'react';
 import { ChevronDown, Info } from 'lucide-react';
-import { MEDIA } from '@/config/media';
-import { CornerBrackets } from '@/features/ngay-tot/components/corner-brackets';
+import { Chip, DisplaySize, DisplayTitle, FOCUS_RING_CLASS, TitleFace } from '@/design-system';
 import { HourDetailDialog } from '@/features/ngay-tot/components/hour-detail-dialog';
-import { zodiacIconPath } from '@/lib/zodiac-icons';
+import { HourDial } from '@/features/ngay-tot/components/hour-dial';
+import { StarRating } from '@/features/ngay-tot/components/star-rating';
+import type { HourEntry, HourQuality } from '@/features/ngay-tot/hour-quality';
+import { cn } from '@/lib/utils';
 
-const MAX_RATING = 5;
 const HOURS_PER_CHI = 2;
-
-export interface HourQuality {
-  readonly range: string;
-  readonly canChi: string;
-  readonly isHoangDao: boolean;
-  readonly rating: number;
-  readonly stars: string;
-  readonly favorable: string;
-  readonly unfavorable: string;
-}
+const HOURS_PER_DAY = 24;
 
 interface HourQualityListProps {
   readonly items: readonly HourQuality[];
   readonly isToday: boolean;
 }
 
-/** The gold artwork is drawn for dark surfaces; on the cream card it disappears. */
-function zodiacIcon(canChi: string, isDark: boolean): string | null {
-  const parts = canChi.split(' ');
-  return zodiacIconPath(parts[parts.length - 1], isDark ? 'gold' : 'default');
-}
-
 function currentChiIndex(): number {
   const hour = new Date().getHours();
-  return Math.floor(((hour + 1) % 24) / HOURS_PER_CHI);
+  return Math.floor(((hour + 1) % HOURS_PER_DAY) / HOURS_PER_CHI);
 }
 
-function StarRating({ rating, isDark }: { readonly rating: number; readonly isDark: boolean }) {
-  return (
-    <span
-      aria-label={`${rating} trên ${MAX_RATING} sao`}
-      className="flex items-center justify-center gap-0.5"
-      role="img"
-    >
-      {Array.from({ length: MAX_RATING }, (_, index) => (
-        <span
-          aria-hidden
-          className={`text-xs leading-none ${
-            index < rating ? 'text-[#d9ab5c]' : isDark ? 'text-white/20' : 'text-black/15'
-          }`}
-          key={index}
-        >
-          ★
-        </span>
-      ))}
-    </span>
-  );
-}
-
-function GroupLabel({ isDark, text }: { readonly isDark: boolean; readonly text: string }) {
+function GroupLabel({ text }: { readonly text: string }): ReactElement {
   return (
     <div className="mt-10 flex items-center gap-3">
-      <span aria-hidden className="h-px flex-1 bg-[#c9a15c]/40" />
-
-      <span
-        className="relative flex aspect-[550/139] w-[230px] shrink-0 items-center justify-center bg-[length:100%_100%] bg-no-repeat sm:w-[280px]"
-        style={{
-          backgroundImage: `url(${isDark ? MEDIA.ngayTot.labelPlateDark : MEDIA.ngayTot.labelPlateLight})`,
-        }}
-      >
-        <img
-          alt=""
-          aria-hidden
-          className="absolute -left-4 size-10 sm:-left-5 sm:size-12"
-          src={isDark ? MEDIA.ngayTot.labelIconMoon : MEDIA.ngayTot.labelIconSun}
-        />
-        <span
-          className={`pl-6 text-xs font-bold tracking-[0.14em] uppercase sm:text-sm ${
-            isDark ? 'text-[#e8c987]' : 'text-primary'
-          }`}
-        >
-          {text}
-        </span>
-      </span>
-
-      <span aria-hidden className="h-px flex-1 bg-[#c9a15c]/40" />
+      <span aria-hidden className="h-px flex-1 bg-ink/15" />
+      <h3 className="font-emphasis text-xl font-bold text-ink">{text}</h3>
+      <span aria-hidden className="h-px flex-1 bg-ink/15" />
     </div>
   );
 }
 
 function HourCard({
-  item,
-  isNow,
+  entry,
   onOpen,
 }: {
-  readonly item: HourQuality;
-  readonly isNow: boolean;
-  readonly onOpen: () => void;
-}) {
-  const isDark = !item.isHoangDao;
-  const iconSrc = zodiacIcon(item.canChi, isDark);
+  readonly entry: HourEntry;
+  readonly onOpen: (opener: HTMLButtonElement) => void;
+}): ReactElement {
+  const { item, chiIndex, isNow } = entry;
 
   return (
     <button
-      className="relative block w-full min-w-0 cursor-pointer transition-transform duration-200 hover:scale-[1.04] focus-visible:outline-none motion-reduce:transition-none motion-reduce:hover:scale-100"
-      onClick={onOpen}
+      className={cn(
+        'block h-full w-full min-w-0 rounded-xl transition-transform hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0',
+        FOCUS_RING_CLASS,
+      )}
+      onClick={(event) => onOpen(event.currentTarget)}
       type="button"
     >
-      <CornerBrackets className={isDark ? 'text-[#c9a15c]/50' : 'text-[#c9a15c]/40'} />
-
-      <span className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 rounded-md bg-gradient-to-b from-[#e8c987] to-[#b8894a] px-3 py-1 text-xs font-bold whitespace-nowrap text-[#2a1f0e] shadow-sm">
-        {item.range}
-      </span>
-
       <span
-        className={`flex flex-col items-center gap-2 rounded-xl border px-2 pt-5 pb-3 shadow-sm ${
-          isDark ? 'border-[#c9a15c]/40 bg-[#2b2521]' : 'border-[#c9a15c]/35 bg-[#fdfaf3]'
-        }`}
+        className={cn(
+          'flex h-full flex-col items-center gap-2 rounded-xl px-2 py-4',
+          item.isHoangDao ? 'border-2 border-gold bg-day' : 'border border-ink/15 bg-day-200',
+          isNow && 'inset-ring-2 inset-ring-gold',
+        )}
       >
-        <span
-          className={`flex size-14 items-center justify-center rounded-full border ${
-            isDark ? 'border-[#c9a15c]/40 bg-white/5' : 'border-[#c9a15c]/30 bg-[#f7efdd]'
-          }`}
-        >
-          {iconSrc && <img alt="" aria-hidden className="size-9 object-contain" src={iconSrc} />}
+        <span className="font-display text-sm font-extrabold text-ink tabular-nums">
+          {item.range}
         </span>
-
-        <span className={`text-base font-bold ${isDark ? 'text-[#f3e6cd]' : 'text-foreground'}`}>
-          {item.canChi}
-        </span>
-
+        <HourDial chiIndex={chiIndex} className="size-12" />
+        <span className="text-base font-bold text-ink">{item.canChi}</span>
         {isNow ? (
-          <span className="rounded-full bg-gradient-to-br from-[#e8c987] to-[#b8894a] px-2 py-0.5 text-[0.65rem] font-bold text-[#2a1f0e]">
+          <span className="rounded-full bg-gold px-2 py-0.5 text-2xs font-bold text-ink">
             Bây giờ
           </span>
         ) : (
-          <span className={`text-xs ${isDark ? 'text-[#a89b83]' : 'text-muted-foreground'}`}>
-            {item.isHoangDao ? 'Hoàng đạo' : 'Hắc đạo'}
-          </span>
+          <span className="text-xs text-ink-soft">{item.isHoangDao ? 'Hoàng đạo' : 'Hắc đạo'}</span>
         )}
-
-        <StarRating isDark={isDark} rating={item.rating} />
-
-        <ChevronDown
-          aria-hidden
-          className={`size-5 rounded-full border p-0.5 ${
-            isDark ? 'border-[#c9a15c]/40 text-[#e8c987]' : 'border-[#c9a15c]/40 text-primary'
-          }`}
-        />
+        <StarRating className="justify-center" rating={item.rating} />
+        <ChevronDown aria-hidden className="size-5 text-ink" />
       </span>
     </button>
   );
 }
 
-export function HourQualityList({ items, isToday }: HourQualityListProps) {
-  const [openHour, setOpenHour] = useState<HourQuality | null>(null);
+function HourGrid({
+  entries,
+  onOpen,
+}: {
+  readonly entries: readonly HourEntry[];
+  readonly onOpen: (entry: HourEntry, opener: HTMLButtonElement) => void;
+}): ReactElement {
+  return (
+    <ul className="mt-6 grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3 lg:grid-cols-6">
+      {entries.map((entry) => (
+        <li className="min-w-0" key={entry.item.range}>
+          <HourCard entry={entry} onOpen={(opener) => onOpen(entry, opener)} />
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export function HourQualityList({ items, isToday }: HourQualityListProps): ReactElement {
+  const [openEntry, setOpenEntry] = useState<HourEntry | null>(null);
+  const openerRef = useRef<HTMLButtonElement | null>(null);
   const nowIndex = isToday ? currentChiIndex() : null;
-  const withIndex = items.map((item, index) => ({ item, isNow: index === nowIndex }));
-  const hoangDao = withIndex.filter((entry) => entry.item.isHoangDao);
-  const hacDao = withIndex.filter((entry) => !entry.item.isHoangDao);
+  const entries = items.map((item, index) => ({
+    item,
+    chiIndex: index,
+    isNow: index === nowIndex,
+  }));
+  const hoangDao = entries.filter((entry) => entry.item.isHoangDao);
+  const hacDao = entries.filter((entry) => !entry.item.isHoangDao);
+
+  const openHour = (entry: HourEntry, opener: HTMLButtonElement): void => {
+    openerRef.current = opener;
+    setOpenEntry(entry);
+  };
+
+  const returnFocusToOpener = (event: Event): void => {
+    event.preventDefault();
+    openerRef.current?.focus();
+  };
 
   return (
-    <section className="relative overflow-hidden rounded-2xl border border-[#c9a15c]/35 bg-card px-4 py-6 shadow-md md:px-8 md:py-8">
-      <img
-        alt=""
-        aria-hidden
-        className="pointer-events-none absolute top-2 left-0 w-[270px] opacity-45 select-none md:w-[450px]"
-        loading="lazy"
-        src={MEDIA.ngayTot.decorPine}
-      />
-
-      <img
-        alt=""
-        aria-hidden
-        className="pointer-events-none absolute -top-6 right-0 w-[200px] opacity-45 select-none md:w-[340px]"
-        loading="lazy"
-        src={MEDIA.ngayTot.decorCrane}
-      />
-
-      <div className="relative">
-        <h2 className="text-center text-2xl font-bold tracking-wide text-primary uppercase md:text-3xl">
+    <section className="rounded-2xl border border-ink/15 bg-day px-4 py-6 text-ink md:px-8 md:py-8">
+      <div className="text-center">
+        <DisplayTitle as="h2" size={DisplaySize.Card} face={TitleFace.Serif}>
           Giờ tốt xấu trong ngày
-        </h2>
-        <p className="mt-2 text-center text-sm text-muted-foreground">
-          Chọn giờ tốt để mọi việc hanh thông, thuận lợi
-        </p>
-
-        <div className="mt-5 flex flex-wrap justify-center gap-3">
-          <span className="inline-flex items-center gap-2 rounded-lg border border-[#c9a15c]/40 bg-[#fdf3e0] px-4 py-2 text-sm font-medium text-primary">
-            <span aria-hidden className="size-2 rounded-full bg-[#c9a15c]" />
-            {hoangDao.length} giờ Hoàng đạo
-          </span>
-          <span className="inline-flex items-center gap-2 rounded-lg border border-border bg-muted/50 px-4 py-2 text-sm font-medium text-muted-foreground">
-            <span aria-hidden className="size-2 rounded-full bg-muted-foreground/50" />
-            {hacDao.length} giờ Hắc đạo
-          </span>
-        </div>
-
-        <GroupLabel isDark={false} text="Giờ Hoàng đạo" />
-        <ul className="mt-6 grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3 lg:grid-cols-6">
-          {hoangDao.map((entry) => (
-            <li className="min-w-0" key={entry.item.range}>
-              <HourCard
-                isNow={entry.isNow}
-                item={entry.item}
-                onOpen={() => setOpenHour(entry.item)}
-              />
-            </li>
-          ))}
-        </ul>
-
-        <GroupLabel isDark text="Giờ Hắc đạo" />
-        <ul className="mt-6 grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3 lg:grid-cols-6">
-          {hacDao.map((entry) => (
-            <li className="min-w-0" key={entry.item.range}>
-              <HourCard
-                isNow={entry.isNow}
-                item={entry.item}
-                onOpen={() => setOpenHour(entry.item)}
-              />
-            </li>
-          ))}
-        </ul>
-
-        <p className="mt-8 flex items-start gap-3 rounded-xl border border-[#c9a15c]/30 bg-[#fdf3e0]/60 px-4 py-3">
-          <Info aria-hidden className="mt-0.5 size-5 shrink-0 text-primary" />
-          <span className="text-sm text-muted-foreground">
-            <span className="font-semibold text-foreground">Lưu ý: </span>
-            Giờ tốt xấu chỉ mang tính tham khảo. Hãy kết hợp với các yếu tố khác để có lựa chọn phù
-            hợp nhất.
-          </span>
-        </p>
+        </DisplayTitle>
+        <p className="mt-2 text-sm text-ink-soft">Chọn giờ tốt để mọi việc hanh thông, thuận lợi</p>
       </div>
 
-      <HourDetailDialog hour={openHour} onClose={() => setOpenHour(null)} />
+      <div className="mt-5 flex flex-wrap justify-center gap-3">
+        <Chip>
+          <span aria-hidden className="mr-2 size-2 rounded-full bg-gold" />
+          {hoangDao.length} giờ Hoàng đạo
+        </Chip>
+        <Chip>
+          <span aria-hidden className="mr-2 size-2 rounded-full bg-ink" />
+          {hacDao.length} giờ Hắc đạo
+        </Chip>
+      </div>
+
+      <GroupLabel text="Giờ Hoàng đạo" />
+      <HourGrid entries={hoangDao} onOpen={openHour} />
+
+      <GroupLabel text="Giờ Hắc đạo" />
+      <HourGrid entries={hacDao} onOpen={openHour} />
+
+      <p className="mt-8 flex items-start gap-3 rounded-xl bg-day-200 px-4 py-3">
+        <Info aria-hidden className="mt-0.5 size-5 shrink-0 text-ink" />
+        <span className="text-sm text-ink-soft">
+          <span className="font-semibold text-ink">Lưu ý: </span>
+          Giờ tốt xấu chỉ mang tính tham khảo. Hãy kết hợp với các yếu tố khác để có lựa chọn phù
+          hợp nhất.
+        </span>
+      </p>
+
+      <HourDetailDialog
+        entry={openEntry}
+        onClose={() => setOpenEntry(null)}
+        onCloseAutoFocus={returnFocusToOpener}
+      />
     </section>
   );
 }

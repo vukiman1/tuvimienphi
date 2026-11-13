@@ -208,6 +208,10 @@ describe('design tokens', () => {
     expect(contrastRatio(token('ink'), wash)).toBeGreaterThanOrEqual(AA_NORMAL_TEXT);
   });
 
+  it('mùng 1 and rằm labels read dusk on the day tile', () => {
+    expect(contrastRatio(token('dusk'), token('day-200'))).toBeGreaterThanOrEqual(AA_NORMAL_TEXT);
+  });
+
   it('progress fill is visible on the skeleton track', () => {
     expect(contrastRatio(token('dusk'), token('day-200'))).toBeGreaterThanOrEqual(AA_NON_TEXT);
   });

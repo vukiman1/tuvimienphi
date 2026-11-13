@@ -1,12 +1,19 @@
+import type { ReactElement } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { MEDIA } from '@/config/media';
-import { CornerBrackets } from '@/features/ngay-tot/components/corner-brackets';
-import { convertSolarToLunar } from '@org/shared-tu-vi';
+import { FOCUS_RING_CLASS } from '@/design-system';
+import { buildCalendarDays, type CalendarDay } from '@/features/ngay-tot/calendar-day';
+import { cn } from '@/lib/utils';
 
 const WEEKDAY_LABELS = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'] as const;
-const CALENDAR_CELL_COUNT = 42;
+const SUNDAY_LABEL = 'CN';
 const NAV_BUTTON_CLASS =
-  'flex size-7 items-center justify-center rounded-md border border-[#c9a15c]/60 text-primary transition-colors hover:bg-primary/10 outline-none focus-visible:ring-2 focus-visible:ring-ring/60';
+  'flex size-11 items-center justify-center rounded-full border border-ink/15 text-ink transition-colors hover:bg-day-200';
+
+const DAY_CELL_CLASS = {
+  inMonth: 'bg-day-200',
+  selected: 'bg-gold inset-ring-2 inset-ring-ink',
+  today: 'inset-ring-1 inset-ring-ink',
+} as const;
 
 interface MonthCalendarProps {
   readonly viewYear: number;
@@ -17,20 +24,48 @@ interface MonthCalendarProps {
   readonly onGoToday: () => void;
 }
 
-function buildCalendarDates(year: number, month: number): readonly Date[] {
-  const firstOfMonth = new Date(year, month - 1, 1);
-  const daysSinceMonday = (firstOfMonth.getDay() + 6) % 7;
-  return Array.from(
-    { length: CALENDAR_CELL_COUNT },
-    (_, index) => new Date(year, month - 1, 1 - daysSinceMonday + index),
-  );
+function solarTextClass(day: CalendarDay): string {
+  if (day.isSelected) return 'text-ink';
+  if (!day.isInViewMonth) return 'text-ink-soft';
+  if (day.isSunday) return 'text-danger';
+  return 'text-ink';
 }
 
-function isSameDay(a: Date, b: Date): boolean {
+function lunarTextClass(day: CalendarDay): string {
+  if (day.isSpecialLunarDay && day.isInViewMonth) return 'font-bold text-dusk';
+  if (day.isSelected) return 'text-ink';
+  return 'text-ink-soft';
+}
+
+function DayButton({
+  day,
+  onSelect,
+}: {
+  readonly day: CalendarDay;
+  readonly onSelect: (date: Date) => void;
+}): ReactElement {
+  const isPlain = !day.isSelected && !day.isToday;
+
   return (
-    a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate()
+    <button
+      aria-current={day.isToday ? 'date' : undefined}
+      aria-pressed={day.isSelected}
+      onClick={() => onSelect(day.date)}
+      type="button"
+      className={cn(
+        'mx-auto flex aspect-square w-full max-w-12 flex-col items-center justify-center rounded-xl transition-colors',
+        FOCUS_RING_CLASS,
+        day.isInViewMonth && DAY_CELL_CLASS.inMonth,
+        day.isToday && !day.isSelected && DAY_CELL_CLASS.today,
+        day.isSelected && DAY_CELL_CLASS.selected,
+        isPlain && 'hover:ring-1 hover:ring-ink/40 hover:ring-inset',
+      )}
+    >
+      <span className={cn('text-sm leading-5 font-semibold', solarTextClass(day))}>
+        {day.date.getDate()}
+      </span>
+      <span className={cn('text-2xs leading-4', lunarTextClass(day))}>{day.lunarLabel}</span>
+    </button>
   );
 }
 
@@ -41,36 +76,29 @@ export function MonthCalendar({
   onSelectDate,
   onStepMonth,
   onGoToday,
-}: MonthCalendarProps) {
-  const today = new Date();
-  const dates = buildCalendarDates(viewYear, viewMonth);
+}: MonthCalendarProps): ReactElement {
+  const days = buildCalendarDays({ viewYear, viewMonth, selectedDate, today: new Date() });
 
   return (
-    <div className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-[#c9a15c]/40 bg-card p-3 pb-[36%] shadow-md md:p-5 md:pb-[36%]">
-      <CornerBrackets />
-      <img
-        alt=""
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 w-full opacity-35 select-none"
-        loading="lazy"
-        src={MEDIA.ngayTot.calendarFoot}
-      />
-
-      <div className="relative flex items-center justify-between gap-2">
-        <button
-          aria-label="Tháng trước"
-          className={NAV_BUTTON_CLASS}
-          onClick={() => onStepMonth(-1)}
-          type="button"
-        >
-          <ChevronLeft className="size-4" />
-        </button>
-        <p className="text-sm font-bold tracking-wide whitespace-nowrap text-primary uppercase sm:text-base md:text-xl">
+    <div className="flex h-full flex-col rounded-2xl border border-ink/15 bg-day p-2 sm:p-3 md:p-5">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-center font-display text-xl font-extrabold text-ink sm:text-left">
           Tháng {viewMonth}, {viewYear}
         </p>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-center gap-2">
           <button
-            className="rounded-full border border-[#c9a15c]/40 px-2.5 py-1 text-[0.7rem] font-medium whitespace-nowrap text-muted-foreground transition-colors outline-none hover:border-[#c9a15c] hover:text-primary focus-visible:ring-2 focus-visible:ring-ring/60 sm:px-3.5 sm:text-xs"
+            aria-label="Tháng trước"
+            className={cn(NAV_BUTTON_CLASS, FOCUS_RING_CLASS)}
+            onClick={() => onStepMonth(-1)}
+            type="button"
+          >
+            <ChevronLeft aria-hidden className="size-4" />
+          </button>
+          <button
+            className={cn(
+              'min-h-11 rounded-full border border-ink/15 px-4 text-xs font-semibold text-ink transition-colors hover:border-gold',
+              FOCUS_RING_CLASS,
+            )}
             onClick={onGoToday}
             type="button"
           >
@@ -78,70 +106,31 @@ export function MonthCalendar({
           </button>
           <button
             aria-label="Tháng sau"
-            className={NAV_BUTTON_CLASS}
+            className={cn(NAV_BUTTON_CLASS, FOCUS_RING_CLASS)}
             onClick={() => onStepMonth(1)}
             type="button"
           >
-            <ChevronRight className="size-4" />
+            <ChevronRight aria-hidden className="size-4" />
           </button>
         </div>
       </div>
 
-      <div className="relative mt-4 grid flex-1 grid-cols-7 gap-y-1 content-between">
+      <div className="mt-4 grid flex-1 grid-cols-7 content-between gap-0.5 sm:gap-1">
         {WEEKDAY_LABELS.map((label) => (
           <p
             key={label}
-            className={`pb-1 text-center text-[0.65rem] font-semibold tracking-wide ${
-              label === 'CN' ? 'text-destructive' : 'text-muted-foreground'
-            }`}
+            className={cn(
+              'pb-1 text-center text-xs font-semibold',
+              label === SUNDAY_LABEL ? 'text-danger' : 'text-ink-soft',
+            )}
           >
             {label}
           </p>
         ))}
 
-        {dates.map((date) => {
-          const lunar = convertSolarToLunar(date);
-          const isInViewMonth =
-            date.getMonth() + 1 === viewMonth && date.getFullYear() === viewYear;
-          const isToday = isSameDay(date, today);
-          const isSelected = isSameDay(date, selectedDate);
-          const isSunday = date.getDay() === 0;
-          const isSpecialLunarDay = lunar.day === 1 || lunar.day === 15;
-          const lunarLabel = lunar.day === 1 ? `${lunar.day}/${lunar.month}` : `${lunar.day}`;
-
-          const solarColor = isSelected
-            ? 'text-[#1a1a1c]'
-            : !isInViewMonth
-              ? 'text-muted-foreground/40'
-              : isSunday
-                ? 'text-destructive'
-                : 'text-foreground';
-          const lunarColor = isSelected
-            ? 'text-[#1a1a1c]/70'
-            : !isInViewMonth
-              ? 'text-muted-foreground/30'
-              : isSpecialLunarDay
-                ? 'font-semibold text-primary'
-                : 'text-muted-foreground';
-
-          return (
-            <button
-              key={date.toISOString()}
-              aria-current={isToday ? 'date' : undefined}
-              aria-pressed={isSelected}
-              onClick={() => onSelectDate(date)}
-              type="button"
-              className={`mx-auto flex aspect-square w-full max-w-11 flex-col items-center justify-center rounded-full transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring/60 ${
-                isSelected
-                  ? 'bg-gradient-to-br from-[#e8c987] to-[#b8894a] shadow-sm'
-                  : `hover:bg-primary/10 ${isToday ? 'ring-1 ring-[#c9a15c]' : ''}`
-              }`}
-            >
-              <span className={`text-sm font-medium ${solarColor}`}>{date.getDate()}</span>
-              <span className={`text-[0.6rem] leading-tight ${lunarColor}`}>{lunarLabel}</span>
-            </button>
-          );
-        })}
+        {days.map((day) => (
+          <DayButton key={day.date.toISOString()} day={day} onSelect={onSelectDate} />
+        ))}
       </div>
     </div>
   );

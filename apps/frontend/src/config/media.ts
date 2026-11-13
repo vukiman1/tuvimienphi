@@ -50,17 +50,8 @@ export const MEDIA = {
     luopan: mediaUrl('/la-so/luopan.webp'),
   },
   ngayTot: {
-    lichBackground: mediaUrl('/ngay-tot/lich-bg.svg'),
-    barWood: mediaUrl('/ngay-tot/bar-wood.png'),
-    barMarble: mediaUrl('/ngay-tot/bar-marble.png'),
-    calendarFoot: mediaUrl('/ngay-tot/calendar-foot.webp'),
     sceneTop: mediaUrl('/ngay-tot/scene-top.webp'),
     decorCrane: mediaUrl('/ngay-tot/decor-crane.webp'),
-    decorPine: mediaUrl('/ngay-tot/decor-pine.webp'),
-    labelPlateDark: mediaUrl('/ngay-tot/label-plate-dark.webp'),
-    labelPlateLight: mediaUrl('/ngay-tot/label-plate-light.webp'),
-    labelIconMoon: mediaUrl('/ngay-tot/label-icon-moon.webp'),
-    labelIconSun: mediaUrl('/ngay-tot/label-icon-sun.webp'),
   },
   vanHan: {
     decorCloud: mediaUrl('/van-han/decor-cloud.png'),
@@ -75,11 +66,6 @@ export function vanHanHeroUrl(slug: string): string {
 /** Đồng xu ngũ hành cho card năm sinh, theo slug hành (thuy/hoa/tho/moc/kim). */
 export function vanHanCoinUrl(slug: string): string {
   return mediaUrl(`/van-han/coin-${slug}.png`);
-}
-
-/** The six Lục Diệu discs, keyed by the slot's slug. */
-export function xuatHanhIconUrl(slug: string): string {
-  return mediaUrl(`/ngay-tot/icons/${slug}.webp`);
 }
 
 /** Named separately from MEDIA because the file is picked at runtime, not known upfront. */
