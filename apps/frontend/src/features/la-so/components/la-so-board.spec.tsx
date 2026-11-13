@@ -3,6 +3,8 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import type { NguHanh } from '@org/shared-tu-vi';
 import { FOCUS_RING_CLASS } from '@/design-system';
 import { CalendarType, Gender } from '@/features/la-so/birth-input';
+import { FULL_BOARD_WIDTH } from '@/features/la-so/board-fit';
+import { BOARD_SIZE } from '@/features/la-so/board-layout';
 import type { ChartView, CungView } from '@/features/la-so/chart-types';
 import { toChartView } from '@/features/la-so/to-chart-view';
 import { LaSoBoard } from './la-so-board';
@@ -18,6 +20,8 @@ const SAMPLE_BIRTH = {
 const VIEW_YEAR = 2026;
 const WIDE_CONTAINER = 1024;
 const PHONE_CONTAINER = 360;
+const FULL_CONTAINER_NARROWER_THAN_BOARD = 700;
+const EQUAL_GROWING_ROWS = new RegExp(`^repeat\\(${BOARD_SIZE}, minmax\\(\\d+px, 1fr\\)\\)$`);
 const TY = 0;
 const TY_RELATED = [4, 8, 6, 1] as const;
 const SPOTLIGHT_CLASS = 'bg-gold/10';
@@ -93,10 +97,51 @@ function follows(later: Node, earlier: Node): boolean {
   return (earlier.compareDocumentPosition(later) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0;
 }
 
-function scaledElements(container: HTMLElement): readonly HTMLElement[] {
+function zoomedElements(container: HTMLElement): readonly HTMLElement[] {
+  return [...container.querySelectorAll<HTMLElement>('*')].filter((element) =>
+    Boolean(element.style.zoom),
+  );
+}
+
+function paintScaledElements(container: HTMLElement): readonly HTMLElement[] {
   return [...container.querySelectorAll<HTMLElement>('*')].filter((element) =>
     element.style.transform.includes('scale('),
   );
+}
+
+function starCount(cung: CungView): number {
+  return (
+    cung.chinhTinh.length +
+    cung.catTinh.length +
+    cung.hungTinh.length +
+    cung.luuTinh.length +
+    cung.daiVanTinh.length
+  );
+}
+
+function busiestCung(): CungView {
+  return CHART.cungs.reduce((busiest, cung) =>
+    starCount(cung) > starCount(busiest) ? cung : busiest,
+  );
+}
+
+function boardGrid(cell: HTMLElement): HTMLElement {
+  for (let node = cell.parentElement; node !== null; node = node.parentElement) {
+    if (node.style.gridTemplateRows !== '') return node;
+  }
+  throw new Error(`No board grid around ${cell.getAttribute('aria-label') ?? 'the cell'}`);
+}
+
+function pinnedHeightsBetween(cell: HTMLElement, container: HTMLElement): readonly string[] {
+  const heights: string[] = [];
+  for (
+    let node: HTMLElement | null = cell;
+    node !== null && node !== container;
+    node = node.parentElement
+  ) {
+    if (node.style.height !== '') heights.push(node.style.height);
+  }
+  return heights;
 }
 
 function byIndex(first: number, second: number): number {
@@ -265,6 +310,27 @@ describe('LaSoBoard on a wide container', () => {
   });
 });
 
+describe('LaSoBoard sizing the full board', () => {
+  it('lets the busiest cung grow every row instead of clipping its last line', () => {
+    observeWidth(WIDE_CONTAINER);
+    const { container } = renderBoard();
+    const busiest = cungButton(busiestCung());
+
+    expect(pinnedHeightsBetween(busiest, container)).toEqual([]);
+    expect(boardGrid(busiest).style.gridTemplateRows).toMatch(EQUAL_GROWING_ROWS);
+  });
+
+  it('shrinks the board in layout so the page below starts where the board ends', () => {
+    observeWidth(FULL_CONTAINER_NARROWER_THAN_BOARD);
+    const { container } = renderBoard();
+
+    expect(paintScaledElements(container)).toEqual([]);
+    expect(boardGrid(cungButton(MENH)).style.zoom).toBe(
+      String(FULL_CONTAINER_NARROWER_THAN_BOARD / FULL_BOARD_WIDTH),
+    );
+  });
+});
+
 describe('LaSoBoard on a phone-width container', () => {
   beforeEach(() => observeWidth(PHONE_CONTAINER));
 
@@ -272,7 +338,7 @@ describe('LaSoBoard on a phone-width container', () => {
     const { container } = renderBoard();
 
     expect(screen.getAllByRole('button', { name: /^Cung / })).toHaveLength(CHART.cungs.length);
-    expect(scaledElements(container)).toEqual([]);
+    expect(zoomedElements(container)).toEqual([]);
   });
 
   it('spotlights the tapped cung without hover', () => {
@@ -343,9 +409,7 @@ describe('LaSoBoard switching layouts', () => {
     const { container } = renderBoard();
 
     expect(screen.queryByRole('region')).toBeNull();
-    expect(scaledElements(container).map((element) => element.style.transform)).toEqual([
-      'scale(1)',
-    ]);
+    expect(zoomedElements(container).map((element) => element.style.zoom)).toEqual(['1']);
   });
 
   it('keeps the panel free of the board buttons', () => {

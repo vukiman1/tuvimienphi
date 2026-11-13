@@ -34,8 +34,7 @@ interface LineStyle {
 }
 
 const CENTER_AREA = { gridRow: '2 / span 2', gridColumn: '2 / span 2' } as const;
-const FULL_BOARD_ROW_HEIGHT = 258;
-const FULL_BOARD_HEIGHT = BOARD_SIZE * FULL_BOARD_ROW_HEIGHT;
+const FULL_BOARD_MIN_ROW_HEIGHT = 258;
 const FULL_LINE_STYLE: LineStyle = { strokeWidth: 0.008 };
 const COMPACT_LINE_STYLE: LineStyle = { strokeWidth: 1.5, vectorEffect: 'non-scaling-stroke' };
 const ORBIT_POINTS = 12;
@@ -146,45 +145,39 @@ function FullBoard({
 
   return (
     <div
-      className="mx-auto"
-      style={{ width: FULL_BOARD_WIDTH * scale, height: FULL_BOARD_HEIGHT * scale }}
+      className={cn('relative mx-auto grid', CHART_RULE_CLASS.fill)}
+      style={{
+        width: FULL_BOARD_WIDTH,
+        zoom: scale,
+        gridTemplateColumns: `repeat(${BOARD_SIZE}, minmax(0, 1fr))`,
+        gridTemplateRows: `repeat(${BOARD_SIZE}, minmax(${FULL_BOARD_MIN_ROW_HEIGHT}px, 1fr))`,
+      }}
     >
-      <div
-        className={cn('relative grid origin-top-left', CHART_RULE_CLASS.fill)}
-        style={{
-          width: FULL_BOARD_WIDTH,
-          height: FULL_BOARD_HEIGHT,
-          transform: `scale(${scale})`,
-          gridTemplateColumns: `repeat(${BOARD_SIZE}, minmax(0, 1fr))`,
-          gridTemplateRows: `repeat(${BOARD_SIZE}, ${FULL_BOARD_ROW_HEIGHT}px)`,
-        }}
-      >
-        {chart.cungs.map((cung) => (
-          <div key={cung.index} className="min-w-0 bg-day" style={gridPlacement(cung)}>
-            <CungCard
-              cung={cung}
-              isFocused={isSpotlight && cung.index === focusedIndex}
-              isRelated={isSpotlight && highlights.related.has(cung.index)}
-              isSelected={cung.index === selectedIndex}
-              onFocusCung={onHover}
-              onSelect={onSelect}
-            />
-          </div>
-        ))}
-
-        <div className="min-w-0" style={CENTER_AREA}>
-          <ThienBan meta={chart.meta} />
+      {chart.cungs.map((cung) => (
+        <div key={cung.index} className="min-w-0 bg-day" style={gridPlacement(cung)}>
+          <CungCard
+            cung={cung}
+            isFocused={isSpotlight && cung.index === focusedIndex}
+            isRelated={isSpotlight && highlights.related.has(cung.index)}
+            isSelected={cung.index === selectedIndex}
+            onFocusCung={onHover}
+            onSelect={onSelect}
+          />
         </div>
+      ))}
 
-        <BlockLabel label="Tuần" pair={highlights.tuan} />
-        <BlockLabel label="Triệt" pair={highlights.triet} />
-
-        {chart.cungs.map((cung) => (
-          <ChiLabel key={cung.index} cung={cung} isActive={isLit(cung.index)} />
-        ))}
-
-        <BoardLines highlights={highlights} lineStyle={FULL_LINE_STYLE} />
+      <div className="min-w-0" style={CENTER_AREA}>
+        <ThienBan meta={chart.meta} />
       </div>
+
+      <BlockLabel label="Tuần" pair={highlights.tuan} />
+      <BlockLabel label="Triệt" pair={highlights.triet} />
+
+      {chart.cungs.map((cung) => (
+        <ChiLabel key={cung.index} cung={cung} isActive={isLit(cung.index)} />
+      ))}
+
+      <BoardLines highlights={highlights} lineStyle={FULL_LINE_STYLE} />
     </div>
   );
 }
