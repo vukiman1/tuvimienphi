@@ -1,38 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import { LuanGiaiCard } from '@/features/la-so/components/luan-giai-card';
 import { cn } from '@/lib/utils';
 
-const BLOCK_CLASS = 'rounded bg-[#e3d7ba]';
+const BLOCK_CLASS = 'rounded bg-day-200';
 const SWEEP_CLASS = 'animate-ink-sweep motion-reduce:animate-none';
 
-/** Bề rộng lệch nhau cho mấy vạch chờ trông như đoạn văn thật, không như bảng biểu. */
 const LINE_WIDTHS = ['w-full', 'w-[96%]', 'w-[88%]', 'w-[93%]', 'w-[62%]'] as const;
 
 const TICK_MS = 1_000;
 
-/**
- * Thanh tiến trình bò tới mốc này rồi chậm dần, không bao giờ đầy — máy chủ làm xong mới trả một
- * lần, không có đường nào báo về đang ở bước nào, nên vẽ một thanh chạy tới 100% là nói dối.
- */
 const KY_VONG_GIAY = 20;
 const TRAN_PHAN_TRAM = 90;
 
-/** Dưới ngưỡng này thì nhắc tới thời gian chỉ tổ làm người ta để ý là phải chờ. */
 const BAT_DAU_DEM_GIAY = 8;
 
-/** Mỗi chừng này giây hiện thêm một vạch chữ, cho cảm giác bài đang được viết dần. */
 const GIAY_MOI_VACH = 2;
 
 interface LuanGiaiSkeletonCardProps {
-  /**
-   * Bật khi thực sự đang viết bài. Đọc bài đã có thì xong trong tích tắc, hiện thông điệp chờ ở đó
-   * là nói sai việc đang diễn ra.
-   */
   readonly isWriting?: boolean;
 }
 
-/** Khung chờ dựng theo đúng bố cục thẻ bài, để lúc nội dung về không bị nhảy layout. */
-export function LuanGiaiSkeletonCard({ isWriting }: LuanGiaiSkeletonCardProps) {
+export function LuanGiaiSkeletonCard({ isWriting }: LuanGiaiSkeletonCardProps): ReactElement {
   const [giay, setGiay] = useState(0);
 
   useEffect(() => {
@@ -42,8 +30,6 @@ export function LuanGiaiSkeletonCard({ isWriting }: LuanGiaiSkeletonCardProps) {
     return () => clearInterval(id);
   }, [isWriting]);
 
-  // Tiệm cận trần chứ không tuyến tính: chờ càng lâu thanh càng bò chậm, nên quá hẹn vẫn không kẹt
-  // ở một con số đứng im.
   const phanTram = Math.round(TRAN_PHAN_TRAM * (1 - Math.exp(-giay / KY_VONG_GIAY)));
   const soVach = isWriting
     ? Math.min(LINE_WIDTHS.length, 1 + Math.floor(giay / GIAY_MOI_VACH))
@@ -54,13 +40,11 @@ export function LuanGiaiSkeletonCard({ isWriting }: LuanGiaiSkeletonCardProps) {
       <div aria-label="Đang tải luận giải" role="status">
         {isWriting ? (
           <div className="mb-7">
-            <p aria-live="polite" className="text-center text-[15px] leading-[24px] text-[#6b5a4e]">
+            <p aria-live="polite" className="text-center text-sm text-ink-soft">
               Đang viết luận giải cho lá số của bạn
-              {giay >= BAT_DAU_DEM_GIAY ? (
-                <span className="text-[#8a7a63]"> · {Math.round(giay)} giây rồi</span>
-              ) : null}
+              {giay >= BAT_DAU_DEM_GIAY ? <span> · {Math.round(giay)} giây rồi</span> : null}
             </p>
-            <p className="mt-1 text-center text-[13px] text-[#8a7a63]">
+            <p className="mt-1 text-center text-xs text-ink-soft">
               Mỗi bài viết riêng cho lá số này, thường mất 10–40 giây
             </p>
 
@@ -69,43 +53,39 @@ export function LuanGiaiSkeletonCard({ isWriting }: LuanGiaiSkeletonCardProps) {
               aria-valuemax={100}
               aria-valuemin={0}
               aria-valuenow={phanTram}
-              className="mx-auto mt-4 h-[3px] w-[62%] overflow-hidden rounded-full bg-[#e3d7ba]"
+              className="mx-auto mt-4 h-1 w-3/5 overflow-hidden rounded-full bg-day-200"
               role="progressbar"
             >
               <div
-                className="h-full rounded-full bg-[#b08b4f] transition-[width] duration-1000 ease-out motion-reduce:transition-none"
+                className="h-full rounded-full bg-dusk transition-[width] duration-1000 ease-out motion-reduce:transition-none"
                 style={{ width: `${phanTram}%` }}
               />
             </div>
           </div>
         ) : null}
 
-        <div className="flex items-center gap-[14px] pl-[3%]">
+        <div className="flex items-center gap-4">
           <div
-            className={cn(
-              BLOCK_CLASS,
-              SWEEP_CLASS,
-              'size-[64px] shrink-0 rounded-full md:size-[88px]',
-            )}
+            className={cn(BLOCK_CLASS, SWEEP_CLASS, 'size-16 shrink-0 rounded-full md:size-20')}
           />
           <div className="min-w-0 flex-1">
-            <div className={cn(BLOCK_CLASS, SWEEP_CLASS, 'h-[14px] w-[110px]')} />
-            <div className={cn(BLOCK_CLASS, SWEEP_CLASS, 'mt-3 h-[28px] w-[62%] md:h-[36px]')} />
+            <div className={cn(BLOCK_CLASS, SWEEP_CLASS, 'h-3.5 w-28')} />
+            <div className={cn(BLOCK_CLASS, SWEEP_CLASS, 'mt-3 h-8 w-3/5 md:h-12')} />
           </div>
         </div>
 
-        <div className={cn(BLOCK_CLASS, SWEEP_CLASS, 'mt-7 h-[22px] w-[74%]')} />
+        <div className={cn(BLOCK_CLASS, SWEEP_CLASS, 'mt-6 h-6 w-3/4')} />
 
         <div className="mt-8 space-y-3">
           {LINE_WIDTHS.slice(0, soVach).map((width) => (
-            <div key={width} className={cn(BLOCK_CLASS, SWEEP_CLASS, 'h-[15px]', width)} />
+            <div key={width} className={cn(BLOCK_CLASS, SWEEP_CLASS, 'h-4', width)} />
           ))}
         </div>
 
         {!isWriting ? (
           <div className="mt-8 space-y-3">
             {LINE_WIDTHS.slice(0, 3).map((width) => (
-              <div key={width} className={cn(BLOCK_CLASS, SWEEP_CLASS, 'h-[15px]', width)} />
+              <div key={width} className={cn(BLOCK_CLASS, SWEEP_CLASS, 'h-4', width)} />
             ))}
           </div>
         ) : null}

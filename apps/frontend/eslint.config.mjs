@@ -7,8 +7,7 @@ const MIGRATED_FILES = [
   'src/components/ui/**',
   'src/features/home/**',
   'src/features/tet-hub/**',
-  'src/features/la-so/components/birth-form.tsx',
-  'src/features/la-so/components/calendar-toggle.tsx',
+  'src/features/la-so/**',
 ];
 const DESIGN_SYSTEM_FILES = ['src/design-system/**'];
 

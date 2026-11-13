@@ -412,6 +412,15 @@ describe('PageHero', () => {
     expect(title.parentElement?.className).toContain('min-w-0');
     expect(title.parentElement?.className).toContain('break-words');
   });
+
+  it('renders the title alone when it has no breadcrumb or eyebrow', () => {
+    render(<PageHero title="Lá Số Tử Vi" />);
+    const band = screen.getByRole('heading', { level: 1 }).closest('section') as HTMLElement;
+
+    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
+    expect(band.querySelector('nav')).toBeNull();
+    expect(band.querySelector('p')).toBeNull();
+  });
 });
 
 describe('DisplayTitle', () => {

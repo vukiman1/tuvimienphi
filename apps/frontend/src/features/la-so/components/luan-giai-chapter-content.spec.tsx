@@ -159,4 +159,11 @@ describe('LuanGiaiChapterContent', () => {
 
     expect(await screen.findByText(/Chưa luận được vận hạn năm 2027/)).toBeTruthy();
   });
+
+  it('the request button is a gold CTA', () => {
+    renderChapter();
+
+    const button = screen.getByRole('button', { name: 'Xem luận giải' });
+    expect(button.getAttribute('class')?.split(/\s+/)).toContain('bg-gold');
+  });
 });

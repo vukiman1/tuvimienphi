@@ -1,62 +1,21 @@
-import type { CungView, SaoView } from '@/features/la-so/chart-types';
-import { cn } from '@/lib/utils';
+import type { ReactElement } from 'react';
+import { FOCUS_RING_CLASS } from '@/design-system';
+import type { CungView } from '@/features/la-so/chart-types';
 import {
   CHART_RULE_CLASS,
   CUNG_SURFACE_CLASS,
-  SAO_ELEMENT_CLASS,
+  cungStateClass,
 } from '@/features/la-so/chart-colors';
+import { CungCellContent } from '@/features/la-so/components/cung-cell-content';
+import { cn } from '@/lib/utils';
 
 interface CungCardProps {
   readonly cung: CungView;
-  /** Cung đang được rê chuột hoặc đang chọn — quyết định màu nền đậm. */
   readonly isFocused: boolean;
-  /** Tam hợp hoặc xung chiếu của cung đang focus. */
   readonly isRelated: boolean;
-  /** Cung đang chọn bằng click, chỉ dùng cho `aria-pressed`. */
   readonly isSelected: boolean;
-  /** Không nằm trong tam phương tứ chính của cung đang rê chuột. */
-  readonly isDimmed: boolean;
   readonly onSelect: (cungIndex: number) => void;
   readonly onFocusCung: (cungIndex: number | null) => void;
-}
-
-function SaoColumn({
-  sao,
-  align,
-}: {
-  readonly sao: readonly SaoView[];
-  readonly align: 'left' | 'right';
-}) {
-  return (
-    <ul className={cn('flex min-w-0 flex-col gap-[1px]', align === 'right' && 'items-start')}>
-      {sao.map((item) => (
-        <li
-          key={item.name}
-          className={cn(
-            'truncate text-[13px] leading-[18px] font-semibold',
-            SAO_ELEMENT_CLASS[item.element],
-          )}
-        >
-          {item.name}
-          {item.rating && <span className="text-[11px] font-normal"> ({item.rating})</span>}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-/** Một dòng sao của tầng phủ, in tràn ngang dưới hai cột phụ tinh. */
-function SaoRow({ sao, prefix }: { readonly sao: readonly SaoView[]; readonly prefix: string }) {
-  return (
-    <ul className="flex flex-wrap gap-x-2 pt-[2px] text-[12px] leading-[16px] font-semibold">
-      {sao.map((item) => (
-        <li key={item.name} className={cn('whitespace-nowrap', SAO_ELEMENT_CLASS[item.element])}>
-          {prefix}
-          {item.name}
-        </li>
-      ))}
-    </ul>
-  );
 }
 
 export function CungCard({
@@ -64,10 +23,9 @@ export function CungCard({
   isFocused,
   isRelated,
   isSelected,
-  isDimmed,
   onSelect,
   onFocusCung,
-}: CungCardProps) {
+}: CungCardProps): ReactElement {
   return (
     <button
       aria-label={`Cung ${cung.name}`}
@@ -79,99 +37,14 @@ export function CungCard({
       onMouseLeave={() => onFocusCung(null)}
       type="button"
       className={cn(
-        'relative block h-full w-full overflow-hidden border px-[4px] py-[11px] text-left transition-colors outline-none',
+        'relative block h-full w-full overflow-hidden border px-1 py-3 text-left transition-colors focus-visible:z-30',
+        FOCUS_RING_CLASS,
         CHART_RULE_CLASS.border,
-        'focus-visible:ring-2 focus-visible:ring-[#e08a0b]',
-        isFocused
-          ? CUNG_SURFACE_CLASS.focused
-          : isRelated
-            ? CUNG_SURFACE_CLASS.related
-            : CUNG_SURFACE_CLASS.base,
+        isFocused || isRelated ? CUNG_SURFACE_CLASS.spotlight : CUNG_SURFACE_CLASS.base,
+        cungStateClass(isSelected, isFocused, isRelated),
       )}
     >
-      {cung.isTieuHan ? (
-        <span
-          className={`pointer-events-none absolute top-0 right-[4px] px-[6px] text-[10px] leading-[11px] font-bold text-white ${CHART_RULE_CLASS.blockLabel}`}
-        >
-          Tiểu hạn
-        </span>
-      ) : null}
-      <span className={cn('flex h-full flex-col transition-opacity', isDimmed && 'opacity-30')}>
-        <div className="flex items-baseline justify-between gap-1.5">
-          <span className="shrink-0 text-[13px] leading-[17px] font-bold whitespace-nowrap text-[#17150f]">
-            {cung.canChi}
-          </span>
-          <span className="truncate text-[14px] leading-[19px] font-bold text-[#e08a0b]">
-            {cung.name}
-            {cung.isThan && <span className="text-[#17150f]">&lt;THÂN&gt;</span>}
-          </span>
-          <span className="text-[13px] leading-[17px] font-bold text-[#17150f] tabular-nums">
-            {cung.daiVanStartAge}
-          </span>
-        </div>
-
-        <div className="flex items-baseline justify-between gap-1.5">
-          <span className="shrink-0 text-[13px] leading-[17px] font-bold whitespace-nowrap text-[#17150f]">
-            {cung.element}
-          </span>
-          <span className="flex min-w-0 flex-wrap justify-center gap-x-2">
-            {cung.isVoChinhDieu ? (
-              <span className="text-[13px] leading-[19px] font-semibold text-[#6b6455] italic">
-                vô chính diệu
-              </span>
-            ) : (
-              cung.chinhTinh.map((sao) => (
-                <span
-                  key={sao.name}
-                  className={cn(
-                    'text-[14px] leading-[19px] font-bold whitespace-nowrap',
-                    SAO_ELEMENT_CLASS[sao.element],
-                  )}
-                >
-                  {sao.polarity}
-                  {sao.name}
-                  {sao.rating && <span className="text-[12px] font-normal"> ({sao.rating})</span>}
-                </span>
-              ))
-            )}
-          </span>
-          <span className="shrink-0 text-[13px] leading-[17px] font-bold whitespace-nowrap text-[#17150f]">
-            {cung.monthOrder}
-          </span>
-        </div>
-
-        {cung.chinhTinhMuon.length > 0 && (
-          <span className="flex min-w-0 flex-wrap justify-center gap-x-2 opacity-70">
-            {cung.chinhTinhMuon.map((sao) => (
-              <span
-                key={sao.name}
-                className={cn(
-                  'text-[12px] leading-[16px] font-semibold whitespace-nowrap',
-                  SAO_ELEMENT_CLASS[sao.element],
-                )}
-              >
-                ({sao.name}
-                {sao.rating && ` ${sao.rating}`})
-              </span>
-            ))}
-          </span>
-        )}
-
-        <div className="mt-[3px] grid flex-1 grid-cols-2 gap-x-1">
-          <SaoColumn align="left" sao={cung.catTinh} />
-          <SaoColumn align="right" sao={cung.hungTinh} />
-        </div>
-
-        {cung.luuTinh.length > 0 && <SaoRow prefix="L." sao={cung.luuTinh} />}
-
-        {cung.daiVanTinh.length > 0 && <SaoRow prefix="ĐV." sao={cung.daiVanTinh} />}
-
-        <div className="mt-auto flex items-baseline justify-between gap-1.5 pt-[4px] text-[12px] leading-[16px] font-semibold text-[#17150f]">
-          <span>{cung.daiVan}</span>
-          <span className="font-bold">{cung.trangSinh}</span>
-          <span>{cung.luuNien}</span>
-        </div>
-      </span>
+      <CungCellContent cung={cung} />
     </button>
   );
 }

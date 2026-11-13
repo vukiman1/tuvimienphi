@@ -1,29 +1,43 @@
+import type { ReactElement } from 'react';
 import { CHART_RULE_CLASS, CUNG_SURFACE_CLASS } from '@/features/la-so/chart-colors';
 import type { ChartMeta } from '@/features/la-so/chart-types';
+import { cn } from '@/lib/utils';
+
+const WORD_ABOVE_LINES_CLASS = 'relative z-20 bg-day';
 
 interface ThienBanProps {
   readonly meta: ChartMeta;
 }
 
-function Row({ label, value }: { readonly label: string; readonly value: string }) {
+function Row({ label, value }: { readonly label: string; readonly value: string }): ReactElement {
   return (
-    <div className="flex gap-2 text-[13px] leading-[21px]">
-      <span className="w-[94px] shrink-0 font-semibold whitespace-nowrap text-[#5b5347]">
-        {label}
+    <div className="flex gap-2 text-xs leading-5">
+      <span className="w-24 shrink-0">
+        <span
+          className={cn('font-semibold whitespace-nowrap text-ink-soft', WORD_ABOVE_LINES_CLASS)}
+        >
+          {label}
+        </span>
       </span>
-      <span className="min-w-0 font-medium text-[#17150f]">{value}</span>
+      <span className={cn('min-w-0 text-ink', WORD_ABOVE_LINES_CLASS)}>{value}</span>
     </div>
   );
 }
 
-export function ThienBan({ meta }: ThienBanProps) {
+export function ThienBan({ meta }: ThienBanProps): ReactElement {
   return (
     <div
-      className={`flex h-full flex-col items-center justify-center gap-2 border px-3 py-2 ${CHART_RULE_CLASS.border} ${CUNG_SURFACE_CLASS.base}`}
+      className={cn(
+        'flex h-full flex-col items-center justify-center gap-2 border px-3 py-2',
+        CHART_RULE_CLASS.border,
+        CUNG_SURFACE_CLASS.base,
+      )}
     >
-      <p className="text-[20px] leading-[26px] font-bold text-[#8a2b22]">Lá Số Tử Vi</p>
+      <p className={cn('text-xl leading-7 font-bold text-dusk', WORD_ABOVE_LINES_CLASS)}>
+        Lá Số Tử Vi
+      </p>
 
-      <div className="flex w-full max-w-[352px] flex-col">
+      <div className="flex w-full max-w-80 flex-col">
         <Row label="Họ tên:" value={meta.fullName} />
         <Row label="Năm:" value={`${meta.solarYear} · ${meta.lunarYear}`} />
         <Row label="Tháng:" value={`${meta.solarMonth} · ${meta.lunarMonth}`} />

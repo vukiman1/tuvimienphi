@@ -1,28 +1,14 @@
-import type { ReactNode } from 'react';
-import { MEDIA } from '@/config/media';
+import type { ReactElement, ReactNode } from 'react';
+import { DisplaySize, DisplayTitle, Eyebrow, TitleFace } from '@/design-system';
 
 interface LuanGiaiCardProps {
   readonly children: ReactNode;
 }
 
-/** Khung giấy hai viền dùng chung cho mọi mục luận giải, đã biên soạn hay còn để trống. */
-export function LuanGiaiCard({ children }: LuanGiaiCardProps) {
+export function LuanGiaiCard({ children }: LuanGiaiCardProps): ReactElement {
   return (
-    // Không đặt overflow-hidden: tranh phải tràn được ra ngoài khung thẻ.
-    <article className="relative border border-[#c9a15c] bg-[#faf6ec] p-[6px]">
-      {/*
-        Hoa văn la kinh chìm dưới nền. Có khung cắt riêng vì bản thân thẻ cố ý không cắt tràn —
-        tranh hạc còn phải thò ra ngoài mép.
-      */}
-      <span aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-        <img
-          alt=""
-          className="absolute top-1/2 left-1/2 w-[50%] max-w-[560px] -translate-x-1/2 -translate-y-1/2 opacity-[0.07] select-none"
-          src={MEDIA.laSo.luopan}
-        />
-      </span>
-
-      <div className="relative border border-[#c9a15c]/45 px-5 pt-8 pb-7 md:px-10">{children}</div>
+    <article className="rounded-3xl border border-ink/10 bg-day px-5 py-8 md:px-10">
+      {children}
     </article>
   );
 }
@@ -33,30 +19,25 @@ interface LuanGiaiCardHeaderProps {
   readonly eyebrow?: string;
 }
 
-export function LuanGiaiCardHeader({ order, title, eyebrow }: LuanGiaiCardHeaderProps) {
+export function LuanGiaiCardHeader({
+  order,
+  title,
+  eyebrow,
+}: LuanGiaiCardHeaderProps): ReactElement {
   return (
-    <header className="flex items-center gap-[14px] pl-[3%]">
-      {/* Khung huy hiệu là ảnh trống dùng chung cho mọi mục, số thứ tự vẽ đè lên bằng chữ. */}
-      <span className="relative flex size-[64px] shrink-0 items-center justify-center md:size-[88px]">
-        <img
-          alt=""
-          aria-hidden
-          className="absolute inset-0 size-full select-none"
-          src={MEDIA.laSo.badge}
-        />
-        <span className="relative text-[37px] leading-none font-bold text-[#f5e8d0] md:text-[50px]">
-          {order}
-        </span>
+    <header className="flex items-center gap-4">
+      <span className="flex size-16 shrink-0 items-center justify-center rounded-full bg-night font-display text-2xl font-extrabold text-dawn shadow-glow-gold md:size-20 md:text-3xl">
+        {order}
       </span>
       <div className="min-w-0">
         {eyebrow && (
-          <p className="text-[14px] font-semibold tracking-[0.3em] text-[#a8281c] uppercase">
-            {eyebrow}
-          </p>
+          <div className="text-ink-soft">
+            <Eyebrow>{eyebrow}</Eyebrow>
+          </div>
         )}
-        <h3 className="text-[24px] leading-[30px] font-bold tracking-wide text-[#7a1f15] uppercase md:text-[34px] md:leading-[42px]">
+        <DisplayTitle as="h3" face={TitleFace.Serif} size={DisplaySize.Card}>
           {title}
-        </h3>
+        </DisplayTitle>
       </div>
     </header>
   );

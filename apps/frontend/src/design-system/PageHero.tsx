@@ -14,8 +14,8 @@ export interface PagePainting {
 }
 
 interface PageHeroProps {
-  readonly breadcrumb: ReactNode;
-  readonly eyebrow: string;
+  readonly breadcrumb?: ReactNode;
+  readonly eyebrow?: string;
   readonly title: ReactNode;
   readonly lead?: string;
   readonly painting?: PagePainting;
@@ -69,9 +69,11 @@ export function PageHero({
       <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-10 md:px-6 md:py-16">
         {breadcrumb}
         <div className="flex flex-col gap-4">
-          <div className="text-dawn">
-            <Eyebrow>{eyebrow}</Eyebrow>
-          </div>
+          {eyebrow === undefined ? null : (
+            <div className="text-dawn">
+              <Eyebrow>{eyebrow}</Eyebrow>
+            </div>
+          )}
           <div className="max-w-2xl min-w-0 break-words">
             <DisplayTitle as="h1" size={DisplaySize.Chapter}>
               {title}
