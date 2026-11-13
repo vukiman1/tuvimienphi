@@ -1,8 +1,7 @@
-import { type ReactElement, useCallback, useRef } from 'react';
-import { Link, useRouterState } from '@tanstack/react-router';
+import { type ReactElement, Suspense, useCallback, useRef } from 'react';
+import { Link, lazyRouteComponent, useRouterState } from '@tanstack/react-router';
 import { NAV_ITEMS, type NavItem } from '@/components/layout/nav-items';
 import { NavigationProgress } from '@/components/layout/navigation-progress';
-import { UserMenu } from '@/components/layout/user-menu';
 import {
   type ChapterAnchor,
   ChapterTone,
@@ -12,6 +11,7 @@ import {
   isDarkTone,
   useChapterAt,
 } from '@/design-system';
+import { preloadAuthModal } from '@/features/auth/lazy-auth-modal';
 import { useAuthModal } from '@/features/auth/use-auth-modal';
 import { cn } from '@/lib/utils';
 import { selectIsInitializing, selectUser, useAuthStore } from '@/stores/auth-store';
@@ -24,6 +24,16 @@ const STORY_HEADER_TONE_CLASS: Readonly<Record<ChapterTone, string>> = {
   [ChapterTone.Dawn]: 'bg-dawn/90 text-ink',
   [ChapterTone.Day]: 'bg-day/90 text-ink',
 };
+
+interface UserMenuModule {
+  readonly UserMenu: () => ReactElement | null;
+}
+
+function importUserMenu(): Promise<UserMenuModule> {
+  return import('@/components/layout/user-menu');
+}
+
+const UserMenu = lazyRouteComponent(importUserMenu, 'UserMenu');
 
 const NAV_LINK_CLASS =
   'relative shrink-0 pb-1 text-xs tracking-wide whitespace-nowrap no-underline transition-colors md:text-sm after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:transition-transform after:duration-300 hover:after:scale-x-100 motion-reduce:after:transition-none';
@@ -61,6 +71,18 @@ function NavLink({ item, isActive, isOverDark, mutedClass }: NavLinkProps) {
     >
       {item.label}
     </Link>
+  );
+}
+
+interface SessionPlaceholderProps {
+  readonly mutedClass: string;
+}
+
+function SessionPlaceholder({ mutedClass }: SessionPlaceholderProps): ReactElement {
+  return (
+    <span className={cn('text-sm', mutedClass)} role="status">
+      Loading session...
+    </span>
   );
 }
 
@@ -123,14 +145,16 @@ export function SiteHeader({ isStoryPage = false }: SiteHeaderProps): ReactEleme
 
         <div className="inline-flex min-h-9 shrink-0 items-center gap-3" aria-busy={isInitializing}>
           {isInitializing ? (
-            <span className={cn('text-sm', mutedClass)} role="status">
-              Loading session...
-            </span>
+            <SessionPlaceholder mutedClass={mutedClass} />
           ) : user ? (
-            <UserMenu />
+            <Suspense fallback={<SessionPlaceholder mutedClass={mutedClass} />}>
+              <UserMenu />
+            </Suspense>
           ) : (
             <button
               onClick={() => openAuth('login')}
+              onFocus={preloadAuthModal}
+              onMouseEnter={preloadAuthModal}
               type="button"
               className={cn(
                 'rounded-full border border-current px-4 py-1 text-[0.65rem] font-semibold tracking-[0.12em] uppercase transition-colors hover:bg-current/10 md:px-5 md:py-1.5 md:text-xs md:tracking-[0.18em]',

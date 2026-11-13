@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ConfirmProvider } from '@/components/ui/confirm-dialog';
 import { SessionsCard } from './sessions-card';
@@ -73,12 +73,15 @@ describe('SessionsCard', () => {
     jest.mocked(authService.revokeOtherSessions).mockResolvedValue({ message: 'ok' } as never);
 
     renderCard();
-    fireEvent.click(
-      await screen.findByRole('button', { name: 'Đăng xuất khỏi tất cả thiết bị khác' }),
-    );
+    const signOutOthers = await screen.findByRole('button', {
+      name: 'Đăng xuất khỏi tất cả thiết bị khác',
+    });
+    await act(async () => {
+      fireEvent.click(signOutOthers);
+    });
 
     expect(authService.revokeOtherSessions).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole('button', { name: 'Đồng ý' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Đồng ý' }));
 
     await waitFor(() => expect(authService.revokeOtherSessions).toHaveBeenCalled());
   });

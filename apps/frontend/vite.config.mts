@@ -11,6 +11,12 @@ import { preloadFontsPlugin } from './tools/preload-fonts.ts';
 
 const requireFromHere = createRequire(import.meta.url);
 const isAnalyze = process.env.ANALYZE === 'true';
+const ROUTER_AND_QUERY_PACKAGES =
+  /[\\/]node_modules[\\/]@tanstack[\\/](react-router|router-core|history|react-query|query-core|react-store|store)[\\/]/;
+const STARTUP_UI_PACKAGES =
+  /[\\/]node_modules[\\/](clsx|tailwind-merge|class-variance-authority|zustand)[\\/]/;
+const LUCIDE_ICON_RUNTIME =
+  /[\\/]node_modules[\\/]lucide-react[\\/]dist[\\/]esm[\\/]((createLucideIcon|Icon|defaultAttributes|context)\.mjs$|shared[\\/])/;
 const HEADING_FONT_FILES: readonly RegExp[] = [
   /inter-tight-latin-800-normal-[\w-]+\.woff2$/,
   /inter-tight-vietnamese-800-normal-[\w-]+\.woff2$/,
@@ -83,9 +89,12 @@ export default defineConfig(({ command, mode }) => {
             // Match the package dir precisely so sibling packages (@sentry/react,
             // react-toastify, radix-ui) are not swept into the React runtime chunk.
             if (/[\\/](react|react-dom|scheduler)@/.test(id)) return 'react';
-            if (id.includes('@tanstack')) return 'tanstack';
+            if (ROUTER_AND_QUERY_PACKAGES.test(id)) return 'tanstack';
             if (id.includes('@sentry')) return 'sentry';
-            return 'vendor';
+            if (STARTUP_UI_PACKAGES.test(id) || LUCIDE_ICON_RUNTIME.test(id)) {
+              return 'startup-vendor';
+            }
+            return undefined;
           },
         },
       },

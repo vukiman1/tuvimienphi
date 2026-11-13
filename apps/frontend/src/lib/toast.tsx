@@ -1,4 +1,4 @@
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify/unstyled';
 import { ToastCard, type ToastVariant } from '@/components/ui/toast-card';
 
 const AUTO_CLOSE_MS = 4000;

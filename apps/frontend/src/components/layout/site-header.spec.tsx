@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { act, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import {
   RouterProvider,
   createMemoryHistory,
@@ -9,8 +9,22 @@ import {
   createRouter,
 } from '@tanstack/react-router';
 import { ChapterTone, StoryChapter, StoryProvider } from '@/design-system';
+import { preloadAuthModal } from '@/features/auth/lazy-auth-modal';
 import { useAuthStore } from '@/stores/auth-store';
 import { SiteHeader } from './site-header';
+
+const mockUserMenuLoaded = jest.fn();
+
+jest.mock('./user-menu', () => {
+  mockUserMenuLoaded();
+  return jest.requireActual('./user-menu');
+});
+
+jest.mock('@/features/auth/lazy-auth-modal', () => ({
+  preloadAuthModal: jest.fn(),
+}));
+
+const SIGNED_IN_USER = { email: 'jane@example.com', avatar: null };
 
 function rectAt(top: number): DOMRect {
   return {
@@ -84,7 +98,55 @@ async function renderAt(path: string, page: () => ReactElement): Promise<void> {
 
 describe('SiteHeader', () => {
   beforeEach(() => {
+    jest.mocked(preloadAuthModal).mockClear();
     useAuthStore.setState({ user: null, isInitializing: false });
+  });
+
+  it('leaves the user menu code unloaded for a signed-out visitor', async () => {
+    await renderAt('/ngay-tot', () => <SiteHeader />);
+
+    expect(screen.getByRole('button', { name: /đăng nhập/i })).toBeTruthy();
+    expect(mockUserMenuLoaded).not.toHaveBeenCalled();
+  });
+
+  it('fills the session slot with the placeholder until the user menu arrives', async () => {
+    await renderAt('/ngay-tot', () => <SiteHeader />);
+    const sessionSlot = screen.getByRole('button', { name: /đăng nhập/i }).parentElement;
+    if (sessionSlot === null) {
+      throw new Error('The login button has no session slot around it');
+    }
+    const slotTexts: string[] = [];
+    const observer = new MutationObserver(() => {
+      slotTexts.push(sessionSlot.textContent ?? '');
+    });
+    observer.observe(sessionSlot, { childList: true, subtree: true, characterData: true });
+
+    await act(async () => {
+      useAuthStore.setState({ user: SIGNED_IN_USER });
+    });
+    observer.disconnect();
+
+    expect(await screen.findByRole('button', { name: /jane@example.com/ })).toBeTruthy();
+    expect(slotTexts).toContain('Loading session...');
+    expect(slotTexts).not.toContain('');
+    expect(mockUserMenuLoaded).toHaveBeenCalled();
+  });
+
+  it('starts loading the sign-in modal when the login button is hovered', async () => {
+    await renderAt('/ngay-tot', () => <SiteHeader />);
+    expect(preloadAuthModal).not.toHaveBeenCalled();
+
+    fireEvent.mouseEnter(screen.getByRole('button', { name: /đăng nhập/i }));
+
+    await waitFor(() => expect(preloadAuthModal).toHaveBeenCalled());
+  });
+
+  it('starts loading the sign-in modal when the login button takes keyboard focus', async () => {
+    await renderAt('/ngay-tot', () => <SiteHeader />);
+
+    fireEvent.focus(screen.getByRole('button', { name: /đăng nhập/i }));
+
+    await waitFor(() => expect(preloadAuthModal).toHaveBeenCalled());
   });
 
   it('marks the current section with aria-current="page"', async () => {

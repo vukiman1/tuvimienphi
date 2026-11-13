@@ -1,14 +1,15 @@
-import { createContext, useCallback, useContext, useRef, useState, type ReactNode } from 'react';
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
+  Suspense,
+  createContext,
+  useCallback,
+  useContext,
+  useRef,
+  useState,
+  type ReactElement,
+  type ReactNode,
+} from 'react';
+import { lazyRouteComponent } from '@tanstack/react-router';
+import type { ConfirmAlertDialogProps } from './confirm-alert-dialog';
 
 export interface ConfirmOptions {
   title: string;
@@ -21,6 +22,16 @@ export interface ConfirmOptions {
 type ConfirmFn = (options: ConfirmOptions) => Promise<boolean>;
 
 const ConfirmContext = createContext<ConfirmFn | null>(null);
+
+interface ConfirmAlertDialogModule {
+  readonly ConfirmAlertDialog: (props: ConfirmAlertDialogProps) => ReactElement;
+}
+
+function importConfirmAlertDialog(): Promise<ConfirmAlertDialogModule> {
+  return import('./confirm-alert-dialog');
+}
+
+const ConfirmAlertDialog = lazyRouteComponent(importConfirmAlertDialog, 'ConfirmAlertDialog');
 
 /** Hosts the app's one confirmation dialog so callers get `await confirm(...)` and render nothing. */
 export function ConfirmProvider({ children }: { children: ReactNode }) {
@@ -50,28 +61,9 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
     <ConfirmContext.Provider value={confirm}>
       {children}
       {options && (
-        <AlertDialog open={isOpen} onOpenChange={(open) => !open && settle(false)}>
-          <AlertDialogContent>
-            <AlertDialogTitle>{options.title}</AlertDialogTitle>
-            <AlertDialogDescription>{options.description}</AlertDialogDescription>
-            <AlertDialogFooter>
-              <AlertDialogCancel asChild>
-                <Button onClick={() => settle(false)} type="button" variant="ghost">
-                  {options.cancelLabel ?? 'Cancel'}
-                </Button>
-              </AlertDialogCancel>
-              <AlertDialogAction asChild>
-                <Button
-                  onClick={() => settle(true)}
-                  type="button"
-                  variant={options.destructive ? 'destructive' : 'default'}
-                >
-                  {options.confirmLabel ?? 'Confirm'}
-                </Button>
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        <Suspense fallback={null}>
+          <ConfirmAlertDialog isOpen={isOpen} onSettle={settle} options={options} />
+        </Suspense>
       )}
     </ConfirmContext.Provider>
   );
