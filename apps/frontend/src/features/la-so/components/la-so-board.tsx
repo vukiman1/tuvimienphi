@@ -1,4 +1,11 @@
-import { useState, type ReactElement } from 'react';
+import {
+  useImperativeHandle,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type ReactElement,
+  type Ref,
+} from 'react';
 import { Orbit } from '@/design-system';
 import type { ChartView, CungView } from '@/features/la-so/chart-types';
 import { useElementWidth } from '@/hooks/use-element-width';
@@ -15,6 +22,7 @@ import {
   boardVariantFor,
 } from '@/features/la-so/board-fit';
 import { boardHighlights, type BoardHighlights } from '@/features/la-so/board-highlights';
+import { cungIndexInDirection, isBoardKey } from '@/features/la-so/board-navigation';
 import { BoardDensity, cungForDensity } from '@/features/la-so/board-density';
 import { useBoardDensity } from '@/features/la-so/use-board-density';
 import { BoardDensityToggle } from '@/features/la-so/components/board-density-toggle';
@@ -25,10 +33,22 @@ import { CungDetail } from '@/features/la-so/components/cung-detail';
 import { ThienBan } from '@/features/la-so/components/thien-ban';
 import { cn } from '@/lib/utils';
 
+export interface LaSoBoardHandle {
+  readonly focusCung: (index: number) => void;
+}
+
+interface CungButtonRegistry {
+  readonly register: (cungIndex: number) => (button: HTMLButtonElement | null) => void;
+}
+
 interface LaSoBoardProps {
   readonly chart: ChartView;
   readonly selectedIndex: number;
   readonly onSelect: (cungIndex: number) => void;
+}
+
+interface LaSoBoardWithHandleProps extends LaSoBoardProps {
+  readonly boardRef?: Ref<LaSoBoardHandle>;
 }
 
 interface LineStyle {
@@ -130,7 +150,7 @@ function BoardLines({
   );
 }
 
-interface FullBoardProps extends LaSoBoardProps {
+interface FullBoardProps extends LaSoBoardProps, CungButtonRegistry {
   readonly density: BoardDensity;
   readonly scale: number;
   readonly hoveredIndex: number | null;
@@ -145,6 +165,7 @@ function FullBoard({
   scale,
   hoveredIndex,
   onHover,
+  register,
 }: FullBoardProps): ReactElement {
   const focusedIndex = hoveredIndex ?? selectedIndex;
   const highlights = boardHighlights(chart, focusedIndex);
@@ -164,6 +185,7 @@ function FullBoard({
       {chart.cungs.map((cung) => (
         <div key={cung.index} className="min-w-0 bg-night" style={gridPlacement(cung)}>
           <CungCard
+            buttonRef={register(cung.index)}
             cung={cungForDensity(cung, density)}
             isFocused={isSpotlight && cung.index === focusedIndex}
             isRelated={isSpotlight && highlights.related.has(cung.index)}
@@ -190,7 +212,12 @@ function FullBoard({
   );
 }
 
-function CompactBoard({ chart, selectedIndex, onSelect }: LaSoBoardProps): ReactElement {
+function CompactBoard({
+  chart,
+  selectedIndex,
+  onSelect,
+  register,
+}: LaSoBoardProps & CungButtonRegistry): ReactElement {
   const highlights = boardHighlights(chart, selectedIndex);
   const selected = chart.cungs[selectedIndex];
 
@@ -206,6 +233,7 @@ function CompactBoard({ chart, selectedIndex, onSelect }: LaSoBoardProps): React
         {chart.cungs.map((cung) => (
           <div key={cung.index} className="min-w-0 bg-night" style={gridPlacement(cung)}>
             <CompactCungCell
+              buttonRef={register(cung.index)}
               cung={cung}
               isPicked={cung.index === selectedIndex}
               isRelated={highlights.related.has(cung.index)}
@@ -230,14 +258,46 @@ function CompactBoard({ chart, selectedIndex, onSelect }: LaSoBoardProps): React
   );
 }
 
-export function LaSoBoard({ chart, selectedIndex, onSelect }: LaSoBoardProps): ReactElement {
+function useCungButtons(boardRef: Ref<LaSoBoardHandle> | undefined): {
+  readonly register: CungButtonRegistry['register'];
+  readonly handleKeyDown: (event: KeyboardEvent<HTMLElement>) => void;
+} {
+  const buttons = useRef(new Map<number, HTMLButtonElement>());
+
+  const register: CungButtonRegistry['register'] = (cungIndex) => (button) => {
+    if (button === null) buttons.current.delete(cungIndex);
+    else buttons.current.set(cungIndex, button);
+  };
+
+  useImperativeHandle(boardRef, () => ({
+    focusCung: (index) => buttons.current.get(index)?.focus(),
+  }));
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLElement>): void => {
+    if (!isBoardKey(event.key)) return;
+    const from = [...buttons.current].find(([, button]) => button === event.target)?.[0];
+    if (from === undefined) return;
+    event.preventDefault();
+    buttons.current.get(cungIndexInDirection(from, event.key))?.focus();
+  };
+
+  return { register, handleKeyDown };
+}
+
+export function LaSoBoard({
+  chart,
+  selectedIndex,
+  onSelect,
+  boardRef,
+}: LaSoBoardWithHandleProps): ReactElement {
   const { ref, width } = useElementWidth<HTMLDivElement>();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [density, setDensity] = useBoardDensity();
+  const { register, handleKeyDown } = useCungButtons(boardRef);
   const variant = width === null ? null : boardVariantFor(width);
 
   return (
-    <div className="w-full" ref={ref}>
+    <div className="w-full" onKeyDown={handleKeyDown} ref={ref}>
       {width !== null && variant === BoardVariant.Full ? (
         <>
           <div className="flex justify-end pb-3">
@@ -249,13 +309,19 @@ export function LaSoBoard({ chart, selectedIndex, onSelect }: LaSoBoardProps): R
             hoveredIndex={hoveredIndex}
             onHover={setHoveredIndex}
             onSelect={onSelect}
+            register={register}
             scale={boardScaleFor(width)}
             selectedIndex={selectedIndex}
           />
         </>
       ) : null}
       {variant === BoardVariant.Compact ? (
-        <CompactBoard chart={chart} onSelect={onSelect} selectedIndex={selectedIndex} />
+        <CompactBoard
+          chart={chart}
+          onSelect={onSelect}
+          register={register}
+          selectedIndex={selectedIndex}
+        />
       ) : null}
     </div>
   );

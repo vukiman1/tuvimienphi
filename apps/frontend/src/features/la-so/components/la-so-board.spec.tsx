@@ -1,5 +1,5 @@
-import { useState, type ReactElement } from 'react';
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { createRef, useState, type ReactElement } from 'react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import type { NguHanh } from '@org/shared-tu-vi';
 import { FOCUS_RING_CLASS } from '@/design-system';
 import { CalendarType, Gender } from '@/features/la-so/birth-input';
@@ -8,7 +8,7 @@ import { FULL_BOARD_WIDTH } from '@/features/la-so/board-fit';
 import { BOARD_SIZE } from '@/features/la-so/board-layout';
 import type { ChartView, CungView } from '@/features/la-so/chart-types';
 import { toChartView } from '@/features/la-so/to-chart-view';
-import { LaSoBoard } from './la-so-board';
+import { LaSoBoard, type LaSoBoardHandle } from './la-so-board';
 
 const SAMPLE_BIRTH = {
   day: 12,
@@ -24,6 +24,8 @@ const PHONE_CONTAINER = 360;
 const FULL_CONTAINER_NARROWER_THAN_BOARD = 700;
 const EQUAL_GROWING_ROWS = new RegExp(`^repeat\\(${BOARD_SIZE}, minmax\\(\\d+px, 1fr\\)\\)$`);
 const TY = 0;
+const TI = 5;
+const NGO = 6;
 const TY_RELATED = [4, 8, 6, 1] as const;
 const SPOTLIGHT_CLASS = 'bg-gold/12';
 const DIMMED_CLASS = 'opacity-30';
@@ -243,6 +245,47 @@ describe('LaSoBoard on a wide container', () => {
     expect(classTokens(cungButton(MENH))).toContain('shadow-glow-gold-strong');
   });
 
+  it('arrow keys move focus between cung', () => {
+    renderBoard();
+    cungButton(CHART.cungs[TI]).focus();
+
+    fireEvent.keyDown(cungButton(CHART.cungs[TI]), { key: 'ArrowRight' });
+
+    expect(document.activeElement).toBe(cungButton(CHART.cungs[NGO]));
+  });
+
+  it('spotlights the cung that keyboard focus moved to', () => {
+    renderBoard();
+    cungButton(CHART.cungs[TI]).focus();
+
+    fireEvent.keyDown(cungButton(CHART.cungs[TI]), { key: 'ArrowRight' });
+
+    expect(classTokens(cungButton(CHART.cungs[NGO]))).toEqual(
+      expect.arrayContaining([...FOCUSED_MARK, SPOTLIGHT_CLASS]),
+    );
+  });
+
+  it('leaves other keys to the browser', () => {
+    renderBoard();
+    cungButton(CHART.cungs[TI]).focus();
+
+    const wasNotPrevented = fireEvent.keyDown(cungButton(CHART.cungs[TI]), { key: 'Tab' });
+
+    expect(wasNotPrevented).toBe(true);
+    expect(document.activeElement).toBe(cungButton(CHART.cungs[TI]));
+  });
+
+  it('focuses a cung through the board handle', () => {
+    const boardRef = createRef<LaSoBoardHandle>();
+    render(
+      <LaSoBoard boardRef={boardRef} chart={CHART} onSelect={() => undefined} selectedIndex={0} />,
+    );
+
+    act(() => boardRef.current?.focusCung(NGO));
+
+    expect(document.activeElement).toBe(cungButton(CHART.cungs[NGO]));
+  });
+
   it('spotlights the hovered cung with its tam hợp, xung chiếu and nhị hợp', () => {
     renderBoard();
     const hovered = CHART.cungs[TY];
@@ -386,6 +429,15 @@ describe('LaSoBoard on a phone-width container', () => {
 
     expect(screen.getAllByRole('button', { name: /^Cung / })).toHaveLength(CHART.cungs.length);
     expect(zoomedElements(container)).toEqual([]);
+  });
+
+  it('arrow keys move focus between cung on the compact board', () => {
+    renderBoard();
+    cungButton(CHART.cungs[TI]).focus();
+
+    fireEvent.keyDown(cungButton(CHART.cungs[TI]), { key: 'ArrowDown' });
+
+    expect(document.activeElement).toBe(cungButton(CHART.cungs[4]));
   });
 
   it('spotlights the tapped cung without hover', () => {

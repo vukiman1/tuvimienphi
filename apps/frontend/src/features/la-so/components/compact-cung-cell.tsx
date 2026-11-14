@@ -10,6 +10,7 @@ import {
 import { cn } from '@/lib/utils';
 
 interface CompactCungCellProps {
+  readonly buttonRef: (button: HTMLButtonElement | null) => void;
   readonly cung: CungView;
   readonly isPicked: boolean;
   readonly isRelated: boolean;
@@ -17,6 +18,7 @@ interface CompactCungCellProps {
 }
 
 export function CompactCungCell({
+  buttonRef,
   cung,
   isPicked,
   isRelated,
@@ -27,6 +29,7 @@ export function CompactCungCell({
       aria-label={`Cung ${cung.name}`}
       aria-pressed={isPicked}
       onClick={() => onSelect(cung.index)}
+      ref={buttonRef}
       type="button"
       className={cn(
         'relative flex h-full min-h-24 w-full flex-col items-center gap-0.5 overflow-hidden px-0.5 pt-3 pb-1.5 text-center transition-colors focus-visible:z-30',
