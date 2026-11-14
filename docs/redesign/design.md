@@ -138,7 +138,7 @@ The current ~346 images (about 60 MB in `apps/frontend/public`) are replaced pag
 
 **Shipping without an illustration is valid.** Old images are never kept as a stopgap.
 
-The per-cung paintings inside luận giải (`CUNG_ILLUSTRATIONS` in `src/config/media.ts`) are dropped, not replaced.
+The per-cung ink-wash paintings inside luận giải came back on 2026-11-15 (Kim An's call): one painting per cung, beside the article on the Day reading zone, chosen by the article's `sourceCung`. They are the one exception to the night-landscape style, because they sit on cream and read as illustrations of the text. Six are the original set and six were generated to match it (see illustration-guide L5).
 
 An asset is accepted only if it:
 
