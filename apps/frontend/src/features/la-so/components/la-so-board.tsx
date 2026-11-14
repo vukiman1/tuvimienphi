@@ -29,7 +29,6 @@ import { BoardDensityToggle } from '@/features/la-so/components/board-density-to
 import { CHART_LINE_CLASS, CHART_RULE_CLASS } from '@/features/la-so/chart-colors';
 import { CompactCungCell } from '@/features/la-so/components/compact-cung-cell';
 import { CungCard } from '@/features/la-so/components/cung-card';
-import { CungDetail } from '@/features/la-so/components/cung-detail';
 import { ThienBan } from '@/features/la-so/components/thien-ban';
 import { cn } from '@/lib/utils';
 
@@ -219,7 +218,6 @@ function CompactBoard({
   register,
 }: LaSoBoardProps & CungButtonRegistry): ReactElement {
   const highlights = boardHighlights(chart, selectedIndex);
-  const selected = chart.cungs[selectedIndex];
 
   return (
     <div className="flex flex-col gap-4">
@@ -252,7 +250,6 @@ function CompactBoard({
         <BoardLines highlights={highlights} lineStyle={COMPACT_LINE_STYLE} />
       </div>
 
-      <CungDetail cung={selected} />
       <ThienBan meta={chart.meta} />
     </div>
   );

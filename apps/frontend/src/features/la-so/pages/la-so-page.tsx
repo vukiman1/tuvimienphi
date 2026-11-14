@@ -1,11 +1,10 @@
 import { useMemo, useState, type ReactElement } from 'react';
-import { CUNG_NAMES } from '@org/shared-tu-vi';
 import { Navigate, getRouteApi, useNavigate } from '@tanstack/react-router';
 import { LaSoBoard } from '@/features/la-so/components/la-so-board';
 import { LuanGiaiSection } from '@/features/la-so/components/luan-giai-section';
 import { LUAN_GIAI_CHAPTERS, LUAN_GIAI_MOTTO } from '@/features/la-so/luan-giai-data';
 import { birthInputSchema } from '@/features/la-so/birth-input';
-import { CUNG_SLUGS, cungNameFromSlug } from '@/features/la-so/cung-slug';
+import { CUNG_SLUGS, cungNameFromSlug, cungNameOf } from '@/features/la-so/cung-slug';
 import { LaSoHero } from '@/features/la-so/components/la-so-hero';
 import { useRecordChartView } from '@/features/la-so/history/use-record-chart-view';
 import { toChartView } from '@/features/la-so/to-chart-view';
@@ -45,10 +44,9 @@ export function LaSoPage(): ReactElement {
 
   const pickCung = (cungIndex: number): void => {
     const pickedView = chart.cungs.find((cung) => cung.index === cungIndex);
-    const pickedName = CUNG_NAMES.find((name) => name.toUpperCase() === pickedView?.name);
-    if (!pickedName) return;
+    if (!pickedView) return;
     void navigate({
-      search: (prev) => ({ ...prev, cung: CUNG_SLUGS[pickedName] }),
+      search: (prev) => ({ ...prev, cung: CUNG_SLUGS[cungNameOf(pickedView)] }),
       replace: true,
       resetScroll: false,
     });

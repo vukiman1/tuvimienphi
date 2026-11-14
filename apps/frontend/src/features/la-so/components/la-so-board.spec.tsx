@@ -1,5 +1,5 @@
 import { createRef, useState, type ReactElement } from 'react';
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import type { NguHanh } from '@org/shared-tu-vi';
 import { FOCUS_RING_CLASS } from '@/design-system';
 import { CalendarType, Gender } from '@/features/la-so/birth-input';
@@ -98,10 +98,6 @@ function renderBoard(): ReturnType<typeof render> {
 
 function cungButton(cung: CungView): HTMLElement {
   return screen.getByRole('button', { name: `Cung ${cung.name}` });
-}
-
-function follows(later: Node, earlier: Node): boolean {
-  return (earlier.compareDocumentPosition(later) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0;
 }
 
 function zoomedElements(container: HTMLElement): readonly HTMLElement[] {
@@ -482,38 +478,6 @@ describe('LaSoBoard on a phone-width container', () => {
       expectStateMarkBesideFocusRing(button, mark);
     }
   });
-
-  it('shows every star of the picked cung in a panel below the board', () => {
-    renderBoard();
-    const panel = screen.getByRole('region', { name: `Cung ${MENH.name}` });
-    const names = [
-      ...MENH.catTinh.map((sao) => sao.name),
-      ...MENH.hungTinh.map((sao) => sao.name),
-      ...MENH.chinhTinh.map((sao) => sao.name),
-      ...MENH.luuTinh.map((sao) => `L.${sao.name}`),
-    ];
-
-    expect(names.length).toBeGreaterThan(0);
-    for (const name of names) {
-      expect(panel.textContent).toContain(name);
-    }
-  });
-
-  it('follows the picked cung in the panel', () => {
-    renderBoard();
-    const tapped = CHART.cungs[TY];
-
-    fireEvent.click(cungButton(tapped));
-
-    expect(screen.getByRole('region', { name: `Cung ${tapped.name}` })).toBeTruthy();
-  });
-
-  it('keeps the full thiên bàn after the panel', () => {
-    renderBoard();
-    const panel = screen.getByRole('region', { name: `Cung ${MENH.name}` });
-
-    expect(follows(screen.getByText('Lai nhân cung:'), panel)).toBe(true);
-  });
 });
 
 describe('LaSoBoard switching layouts', () => {
@@ -523,14 +487,6 @@ describe('LaSoBoard switching layouts', () => {
 
     expect(screen.queryByRole('region')).toBeNull();
     expect(zoomedElements(container).map((element) => element.style.zoom)).toEqual(['1']);
-  });
-
-  it('keeps the panel free of the board buttons', () => {
-    observeWidth(PHONE_CONTAINER);
-    renderBoard();
-    const panel = screen.getByRole('region', { name: `Cung ${MENH.name}` });
-
-    expect(within(panel).queryAllByRole('button')).toEqual([]);
   });
 
   it('lays the board out before the first resize notification, so nothing below it shifts', () => {
