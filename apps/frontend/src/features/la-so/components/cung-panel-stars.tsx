@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
-import { CHINH_TINH_NAMES } from '@org/shared-tu-vi';
 import { Chip } from '@/design-system';
+import { properChinhTinhName } from '@/features/la-so/chart-star-ratings';
 import { SAO_ON_DAY_CLASS } from '@/features/la-so/chart-colors';
 import type { ChinhTinhView, CungView, SaoView } from '@/features/la-so/chart-types';
 import { PanelSection } from '@/features/la-so/components/panel-section';
@@ -22,31 +22,29 @@ interface StarGroup {
   readonly stars: readonly SaoView[];
 }
 
-function titleCaseChinhTinh(name: string): string {
-  return CHINH_TINH_NAMES.find((candidate) => candidate.toUpperCase() === name) ?? name;
-}
-
 function ChinhTinhRow({ star }: { readonly star: ChinhTinhView }): ReactElement {
   return (
     <li className="flex items-center gap-2 text-reading">
       <span className={cn('flex items-center gap-2 font-semibold', SAO_ON_DAY_CLASS[star.element])}>
         <span className="size-2 rounded-full bg-current" />
-        {titleCaseChinhTinh(star.name)}
+        {properChinhTinhName(star.name)}
       </span>
       {star.rating ? <span className="text-ink-soft">{RATING_LABEL[star.rating]}</span> : null}
     </li>
   );
 }
 
+function voChinhDieuText(cung: CungView, muonTu: string | null): string {
+  if (cung.chinhTinhMuon.length === 0) return 'Vô chính diệu';
+  const borrowed = cung.chinhTinhMuon.map((star) => properChinhTinhName(star.name)).join(', ');
+  return `Vô chính diệu — mượn ${borrowed} từ cung ${muonTu}`;
+}
+
 export function ChinhTinhSection({ cung, muonTu }: ChinhTinhSectionProps): ReactElement {
   return (
     <PanelSection title="Chính tinh">
       {cung.isVoChinhDieu ? (
-        <p className="text-reading">
-          Vô chính diệu — mượn{' '}
-          {cung.chinhTinhMuon.map((star) => titleCaseChinhTinh(star.name)).join(', ')} từ cung{' '}
-          {muonTu}
-        </p>
+        <p className="text-reading">{voChinhDieuText(cung, muonTu)}</p>
       ) : (
         <ul className="flex flex-col gap-1">
           {cung.chinhTinh.map((star) => (

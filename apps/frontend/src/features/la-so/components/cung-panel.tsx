@@ -45,13 +45,20 @@ export function CungPanel({
         <Chip>Tam hợp: {facts.tamHop.join(' · ')}</Chip>
         <Chip>Xung chiếu: {facts.xungChieu}</Chip>
         <Chip>Nhị hợp: {facts.nhiHop}</Chip>
-        {facts.anNgu ? <Chip>{facts.anNgu}</Chip> : null}
+        {facts.anNgu.map((name) => (
+          <Chip key={name}>{name}</Chip>
+        ))}
       </div>
 
       <p className="text-reading">{CUNG_Y_NGHIA[facts.cungName]}</p>
 
       <ChinhTinhSection cung={cung} muonTu={facts.muonTu} />
-      <QuickLuanSection birth={birth} cung={facts.cungName} onReadChapter={onReadChapter} />
+      <QuickLuanSection
+        birth={birth}
+        chart={chart}
+        cung={facts.cungName}
+        onReadChapter={onReadChapter}
+      />
       <PhuTinhSections cung={cung} viewYear={viewYear} />
     </section>
   );

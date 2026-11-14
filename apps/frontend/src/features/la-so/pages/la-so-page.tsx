@@ -13,8 +13,8 @@ import type { ChartView } from '@/features/la-so/chart-types';
 const route = getRouteApi('/_site/la-so/detail');
 
 function selectedCungIndex(chart: ChartView, slug: string | undefined): number {
-  const pickedName = cungNameFromSlug(slug)?.toUpperCase();
-  const pickedIndex = chart.cungs.findIndex((cung) => cung.name === pickedName);
+  const pickedName = cungNameFromSlug(slug);
+  const pickedIndex = chart.cungs.findIndex((cung) => cungNameOf(cung) === pickedName);
   return pickedIndex === -1 ? chart.cungs.findIndex((cung) => cung.isMenh) : pickedIndex;
 }
 

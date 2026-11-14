@@ -1,3 +1,4 @@
+import type { ChartView } from '@/features/la-so/chart-types';
 import { CalendarType, Gender } from '@/features/la-so/birth-input';
 import { cungFacts } from '@/features/la-so/cung-facts';
 import { toChartView } from '@/features/la-so/to-chart-view';
@@ -46,13 +47,24 @@ describe('cungFacts', () => {
     const tuanIndex = CHART.cungs.findIndex((cung) => cung.hasTuan);
     const trietIndex = CHART.cungs.findIndex((cung) => cung.hasTriet);
 
-    expect(cungFacts(CHART, tuanIndex).anNgu).toBe('Tuần');
-    expect(cungFacts(CHART, trietIndex).anNgu).toBe('Triệt');
+    expect(cungFacts(CHART, tuanIndex).anNgu).toEqual(['Tuần']);
+    expect(cungFacts(CHART, trietIndex).anNgu).toEqual(['Triệt']);
   });
 
   it('marks neither on a cung they miss', () => {
     const clearIndex = CHART.cungs.findIndex((cung) => !cung.hasTuan && !cung.hasTriet);
 
-    expect(cungFacts(CHART, clearIndex).anNgu).toBeNull();
+    expect(cungFacts(CHART, clearIndex).anNgu).toEqual([]);
+  });
+
+  it('marks both Tuần and Triệt on a cung they both cover', () => {
+    const covered: ChartView = {
+      ...CHART,
+      cungs: CHART.cungs.map((cung, index) =>
+        index === MENH_INDEX ? { ...cung, hasTuan: true, hasTriet: true } : cung,
+      ),
+    };
+
+    expect(cungFacts(covered, MENH_INDEX).anNgu).toEqual(['Tuần', 'Triệt']);
   });
 });

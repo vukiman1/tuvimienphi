@@ -4,20 +4,20 @@ import { cungNameOf } from '@/features/la-so/cung-slug';
 
 const DAI_VAN_YEARS = 10;
 
+export type AnNgu = 'Tuần' | 'Triệt';
+
 export interface CungFacts {
   readonly cungName: CungName;
   readonly daiVan: { readonly from: number; readonly to: number };
   readonly tamHop: readonly [string, string];
   readonly xungChieu: string;
   readonly nhiHop: string;
-  readonly anNgu: 'Tuần' | 'Triệt' | null;
+  readonly anNgu: readonly AnNgu[];
   readonly muonTu: string | null;
 }
 
-function anNguOf(hasTuan: boolean, hasTriet: boolean): CungFacts['anNgu'] {
-  if (hasTuan) return 'Tuần';
-  if (hasTriet) return 'Triệt';
-  return null;
+function anNguOf(hasTuan: boolean, hasTriet: boolean): readonly AnNgu[] {
+  return [...(hasTuan ? (['Tuần'] as const) : []), ...(hasTriet ? (['Triệt'] as const) : [])];
 }
 
 export function cungFacts(chart: ChartView, index: number): CungFacts {

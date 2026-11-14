@@ -7,6 +7,8 @@ import {
   QUICK_LUAN_CUNG,
   type CungName,
 } from '@org/shared-tu-vi';
+import { FOCUS_RING_CLASS } from '@/design-system';
+import type { ChartView } from '@/features/la-so/chart-types';
 import { CalendarType, Gender, type BirthInput } from '@/features/la-so/birth-input';
 import { hasQuickLuan } from '@/features/la-so/cung-chapters';
 import { cungNameOf } from '@/features/la-so/cung-slug';
@@ -35,13 +37,14 @@ function indexOfCung(name: CungName): number {
 function renderPanel(
   name: CungName,
   onReadChapter: (order: string) => void = () => undefined,
+  chart: ChartView = CHART,
 ): HTMLElement {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   render(
     <QueryClientProvider client={client}>
       <CungPanel
         birth={BIRTH}
-        chart={CHART}
+        chart={chart}
         index={indexOfCung(name)}
         onReadChapter={onReadChapter}
         viewYear={VIEW_YEAR}
@@ -111,6 +114,66 @@ describe('CungPanel', () => {
     ).toBeTruthy();
     expect(screen.getAllByText(/^Vì sao:/)).toHaveLength(2);
     expect(screen.queryByRole('status')).toBeNull();
+  });
+
+  it('names the brightness of the stars behind a claim', async () => {
+    renderPanel('Mệnh');
+    const result = quickLuanFor(BIRTH, 'Mệnh');
+    const stars = [...(result?.thuan.do ?? []), ...(result?.nghich.do ?? [])];
+    const rated = CHART.cungs
+      .flatMap((cung) => cung.chinhTinh)
+      .map((star) => ({ name: star.name, rating: star.rating }))
+      .find((star) => star.rating && stars.some((name) => name.toUpperCase() === star.name));
+    expect(rated).toBeDefined();
+    const label = RATING_LABEL[rated?.rating ?? 'B'];
+
+    const lines = await screen.findAllByText(/^Vì sao:/);
+
+    expect(lines.some((line) => line.textContent?.includes(`(${label})`))).toBe(true);
+  });
+
+  it('hides the rating of a star that has none', async () => {
+    renderPanel('Mệnh');
+
+    const lines = await screen.findAllByText(/^Vì sao:/);
+
+    expect(lines.every((line) => !line.textContent?.includes('()'))).toBe(true);
+  });
+
+  it('reads just Vô chính diệu when nothing is borrowed', () => {
+    const bare: ChartView = {
+      ...CHART,
+      cungs: CHART.cungs.map((cung) =>
+        cung.isVoChinhDieu ? { ...cung, chinhTinhMuon: [] } : cung,
+      ),
+    };
+
+    renderPanel('Tài Bạch', undefined, bare);
+
+    expect(screen.getByText('Vô chính diệu')).toBeTruthy();
+    expect(screen.queryByText(/mượn/)).toBeNull();
+  });
+
+  it('gives the chapter link the focus ring', () => {
+    renderPanel('Quan Lộc');
+
+    const link = screen.getByText('Đọc luận giải chương Công danh Sự nghiệp');
+
+    expect(FOCUS_RING_CLASS.split(' ').every((token) => link.classList.contains(token))).toBe(true);
+  });
+
+  it('shows both Tuần and Triệt chips when a cung carries both', () => {
+    const both: ChartView = {
+      ...CHART,
+      cungs: CHART.cungs.map((cung) =>
+        cung.isMenh ? { ...cung, hasTuan: true, hasTriet: true } : cung,
+      ),
+    };
+
+    renderPanel('Mệnh', undefined, both);
+
+    expect(screen.getByText('Tuần')).toBeTruthy();
+    expect(screen.getByText('Triệt')).toBeTruthy();
   });
 
   it('has no luận nhanh for Thiên Di', () => {
