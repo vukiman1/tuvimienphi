@@ -1,4 +1,5 @@
 import { appConfig } from '@/config/app-config';
+import type { PagePainting } from '@/design-system';
 
 /**
  * Every image and video the app serves, in one place. Paths are relative to the media origin, so
@@ -48,6 +49,14 @@ export const MEDIA = {
     illustrationCrane: mediaUrl('/la-so/crane-pine.webp'),
     sealSmall: mediaUrl('/la-so/seal-sm.webp'),
     luopan: mediaUrl('/la-so/luopan.webp'),
+    heroNight: {
+      small: mediaUrl('/la-so/hero-night-768.webp'),
+      large: mediaUrl('/la-so/hero-night-1536.webp'),
+    } satisfies PagePainting,
+    boardNight: {
+      small: mediaUrl('/la-so/board-night-768.webp'),
+      large: mediaUrl('/la-so/board-night-1536.webp'),
+    } satisfies PagePainting,
   },
   ngayTot: {
     sceneTop: mediaUrl('/ngay-tot/scene-top.webp'),
@@ -84,4 +93,12 @@ export function conGiapPaintingUrl(conGiapSlug: string, width: number): string {
 
 export function conGiapEmblemUrl(conGiapSlug: string): string {
   return mediaUrl(`/tet/emblem/${conGiapSlug}-128.webp`);
+}
+
+export function cungEmblemUrl(cungSlug: string, width: number): string {
+  return mediaUrl(`/la-so/cung/cung-${cungSlug}-${width}.webp`);
+}
+
+export function hanhIconUrl(hanhSlug: string): string {
+  return mediaUrl(`/la-so/hanh/hanh-${hanhSlug}-64.webp`);
 }

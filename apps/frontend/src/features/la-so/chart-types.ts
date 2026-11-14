@@ -1,4 +1,10 @@
-import { type NguHanh, type PhuTinhName, type Rating } from '@org/shared-tu-vi';
+import {
+  type ChinhTinhName,
+  type CungName,
+  type NguHanh,
+  type PhuTinhName,
+  type Rating,
+} from '@org/shared-tu-vi';
 
 /** Kiểu dữ liệu mà giao diện lá số cần. Engine an sao sẽ trả về đúng hình dạng này. */
 
@@ -10,6 +16,7 @@ export interface SaoView {
 }
 
 export interface ChinhTinhView {
+  readonly starName: ChinhTinhName;
   readonly name: string;
   readonly polarity: string | null;
   readonly rating: Rating | null;
@@ -22,6 +29,7 @@ export interface CungView {
   readonly chi: string;
   /** Can viết tắt kèm chi, ví dụ "C.Thìn". */
   readonly canChi: string;
+  readonly cungName: CungName;
   readonly name: string;
   /** Âm dương và ngũ hành của cung, ví dụ "+Thổ". */
   readonly element: string;

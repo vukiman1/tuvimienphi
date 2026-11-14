@@ -63,6 +63,7 @@ function toLuuSaoView(name: PhuTinhName): SaoView {
 
 function toChinhTinhView(star: EngineSao<ChinhTinhName>): ChinhTinhView {
   return {
+    starName: star.name,
     name: star.name.toUpperCase(),
     polarity: CHINH_TINH_POLARITY[star.name],
     rating: star.rating,
@@ -73,11 +74,13 @@ function toChinhTinhView(star: EngineSao<ChinhTinhName>): ChinhTinhView {
 function toCungViews(chart: TuViChart): readonly CungView[] {
   return chart.cungs.map((cung) => {
     const phuTinh = [...cung.phuTinh];
+    const cungName = cungNameAt(cung.chiIndex, chart.menhIndex);
     return {
       index: cung.chiIndex,
       chi: CHI[cung.chiIndex],
       canChi: shortCanChi(cung.can, cung.chiIndex),
-      name: cung.name.toUpperCase(),
+      cungName,
+      name: cungName.toUpperCase(),
       element: CHI_ELEMENTS[cung.chiIndex],
       daiVanStartAge: cung.daiVanStartAge,
       monthOrder: cung.cungThang === 0 ? '' : `Th.${cung.cungThang}`,

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   RouterProvider,
@@ -7,17 +7,35 @@ import {
   createRoute,
   createRouter,
 } from '@tanstack/react-router';
+import { MEDIA } from '@/config/media';
 import { birthSearchSchema } from '@/features/la-so/birth-input';
+import { DESKTOP_WORKSPACE_QUERY } from '@/features/la-so/components/la-so-workspace.constants';
+import { toChartView } from '@/features/la-so/to-chart-view';
+import { restoreMatchMedia, stubMatchMedia } from '@/test-utils/stub-match-media';
 import { LaSoPage } from './la-so-page';
 
 jest.mock('@/lib/http-request', () => ({
   httpRequest: { get: jest.fn(() => new Promise(() => undefined)), post: jest.fn() },
 }));
 
+jest.mock('@/features/la-so/to-chart-view', () => {
+  const actual = jest.requireActual<typeof import('@/features/la-so/to-chart-view')>(
+    '@/features/la-so/to-chart-view',
+  );
+  return { ...actual, toChartView: jest.fn(actual.toChartView) };
+});
+
 const SAMPLE_SEARCH = '?day=12&month=3&year=1995&calendar=duong&hour=Ng%E1%BB%8D&gender=nam';
 const LUAN_GIAI_TITLE = 'Luận giải lá số';
+const QUAN_LOC_READ_LINK = 'Đọc luận giải chương Công danh Sự nghiệp';
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 
-async function renderLaSoPage(search: string): Promise<ReturnType<typeof render>> {
+interface RenderedLaSoPage {
+  readonly view: ReturnType<typeof render>;
+  readonly currentSearch: () => Readonly<Record<string, unknown>>;
+}
+
+async function renderLaSoPage(search: string): Promise<RenderedLaSoPage> {
   const rootRoute = createRootRoute();
   const siteRoute = createRoute({ getParentRoute: () => rootRoute, id: '_site' });
   const laSoRoute = createRoute({
@@ -44,23 +62,34 @@ async function renderLaSoPage(search: string): Promise<ReturnType<typeof render>
     </QueryClientProvider>,
   );
   await screen.findByRole('heading', { level: 1, name: 'Lá Số Tử Vi' });
-  return view;
+  return { view, currentSearch: () => router.state.location.search };
 }
 
-function pickedCungLine(name: string): HTMLElement {
-  return screen.getByText(
-    (_, element) =>
-      element?.tagName === 'P' &&
-      new RegExp(`^Đang chọn cung ${name} ·`, 'i').test(element.textContent ?? ''),
-  );
+function cungButton(name: string): HTMLElement {
+  return screen.getByRole('button', { name: new RegExp(`^Cung ${name}$`, 'i') });
+}
+
+function isPicked(name: string): boolean {
+  return cungButton(name).getAttribute('aria-pressed') === 'true';
 }
 
 function follows(later: Node, earlier: Node): boolean {
   return (earlier.compareDocumentPosition(later) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0;
 }
 
+function luanGiaiAnchor(): HTMLElement {
+  const anchor = document.getElementById('luan-giai');
+  if (anchor === null) throw new Error('the page has no #luan-giai anchor');
+  return anchor;
+}
+
 beforeEach(() => {
   window.localStorage.clear();
+});
+
+afterEach(() => {
+  restoreMatchMedia();
+  jest.restoreAllMocks();
 });
 
 describe('LaSoPage', () => {
@@ -74,33 +103,116 @@ describe('LaSoPage', () => {
     expect(follows(luanGiai, firstCung)).toBe(true);
   });
 
-  it('names the picked cung under the board, Mệnh first', async () => {
+  it('picks Mệnh when the URL names no cung', async () => {
     await renderLaSoPage(SAMPLE_SEARCH);
-    expect(pickedCungLine('Mệnh')).toBeTruthy();
 
-    const [other] = screen
-      .getAllByRole('button', { name: /^Cung / })
-      .filter((button) => button.getAttribute('aria-pressed') === 'false');
-    const otherName = (other.getAttribute('aria-label') ?? '').replace(/^Cung /, '');
-    fireEvent.click(other);
+    expect(isPicked('Mệnh')).toBe(true);
+  });
 
-    expect(pickedCungLine(otherName)).toBeTruthy();
+  it('picks the cung named in the URL', async () => {
+    await renderLaSoPage(`${SAMPLE_SEARCH}&cung=quan-loc`);
+
+    expect(isPicked('Quan Lộc')).toBe(true);
+    expect(isPicked('Mệnh')).toBe(false);
+  });
+
+  it('falls back to Mệnh on a bad slug', async () => {
+    await renderLaSoPage(`${SAMPLE_SEARCH}&cung=abc`);
+
+    expect(isPicked('Mệnh')).toBe(true);
+  });
+
+  it('writes the picked cung into the URL', async () => {
+    stubMatchMedia([DESKTOP_WORKSPACE_QUERY]);
+    const { currentSearch } = await renderLaSoPage(SAMPLE_SEARCH);
+    fireEvent.click(cungButton('Tài Bạch'));
+
+    await waitFor(() => expect(currentSearch().cung).toBe('tai-bach'));
+    expect(isPicked('Tài Bạch')).toBe(true);
+  });
+
+  it('keeps the cast chart when another cung is picked', async () => {
+    stubMatchMedia([DESKTOP_WORKSPACE_QUERY]);
+    const { currentSearch } = await renderLaSoPage(SAMPLE_SEARCH);
+    const castCount = jest.mocked(toChartView).mock.calls.length;
+
+    fireEvent.click(cungButton('Tài Bạch'));
+
+    await waitFor(() => expect(currentSearch().cung).toBe('tai-bach'));
+    expect(jest.mocked(toChartView).mock.calls).toHaveLength(castCount);
   });
 
   it('drops the decor paintings beside the board', async () => {
-    const { container } = await renderLaSoPage(SAMPLE_SEARCH);
-    const luanGiaiBand = screen
-      .getByRole('heading', { level: 2, name: LUAN_GIAI_TITLE })
-      .closest('section');
+    const {
+      view: { container },
+    } = await renderLaSoPage(SAMPLE_SEARCH);
 
-    for (const image of container.querySelectorAll('img')) {
-      expect(luanGiaiBand?.contains(image)).toBe(true);
-    }
+    expect(container.querySelector(`img[src="${MEDIA.laSo.decorLeft}"]`)).toBeNull();
+    expect(container.querySelector(`img[src="${MEDIA.laSo.decorRight}"]`)).toBeNull();
   });
 
-  it('renders no images', async () => {
-    const { container } = await renderLaSoPage(SAMPLE_SEARCH);
+  it('paints the hero, the board sky and the luận giải dusk, once each', async () => {
+    const {
+      view: { container },
+    } = await renderLaSoPage(SAMPLE_SEARCH);
 
-    expect(container.querySelectorAll('img')).toHaveLength(0);
+    const paintings = [...container.querySelectorAll('img[srcset*="1536w"]')].map((image) =>
+      image.getAttribute('src'),
+    );
+
+    expect(paintings).toEqual([
+      MEDIA.laSo.heroNight.large,
+      MEDIA.laSo.boardNight.large,
+      MEDIA.story.duskPineLarge,
+    ]);
+  });
+
+  it('drops the picked-cung line', async () => {
+    await renderLaSoPage(SAMPLE_SEARCH);
+
+    expect(screen.queryByText(/Đang chọn cung/)).toBeNull();
+  });
+
+  it('reading a chapter from the panel selects it and moves focus to luận giải', async () => {
+    stubMatchMedia([DESKTOP_WORKSPACE_QUERY]);
+    await renderLaSoPage(SAMPLE_SEARCH);
+    fireEvent.click(cungButton('Quan Lộc'));
+
+    fireEvent.click(await screen.findByRole('button', { name: QUAN_LOC_READ_LINK }));
+
+    expect(screen.getByRole('tab', { name: /^03/ }).getAttribute('aria-selected')).toBe('true');
+    expect(luanGiaiAnchor().contains(document.activeElement)).toBe(true);
+  });
+
+  it('reading a chapter from the sheet closes it and moves focus to luận giải', async () => {
+    stubMatchMedia([]);
+    await renderLaSoPage(SAMPLE_SEARCH);
+    fireEvent.click(cungButton('Quan Lộc'));
+
+    fireEvent.click(await screen.findByRole('button', { name: QUAN_LOC_READ_LINK }));
+
+    await waitFor(() => expect(luanGiaiAnchor().contains(document.activeElement)).toBe(true));
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(screen.getByRole('tab', { name: /^03/ }).getAttribute('aria-selected')).toBe('true');
+  });
+
+  it('scrolls smoothly to luận giải when motion is allowed', async () => {
+    stubMatchMedia([DESKTOP_WORKSPACE_QUERY]);
+    const scrollIntoView = jest.spyOn(Element.prototype, 'scrollIntoView');
+    await renderLaSoPage(`${SAMPLE_SEARCH}&cung=quan-loc`);
+
+    fireEvent.click(await screen.findByRole('button', { name: QUAN_LOC_READ_LINK }));
+
+    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
+  });
+
+  it('jumps to luận giải without smooth scrolling when the reader prefers reduced motion', async () => {
+    stubMatchMedia([DESKTOP_WORKSPACE_QUERY, REDUCED_MOTION_QUERY]);
+    const scrollIntoView = jest.spyOn(Element.prototype, 'scrollIntoView');
+    await renderLaSoPage(`${SAMPLE_SEARCH}&cung=quan-loc`);
+
+    fireEvent.click(await screen.findByRole('button', { name: QUAN_LOC_READ_LINK }));
+
+    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto' });
   });
 });

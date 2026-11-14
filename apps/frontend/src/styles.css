@@ -135,6 +135,8 @@
   --animate-modal-out: modal-out 0.15s;
   --animate-backdrop-in: backdrop-in 0.3s;
   --animate-backdrop-out: backdrop-out 0.15s;
+  --animate-sheet-in: sheet-in 0.3s ease-out;
+  --animate-sheet-out: sheet-out 0.15s ease-in;
 
   @keyframes modal-in {
     0% {
@@ -181,11 +183,30 @@
       opacity: 0;
     }
   }
+
+  @keyframes sheet-in {
+    from {
+      translate: 0 100%;
+    }
+    to {
+      translate: 0 0;
+    }
+  }
+
+  @keyframes sheet-out {
+    from {
+      translate: 0 0;
+    }
+    to {
+      translate: 0 100%;
+    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   [data-slot='modal'],
-  [data-slot='modal-backdrop'] {
+  [data-slot='modal-backdrop'],
+  [data-slot='sheet'] {
     animation: none;
   }
 }

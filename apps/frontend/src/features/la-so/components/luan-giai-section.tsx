@@ -1,7 +1,16 @@
 import { Fragment, type ReactElement } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { isYearDependentChapter, type BirthInput } from '@org/shared-contracts';
-import { DisplaySize, DisplayTitle, Orbit, ReadingZone, TitleFace } from '@/design-system';
+import { MEDIA } from '@/config/media';
+import {
+  DisplaySize,
+  DisplayTitle,
+  Orbit,
+  ReadingZone,
+  TitleFace,
+  type PagePainting,
+} from '@/design-system';
+import { BandPainting } from '@/features/la-so/components/band-painting';
 import { luanGiaiQueries } from '@/features/la-so/luan-giai-queries';
 import type { LuanGiaiChapter } from '@/features/la-so/luan-giai-data';
 import { LuanGiaiChapterContent } from '@/features/la-so/components/luan-giai-chapter-content';
@@ -17,6 +26,12 @@ interface LuanGiaiSectionProps {
 }
 
 const MOTTO_ORBIT_RINGS = 2;
+const LUAN_GIAI_PAINTING: PagePainting = {
+  small: MEDIA.story.duskPineSmall,
+  large: MEDIA.story.duskPineLarge,
+};
+
+export const LUAN_GIAI_ANCHOR_ID = 'luan-giai';
 
 export function LuanGiaiSection({
   birth,
@@ -31,19 +46,26 @@ export function LuanGiaiSection({
 
   return (
     <section className="bg-deep text-day">
-      <div className="mx-auto max-w-6xl px-4 pt-12 pb-8 md:px-6">
-        <div className="text-center">
-          <DisplayTitle as="h2" face={TitleFace.Serif} size={DisplaySize.Card}>
-            Luận giải lá số
-          </DisplayTitle>
-        </div>
-        <div className="mt-8">
-          <LuanGiaiChapters
-            activeOrder={activeChapter}
-            chapters={chapters}
-            statuses={trangThai?.chapters}
-            onSelect={onSelectChapter}
-          />
+      <div className="relative">
+        <BandPainting painting={LUAN_GIAI_PAINTING} />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 hidden bg-deep/70 md:block"
+        />
+        <div className="relative mx-auto max-w-6xl px-4 pt-12 pb-8 md:px-6">
+          <div className="text-center" id={LUAN_GIAI_ANCHOR_ID} tabIndex={-1}>
+            <DisplayTitle as="h2" face={TitleFace.Serif} size={DisplaySize.Card}>
+              Luận giải lá số
+            </DisplayTitle>
+          </div>
+          <div className="mt-8">
+            <LuanGiaiChapters
+              activeOrder={activeChapter}
+              chapters={chapters}
+              statuses={trangThai?.chapters}
+              onSelect={onSelectChapter}
+            />
+          </div>
         </div>
       </div>
 

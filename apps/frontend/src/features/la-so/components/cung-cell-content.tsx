@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 import type { CungView, SaoView } from '@/features/la-so/chart-types';
-import { CHART_RULE_CLASS, SAO_ELEMENT_CLASS } from '@/features/la-so/chart-colors';
+import { CHART_RULE_CLASS, SAO_ON_NIGHT_CLASS } from '@/features/la-so/chart-colors';
 import { cn } from '@/lib/utils';
 
 interface CungCellContentProps {
@@ -15,7 +15,7 @@ function SaoColumn({ sao }: { readonly sao: readonly SaoView[] }): ReactElement 
           key={item.name}
           className={cn(
             'block truncate text-xs leading-4 font-semibold',
-            SAO_ELEMENT_CLASS[item.element],
+            SAO_ON_NIGHT_CLASS[item.element],
           )}
         >
           {item.name}
@@ -36,7 +36,7 @@ function SaoRow({
   return (
     <span className="flex flex-wrap gap-x-2 pt-0.5 text-xs leading-4 font-semibold">
       {sao.map((item) => (
-        <span key={item.name} className={cn('whitespace-nowrap', SAO_ELEMENT_CLASS[item.element])}>
+        <span key={item.name} className={cn('whitespace-nowrap', SAO_ON_NIGHT_CLASS[item.element])}>
           {prefix}
           {item.name}
         </span>
@@ -60,32 +60,32 @@ export function CungCellContent({ cung }: CungCellContentProps): ReactElement {
       ) : null}
       <span className="flex h-full flex-col">
         <span className="flex items-baseline justify-between gap-1.5">
-          <span className="shrink-0 text-xs leading-4 font-bold whitespace-nowrap text-ink">
+          <span className="shrink-0 text-xs leading-4 font-bold whitespace-nowrap text-day-soft">
             {cung.canChi}
           </span>
-          <span className="truncate text-sm leading-5 font-bold text-dusk">
+          <span className="truncate text-sm leading-5 font-bold text-dawn">
             {cung.name}
-            {cung.isThan && <span className="text-ink">&lt;THÂN&gt;</span>}
+            {cung.isThan && <span className="text-day-soft">&lt;THÂN&gt;</span>}
           </span>
-          <span className="text-xs leading-4 font-bold text-ink tabular-nums">
+          <span className="text-xs leading-4 font-bold text-day-soft tabular-nums">
             {cung.daiVanStartAge}
           </span>
         </span>
 
         <span className="flex items-baseline justify-between gap-1.5">
-          <span className="shrink-0 text-xs leading-4 font-bold whitespace-nowrap text-ink">
+          <span className="shrink-0 text-xs leading-4 font-bold whitespace-nowrap text-day-soft">
             {cung.element}
           </span>
           <span className="flex min-w-0 flex-wrap justify-center gap-x-2">
             {cung.isVoChinhDieu ? (
-              <span className="text-xs leading-5 font-semibold text-ink-soft">vô chính diệu</span>
+              <span className="text-xs leading-5 font-semibold text-day-soft">vô chính diệu</span>
             ) : (
               cung.chinhTinh.map((sao) => (
                 <span
                   key={sao.name}
                   className={cn(
                     'text-sm leading-5 font-bold whitespace-nowrap',
-                    SAO_ELEMENT_CLASS[sao.element],
+                    SAO_ON_NIGHT_CLASS[sao.element],
                   )}
                 >
                   {sao.polarity}
@@ -95,7 +95,7 @@ export function CungCellContent({ cung }: CungCellContentProps): ReactElement {
               ))
             )}
           </span>
-          <span className="shrink-0 text-xs leading-4 font-bold whitespace-nowrap text-ink">
+          <span className="shrink-0 text-xs leading-4 font-bold whitespace-nowrap text-day-soft">
             {cung.monthOrder}
           </span>
         </span>
@@ -107,7 +107,7 @@ export function CungCellContent({ cung }: CungCellContentProps): ReactElement {
                 key={sao.name}
                 className={cn(
                   'text-xs leading-4 font-semibold whitespace-nowrap',
-                  SAO_ELEMENT_CLASS[sao.element],
+                  SAO_ON_NIGHT_CLASS[sao.element],
                 )}
               >
                 ({sao.name}
@@ -126,7 +126,7 @@ export function CungCellContent({ cung }: CungCellContentProps): ReactElement {
 
         {cung.daiVanTinh.length > 0 && <SaoRow prefix="ĐV." sao={cung.daiVanTinh} />}
 
-        <span className="mt-auto flex items-baseline justify-between gap-1.5 pt-1 text-xs leading-4 font-semibold text-ink">
+        <span className="mt-auto flex items-baseline justify-between gap-1.5 pt-1 text-xs leading-4 font-semibold text-day-soft">
           <span>{cung.daiVan}</span>
           <span className="font-bold">{cung.trangSinh}</span>
           <span>{cung.luuNien}</span>

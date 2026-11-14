@@ -17,7 +17,11 @@
   --color-hanh-thuy: #17150f;
   --color-hanh-hoa: #c62828;
   --color-hanh-tho: #8a6508;
-  --color-chart-block: #17150f;
+  --color-hanh-kim-night: #d6d0c4;
+  --color-hanh-moc-night: #6fd69a;
+  --color-hanh-thuy-night: #9fc2ff;
+  --color-hanh-hoa-night: #ff9a8f;
+  --color-hanh-tho-night: #e8b85c;
 
   --font-sans: 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-display: 'Inter Tight', 'Be Vietnam Pro', sans-serif;
@@ -30,6 +34,8 @@
   --text-reading: 1.0625rem;
   --leading-reading: 1.7;
   --container-reading: 68ch;
+  --max-height-workspace-panel: calc(100dvh - 3rem);
+  --max-height-sheet: 85dvh;
 
   --shadow-glow-gold: 0 0 0.75rem rgb(242 180 65 / 0.45), 0 0 0.125rem rgb(242 180 65 / 0.8);
   --shadow-glow-gold-strong:

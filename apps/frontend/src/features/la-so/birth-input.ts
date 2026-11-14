@@ -92,4 +92,5 @@ export const birthInputSchema = birthFieldsSchema.refine(isRealBirthDate, {
 /** Optional throughout: /la-so is reachable directly, without anyone having filled the form. */
 export const birthSearchSchema = birthFieldsSchema.partial().extend({
   viewYear: z.number().int().min(MIN_VIEW_YEAR).max(MAX_VIEW_YEAR).optional(),
+  cung: z.string().optional().catch(undefined),
 });

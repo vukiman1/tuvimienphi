@@ -5,9 +5,11 @@ import { compositeOver, contrastRatio } from './contrast';
 const AA_NORMAL_TEXT = 4.5;
 const AA_NON_TEXT = 3;
 const COLOR_TOKEN = /--color-([\w-]+):\s*(#[0-9a-fA-F]{6})/g;
-const CHART_TOKEN_PREFIXES = ['hanh-', 'chart-block'] as const;
+const CHART_TOKEN_PREFIXES = ['hanh-'] as const;
 const DARK_TONES = ['night', 'deep', 'dusk'] as const;
 const SPOTLIGHT_TINT_ALPHA = 0.1;
+const NIGHT_SPOTLIGHT_ALPHA = 0.12;
+const NIGHT_STAR_TOKENS = ['kim', 'moc', 'thuy', 'hoa', 'tho'].map((hanh) => `hanh-${hanh}-night`);
 const TAB_TRACK_ALPHA = 0.4;
 const UNAVAILABLE_TAB_ALPHA = 0.55;
 const KEY_PHRASE_WASH_ALPHA = 0.6;
@@ -162,7 +164,9 @@ describe('design tokens', () => {
 
   it('every chart data colour passes AA on the spotlight tint', () => {
     const tint = compositeOver(token('gold'), SPOTLIGHT_TINT_ALPHA, token('day'));
-    const hanhTokens = [...TOKENS].filter(([name]) => name.startsWith('hanh-'));
+    const hanhTokens = [...TOKENS].filter(
+      ([name]) => name.startsWith('hanh-') && !name.endsWith('-night'),
+    );
 
     expect(hanhTokens.length).toBe(5);
     for (const [, value] of hanhTokens) {
@@ -176,12 +180,6 @@ describe('design tokens', () => {
     for (const label of ['ink', 'ink-soft', 'dusk']) {
       expect(contrastRatio(token(label), tint)).toBeGreaterThanOrEqual(AA_NORMAL_TEXT);
     }
-  });
-
-  it('Tuần, Triệt and Tiểu hạn labels read day on the chart block', () => {
-    expect(contrastRatio(token('day'), token('chart-block'))).toBeGreaterThanOrEqual(
-      AA_NORMAL_TEXT,
-    );
   });
 
   it('board lines and the picked ring stay visible on every cung surface', () => {
@@ -217,14 +215,47 @@ describe('design tokens', () => {
   });
 
   it('every chart data colour passes AA on day', () => {
-    const chartTokens = [...TOKENS].filter(([name]) =>
-      CHART_TOKEN_PREFIXES.some((prefix) => name.startsWith(prefix)),
+    const chartTokens = [...TOKENS].filter(
+      ([name]) =>
+        CHART_TOKEN_PREFIXES.some((prefix) => name.startsWith(prefix)) && !name.endsWith('-night'),
     );
 
-    expect(chartTokens.length).toBe(6);
+    expect(chartTokens.length).toBe(5);
     for (const [, value] of chartTokens) {
       expect(contrastRatio(value, token('day'))).toBeGreaterThanOrEqual(AA_NORMAL_TEXT);
     }
+  });
+});
+
+describe('night board tokens', () => {
+  const nightSurfaces = (): readonly string[] => [
+    token('night'),
+    compositeOver(token('gold'), NIGHT_SPOTLIGHT_ALPHA, token('night')),
+  ];
+
+  it('every night star colour passes AA on night and on its spotlight', () => {
+    for (const name of NIGHT_STAR_TOKENS) {
+      for (const surface of nightSurfaces()) {
+        expect(contrastRatio(token(name), surface)).toBeGreaterThanOrEqual(AA_NORMAL_TEXT);
+      }
+    }
+  });
+
+  it('night board graphics stay visible', () => {
+    for (const graphic of ['gold', 'ember', 'dawn']) {
+      for (const surface of nightSurfaces()) {
+        expect(contrastRatio(token(graphic), surface)).toBeGreaterThanOrEqual(AA_NON_TEXT);
+      }
+    }
+  });
+
+  it('board text reads on the night cells', () => {
+    for (const label of ['dawn', 'day-soft']) {
+      for (const surface of nightSurfaces()) {
+        expect(contrastRatio(token(label), surface)).toBeGreaterThanOrEqual(AA_NORMAL_TEXT);
+      }
+    }
+    expect(contrastRatio(token('night'), token('day'))).toBeGreaterThanOrEqual(AA_NORMAL_TEXT);
   });
 });
 

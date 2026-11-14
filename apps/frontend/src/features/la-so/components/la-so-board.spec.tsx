@@ -1,13 +1,14 @@
-import { useState, type ReactElement } from 'react';
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { createRef, useState, type ReactElement } from 'react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import type { NguHanh } from '@org/shared-tu-vi';
 import { FOCUS_RING_CLASS } from '@/design-system';
 import { CalendarType, Gender } from '@/features/la-so/birth-input';
+import { KEY_PHU_TINH } from '@/features/la-so/board-density';
 import { FULL_BOARD_WIDTH } from '@/features/la-so/board-fit';
 import { BOARD_SIZE } from '@/features/la-so/board-layout';
 import type { ChartView, CungView } from '@/features/la-so/chart-types';
 import { toChartView } from '@/features/la-so/to-chart-view';
-import { LaSoBoard } from './la-so-board';
+import { LaSoBoard, type LaSoBoardHandle } from './la-so-board';
 
 const SAMPLE_BIRTH = {
   day: 12,
@@ -23,21 +24,23 @@ const PHONE_CONTAINER = 360;
 const FULL_CONTAINER_NARROWER_THAN_BOARD = 700;
 const EQUAL_GROWING_ROWS = new RegExp(`^repeat\\(${BOARD_SIZE}, minmax\\(\\d+px, 1fr\\)\\)$`);
 const TY = 0;
+const TI = 5;
+const NGO = 6;
 const TY_RELATED = [4, 8, 6, 1] as const;
-const SPOTLIGHT_CLASS = 'bg-gold/10';
+const SPOTLIGHT_CLASS = 'bg-gold/12';
 const DIMMED_CLASS = 'opacity-30';
-const PICKED_MARK = ['inset-ring-2', 'inset-ring-ink'] as const;
-const FOCUSED_MARK = ['inset-ring-2', 'inset-ring-gold'] as const;
-const RELATED_MARK = ['inset-ring-1', 'inset-ring-gold'] as const;
+const PICKED_MARK = ['inset-ring-2', 'inset-ring-gold'] as const;
+const FOCUSED_MARK = ['inset-ring-2', 'inset-ring-dawn'] as const;
+const RELATED_MARK = ['inset-ring-1', 'inset-ring-gold/60'] as const;
 const FOCUS_RING_TOKENS = FOCUS_RING_CLASS.split(' ');
 const OUTER_RING_STATE = /^ring-/;
 
 const HANH_CLASS: Readonly<Record<NguHanh, string>> = {
-  Kim: 'text-hanh-kim',
-  Mộc: 'text-hanh-moc',
-  Thủy: 'text-hanh-thuy',
-  Hỏa: 'text-hanh-hoa',
-  Thổ: 'text-hanh-tho',
+  Kim: 'text-hanh-kim-night',
+  Mộc: 'text-hanh-moc-night',
+  Thủy: 'text-hanh-thuy-night',
+  Hỏa: 'text-hanh-hoa-night',
+  Thổ: 'text-hanh-tho-night',
 };
 
 const STUBBED_RESIZE_OBSERVER = globalThis.ResizeObserver;
@@ -95,10 +98,6 @@ function renderBoard(): ReturnType<typeof render> {
 
 function cungButton(cung: CungView): HTMLElement {
   return screen.getByRole('button', { name: `Cung ${cung.name}` });
-}
-
-function follows(later: Node, earlier: Node): boolean {
-  return (earlier.compareDocumentPosition(later) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0;
 }
 
 function zoomedElements(container: HTMLElement): readonly HTMLElement[] {
@@ -171,7 +170,7 @@ function ownText(element: Element): string {
 
 function elementReading(container: HTMLElement, text: string): HTMLElement | undefined {
   return [...container.querySelectorAll<HTMLElement>('*')].find(
-    (element) => ownText(element) === text,
+    (element) => ownText(element) === text && element.closest('[aria-hidden="true"]') === null,
   );
 }
 
@@ -186,6 +185,7 @@ function expectStateMarkBesideFocusRing(button: HTMLElement, mark: readonly stri
 }
 
 afterEach(() => {
+  window.localStorage.clear();
   Object.assign(globalThis, { ResizeObserver: STUBBED_RESIZE_OBSERVER });
   jest.restoreAllMocks();
 });
@@ -195,6 +195,7 @@ describe('LaSoBoard on a wide container', () => {
 
   it('paints every star with its hành token', () => {
     renderBoard();
+    fireEvent.click(screen.getByRole('button', { name: 'Đủ sao' }));
     const button = cungButton(MENH);
     const stars = [
       ...MENH.chinhTinh.map((sao) => ({ text: `${sao.polarity ?? ''}${sao.name}`, sao })),
@@ -211,14 +212,111 @@ describe('LaSoBoard on a wide container', () => {
     }
   });
 
-  it('marks only the picked cung with an ink ring', () => {
+  it('hides a non-key phụ tinh in Gọn and shows it in Đủ sao', () => {
+    const [hidden] = [...MENH.catTinh, ...MENH.hungTinh].filter(
+      (sao) => !KEY_PHU_TINH.has(sao.name),
+    );
+    renderBoard();
+
+    expect(elementReading(cungButton(MENH), hidden.name)).toBeUndefined();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Đủ sao' }));
+
+    expect(elementReading(cungButton(MENH), hidden.name)).toBeDefined();
+  });
+
+  it('keeps the Đủ sao cell height in Gọn so the board keeps its shape', () => {
+    const [hidden] = [...MENH.catTinh, ...MENH.hungTinh].filter(
+      (sao) => !KEY_PHU_TINH.has(sao.name),
+    );
+    renderBoard();
+    const sizingCopy =
+      cungButton(MENH).querySelector<HTMLElement>('[aria-hidden="true"]') ?? undefined;
+
+    expect(sizingCopy).toBeDefined();
+    expect(classTokens(sizingCopy)).toContain('invisible');
+    expect(sizingCopy?.textContent).toContain(hidden.name);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Đủ sao' }));
+
+    expect(cungButton(MENH).querySelector('[aria-hidden="true"]')).toBeNull();
+  });
+
+  it('explains the hành colours and brightness letters under the full board', () => {
+    renderBoard();
+
+    expect(screen.getByRole('list', { name: 'Ngũ hành' })).toBeTruthy();
+    expect(screen.getByRole('list', { name: 'Độ sáng' })).toBeTruthy();
+  });
+
+  it('marks only the picked cung with a gold ring', () => {
     renderBoard();
     const pressed = screen
       .getAllByRole('button', { name: /^Cung / })
-      .filter((button) => classTokens(button).includes('inset-ring-ink'));
+      .filter((button) => classTokens(button).includes('inset-ring-gold'));
 
     expect(pressed).toEqual([cungButton(MENH)]);
     expect(cungButton(MENH).getAttribute('aria-pressed')).toBe('true');
+  });
+
+  it('lights the picked cung with the gold glow', () => {
+    renderBoard();
+
+    expect(classTokens(cungButton(MENH))).toContain('shadow-glow-gold-strong');
+  });
+
+  it('arrow keys move focus between cung', () => {
+    renderBoard();
+    cungButton(CHART.cungs[TI]).focus();
+
+    fireEvent.keyDown(cungButton(CHART.cungs[TI]), { key: 'ArrowRight' });
+
+    expect(document.activeElement).toBe(cungButton(CHART.cungs[NGO]));
+  });
+
+  it('spotlights the cung that keyboard focus moved to', () => {
+    renderBoard();
+    cungButton(CHART.cungs[TI]).focus();
+
+    fireEvent.keyDown(cungButton(CHART.cungs[TI]), { key: 'ArrowRight' });
+
+    expect(classTokens(cungButton(CHART.cungs[NGO]))).toEqual(
+      expect.arrayContaining([...FOCUSED_MARK, SPOTLIGHT_CLASS]),
+    );
+  });
+
+  it('leaves other keys to the browser', () => {
+    renderBoard();
+    cungButton(CHART.cungs[TI]).focus();
+
+    const wasNotPrevented = fireEvent.keyDown(cungButton(CHART.cungs[TI]), { key: 'Tab' });
+
+    expect(wasNotPrevented).toBe(true);
+    expect(document.activeElement).toBe(cungButton(CHART.cungs[TI]));
+  });
+
+  it('leaves arrow keys with a modifier to the browser', () => {
+    renderBoard();
+    cungButton(CHART.cungs[TI]).focus();
+
+    const wasNotPrevented = fireEvent.keyDown(cungButton(CHART.cungs[TI]), {
+      key: 'ArrowRight',
+      altKey: true,
+    });
+
+    expect(wasNotPrevented).toBe(true);
+    expect(document.activeElement).toBe(cungButton(CHART.cungs[TI]));
+  });
+
+  it('focuses a cung through the board handle', () => {
+    const boardRef = createRef<LaSoBoardHandle>();
+    render(
+      <LaSoBoard boardRef={boardRef} chart={CHART} onSelect={() => undefined} selectedIndex={0} />,
+    );
+
+    act(() => boardRef.current?.focusCung(NGO));
+
+    expect(document.activeElement).toBe(cungButton(CHART.cungs[NGO]));
   });
 
   it('spotlights the hovered cung with its tam hợp, xung chiếu and nhị hợp', () => {
@@ -264,10 +362,10 @@ describe('LaSoBoard on a wide container', () => {
     expect(tinted).toEqual([]);
   });
 
-  it('draws the tam hợp triangle in deep and the xung chiếu line in ember', () => {
+  it('draws the tam hợp triangle in gold and the xung chiếu line in ember', () => {
     const { container } = renderBoard();
 
-    expect(container.querySelectorAll('svg line.stroke-deep')).toHaveLength(3);
+    expect(container.querySelectorAll('svg line.stroke-gold')).toHaveLength(3);
     expect(container.querySelectorAll('svg line.stroke-ember')).toHaveLength(1);
   });
 
@@ -277,7 +375,7 @@ describe('LaSoBoard on a wide container', () => {
     const words = [screen.getByText('Lá Số Tử Vi'), label, screen.getByText(CHART.meta.chuMenh)];
 
     for (const word of words) {
-      expect(classTokens(word)).toEqual(expect.arrayContaining(['relative', 'z-20', 'bg-day']));
+      expect(classTokens(word)).toEqual(expect.arrayContaining(['relative', 'z-20', 'bg-night']));
     }
     const stackingAncestors: HTMLElement[] = [];
     for (let node = label.parentElement; node !== null; node = node.parentElement) {
@@ -293,16 +391,16 @@ describe('LaSoBoard on a wide container', () => {
       const label = screen
         .getAllByText(cung.chi)
         .find((element) => classTokens(element).includes('z-20'));
-      expect(classTokens(label)).toContain('bg-day');
+      expect(classTokens(label)).toContain('bg-night');
     }
   });
 
-  it('sets Tuần and Triệt on the chart-block surface', () => {
+  it('sets Tuần and Triệt on the day surface', () => {
     renderBoard();
 
     for (const label of ['Tuần', 'Triệt']) {
       expect(classTokens(screen.getByText(label))).toEqual(
-        expect.arrayContaining(['bg-chart-block', 'text-day']),
+        expect.arrayContaining(['bg-day', 'text-night']),
       );
     }
   });
@@ -366,6 +464,22 @@ describe('LaSoBoard on a phone-width container', () => {
     expect(zoomedElements(container)).toEqual([]);
   });
 
+  it('explains the hành colours and brightness letters under the compact board', () => {
+    renderBoard();
+
+    expect(screen.getByRole('list', { name: 'Ngũ hành' })).toBeTruthy();
+    expect(screen.getByRole('list', { name: 'Độ sáng' })).toBeTruthy();
+  });
+
+  it('arrow keys move focus between cung on the compact board', () => {
+    renderBoard();
+    cungButton(CHART.cungs[TI]).focus();
+
+    fireEvent.keyDown(cungButton(CHART.cungs[TI]), { key: 'ArrowDown' });
+
+    expect(document.activeElement).toBe(cungButton(CHART.cungs[4]));
+  });
+
   it('spotlights the tapped cung without hover', () => {
     renderBoard();
     const tapped = CHART.cungs[TY];
@@ -408,55 +522,14 @@ describe('LaSoBoard on a phone-width container', () => {
       expectStateMarkBesideFocusRing(button, mark);
     }
   });
-
-  it('shows every star of the picked cung in a panel below the board', () => {
-    renderBoard();
-    const panel = screen.getByRole('region', { name: `Cung ${MENH.name}` });
-    const names = [
-      ...MENH.catTinh.map((sao) => sao.name),
-      ...MENH.hungTinh.map((sao) => sao.name),
-      ...MENH.chinhTinh.map((sao) => sao.name),
-      ...MENH.luuTinh.map((sao) => `L.${sao.name}`),
-    ];
-
-    expect(names.length).toBeGreaterThan(0);
-    for (const name of names) {
-      expect(panel.textContent).toContain(name);
-    }
-  });
-
-  it('follows the picked cung in the panel', () => {
-    renderBoard();
-    const tapped = CHART.cungs[TY];
-
-    fireEvent.click(cungButton(tapped));
-
-    expect(screen.getByRole('region', { name: `Cung ${tapped.name}` })).toBeTruthy();
-  });
-
-  it('keeps the full thiên bàn after the panel', () => {
-    renderBoard();
-    const panel = screen.getByRole('region', { name: `Cung ${MENH.name}` });
-
-    expect(follows(screen.getByText('Lai nhân cung:'), panel)).toBe(true);
-  });
 });
 
 describe('LaSoBoard switching layouts', () => {
-  it('shows the scaled board and no panel on a wide container', () => {
+  it('shows the scaled board on a wide container', () => {
     observeWidth(WIDE_CONTAINER);
     const { container } = renderBoard();
 
-    expect(screen.queryByRole('region')).toBeNull();
     expect(zoomedElements(container).map((element) => element.style.zoom)).toEqual(['1']);
-  });
-
-  it('keeps the panel free of the board buttons', () => {
-    observeWidth(PHONE_CONTAINER);
-    renderBoard();
-    const panel = screen.getByRole('region', { name: `Cung ${MENH.name}` });
-
-    expect(within(panel).queryAllByRole('button')).toEqual([]);
   });
 
   it('lays the board out before the first resize notification, so nothing below it shifts', () => {
