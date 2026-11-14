@@ -23,8 +23,8 @@ export function cungStateClass(
 }
 
 export const CHART_RULE_CLASS = {
-  border: 'border-gold/25',
-  fill: 'bg-gold/25',
+  border: 'border-gold/55',
+  fill: 'bg-gold/55',
   blockLabel: 'bg-day text-night',
 } as const;
 
