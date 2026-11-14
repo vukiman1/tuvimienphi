@@ -1,4 +1,4 @@
-import { CalendarType, Gender, birthInputSchema } from './birth-input';
+import { CalendarType, Gender, birthInputSchema, birthSearchSchema } from './birth-input';
 
 const FILLED = {
   day: 9,
@@ -40,5 +40,15 @@ describe('birthInputSchema', () => {
         calendar: CalendarType.Lunar,
       }).success,
     ).toBe(false);
+  });
+});
+
+describe('birthSearchSchema', () => {
+  it('keeps the picked cung slug', () => {
+    expect(birthSearchSchema.parse({ cung: 'quan-loc' }).cung).toBe('quan-loc');
+  });
+
+  it('drops a cung that is not a string instead of throwing', () => {
+    expect(birthSearchSchema.parse({ cung: 12 }).cung).toBeUndefined();
   });
 });

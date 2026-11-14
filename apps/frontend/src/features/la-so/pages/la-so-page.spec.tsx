@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   RouterProvider,
@@ -17,7 +17,12 @@ jest.mock('@/lib/http-request', () => ({
 const SAMPLE_SEARCH = '?day=12&month=3&year=1995&calendar=duong&hour=Ng%E1%BB%8D&gender=nam';
 const LUAN_GIAI_TITLE = 'Luận giải lá số';
 
-async function renderLaSoPage(search: string): Promise<ReturnType<typeof render>> {
+interface RenderedLaSoPage {
+  readonly view: ReturnType<typeof render>;
+  readonly currentSearch: () => Readonly<Record<string, unknown>>;
+}
+
+async function renderLaSoPage(search: string): Promise<RenderedLaSoPage> {
   const rootRoute = createRootRoute();
   const siteRoute = createRoute({ getParentRoute: () => rootRoute, id: '_site' });
   const laSoRoute = createRoute({
@@ -44,15 +49,15 @@ async function renderLaSoPage(search: string): Promise<ReturnType<typeof render>
     </QueryClientProvider>,
   );
   await screen.findByRole('heading', { level: 1, name: 'Lá Số Tử Vi' });
-  return view;
+  return { view, currentSearch: () => router.state.location.search };
 }
 
-function pickedCungLine(name: string): HTMLElement {
-  return screen.getByText(
-    (_, element) =>
-      element?.tagName === 'P' &&
-      new RegExp(`^Đang chọn cung ${name} ·`, 'i').test(element.textContent ?? ''),
-  );
+function cungButton(name: string): HTMLElement {
+  return screen.getByRole('button', { name: new RegExp(`^Cung ${name}$`, 'i') });
+}
+
+function isPicked(name: string): boolean {
+  return cungButton(name).getAttribute('aria-pressed') === 'true';
 }
 
 function follows(later: Node, earlier: Node): boolean {
@@ -74,21 +79,37 @@ describe('LaSoPage', () => {
     expect(follows(luanGiai, firstCung)).toBe(true);
   });
 
-  it('names the picked cung under the board, Mệnh first', async () => {
+  it('picks Mệnh when the URL names no cung', async () => {
     await renderLaSoPage(SAMPLE_SEARCH);
-    expect(pickedCungLine('Mệnh')).toBeTruthy();
 
-    const [other] = screen
-      .getAllByRole('button', { name: /^Cung / })
-      .filter((button) => button.getAttribute('aria-pressed') === 'false');
-    const otherName = (other.getAttribute('aria-label') ?? '').replace(/^Cung /, '');
-    fireEvent.click(other);
+    expect(isPicked('Mệnh')).toBe(true);
+  });
 
-    expect(pickedCungLine(otherName)).toBeTruthy();
+  it('picks the cung named in the URL', async () => {
+    await renderLaSoPage(`${SAMPLE_SEARCH}&cung=quan-loc`);
+
+    expect(isPicked('Quan Lộc')).toBe(true);
+    expect(isPicked('Mệnh')).toBe(false);
+  });
+
+  it('falls back to Mệnh on a bad slug', async () => {
+    await renderLaSoPage(`${SAMPLE_SEARCH}&cung=abc`);
+
+    expect(isPicked('Mệnh')).toBe(true);
+  });
+
+  it('writes the picked cung into the URL', async () => {
+    const { currentSearch } = await renderLaSoPage(SAMPLE_SEARCH);
+    fireEvent.click(cungButton('Tài Bạch'));
+
+    await waitFor(() => expect(currentSearch().cung).toBe('tai-bach'));
+    expect(isPicked('Tài Bạch')).toBe(true);
   });
 
   it('drops the decor paintings beside the board', async () => {
-    const { container } = await renderLaSoPage(SAMPLE_SEARCH);
+    const {
+      view: { container },
+    } = await renderLaSoPage(SAMPLE_SEARCH);
     const luanGiaiBand = screen
       .getByRole('heading', { level: 2, name: LUAN_GIAI_TITLE })
       .closest('section');
@@ -99,7 +120,9 @@ describe('LaSoPage', () => {
   });
 
   it('renders no images', async () => {
-    const { container } = await renderLaSoPage(SAMPLE_SEARCH);
+    const {
+      view: { container },
+    } = await renderLaSoPage(SAMPLE_SEARCH);
 
     expect(container.querySelectorAll('img')).toHaveLength(0);
   });
