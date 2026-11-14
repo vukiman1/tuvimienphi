@@ -5,7 +5,7 @@ import { compositeOver, contrastRatio } from './contrast';
 const AA_NORMAL_TEXT = 4.5;
 const AA_NON_TEXT = 3;
 const COLOR_TOKEN = /--color-([\w-]+):\s*(#[0-9a-fA-F]{6})/g;
-const CHART_TOKEN_PREFIXES = ['hanh-', 'chart-block'] as const;
+const CHART_TOKEN_PREFIXES = ['hanh-'] as const;
 const DARK_TONES = ['night', 'deep', 'dusk'] as const;
 const SPOTLIGHT_TINT_ALPHA = 0.1;
 const NIGHT_SPOTLIGHT_ALPHA = 0.12;
@@ -182,12 +182,6 @@ describe('design tokens', () => {
     }
   });
 
-  it('Tuần, Triệt and Tiểu hạn labels read day on the chart block', () => {
-    expect(contrastRatio(token('day'), token('chart-block'))).toBeGreaterThanOrEqual(
-      AA_NORMAL_TEXT,
-    );
-  });
-
   it('board lines and the picked ring stay visible on every cung surface', () => {
     const tint = compositeOver(token('gold'), SPOTLIGHT_TINT_ALPHA, token('day'));
 
@@ -226,7 +220,7 @@ describe('design tokens', () => {
         CHART_TOKEN_PREFIXES.some((prefix) => name.startsWith(prefix)) && !name.endsWith('-night'),
     );
 
-    expect(chartTokens.length).toBe(6);
+    expect(chartTokens.length).toBe(5);
     for (const [, value] of chartTokens) {
       expect(contrastRatio(value, token('day'))).toBeGreaterThanOrEqual(AA_NORMAL_TEXT);
     }

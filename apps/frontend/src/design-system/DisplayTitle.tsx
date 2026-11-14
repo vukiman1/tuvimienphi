@@ -15,12 +15,14 @@ export enum DisplaySize {
   Hero = 'hero',
   Chapter = 'chapter',
   Card = 'card',
+  Panel = 'panel',
 }
 
 const DISPLAY_SIZE_CLASS: Readonly<Record<DisplaySize, string>> = {
   [DisplaySize.Hero]: 'text-[clamp(3.6rem,10.2vw,10.6rem)]',
   [DisplaySize.Chapter]: 'text-[clamp(2.6rem,5vw,5.1rem)]',
   [DisplaySize.Card]: 'text-[clamp(1.9rem,3.4vw,3rem)]',
+  [DisplaySize.Panel]: 'text-3xl',
 };
 
 interface DisplayTitleProps {

@@ -49,11 +49,9 @@ export function CungSheet({
             onCloseFocus();
           }}
         >
-          <div className="flex shrink-0 items-center gap-1 px-6 pt-6 pb-4">
+          <div className="flex shrink-0 items-center justify-end gap-1 px-6 pt-6 pb-4">
             <Dialog.Title asChild>
-              <p className="flex-1 text-sm font-bold tracking-widest text-ink-soft uppercase">
-                {title}
-              </p>
+              <p className="sr-only">{title}</p>
             </Dialog.Title>
             <button
               aria-label="Cung trước"

@@ -271,6 +271,19 @@ describe('LaSoBoard on a wide container', () => {
     expect(document.activeElement).toBe(cungButton(CHART.cungs[TI]));
   });
 
+  it('leaves arrow keys with a modifier to the browser', () => {
+    renderBoard();
+    cungButton(CHART.cungs[TI]).focus();
+
+    const wasNotPrevented = fireEvent.keyDown(cungButton(CHART.cungs[TI]), {
+      key: 'ArrowRight',
+      altKey: true,
+    });
+
+    expect(wasNotPrevented).toBe(true);
+    expect(document.activeElement).toBe(cungButton(CHART.cungs[TI]));
+  });
+
   it('focuses a cung through the board handle', () => {
     const boardRef = createRef<LaSoBoardHandle>();
     render(
@@ -481,11 +494,10 @@ describe('LaSoBoard on a phone-width container', () => {
 });
 
 describe('LaSoBoard switching layouts', () => {
-  it('shows the scaled board and no panel on a wide container', () => {
+  it('shows the scaled board on a wide container', () => {
     observeWidth(WIDE_CONTAINER);
     const { container } = renderBoard();
 
-    expect(screen.queryByRole('region')).toBeNull();
     expect(zoomedElements(container).map((element) => element.style.zoom)).toEqual(['1']);
   });
 

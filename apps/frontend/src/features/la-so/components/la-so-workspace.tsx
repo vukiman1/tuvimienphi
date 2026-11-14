@@ -30,6 +30,7 @@ export function LaSoWorkspace({
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [wasDesktop, setWasDesktop] = useState(isDesktop);
   const boardRef = useRef<LaSoBoardHandle>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const chapterAfterClose = useRef<string | null>(null);
 
   if (wasDesktop !== isDesktop) {
@@ -40,6 +41,7 @@ export function LaSoWorkspace({
   const selectCung = (index: number): void => {
     onSelect(index);
     if (!isDesktop) setIsSheetOpen(true);
+    else if (panelRef.current) panelRef.current.scrollTop = 0;
   };
 
   const readChapterFromSheet = (order: string): void => {
@@ -78,7 +80,10 @@ export function LaSoWorkspace({
             selectedIndex={selectedIndex}
           />
           {isDesktop ? (
-            <div className="sticky top-6 max-h-workspace-panel self-start overflow-y-auto rounded-2xl border border-gold/40 bg-day p-6 text-ink shadow-glow-gold">
+            <div
+              ref={panelRef}
+              className="sticky top-6 max-h-workspace-panel self-start overflow-y-auto rounded-2xl border border-gold/40 bg-day p-6 text-ink shadow-glow-gold"
+            >
               {panel}
             </div>
           ) : (

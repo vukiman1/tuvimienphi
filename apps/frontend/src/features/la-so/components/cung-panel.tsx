@@ -31,7 +31,7 @@ export function CungPanel({
   return (
     <section aria-labelledby={titleId} className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center gap-2">
-        <DisplayTitle as="h2" id={titleId} face={TitleFace.Serif} size={DisplaySize.Card}>
+        <DisplayTitle as="h2" id={titleId} face={TitleFace.Serif} size={DisplaySize.Panel}>
           Cung {facts.cungName} <span className="text-ink-soft">· {cung.chi}</span>
         </DisplayTitle>
         {cung.isThan ? <span className={TAG_CLASS}>THÂN</span> : null}

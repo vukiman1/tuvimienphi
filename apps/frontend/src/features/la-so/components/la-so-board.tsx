@@ -271,6 +271,7 @@ function useCungButtons(boardRef: Ref<LaSoBoardHandle> | undefined): {
   }));
 
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>): void => {
+    if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
     if (!isBoardKey(event.key)) return;
     const from = [...buttons.current].find(([, button]) => button === event.target)?.[0];
     if (from === undefined) return;

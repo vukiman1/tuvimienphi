@@ -21,6 +21,7 @@ const BIRTH: BirthInput = {
 const VIEW_YEAR = 2026;
 const CHART = toChartView({ ...BIRTH, viewYear: VIEW_YEAR });
 const QUAN_LOC_CHAPTER = '03';
+const SCROLLED_OFFSET = 200;
 
 interface WorkspaceSpies {
   readonly onSelect: jest.Mock<void, [number]>;
@@ -74,6 +75,20 @@ describe('LaSoWorkspace', () => {
 
     expect(screen.getByRole('heading', { level: 2, name: /^Cung Mệnh/ })).toBeTruthy();
     expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('opens the newly picked cung at the top of the side panel', () => {
+    stubMatchMedia([DESKTOP_WORKSPACE_QUERY]);
+    renderWorkspace();
+    const panel = screen
+      .getByRole('heading', { level: 2, name: /^Cung Mệnh/ })
+      .closest<HTMLElement>('.overflow-y-auto');
+    if (panel === null) throw new Error('the side panel does not scroll');
+    Object.defineProperty(panel, 'scrollTop', { value: SCROLLED_OFFSET, writable: true });
+
+    fireEvent.click(cungButton('Tài Bạch'));
+
+    expect(panel.scrollTop).toBe(0);
   });
 
   it('opens the sheet only after a tap below desktop', () => {

@@ -61,6 +61,31 @@ describe('CungPanel', () => {
     expect(heading.textContent).toBe(`Cung Mệnh · ${CHART.cungs[indexOfCung('Mệnh')].chi}`);
   });
 
+  it('marks the cung that holds the Thân', () => {
+    const index = CHART.cungs.findIndex((cung) => cung.isThan);
+
+    renderPanel(cungNameOf(CHART.cungs[index]));
+
+    expect(screen.getByText('THÂN')).toBeTruthy();
+  });
+
+  it('marks the tiểu hạn cung of the view year', () => {
+    const index = CHART.cungs.findIndex((cung) => cung.isTieuHan);
+
+    renderPanel(cungNameOf(CHART.cungs[index]));
+
+    expect(screen.getByText(`Tiểu hạn ${VIEW_YEAR}`)).toBeTruthy();
+  });
+
+  it('shows no tags on an ordinary cung', () => {
+    const index = CHART.cungs.findIndex((cung) => !cung.isThan && !cung.isTieuHan);
+
+    renderPanel(cungNameOf(CHART.cungs[index]));
+
+    expect(screen.queryByText('THÂN')).toBeNull();
+    expect(screen.queryByText(/^Tiểu hạn/)).toBeNull();
+  });
+
   it('shows the fact chips', () => {
     renderPanel('Mệnh');
     const { daiVanStartAge } = CHART.cungs[indexOfCung('Mệnh')];
