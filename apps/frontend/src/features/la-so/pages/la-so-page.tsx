@@ -1,14 +1,18 @@
 import { useMemo, useState, type ReactElement } from 'react';
 import { Navigate, getRouteApi, useNavigate } from '@tanstack/react-router';
-import { LaSoBoard } from '@/features/la-so/components/la-so-board';
-import { LuanGiaiSection } from '@/features/la-so/components/luan-giai-section';
+import {
+  LUAN_GIAI_ANCHOR_ID,
+  LuanGiaiSection,
+} from '@/features/la-so/components/luan-giai-section';
 import { LUAN_GIAI_CHAPTERS, LUAN_GIAI_MOTTO } from '@/features/la-so/luan-giai-data';
 import { birthInputSchema } from '@/features/la-so/birth-input';
 import { CUNG_SLUGS, cungNameFromSlug, cungNameOf } from '@/features/la-so/cung-slug';
 import { LaSoHero } from '@/features/la-so/components/la-so-hero';
+import { LaSoWorkspace } from '@/features/la-so/components/la-so-workspace';
 import { useRecordChartView } from '@/features/la-so/history/use-record-chart-view';
 import { toChartView } from '@/features/la-so/to-chart-view';
 import type { ChartView } from '@/features/la-so/chart-types';
+import { usePrefersReducedMotion } from '@/hooks/use-prefers-reduced-motion';
 
 const route = getRouteApi('/_site/la-so/detail');
 
@@ -34,13 +38,13 @@ export function LaSoPage(): ReactElement {
 
   useRecordChartView(birth);
   const [activeChapter, setActiveChapter] = useState(LUAN_GIAI_CHAPTERS[0].order);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   if (!birth || !chart) {
     return <Navigate to="/la-so" />;
   }
 
   const selectedIndex = selectedCungIndex(chart, search.cung);
-  const selected = chart.cungs[selectedIndex];
 
   const pickCung = (cungIndex: number): void => {
     const pickedView = chart.cungs.find((cung) => cung.index === cungIndex);
@@ -50,6 +54,13 @@ export function LaSoPage(): ReactElement {
       replace: true,
       resetScroll: false,
     });
+  };
+
+  const readChapter = (order: string): void => {
+    setActiveChapter(order);
+    const anchor = document.getElementById(LUAN_GIAI_ANCHOR_ID);
+    anchor?.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+    anchor?.focus({ preventScroll: true });
   };
 
   return (
@@ -64,15 +75,14 @@ export function LaSoPage(): ReactElement {
         viewYear={viewYear}
       />
 
-      <section className="bg-day">
-        <div className="mx-auto max-w-6xl px-4 py-8 md:px-6">
-          <LaSoBoard chart={chart} onSelect={pickCung} selectedIndex={selectedIndex} />
-          <p className="mt-4 text-center text-sm text-ink-soft">
-            Đang chọn cung <span className="font-semibold text-ink">{selected.name}</span> ·{' '}
-            {selected.canChi} · đại vận {selected.daiVanStartAge}–{selected.daiVanStartAge + 9} tuổi
-          </p>
-        </div>
-      </section>
+      <LaSoWorkspace
+        birth={birth}
+        chart={chart}
+        onReadChapter={readChapter}
+        onSelect={pickCung}
+        selectedIndex={selectedIndex}
+        viewYear={viewYear}
+      />
 
       <LuanGiaiSection
         activeChapter={activeChapter}

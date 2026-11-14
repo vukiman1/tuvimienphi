@@ -29,7 +29,7 @@ export function CungPanel({
   const facts = cungFacts(chart, index);
 
   return (
-    <section aria-labelledby={titleId} className="flex flex-col gap-4 bg-day p-4 text-ink md:p-6">
+    <section aria-labelledby={titleId} className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center gap-2">
         <DisplayTitle as="h2" id={titleId} face={TitleFace.Serif} size={DisplaySize.Card}>
           Cung {facts.cungName} <span className="text-ink-soft">· {cung.chi}</span>

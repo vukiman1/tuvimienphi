@@ -35,6 +35,8 @@
   --text-reading: 1.0625rem;
   --leading-reading: 1.7;
   --container-reading: 68ch;
+  --max-height-workspace-panel: calc(100dvh - 3rem);
+  --max-height-sheet: 85dvh;
 
   --shadow-glow-gold: 0 0 0.75rem rgb(242 180 65 / 0.45), 0 0 0.125rem rgb(242 180 65 / 0.8);
   --shadow-glow-gold-strong:

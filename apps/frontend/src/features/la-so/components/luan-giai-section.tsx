@@ -18,6 +18,8 @@ interface LuanGiaiSectionProps {
 
 const MOTTO_ORBIT_RINGS = 2;
 
+export const LUAN_GIAI_ANCHOR_ID = 'luan-giai';
+
 export function LuanGiaiSection({
   birth,
   viewYear,
@@ -32,7 +34,7 @@ export function LuanGiaiSection({
   return (
     <section className="bg-deep text-day">
       <div className="mx-auto max-w-6xl px-4 pt-12 pb-8 md:px-6">
-        <div className="text-center">
+        <div className="text-center" id={LUAN_GIAI_ANCHOR_ID} tabIndex={-1}>
           <DisplayTitle as="h2" face={TitleFace.Serif} size={DisplaySize.Card}>
             Luận giải lá số
           </DisplayTitle>

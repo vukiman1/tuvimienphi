@@ -8,6 +8,7 @@ import {
   createRouter,
 } from '@tanstack/react-router';
 import { birthSearchSchema } from '@/features/la-so/birth-input';
+import { DESKTOP_WORKSPACE_QUERY } from '@/features/la-so/components/la-so-workspace.constants';
 import { LaSoPage } from './la-so-page';
 
 jest.mock('@/lib/http-request', () => ({
@@ -16,6 +17,8 @@ jest.mock('@/lib/http-request', () => ({
 
 const SAMPLE_SEARCH = '?day=12&month=3&year=1995&calendar=duong&hour=Ng%E1%BB%8D&gender=nam';
 const LUAN_GIAI_TITLE = 'Luận giải lá số';
+const QUAN_LOC_READ_LINK = 'Đọc luận giải chương Công danh Sự nghiệp';
+const ORIGINAL_MATCH_MEDIA = window.matchMedia;
 
 interface RenderedLaSoPage {
   readonly view: ReturnType<typeof render>;
@@ -64,8 +67,32 @@ function follows(later: Node, earlier: Node): boolean {
   return (earlier.compareDocumentPosition(later) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0;
 }
 
+function stubScreen(isDesktop: boolean): void {
+  window.matchMedia = (query: string): MediaQueryList =>
+    ({
+      matches: isDesktop && query === DESKTOP_WORKSPACE_QUERY,
+      media: query,
+      onchange: null,
+      addEventListener: () => undefined,
+      removeEventListener: () => undefined,
+      addListener: () => undefined,
+      removeListener: () => undefined,
+      dispatchEvent: () => false,
+    }) as MediaQueryList;
+}
+
+function luanGiaiAnchor(): HTMLElement {
+  const anchor = document.getElementById('luan-giai');
+  if (anchor === null) throw new Error('the page has no #luan-giai anchor');
+  return anchor;
+}
+
 beforeEach(() => {
   window.localStorage.clear();
+});
+
+afterEach(() => {
+  window.matchMedia = ORIGINAL_MATCH_MEDIA;
 });
 
 describe('LaSoPage', () => {
@@ -99,6 +126,7 @@ describe('LaSoPage', () => {
   });
 
   it('writes the picked cung into the URL', async () => {
+    stubScreen(true);
     const { currentSearch } = await renderLaSoPage(SAMPLE_SEARCH);
     fireEvent.click(cungButton('Tài Bạch'));
 
@@ -129,5 +157,34 @@ describe('LaSoPage', () => {
 
     expect(container.querySelectorAll('img')).toHaveLength(1);
     expect(heroBand?.querySelectorAll('img')).toHaveLength(1);
+  });
+
+  it('drops the picked-cung line', async () => {
+    await renderLaSoPage(SAMPLE_SEARCH);
+
+    expect(screen.queryByText(/Đang chọn cung/)).toBeNull();
+  });
+
+  it('reading a chapter from the panel selects it and moves focus to luận giải', async () => {
+    stubScreen(true);
+    await renderLaSoPage(SAMPLE_SEARCH);
+    fireEvent.click(cungButton('Quan Lộc'));
+
+    fireEvent.click(await screen.findByRole('button', { name: QUAN_LOC_READ_LINK }));
+
+    expect(screen.getByRole('tab', { name: /^03/ }).getAttribute('aria-selected')).toBe('true');
+    expect(luanGiaiAnchor().contains(document.activeElement)).toBe(true);
+  });
+
+  it('reading a chapter from the sheet closes it and moves focus to luận giải', async () => {
+    stubScreen(false);
+    await renderLaSoPage(SAMPLE_SEARCH);
+    fireEvent.click(cungButton('Quan Lộc'));
+
+    fireEvent.click(await screen.findByRole('button', { name: QUAN_LOC_READ_LINK }));
+
+    await waitFor(() => expect(luanGiaiAnchor().contains(document.activeElement)).toBe(true));
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(screen.getByRole('tab', { name: /^03/ }).getAttribute('aria-selected')).toBe('true');
   });
 });
