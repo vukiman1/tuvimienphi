@@ -3,6 +3,7 @@
   "framework": "vite",
   "buildCommand": "pnpm nx build @org/dashboard",
   "outputDirectory": "dist",
+  "git": { "deploymentEnabled": false },
   "redirects": [{ "source": "/", "destination": "/admin", "permanent": false }],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "https://api.xemtuvimienphi.top/api/$1" },
