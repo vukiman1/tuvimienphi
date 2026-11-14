@@ -49,6 +49,8 @@ export * from './luan/build-tai-bach-muc-briefs.js';
 export * from './luan/build-tinh-duyen-brief.js';
 export * from './luan/build-tinh-duyen-muc-briefs.js';
 export * from './luan/build-van-han-brief.js';
+export * from './luan/quick-cung-luan.js';
+export * from './luan/bang/cung-y-nghia.js';
 export * from './luan/bang/menh-than.js';
 export { LUU_TINH_NAMES, type LuuTinhName } from './an-luu-tinh.js';
 export * from './luan/bang/van-han/dai-van-chu-de.js';
