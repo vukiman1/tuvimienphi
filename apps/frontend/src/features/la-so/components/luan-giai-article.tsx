@@ -3,6 +3,8 @@ import type { LuanGiaiArticle } from '@org/shared-contracts';
 import { LuanGiaiAccordion } from '@/features/la-so/components/luan-giai-accordion';
 import { LuanGiaiCard, LuanGiaiCardHeader } from '@/features/la-so/components/luan-giai-card';
 import { RichText } from '@/features/la-so/components/rich-text';
+import { ArticlePainting } from '@/features/la-so/components/article-painting';
+import { luanGiaiPainting } from '@/features/la-so/luan-giai-painting';
 import { cn } from '@/lib/utils';
 
 interface LuanGiaiArticleCardProps {
@@ -34,10 +36,13 @@ export function LuanGiaiArticleCard({
         }
       : NO_REVEAL;
   const summaryStep = FIRST_PARAGRAPH_STEP + article.paragraphs.length;
+  const painting = luanGiaiPainting(article.sourceCung);
 
   return (
     <LuanGiaiCard>
       <LuanGiaiCardHeader eyebrow={article.eyebrow} order={order} title={article.title} />
+
+      {painting === undefined ? null : <ArticlePainting painting={painting} />}
 
       <div className="mt-6 flex items-center gap-6">
         <blockquote

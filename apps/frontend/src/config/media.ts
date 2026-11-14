@@ -99,6 +99,10 @@ export function cungEmblemUrl(cungSlug: string, width: number): string {
   return mediaUrl(`/la-so/cung/cung-${cungSlug}-${width}.webp`);
 }
 
+export function luanGiaiPaintingUrl(cungSlug: string, width: number): string {
+  return mediaUrl(`/la-so/than-cu/${cungSlug}-${width}.webp`);
+}
+
 export function hanhIconUrl(hanhSlug: string): string {
   return mediaUrl(`/la-so/hanh/hanh-${hanhSlug}-64.webp`);
 }

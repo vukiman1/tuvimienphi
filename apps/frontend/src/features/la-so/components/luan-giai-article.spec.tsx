@@ -22,6 +22,32 @@ function doTre(text: string): string {
 }
 
 describe('LuanGiaiArticleCard', () => {
+  it('vẽ tranh thuỷ mặc của cung mà bài đọc từ đó', () => {
+    const { container } = render(
+      <LuanGiaiArticleCard article={{ ...BAI, sourceCung: 'Thiên Di' }} order="02" />,
+    );
+    const tranh = container.querySelector('figure img');
+
+    expect(tranh?.getAttribute('src')).toContain('/la-so/than-cu/thien-di-320.webp');
+    expect(tranh?.getAttribute('srcset')).toContain('thien-di-640.webp 640w');
+    expect(tranh?.getAttribute('loading')).toBe('lazy');
+    expect(tranh?.closest('[aria-hidden="true"]')).not.toBeNull();
+  });
+
+  it('không vẽ tranh khi bài không gắn với cung nào', () => {
+    const { container } = render(<LuanGiaiArticleCard article={BAI} order="02" />);
+
+    expect(container.querySelector('figure img')).toBeNull();
+  });
+
+  it('không vẽ tranh khi tên cung lạ', () => {
+    const { container } = render(
+      <LuanGiaiArticleCard article={{ ...BAI, sourceCung: 'Cung lạ' }} order="02" />,
+    );
+
+    expect(container.querySelector('figure img')).toBeNull();
+  });
+
   it('hiện dần từng khối khi bài vừa được viết xong', () => {
     render(<LuanGiaiArticleCard article={BAI} isFresh order="02" />);
 
@@ -62,11 +88,13 @@ describe('LuanGiaiArticleCard', () => {
     );
   });
 
-  it('ships no painting and no seal', () => {
+  it('ships the cung painting and no seal', () => {
     const { container } = render(
       <LuanGiaiArticleCard article={{ ...BAI, sourceCung: 'Mệnh' }} order="02" />,
     );
+    const anh = [...container.querySelectorAll('img')];
 
-    expect(container.querySelectorAll('img')).toHaveLength(0);
+    expect(anh).toHaveLength(1);
+    expect(anh[0].getAttribute('src')).toContain('/la-so/than-cu/menh-320.webp');
   });
 });
