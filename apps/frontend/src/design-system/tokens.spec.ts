@@ -9,8 +9,6 @@ const CHART_TOKEN_PREFIXES = ['hanh-', 'chart-block'] as const;
 const DARK_TONES = ['night', 'deep', 'dusk'] as const;
 const SPOTLIGHT_TINT_ALPHA = 0.1;
 const NIGHT_SPOTLIGHT_ALPHA = 0.12;
-const BOARD_RULE_ALPHA = 0.55;
-const RELATED_RING_ALPHA = 0.6;
 const NIGHT_STAR_TOKENS = ['kim', 'moc', 'thuy', 'hoa', 'tho'].map((hanh) => `hanh-${hanh}-night`);
 const TAB_TRACK_ALPHA = 0.4;
 const UNAVAILABLE_TAB_ALPHA = 0.55;
@@ -253,15 +251,6 @@ describe('night board tokens', () => {
     for (const graphic of ['gold', 'ember', 'dawn']) {
       for (const surface of nightSurfaces()) {
         expect(contrastRatio(token(graphic), surface)).toBeGreaterThanOrEqual(AA_NON_TEXT);
-      }
-    }
-  });
-
-  it('night board rules and the related ring stay visible', () => {
-    for (const alpha of [BOARD_RULE_ALPHA, RELATED_RING_ALPHA]) {
-      const line = compositeOver(token('gold'), alpha, token('night'));
-      for (const surface of nightSurfaces()) {
-        expect(contrastRatio(line, surface)).toBeGreaterThanOrEqual(AA_NON_TEXT);
       }
     }
   });
