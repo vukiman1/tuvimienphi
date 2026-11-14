@@ -20,10 +20,11 @@ function classTokens(element: Element | null): readonly string[] {
   return element?.getAttribute('class')?.split(/\s+/) ?? [];
 }
 
-function renderHero(): HTMLElement {
+function renderHero(fullName = ''): HTMLElement {
   render(
     <LaSoHero
       birthYear={BIRTH_YEAR}
+      fullName={fullName}
       meta={meta}
       onViewYearChange={() => undefined}
       viewYear={VIEW_YEAR}
@@ -57,5 +58,33 @@ describe('LaSoHero', () => {
       expect.arrayContaining(['bg-day', 'text-ink', ...FOCUS_RING_CLASS.split(' ')]),
     );
     expect(classTokens(within(band).getByText('Năm xem'))).toContain('text-day-soft');
+  });
+
+  it('names the chart owner in the title', () => {
+    render(
+      <LaSoHero
+        birthYear={BIRTH_YEAR}
+        fullName="Nguyễn Văn A"
+        meta={meta}
+        onViewYearChange={() => undefined}
+        viewYear={VIEW_YEAR}
+      />,
+    );
+
+    expect(screen.getByRole('heading', { level: 1, name: 'Lá số của Nguyễn Văn A' })).toBeTruthy();
+  });
+
+  it('keeps the generic title without a name', () => {
+    renderHero('');
+
+    expect(screen.getByRole('heading', { level: 1 }).textContent).toBe('Lá Số Tử Vi');
+  });
+
+  it('paints the hero from md up', () => {
+    const band = renderHero();
+    const painting = band.querySelector('img');
+
+    expect(painting?.getAttribute('loading')).toBe('lazy');
+    expect(painting?.getAttribute('srcset')).toContain('hero-night-768.webp 768w');
   });
 });

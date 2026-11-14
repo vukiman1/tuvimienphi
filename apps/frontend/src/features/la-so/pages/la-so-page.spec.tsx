@@ -113,17 +113,21 @@ describe('LaSoPage', () => {
     const luanGiaiBand = screen
       .getByRole('heading', { level: 2, name: LUAN_GIAI_TITLE })
       .closest('section');
+    const heroBand = screen.getByRole('heading', { level: 1 }).closest('section');
 
     for (const image of container.querySelectorAll('img')) {
-      expect(luanGiaiBand?.contains(image)).toBe(true);
+      expect(luanGiaiBand?.contains(image) || heroBand?.contains(image)).toBe(true);
     }
   });
 
-  it('renders no images', async () => {
+  it('paints only the hero', async () => {
     const {
       view: { container },
     } = await renderLaSoPage(SAMPLE_SEARCH);
 
-    expect(container.querySelectorAll('img')).toHaveLength(0);
+    const heroBand = screen.getByRole('heading', { level: 1 }).closest('section');
+
+    expect(container.querySelectorAll('img')).toHaveLength(1);
+    expect(heroBand?.querySelectorAll('img')).toHaveLength(1);
   });
 });

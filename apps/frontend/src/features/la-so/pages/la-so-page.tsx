@@ -56,6 +56,7 @@ export function LaSoPage(): ReactElement {
     <main className="w-full">
       <LaSoHero
         birthYear={search.year ?? viewYear}
+        fullName={birth.fullName ?? ''}
         meta={chart.meta}
         onViewYearChange={(year) =>
           void navigate({ search: (prev) => ({ ...prev, viewYear: year }) })
