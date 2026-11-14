@@ -3,7 +3,7 @@ export enum BoardVariant {
   Full = 'full',
 }
 
-export const FULL_BOARD_MIN_WIDTH = 640;
+export const FULL_BOARD_MIN_WIDTH = 680;
 export const FULL_BOARD_WIDTH = 812;
 const MAX_BOARD_SCALE = 1;
 

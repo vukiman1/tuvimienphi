@@ -3,7 +3,7 @@ import { CHART_RULE_CLASS, CUNG_SURFACE_CLASS } from '@/features/la-so/chart-col
 import type { ChartMeta } from '@/features/la-so/chart-types';
 import { cn } from '@/lib/utils';
 
-const WORD_ABOVE_LINES_CLASS = 'relative z-20 bg-day';
+const WORD_ABOVE_LINES_CLASS = 'relative z-20 bg-night';
 
 interface ThienBanProps {
   readonly meta: ChartMeta;
@@ -14,12 +14,12 @@ function Row({ label, value }: { readonly label: string; readonly value: string 
     <div className="flex gap-2 text-xs leading-5">
       <span className="w-24 shrink-0">
         <span
-          className={cn('font-semibold whitespace-nowrap text-ink-soft', WORD_ABOVE_LINES_CLASS)}
+          className={cn('font-semibold whitespace-nowrap text-day-soft', WORD_ABOVE_LINES_CLASS)}
         >
           {label}
         </span>
       </span>
-      <span className={cn('min-w-0 text-ink', WORD_ABOVE_LINES_CLASS)}>{value}</span>
+      <span className={cn('min-w-0 text-day', WORD_ABOVE_LINES_CLASS)}>{value}</span>
     </div>
   );
 }
@@ -33,7 +33,7 @@ export function ThienBan({ meta }: ThienBanProps): ReactElement {
         CUNG_SURFACE_CLASS.base,
       )}
     >
-      <p className={cn('text-xl leading-7 font-bold text-dusk', WORD_ABOVE_LINES_CLASS)}>
+      <p className={cn('text-xl leading-7 font-bold text-dawn', WORD_ABOVE_LINES_CLASS)}>
         Lá Số Tử Vi
       </p>
 

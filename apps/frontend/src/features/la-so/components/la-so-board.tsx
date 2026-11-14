@@ -76,8 +76,8 @@ function ChiLabel({
   return (
     <span
       className={cn(
-        'pointer-events-none absolute z-20 bg-day px-0.5 text-2xs leading-3.5',
-        isActive ? 'font-bold text-dusk' : 'font-semibold text-ink-soft',
+        'pointer-events-none absolute z-20 bg-night px-0.5 text-2xs leading-3.5',
+        isActive ? 'font-bold text-dawn' : 'font-semibold text-day-soft',
       )}
       style={{ left, top, transform }}
     >
@@ -154,7 +154,7 @@ function FullBoard({
       }}
     >
       {chart.cungs.map((cung) => (
-        <div key={cung.index} className="min-w-0 bg-day" style={gridPlacement(cung)}>
+        <div key={cung.index} className="min-w-0 bg-night" style={gridPlacement(cung)}>
           <CungCard
             cung={cung}
             isFocused={isSpotlight && cung.index === focusedIndex}
@@ -196,7 +196,7 @@ function CompactBoard({ chart, selectedIndex, onSelect }: LaSoBoardProps): React
         )}
       >
         {chart.cungs.map((cung) => (
-          <div key={cung.index} className="min-w-0 bg-day" style={gridPlacement(cung)}>
+          <div key={cung.index} className="min-w-0 bg-night" style={gridPlacement(cung)}>
             <CompactCungCell
               cung={cung}
               isPicked={cung.index === selectedIndex}
@@ -206,7 +206,7 @@ function CompactBoard({ chart, selectedIndex, onSelect }: LaSoBoardProps): React
           </div>
         ))}
 
-        <div className="flex items-center justify-center bg-day" style={CENTER_AREA}>
+        <div className="flex items-center justify-center bg-night" style={CENTER_AREA}>
           <Orbit points={ORBIT_POINTS} className="size-3/4 text-gold/60" />
         </div>
 

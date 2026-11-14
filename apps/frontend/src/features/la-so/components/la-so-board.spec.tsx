@@ -24,20 +24,20 @@ const FULL_CONTAINER_NARROWER_THAN_BOARD = 700;
 const EQUAL_GROWING_ROWS = new RegExp(`^repeat\\(${BOARD_SIZE}, minmax\\(\\d+px, 1fr\\)\\)$`);
 const TY = 0;
 const TY_RELATED = [4, 8, 6, 1] as const;
-const SPOTLIGHT_CLASS = 'bg-gold/10';
+const SPOTLIGHT_CLASS = 'bg-gold/12';
 const DIMMED_CLASS = 'opacity-30';
-const PICKED_MARK = ['inset-ring-2', 'inset-ring-ink'] as const;
-const FOCUSED_MARK = ['inset-ring-2', 'inset-ring-gold'] as const;
-const RELATED_MARK = ['inset-ring-1', 'inset-ring-gold'] as const;
+const PICKED_MARK = ['inset-ring-2', 'inset-ring-gold'] as const;
+const FOCUSED_MARK = ['inset-ring-2', 'inset-ring-dawn'] as const;
+const RELATED_MARK = ['inset-ring-1', 'inset-ring-gold/60'] as const;
 const FOCUS_RING_TOKENS = FOCUS_RING_CLASS.split(' ');
 const OUTER_RING_STATE = /^ring-/;
 
 const HANH_CLASS: Readonly<Record<NguHanh, string>> = {
-  Kim: 'text-hanh-kim',
-  Mộc: 'text-hanh-moc',
-  Thủy: 'text-hanh-thuy',
-  Hỏa: 'text-hanh-hoa',
-  Thổ: 'text-hanh-tho',
+  Kim: 'text-hanh-kim-night',
+  Mộc: 'text-hanh-moc-night',
+  Thủy: 'text-hanh-thuy-night',
+  Hỏa: 'text-hanh-hoa-night',
+  Thổ: 'text-hanh-tho-night',
 };
 
 const STUBBED_RESIZE_OBSERVER = globalThis.ResizeObserver;
@@ -211,14 +211,20 @@ describe('LaSoBoard on a wide container', () => {
     }
   });
 
-  it('marks only the picked cung with an ink ring', () => {
+  it('marks only the picked cung with a gold ring', () => {
     renderBoard();
     const pressed = screen
       .getAllByRole('button', { name: /^Cung / })
-      .filter((button) => classTokens(button).includes('inset-ring-ink'));
+      .filter((button) => classTokens(button).includes('inset-ring-gold'));
 
     expect(pressed).toEqual([cungButton(MENH)]);
     expect(cungButton(MENH).getAttribute('aria-pressed')).toBe('true');
+  });
+
+  it('lights the picked cung with the gold glow', () => {
+    renderBoard();
+
+    expect(classTokens(cungButton(MENH))).toContain('shadow-glow-gold-strong');
   });
 
   it('spotlights the hovered cung with its tam hợp, xung chiếu and nhị hợp', () => {
@@ -264,10 +270,10 @@ describe('LaSoBoard on a wide container', () => {
     expect(tinted).toEqual([]);
   });
 
-  it('draws the tam hợp triangle in deep and the xung chiếu line in ember', () => {
+  it('draws the tam hợp triangle in gold and the xung chiếu line in ember', () => {
     const { container } = renderBoard();
 
-    expect(container.querySelectorAll('svg line.stroke-deep')).toHaveLength(3);
+    expect(container.querySelectorAll('svg line.stroke-gold')).toHaveLength(3);
     expect(container.querySelectorAll('svg line.stroke-ember')).toHaveLength(1);
   });
 
@@ -277,7 +283,7 @@ describe('LaSoBoard on a wide container', () => {
     const words = [screen.getByText('Lá Số Tử Vi'), label, screen.getByText(CHART.meta.chuMenh)];
 
     for (const word of words) {
-      expect(classTokens(word)).toEqual(expect.arrayContaining(['relative', 'z-20', 'bg-day']));
+      expect(classTokens(word)).toEqual(expect.arrayContaining(['relative', 'z-20', 'bg-night']));
     }
     const stackingAncestors: HTMLElement[] = [];
     for (let node = label.parentElement; node !== null; node = node.parentElement) {
@@ -293,16 +299,16 @@ describe('LaSoBoard on a wide container', () => {
       const label = screen
         .getAllByText(cung.chi)
         .find((element) => classTokens(element).includes('z-20'));
-      expect(classTokens(label)).toContain('bg-day');
+      expect(classTokens(label)).toContain('bg-night');
     }
   });
 
-  it('sets Tuần and Triệt on the chart-block surface', () => {
+  it('sets Tuần and Triệt on the day surface', () => {
     renderBoard();
 
     for (const label of ['Tuần', 'Triệt']) {
       expect(classTokens(screen.getByText(label))).toEqual(
-        expect.arrayContaining(['bg-chart-block', 'text-day']),
+        expect.arrayContaining(['bg-day', 'text-night']),
       );
     }
   });
