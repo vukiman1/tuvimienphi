@@ -35,6 +35,25 @@ Chưa có `prod.enc.env` trên `dev` thì bỏ qua cả ba bước, deploy dùng
 
 Không giải mã được (thiếu hoặc sai `SOPS_AGE_KEY`) thì job đỏ và không có tin Zalo, vì token nằm trong chính file đó. GitHub vẫn báo workflow fail qua email / app: bật ở Settings → Notifications → Actions.
 
+## Frontend và dashboard trên Vercel
+
+Repo là private và team Vercel ở gói Hobby, nên Vercel chặn mọi deploy từ Git có commit không do chủ team viết ("Deployment was blocked"). Vì vậy deploy từ Git bị tắt trong `apps/frontend/vercel.json` và `apps/dashboard/vercel.json` (`git.deploymentEnabled: false`), và workflow `Deploy Frontend` deploy bằng Vercel CLI sau khi `Push to dev` xanh. Vercel vẫn build trên hạ tầng của nó với cấu hình project như cũ.
+
+Token và ID nằm trong `vercel.enc.env`, mã hoá cùng khoá với `prod.enc.env` nhưng tách riêng để token không bị ghi lên VPS:
+
+| Key                           | Lấy ở đâu                                                         |
+| ----------------------------- | ----------------------------------------------------------------- |
+| `VERCEL_TOKEN`                | Vercel (tài khoản chủ team) → Account Settings → Tokens           |
+| `VERCEL_ORG_ID`               | Team Settings → General → Team ID                                 |
+| `VERCEL_FRONTEND_PROJECT_ID`  | Project `tuvimienphi-fronend` → Settings → General → Project ID   |
+| `VERCEL_DASHBOARD_PROJECT_ID` | Project `tuvimienphi-dashboard` → Settings → General → Project ID |
+
+```bash
+sops edit vercel.enc.env
+```
+
+Ba ID không bí mật nên để dạng rõ (`unencrypted_regex`), chỉ token được mã hoá. Còn `replace-me` thì job báo đỏ và nói rõ key nào thiếu. Deploy lại một commit: chạy tay `Deploy Frontend`, nhập SHA hoặc để trống để lấy commit mới nhất trên `dev`.
+
 ## Khoá
 
 | Khoá    | Nửa bí mật ở đâu                                                                                                                | Dùng cho    |
