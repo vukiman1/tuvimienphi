@@ -3,6 +3,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import type { NguHanh } from '@org/shared-tu-vi';
 import { FOCUS_RING_CLASS } from '@/design-system';
 import { CalendarType, Gender } from '@/features/la-so/birth-input';
+import { KEY_PHU_TINH } from '@/features/la-so/board-density';
 import { FULL_BOARD_WIDTH } from '@/features/la-so/board-fit';
 import { BOARD_SIZE } from '@/features/la-so/board-layout';
 import type { ChartView, CungView } from '@/features/la-so/chart-types';
@@ -186,6 +187,7 @@ function expectStateMarkBesideFocusRing(button: HTMLElement, mark: readonly stri
 }
 
 afterEach(() => {
+  window.localStorage.clear();
   Object.assign(globalThis, { ResizeObserver: STUBBED_RESIZE_OBSERVER });
   jest.restoreAllMocks();
 });
@@ -195,6 +197,7 @@ describe('LaSoBoard on a wide container', () => {
 
   it('paints every star with its hành token', () => {
     renderBoard();
+    fireEvent.click(screen.getByRole('button', { name: 'Đủ sao' }));
     const button = cungButton(MENH);
     const stars = [
       ...MENH.chinhTinh.map((sao) => ({ text: `${sao.polarity ?? ''}${sao.name}`, sao })),
@@ -209,6 +212,19 @@ describe('LaSoBoard on a wide container', () => {
       expect(element).toBeDefined();
       expect(classTokens(element)).toContain(HANH_CLASS[sao.element]);
     }
+  });
+
+  it('hides a non-key phụ tinh in Gọn and shows it in Đủ sao', () => {
+    const [hidden] = [...MENH.catTinh, ...MENH.hungTinh].filter(
+      (sao) => !KEY_PHU_TINH.has(sao.name),
+    );
+    renderBoard();
+
+    expect(elementReading(cungButton(MENH), hidden.name)).toBeUndefined();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Đủ sao' }));
+
+    expect(elementReading(cungButton(MENH), hidden.name)).toBeDefined();
   });
 
   it('marks only the picked cung with a gold ring', () => {
