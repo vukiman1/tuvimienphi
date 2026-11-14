@@ -2,14 +2,15 @@ import { useRef, useState, type ReactElement } from 'react';
 import type { BirthInput } from '@/features/la-so/birth-input';
 import { ringNeighbour } from '@/features/la-so/board-navigation';
 import type { ChartView } from '@/features/la-so/chart-types';
+import { MEDIA } from '@/config/media';
+import { BandPainting } from '@/features/la-so/components/band-painting';
 import { CungPanel } from '@/features/la-so/components/cung-panel';
 import { CungSheet } from '@/features/la-so/components/cung-sheet';
 import { LaSoBoard, type LaSoBoardHandle } from '@/features/la-so/components/la-so-board';
 import { DESKTOP_WORKSPACE_QUERY } from '@/features/la-so/components/la-so-workspace.constants';
-import { cungNameOf } from '@/features/la-so/cung-slug';
 import { useMediaQuery } from '@/hooks/use-media-query';
 
-export interface LaSoWorkspaceProps {
+interface LaSoWorkspaceProps {
   readonly chart: ChartView;
   readonly birth: BirthInput;
   readonly viewYear: number;
@@ -70,8 +71,9 @@ export function LaSoWorkspace({
   );
 
   return (
-    <section className="bg-night">
-      <div className="mx-auto max-w-7xl px-4 py-8 md:px-6">
+    <section className="relative bg-night">
+      <BandPainting painting={MEDIA.laSo.boardNight} />
+      <div className="relative mx-auto max-w-7xl px-4 py-8 md:px-6">
         <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_26rem]">
           <LaSoBoard
             boardRef={boardRef}
@@ -92,7 +94,7 @@ export function LaSoWorkspace({
               onOpenChange={setIsSheetOpen}
               onStep={(step) => onSelect(ringNeighbour(selectedIndex, step))}
               open={isSheetOpen}
-              title={`Cung ${cungNameOf(chart.cungs[selectedIndex])}`}
+              title={`Cung ${chart.cungs[selectedIndex].cungName}`}
             >
               {panel}
             </CungSheet>

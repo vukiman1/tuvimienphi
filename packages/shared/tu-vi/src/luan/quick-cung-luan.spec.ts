@@ -1,4 +1,5 @@
 import { castNatal, type NatalChart } from '../cast-chart.js';
+import { CUNG_NAMES } from '../dia-ban.js';
 import { Gender } from '../van-han.js';
 import { BANG_QUAN_LOC } from './bang/quan-loc/bang-quan-loc.js';
 import { buildCungBrief } from './build-cung-brief.js';
@@ -44,7 +45,9 @@ describe('quickCungLuan', () => {
     expect(quickCungLuan(VO_CHINH_DIEU_MENH_CHART, 'Mệnh')).not.toBeNull();
   });
 
-  it('has nothing to say for a cung without a table', () => {
-    expect(quickCungLuan(BASELINE_CHART, 'Thiên Di')).toBeNull();
+  it('gives every cung a reading on the sample chart', () => {
+    const unread = CUNG_NAMES.filter((cung) => quickCungLuan(BASELINE_CHART, cung) === null);
+
+    expect(unread).toEqual([]);
   });
 });

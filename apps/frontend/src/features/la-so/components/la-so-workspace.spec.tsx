@@ -2,24 +2,17 @@ import { useState, type ReactElement } from 'react';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { CungName } from '@org/shared-tu-vi';
-import { CalendarType, Gender, type BirthInput } from '@/features/la-so/birth-input';
 import { ringNeighbour } from '@/features/la-so/board-navigation';
-import { cungNameOf } from '@/features/la-so/cung-slug';
-import { toChartView } from '@/features/la-so/to-chart-view';
+import {
+  SAMPLE_BIRTH,
+  SAMPLE_CHART,
+  SAMPLE_VIEW_YEAR,
+  indexOfCung,
+} from '@/test-utils/sample-chart';
 import { restoreMatchMedia, stubMatchMedia } from '@/test-utils/stub-match-media';
 import { DESKTOP_WORKSPACE_QUERY } from './la-so-workspace.constants';
 import { LaSoWorkspace } from './la-so-workspace';
 
-const BIRTH: BirthInput = {
-  day: 12,
-  month: 3,
-  year: 1995,
-  calendar: CalendarType.Solar,
-  hour: 'Ngọ',
-  gender: Gender.Male,
-};
-const VIEW_YEAR = 2026;
-const CHART = toChartView({ ...BIRTH, viewYear: VIEW_YEAR });
 const QUAN_LOC_CHAPTER = '03';
 const SCROLLED_OFFSET = 200;
 
@@ -28,23 +21,19 @@ interface WorkspaceSpies {
   readonly onReadChapter: jest.Mock<void, [string]>;
 }
 
-function indexOfCung(name: CungName): number {
-  return CHART.cungs.findIndex((cung) => cungNameOf(cung) === name);
-}
-
 function WorkspaceHarness({ onSelect, onReadChapter }: WorkspaceSpies): ReactElement {
   const [selectedIndex, setSelectedIndex] = useState(indexOfCung('Mệnh'));
   return (
     <LaSoWorkspace
-      birth={BIRTH}
-      chart={CHART}
+      birth={SAMPLE_BIRTH}
+      chart={SAMPLE_CHART}
       onReadChapter={onReadChapter}
       onSelect={(index) => {
         onSelect(index);
         setSelectedIndex(index);
       }}
       selectedIndex={selectedIndex}
-      viewYear={VIEW_YEAR}
+      viewYear={SAMPLE_VIEW_YEAR}
     />
   );
 }
@@ -113,7 +102,7 @@ describe('LaSoWorkspace', () => {
 
     expect(onSelect).toHaveBeenLastCalledWith(next);
     expect(
-      screen.getByRole('dialog', { name: `Cung ${cungNameOf(CHART.cungs[next])}` }),
+      screen.getByRole('dialog', { name: `Cung ${SAMPLE_CHART.cungs[next].cungName}` }),
     ).toBeTruthy();
   });
 
@@ -127,7 +116,7 @@ describe('LaSoWorkspace', () => {
 
     expect(onSelect).toHaveBeenLastCalledWith(previous);
     expect(
-      screen.getByRole('dialog', { name: `Cung ${cungNameOf(CHART.cungs[previous])}` }),
+      screen.getByRole('dialog', { name: `Cung ${SAMPLE_CHART.cungs[previous].cungName}` }),
     ).toBeTruthy();
   });
 
@@ -162,6 +151,19 @@ describe('LaSoWorkspace', () => {
     act(() => media.setMatches(DESKTOP_WORKSPACE_QUERY, false));
 
     expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('paints the night sky behind the workspace from tablet width up, lazily', () => {
+    stubMatchMedia([DESKTOP_WORKSPACE_QUERY]);
+    renderWorkspace();
+    const painting = document.querySelector('img[src*="/la-so/board-night-"]');
+
+    expect(painting?.parentElement?.classList.contains('bg-night')).toBe(true);
+    expect(painting?.getAttribute('alt')).toBe('');
+    expect(painting?.getAttribute('loading')).toBe('lazy');
+    expect(painting?.getAttribute('fetchpriority')).toBe('low');
+    expect(painting?.classList.contains('hidden')).toBe(true);
+    expect(painting?.classList.contains('md:block')).toBe(true);
   });
 
   it('closes the sheet before handing over the chapter to read', async () => {

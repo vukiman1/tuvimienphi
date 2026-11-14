@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import type { CungName, LuanDe, Rating } from '@org/shared-tu-vi';
+import { type CungName, type LuanDe, type QuickCungLuan, type Rating } from '@org/shared-tu-vi';
 import { FOCUS_RING_CLASS } from '@/design-system';
 import { starRatings } from '@/features/la-so/chart-star-ratings';
 import type { ChartView } from '@/features/la-so/chart-types';
@@ -16,6 +16,11 @@ interface QuickLuanSectionProps {
   readonly chart: ChartView;
   readonly cung: CungName;
   readonly onReadChapter: (order: string) => void;
+}
+
+interface QuickLuanClaimsProps {
+  readonly luan: QuickCungLuan;
+  readonly chart: ChartView;
 }
 
 interface SkeletonLineProps {
@@ -47,6 +52,16 @@ function ClaimRow({ label, claim, ratings }: ClaimRowProps): ReactElement {
         Vì sao: {claim.do.map((name) => starWithRating(name, ratings)).join(', ')}
       </p>
     </div>
+  );
+}
+
+function QuickLuanClaims({ luan, chart }: QuickLuanClaimsProps): ReactElement {
+  const ratings = starRatings(chart);
+  return (
+    <>
+      <ClaimRow label="Nét thuận" claim={luan.thuan} ratings={ratings} />
+      <ClaimRow label="Cần để ý" claim={luan.nghich} ratings={ratings} />
+    </>
   );
 }
 
@@ -83,7 +98,8 @@ function LuanSkeleton(): ReactElement {
 }
 
 function chapterFor(cung: CungName): LuanGiaiChapter | undefined {
-  return LUAN_GIAI_CHAPTERS.find((candidate) => candidate.order === CHAPTER_FOR_CUNG[cung]);
+  const order = CHAPTER_FOR_CUNG[cung];
+  return LUAN_GIAI_CHAPTERS.find((candidate) => candidate.order === order);
 }
 
 export function QuickLuanSection({
@@ -94,29 +110,23 @@ export function QuickLuanSection({
 }: QuickLuanSectionProps): ReactElement | null {
   const { data, isPending } = useQuickLuan(birth, cung);
   const chapter = chapterFor(cung);
-  if (!chapter || (!isPending && !data)) return null;
-  const ratings = starRatings(chart);
+  if (!isPending && !data) return null;
 
   return (
     <PanelSection title="Luận nhanh">
-      {data ? (
-        <>
-          <ClaimRow label="Nét thuận" claim={data.thuan} ratings={ratings} />
-          <ClaimRow label="Cần để ý" claim={data.nghich} ratings={ratings} />
-        </>
-      ) : (
-        <LuanSkeleton />
-      )}
-      <button
-        type="button"
-        className={cn(
-          'self-start text-sm font-semibold text-ink underline underline-offset-4',
-          FOCUS_RING_CLASS,
-        )}
-        onClick={() => onReadChapter(chapter.order)}
-      >
-        Đọc luận giải chương {chapter.title}
-      </button>
+      {data ? <QuickLuanClaims chart={chart} luan={data} /> : <LuanSkeleton />}
+      {chapter ? (
+        <button
+          type="button"
+          className={cn(
+            'self-start text-sm font-semibold text-ink underline underline-offset-4',
+            FOCUS_RING_CLASS,
+          )}
+          onClick={() => onReadChapter(chapter.order)}
+        >
+          Đọc luận giải chương {chapter.title}
+        </button>
+      ) : null}
     </PanelSection>
   );
 }

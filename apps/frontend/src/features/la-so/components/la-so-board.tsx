@@ -26,6 +26,7 @@ import { cungIndexInDirection, isBoardKey } from '@/features/la-so/board-navigat
 import { BoardDensity, cungForDensity } from '@/features/la-so/board-density';
 import { useBoardDensity } from '@/features/la-so/use-board-density';
 import { BoardDensityToggle } from '@/features/la-so/components/board-density-toggle';
+import { BoardLegend } from '@/features/la-so/components/board-legend';
 import { CHART_LINE_CLASS, CHART_RULE_CLASS } from '@/features/la-so/chart-colors';
 import { CompactCungCell } from '@/features/la-so/components/compact-cung-cell';
 import { CungCard } from '@/features/la-so/components/cung-card';
@@ -36,17 +37,12 @@ export interface LaSoBoardHandle {
   readonly focusCung: (index: number) => void;
 }
 
-interface CungButtonRegistry {
-  readonly register: (cungIndex: number) => (button: HTMLButtonElement | null) => void;
-}
+type RegisterCungButton = (cungIndex: number) => (button: HTMLButtonElement | null) => void;
 
 interface LaSoBoardProps {
   readonly chart: ChartView;
   readonly selectedIndex: number;
   readonly onSelect: (cungIndex: number) => void;
-}
-
-interface LaSoBoardWithHandleProps extends LaSoBoardProps {
   readonly boardRef?: Ref<LaSoBoardHandle>;
 }
 
@@ -56,10 +52,7 @@ interface LineStyle {
 }
 
 const CENTER_AREA = { gridRow: '2 / span 2', gridColumn: '2 / span 2' } as const;
-const FULL_BOARD_MIN_ROW_HEIGHT: Readonly<Record<BoardDensity, number>> = {
-  [BoardDensity.All]: 258,
-  [BoardDensity.Key]: 176,
-};
+const FULL_BOARD_MIN_ROW_HEIGHT = 258;
 const FULL_LINE_STYLE: LineStyle = { strokeWidth: 0.008 };
 const COMPACT_LINE_STYLE: LineStyle = { strokeWidth: 1.5, vectorEffect: 'non-scaling-stroke' };
 const ORBIT_POINTS = 12;
@@ -149,7 +142,8 @@ function BoardLines({
   );
 }
 
-interface FullBoardProps extends LaSoBoardProps, CungButtonRegistry {
+interface FullBoardProps extends LaSoBoardProps {
+  readonly register: RegisterCungButton;
   readonly density: BoardDensity;
   readonly scale: number;
   readonly hoveredIndex: number | null;
@@ -178,7 +172,7 @@ function FullBoard({
         width: FULL_BOARD_WIDTH,
         zoom: scale,
         gridTemplateColumns: `repeat(${BOARD_SIZE}, minmax(0, 1fr))`,
-        gridTemplateRows: `repeat(${BOARD_SIZE}, minmax(${FULL_BOARD_MIN_ROW_HEIGHT[density]}px, 1fr))`,
+        gridTemplateRows: `repeat(${BOARD_SIZE}, minmax(${FULL_BOARD_MIN_ROW_HEIGHT}px, 1fr))`,
       }}
     >
       {chart.cungs.map((cung) => (
@@ -186,6 +180,7 @@ function FullBoard({
           <CungCard
             buttonRef={register(cung.index)}
             cung={cungForDensity(cung, density)}
+            sizingCung={density === BoardDensity.Key ? cung : undefined}
             isFocused={isSpotlight && cung.index === focusedIndex}
             isRelated={isSpotlight && highlights.related.has(cung.index)}
             isSelected={cung.index === selectedIndex}
@@ -216,7 +211,7 @@ function CompactBoard({
   selectedIndex,
   onSelect,
   register,
-}: LaSoBoardProps & CungButtonRegistry): ReactElement {
+}: LaSoBoardProps & { readonly register: RegisterCungButton }): ReactElement {
   const highlights = boardHighlights(chart, selectedIndex);
 
   return (
@@ -256,12 +251,12 @@ function CompactBoard({
 }
 
 function useCungButtons(boardRef: Ref<LaSoBoardHandle> | undefined): {
-  readonly register: CungButtonRegistry['register'];
+  readonly register: RegisterCungButton;
   readonly handleKeyDown: (event: KeyboardEvent<HTMLElement>) => void;
 } {
   const buttons = useRef(new Map<number, HTMLButtonElement>());
 
-  const register: CungButtonRegistry['register'] = (cungIndex) => (button) => {
+  const register: RegisterCungButton = (cungIndex) => (button) => {
     if (button === null) buttons.current.delete(cungIndex);
     else buttons.current.set(cungIndex, button);
   };
@@ -287,7 +282,7 @@ export function LaSoBoard({
   selectedIndex,
   onSelect,
   boardRef,
-}: LaSoBoardWithHandleProps): ReactElement {
+}: LaSoBoardProps): ReactElement {
   const { ref, width } = useElementWidth<HTMLDivElement>();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [density, setDensity] = useBoardDensity();
@@ -321,6 +316,7 @@ export function LaSoBoard({
           selectedIndex={selectedIndex}
         />
       ) : null}
+      {variant === null ? null : <BoardLegend />}
     </div>
   );
 }

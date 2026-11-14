@@ -26,7 +26,7 @@ Kim An picked the direction from five AI mockups on 2026-11-14: the dark board f
    - a short **luận nhanh** (one thuận and one nghịch claim, with the stars behind each);
    - every phụ tinh, grouped;
    - a link to the matching paid chapter.
-3. The board fits one desktop screen by default: a **Gọn** density (key stars only), with a **Đủ sao** toggle that is remembered.
+3. A **Gọn** density (key stars only) with a remembered **Đủ sao** toggle. Both densities keep the familiar tall board: a Gọn cell reserves the height its Đủ sao content needs (Kim An, 2026-11-14).
 4. Night look. Dark board on `night`, gold rules and glow, a painted hero, and luận giải unchanged below.
 5. Every quality gate from `docs/redesign/design.md` still holds: Lighthouse, AA contrast, CLS 0, no new font weights.
 
@@ -52,17 +52,17 @@ Kim An picked the direction from five AI mockups on 2026-11-14: the dark board f
 
 ## Layout
 
-| Width (viewport) | Board                                                                    | Detail                                                                                   |
-| ---------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
-| ≥ 1280           | Left column, `minmax(0,1fr)`; full board scaled to fit (about 780 px)    | Sticky right column, 26rem, full height below the header, scrolls inside                 |
-| 680–1279         | Full board, centred, up to 812 px                                        | Bottom sheet (Radix Dialog), opened by tapping a cung, max 85dvh, prev/next cung buttons |
+| Width (viewport) | Board                                                                           | Detail                                                                                   |
+| ---------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| ≥ 1280           | Left column, `minmax(0,1fr)`; full board scaled to fit (about 780 px)           | Sticky right column, 26rem, full height below the header, scrolls inside                 |
+| 680–1279         | Full board, centred, up to 812 px                                               | Bottom sheet (Radix Dialog), opened by tapping a cung, max 85dvh, prev/next cung buttons |
 | < 680            | Compact board (unchanged since #200: name and chính tinh only), thiên bàn below | Same bottom sheet                                                                        |
 
 - The workspace container widens from `max-w-6xl` to `max-w-7xl`, so the board keeps about 780 px next to the 26rem panel.
 - On load at ≥ 1280 px the panel shows the picked cung (Mệnh by default). Below 1280 px the sheet opens only on a tap, never on load.
 - The sheet replaces today's inline `CungDetail` on phones.
 - The compact breakpoint moves from 640 to 680 px container width. At 680 the full board's scale is 0.837, so `text-xs` (12 px) star names still render at 10 px or more.
-- "Fits one desktop screen" means: at 1440×900, once the reader scrolls past the hero, the whole `Gọn` board is visible under the header. `Gọn` rows have a 176 px minimum (`Đủ sao` keeps 258). A busy cung still grows its row, as #201 chose; nothing is trimmed. The hero keeps its height.
+- The board keeps the proportions of today's lá số in both densities (about 784×1325 at 1440 for the sample chart); the sticky panel, not a shorter board, keeps the detail in view.
 
 ## Board (dark)
 
@@ -80,13 +80,13 @@ Kim An picked the direction from five AI mockups on 2026-11-14: the dark board f
   - The Tuần/Triệt and Tiểu hạn tags become `bg-day text-night`, because `chart-block` is invisible on night.
 - **Star colours on night** use five new tokens. Measured contrast is on night and on the `gold/12` tint:
 
-  | Token                  | Value     | On night | On tint |
-  | ---------------------- | --------- | -------- | ------- |
-  | `hanh-kim-on-night`    | `#d6d0c4` | 12.12    | 9.86    |
-  | `hanh-moc-on-night`    | `#6fd69a` | 10.42    | 8.48    |
-  | `hanh-thuy-on-night`   | `#9fc2ff` | 10.31    | 8.39    |
-  | `hanh-hoa-on-night`    | `#ff9a8f` | 9.10     | 7.41    |
-  | `hanh-tho-on-night`    | `#e8b85c` | 10.14    | 8.25    |
+  | Token                | Value     | On night | On tint |
+  | -------------------- | --------- | -------- | ------- |
+  | `hanh-kim-on-night`  | `#d6d0c4` | 12.12    | 9.86    |
+  | `hanh-moc-on-night`  | `#6fd69a` | 10.42    | 8.48    |
+  | `hanh-thuy-on-night` | `#9fc2ff` | 10.31    | 8.39    |
+  | `hanh-hoa-on-night`  | `#ff9a8f` | 9.10     | 7.41    |
+  | `hanh-tho-on-night`  | `#e8b85c` | 10.14    | 8.25    |
 
   Thủy turns blue on night: cream would read the same as Kim. These are chart data colours, which design.md already keeps outside the ten-colour palette. The light `hanh-*` set stays for the cream panel.
 
@@ -123,6 +123,7 @@ The panel is a cream card (`bg-day text-ink`, a `gold/40` border and `rounded-2x
    The claims come from the base brief (`buildMenhBrief` / `buildCungBrief`), not the mục briefs: the panel teases the cung, and the paid mục goes deeper.
 
    The section is absent when the brief is `null` or the cung has no table.
+
 6. **Phụ tinh.** Every star, in three groups:
    - **Cát tinh** and **Hung tinh** (natal);
    - **Năm {viewYear}** (lưu tinh), plus **Đại vận** (đại vận tinh) when present.

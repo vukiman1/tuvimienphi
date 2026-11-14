@@ -1,8 +1,8 @@
 import type { ReactElement } from 'react';
 import { Chip } from '@/design-system';
-import { properChinhTinhName } from '@/features/la-so/chart-star-ratings';
 import { SAO_ON_DAY_CLASS } from '@/features/la-so/chart-colors';
 import type { ChinhTinhView, CungView, SaoView } from '@/features/la-so/chart-types';
+import { HanhIcon } from '@/features/la-so/components/hanh-icon';
 import { PanelSection } from '@/features/la-so/components/panel-section';
 import { RATING_LABEL } from '@/features/la-so/components/cung-panel.constants';
 import { cn } from '@/lib/utils';
@@ -26,8 +26,8 @@ function ChinhTinhRow({ star }: { readonly star: ChinhTinhView }): ReactElement 
   return (
     <li className="flex items-center gap-2 text-reading">
       <span className={cn('flex items-center gap-2 font-semibold', SAO_ON_DAY_CLASS[star.element])}>
-        <span className="size-2 rounded-full bg-current" />
-        {properChinhTinhName(star.name)}
+        <HanhIcon element={star.element} />
+        {star.starName}
       </span>
       {star.rating ? <span className="text-ink-soft">{RATING_LABEL[star.rating]}</span> : null}
     </li>
@@ -36,7 +36,7 @@ function ChinhTinhRow({ star }: { readonly star: ChinhTinhView }): ReactElement 
 
 function voChinhDieuText(cung: CungView, muonTu: string | null): string {
   if (cung.chinhTinhMuon.length === 0) return 'Vô chính diệu';
-  const borrowed = cung.chinhTinhMuon.map((star) => properChinhTinhName(star.name)).join(', ');
+  const borrowed = cung.chinhTinhMuon.map((star) => star.starName).join(', ');
   return `Vô chính diệu — mượn ${borrowed} từ cung ${muonTu}`;
 }
 

@@ -1,24 +1,13 @@
 import { BoardDensity, KEY_PHU_TINH, cungForDensity } from '@/features/la-so/board-density';
-import { CalendarType, Gender } from '@/features/la-so/birth-input';
 import type { CungView } from '@/features/la-so/chart-types';
-import { toChartView } from '@/features/la-so/to-chart-view';
-
-const CHART = toChartView({
-  day: 12,
-  month: 3,
-  year: 1995,
-  calendar: CalendarType.Solar,
-  hour: 'Ngọ',
-  gender: Gender.Male,
-  viewYear: 2026,
-});
+import { SAMPLE_CHART } from '@/test-utils/sample-chart';
 
 function sideStarCount(cung: CungView): number {
   return cung.catTinh.length + cung.hungTinh.length;
 }
 
 function busiestCung(): CungView {
-  return CHART.cungs.reduce((busiest, cung) =>
+  return SAMPLE_CHART.cungs.reduce((busiest, cung) =>
     sideStarCount(cung) > sideStarCount(busiest) ? cung : busiest,
   );
 }

@@ -8,7 +8,3 @@ export const CHAPTER_FOR_CUNG: Readonly<Partial<Record<CungName, string>>> = {
   'Phụ Mẫu': '05',
   'Tử Tức': '05',
 };
-
-export function hasQuickLuan(cung: CungName): boolean {
-  return CHAPTER_FOR_CUNG[cung] !== undefined;
-}

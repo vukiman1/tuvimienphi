@@ -7,14 +7,23 @@ import {
   createRoute,
   createRouter,
 } from '@tanstack/react-router';
+import { MEDIA } from '@/config/media';
 import { birthSearchSchema } from '@/features/la-so/birth-input';
 import { DESKTOP_WORKSPACE_QUERY } from '@/features/la-so/components/la-so-workspace.constants';
+import { toChartView } from '@/features/la-so/to-chart-view';
 import { restoreMatchMedia, stubMatchMedia } from '@/test-utils/stub-match-media';
 import { LaSoPage } from './la-so-page';
 
 jest.mock('@/lib/http-request', () => ({
   httpRequest: { get: jest.fn(() => new Promise(() => undefined)), post: jest.fn() },
 }));
+
+jest.mock('@/features/la-so/to-chart-view', () => {
+  const actual = jest.requireActual<typeof import('@/features/la-so/to-chart-view')>(
+    '@/features/la-so/to-chart-view',
+  );
+  return { ...actual, toChartView: jest.fn(actual.toChartView) };
+});
 
 const SAMPLE_SEARCH = '?day=12&month=3&year=1995&calendar=duong&hour=Ng%E1%BB%8D&gender=nam';
 const LUAN_GIAI_TITLE = 'Luận giải lá số';
@@ -122,29 +131,40 @@ describe('LaSoPage', () => {
     expect(isPicked('Tài Bạch')).toBe(true);
   });
 
+  it('keeps the cast chart when another cung is picked', async () => {
+    stubMatchMedia([DESKTOP_WORKSPACE_QUERY]);
+    const { currentSearch } = await renderLaSoPage(SAMPLE_SEARCH);
+    const castCount = jest.mocked(toChartView).mock.calls.length;
+
+    fireEvent.click(cungButton('Tài Bạch'));
+
+    await waitFor(() => expect(currentSearch().cung).toBe('tai-bach'));
+    expect(jest.mocked(toChartView).mock.calls).toHaveLength(castCount);
+  });
+
   it('drops the decor paintings beside the board', async () => {
     const {
       view: { container },
     } = await renderLaSoPage(SAMPLE_SEARCH);
-    const luanGiaiBand = screen
-      .getByRole('heading', { level: 2, name: LUAN_GIAI_TITLE })
-      .closest('section');
-    const heroBand = screen.getByRole('heading', { level: 1 }).closest('section');
 
-    for (const image of container.querySelectorAll('img')) {
-      expect(luanGiaiBand?.contains(image) || heroBand?.contains(image)).toBe(true);
-    }
+    expect(container.querySelector(`img[src="${MEDIA.laSo.decorLeft}"]`)).toBeNull();
+    expect(container.querySelector(`img[src="${MEDIA.laSo.decorRight}"]`)).toBeNull();
   });
 
-  it('paints only the hero', async () => {
+  it('paints the hero, the board sky and the luận giải dusk, once each', async () => {
     const {
       view: { container },
     } = await renderLaSoPage(SAMPLE_SEARCH);
 
-    const heroBand = screen.getByRole('heading', { level: 1 }).closest('section');
+    const paintings = [...container.querySelectorAll('img[srcset*="1536w"]')].map((image) =>
+      image.getAttribute('src'),
+    );
 
-    expect(container.querySelectorAll('img')).toHaveLength(1);
-    expect(heroBand?.querySelectorAll('img')).toHaveLength(1);
+    expect(paintings).toEqual([
+      MEDIA.laSo.heroNight.large,
+      MEDIA.laSo.boardNight.large,
+      MEDIA.story.duskPineLarge,
+    ]);
   });
 
   it('drops the picked-cung line', async () => {

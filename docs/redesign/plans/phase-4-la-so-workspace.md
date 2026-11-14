@@ -32,7 +32,7 @@
    - The "Đang chọn cung …" line is removed.
 7. **Prev/next in the sheet follow the ring** (index ± 1 mod 12), the same direction as the board's clockwise order.
 8. **The 10 px floor counts on-screen size.** `FULL_BOARD_MIN_WIDTH` goes from 640 to 680, so the scaled `text-xs` never drops under 10 px. Tags stay `text-2xs`.
-9. **Fit target:** a 1440×900 viewport, once the reader has scrolled past the hero. Rows still grow; nothing is trimmed.
+9. **Board proportions (revised by Kim An, 2026-11-14):** the board keeps the familiar tall shape. Gọn cells render an invisible `aria-hidden` copy of the Đủ sao cell to reserve its height, and both densities share the 258 px row minimum.
 10. **Luận nhanh copy** is the claim as written, capitalised and with a full stop, under the labels `Nét thuận` / `Cần để ý`. Phụ Mẫu, Tử Tức and Phu Thê all link to chapter 05.
 
 ## Global Constraints
@@ -116,6 +116,7 @@
   ```
 
   Wire `quickCungLuan` with a `Readonly<Partial<Record<CungName, (chart: NatalChart) => ChapterBrief | null>>>` lookup.
+
 - [ ] **Step 4: Run again.** Expected: PASS. Then `NX_WORKSPACE_ROOT_PATH=$PWD pnpm nx test shared-tu-vi`: all pass.
 - [ ] **Step 5: Commit.** `feat(tu-vi): pick a quick thuận and nghịch claim per cung and define what each cung governs`
 
@@ -171,18 +172,24 @@
 - Produces:
 
   ```ts
-  export enum BoardDensity { Key = 'gon', All = 'du' }
+  export enum BoardDensity {
+    Key = 'gon',
+    All = 'du',
+  }
   export const KEY_PHU_TINH: ReadonlySet<PhuTinhName>;
   export function cungForDensity(cung: CungView, density: BoardDensity): CungView;
   export function useBoardDensity(): readonly [BoardDensity, (density: BoardDensity) => void];
   export const BOARD_DENSITY_STORAGE_KEY = 'la-so.board-density';
-  export function BoardDensityToggle(props: { readonly value: BoardDensity; readonly onChange: (density: BoardDensity) => void }): ReactElement;
+  export function BoardDensityToggle(props: {
+    readonly value: BoardDensity;
+    readonly onChange: (density: BoardDensity) => void;
+  }): ReactElement;
   ```
 
   - `KEY_PHU_TINH` holds: Tả Phù, Hữu Bật, Văn Xương, Văn Khúc, Thiên Khôi, Thiên Việt, Kình Dương, Đà La, Hỏa Tinh, Linh Tinh, Địa Không, Địa Kiếp, Hóa Lộc, Hóa Quyền, Hóa Khoa, Hóa Kỵ, Lộc Tồn and Thiên Mã. Type it as `satisfies readonly PhuTinhName[]`, so a misspelt name fails typecheck.
   - `cungForDensity` filters `catTinh`, `hungTinh`, `luuTinh` and `daiVanTinh` by name for `Key`, and returns the cung unchanged for `All`.
   - The toggle is two buttons labelled `Gọn` and `Đủ sao`, with `aria-pressed`, inside `role="group"` with `aria-label="Mật độ lá số"`.
-  - Row minimum: `FULL_BOARD_MIN_ROW_HEIGHT` becomes `{ [BoardDensity.All]: 258, [BoardDensity.Key]: 176 }`. Rows still grow (#201).
+  - Row minimum: `FULL_BOARD_MIN_ROW_HEIGHT` is 258 for both densities. Rows still grow (#201).
 
 - [ ] **Step 1: Write the failing tests.**
   - `keeps chính tinh and key stars in Gọn`: for the sample chart's busiest cung (the most `catTinh` + `hungTinh`), every remaining star name is in `KEY_PHU_TINH`, and `chinhTinh` is unchanged.
@@ -209,7 +216,12 @@
 - Produces:
 
   ```ts
-  export enum BoardKey { Up = 'ArrowUp', Down = 'ArrowDown', Left = 'ArrowLeft', Right = 'ArrowRight' }
+  export enum BoardKey {
+    Up = 'ArrowUp',
+    Down = 'ArrowDown',
+    Left = 'ArrowLeft',
+    Right = 'ArrowRight',
+  }
   export function cungIndexInDirection(from: number, key: BoardKey): number;
   export function ringNeighbour(from: number, step: 1 | -1): number;
   ```
@@ -289,7 +301,10 @@
   }
   export function cungFacts(chart: ChartView, index: number): CungFacts;
   export function quickLuanFor(birth: BirthInput, cung: CungName): QuickCungLuan | null;
-  export function useQuickLuan(birth: BirthInput, cung: CungName): UseQueryResult<QuickCungLuan | null>;
+  export function useQuickLuan(
+    birth: BirthInput,
+    cung: CungName,
+  ): UseQueryResult<QuickCungLuan | null>;
   export const RATING_LABEL: Readonly<Record<Rating, string>>;
   export const CHAPTER_FOR_CUNG: Readonly<Partial<Record<CungName, string>>>;
   export interface CungPanelProps {
@@ -334,6 +349,7 @@
   6. `Cát tinh`, `Hung tinh`, `Năm {viewYear}` (luuTinh with the `L.` prefix dropped) and `Đại vận` (daiVanTinh), each a wrap of small `Chip`s in `SAO_ON_DAY_CLASS`. Empty groups are omitted.
 
   Each section gets an `h3` (`text-sm font-bold uppercase tracking-wide text-ink-soft`).
+
 - [ ] **Step 4: Run again.** Expected: PASS.
 - [ ] **Step 5: Commit.** `feat(la-so): explain the picked cung in a detail panel with a quick reading`
 
@@ -385,7 +401,13 @@
     readonly onReadChapter: (order: string) => void;
   }
   export function LaSoWorkspace(props: LaSoWorkspaceProps): ReactElement;
-  export function CungSheet(props: { readonly open: boolean; readonly onOpenChange: (open: boolean) => void; readonly onStep: (step: 1 | -1) => void; readonly children: ReactNode; readonly title: string }): ReactElement;
+  export function CungSheet(props: {
+    readonly open: boolean;
+    readonly onOpenChange: (open: boolean) => void;
+    readonly onStep: (step: 1 | -1) => void;
+    readonly children: ReactNode;
+    readonly title: string;
+  }): ReactElement;
   ```
 
   - `useMediaQuery` uses `useSyncExternalStore` over `matchMedia`, and returns `false` when `matchMedia` is missing.
@@ -427,6 +449,7 @@
   - the sheet clears the mobile nav and the home indicator;
   - at 1440×900 the `Gọn` board's last row is visible after scrolling at most the hero height;
   - at 680, 1024 and 1280 no star name renders under 10 px: `getComputedStyle` font size × the board's `zoom`.
+
 - [ ] **Step 4: Lighthouse A/B.** 5 runs each, on the A and B builds served locally. B Performance must be ≥ A − 2, with Accessibility 100 and CLS 0, and the LCP element must not be the painting.
 - [ ] **Step 5: Hand off.** Report the decisions, screenshots and numbers to Kim An. Wait for "tạo pull" before branching, pushing or opening a PR.
 - [ ] **Step 6: After deploy.** 5 production Lighthouse runs on the Task 0 URL. Record them next to the baseline. The median must be ≥ the baseline.

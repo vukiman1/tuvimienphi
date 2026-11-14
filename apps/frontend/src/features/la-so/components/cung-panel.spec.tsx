@@ -1,56 +1,53 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import {
-  CHINH_TINH_NAMES,
-  CUNG_NAMES,
-  CUNG_Y_NGHIA,
-  QUICK_LUAN_CUNG,
-  type CungName,
-} from '@org/shared-tu-vi';
+import { CUNG_Y_NGHIA, type CungName, type NguHanh } from '@org/shared-tu-vi';
 import { FOCUS_RING_CLASS } from '@/design-system';
 import type { ChartView } from '@/features/la-so/chart-types';
-import { CalendarType, Gender, type BirthInput } from '@/features/la-so/birth-input';
-import { hasQuickLuan } from '@/features/la-so/cung-chapters';
-import { cungNameOf } from '@/features/la-so/cung-slug';
 import { cungFacts } from '@/features/la-so/cung-facts';
-import { toChartView } from '@/features/la-so/to-chart-view';
 import { quickLuanFor } from '@/features/la-so/quick-luan';
+import {
+  SAMPLE_BIRTH,
+  SAMPLE_CHART,
+  SAMPLE_VIEW_YEAR,
+  indexOfCung,
+} from '@/test-utils/sample-chart';
 import { RATING_LABEL } from '@/features/la-so/components/cung-panel.constants';
 import { CungPanel } from './cung-panel';
 
-const BIRTH: BirthInput = {
-  day: 12,
-  month: 3,
-  year: 1995,
-  calendar: CalendarType.Solar,
-  hour: 'Ngọ',
-  gender: Gender.Male,
-};
-const VIEW_YEAR = 2026;
-const CHART = toChartView({ ...BIRTH, viewYear: VIEW_YEAR });
 const DAI_VAN_LAST_YEAR_OFFSET = 9;
+const HANH_ICON_SLUG: Readonly<Record<NguHanh, string>> = {
+  Kim: 'kim',
+  Mộc: 'moc',
+  Thủy: 'thuy',
+  Hỏa: 'hoa',
+  Thổ: 'tho',
+};
 
-function indexOfCung(name: CungName): number {
-  return CHART.cungs.findIndex((cung) => cungNameOf(cung) === name);
+function renderPanelIn(
+  name: CungName,
+  onReadChapter: (order: string) => void = () => undefined,
+  chart: ChartView = SAMPLE_CHART,
+): ReturnType<typeof render> {
+  const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  return render(
+    <QueryClientProvider client={client}>
+      <CungPanel
+        birth={SAMPLE_BIRTH}
+        chart={chart}
+        index={indexOfCung(name)}
+        onReadChapter={onReadChapter}
+        viewYear={SAMPLE_VIEW_YEAR}
+      />
+    </QueryClientProvider>,
+  );
 }
 
 function renderPanel(
   name: CungName,
   onReadChapter: (order: string) => void = () => undefined,
-  chart: ChartView = CHART,
+  chart: ChartView = SAMPLE_CHART,
 ): HTMLElement {
-  const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  render(
-    <QueryClientProvider client={client}>
-      <CungPanel
-        birth={BIRTH}
-        chart={chart}
-        index={indexOfCung(name)}
-        onReadChapter={onReadChapter}
-        viewYear={VIEW_YEAR}
-      />
-    </QueryClientProvider>,
-  );
+  renderPanelIn(name, onReadChapter, chart);
   return screen.getByRole('heading', { level: 2 });
 }
 
@@ -58,29 +55,29 @@ describe('CungPanel', () => {
   it('titles the panel with the cung and its chi', () => {
     const heading = renderPanel('Mệnh');
 
-    expect(heading.textContent).toBe(`Cung Mệnh · ${CHART.cungs[indexOfCung('Mệnh')].chi}`);
+    expect(heading.textContent).toBe(`Cung Mệnh · ${SAMPLE_CHART.cungs[indexOfCung('Mệnh')].chi}`);
   });
 
   it('marks the cung that holds the Thân', () => {
-    const index = CHART.cungs.findIndex((cung) => cung.isThan);
+    const index = SAMPLE_CHART.cungs.findIndex((cung) => cung.isThan);
 
-    renderPanel(cungNameOf(CHART.cungs[index]));
+    renderPanel(SAMPLE_CHART.cungs[index].cungName);
 
     expect(screen.getByText('THÂN')).toBeTruthy();
   });
 
   it('marks the tiểu hạn cung of the view year', () => {
-    const index = CHART.cungs.findIndex((cung) => cung.isTieuHan);
+    const index = SAMPLE_CHART.cungs.findIndex((cung) => cung.isTieuHan);
 
-    renderPanel(cungNameOf(CHART.cungs[index]));
+    renderPanel(SAMPLE_CHART.cungs[index].cungName);
 
-    expect(screen.getByText(`Tiểu hạn ${VIEW_YEAR}`)).toBeTruthy();
+    expect(screen.getByText(`Tiểu hạn ${SAMPLE_VIEW_YEAR}`)).toBeTruthy();
   });
 
   it('shows no tags on an ordinary cung', () => {
-    const index = CHART.cungs.findIndex((cung) => !cung.isThan && !cung.isTieuHan);
+    const index = SAMPLE_CHART.cungs.findIndex((cung) => !cung.isThan && !cung.isTieuHan);
 
-    renderPanel(cungNameOf(CHART.cungs[index]));
+    renderPanel(SAMPLE_CHART.cungs[index].cungName);
 
     expect(screen.queryByText('THÂN')).toBeNull();
     expect(screen.queryByText(/^Tiểu hạn/)).toBeNull();
@@ -88,7 +85,7 @@ describe('CungPanel', () => {
 
   it('shows the fact chips', () => {
     renderPanel('Mệnh');
-    const { daiVanStartAge } = CHART.cungs[indexOfCung('Mệnh')];
+    const { daiVanStartAge } = SAMPLE_CHART.cungs[indexOfCung('Mệnh')];
 
     expect(
       screen.getByText(
@@ -109,25 +106,52 @@ describe('CungPanel', () => {
 
   it('writes brightness in full', () => {
     renderPanel('Tử Tức');
-    const [star] = CHART.cungs[indexOfCung('Tử Tức')].chinhTinh;
-    const properName = CHINH_TINH_NAMES.find((name) => name.toUpperCase() === star.name);
+    const [star] = SAMPLE_CHART.cungs[indexOfCung('Tử Tức')].chinhTinh;
 
-    const row = screen.getByText(properName ?? '').closest('li');
+    const row = screen.getByText(star.starName).closest('li');
 
     expect(star.rating).not.toBeNull();
     expect(row?.textContent).toContain(RATING_LABEL[star.rating ?? 'B']);
   });
 
+  it('heads the panel with the emblem of the picked cung', () => {
+    const { container } = renderPanelIn('Quan Lộc');
+
+    const emblem = container.querySelector('img[src*="/cung-quan-loc-"]');
+
+    expect(emblem).not.toBeNull();
+    expect(emblem?.getAttribute('srcset')).toContain('/cung-quan-loc-256.webp 256w');
+  });
+
+  it('keeps the cung emblem out of the accessibility tree', () => {
+    const { container } = renderPanelIn('Mệnh');
+
+    const emblem = container.querySelector('img[src*="/cung-menh-"]');
+
+    expect(emblem?.getAttribute('alt')).toBe('');
+    expect(screen.queryAllByRole('img')).toHaveLength(0);
+  });
+
+  it('marks each chính tinh with the icon of its hành', () => {
+    renderPanel('Tử Tức');
+    const [star] = SAMPLE_CHART.cungs[indexOfCung('Tử Tức')].chinhTinh;
+
+    const icon = screen.getByText(star.starName).querySelector('img');
+
+    expect(icon?.getAttribute('src')).toContain(`/hanh-${HANH_ICON_SLUG[star.element]}-64.webp`);
+    expect(icon?.getAttribute('alt')).toBe('');
+  });
+
   it('explains a vô chính diệu cung', () => {
     renderPanel('Tài Bạch');
-    const { muonTu } = cungFacts(CHART, indexOfCung('Tài Bạch'));
+    const { muonTu } = cungFacts(SAMPLE_CHART, indexOfCung('Tài Bạch'));
 
     expect(screen.getByText(new RegExp(`Vô chính diệu.*mượn .* từ cung ${muonTu}`))).toBeTruthy();
   });
 
   it('shows one thuận and one nghịch claim with their stars', async () => {
     renderPanel('Mệnh');
-    const result = quickLuanFor(BIRTH, 'Mệnh');
+    const result = quickLuanFor(SAMPLE_BIRTH, 'Mệnh');
 
     expect(screen.queryByText('Nét thuận')).toBeNull();
     expect(screen.getByRole('status', { name: 'Đang soạn luận nhanh' })).toBeTruthy();
@@ -143,12 +167,11 @@ describe('CungPanel', () => {
 
   it('names the brightness of the stars behind a claim', async () => {
     renderPanel('Mệnh');
-    const result = quickLuanFor(BIRTH, 'Mệnh');
+    const result = quickLuanFor(SAMPLE_BIRTH, 'Mệnh');
     const stars = [...(result?.thuan.do ?? []), ...(result?.nghich.do ?? [])];
-    const rated = CHART.cungs
+    const rated = SAMPLE_CHART.cungs
       .flatMap((cung) => cung.chinhTinh)
-      .map((star) => ({ name: star.name, rating: star.rating }))
-      .find((star) => star.rating && stars.some((name) => name.toUpperCase() === star.name));
+      .find((star) => star.rating && stars.includes(star.starName));
     expect(rated).toBeDefined();
     const label = RATING_LABEL[rated?.rating ?? 'B'];
 
@@ -167,8 +190,8 @@ describe('CungPanel', () => {
 
   it('reads just Vô chính diệu when nothing is borrowed', () => {
     const bare: ChartView = {
-      ...CHART,
-      cungs: CHART.cungs.map((cung) =>
+      ...SAMPLE_CHART,
+      cungs: SAMPLE_CHART.cungs.map((cung) =>
         cung.isVoChinhDieu ? { ...cung, chinhTinhMuon: [] } : cung,
       ),
     };
@@ -189,8 +212,8 @@ describe('CungPanel', () => {
 
   it('shows both Tuần and Triệt chips when a cung carries both', () => {
     const both: ChartView = {
-      ...CHART,
-      cungs: CHART.cungs.map((cung) =>
+      ...SAMPLE_CHART,
+      cungs: SAMPLE_CHART.cungs.map((cung) =>
         cung.isMenh ? { ...cung, hasTuan: true, hasTriet: true } : cung,
       ),
     };
@@ -201,10 +224,11 @@ describe('CungPanel', () => {
     expect(screen.getByText('Triệt')).toBeTruthy();
   });
 
-  it('has no luận nhanh for Thiên Di', () => {
+  it('shows luận nhanh for a cung without a chapter, with no chapter link', async () => {
     renderPanel('Thiên Di');
 
-    expect(screen.queryByText('Luận nhanh')).toBeNull();
+    expect(await screen.findAllByText(/^Vì sao:/)).toHaveLength(2);
+    expect(screen.queryByText(/^Đọc luận giải chương/)).toBeNull();
   });
 
   it('links Quan Lộc to chapter 03', () => {
@@ -226,10 +250,10 @@ describe('CungPanel', () => {
   });
 
   it('lists every phụ tinh in the panel even in Gọn', () => {
-    const busiest = [...CHART.cungs].sort(
+    const busiest = [...SAMPLE_CHART.cungs].sort(
       (a, b) => b.catTinh.length + b.hungTinh.length - (a.catTinh.length + a.hungTinh.length),
     )[0];
-    renderPanel(cungNameOf(busiest));
+    renderPanel(busiest.cungName);
 
     const names = [...busiest.catTinh, ...busiest.hungTinh].map((star) => star.name);
     expect(names.length).toBeGreaterThan(0);
@@ -239,18 +263,10 @@ describe('CungPanel', () => {
   });
 
   it('omits a star group that is empty', () => {
-    const bare = CHART.cungs.find((cung) => cung.daiVanTinh.length === 0);
+    const bare = SAMPLE_CHART.cungs.find((cung) => cung.daiVanTinh.length === 0);
     expect(bare).toBeDefined();
-    renderPanel(cungNameOf(bare ?? CHART.cungs[0]));
+    renderPanel((bare ?? SAMPLE_CHART.cungs[0]).cungName);
 
     expect(screen.queryByRole('heading', { level: 3, name: 'Đại vận' })).toBeNull();
-  });
-});
-
-describe('quick luận coverage', () => {
-  it('is offered for exactly the cung the engine reads quickly', () => {
-    expect(CUNG_NAMES.filter(hasQuickLuan)).toEqual(
-      CUNG_NAMES.filter((name) => QUICK_LUAN_CUNG.includes(name)),
-    );
   });
 });

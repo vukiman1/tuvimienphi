@@ -170,7 +170,7 @@ function ownText(element: Element): string {
 
 function elementReading(container: HTMLElement, text: string): HTMLElement | undefined {
   return [...container.querySelectorAll<HTMLElement>('*')].find(
-    (element) => ownText(element) === text,
+    (element) => ownText(element) === text && element.closest('[aria-hidden="true"]') === null,
   );
 }
 
@@ -223,6 +223,30 @@ describe('LaSoBoard on a wide container', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Đủ sao' }));
 
     expect(elementReading(cungButton(MENH), hidden.name)).toBeDefined();
+  });
+
+  it('keeps the Đủ sao cell height in Gọn so the board keeps its shape', () => {
+    const [hidden] = [...MENH.catTinh, ...MENH.hungTinh].filter(
+      (sao) => !KEY_PHU_TINH.has(sao.name),
+    );
+    renderBoard();
+    const sizingCopy =
+      cungButton(MENH).querySelector<HTMLElement>('[aria-hidden="true"]') ?? undefined;
+
+    expect(sizingCopy).toBeDefined();
+    expect(classTokens(sizingCopy)).toContain('invisible');
+    expect(sizingCopy?.textContent).toContain(hidden.name);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Đủ sao' }));
+
+    expect(cungButton(MENH).querySelector('[aria-hidden="true"]')).toBeNull();
+  });
+
+  it('explains the hành colours and brightness letters under the full board', () => {
+    renderBoard();
+
+    expect(screen.getByRole('list', { name: 'Ngũ hành' })).toBeTruthy();
+    expect(screen.getByRole('list', { name: 'Độ sáng' })).toBeTruthy();
   });
 
   it('marks only the picked cung with a gold ring', () => {
@@ -438,6 +462,13 @@ describe('LaSoBoard on a phone-width container', () => {
 
     expect(screen.getAllByRole('button', { name: /^Cung / })).toHaveLength(CHART.cungs.length);
     expect(zoomedElements(container)).toEqual([]);
+  });
+
+  it('explains the hành colours and brightness letters under the compact board', () => {
+    renderBoard();
+
+    expect(screen.getByRole('list', { name: 'Ngũ hành' })).toBeTruthy();
+    expect(screen.getByRole('list', { name: 'Độ sáng' })).toBeTruthy();
   });
 
   it('arrow keys move focus between cung on the compact board', () => {

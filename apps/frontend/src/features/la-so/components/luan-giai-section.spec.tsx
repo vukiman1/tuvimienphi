@@ -80,9 +80,32 @@ describe('LuanGiaiSection', () => {
     }
   });
 
-  it('draws no raster images', () => {
+  it('paints dusk behind the title and tabs from tablet width up, lazily', () => {
+    renderSection();
+    const titleBand = screen.getByRole('heading', { level: 2 }).closest('.max-w-6xl');
+    const painting = titleBand?.parentElement?.querySelector(':scope > img');
+
+    expect(painting?.getAttribute('src')).toContain('/story/dusk-pine-1536.webp');
+    expect(painting?.getAttribute('alt')).toBe('');
+    expect(painting?.getAttribute('loading')).toBe('lazy');
+    expect(classTokens(painting ?? null)).toEqual(expect.arrayContaining(['hidden', 'md:block']));
+  });
+
+  it('dims the dusk painting under a Deep veil so the title stays readable', () => {
+    renderSection();
+    const painting = screen
+      .getByRole('heading', { level: 2 })
+      .closest('section')
+      ?.querySelector('img');
+    const veil = painting?.nextElementSibling ?? null;
+
+    expect(veil?.getAttribute('aria-hidden')).toBe('true');
+    expect(classTokens(veil)).toEqual(expect.arrayContaining(['bg-deep/70', 'hidden', 'md:block']));
+  });
+
+  it('draws only the one painting', () => {
     const { container } = renderSection();
 
-    expect(container.querySelectorAll('img')).toHaveLength(0);
+    expect(container.querySelectorAll('img')).toHaveLength(1);
   });
 });

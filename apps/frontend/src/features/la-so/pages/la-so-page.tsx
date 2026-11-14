@@ -6,7 +6,7 @@ import {
 } from '@/features/la-so/components/luan-giai-section';
 import { LUAN_GIAI_CHAPTERS, LUAN_GIAI_MOTTO } from '@/features/la-so/luan-giai-data';
 import { birthInputSchema } from '@/features/la-so/birth-input';
-import { CUNG_SLUGS, cungNameFromSlug, cungNameOf } from '@/features/la-so/cung-slug';
+import { CUNG_SLUGS, cungNameFromSlug } from '@/features/la-so/cung-slug';
 import { LaSoHero } from '@/features/la-so/components/la-so-hero';
 import { LaSoWorkspace } from '@/features/la-so/components/la-so-workspace';
 import { useRecordChartView } from '@/features/la-so/history/use-record-chart-view';
@@ -18,7 +18,7 @@ const route = getRouteApi('/_site/la-so/detail');
 
 function selectedCungIndex(chart: ChartView, slug: string | undefined): number {
   const pickedName = cungNameFromSlug(slug);
-  const pickedIndex = chart.cungs.findIndex((cung) => cungNameOf(cung) === pickedName);
+  const pickedIndex = chart.cungs.findIndex((cung) => cung.cungName === pickedName);
   return pickedIndex === -1 ? chart.cungs.findIndex((cung) => cung.isMenh) : pickedIndex;
 }
 
@@ -26,11 +26,20 @@ export function LaSoPage(): ReactElement {
   const search = route.useSearch();
   const navigate = useNavigate({ from: '/la-so/detail' });
   const viewYear = search.viewYear ?? new Date().getFullYear();
+  const { fullName, day, month, year, calendar, hour, gender } = search;
 
   const birth = useMemo(() => {
-    const parsed = birthInputSchema.safeParse(search);
+    const parsed = birthInputSchema.safeParse({
+      fullName,
+      day,
+      month,
+      year,
+      calendar,
+      hour,
+      gender,
+    });
     return parsed.success ? parsed.data : null;
-  }, [search]);
+  }, [fullName, day, month, year, calendar, hour, gender]);
   const chart = useMemo(
     () => (birth ? toChartView({ ...birth, viewYear }) : null),
     [birth, viewYear],
@@ -47,10 +56,8 @@ export function LaSoPage(): ReactElement {
   const selectedIndex = selectedCungIndex(chart, search.cung);
 
   const pickCung = (cungIndex: number): void => {
-    const pickedView = chart.cungs.find((cung) => cung.index === cungIndex);
-    if (!pickedView) return;
     void navigate({
-      search: (prev) => ({ ...prev, cung: CUNG_SLUGS[cungNameOf(pickedView)] }),
+      search: (prev) => ({ ...prev, cung: CUNG_SLUGS[chart.cungs[cungIndex].cungName] }),
       replace: true,
       resetScroll: false,
     });
@@ -66,7 +73,7 @@ export function LaSoPage(): ReactElement {
   return (
     <main className="w-full">
       <LaSoHero
-        birthYear={search.year ?? viewYear}
+        birthYear={year ?? viewYear}
         fullName={birth.fullName ?? ''}
         meta={chart.meta}
         onViewYearChange={(year) =>
