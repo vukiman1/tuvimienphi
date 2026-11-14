@@ -6,6 +6,7 @@ import { CalendarType, Gender, type BirthInput } from '@/features/la-so/birth-in
 import { ringNeighbour } from '@/features/la-so/board-navigation';
 import { cungNameOf } from '@/features/la-so/cung-slug';
 import { toChartView } from '@/features/la-so/to-chart-view';
+import { restoreMatchMedia, stubMatchMedia } from '@/test-utils/stub-match-media';
 import { DESKTOP_WORKSPACE_QUERY } from './la-so-workspace.constants';
 import { LaSoWorkspace } from './la-so-workspace';
 
@@ -19,47 +20,11 @@ const BIRTH: BirthInput = {
 };
 const VIEW_YEAR = 2026;
 const CHART = toChartView({ ...BIRTH, viewYear: VIEW_YEAR });
-const ORIGINAL_MATCH_MEDIA = window.matchMedia;
 const QUAN_LOC_CHAPTER = '03';
-
-interface MediaQueryStub {
-  readonly setMatches: (matches: boolean) => void;
-}
 
 interface WorkspaceSpies {
   readonly onSelect: jest.Mock<void, [number]>;
   readonly onReadChapter: jest.Mock<void, [string]>;
-}
-
-class StubMediaQueryList extends EventTarget implements MediaQueryList {
-  readonly onchange = null;
-
-  constructor(
-    readonly media: string,
-    public matches: boolean,
-  ) {
-    super();
-  }
-
-  addListener(): void {
-    return undefined;
-  }
-
-  removeListener(): void {
-    return undefined;
-  }
-}
-
-function stubDesktop(initialMatches: boolean): MediaQueryStub {
-  const watched = new StubMediaQueryList(DESKTOP_WORKSPACE_QUERY, initialMatches);
-  window.matchMedia = (query: string): MediaQueryList =>
-    query === DESKTOP_WORKSPACE_QUERY ? watched : new StubMediaQueryList(query, false);
-  return {
-    setMatches: (matches) => {
-      watched.matches = matches;
-      watched.dispatchEvent(new Event('change'));
-    },
-  };
 }
 
 function indexOfCung(name: CungName): number {
@@ -99,12 +64,12 @@ function cungButton(name: CungName): HTMLElement {
 }
 
 afterEach(() => {
-  window.matchMedia = ORIGINAL_MATCH_MEDIA;
+  restoreMatchMedia();
 });
 
 describe('LaSoWorkspace', () => {
   it('shows the panel beside the board on desktop', () => {
-    stubDesktop(true);
+    stubMatchMedia([DESKTOP_WORKSPACE_QUERY]);
     renderWorkspace();
 
     expect(screen.getByRole('heading', { level: 2, name: /^Cung Mệnh/ })).toBeTruthy();
@@ -112,7 +77,7 @@ describe('LaSoWorkspace', () => {
   });
 
   it('opens the sheet only after a tap below desktop', () => {
-    stubDesktop(false);
+    stubMatchMedia([]);
     renderWorkspace();
 
     expect(screen.queryByRole('dialog')).toBeNull();
@@ -123,7 +88,7 @@ describe('LaSoWorkspace', () => {
   });
 
   it('steps to the next cung in the sheet', () => {
-    stubDesktop(false);
+    stubMatchMedia([]);
     const { onSelect } = renderWorkspace();
     const quanLoc = indexOfCung('Quan Lộc');
     const next = ringNeighbour(quanLoc, 1);
@@ -138,7 +103,7 @@ describe('LaSoWorkspace', () => {
   });
 
   it('steps to the previous cung in the sheet', () => {
-    stubDesktop(false);
+    stubMatchMedia([]);
     const { onSelect } = renderWorkspace();
     const previous = ringNeighbour(indexOfCung('Quan Lộc'), -1);
     fireEvent.click(cungButton('Quan Lộc'));
@@ -152,7 +117,7 @@ describe('LaSoWorkspace', () => {
   });
 
   it('returns focus to the cung after closing', async () => {
-    stubDesktop(false);
+    stubMatchMedia([]);
     renderWorkspace();
     fireEvent.click(cungButton('Quan Lộc'));
 
@@ -163,29 +128,29 @@ describe('LaSoWorkspace', () => {
   });
 
   it('closes the sheet when the screen grows to desktop', () => {
-    const media = stubDesktop(false);
+    const media = stubMatchMedia([]);
     renderWorkspace();
     fireEvent.click(cungButton('Quan Lộc'));
 
-    act(() => media.setMatches(true));
+    act(() => media.setMatches(DESKTOP_WORKSPACE_QUERY, true));
 
     expect(screen.queryByRole('dialog')).toBeNull();
     expect(screen.getByRole('heading', { level: 2, name: /^Cung Quan Lộc/ })).toBeTruthy();
   });
 
   it('keeps the sheet closed when the screen shrinks back', () => {
-    const media = stubDesktop(false);
+    const media = stubMatchMedia([]);
     renderWorkspace();
     fireEvent.click(cungButton('Quan Lộc'));
-    act(() => media.setMatches(true));
+    act(() => media.setMatches(DESKTOP_WORKSPACE_QUERY, true));
 
-    act(() => media.setMatches(false));
+    act(() => media.setMatches(DESKTOP_WORKSPACE_QUERY, false));
 
     expect(screen.queryByRole('dialog')).toBeNull();
   });
 
   it('closes the sheet before handing over the chapter to read', async () => {
-    stubDesktop(false);
+    stubMatchMedia([]);
     const { onReadChapter } = renderWorkspace();
     fireEvent.click(cungButton('Quan Lộc'));
 

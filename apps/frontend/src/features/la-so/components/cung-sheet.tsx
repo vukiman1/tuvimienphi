@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from 'react';
+import { useRef, type ReactElement, type ReactNode } from 'react';
 import { Dialog } from 'radix-ui';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { FOCUS_RING_CLASS } from '@/design-system';
@@ -26,6 +26,13 @@ export function CungSheet({
   children,
   title,
 }: CungSheetProps): ReactElement {
+  const bodyRef = useRef<HTMLDivElement>(null);
+
+  const step = (direction: 1 | -1): void => {
+    if (bodyRef.current) bodyRef.current.scrollTop = 0;
+    onStep(direction);
+  };
+
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
@@ -35,14 +42,14 @@ export function CungSheet({
         />
         <Dialog.Content
           aria-describedby={undefined}
-          className="fixed inset-x-0 bottom-0 z-50 max-h-sheet overflow-y-auto rounded-t-2xl bg-day p-6 text-ink data-[state=closed]:animate-sheet-out data-[state=open]:animate-sheet-in"
+          className="fixed inset-x-0 bottom-0 z-50 flex max-h-sheet flex-col rounded-t-2xl bg-day pb-[env(safe-area-inset-bottom)] text-ink data-[state=closed]:animate-sheet-out data-[state=open]:animate-sheet-in"
           data-slot="sheet"
           onCloseAutoFocus={(event) => {
             event.preventDefault();
             onCloseFocus();
           }}
         >
-          <div className="mb-4 flex items-center gap-1">
+          <div className="flex shrink-0 items-center gap-1 px-6 pt-6 pb-4">
             <Dialog.Title asChild>
               <p className="flex-1 text-sm font-bold tracking-widest text-ink-soft uppercase">
                 {title}
@@ -51,7 +58,7 @@ export function CungSheet({
             <button
               aria-label="Cung trước"
               className={ICON_BUTTON_CLASS}
-              onClick={() => onStep(-1)}
+              onClick={() => step(-1)}
               type="button"
             >
               <ChevronLeft aria-hidden className="size-5" />
@@ -59,7 +66,7 @@ export function CungSheet({
             <button
               aria-label="Cung sau"
               className={ICON_BUTTON_CLASS}
-              onClick={() => onStep(1)}
+              onClick={() => step(1)}
               type="button"
             >
               <ChevronRight aria-hidden className="size-5" />
@@ -68,7 +75,9 @@ export function CungSheet({
               <X aria-hidden className="size-5" />
             </Dialog.Close>
           </div>
-          <div className="pb-[env(safe-area-inset-bottom)]">{children}</div>
+          <div className="min-h-0 overflow-y-auto px-6 pb-6" ref={bodyRef}>
+            {children}
+          </div>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
