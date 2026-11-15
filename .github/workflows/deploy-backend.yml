@@ -182,6 +182,33 @@ jobs:
             -o ConnectTimeout=20 \
             "${VPS_USER}@${VPS_HOST}" "$remote_command" < "$RENDERED_ENV"
 
+      - name: Upload the deploy files
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ vars.VPS_USER }}
+          VPS_SSH_PORT: ${{ vars.VPS_SSH_PORT || '22' }}
+          VPS_DEPLOY_PATH: ${{ vars.VPS_DEPLOY_PATH || '/opt/tuvimienphi' }}
+          COMMIT: ${{ steps.target.outputs.commit }}
+          DEPLOY_FILES: docker-compose.prod.yml tools/notify-zalo.sh tools/vps/watch-containers.sh tools/vps/watch-clock.sh
+        run: |
+          shipped=()
+          for path in $DEPLOY_FILES; do
+            if git cat-file -e "${COMMIT}:${path}" 2>/dev/null; then
+              shipped+=("$path")
+            else
+              echo "::notice::${path} is not in ${COMMIT}; the VPS keeps whatever it has"
+            fi
+          done
+
+          files_dir="$(printf '%q' "${VPS_DEPLOY_PATH}/.deploy-files")"
+          remote_command="rm -rf ${files_dir} && mkdir -p ${files_dir} && tar -x -C ${files_dir}"
+          git archive --format=tar "$COMMIT" "${shipped[@]}" \
+            | ssh -i ~/.ssh/deploy_key -p "$VPS_SSH_PORT" \
+              -o BatchMode=yes \
+              -o StrictHostKeyChecking=yes \
+              -o ConnectTimeout=20 \
+              "${VPS_USER}@${VPS_HOST}" "$remote_command"
+
       - name: Deploy over SSH
         env:
           VPS_HOST: ${{ secrets.VPS_HOST }}
@@ -190,9 +217,8 @@ jobs:
           VPS_DEPLOY_PATH: ${{ vars.VPS_DEPLOY_PATH || '/opt/tuvimienphi' }}
           IMAGE: ${{ steps.target.outputs.image }}
           COMMIT: ${{ steps.target.outputs.commit }}
-          REPOSITORY: ${{ github.repository }}
         run: |
-          remote_command="bash -s -- $(printf '%q ' "$IMAGE" "$COMMIT" "$VPS_DEPLOY_PATH" "$REPOSITORY")"
+          remote_command="bash -s -- $(printf '%q ' "$IMAGE" "$COMMIT" "$VPS_DEPLOY_PATH")"
           ssh -i ~/.ssh/deploy_key -p "$VPS_SSH_PORT" \
             -o BatchMode=yes \
             -o StrictHostKeyChecking=yes \

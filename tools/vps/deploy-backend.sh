@@ -4,12 +4,11 @@ set -euo pipefail
 readonly IMAGE="$1"
 readonly COMMIT="$2"
 readonly DEPLOY_PATH="$3"
-readonly REPOSITORY="$4"
 readonly COMPOSE_FILE_NAME='docker-compose.prod.yml'
 readonly READINESS_TIMEOUT_SECONDS=180
 readonly READINESS_POLL_SECONDS=3
 readonly SOURCE_LABEL='org.opencontainers.image.source'
-readonly MONITORING_SCRIPTS=(tools/notify-zalo.sh tools/vps/watch-containers.sh tools/vps/watch-clock.sh)
+readonly SHIPPED_FILES_DIR='.deploy-files'
 readonly LIVE_ENV_FILE='.env'
 readonly NEXT_ENV_FILE='.env.next'
 
@@ -29,26 +28,19 @@ else
   [ -f "$env_file" ] || fail "$DEPLOY_PATH/$env_file is missing; commit prod.enc.env or copy .env.prod.example and fill it in"
 fi
 
-raw_url() {
-  printf 'https://raw.githubusercontent.com/%s/%s/%s' "$REPOSITORY" "$COMMIT" "$1"
-}
+[ -f "${SHIPPED_FILES_DIR}/${COMPOSE_FILE_NAME}" ] \
+  || fail "the workflow did not ship $COMPOSE_FILE_NAME for $COMMIT"
 
-echo "==> fetching $COMPOSE_FILE_NAME at $COMMIT"
-curl --fail --silent --show-error --location \
-  --output "${COMPOSE_FILE_NAME}.next" \
-  "$(raw_url "$COMPOSE_FILE_NAME")"
-mv "${COMPOSE_FILE_NAME}.next" "$COMPOSE_FILE_NAME"
-
-for script in "${MONITORING_SCRIPTS[@]}"; do
-  mkdir -p "$(dirname "$script")"
-  if curl --fail --silent --show-error --location --output "${script}.next" "$(raw_url "$script")"; then
-    mv "${script}.next" "$script"
-    chmod +x "$script"
-  else
-    rm -f "${script}.next"
-    echo "==> $script is not in $COMMIT, leaving whatever is on disk" >&2
-  fi
-done
+echo "==> installing the files shipped with $COMMIT"
+while IFS= read -r -d '' shipped; do
+  target="${shipped#"${SHIPPED_FILES_DIR}/"}"
+  mkdir -p "$(dirname "$target")"
+  mv "$shipped" "$target"
+  case "$target" in
+    *.sh) chmod +x "$target" ;;
+  esac
+done < <(find "$SHIPPED_FILES_DIR" -type f -print0)
+rm -rf "$SHIPPED_FILES_DIR"
 
 active_services="$(docker compose --env-file "$env_file" config --services)"
 services_to_pull=(backend)
