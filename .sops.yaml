@@ -4,8 +4,8 @@ creation_rules:
       age1jj4gnpjuaf93vjdlfj0k85cac2vmhfrt96zn0329y3kv4pry2fmqshzwqj,
       age1ztsdqeunqc8m8p93kllqk9gcyv55hf56u8g5lnqfczydhcrw838s486y8y
     unencrypted_regex: ^(COMPOSE_FILE|COMPOSE_PROFILES|POSTGRES_USER|POSTGRES_DB|APP_URL|CORS_ORIGINS|R2_ENDPOINT_URL|R2_BACKUP_BUCKET|R2_MEDIA_BUCKET|R2_MEDIA_PUBLIC_URL|GOOGLE_CLIENT_ID|ZALO_CHAT_ID)$
-  - path_regex: (^|/)vercel\.enc\.env$
+  - path_regex: (^|/)cloudflare\.enc\.env$
     age: >-
       age1jj4gnpjuaf93vjdlfj0k85cac2vmhfrt96zn0329y3kv4pry2fmqshzwqj,
       age1ztsdqeunqc8m8p93kllqk9gcyv55hf56u8g5lnqfczydhcrw838s486y8y
-    unencrypted_regex: ^(VERCEL_ORG_ID|VERCEL_FRONTEND_PROJECT_ID|VERCEL_DASHBOARD_PROJECT_ID)$
+    unencrypted_regex: ^(CLOUDFLARE_ACCOUNT_ID)$
