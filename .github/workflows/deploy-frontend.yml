@@ -23,8 +23,8 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   SOPS_VERSION: v3.13.3
   SOPS_LINUX_AMD64_SHA256: e5bec3346a873ae91d871550f3e698c1aad962aff462a080e40f25fde17fef6b
-  VERCEL_CLI_VERSION: 65.16.0
-  VERCEL_ENV_SOURCE: origin/dev:vercel.enc.env
+  WRANGLER_VERSION: 4.162.0
+  CLOUDFLARE_ENV_SOURCE: origin/dev:cloudflare.enc.env
 
 jobs:
   deploy:
@@ -37,11 +37,13 @@ jobs:
       matrix:
         include:
           - app: frontend
-            project_id_key: VERCEL_FRONTEND_PROJECT_ID
+            project: '@org/frontend'
+            prerender: true
           - app: dashboard
-            project_id_key: VERCEL_DASHBOARD_PROJECT_ID
+            project: '@org/dashboard'
+            prerender: false
     concurrency:
-      group: deploy-frontend-${{ matrix.app }}
+      group: deploy-${{ matrix.app }}
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v7
@@ -67,13 +69,12 @@ jobs:
           git checkout --quiet --detach "$commit"
           echo "Deploying ${commit}"
 
-      - name: Decrypt the Vercel credentials
+      - name: Decrypt the Cloudflare credentials
         env:
           SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
-          PROJECT_ID_KEY: ${{ matrix.project_id_key }}
         run: |
           if [ -z "$SOPS_AGE_KEY" ]; then
-            echo "::error::Set SOPS_AGE_KEY on the vps-sieu-toc-production environment; ${VERCEL_ENV_SOURCE} cannot be decrypted without it"
+            echo "::error::Set SOPS_AGE_KEY on the vps-sieu-toc-production environment; ${CLOUDFLARE_ENV_SOURCE} cannot be decrypted without it"
             exit 1
           fi
 
@@ -84,37 +85,62 @@ jobs:
           chmod +x "$sops_bin"
 
           umask 077
-          rendered="${RUNNER_TEMP}/vercel.env"
-          git show "$VERCEL_ENV_SOURCE" \
+          rendered="${RUNNER_TEMP}/cloudflare.env"
+          git show "$CLOUDFLARE_ENV_SOURCE" \
             | "$sops_bin" decrypt --input-type dotenv --output-type dotenv /dev/stdin > "$rendered"
 
           value_of() {
             sed -n "s/^$1=//p" "$rendered" | head -n 1
           }
 
-          token="$(value_of VERCEL_TOKEN)"
-          org_id="$(value_of VERCEL_ORG_ID)"
-          project_id="$(value_of "$PROJECT_ID_KEY")"
+          token="$(value_of CLOUDFLARE_API_TOKEN)"
+          account_id="$(value_of CLOUDFLARE_ACCOUNT_ID)"
           rm -f "$rendered"
 
           missing=()
-          for pair in "VERCEL_TOKEN=${token}" "VERCEL_ORG_ID=${org_id}" "${PROJECT_ID_KEY}=${project_id}"; do
+          for pair in "CLOUDFLARE_API_TOKEN=${token}" "CLOUDFLARE_ACCOUNT_ID=${account_id}"; do
             value="${pair#*=}"
             if [ -z "$value" ] || [ "$value" = 'replace-me' ]; then
               missing+=("${pair%%=*}")
             fi
           done
           if [ "${#missing[@]}" -gt 0 ]; then
-            echo "::error::Fill ${missing[*]} in vercel.enc.env (sops edit vercel.enc.env)"
+            echo "::error::Fill ${missing[*]} in cloudflare.enc.env (sops edit cloudflare.enc.env)"
             exit 1
           fi
 
           echo "::add-mask::${token}"
           {
-            echo "VERCEL_TOKEN=${token}"
-            echo "VERCEL_ORG_ID=${org_id}"
-            echo "VERCEL_PROJECT_ID=${project_id}"
+            echo "CLOUDFLARE_API_TOKEN=${token}"
+            echo "CLOUDFLARE_ACCOUNT_ID=${account_id}"
           } >> "$GITHUB_ENV"
 
-      - name: Deploy to Vercel production
-        run: npx --yes "vercel@${VERCEL_CLI_VERSION}" deploy --prod --yes --token "$VERCEL_TOKEN"
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: 'pnpm'
+          cache-dependency-path: pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build
+        env:
+          NODE_ENV: production
+          VITE_GOOGLE_CLIENT_ID: 98028024074-s9nmhn3raqgrod8p2sskt0omq9u591o8.apps.googleusercontent.com
+          VITE_CF_ANALYTICS_TOKEN: 777257fb8ec744b689c5462d2f755fae
+        run: pnpm nx build "${{ matrix.project }}" --skip-nx-cache
+
+      - name: Prerender
+        if: matrix.prerender
+        working-directory: apps/frontend
+        run: |
+          pnpm exec playwright install --with-deps chromium
+          node tools/prerender.mjs
+
+      - name: Deploy to Cloudflare
+        working-directory: apps/${{ matrix.app }}
+        run: npx --yes "wrangler@${WRANGLER_VERSION}" deploy

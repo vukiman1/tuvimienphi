@@ -35,24 +35,25 @@ Chưa có `prod.enc.env` trên `dev` thì bỏ qua cả ba bước, deploy dùng
 
 Không giải mã được (thiếu hoặc sai `SOPS_AGE_KEY`) thì job đỏ và không có tin Zalo, vì token nằm trong chính file đó. GitHub vẫn báo workflow fail qua email / app: bật ở Settings → Notifications → Actions.
 
-## Frontend và dashboard trên Vercel
+## Frontend và dashboard trên Cloudflare (đang thử)
 
-Repo là private và team Vercel ở gói Hobby, nên Vercel chặn mọi deploy từ Git có commit không do chủ team viết ("Deployment was blocked"). Vì vậy deploy từ Git bị tắt trong `apps/frontend/vercel.json` và `apps/dashboard/vercel.json` (`git.deploymentEnabled: false`), và workflow `Deploy Frontend` deploy bằng Vercel CLI sau khi `Push to dev` xanh. Vercel vẫn build trên hạ tầng của nó với cấu hình project như cũ.
+Repo là private và team Vercel ở gói Hobby, nên Vercel chặn mọi deploy có commit không do chủ team viết. Frontend đang được thử trên Cloudflare Workers (static assets): workflow `Deploy Frontend` chạy sau khi `Push to dev` xanh (hoặc chạy tay cho một commit trên `dev`), build và prerender trên GitHub Actions, rồi `wrangler deploy` lên `tuvimienphi-frontend.anvuit734.workers.dev` và `tuvimienphi-dashboard.anvuit734.workers.dev`. Domain thật vẫn trỏ về bản cũ trên Vercel cho tới khi chuyển.
 
-Token và ID nằm trong `vercel.enc.env`, mã hoá cùng khoá với `prod.enc.env` nhưng tách riêng để token không bị ghi lên VPS:
+- `apps/frontend/wrangler.jsonc`: thư mục `dist` là static assets; đường dẫn không có file thì Worker trả `spa-shell.html`.
+- `apps/frontend/worker/index.ts`: chuyển `/api/*` sang `https://api.xemtuvimienphi.top`, thay rewrite trong `vercel.json`.
+- `apps/dashboard/wrangler.jsonc` + `worker/index.ts`: như frontend, thêm chuyển `/` sang `/admin` và trả `index.html` cho mọi đường dẫn khác.
+- `public/_headers` của cả hai app: cache `immutable` cho `/assets/*`.
 
-| Key                           | Lấy ở đâu                                                         |
-| ----------------------------- | ----------------------------------------------------------------- |
-| `VERCEL_TOKEN`                | Vercel (tài khoản chủ team) → Account Settings → Tokens           |
-| `VERCEL_ORG_ID`               | Team Settings → General → Team ID                                 |
-| `VERCEL_FRONTEND_PROJECT_ID`  | Project `tuvimienphi-fronend` → Settings → General → Project ID   |
-| `VERCEL_DASHBOARD_PROJECT_ID` | Project `tuvimienphi-dashboard` → Settings → General → Project ID |
+Token nằm trong `cloudflare.enc.env`, mã hoá cùng khoá với `prod.enc.env` nhưng tách riêng để không bị ghi lên VPS:
+
+| Key                     | Lấy ở đâu                                                    |
+| ----------------------- | ------------------------------------------------------------ |
+| `CLOUDFLARE_API_TOKEN`  | My Profile → API Tokens → template "Edit Cloudflare Workers" |
+| `CLOUDFLARE_ACCOUNT_ID` | Dashboard → Workers & Pages → Account ID (cột phải)          |
 
 ```bash
-sops edit vercel.enc.env
+sops edit cloudflare.enc.env
 ```
-
-Ba ID không bí mật nên để dạng rõ (`unencrypted_regex`), chỉ token được mã hoá. Còn `replace-me` thì job báo đỏ và nói rõ key nào thiếu. Deploy lại một commit: chạy tay `Deploy Frontend`, nhập SHA hoặc để trống để lấy commit mới nhất trên `dev`.
 
 ## Khoá
 
