@@ -8,7 +8,7 @@ interface Env {
 
 const API_ORIGIN = 'https://api.xemtuvimienphi.top';
 const API_PATH_PREFIX = '/api/';
-const SPA_SHELL_PATH = '/spa-shell.html';
+const SPA_SHELL_PATH = '/spa-shell';
 
 function proxyToApi(request: Request, url: URL): Promise<Response> {
   return fetch(new Request(`${API_ORIGIN}${url.pathname}${url.search}`, request));
