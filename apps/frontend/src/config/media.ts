@@ -67,21 +67,6 @@ export const MEDIA = {
   },
 } as const;
 
-/** Ảnh minh hoạ hero vẽ tay của từng con giáp, theo slug con giáp (ví dụ "07-ngo"). */
-export function vanHanHeroUrl(slug: string): string {
-  return mediaUrl(`/van-han/hero-${slug}.png`);
-}
-
-/** Đồng xu ngũ hành cho card năm sinh, theo slug hành (thuy/hoa/tho/moc/kim). */
-export function vanHanCoinUrl(slug: string): string {
-  return mediaUrl(`/van-han/coin-${slug}.png`);
-}
-
-/** Named separately from MEDIA because the file is picked at runtime, not known upfront. */
-export function zodiacIconUrl(fileName: string): string {
-  return mediaUrl(`/zodiac/${fileName}.png`);
-}
-
 /** Hand-drawn feng-shui glyph for a Kiến Thức topic chip (icon_1..icon_8, in category order). */
 export function categoryIconUrl(index: number): string {
   return mediaUrl(`/separated_icons/icon_${index}.webp`);
