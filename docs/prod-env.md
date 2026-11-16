@@ -43,7 +43,9 @@ Từ 2026-11-16 frontend và dashboard chạy trên Cloudflare Workers (static a
 - `dashboard.xemtuvimienphi.top` → Worker `tuvimienphi-dashboard`.
 - `www.xemtuvimienphi.top` được redirect rule của Cloudflare chuyển 301 về apex.
 
-DNS và Workers Custom Domains đều quản lý trong Cloudflare (`routes` với `custom_domain: true` trong `wrangler.jsonc`). `workers_dev` và `preview_urls` tắt nên không có địa chỉ `*.workers.dev`.
+DNS và Workers Custom Domains đều quản lý trong Cloudflare (`routes` với `custom_domain: true` trong `wrangler.jsonc`). `workers_dev` tắt nên bản production không có địa chỉ `*.workers.dev`; `preview_urls` bật cho preview PR (xem dưới).
+
+Job cuối `notify Zalo` gửi một tin gộp cả hai app, báo cả thành công lẫn thất bại, kèm số trang đã prerender; token Zalo lấy từ `prod.enc.env`, Zalo lỗi cũng không làm workflow đỏ. Workflow này chạy song song với `Deploy Backend`, nên prerender có thể gặp lúc backend đang khởi động lại: mỗi lời gọi API trả 5xx hoặc lỗi mạng được thử lại sau 5, 10, 20, 40, 60 giây (`apps/frontend/tools/retry-transient.mjs`) trước khi tính là hỏng.
 
 - `apps/frontend/wrangler.jsonc`: thư mục `dist` là static assets; đường dẫn không có file thì Worker trả `spa-shell.html`.
 - `apps/frontend/worker/index.ts`: chuyển `/api/*` sang `https://api.xemtuvimienphi.top`.

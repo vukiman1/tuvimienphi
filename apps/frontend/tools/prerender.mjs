@@ -18,6 +18,7 @@ import { renderSitemap } from './sitemap.mjs';
 import { stripGoogleIdentityTags } from './strip-google-identity-tags.mjs';
 import { stripModulePreloadLinks } from './strip-modulepreload-links.mjs';
 import { stripMotionReady } from './strip-motion-ready.mjs';
+import { isServerErrorStatus, retryTransient } from './retry-transient.mjs';
 import { fetchPublishedVanHanYears } from './van-han-years.mjs';
 
 const ANALYTICS_BEACON_URLS = 'https://static.cloudflareinsights.com/**';
@@ -62,7 +63,11 @@ function createApiReadCache(apiContext) {
     if (!responses.has(apiUrl)) {
       responses.set(
         apiUrl,
-        apiContext.get(apiUrl).then(async (response) => ({
+        retryTransient(() => apiContext.get(apiUrl), {
+          isTransient: (response) => isServerErrorStatus(response.status()),
+          onRetry: ({ delayMs, reason }) =>
+            console.warn(`[prerender] ${apiUrl}: ${reason}, retrying in ${delayMs} ms`),
+        }).then(async (response) => ({
           status: response.status(),
           headers: response.headers(),
           body: await response.body(),

@@ -1,3 +1,9 @@
+import {
+  isServerErrorStatus,
+  retryTransient,
+  TRANSIENT_RETRY_DELAYS_MS,
+} from './retry-transient.mjs';
+
 const VAN_HAN_YEARS_PATH = '/van-han/years';
 
 export class VanHanYearsError extends Error {
@@ -11,11 +17,19 @@ function isYearList(value) {
   return Array.isArray(value) && value.every((year) => Number.isInteger(year) && year > 0);
 }
 
-export async function fetchPublishedVanHanYears(apiBaseUrl) {
+export async function fetchPublishedVanHanYears(
+  apiBaseUrl,
+  retryDelaysMs = TRANSIENT_RETRY_DELAYS_MS,
+) {
   const url = `${apiBaseUrl}${VAN_HAN_YEARS_PATH}`;
   let response;
   try {
-    response = await fetch(url);
+    response = await retryTransient(() => fetch(url), {
+      isTransient: (answer) => isServerErrorStatus(answer.status),
+      delaysMs: retryDelaysMs,
+      onRetry: ({ delayMs, reason }) =>
+        console.warn(`[prerender] ${url}: ${reason}, retrying in ${delayMs} ms`),
+    });
   } catch (error) {
     throw new VanHanYearsError(url, `unreachable (${error.cause?.code ?? error.message})`);
   }

@@ -25,6 +25,7 @@ env:
   SOPS_LINUX_AMD64_SHA256: e5bec3346a873ae91d871550f3e698c1aad962aff462a080e40f25fde17fef6b
   WRANGLER_VERSION: 4.162.0
   CLOUDFLARE_ENV_SOURCE: origin/dev:cloudflare.enc.env
+  PROD_ENV_SOURCE: origin/dev:prod.enc.env
 
 jobs:
   deploy:
@@ -139,8 +140,117 @@ jobs:
         working-directory: apps/frontend
         run: |
           pnpm exec playwright install --with-deps chromium
-          node tools/prerender.mjs
+          log="${RUNNER_TEMP}/prerender.log"
+          set +e
+          node tools/prerender.mjs 2>&1 | tee "$log"
+          status="${PIPESTATUS[0]}"
+          set -e
+          summary="$(grep -oE 'wrote [0-9]+/[0-9]+ routes' "$log" | tail -n 1 || true)"
+          if [ -n "$summary" ]; then
+            echo "::notice title=prerender::${summary}"
+          fi
+          exit "$status"
 
       - name: Deploy to Cloudflare
         working-directory: apps/${{ matrix.app }}
         run: npx --yes "wrangler@${WRANGLER_VERSION}" deploy
+
+  notify:
+    name: notify Zalo
+    needs: deploy
+    if: always() && needs.deploy.result != 'skipped'
+    runs-on: ubuntu-latest
+    environment: vps-sieu-toc-production
+    continue-on-error: true
+    permissions:
+      contents: read
+      actions: read
+      checks: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          filter: tree:0
+          fetch-depth: 0
+
+      - name: Send the deploy result to Zalo
+        env:
+          SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+          REQUESTED_COMMIT: ${{ inputs.commit }}
+          RUN_COMMIT: ${{ github.event.workflow_run.head_sha }}
+          ACTOR: ${{ github.actor }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ -z "$SOPS_AGE_KEY" ]; then
+            echo "::warning::Set SOPS_AGE_KEY on the vps-sieu-toc-production environment to get deploy notifications"
+            exit 0
+          fi
+
+          sops_bin="${RUNNER_TEMP}/sops"
+          curl --fail --silent --show-error --location --output "$sops_bin" \
+            "https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux.amd64"
+          echo "${SOPS_LINUX_AMD64_SHA256}  ${sops_bin}" | sha256sum --check --status
+          chmod +x "$sops_bin"
+
+          git fetch --quiet --no-tags origin '+refs/heads/dev:refs/remotes/origin/dev'
+
+          umask 077
+          rendered="${RUNNER_TEMP}/prod.env"
+          git show "$PROD_ENV_SOURCE" \
+            | "$sops_bin" decrypt --input-type dotenv --output-type dotenv /dev/stdin > "$rendered"
+          ZALO_BOT_TOKEN="$(sed -n 's/^ZALO_BOT_TOKEN=//p' "$rendered" | tail -n 1)"
+          ZALO_CHAT_ID="$(sed -n 's/^ZALO_CHAT_ID=//p' "$rendered" | tail -n 1)"
+          rm -f "$rendered"
+          echo "::add-mask::${ZALO_BOT_TOKEN}"
+          export ZALO_BOT_TOKEN ZALO_CHAT_ID
+
+          if [ -z "$ZALO_BOT_TOKEN" ] || [ -z "$ZALO_CHAT_ID" ]; then
+            echo "::warning::Set ZALO_BOT_TOKEN and ZALO_CHAT_ID in prod.enc.env to get deploy notifications"
+            exit 0
+          fi
+
+          markdown_escape() {
+            sed -e 's/[][\\*_~`{}]/\\&/g'
+          }
+
+          commit="$(git rev-parse --verify --quiet "${RUN_COMMIT:-${REQUESTED_COMMIT:-origin/dev}}^{commit}" || true)"
+          subject="$(git log -1 --format=%s "$commit" 2>/dev/null || true)"
+
+          jobs="$(gh api "repos/${REPOSITORY}/actions/runs/${RUN_ID}/jobs" \
+            --jq '.jobs[] | select(.name | startswith("deploy ")) | [(.name | ltrimstr("deploy ")), (.conclusion // "unknown"), (.id | tostring)] | @tsv')"
+
+          all_succeeded=true
+          app_lines=''
+          while IFS=$'\t' read -r app conclusion job_id; do
+            [ -n "$app" ] || continue
+            detail=''
+            if [ "$app" = frontend ]; then
+              detail="$(gh api "repos/${REPOSITORY}/check-runs/${job_id}/annotations" \
+                --jq '[.[] | select(.title == "prerender") | .message] | last // ""' 2>/dev/null || true)"
+            fi
+            if [ "$conclusion" = success ]; then
+              icon='✅'
+            else
+              icon='🚫'
+              all_succeeded=false
+            fi
+            line="- ${icon} ${app}: ${conclusion}"
+            [ -z "$detail" ] || line="${line} (${detail})"
+            app_lines="${app_lines}${line}"$'\n'
+          done <<< "$jobs"
+
+          if [ "$all_succeeded" = true ]; then
+            headline='✅ {green}Deploy web thành công{/green}'
+          else
+            headline='🚫 {red}Deploy web thất bại{/red}'
+          fi
+
+          {
+            printf '**%s**\n' "$headline"
+            printf -- '- 📦 commit: %s %s\n' "${commit:0:7}" "$(markdown_escape <<< "$subject")"
+            printf '%s' "$app_lines"
+            printf -- '- 👤 bởi: %s\n' "$(markdown_escape <<< "$ACTOR")"
+            printf -- '- 🔗 %s\n' "$RUN_URL"
+          } | bash tools/notify-zalo.sh --markdown
