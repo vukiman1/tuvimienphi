@@ -10,6 +10,7 @@ import {
   createRouter,
 } from '@tanstack/react-router';
 import type { VanHanCurrent } from '@org/shared-contracts';
+import { FOCUS_RING_CLASS } from '@/design-system';
 import { TY_ENTRY, VAN_HAN_CURRENT } from '../__fixtures__/van-han-current';
 import { vanHanZodiacHead } from '../van-han-zodiac-head';
 import { VanHanZodiacPage } from './van-han-zodiac-page';
@@ -132,5 +133,120 @@ describe('VanHanZodiacPage', () => {
 
     expect(await screen.findByRole('heading', { level: 1, name: 'Vận hạn tuổi Tý' })).toBeTruthy();
     expect(screen.getByText(/chưa được cập nhật/)).toBeTruthy();
+  });
+
+  describe('in D3', () => {
+    function classTokens(element: Element | null): readonly string[] {
+      return element?.getAttribute('class')?.split(/\s+/) ?? [];
+    }
+
+    async function heroSection(): Promise<HTMLElement> {
+      const title = await screen.findByRole('heading', { level: 1 });
+      const section = title.closest('section');
+      expect(section).not.toBeNull();
+      return section ?? document.body;
+    }
+
+    function dayZoneOf(element: Element): Element | null {
+      return element.closest('section.bg-day');
+    }
+
+    it('opens with a Night hero holding the title, the way back and the Tết link', async () => {
+      renderZodiacPage('/van-han/tuoi-ty', { current: VAN_HAN_CURRENT });
+
+      const hero = await heroSection();
+      expect(classTokens(hero)).toContain('bg-night');
+      for (const name of ['← Vận hạn 12 con giáp', 'Tử vi 2027 tuổi Tý']) {
+        expect(classTokens(within(hero).getByRole('link', { name }))).toEqual(
+          expect.arrayContaining(FOCUS_RING_CLASS.split(' ')),
+        );
+      }
+    });
+
+    it('states the con giáp, the year and the birth years in the hero', async () => {
+      renderZodiacPage('/van-han/tuoi-ty', { current: VAN_HAN_CURRENT });
+
+      const hero = await heroSection();
+      for (const fact of [
+        'Tuổi Tý',
+        'Vận hạn năm Bính Ngọ 2026',
+        'Sinh năm: 1972, 1984, 1996, 2008, 2020',
+      ]) {
+        expect(screen.getAllByText(fact)).toHaveLength(1);
+        expect(hero.contains(screen.getByText(fact))).toBe(true);
+      }
+    });
+
+    it('drops the fact separators on phones so no wrapped line starts with a dot', async () => {
+      renderZodiacPage('/van-han/tuoi-ty', { current: VAN_HAN_CURRENT });
+
+      const hero = await heroSection();
+      const separators = within(hero).getAllByText('·');
+      expect(separators).toHaveLength(2);
+      for (const separator of separators) {
+        expect(classTokens(separator)).toEqual(expect.arrayContaining(['hidden', 'sm:inline']));
+        expect(separator.getAttribute('aria-hidden')).toBe('true');
+      }
+    });
+
+    it('switches years from pills in the hero', async () => {
+      renderZodiacPage('/van-han/tuoi-ty', {
+        current: VAN_HAN_CURRENT,
+        publishedYears: [2028, 2027, 2026],
+      });
+
+      const hero = await heroSection();
+      const years = within(hero).getByRole('navigation', { name: 'Năm khác' });
+      const links = within(years).getAllByRole('link');
+      expect(links).toHaveLength(2);
+      for (const link of links) {
+        expect(classTokens(link)).toEqual(
+          expect.arrayContaining(['min-h-11', 'border', 'border-day-soft']),
+        );
+      }
+      const shown = within(years).getByText('2026');
+      expect(shown.hasAttribute('href')).toBe(false);
+      expect(classTokens(shown)).toEqual(expect.arrayContaining(['bg-gold', 'text-ink']));
+      expect(shown.getAttribute('aria-current')).toBe('true');
+    });
+
+    it('sets the reading on a Day zone below the hero', async () => {
+      renderZodiacPage('/van-han/tuoi-ty', { current: VAN_HAN_CURRENT });
+
+      const hero = await heroSection();
+      const overviewTitle = screen.getByRole('heading', { name: 'Lưu Niên Vận Thế' });
+      expect(dayZoneOf(overviewTitle)).not.toBeNull();
+      expect(hero.contains(overviewTitle)).toBe(false);
+    });
+
+    it('puts the con giáp picker after the readings', async () => {
+      renderZodiacPage('/van-han/tuoi-ty', { current: VAN_HAN_CURRENT });
+
+      const picker = await screen.findByRole('navigation', { name: 'Chọn con giáp' });
+      const lastReading = screen.getByRole('heading', { name: 'Vận Hạn Từng Tuổi' });
+      expect(
+        lastReading.compareDocumentPosition(picker) & Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy();
+    });
+
+    it('keeps the not-published note on the Day zone with no facts in the hero', async () => {
+      renderZodiacPage('/van-han/tuoi-ty', { current: null, publishedYears: [] });
+
+      const hero = await heroSection();
+      expect(dayZoneOf(screen.getByText(/chưa được cập nhật/))).not.toBeNull();
+      expect(within(hero).queryByText(/Sinh năm/)).toBeNull();
+      expect(screen.queryByRole('navigation', { name: 'Năm khác' })).toBeNull();
+    });
+
+    it('loads no image but the con giáp emblems', async () => {
+      renderZodiacPage('/van-han/tuoi-ty', { current: VAN_HAN_CURRENT });
+
+      await heroSection();
+      const images = Array.from(document.querySelectorAll('img'));
+      expect(images.length).toBeGreaterThan(0);
+      for (const image of images) {
+        expect(image.getAttribute('src')).toContain('/tet/emblem/');
+      }
+    });
   });
 });

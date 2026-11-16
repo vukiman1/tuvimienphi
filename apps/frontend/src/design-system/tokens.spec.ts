@@ -134,6 +134,11 @@ describe('design tokens', () => {
     }
   });
 
+  it('muted outlines stand out from their surface', () => {
+    expect(contrastRatio(token('ink-soft'), token('day'))).toBeGreaterThanOrEqual(AA_NON_TEXT);
+    expect(contrastRatio(token('day-soft'), token('night'))).toBeGreaterThanOrEqual(AA_NON_TEXT);
+  });
+
   it('dawn eyebrows and labels are readable on night', () => {
     expect(contrastRatio(token('dawn'), token('night'))).toBeGreaterThanOrEqual(AA_NORMAL_TEXT);
   });
