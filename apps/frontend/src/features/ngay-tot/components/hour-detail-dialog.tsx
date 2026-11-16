@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { HourDial } from '@/features/ngay-tot/components/hour-dial';
-import { StarRating } from '@/features/ngay-tot/components/star-rating';
+import { StarRating } from '@/design-system';
 import type { HourEntry } from '@/features/ngay-tot/hour-quality';
 import { cn } from '@/lib/utils';
 

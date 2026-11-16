@@ -19,6 +19,7 @@ import {
   FOCUS_RING_CLASS,
   PageHero,
   ReadingZone,
+  StarRating,
   StickyCta,
   StoryChapter,
   StoryProvider,
@@ -511,5 +512,26 @@ describe('ReadingZone', () => {
     expect(className).toContain('text-reading');
     expect(className).toContain('leading-reading');
     expect(className).toContain('max-w-reading');
+  });
+});
+
+describe('StarRating', () => {
+  it('rates by shape, not by opacity', () => {
+    render(<StarRating rating={3} />);
+
+    const rating = screen.getByRole('img', { name: '3 trên 5 sao' });
+    const stars = Array.from(rating.querySelectorAll('svg'));
+    const tokensOf = (star: Element): readonly string[] =>
+      star.getAttribute('class')?.split(/\s+/) ?? [];
+    const filled = stars.filter((star) => tokensOf(star).includes('fill-gold'));
+    const empty = stars.filter((star) => tokensOf(star).includes('fill-transparent'));
+    expect(filled).toHaveLength(3);
+    expect(empty).toHaveLength(2);
+    for (const star of filled) expect(tokensOf(star)).toContain('text-ink');
+    for (const star of empty) expect(tokensOf(star)).toContain('text-ink-soft');
+    const allTokens = [rating, ...stars].flatMap(tokensOf);
+    expect(allTokens.filter((token) => token.includes('opacity') || token.includes('/'))).toEqual(
+      [],
+    );
   });
 });

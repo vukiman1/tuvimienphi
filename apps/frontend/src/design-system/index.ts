@@ -17,6 +17,7 @@ export { sectionProgress } from './motion/scroll-progress';
 export { useSectionProgress, type SectionProgress } from './motion/use-section-progress';
 export { PAINTING_WIDTH, PageHero, type PagePainting } from './PageHero';
 export { ReadingZone } from './ReadingZone';
+export { StarRating } from './StarRating';
 export { StickyCta } from './StickyCta';
 export { StoryChapter } from './StoryChapter';
 export {
