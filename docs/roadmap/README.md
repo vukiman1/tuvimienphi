@@ -53,6 +53,8 @@ Quy ước ưu tiên: 🔴 nên làm sớm (bảo mật) · 🟡 nên làm (ch�
 | 3   | Watch + restart cho dev                       | 🟢      | Tooling  | [07-build-pipeline.md](07-build-pipeline.md)   |
 | 4   | Worker riêng + quy ước cron (UTC, BullMQ)     | 🟡      | Ops      | [11-worker-and-cron.md](11-worker-and-cron.md) |
 
+Từ 2026-11-16 frontend và dashboard chạy trên Cloudflare Workers; mọi chỗ trong roadmap nói Vercel là host hiện tại đã lỗi thời.
+
 ## Lá số
 
 Mọi mục trong [05-la-so.md](05-la-so.md) đã xong, kể cả hai mục phase sau (nối luận giải vào lá số thật, lưu và xem lại lá số).

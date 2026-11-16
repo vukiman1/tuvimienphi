@@ -1,4 +1,4 @@
-name: Deploy Frontend
+name: Deploy Web Apps
 
 on:
   workflow_run:
