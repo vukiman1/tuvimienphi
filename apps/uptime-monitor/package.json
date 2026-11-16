@@ -1,0 +1,12 @@
+{
+  "name": "@org/uptime-monitor",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "nx": {
+    "tags": [
+      "scope:monitoring",
+      "type:app"
+    ]
+  }
+}
