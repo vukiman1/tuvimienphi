@@ -69,6 +69,7 @@ The flow for one page:
     - **Warning:** a pair in the same group at Jaccard `0.10` or above gets a preview warning, not a rejection.
 
     `check --only` compares the page with every other draft and content file, so the writer is told which page it repeats. `check` reports the whole corpus. Kim An can move the thresholds after the first batch; the preview prints each page's closest neighbour and score.
+
 14. **Fact checks are engine-driven and report what they skip.** The checkers read the engine, not the brief, and apply to every page, lessons included. The binding rules (Tasks 8 and 9) are heuristics over clauses: when a clause is ambiguous, it is skipped rather than guessed. Every clause that holds claim vocabulary (bậc words, hành, chòm, cát/hung, relation words, `luôn`, `không bao giờ`, health and money words) is listed by `check --only` and in the preview as **checked** or **skipped** with the reason, so Kim An reads the skipped ones first.
 15. **Star names are case-sensitive.** "Tử Vi" is the star, "tử vi" is the art. The writing guide requires that, the checkers match engine names exactly, and `checkWording` rejects the capitalised art (`môn Tử Vi`, `lá số Tử Vi`, `xem Tử Vi`, `học Tử Vi`, `Tử Vi Đẩu Số`). Chòm mentions ("chòm Tử Vi", "chòm Thiên Phủ") are not star mentions.
 16. **Rating vocabulary and binding.**
@@ -109,6 +110,7 @@ The flow for one page:
     - every Tết-only file moves into `content-gen/tet-hub/` with its name unchanged, including `tet-hub-gen.module.ts`, `ai-call-pacer.ts` and `rejected-attempts.ts`, which Kiến thức no longer uses.
 
     A second commit adds `src/content-gen/**/*.ts` to the `AI_PORT_ONLY` lint rule.
+
 27. **The tools live in `apps/backend/src/content-gen/kien-thuc/`.** Nothing in them needs Nest or the AI port, but the validator reuses `content-gen`'s shared text checks. `check-text.ts` reads `LOI_DOA` from `api/luan-giai`, so luận giải, the Tết hub and Kiến thức share one list of forbidden phrases. A separate nx project would first have to move `check-text.ts`, `shingle-similarity.ts` and `schema-guards.ts` out of the backend, and `shared-kien-thuc` is the wrong home because the frontend imports it. The nx target runs plain `ts-node`: no application context, no database, no `.env`.
 28. **Approved content stays checked.** A backend spec runs the fact checks (not similarity) over `content/**`. A later engine table change then fails `nx affected -t test` on exactly the pages whose prose it contradicts, which lists the pages to rewrite.
 
@@ -212,8 +214,12 @@ export interface ContentSection {
   readonly heading: string;
   readonly paragraphs: readonly string[];
 }
-export interface LessonFile { /* exactly the spec's fields */ }
-export interface EntryFile { /* exactly the spec's fields */ }
+export interface LessonFile {
+  /* exactly the spec's fields */
+}
+export interface EntryFile {
+  /* exactly the spec's fields */
+}
 
 export interface ManifestLesson {
   readonly slug: string;
@@ -253,7 +259,9 @@ export const CONTENT_SLUG_MAX_LENGTH = 80;
 export const RESERVED_LESSON_SEGMENTS: readonly string[];
 export function contentFilePath(kind: ContentKind, slug: string): string;
 export function pageRef(kind: ContentKind, slug: string): PageRef;
-export function parsePageRef(text: string): { readonly kind: ContentKind; readonly slug: string } | null;
+export function parsePageRef(
+  text: string,
+): { readonly kind: ContentKind; readonly slug: string } | null;
 export function isContentSlug(slug: string): boolean;
 export function isReservedLessonSlug(slug: string): boolean;
 ```
@@ -446,14 +454,14 @@ export function castSampleChart(): NatalChart;
 
 **The data.** Titles, slugs and steps below are the plan's values; titles of steps and lessons are the spec's starting set.
 
-| Step | Title | Lessons (slug — title — owned concepts) |
-| --- | --- | --- |
-| 1 | Tử vi là gì | `tu-vi-la-gi` — Tử vi là gì · `la-so-tu-vi-gom-nhung-gi` — Một lá số gồm những gì · `am-duong-ngu-hanh-co-ban` — Âm dương, ngũ hành cơ bản (âm dương) |
-| 2 | Mười hai cung | `12-cung-tu-vi` — 12 cung trong lá số · `cung-menh-va-cung-than` — Cung Mệnh và cung Thân (cung Mệnh, cung Thân) · `tam-hop-xung-chieu` — Tam hợp, xung chiếu giữa các cung (tam hợp, xung chiếu, đối cung) |
-| 3 | Chính tinh | `y-nghia-chinh-tinh` — Ý nghĩa chính tinh (chính tinh) · `chom-tu-vi-va-chom-thien-phu` — Chòm Tử Vi và chòm Thiên Phủ (chòm Tử Vi, chòm Thiên Phủ) · `mieu-vuong-dac-binh-ham` — Miếu, vượng, đắc, bình, hãm (miếu, hãm) |
-| 4 | Phụ tinh và Tứ hóa | `phu-tinh-thuong-gap` — Phụ tinh thường gặp (phụ tinh) · `tu-hoa-la-gi` — Tứ hóa là gì (tứ hóa) · `tuan-va-triet` — Tuần và Triệt (Tuần, Triệt) |
-| 5 | Đại vận và tiểu vận | `cach-xem-dai-van` — Cách xem đại vận (đại vận) · `tieu-van-hang-nam` — Tiểu vận hằng năm (tiểu vận) · `sao-thai-tue` — Sao Thái Tuế là gì? Thái Tuế và lưu niên (Thái Tuế, lưu niên) |
-| 6 | Ứng dụng vào đời sống | `ung-dung-tu-vi-cong-viec` — Tử vi trong công việc · `phong-thuy-va-tu-vi` — Phong thủy và tử vi · `doc-la-so-cua-chinh-ban` — Đọc lá số của chính bạn |
+| Step | Title                 | Lessons (slug — title — owned concepts)                                                                                                                                                                                   |
+| ---- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1    | Tử vi là gì           | `tu-vi-la-gi` — Tử vi là gì · `la-so-tu-vi-gom-nhung-gi` — Một lá số gồm những gì · `am-duong-ngu-hanh-co-ban` — Âm dương, ngũ hành cơ bản (âm dương)                                                                     |
+| 2    | Mười hai cung         | `12-cung-tu-vi` — 12 cung trong lá số · `cung-menh-va-cung-than` — Cung Mệnh và cung Thân (cung Mệnh, cung Thân) · `tam-hop-xung-chieu` — Tam hợp, xung chiếu giữa các cung (tam hợp, xung chiếu, đối cung)               |
+| 3    | Chính tinh            | `y-nghia-chinh-tinh` — Ý nghĩa chính tinh (chính tinh) · `chom-tu-vi-va-chom-thien-phu` — Chòm Tử Vi và chòm Thiên Phủ (chòm Tử Vi, chòm Thiên Phủ) · `mieu-vuong-dac-binh-ham` — Miếu, vượng, đắc, bình, hãm (miếu, hãm) |
+| 4    | Phụ tinh và Tứ hóa    | `phu-tinh-thuong-gap` — Phụ tinh thường gặp (phụ tinh) · `tu-hoa-la-gi` — Tứ hóa là gì (tứ hóa) · `tuan-va-triet` — Tuần và Triệt (Tuần, Triệt)                                                                           |
+| 5    | Đại vận và tiểu vận   | `cach-xem-dai-van` — Cách xem đại vận (đại vận) · `tieu-van-hang-nam` — Tiểu vận hằng năm (tiểu vận) · `sao-thai-tue` — Sao Thái Tuế là gì? Thái Tuế và lưu niên (Thái Tuế, lưu niên)                                     |
+| 6    | Ứng dụng vào đời sống | `ung-dung-tu-vi-cong-viec` — Tử vi trong công việc · `phong-thuy-va-tu-vi` — Phong thủy và tử vi · `doc-la-so-cua-chinh-ban` — Đọc lá số của chính bạn                                                                    |
 
 Entries, in plan order (which is also index and "related entries" order):
 
@@ -546,7 +554,9 @@ export interface LinkScan {
 }
 export function scanLinks(text: string): LinkScan;
 export function toPlainText(text: string): string;
-export function keepFirstLinkPerTarget(sections: readonly ContentSection[]): readonly ContentSection[];
+export function keepFirstLinkPerTarget(
+  sections: readonly ContentSection[],
+): readonly ContentSection[];
 
 export const SYLLABLES_PER_MINUTE = 180;
 export function countSyllables(text: string): number;
@@ -558,7 +568,10 @@ export interface NameHit<N extends string> {
   readonly name: N;
   readonly index: number;
 }
-export function findNames<N extends string>(clause: string, names: readonly N[]): readonly NameHit<N>[];
+export function findNames<N extends string>(
+  clause: string,
+  names: readonly N[],
+): readonly NameHit<N>[];
 
 export function isAffirmedAt(sentence: string, index: number): boolean;
 ```
@@ -615,9 +628,17 @@ export function limitsFor(page: PlannedPage): PageLimits;
 
 export const KIEN_THUC_FORBIDDEN: readonly string[];
 export const ART_WRITTEN_AS_STAR: readonly string[];
-export function checkShape(body: PageDraftBody, title: string, limits: PageLimits): readonly string[];
+export function checkShape(
+  body: PageDraftBody,
+  title: string,
+  limits: PageLimits,
+): readonly string[];
 export function checkLength(body: PageDraftBody, limits: PageLimits): readonly string[];
-export function checkLinks(body: PageDraftBody, self: PageRef, limits: PageLimits): readonly string[];
+export function checkLinks(
+  body: PageDraftBody,
+  self: PageRef,
+  limits: PageLimits,
+): readonly string[];
 export function checkWording(body: PageDraftBody): readonly string[];
 ```
 
@@ -744,7 +765,10 @@ export const checkCatHung: FactCheck;
 export const checkRelations: FactCheck;
 export const checkTuHoaByCan: FactCheck;
 export function checkSampleChart(plainText: string, chart: NatalChart): FactCheckResult;
-export function checkRequiredMentions(body: PageDraftBody, mentions: readonly string[]): readonly string[];
+export function checkRequiredMentions(
+  body: PageDraftBody,
+  mentions: readonly string[],
+): readonly string[];
 ```
 
 - **Relations:**
@@ -761,27 +785,27 @@ export function checkRequiredMentions(body: PageDraftBody, mentions: readonly st
 - **Required mentions:** each string must appear (`mentions`) in the plain text of the body. The brief supplies the list (Task 11).
 - **Golden sentences:** correct prose that every fact check (all six, with the stated subject) must pass. Kim An and the writing rounds add sentences whenever a correct one is rejected. The seed:
 
-  | Subject | Sentence |
-  | --- | --- |
-  | null | Thiên Cơ miếu ở Thìn, Tuất, Mão, Dậu và hãm ở Dần, Hợi. |
-  | null | Thiên Cơ hãm ở Dần nhưng sang Thìn lại miếu. |
-  | Thiên Cơ | Sao này hãm tại Dần, Hợi, còn tới Tị, Thân thì vượng. |
-  | Thiên Cơ | Tại Dần và Hợi, sao này hãm. |
-  | null | Người sinh năm Thân có Thiên Cơ ở Mệnh thường miếu vượng. |
-  | Thiên Cơ | Đi cùng Cự Môn ở Mão, sao này miếu địa. |
-  | Tả Phù | Tả Phù không có bậc miếu hay hãm. |
-  | Tả Phù | Tả Phù không mang bậc miếu, vượng hay hãm như chính tinh. |
-  | Tả Phù | Không như Thiên Cơ có lúc miếu lúc hãm, Tả Phù không có bậc. |
-  | null | Lá số có Thân cư Mệnh, Thái Dương miếu thì càng sáng. |
-  | Địa Kiếp | Không Kiếp đắc địa ở Dần, Thân, Tị, Hợi. |
-  | Lộc Tồn | Gặp Lộc Tồn, hung tinh bớt phần nào sức phá. |
-  | Thiên Khôi | Thiên Khôi đi cùng hung tinh vẫn giữ được vai quý nhân. |
-  | null | Cung Phúc Đức gặp hung tinh thì nên đọc kỹ các sao đi kèm. |
-  | Kình Dương | Kình Dương là hung tinh. |
-  | Văn Xương | Văn Xương là cát tinh, chủ về chữ nghĩa. |
-  | null | Bốn nhóm tam hợp là Thân Tý Thìn, Dần Ngọ Tuất, Tị Dậu Sửu và Hợi Mão Mùi. |
-  | null | Mệnh tam hợp với Tài Bạch và Quan Lộc. |
-  | null | Mệnh, Tài Bạch, Quan Lộc là một bộ tam hợp, còn Phụ Mẫu, Tật Ách, Tử Tức là bộ khác. |
+  | Subject    | Sentence                                                                             |
+  | ---------- | ------------------------------------------------------------------------------------ |
+  | null       | Thiên Cơ miếu ở Thìn, Tuất, Mão, Dậu và hãm ở Dần, Hợi.                              |
+  | null       | Thiên Cơ hãm ở Dần nhưng sang Thìn lại miếu.                                         |
+  | Thiên Cơ   | Sao này hãm tại Dần, Hợi, còn tới Tị, Thân thì vượng.                                |
+  | Thiên Cơ   | Tại Dần và Hợi, sao này hãm.                                                         |
+  | null       | Người sinh năm Thân có Thiên Cơ ở Mệnh thường miếu vượng.                            |
+  | Thiên Cơ   | Đi cùng Cự Môn ở Mão, sao này miếu địa.                                              |
+  | Tả Phù     | Tả Phù không có bậc miếu hay hãm.                                                    |
+  | Tả Phù     | Tả Phù không mang bậc miếu, vượng hay hãm như chính tinh.                            |
+  | Tả Phù     | Không như Thiên Cơ có lúc miếu lúc hãm, Tả Phù không có bậc.                         |
+  | null       | Lá số có Thân cư Mệnh, Thái Dương miếu thì càng sáng.                                |
+  | Địa Kiếp   | Không Kiếp đắc địa ở Dần, Thân, Tị, Hợi.                                             |
+  | Lộc Tồn    | Gặp Lộc Tồn, hung tinh bớt phần nào sức phá.                                         |
+  | Thiên Khôi | Thiên Khôi đi cùng hung tinh vẫn giữ được vai quý nhân.                              |
+  | null       | Cung Phúc Đức gặp hung tinh thì nên đọc kỹ các sao đi kèm.                           |
+  | Kình Dương | Kình Dương là hung tinh.                                                             |
+  | Văn Xương  | Văn Xương là cát tinh, chủ về chữ nghĩa.                                             |
+  | null       | Bốn nhóm tam hợp là Thân Tý Thìn, Dần Ngọ Tuất, Tị Dậu Sửu và Hợi Mão Mùi.           |
+  | null       | Mệnh tam hợp với Tài Bạch và Quan Lộc.                                               |
+  | null       | Mệnh, Tài Bạch, Quan Lộc là một bộ tam hợp, còn Phụ Mẫu, Tật Ách, Tử Tức là bộ khác. |
 
 - [ ] **Step 1: Write the failing tests.**
   - `check-relations.spec.ts`:
@@ -831,13 +855,23 @@ export interface Neighbour {
   readonly ref: PageRef;
   readonly score: number;
 }
-export function closestNeighbour(ref: PageRef, plainText: string, corpus: readonly CorpusPage[]): Neighbour | null;
+export function closestNeighbour(
+  ref: PageRef,
+  plainText: string,
+  corpus: readonly CorpusPage[],
+): Neighbour | null;
 export function checkSimilarity(page: CorpusPage, corpus: readonly CorpusPage[]): readonly string[];
-export function similarityWarnings(page: CorpusPage, corpus: readonly CorpusPage[]): readonly string[];
+export function similarityWarnings(
+  page: CorpusPage,
+  corpus: readonly CorpusPage[],
+): readonly string[];
 export function findTooSimilarPages(corpus: readonly CorpusPage[]): readonly SimilarPair[];
 
 export const CLAIM_WORDS: readonly string[];
-export function claimClausesOf(plainText: string, results: readonly FactCheckResult[]): readonly ClaimClause[];
+export function claimClausesOf(
+  plainText: string,
+  results: readonly FactCheckResult[],
+): readonly ClaimClause[];
 
 export interface PageValidationContext {
   readonly page: PlannedPage;
@@ -954,26 +988,26 @@ export function renderBrief(brief: PageBrief): string;
 - **Term:** the engine lists that exist for it: `CAN`, `CHI` with `CHI_NGU_HANH`, the five cục from `CUC_BY_ELEMENT`, the 30 `NAP_AM_NAMES`, `VONG_TRANG_SINH`, the sinh and khắc cycle derived from `theSinhKhac` (written in new style, never echoing the enum values), and the v1 stars of each hành. Required mention: the term's title.
 - **Lesson:** `LESSON_OUTLINES[slug].mustCover` and `lessonFactLines`:
 
-  | Lesson | Engine facts in the brief | Must cover |
-  | --- | --- | --- |
-  | `tu-vi-la-gi` | counts: 12 cung, 14 chính tinh, `PHU_TINH_NAMES.length` phụ tinh | what a lá số is drawn from (date and hour of birth); what it is for and not for; the path ahead |
-  | `la-so-tu-vi-gom-nhung-gi` | `CUNG_NAMES`; the parts of `NatalChart` a board shows (bản mệnh, cục, Mệnh chủ, Thân chủ, cân lượng, đại vận ages) | the địa bàn, the middle box, stars in a cung, where to look first |
-  | `am-duong-ngu-hanh-co-ban` | the five hành, the sinh and khắc cycles, `CHI_NGU_HANH` | âm dương; five hành; sinh and khắc; why a star's hành meets a palace's |
-  | `12-cung-tu-vi` | `CUNG_NAMES` in board order | each cung in one line; the order around the board |
-  | `cung-menh-va-cung-than` | the six palaces Thân can sit in, computed from `anCungMenh` and `anCungThan` over all months and hours | Mệnh vs Thân; why Thân only lands in six; Thân cư Mệnh |
-  | `tam-hop-xung-chieu` | `cungFacts` for all 12 | tam hợp; đối cung; reading a palace with its partners; one sentence on vô chính diệu with the link `[[thuat-ngu/vo-chinh-dieu|…]]`, not a section |
-  | `y-nghia-chinh-tinh` | the 14 chính tinh with hành | what a chính tinh is; one line per star, no ratings |
-  | `chom-tu-vi-va-chom-thien-phu` | `chomMembers` of both | the two circles; how Thiên Phủ mirrors Tử Vi |
-  | `mieu-vuong-dac-binh-ham` | the five bậc and their letters; Thái Dương's and Thái Âm's rows | what the five bậc mean; how to read the letter beside a star; that some stars have no bậc |
-  | `phu-tinh-thuong-gap` | the 13 v1 phụ tinh with hành and hung | the pairs; cát vs hung; why phụ tinh colour a palace |
-  | `tu-hoa-la-gi` | the four hóa, hung for Hóa Kỵ, the full can table | what the hóa attach to; that they follow the can of the year |
-  | `tuan-va-triet` | `anTriet` for each can; how `anTuan` follows the year pillar | what Tuần and Triệt block; reading a palace under them |
-  | `cach-xem-dai-van` | the five cục values as the starting age; 10-year spans | where the first đại vận starts; reading a vận as a palace |
-  | `tieu-van-hang-nam` | from `anTieuHan`: the cung where tiểu hạn starts for each tam hợp group of year chi, and its direction for nam and nữ | the yearly palace; how it differs from đại vận |
-  | `sao-thai-tue` | `LUU_TINH_NAMES`; the `ThaiTueRelation` kinds `phamThaiTue` reports | what Thái Tuế is; lưu niên stars; calm framing |
-  | `ung-dung-tu-vi-cong-viec` | none | Quan Lộc and its partners; using a reading as reflection, not orders |
-  | `phong-thuy-va-tu-vi` | none | how they differ; what each can and cannot say |
-  | `doc-la-so-cua-chinh-ban` | from `castSampleChart()`: Mệnh's chi and stars with ratings, Thân's palace, cục, bản mệnh, the four hóa and their palaces, the đối cung and tam hợp stars, the borrowing in Tài Bạch | a step-by-step read of the sample; then "lập lá số của bạn" |
+  | Lesson                         | Engine facts in the brief                                                                                                                                                            | Must cover                                                                                                                    |
+  | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+  | `tu-vi-la-gi`                  | counts: 12 cung, 14 chính tinh, `PHU_TINH_NAMES.length` phụ tinh                                                                                                                     | what a lá số is drawn from (date and hour of birth); what it is for and not for; the path ahead                               |
+  | `la-so-tu-vi-gom-nhung-gi`     | `CUNG_NAMES`; the parts of `NatalChart` a board shows (bản mệnh, cục, Mệnh chủ, Thân chủ, cân lượng, đại vận ages)                                                                   | the địa bàn, the middle box, stars in a cung, where to look first                                                             |
+  | `am-duong-ngu-hanh-co-ban`     | the five hành, the sinh and khắc cycles, `CHI_NGU_HANH`                                                                                                                              | âm dương; five hành; sinh and khắc; why a star's hành meets a palace's                                                        |
+  | `12-cung-tu-vi`                | `CUNG_NAMES` in board order                                                                                                                                                          | each cung in one line; the order around the board                                                                             |
+  | `cung-menh-va-cung-than`       | the six palaces Thân can sit in, computed from `anCungMenh` and `anCungThan` over all months and hours                                                                               | Mệnh vs Thân; why Thân only lands in six; Thân cư Mệnh                                                                        |
+  | `tam-hop-xung-chieu`           | `cungFacts` for all 12                                                                                                                                                               | tam hợp; đối cung; reading a palace with its partners; one sentence on vô chính diệu with the link `[[thuat-ngu/vo-chinh-dieu | …]]`, not a section |
+  | `y-nghia-chinh-tinh`           | the 14 chính tinh with hành                                                                                                                                                          | what a chính tinh is; one line per star, no ratings                                                                           |
+  | `chom-tu-vi-va-chom-thien-phu` | `chomMembers` of both                                                                                                                                                                | the two circles; how Thiên Phủ mirrors Tử Vi                                                                                  |
+  | `mieu-vuong-dac-binh-ham`      | the five bậc and their letters; Thái Dương's and Thái Âm's rows                                                                                                                      | what the five bậc mean; how to read the letter beside a star; that some stars have no bậc                                     |
+  | `phu-tinh-thuong-gap`          | the 13 v1 phụ tinh with hành and hung                                                                                                                                                | the pairs; cát vs hung; why phụ tinh colour a palace                                                                          |
+  | `tu-hoa-la-gi`                 | the four hóa, hung for Hóa Kỵ, the full can table                                                                                                                                    | what the hóa attach to; that they follow the can of the year                                                                  |
+  | `tuan-va-triet`                | `anTriet` for each can; how `anTuan` follows the year pillar                                                                                                                         | what Tuần and Triệt block; reading a palace under them                                                                        |
+  | `cach-xem-dai-van`             | the five cục values as the starting age; 10-year spans                                                                                                                               | where the first đại vận starts; reading a vận as a palace                                                                     |
+  | `tieu-van-hang-nam`            | from `anTieuHan`: the cung where tiểu hạn starts for each tam hợp group of year chi, and its direction for nam and nữ                                                                | the yearly palace; how it differs from đại vận                                                                                |
+  | `sao-thai-tue`                 | `LUU_TINH_NAMES`; the `ThaiTueRelation` kinds `phamThaiTue` reports                                                                                                                  | what Thái Tuế is; lưu niên stars; calm framing                                                                                |
+  | `ung-dung-tu-vi-cong-viec`     | none                                                                                                                                                                                 | Quan Lộc and its partners; using a reading as reflection, not orders                                                          |
+  | `phong-thuy-va-tu-vi`          | none                                                                                                                                                                                 | how they differ; what each can and cannot say                                                                                 |
+  | `doc-la-so-cua-chinh-ban`      | from `castSampleChart()`: Mệnh's chi and stars with ratings, Thân's palace, cục, bản mệnh, the four hóa and their palaces, the đối cung and tam hợp stars, the borrowing in Tài Bạch | a step-by-step read of the sample; then "lập lá số của bạn"                                                                   |
 
   Lesson required mentions are the owned concepts plus, for 6.3, the Mệnh's chính tinh, the cục name and Thân's palace. The two lessons with no engine facts (6.1, 6.2) are the ones Kim An reads most closely.
 
@@ -1127,10 +1161,19 @@ export function approvePages(
 
 ```ts
 export enum KienThucBatch {
-  Step01 = 'step-01', Step02 = 'step-02', Step03 = 'step-03',
-  Step04 = 'step-04', Step05 = 'step-05', Step06 = 'step-06',
-  ChinhTinh1 = 'chinh-tinh-1', ChinhTinh2 = 'chinh-tinh-2', Cung = 'cung',
-  TuHoa = 'tu-hoa', PhuTinh = 'phu-tinh', NguHanh = 'ngu-hanh', ThuatNgu = 'thuat-ngu',
+  Step01 = 'step-01',
+  Step02 = 'step-02',
+  Step03 = 'step-03',
+  Step04 = 'step-04',
+  Step05 = 'step-05',
+  Step06 = 'step-06',
+  ChinhTinh1 = 'chinh-tinh-1',
+  ChinhTinh2 = 'chinh-tinh-2',
+  Cung = 'cung',
+  TuHoa = 'tu-hoa',
+  PhuTinh = 'phu-tinh',
+  NguHanh = 'ngu-hanh',
+  ThuatNgu = 'thuat-ngu',
 }
 export function pagesOfBatch(batch: KienThucBatch): readonly PlannedPage[];
 
@@ -1331,5 +1374,6 @@ This task writes no code. Each batch is previewed, read, approved, and then comm
   - phrases in `luan/bang/phu-the/*`.
 
   Briefs must not echo them (Global Constraints, Engine). Fixing them changes luận giải output and is out of scope.
+
 - The spec says feature code talks to AI only through `ai/port`. Kiến thức talks to no AI at all. It does reach into `api/luan-giai` through `check-text.ts:1` (`LOI_DOA`), which keeps one forbidden list. Task 5 extends `AI_PORT_ONLY` to `src/content-gen/**`; that rule restricts only `ai/` imports, so the import stays allowed.
 - The spec says no domain data is added to the engine. Task 2 adds no data, but it does export four existing symbols from the barrel (`ratingOf`, `phuTinhRatingOf`, `VONG_TRANG_SINH`, `CUC_BY_ELEMENT`), because the facts now live in `shared-kien-thuc` and the package exports only its barrel.

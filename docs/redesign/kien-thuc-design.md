@@ -82,17 +82,17 @@ These would make the project a failure even if it shipped:
 
 ## Information architecture
 
-| Page | URL | Content |
-| --- | --- | --- |
-| Hub | `/kien-thuc` | Hero, Lộ trình, Tra cứu, the Tết hub link, a closing CTA |
-| Lesson | `/kien-thuc/<lesson-slug>` | One lesson in the path |
-| Star index | `/kien-thuc/sao` | Every star entry, grouped: Chính tinh, Tứ hóa, Phụ tinh (each group an anchor) |
-| Star entry | `/kien-thuc/sao/<slug>` | 14 chính tinh, the 4 hóa, and the v1 phụ tinh |
-| Palace index | `/kien-thuc/cung` | The 12 cung in board order |
-| Palace entry | `/kien-thuc/cung/<slug>` | One cung |
-| Term index | `/kien-thuc/thuat-ngu` | Ngũ hành, then the glossary A–Z. Carries the `DefinedTermSet` |
-| Term entry | `/kien-thuc/thuat-ngu/<slug>` | One term or hành |
-| Tết hub | `/kien-thuc/tu-vi-<year>/...` | Unchanged |
+| Page         | URL                           | Content                                                                        |
+| ------------ | ----------------------------- | ------------------------------------------------------------------------------ |
+| Hub          | `/kien-thuc`                  | Hero, Lộ trình, Tra cứu, the Tết hub link, a closing CTA                       |
+| Lesson       | `/kien-thuc/<lesson-slug>`    | One lesson in the path                                                         |
+| Star index   | `/kien-thuc/sao`              | Every star entry, grouped: Chính tinh, Tứ hóa, Phụ tinh (each group an anchor) |
+| Star entry   | `/kien-thuc/sao/<slug>`       | 14 chính tinh, the 4 hóa, and the v1 phụ tinh                                  |
+| Palace index | `/kien-thuc/cung`             | The 12 cung in board order                                                     |
+| Palace entry | `/kien-thuc/cung/<slug>`      | One cung                                                                       |
+| Term index   | `/kien-thuc/thuat-ngu`        | Ngũ hành, then the glossary A–Z. Carries the `DefinedTermSet`                  |
+| Term entry   | `/kien-thuc/thuat-ngu/<slug>` | One term or hành                                                               |
+| Tết hub      | `/kien-thuc/tu-vi-<year>/...` | Unchanged                                                                      |
 
 The three index pages are explicit routes, so they win over the lesson route's `$slug` (today `/kien-thuc/sao` would fall into it and get the noindex shell). The six hub tiles link to them: Chính tinh, Tứ hóa and Phụ tinh to the star index's anchors, 12 cung to the palace index, Ngũ hành and Thuật ngữ to the term index's two sections.
 
@@ -108,14 +108,14 @@ Redirects go in the frontend's Cloudflare Workers setup (`apps/frontend/wrangler
 
 Six steps, three lessons each. The titles are the starting set; the content plan may adjust them.
 
-| Step | Title | Lessons |
-| --- | --- | --- |
-| 01 | Tử vi là gì | Tử vi là gì · Một lá số gồm những gì · Âm dương, ngũ hành cơ bản |
-| 02 | Mười hai cung | 12 cung trong lá số · Cung Mệnh và cung Thân · Tam hợp, xung chiếu giữa các cung |
-| 03 | Chính tinh | Ý nghĩa chính tinh · Chòm Tử Vi và chòm Thiên Phủ · Miếu, vượng, đắc, bình, hãm |
-| 04 | Phụ tinh và Tứ hóa | Phụ tinh thường gặp · Tứ hóa là gì · Tuần và Triệt |
-| 05 | Đại vận và tiểu vận | Cách xem đại vận · Tiểu vận hằng năm · Sao Thái Tuế và lưu niên |
-| 06 | Ứng dụng vào đời sống | Tử vi trong công việc · Phong thủy và tử vi · Đọc lá số của chính bạn |
+| Step | Title                 | Lessons                                                                          |
+| ---- | --------------------- | -------------------------------------------------------------------------------- |
+| 01   | Tử vi là gì           | Tử vi là gì · Một lá số gồm những gì · Âm dương, ngũ hành cơ bản                 |
+| 02   | Mười hai cung         | 12 cung trong lá số · Cung Mệnh và cung Thân · Tam hợp, xung chiếu giữa các cung |
+| 03   | Chính tinh            | Ý nghĩa chính tinh · Chòm Tử Vi và chòm Thiên Phủ · Miếu, vượng, đắc, bình, hãm  |
+| 04   | Phụ tinh và Tứ hóa    | Phụ tinh thường gặp · Tứ hóa là gì · Tuần và Triệt                               |
+| 05   | Đại vận và tiểu vận   | Cách xem đại vận · Tiểu vận hằng năm · Sao Thái Tuế và lưu niên                  |
+| 06   | Ứng dụng vào đời sống | Tử vi trong công việc · Phong thủy và tử vi · Đọc lá số của chính bạn            |
 
 The path suggests an order. It does not lock one: every lesson opens for everyone.
 
@@ -138,6 +138,7 @@ Lengths count âm tiết (whitespace-separated tokens), which is how Vietnamese 
   - đối cung and tam hợp for a palace: `xungChieuIndex` and `tamHopIndexes` in `chi.ts`.
 
   A facts block shows only what the engine has. For a star without ratings, the block omits the row, and the validator rejects prose that claims a miếu or hãm position for it. No domain data is added to the engine in this project; filling the gaps needs sourced tables and is follow-up work.
+
 - **Term links inside text.** Lesson and entry prose marks terms as `[[thuat-ngu/can|can]]` or `[[bai/tuan-va-triet|Tuần, Triệt]]`. A link to a page that is not published yet renders as plain text. A spec fails the build if a link names a page that does not exist in the content plan at all.
 - **Spelling** follows the engine's star names and the existing copy: Hóa, Hỏa, Thủy, not Hoá, Hoả, Thuỷ. A few engine strings still use the old style (`chi-ngu-hanh.ts`, `luan/the-cung.ts`, `luan/bang/the-cuc.ts`); briefs avoid quoting them, and fixing them is out of scope.
 - **Review gate.**
@@ -158,7 +159,10 @@ interface LessonFile {
   readonly order: number;
   readonly title: string;
   readonly summary: string;
-  readonly sections: readonly { readonly heading: string; readonly paragraphs: readonly string[] }[];
+  readonly sections: readonly {
+    readonly heading: string;
+    readonly paragraphs: readonly string[];
+  }[];
   readonly readingMinutes: number;
   readonly reviewedAt: string;
 }
@@ -170,7 +174,10 @@ interface EntryFile {
   readonly title: string;
   readonly aliases: readonly string[];
   readonly summary: string;
-  readonly sections: readonly { readonly heading: string; readonly paragraphs: readonly string[] }[];
+  readonly sections: readonly {
+    readonly heading: string;
+    readonly paragraphs: readonly string[];
+  }[];
   readonly learnInLesson: string;
   readonly reviewedAt: string;
 }
@@ -226,6 +233,7 @@ All three page types use the D3 rules from design.md: tokens only, the fonts alr
 ### Search box
 
 - One field in the hub hero. It searches lesson titles, entry titles and aliases.
+
 ### Index pages
 
 - Night `PageHero` with the kind's title ("Các sao trong tử vi", "Mười hai cung", "Thuật ngữ tử vi") and a one-line lead, then a Day zone listing every published entry of that kind as tiles (title and summary), grouped by `EntryGroup` with an h2 per group.
@@ -282,6 +290,7 @@ A new backend module `learning` stores read lessons per user:
   - the text was read and approved on {reviewedAt}.
 
   It shows only on pages from a batch Kim An actually read (the batch PR records this). Validator-only pages show no review claim, since that would be a fake signal. This follows Google's Who/How/Why guidance on automation.
+
 - **Author and reviewer byline.** Kim An's call (2026-11-15): the pages are signed by the site's admin, not by a real name. The visible byline reads "Admin", and `Article.author` is an `Organization` (the site) rather than a `Person`. This gives up the named-expert E-E-A-T signal, which the methodology block and the engine facts partly make up for.
 - **OG images:** one designed D3 share image per page type (hub, lesson, star, palace, term, plus one per index page reusing its type's), not one per page. design.md asks for a designed image per page; per-page images for about 90 pages are a separate pipeline and are follow-up work.
 
