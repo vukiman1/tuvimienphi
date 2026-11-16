@@ -61,6 +61,9 @@ crypto:
 
 ai:
   geminiApiKey: GEMINI_API_KEY
+  gateway:
+    baseUrl: AI_GATEWAY_BASE_URL
+    token: AI_GATEWAY_TOKEN
 
 email:
   resendApiKey: RESEND_API_KEY

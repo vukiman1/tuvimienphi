@@ -1,6 +1,7 @@
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenAI, type GoogleGenAIOptions } from '@google/genai';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import type { AiGatewayConfig } from '@org/backend-config';
 import type { AiCredentials, AiProviderClient } from '../port/ai-provider';
 import type { AiRequest, AiResult } from '../port/ai.types';
 import { tryModels } from './try-models';
@@ -9,17 +10,20 @@ const DEFAULT_TEMPERATURE = 0.7;
 const JSON_MIME_TYPE = 'application/json';
 const MODEL_NAME_PREFIX = /^models\//;
 const GENERATE_ACTION = 'generateContent';
+const GATEWAY_AUTHORIZATION_HEADER = 'cf-aig-authorization';
 
 @Injectable()
 export class GeminiProvider implements AiProviderClient {
   private readonly temperature: number;
+  private readonly gateway: AiGatewayConfig | undefined;
 
   constructor(configService: ConfigService) {
     this.temperature = configService.get<number>('ai.temperature') ?? DEFAULT_TEMPERATURE;
+    this.gateway = configService.get<AiGatewayConfig>('ai.gateway');
   }
 
   async generate(request: AiRequest, { apiKey, models }: AiCredentials): Promise<AiResult> {
-    const genai = new GoogleGenAI({ apiKey });
+    const genai = this.client(apiKey);
 
     const { result, model, failedAttempts, latencyMs } = await tryModels(
       models,
@@ -57,7 +61,7 @@ export class GeminiProvider implements AiProviderClient {
   }
 
   async listModels(apiKey: string): Promise<string[]> {
-    const genai = new GoogleGenAI({ apiKey });
+    const genai = this.client(apiKey);
     const ids: string[] = [];
     for await (const model of await genai.models.list()) {
       if (model.name && model.supportedActions?.includes(GENERATE_ACTION)) {
@@ -65,5 +69,22 @@ export class GeminiProvider implements AiProviderClient {
       }
     }
     return ids.sort();
+  }
+
+  private client(apiKey: string): GoogleGenAI {
+    return new GoogleGenAI(this.clientOptions(apiKey));
+  }
+
+  private clientOptions(apiKey: string): GoogleGenAIOptions {
+    if (!this.gateway) {
+      return { apiKey };
+    }
+    return {
+      apiKey,
+      httpOptions: {
+        baseUrl: this.gateway.baseUrl,
+        headers: { [GATEWAY_AUTHORIZATION_HEADER]: `Bearer ${this.gateway.token}` },
+      },
+    };
   }
 }

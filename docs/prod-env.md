@@ -103,6 +103,19 @@ Thay khoá CI:
 
 Thêm một người được sửa: thêm public key của họ vào `.sops.yaml`, chạy `sops updatekeys prod.enc.env`, mở PR.
 
+## Cloudflare AI Gateway cho Gemini
+
+Khi bật, mọi lời gọi Gemini của backend (sinh luận giải, liệt kê model trong dashboard) đi qua gateway `tuvimienphi` của Cloudflare thay vì gọi thẳng Google. Gateway ghi lại từng request: log, độ trễ, số token và chi phí ước tính mỗi lần gọi, xem ở Dashboard → AI → AI Gateway → `tuvimienphi`. Key Gemini vẫn lấy từ dashboard admin như cũ, gateway chỉ đứng giữa.
+
+| Key                   | Giá trị                                                                                  |
+| --------------------- | ---------------------------------------------------------------------------------------- |
+| `AI_GATEWAY_BASE_URL` | `https://gateway.ai.cloudflare.com/v1/<account_id>/tuvimienphi/google-ai-studio` (https) |
+| `AI_GATEWAY_TOKEN`    | Token của gateway (gateway bật authentication), gửi qua header `cf-aig-authorization`    |
+
+Bật: `sops edit prod.enc.env`, điền cả hai key, mở PR vào `dev`, merge. Chỉ điền một trong hai thì backend và worker không khởi động được (log ghi rõ phải điền cả hai hoặc không điền key nào). Migration không đọc hai key này nên vẫn qua, container cũ đã bị thay: deploy đỏ ở bước chờ healthy và API sập cho tới khi sửa file, nên kiểm tra kỹ trước khi merge.
+
+Tắt / rollback: để trống cả hai giá trị (`AI_GATEWAY_BASE_URL=`, `AI_GATEWAY_TOKEN=`) rồi merge. Backend gọi thẳng Google như trước. Đừng xoá hẳn dòng: hai key nằm trong `.env.prod.example` nên deploy sẽ dừng nếu `prod.enc.env` thiếu chúng.
+
 ## Lưu ý
 
 - **`POSTGRES_PASSWORD`**: đổi trong file không đổi mật khẩu của database đang chạy — Postgres chỉ đọc biến này lúc khởi tạo volume. Chạy `ALTER USER ... PASSWORD ...` trước, rồi mới sửa file.
