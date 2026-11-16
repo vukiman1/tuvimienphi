@@ -3,23 +3,27 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { AiGatewayConfig } from '@org/backend-config';
 import type { AiCredentials, AiProviderClient } from '../port/ai-provider';
+import { AiProvider } from '../port/ai-provider.enum';
 import type { AiRequest, AiResult } from '../port/ai.types';
+import { aiGatewayRoute, type AiGatewayRoute } from './ai-gateway-route';
 import { tryModels } from './try-models';
 
 const DEFAULT_TEMPERATURE = 0.7;
 const JSON_MIME_TYPE = 'application/json';
 const MODEL_NAME_PREFIX = /^models\//;
 const GENERATE_ACTION = 'generateContent';
-const GATEWAY_AUTHORIZATION_HEADER = 'cf-aig-authorization';
 
 @Injectable()
 export class GeminiProvider implements AiProviderClient {
   private readonly temperature: number;
-  private readonly gateway: AiGatewayConfig | undefined;
+  private readonly gatewayRoute: AiGatewayRoute | undefined;
 
   constructor(configService: ConfigService) {
     this.temperature = configService.get<number>('ai.temperature') ?? DEFAULT_TEMPERATURE;
-    this.gateway = configService.get<AiGatewayConfig>('ai.gateway');
+    this.gatewayRoute = aiGatewayRoute(
+      configService.get<AiGatewayConfig>('ai.gateway'),
+      AiProvider.GEMINI,
+    );
   }
 
   async generate(request: AiRequest, { apiKey, models }: AiCredentials): Promise<AiResult> {
@@ -76,15 +80,12 @@ export class GeminiProvider implements AiProviderClient {
   }
 
   private clientOptions(apiKey: string): GoogleGenAIOptions {
-    if (!this.gateway) {
+    if (!this.gatewayRoute) {
       return { apiKey };
     }
     return {
       apiKey,
-      httpOptions: {
-        baseUrl: this.gateway.baseUrl,
-        headers: { [GATEWAY_AUTHORIZATION_HEADER]: `Bearer ${this.gateway.token}` },
-      },
+      httpOptions: { baseUrl: this.gatewayRoute.baseUrl, headers: this.gatewayRoute.headers },
     };
   }
 }
