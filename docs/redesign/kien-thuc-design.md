@@ -1,6 +1,6 @@
 # Kiến thức — Design
 
-Status: approved by Kim An on 2026-11-15. Date: 2026-11-14. Parent design: [design.md](design.md), Phase 3 ("Kiến thức (list, article)"). Mockups (AI-generated; layout and style only, the text inside them is placeholder and has domain errors): the hub (E), a lesson on a phone (F) and a lesson on desktop (D), chosen by Kim An on 2026-11-14 and attached to the GitHub issue "Kiến thức: các trang".
+Status: approved by Kim An on 2026-11-15. Date: 2026-11-14. Parent design: [design.md](design.md), Phase 3 ("Kiến thức (list, article)"). Mockups (AI-generated; layout and style only, the text inside them is placeholder and has domain errors): [the hub](mockups/kien-thuc/hub-desktop.jpg) (E), [a lesson on a phone](mockups/kien-thuc/lesson-mobile.jpg) (F) and [a lesson on desktop](mockups/kien-thuc/lesson-desktop.jpg) (D), chosen by Kim An on 2026-11-14.
 
 ## Intent
 
