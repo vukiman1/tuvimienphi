@@ -9,12 +9,13 @@ const VAN_HAN_YEARS_URL = pathToFileURL(join(__dirname, 'van-han-years.mjs')).hr
 const RUNNER_SCRIPT = `
 import { fetchPublishedVanHanYears } from ${JSON.stringify(VAN_HAN_YEARS_URL)};
 try {
-  console.log(JSON.stringify({ years: await fetchPublishedVanHanYears(process.argv[1]) }));
+  console.log(JSON.stringify({ years: await fetchPublishedVanHanYears(process.argv[1], JSON.parse(process.argv[2])) }));
 } catch (error) {
   console.log(JSON.stringify({ failure: { name: error.name, message: error.message } }));
 }
 `;
 const UNREACHABLE_API_BASE_URL = 'http://127.0.0.1:9/api';
+const TEST_RETRY_DELAYS_MS: readonly number[] = [1, 1];
 
 interface FakeAnswer {
   readonly status: number;
@@ -44,6 +45,7 @@ async function fetchYears(baseUrl: string): Promise<RunnerOutput> {
     '-e',
     RUNNER_SCRIPT,
     baseUrl,
+    JSON.stringify(TEST_RETRY_DELAYS_MS),
   ]);
   return JSON.parse(stdout);
 }
@@ -81,6 +83,16 @@ describe('fetchPublishedVanHanYears', () => {
       name: 'VanHanYearsError',
       message: expect.stringMatching(/\/api\/van-han\/years: answered 429/),
     });
+  });
+
+  it('keeps asking while the backend answers 5xx, then reports the last status', async () => {
+    answer = { status: 502, body: '{}' };
+
+    expect((await fetchYears(apiBaseUrl())).failure).toEqual({
+      name: 'VanHanYearsError',
+      message: expect.stringMatching(/\/api\/van-han\/years: answered 502/),
+    });
+    expect(requestedPaths).toHaveLength(TEST_RETRY_DELAYS_MS.length + 1);
   });
 
   it('fails naming the URL when the API answers something other than a list of years', async () => {
