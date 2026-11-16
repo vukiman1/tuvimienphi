@@ -686,6 +686,8 @@ importers:
 
   apps/frontend-e2e: {}
 
+  apps/uptime-monitor: {}
+
   packages/backend/base:
     dependencies:
       '@nestjs/common':

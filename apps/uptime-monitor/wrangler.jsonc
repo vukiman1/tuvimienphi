@@ -1,0 +1,11 @@
+{
+  "name": "tuvimienphi-uptime",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": false,
+  "preview_urls": false,
+  "triggers": {
+    "crons": ["*/5 * * * *"],
+  },
+  "kv_namespaces": [{ "binding": "UPTIME_STATE", "id": "775653aadca44148b2dd57f956bf9e85" }],
+}

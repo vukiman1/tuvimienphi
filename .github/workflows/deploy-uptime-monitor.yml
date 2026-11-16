@@ -1,0 +1,148 @@
+name: Deploy Uptime Monitor
+
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - 'apps/uptime-monitor/**'
+      - '.github/workflows/deploy-uptime-monitor.yml'
+      - 'prod.enc.env'
+      - 'cloudflare.enc.env'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  SOPS_VERSION: v3.13.3
+  SOPS_LINUX_AMD64_SHA256: e5bec3346a873ae91d871550f3e698c1aad962aff462a080e40f25fde17fef6b
+  WRANGLER_VERSION: 4.162.0
+  CLOUDFLARE_ENV_SOURCE: origin/dev:cloudflare.enc.env
+  PROD_ENV_SOURCE: origin/dev:prod.enc.env
+  WORKER_SECRETS: ZALO_BOT_TOKEN ZALO_CHAT_ID
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    environment: vps-sieu-toc-production
+    concurrency:
+      group: deploy-uptime-monitor
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          filter: tree:0
+          fetch-depth: 0
+
+      - name: Check the commit is on dev
+        run: |
+          git fetch --quiet --no-tags origin '+refs/heads/dev:refs/remotes/origin/dev'
+          if ! git merge-base --is-ancestor HEAD origin/dev; then
+            echo "::error::$(git rev-parse HEAD) is not on dev"
+            exit 1
+          fi
+
+      - name: Check the KV namespace id is filled
+        run: |
+          if grep -q 'replace-with-kv-id' apps/uptime-monitor/wrangler.jsonc; then
+            echo "::error::Run 'wrangler kv namespace create UPTIME_STATE' and put its id in apps/uptime-monitor/wrangler.jsonc"
+            exit 1
+          fi
+
+      - name: Install SOPS
+        run: |
+          sops_bin="${RUNNER_TEMP}/sops"
+          curl --fail --silent --show-error --location --output "$sops_bin" \
+            "https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux.amd64"
+          echo "${SOPS_LINUX_AMD64_SHA256}  ${sops_bin}" | sha256sum --check --status
+          chmod +x "$sops_bin"
+          echo "SOPS_BIN=${sops_bin}" >> "$GITHUB_ENV"
+
+      - name: Decrypt the Cloudflare and Zalo credentials
+        id: credentials
+        env:
+          SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
+        run: |
+          if [ -z "$SOPS_AGE_KEY" ]; then
+            echo "::error::Set SOPS_AGE_KEY on the vps-sieu-toc-production environment; the encrypted env files cannot be decrypted without it"
+            exit 1
+          fi
+
+          umask 077
+          secrets_dir="${RUNNER_TEMP}/uptime-secrets"
+          cloudflare_env="${secrets_dir}/cloudflare.env"
+          prod_env="${secrets_dir}/prod.env"
+          mkdir -p "$secrets_dir"
+          echo "secrets_dir=${secrets_dir}" >> "$GITHUB_OUTPUT"
+
+          git show "$CLOUDFLARE_ENV_SOURCE" \
+            | "$SOPS_BIN" decrypt --input-type dotenv --output-type dotenv /dev/stdin > "$cloudflare_env"
+          git show "$PROD_ENV_SOURCE" \
+            | "$SOPS_BIN" decrypt --input-type dotenv --output-type dotenv /dev/stdin > "$prod_env"
+
+          value_of() {
+            sed -n "s/^$2=//p" "$1" | head -n 1
+          }
+
+          token="$(value_of "$cloudflare_env" CLOUDFLARE_API_TOKEN)"
+          account_id="$(value_of "$cloudflare_env" CLOUDFLARE_ACCOUNT_ID)"
+          for name in $WORKER_SECRETS; do
+            printf '%s' "$(value_of "$prod_env" "$name")" > "${secrets_dir}/${name}"
+          done
+          rm -f "$cloudflare_env" "$prod_env"
+
+          missing=()
+          for pair in "CLOUDFLARE_API_TOKEN=${token}" "CLOUDFLARE_ACCOUNT_ID=${account_id}"; do
+            value="${pair#*=}"
+            if [ -z "$value" ] || [ "$value" = 'replace-me' ]; then
+              missing+=("${pair%%=*}")
+            fi
+          done
+          if [ "${#missing[@]}" -gt 0 ]; then
+            echo "::error::Fill ${missing[*]} in cloudflare.enc.env (sops edit cloudflare.enc.env)"
+            exit 1
+          fi
+          for name in $WORKER_SECRETS; do
+            if [ ! -s "${secrets_dir}/${name}" ]; then
+              missing+=("$name")
+            fi
+          done
+          if [ "${#missing[@]}" -gt 0 ]; then
+            echo "::error::Fill ${missing[*]} in prod.enc.env (sops edit prod.enc.env)"
+            exit 1
+          fi
+
+          echo "::add-mask::${token}"
+          for name in $WORKER_SECRETS; do
+            echo "::add-mask::$(cat "${secrets_dir}/${name}")"
+          done
+          {
+            echo "CLOUDFLARE_API_TOKEN=${token}"
+            echo "CLOUDFLARE_ACCOUNT_ID=${account_id}"
+          } >> "$GITHUB_ENV"
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+
+      - name: Deploy to Cloudflare
+        working-directory: apps/uptime-monitor
+        run: npx --yes "wrangler@${WRANGLER_VERSION}" deploy
+
+      - name: Set the Worker secrets
+        working-directory: apps/uptime-monitor
+        env:
+          SECRETS_DIR: ${{ steps.credentials.outputs.secrets_dir }}
+        run: |
+          for name in $WORKER_SECRETS; do
+            npx --yes "wrangler@${WRANGLER_VERSION}" secret put "$name" < "${SECRETS_DIR}/${name}"
+          done
+
+      - name: Remove the decrypted secrets
+        if: always()
+        env:
+          SECRETS_DIR: ${{ steps.credentials.outputs.secrets_dir }}
+        run: '[ -z "$SECRETS_DIR" ] || rm -rf "$SECRETS_DIR"'

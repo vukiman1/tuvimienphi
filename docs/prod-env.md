@@ -61,6 +61,21 @@ Token nằm trong `cloudflare.enc.env`, mã hoá cùng khoá với `prod.enc.env
 sops edit cloudflare.enc.env
 ```
 
+## Theo dõi uptime từ ngoài VPS
+
+`watch-containers.sh` và `notify-zalo.sh` chạy trên chính VPS, nên VPS chết thì không ai được báo. Worker `tuvimienphi-uptime` (`apps/uptime-monitor`) chạy trên Cloudflare bằng Cron Trigger, 5 phút một lần:
+
+- `GET https://api.xemtuvimienphi.top/health/readiness`, timeout 10 s. Không phải 2xx, quá giờ hoặc lỗi mạng đều tính là hỏng.
+- Chỉ báo khi trạng thái đổi: hỏng **2 lần liên tiếp** mới gửi tin "không phản hồi" (lỗi + giờ Việt Nam bắt đầu hỏng), sống lại thì gửi một tin "đã hoạt động lại" kèm thời gian gián đoạn. Hỏng mãi hay sống mãi thì im lặng.
+- Trạng thái lần trước (kèm thời điểm, số lần hỏng liên tiếp) nằm trong Workers KV, binding `UPTIME_STATE`.
+- `ZALO_BOT_TOKEN`, `ZALO_CHAT_ID` là Worker secret, lấy từ `prod.enc.env` — cùng giá trị VPS dùng. Workflow `Deploy Uptime Monitor` giải mã `cloudflare.enc.env` + `prod.enc.env`, chạy `wrangler deploy` rồi `wrangler secret put` qua stdin. Workflow chạy khi `dev` có thay đổi trong `apps/uptime-monitor/**`, chính workflow, `prod.enc.env` hoặc `cloudflare.enc.env` — đổi token Zalo thì Worker tự nhận bản mới — hoặc chạy tay.
+
+Làm một lần trước lần deploy đầu tiên: tạo KV namespace rồi thay `replace-with-kv-id` trong `apps/uptime-monitor/wrangler.jsonc` bằng id vừa nhận. Workflow dừng với lỗi nếu id vẫn là placeholder.
+
+```bash
+cd apps/uptime-monitor && npx wrangler@4.162.0 kv namespace create UPTIME_STATE
+```
+
 ## Khoá
 
 | Khoá    | Nửa bí mật ở đâu                                                                                                                | Dùng cho    |
