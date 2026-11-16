@@ -9,3 +9,9 @@ creation_rules:
       age1jj4gnpjuaf93vjdlfj0k85cac2vmhfrt96zn0329y3kv4pry2fmqshzwqj,
       age1ztsdqeunqc8m8p93kllqk9gcyv55hf56u8g5lnqfczydhcrw838s486y8y
     unencrypted_regex: ^(CLOUDFLARE_ACCOUNT_ID)$
+  - path_regex: (^|/)cloudflare-preview\.enc\.env$
+    age: >-
+      age1jj4gnpjuaf93vjdlfj0k85cac2vmhfrt96zn0329y3kv4pry2fmqshzwqj,
+      age1ztsdqeunqc8m8p93kllqk9gcyv55hf56u8g5lnqfczydhcrw838s486y8y,
+      age10lkrw2l84vw9h39qx5whn4ydcsd65ftzutaeqcsdvqmq4k4lx3nstxetnm
+    unencrypted_regex: ^(CLOUDFLARE_ACCOUNT_ID)$
