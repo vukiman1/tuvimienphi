@@ -1,9 +1,15 @@
 import { useRef, useState, type ReactElement } from 'react';
 import { ChevronDown, Info } from 'lucide-react';
-import { Chip, DisplaySize, DisplayTitle, FOCUS_RING_CLASS, TitleFace } from '@/design-system';
+import {
+  Chip,
+  DisplaySize,
+  DisplayTitle,
+  FOCUS_RING_CLASS,
+  StarRating,
+  TitleFace,
+} from '@/design-system';
 import { HourDetailDialog } from '@/features/ngay-tot/components/hour-detail-dialog';
 import { HourDial } from '@/features/ngay-tot/components/hour-dial';
-import { StarRating } from '@/features/ngay-tot/components/star-rating';
 import type { HourEntry, HourQuality } from '@/features/ngay-tot/hour-quality';
 import { cn } from '@/lib/utils';
 
@@ -20,7 +26,11 @@ function currentChiIndex(): number {
   return Math.floor(((hour + 1) % HOURS_PER_DAY) / HOURS_PER_CHI);
 }
 
-function GroupLabel({ text }: { readonly text: string }): ReactElement {
+interface GroupLabelProps {
+  readonly text: string;
+}
+
+function GroupLabel({ text }: GroupLabelProps): ReactElement {
   return (
     <div className="mt-10 flex items-center gap-3">
       <span aria-hidden className="h-px flex-1 bg-ink/15" />
