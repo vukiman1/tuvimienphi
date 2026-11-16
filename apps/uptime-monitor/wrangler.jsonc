@@ -7,5 +7,5 @@
   "triggers": {
     "crons": ["*/5 * * * *"],
   },
-  "kv_namespaces": [{ "binding": "UPTIME_STATE", "id": "replace-with-kv-id" }],
+  "kv_namespaces": [{ "binding": "UPTIME_STATE", "id": "775653aadca44148b2dd57f956bf9e85" }],
 }
