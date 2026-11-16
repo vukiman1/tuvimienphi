@@ -1,4 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
+import { ConfigService } from '@nestjs/config';
+import type { AiGatewayConfig } from '@org/backend-config';
 import { AiUnavailableError } from '../port/ai.errors';
 import type { AiRequest } from '../port/ai.types';
 import { AnthropicProvider } from './anthropic.provider';
@@ -13,6 +15,20 @@ jest.mock('@anthropic-ai/sdk', () => ({
     models: { list: mockList },
   })),
 }));
+
+const GATEWAY: AiGatewayConfig = {
+  baseUrl: 'https://gateway.ai.cloudflare.com/v1/account/tuvimienphi',
+  token: 'gateway-token',
+};
+
+const GATEWAY_CLIENT_OPTIONS = {
+  baseURL: 'https://gateway.ai.cloudflare.com/v1/account/tuvimienphi/anthropic',
+  defaultHeaders: { 'cf-aig-authorization': 'Bearer gateway-token' },
+};
+
+function provider(gateway?: AiGatewayConfig): AnthropicProvider {
+  return new AnthropicProvider(new ConfigService({ ai: { gateway } }));
+}
 
 const REQUEST: AiRequest = {
   system: 'Viết hai câu.',
@@ -54,7 +70,7 @@ describe('AnthropicProvider.generate', () => {
     mockCreate.mockResolvedValue(reply());
     const signal = AbortSignal.timeout(5_000);
 
-    await new AnthropicProvider().generate(
+    await provider().generate(
       { ...REQUEST, signal },
       { apiKey: 'sk-ant-key', models: ['claude-opus-5-5'] },
     );
@@ -90,7 +106,7 @@ describe('AnthropicProvider.generate', () => {
     mockCreate.mockResolvedValue(reply());
 
     await expect(
-      new AnthropicProvider().generate(REQUEST, { apiKey: 'k', models: ['claude-opus-5-5'] }),
+      provider().generate(REQUEST, { apiKey: 'k', models: ['claude-opus-5-5'] }),
     ).resolves.toEqual({
       text: '{"doan":"Hai câu."}',
       model: 'claude-opus-5-5',
@@ -108,7 +124,7 @@ describe('AnthropicProvider.generate', () => {
       )
       .mockResolvedValueOnce(reply());
 
-    const result = await new AnthropicProvider().generate(REQUEST, {
+    const result = await provider().generate(REQUEST, {
       apiKey: 'k',
       models: ['claude-opus-5-5', 'claude-haiku-4-5'],
     });
@@ -120,7 +136,7 @@ describe('AnthropicProvider.generate', () => {
     mockCreate.mockResolvedValue(reply({ stop_reason: 'max_tokens' }));
 
     await expect(
-      new AnthropicProvider().generate(REQUEST, { apiKey: 'k', models: ['claude-opus-5-5'] }),
+      provider().generate(REQUEST, { apiKey: 'k', models: ['claude-opus-5-5'] }),
     ).rejects.toBeInstanceOf(AiUnavailableError);
   });
 
@@ -128,8 +144,19 @@ describe('AnthropicProvider.generate', () => {
     mockCreate.mockRejectedValue(new Error('401 invalid x-api-key'));
 
     await expect(
-      new AnthropicProvider().generate(REQUEST, { apiKey: 'bad', models: ['claude-opus-5-5'] }),
+      provider().generate(REQUEST, { apiKey: 'bad', models: ['claude-opus-5-5'] }),
     ).rejects.toThrow('claude-opus-5-5: 401 invalid x-api-key');
+  });
+
+  it('goes through Cloudflare AI Gateway when the gateway is configured', async () => {
+    mockCreate.mockResolvedValue(reply());
+
+    await provider(GATEWAY).generate(REQUEST, {
+      apiKey: 'sk-ant-key',
+      models: ['claude-opus-5-5'],
+    });
+
+    expect(Anthropic).toHaveBeenCalledWith({ apiKey: 'sk-ant-key', ...GATEWAY_CLIENT_OPTIONS });
   });
 });
 
@@ -137,10 +164,18 @@ describe('AnthropicProvider.listModels', () => {
   it('lists the model ids the key can use, sorted', async () => {
     mockList.mockReturnValue(modelsOf('claude-sonnet-5-5', 'claude-haiku-4-5', 'claude-opus-5-5'));
 
-    await expect(new AnthropicProvider().listModels('sk-ant-key')).resolves.toEqual([
+    await expect(provider().listModels('sk-ant-key')).resolves.toEqual([
       'claude-haiku-4-5',
       'claude-opus-5-5',
       'claude-sonnet-5-5',
     ]);
+  });
+
+  it('lists models through Cloudflare AI Gateway when the gateway is configured', async () => {
+    mockList.mockReturnValue(modelsOf());
+
+    await provider(GATEWAY).listModels('sk-ant-key');
+
+    expect(Anthropic).toHaveBeenCalledWith({ apiKey: 'sk-ant-key', ...GATEWAY_CLIENT_OPTIONS });
   });
 });

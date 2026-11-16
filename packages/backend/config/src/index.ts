@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { aiGatewaySchema } from './ai-gateway-config';
 import { applyConnectionUrls } from './connection-urls';
 
-export type { AiGatewayConfig } from './ai-gateway-config';
+export type { AiGatewayConfig, AiGatewayProviderSegment } from './ai-gateway-config';
 export { applyConnectionUrls } from './connection-urls';
 
 const nodeEnv = process.env.NODE_ENV || 'development';

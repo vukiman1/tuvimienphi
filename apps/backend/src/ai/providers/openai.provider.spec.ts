@@ -1,3 +1,5 @@
+import { ConfigService } from '@nestjs/config';
+import type { AiGatewayConfig } from '@org/backend-config';
 import OpenAI from 'openai';
 import { AiUnavailableError } from '../port/ai.errors';
 import type { AiRequest } from '../port/ai.types';
@@ -13,6 +15,20 @@ jest.mock('openai', () => ({
     models: { list: mockList },
   })),
 }));
+
+const GATEWAY: AiGatewayConfig = {
+  baseUrl: 'https://gateway.ai.cloudflare.com/v1/account/tuvimienphi',
+  token: 'gateway-token',
+};
+
+const GATEWAY_CLIENT_OPTIONS = {
+  baseURL: 'https://gateway.ai.cloudflare.com/v1/account/tuvimienphi/openai',
+  defaultHeaders: { 'cf-aig-authorization': 'Bearer gateway-token' },
+};
+
+function provider(gateway?: AiGatewayConfig): OpenAiProvider {
+  return new OpenAiProvider(new ConfigService({ ai: { gateway } }));
+}
 
 const REQUEST: AiRequest = {
   system: 'Viết hai câu.',
@@ -50,7 +66,7 @@ describe('OpenAiProvider.generate', () => {
     mockCreate.mockResolvedValue(completion({ content: '{"doan":"Hai câu."}' }));
     const signal = AbortSignal.timeout(5_000);
 
-    await new OpenAiProvider().generate(
+    await provider().generate(
       { ...REQUEST, signal },
       { apiKey: 'sk-openai-key', models: ['gpt-fast'] },
     );
@@ -87,7 +103,7 @@ describe('OpenAiProvider.generate', () => {
     mockCreate.mockResolvedValue(completion({ content: '{"doan":"Hai câu."}' }));
 
     await expect(
-      new OpenAiProvider().generate(REQUEST, { apiKey: 'k', models: ['gpt-fast'] }),
+      provider().generate(REQUEST, { apiKey: 'k', models: ['gpt-fast'] }),
     ).resolves.toEqual({
       text: '{"doan":"Hai câu."}',
       model: 'gpt-fast',
@@ -103,7 +119,7 @@ describe('OpenAiProvider.generate', () => {
       .mockResolvedValueOnce(completion({ refusal: 'I cannot help with that.' }))
       .mockResolvedValueOnce(completion({ content: '{"doan":"Hai câu."}' }));
 
-    const result = await new OpenAiProvider().generate(REQUEST, {
+    const result = await provider().generate(REQUEST, {
       apiKey: 'k',
       models: ['gpt-fast', 'gpt-big'],
     });
@@ -115,7 +131,7 @@ describe('OpenAiProvider.generate', () => {
     mockCreate.mockResolvedValue(completion({ content: '{"doan":"Hai' }, 'length'));
 
     await expect(
-      new OpenAiProvider().generate(REQUEST, { apiKey: 'k', models: ['gpt-fast'] }),
+      provider().generate(REQUEST, { apiKey: 'k', models: ['gpt-fast'] }),
     ).rejects.toBeInstanceOf(AiUnavailableError);
   });
 
@@ -123,8 +139,16 @@ describe('OpenAiProvider.generate', () => {
     mockCreate.mockRejectedValue(new Error('401 Incorrect API key provided'));
 
     await expect(
-      new OpenAiProvider().generate(REQUEST, { apiKey: 'bad', models: ['gpt-fast'] }),
+      provider().generate(REQUEST, { apiKey: 'bad', models: ['gpt-fast'] }),
     ).rejects.toThrow('gpt-fast: 401 Incorrect API key provided');
+  });
+
+  it('goes through Cloudflare AI Gateway when the gateway is configured', async () => {
+    mockCreate.mockResolvedValue(completion({ content: '{"doan":"Hai câu."}' }));
+
+    await provider(GATEWAY).generate(REQUEST, { apiKey: 'sk-openai-key', models: ['gpt-fast'] });
+
+    expect(OpenAI).toHaveBeenCalledWith({ apiKey: 'sk-openai-key', ...GATEWAY_CLIENT_OPTIONS });
   });
 });
 
@@ -132,9 +156,14 @@ describe('OpenAiProvider.listModels', () => {
   it('lists the model ids the key can use, sorted', async () => {
     mockList.mockReturnValue(modelsOf('gpt-b', 'gpt-a'));
 
-    await expect(new OpenAiProvider().listModels('sk-openai-key')).resolves.toEqual([
-      'gpt-a',
-      'gpt-b',
-    ]);
+    await expect(provider().listModels('sk-openai-key')).resolves.toEqual(['gpt-a', 'gpt-b']);
+  });
+
+  it('lists models through Cloudflare AI Gateway when the gateway is configured', async () => {
+    mockList.mockReturnValue(modelsOf());
+
+    await provider(GATEWAY).listModels('sk-openai-key');
+
+    expect(OpenAI).toHaveBeenCalledWith({ apiKey: 'sk-openai-key', ...GATEWAY_CLIENT_OPTIONS });
   });
 });

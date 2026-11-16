@@ -105,18 +105,28 @@ Thay khoá CI:
 
 Thêm một người được sửa: thêm public key của họ vào `.sops.yaml`, chạy `sops updatekeys prod.enc.env`, mở PR.
 
-## Cloudflare AI Gateway cho Gemini
+## Cloudflare AI Gateway
 
-Khi bật, mọi lời gọi Gemini của backend (sinh luận giải, liệt kê model trong dashboard) đi qua gateway `tuvimienphi` của Cloudflare thay vì gọi thẳng Google. Gateway ghi lại từng request: log, độ trễ, số token và chi phí ước tính mỗi lần gọi, xem ở Dashboard → AI → AI Gateway → `tuvimienphi`. Key Gemini vẫn lấy từ dashboard admin như cũ, gateway chỉ đứng giữa.
+Khi bật, mọi lời gọi AI của backend (sinh luận giải, liệt kê model trong dashboard) tới cả ba provider Gemini, OpenAI và Anthropic đi qua gateway `tuvimienphi` của Cloudflare thay vì gọi thẳng nhà cung cấp. Gateway ghi lại từng request: log, độ trễ, số token và chi phí ước tính mỗi lần gọi, xem ở Dashboard → AI → AI Gateway → `tuvimienphi` → Logs, lọc theo cột Provider (`google-ai-studio`, `openai`, `anthropic`). Key của từng provider vẫn lấy từ dashboard admin như cũ, gateway chỉ đứng giữa.
 
-| Key                   | Giá trị                                                                                  |
-| --------------------- | ---------------------------------------------------------------------------------------- |
-| `AI_GATEWAY_BASE_URL` | `https://gateway.ai.cloudflare.com/v1/<account_id>/tuvimienphi/google-ai-studio` (https) |
-| `AI_GATEWAY_TOKEN`    | Token của gateway (gateway bật authentication), gửi qua header `cf-aig-authorization`    |
+| Key                   | Giá trị                                                                               |
+| --------------------- | ------------------------------------------------------------------------------------- |
+| `AI_GATEWAY_BASE_URL` | Gốc của gateway: `https://gateway.ai.cloudflare.com/v1/<account_id>/tuvimienphi`      |
+| `AI_GATEWAY_TOKEN`    | Token của gateway (gateway bật authentication), gửi qua header `cf-aig-authorization` |
 
-Bật: `sops edit prod.enc.env`, điền cả hai key, mở PR vào `dev`, merge. Chỉ điền một trong hai thì backend và worker không khởi động được (log ghi rõ phải điền cả hai hoặc không điền key nào). Migration không đọc hai key này nên vẫn qua, container cũ đã bị thay: deploy đỏ ở bước chờ healthy và API sập cho tới khi sửa file, nên kiểm tra kỹ trước khi merge.
+`AI_GATEWAY_BASE_URL` chỉ là gốc gateway, không kèm provider và không có `/` ở cuối. Backend tự nối đoạn của từng provider:
 
-Tắt / rollback: để trống cả hai giá trị (`AI_GATEWAY_BASE_URL=`, `AI_GATEWAY_TOKEN=`) rồi merge. Backend gọi thẳng Google như trước. Đừng xoá hẳn dòng: hai key nằm trong `.env.prod.example` nên deploy sẽ dừng nếu `prod.enc.env` thiếu chúng.
+| Provider  | URL backend gọi                          |
+| --------- | ---------------------------------------- |
+| Gemini    | `<AI_GATEWAY_BASE_URL>/google-ai-studio` |
+| OpenAI    | `<AI_GATEWAY_BASE_URL>/openai`           |
+| Anthropic | `<AI_GATEWAY_BASE_URL>/anthropic`        |
+
+Giá trị cũ kết thúc bằng `/google-ai-studio`, `/openai`, `/anthropic` hoặc `/` bị từ chối lúc khởi động (log ghi rõ phải dùng gốc gateway), để không sinh ra URL kiểu `/google-ai-studio/google-ai-studio`.
+
+Bật: `sops edit prod.enc.env`, điền cả hai key, mở PR vào `dev`, merge. Chỉ điền một trong hai, hoặc base URL sai dạng, thì backend và worker không khởi động được. Migration không đọc hai key này nên vẫn qua, container cũ đã bị thay: deploy đỏ ở bước chờ healthy và API sập cho tới khi sửa file, nên kiểm tra kỹ trước khi merge.
+
+Tắt / rollback: để trống cả hai giá trị (`AI_GATEWAY_BASE_URL=`, `AI_GATEWAY_TOKEN=`) rồi merge. Backend gọi thẳng các provider như trước. Đừng xoá hẳn dòng: hai key nằm trong `.env.prod.example` nên deploy sẽ dừng nếu `prod.enc.env` thiếu chúng.
 
 ## Lưu ý
 

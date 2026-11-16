@@ -23,7 +23,7 @@ const REQUEST: AiRequest = {
 };
 
 const GATEWAY: AiGatewayConfig = {
-  baseUrl: 'https://gateway.ai.cloudflare.com/v1/account/tuvimienphi/google-ai-studio',
+  baseUrl: 'https://gateway.ai.cloudflare.com/v1/account/tuvimienphi',
   token: 'gateway-token',
 };
 
@@ -115,7 +115,7 @@ describe('GeminiProvider.generate', () => {
     expect(GoogleGenAI).toHaveBeenCalledWith({
       apiKey: 'console-key',
       httpOptions: {
-        baseUrl: GATEWAY.baseUrl,
+        baseUrl: `${GATEWAY.baseUrl}/google-ai-studio`,
         headers: { 'cf-aig-authorization': 'Bearer gateway-token' },
       },
     });
@@ -147,7 +147,7 @@ describe('GeminiProvider.listModels', () => {
     expect(GoogleGenAI).toHaveBeenCalledWith({
       apiKey: 'console-key',
       httpOptions: {
-        baseUrl: GATEWAY.baseUrl,
+        baseUrl: `${GATEWAY.baseUrl}/google-ai-studio`,
         headers: { 'cf-aig-authorization': 'Bearer gateway-token' },
       },
     });

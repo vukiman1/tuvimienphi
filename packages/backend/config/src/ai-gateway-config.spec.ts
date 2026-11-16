@@ -1,6 +1,12 @@
-import { AI_GATEWAY_HALF_SET_MESSAGE, aiGatewaySchema } from './ai-gateway-config';
+import {
+  AI_GATEWAY_HALF_SET_MESSAGE,
+  AI_GATEWAY_PROVIDER_SEGMENTS,
+  AI_GATEWAY_PROVIDER_SUFFIX_MESSAGE,
+  AI_GATEWAY_TRAILING_SLASH_MESSAGE,
+  aiGatewaySchema,
+} from './ai-gateway-config';
 
-const BASE_URL = 'https://gateway.ai.cloudflare.com/v1/account/tuvimienphi/google-ai-studio';
+const BASE_URL = 'https://gateway.ai.cloudflare.com/v1/account/tuvimienphi';
 
 describe('aiGatewaySchema', () => {
   it('turns the gateway off when neither variable is set', () => {
@@ -32,4 +38,19 @@ describe('aiGatewaySchema', () => {
       aiGatewaySchema.parse({ baseUrl: BASE_URL.replace('https', 'http'), token: 'gateway-token' }),
     ).toThrow();
   });
+
+  it('refuses a base URL with a trailing slash', () => {
+    expect(() =>
+      aiGatewaySchema.parse({ baseUrl: `${BASE_URL}/`, token: 'gateway-token' }),
+    ).toThrow(AI_GATEWAY_TRAILING_SLASH_MESSAGE);
+  });
+
+  it.each(AI_GATEWAY_PROVIDER_SEGMENTS)(
+    'refuses a base URL that already ends in the %s segment',
+    (segment) => {
+      expect(() =>
+        aiGatewaySchema.parse({ baseUrl: `${BASE_URL}/${segment}`, token: 'gateway-token' }),
+      ).toThrow(AI_GATEWAY_PROVIDER_SUFFIX_MESSAGE);
+    },
+  );
 });
