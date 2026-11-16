@@ -1287,7 +1287,7 @@ The orchestrating session runs Task 15's flow on seven pages that cover every ch
   - When a check is wrong: add the real sentence to `golden-sentences.spec.ts` (failing), then fix the check. When the brief is unclear: fix the writing guide or the brief, test-first.
   - Record the change and the reason, then re-dispatch that page.
   - If the âm tiết range is missed in every round, fix the guide, not the range.
-- [ ] **Step 5:** Show Kim An the preview, with the ledger's rounds per page. Do not run `approve`: that is Kim An's step in Task 16. The seven drafts stay and enter their batches.
+- [ ] **Step 5:** Show Kim An the preview, with the ledger's rounds per page. Do not run `approve`: that is Kim An's step in Task 16. The seven drafts stay and enter their batches, except `thuat-ngu/tam-hop-luc-xung`, which is reviewed with the `cung` batch (Task 15).
 - [ ] **Step 6: Commit** any calibration as `fix(content-gen): <what was loosened or tightened>`, one commit per change.
 
 ### Task 15: Writing with subagents, batch by batch
@@ -1303,7 +1303,7 @@ This task writes no code. It fills `tmp/kien-thuc/drafts/` for one batch, which 
 5. `phu-tinh`;
 6. `ngu-hanh`, then `thuat-ngu`.
 
-Each batch is written after the previous one is approved, so its similarity check sees every earlier page. Batches 1–3 gate plan 2 and are approved by **2026-12-15**, so plan 2 can meet design.md's 2027-01-15. Batches 4–6 can follow in later content PRs.
+Each batch is written after the previous one is approved, so its similarity check sees every earlier page. Batches 1–3 gate plan 2 and are approved by **2026-12-15**, so plan 2 can meet design.md's 2027-01-15. `thuat-ngu/tam-hop-luc-xung` (drafted in the dry run) is approved and committed with the `cung` batch: plan 2's 301 from the old article points at it, and plan 2's build fails while it is missing. Batches 4–6 can follow in later content PRs.
 
 **The writing subagent's prompt** (fresh subagent per page, with the worktree path and the `NX_WORKSPACE_ROOT_PATH` prefix spelled out):
 
