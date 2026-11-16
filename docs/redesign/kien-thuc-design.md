@@ -102,7 +102,7 @@ Lessons stay at the flat `/kien-thuc/<slug>` path, so existing article URLs keep
 - `tam-hop-luc-xung` is about compatibility between tuổi, not palaces. It gets a 301 to the term entry `/kien-thuc/thuat-ngu/tam-hop-luc-xung`, which keeps that query; lesson 2.3 about palaces takes the new slug `tam-hop-xung-chieu`.
 - `chon-huong-ban-lam-viec` gets a 301 to `phong-thuy-va-tu-vi`.
 
-Redirects go in the frontend's Cloudflare Workers setup (`apps/frontend/wrangler.jsonc` and its worker) and in the frontend nginx config. The first segments `sao`, `cung`, `thuat-ngu` and anything matching `tu-vi-<year>` (from `TET_HUB_VIEW_YEAR`) can never be lesson slugs, and a spec enforces it.
+Redirects go in `apps/frontend/public/_redirects`, which Workers Static Assets apply before the worker (the worker runs only on `/api/*` and on asset misses, `wrangler.jsonc`), beside the existing `public/_headers`, and in the frontend nginx config. The first segments `sao`, `cung`, `thuat-ngu` and anything matching `tu-vi-<year>` (from `TET_HUB_VIEW_YEAR`) can never be lesson slugs, and a spec enforces it.
 
 ## The path
 
@@ -209,17 +209,17 @@ All three page types use the D3 rules from design.md: tokens only, the fonts alr
 [Night] Áp vào lá số của bạn                     [Lập lá số]
 ```
 
-- Step rows link to the step's first unread lesson. "Đã đọc" is a gold check plus the words; "Đang học" is a gold `inset-ring` left mark plus the words. Neither is colour alone.
+- Step rows link to the step's first unread lesson. "Đã đọc" is an Ink check on a gold disc plus the words (gold on Day is 1.65:1, so it is only ever a fill under Ink, design.md); "Đang học" is a gold `inset-ring` left bar plus the words. Neither is colour alone.
 - Counts and minutes come from the manifest. A tile shows only when its kind has entries.
 - Tile icons are drawn in code from the geometry kit.
 - The step rows' progress marks and the hero button's label depend on local progress, which the prerender cannot know. They render the no-progress state first and switch after mount, keeping the same box sizes so CLS stays 0.
-- From `lg`, the progress card (see Sign-in) can sit beside the path. Below `lg` it sits after the path.
+- The progress card (see Sign-in) sits directly after the path at every width, with no column reserved for it (Kim An's delegation, 2026-11-16).
 
 ### Lesson — mockups F (phone) and D (desktop)
 
 - **Night hero:** a pill "Bước 3/6 · Chính tinh", the h1, "Bài 1/3 · 5 phút đọc · Cập nhật 10/11/2026", and a six-point step track (done / current / ahead marked by fill and shape).
 - **Reading zone** (`ReadingZone`): sections with Playfair h2s. From `lg`, a sticky "Trong bài" table of contents on the left, with the current section marked by a gold `inset-ring` bar.
-- **Terms:** a dotted gold underline on a real `<button>`. It opens a popover on desktop and a bottom sheet below `md`, with the entry's summary and "Xem mục {title} →". Escape and an outside click close it, and focus returns to the term.
+- **Terms:** a dotted gold underline on a real `<button>` that discloses a panel. The panel is in the prerendered DOM while closed (`hidden`) and already holds a real `<a href>` "Xem mục {title} →", so crawlers get the internal link; the entry's summary arrives on first open. It is a popover on desktop and a bottom sheet below `md`. Escape and an outside click close it, and focus returns to the term.
 - **End of lesson:** a "Bài tiếp theo" card (or "Bước tiếp theo" at the end of a step), the progress card when it applies, then a Night card "Áp vào lá số của bạn" with "Lập lá số".
 - The last lesson of step 06 replaces "Bài tiếp theo" with "Lập lá số và đọc theo những gì đã học".
 
@@ -263,7 +263,7 @@ Bạn đã đọc 4/18 bài.
 [Đăng nhập]                                  Để sau
 ```
 
-- **When:** signed out, at least 2 lessons read, at the end of a lesson (never mid-article), and not dismissed in the last 7 days. It can also appear on the hub beside the path under the same rule.
+- **When:** signed out, at least 2 lessons read, at the end of a lesson (never mid-article), and not dismissed in the last 7 days. It can also appear on the hub, after the path, under the same rule.
 - **What it does:** "Đăng nhập" opens the existing lazily-loaded auth modal, where Google sign-in and email already live. "Để sau" hides it for 7 days.
 - **The reader stays on the lesson.** Today a successful Google sign-in navigates to `/` (`use-google-one-tap.ts`, shared by the modal's Google button), while email sign-in stays put. That would throw the reader out of the lesson they just finished. Plan 3 starts with a separate small PR that makes Google sign-in stay on the current page, site-wide, matching email. It changes shared auth behaviour, so it ships and is reviewed on its own.
 - **Copy rule:** it says exactly what signing in does. It promises nothing else.
@@ -284,14 +284,14 @@ A new backend module `learning` stores read lessons per user:
 - The hub's title and description change to describe the path and the reference. This is the one head change to an existing URL. Kim An approves the wording in the plan.
 - Lessons and entries link each other richly (term links, "Học trong…", related entries, next / previous). That internal linking is a large part of the SEO value.
 - The redirects for `chon-huong-ban-lam-viec` and `tam-hop-luc-xung` are 301s.
-- **How the page was made ("Cách soạn bài").** A short methodology block on lessons and entries, in the manner of the Tết hub's "Cách chúng tôi tính":
-  - the facts table is computed by the site's engine;
-  - the text was drafted with AI help from those facts;
-  - the text was read and approved on {reviewedAt}.
+- **How the page was made ("Cách soạn bài").** A short methodology block on every lesson and entry, in the manner of the Tết hub's "Cách chúng tôi tính" (Kim An's delegation, 2026-11-16):
+  - the facts table is computed by the site's engine (only where the page has one);
+  - the text was drafted with AI help from those facts (always shown);
+  - the text was read and approved on {reviewedAt} (only on pages Kim An read).
 
-  It shows only on pages from a batch Kim An actually read (the batch PR records this). Validator-only pages show no review claim, since that would be a fake signal. This follows Google's Who/How/Why guidance on automation.
+  The review line shows only on pages Kim An actually read: each batch PR adds those refs to `OWNER_READ_REFS` (`features/kien-thuc/owner-read-refs.ts`), since the content files carry no such field. Validator-only pages show no review claim, since that would be a fake signal. This follows Google's Who/How/Why guidance on automation.
 
-- **Author and reviewer byline.** Kim An's call (2026-11-15): the pages are signed by the site's admin, not by a real name. The visible byline reads "Admin", and `Article.author` is an `Organization` (the site) rather than a `Person`. This gives up the named-expert E-E-A-T signal, which the methodology block and the engine facts partly make up for.
+- **Author and reviewer byline.** Kim An's call (2026-11-15): the pages are signed by the site's admin, not by a real name. The visible byline reads "Biên soạn: Admin", and `Article.author` is an `Organization` (the site) rather than a `Person`. This gives up the named-expert E-E-A-T signal, which the methodology block and the engine facts partly make up for.
 - **OG images:** one designed D3 share image per page type (hub, lesson, star, palace, term, plus one per index page reusing its type's), not one per page. design.md asks for a designed image per page; per-page images for about 90 pages are a separate pipeline and are follow-up work.
 
 ## Delivery
@@ -304,7 +304,7 @@ Three plans, in this order, each its own PR or PRs on `dev`:
    - **Review.** Drafts are written in batches (step by step, then entries by kind). Kim An reviews each batch behind the same validator gate.
    - An API `generate` command can be added later if content must be produced without a session.
    - Nothing user-facing ships.
-2. **Pages.** Hub, lessons, index pages, entries, search, term popover and local progress, the redirects, `seo-routes`, the OG images, and the deletion of the old data and widgets. It ships when all 18 lessons, the 14 chính tinh and the 12 cung are reviewed, so the hub never shows an empty step. The 4 hóa, the phụ tinh and the terms can follow in later content PRs: until an entry exists, links to it render as plain text and its tile stays hidden. design.md's target for this page is 2027-01-15.
+2. **Pages.** Hub, lessons, index pages, entries, search, term popover and local progress, the redirects, `seo-routes`, the OG images, and the deletion of the old data and widgets. It ships when all 18 lessons, the 14 chính tinh, the 12 cung and the term `tam-hop-luc-xung` are reviewed: the hub never shows an empty step, and the 301 from the old article never points at a missing page (the build fails if it would). The 4 hóa, the phụ tinh and the other terms can follow in later content PRs: until an entry exists, links to it render as plain text and its tile stays hidden. design.md's target for this page is 2027-01-15.
 3. **Sign-in sync.** First the separate "stay on the page after Google sign-in" PR, then the `learning` module and migration, the merge on sign-in, the clear on sign-out, and the progress card.
 
 ## Questions Claude answered on Kim An's delegation (2026-11-14)
@@ -332,7 +332,7 @@ After the builder check (same day):
 18. **Shared devices?** Signing out clears local progress. The server keeps the account's copy.
 19. **Google sign-in sends readers to `/`?** A separate small PR keeps them on the page, site-wide, before the progress card ships.
 20. **Measuring sign-ins from the card?** Not in v1: no auth source is recorded anywhere today.
-21. **Launch all at once?** Lessons, chính tinh and cung together; the other entries follow in content PRs.
+21. **Launch all at once?** Lessons, chính tinh, cung and the redirect target `thuat-ngu/tam-hop-luc-xung` together; the other entries follow in content PRs.
 22. **OG images?** One per page type in v1.
 
 ## Left to the builder
