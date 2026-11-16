@@ -1,5 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 import { ConfigService } from '@nestjs/config';
+import type { AiGatewayConfig } from '@org/backend-config';
 import type { AiRequest } from '../port/ai.types';
 import { GeminiProvider } from './gemini.provider';
 
@@ -21,8 +22,22 @@ const REQUEST: AiRequest = {
   schema: { type: 'object', properties: { doan: { type: 'string' } }, required: ['doan'] },
 };
 
-function provider(temperature?: number): GeminiProvider {
-  return new GeminiProvider({ get: () => temperature } as unknown as ConfigService);
+const GATEWAY: AiGatewayConfig = {
+  baseUrl: 'https://gateway.ai.cloudflare.com/v1/account/tuvimienphi/google-ai-studio',
+  token: 'gateway-token',
+};
+
+interface ProviderSettings {
+  readonly temperature?: number;
+  readonly gateway?: AiGatewayConfig;
+}
+
+function provider({ temperature, gateway }: ProviderSettings = {}): GeminiProvider {
+  const settings: Readonly<Record<string, unknown>> = {
+    'ai.temperature': temperature,
+    'ai.gateway': gateway,
+  };
+  return new GeminiProvider({ get: (key: string) => settings[key] } as unknown as ConfigService);
 }
 
 async function* modelsOf(...models: { name?: string; supportedActions?: string[] }[]) {
@@ -45,7 +60,7 @@ describe('GeminiProvider.generate', () => {
     });
     const signal = AbortSignal.timeout(5_000);
 
-    const result = await provider(0.4).generate(
+    const result = await provider({ temperature: 0.4 }).generate(
       { ...REQUEST, signal },
       { apiKey: 'console-key', models: ['flash-lite'] },
     );
@@ -88,6 +103,23 @@ describe('GeminiProvider.generate', () => {
     expect(result.model).toBe('flash');
     expect(result.outputTokens).toBe(0);
   });
+
+  it('goes through Cloudflare AI Gateway when the gateway is configured', async () => {
+    mockGenerateContent.mockResolvedValue({ text: '{"doan":"Hai câu."}' });
+
+    await provider({ gateway: GATEWAY }).generate(REQUEST, {
+      apiKey: 'console-key',
+      models: ['flash-lite'],
+    });
+
+    expect(GoogleGenAI).toHaveBeenCalledWith({
+      apiKey: 'console-key',
+      httpOptions: {
+        baseUrl: GATEWAY.baseUrl,
+        headers: { 'cf-aig-authorization': 'Bearer gateway-token' },
+      },
+    });
+  });
 });
 
 describe('GeminiProvider.listModels', () => {
@@ -105,5 +137,19 @@ describe('GeminiProvider.listModels', () => {
       'gemini-flash',
       'gemini-flash-lite',
     ]);
+  });
+
+  it('lists models through Cloudflare AI Gateway when the gateway is configured', async () => {
+    mockList.mockResolvedValue(modelsOf());
+
+    await provider({ gateway: GATEWAY }).listModels('console-key');
+
+    expect(GoogleGenAI).toHaveBeenCalledWith({
+      apiKey: 'console-key',
+      httpOptions: {
+        baseUrl: GATEWAY.baseUrl,
+        headers: { 'cf-aig-authorization': 'Bearer gateway-token' },
+      },
+    });
   });
 });

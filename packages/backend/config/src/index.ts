@@ -2,8 +2,10 @@ import dotenv from 'dotenv';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { z } from 'zod';
+import { aiGatewaySchema } from './ai-gateway-config';
 import { applyConnectionUrls } from './connection-urls';
 
+export type { AiGatewayConfig } from './ai-gateway-config';
 export { applyConnectionUrls } from './connection-urls';
 
 const nodeEnv = process.env.NODE_ENV || 'development';
@@ -102,6 +104,10 @@ interface AiConfig {
   geminiApiKey: string;
   models: string[];
   temperature: number;
+  gateway: {
+    baseUrl: string;
+    token: string;
+  };
 }
 
 interface EmailConfig {
@@ -244,6 +250,7 @@ const backendConfigSchema = z.object({
     // nên phải có chỗ để thử lần lượt.
     models: z.array(z.string().min(1)).min(1),
     temperature: z.coerce.number().min(0).max(2),
+    gateway: aiGatewaySchema,
   }),
   email: z.object({
     resendApiKey: z.string().default(''),
