@@ -1,0 +1,138 @@
+name: PR Preview
+
+on:
+  pull_request:
+    branches:
+      - dev
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  SOPS_VERSION: v3.13.3
+  SOPS_LINUX_AMD64_SHA256: e5bec3346a873ae91d871550f3e698c1aad962aff462a080e40f25fde17fef6b
+  WRANGLER_VERSION: 4.162.0
+  WORKERS_SUBDOMAIN: anvuit734
+
+concurrency:
+  group: pr-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  upload:
+    name: preview ${{ matrix.app }}
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    environment: cloudflare-preview
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - app: frontend
+            project: '@org/frontend'
+            prerender: true
+          - app: dashboard
+            project: '@org/dashboard'
+            prerender: false
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Decrypt the preview credentials
+        env:
+          SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
+        run: |
+          if [ -z "$SOPS_AGE_KEY" ]; then
+            echo "::error::Set SOPS_AGE_KEY on the cloudflare-preview environment"
+            exit 1
+          fi
+
+          sops_bin="${RUNNER_TEMP}/sops"
+          curl --fail --silent --show-error --location --output "$sops_bin" \
+            "https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux.amd64"
+          echo "${SOPS_LINUX_AMD64_SHA256}  ${sops_bin}" | sha256sum --check --status
+          chmod +x "$sops_bin"
+
+          umask 077
+          rendered="${RUNNER_TEMP}/preview.env"
+          "$sops_bin" decrypt --input-type dotenv --output-type dotenv cloudflare-preview.enc.env > "$rendered"
+          token="$(sed -n 's/^CLOUDFLARE_API_TOKEN=//p' "$rendered" | head -n 1)"
+          account_id="$(sed -n 's/^CLOUDFLARE_ACCOUNT_ID=//p' "$rendered" | head -n 1)"
+          rm -f "$rendered"
+
+          echo "::add-mask::${token}"
+          {
+            echo "CLOUDFLARE_API_TOKEN=${token}"
+            echo "CLOUDFLARE_ACCOUNT_ID=${account_id}"
+          } >> "$GITHUB_ENV"
+
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: 'pnpm'
+          cache-dependency-path: pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build
+        env:
+          NODE_ENV: production
+          VITE_GOOGLE_CLIENT_ID: 98028024074-s9nmhn3raqgrod8p2sskt0omq9u591o8.apps.googleusercontent.com
+        run: pnpm nx build "${{ matrix.project }}" --skip-nx-cache
+
+      - name: Prerender
+        if: matrix.prerender
+        working-directory: apps/frontend
+        run: |
+          pnpm exec playwright install --with-deps chromium
+          node tools/prerender.mjs
+
+      - name: Keep the preview out of search engines
+        working-directory: apps/${{ matrix.app }}
+        run: |
+          printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
+
+      - name: Upload the preview version
+        working-directory: apps/${{ matrix.app }}
+        env:
+          PREVIEW_ALIAS: pr-${{ github.event.pull_request.number }}
+        run: |
+          npx --yes "wrangler@${WRANGLER_VERSION}" versions upload \
+            --preview-alias "$PREVIEW_ALIAS" \
+            --message "PR #${{ github.event.pull_request.number }} @ ${{ github.event.pull_request.head.sha }}"
+
+  comment:
+    name: comment the preview links
+    needs: upload
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Post or update the preview comment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          marker='<!-- pr-preview -->'
+          frontend="https://pr-${PR_NUMBER}-tuvimienphi-frontend.${WORKERS_SUBDOMAIN}.workers.dev"
+          dashboard="https://pr-${PR_NUMBER}-tuvimienphi-dashboard.${WORKERS_SUBDOMAIN}.workers.dev/admin"
+          body="$(printf '%s\n**Preview** (commit `%s`)\n\n| App | Link |\n| --- | --- |\n| Frontend | %s |\n| Dashboard | %s |\n\nPreviews call the production API: reads are real data, writes are real writes. Sign-in does not work on workers.dev.\n' \
+            "$marker" "${HEAD_SHA:0:7}" "$frontend" "$dashboard")"
+
+          existing="$(gh api "repos/${REPOSITORY}/issues/${PR_NUMBER}/comments" --paginate \
+            --jq ".[] | select(.body | startswith(\"${marker}\")) | .id" | head -n 1)"
+          if [ -n "$existing" ]; then
+            gh api -X PATCH "repos/${REPOSITORY}/issues/comments/${existing}" -f body="$body" > /dev/null
+          else
+            gh api -X POST "repos/${REPOSITORY}/issues/${PR_NUMBER}/comments" -f body="$body" > /dev/null
+          fi

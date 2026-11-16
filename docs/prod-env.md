@@ -76,6 +76,14 @@ Làm một lần trước lần deploy đầu tiên: tạo KV namespace rồi th
 cd apps/uptime-monitor && npx wrangler@4.162.0 kv namespace create UPTIME_STATE
 ```
 
+## Preview cho PR
+
+Mỗi PR vào `dev` (từ nhánh trong repo) chạy workflow `PR Preview`: build như production, rồi `wrangler versions upload --preview-alias pr-<số>` cho cả hai app, không đụng bản production. Bot comment link `https://pr-<số>-tuvimienphi-frontend.anvuit734.workers.dev` và bản dashboard vào PR. `robots.txt` của preview là `Disallow: /`.
+
+Preview gọi API production (đọc là dữ liệu thật, ghi là ghi thật) và không đăng nhập được trên `workers.dev`.
+
+Job dùng environment `cloudflare-preview`, không phải `vps-sieu-toc-production`: secret `SOPS_AGE_KEY` ở đó là một khoá age riêng chỉ mở được `cloudflare-preview.enc.env`, trong đó là token Cloudflare chỉ có quyền Workers Scripts. Code trong PR vì vậy không đọc được secret production.
+
 ## Khoá
 
 | Khoá    | Nửa bí mật ở đâu                                                                                                                | Dùng cho    |
