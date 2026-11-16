@@ -3,6 +3,8 @@
 Đường build của backend còn mang hình dạng thời chạy trên Vercel serverless. Backend đã chuyển sang VPS
 (`docker-compose.prod.yml`, `CMD ["node", "main.js"]`), nên phần lớn thứ còn lại là hành lý thừa.
 
+> Từ 2026-11-16 frontend và dashboard cũng đã chuyển từ Vercel sang Cloudflare Workers; các `vercel.json` trong repo đã bị xoá.
+
 ---
 
 ## 1. 🟡 Mỗi lần `pnpm dev` build hai lần, một lần thừa và là bản production

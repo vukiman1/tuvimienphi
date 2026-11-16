@@ -35,12 +35,18 @@ Chưa có `prod.enc.env` trên `dev` thì bỏ qua cả ba bước, deploy dùng
 
 Không giải mã được (thiếu hoặc sai `SOPS_AGE_KEY`) thì job đỏ và không có tin Zalo, vì token nằm trong chính file đó. GitHub vẫn báo workflow fail qua email / app: bật ở Settings → Notifications → Actions.
 
-## Frontend và dashboard trên Cloudflare (đang thử)
+## Frontend và dashboard trên Cloudflare Workers
 
-Repo là private và team Vercel ở gói Hobby, nên Vercel chặn mọi deploy có commit không do chủ team viết. Frontend đang được thử trên Cloudflare Workers (static assets): workflow `Deploy Frontend` chạy sau khi `Push to dev` xanh (hoặc chạy tay cho một commit trên `dev`), build và prerender trên GitHub Actions, rồi `wrangler deploy` lên `tuvimienphi-frontend.anvuit734.workers.dev` và `tuvimienphi-dashboard.anvuit734.workers.dev`. Domain thật vẫn trỏ về bản cũ trên Vercel cho tới khi chuyển.
+Từ 2026-11-16 frontend và dashboard chạy trên Cloudflare Workers (static assets), không còn trên Vercel. Workflow `Deploy Web Apps` chạy sau khi `Push to dev` xanh (hoặc chạy tay cho một commit trên `dev`), build và prerender trên GitHub Actions, rồi `wrangler deploy` hai Worker:
+
+- `xemtuvimienphi.top` → Worker `tuvimienphi-frontend`.
+- `dashboard.xemtuvimienphi.top` → Worker `tuvimienphi-dashboard`.
+- `www.xemtuvimienphi.top` được redirect rule của Cloudflare chuyển 301 về apex.
+
+DNS và Workers Custom Domains đều quản lý trong Cloudflare (`routes` với `custom_domain: true` trong `wrangler.jsonc`). `workers_dev` và `preview_urls` tắt nên không có địa chỉ `*.workers.dev`.
 
 - `apps/frontend/wrangler.jsonc`: thư mục `dist` là static assets; đường dẫn không có file thì Worker trả `spa-shell.html`.
-- `apps/frontend/worker/index.ts`: chuyển `/api/*` sang `https://api.xemtuvimienphi.top`, thay rewrite trong `vercel.json`.
+- `apps/frontend/worker/index.ts`: chuyển `/api/*` sang `https://api.xemtuvimienphi.top`.
 - `apps/dashboard/wrangler.jsonc` + `worker/index.ts`: như frontend, thêm chuyển `/` sang `/admin` và trả `index.html` cho mọi đường dẫn khác.
 - `public/_headers` của cả hai app: cache `immutable` cho `/assets/*`.
 
@@ -77,4 +83,4 @@ Thêm một người được sửa: thêm public key của họ vào `.sops.yam
 ## Lưu ý
 
 - **`POSTGRES_PASSWORD`**: đổi trong file không đổi mật khẩu của database đang chạy — Postgres chỉ đọc biến này lúc khởi tạo volume. Chạy `ALTER USER ... PASSWORD ...` trước, rồi mới sửa file.
-- Env của frontend và dashboard nằm trên Vercel, không ở đây.
+- Biến `VITE_*` của frontend và dashboard nằm trong workflow `Deploy Web Apps`, không ở đây.

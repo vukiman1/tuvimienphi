@@ -217,7 +217,7 @@ Hậu quả nếu quên, theo từng thứ:
 
 - Trang đăng nhập cho console; `beforeLoad` chặn route; xoá `DEV_ADMIN`; cập nhật `apps/dashboard-e2e/src/admin-gate.spec.ts` (bài test này đang khẳng định trạng thái mở toang là đúng).
 - Thêm origin console vào `CORS_ORIGINS` trên VPS — là danh sách đọc từ env ở [configure-app.ts](../../apps/backend/src/app/configure-app.ts), không phải sửa code.
-- Console phải gọi API **cùng site** với backend, nếu không cookie `sameSite: 'lax'` không được gửi kèm. Vercel rewrite `/api/*` hoặc đặt console dưới cùng domain.
+- Console phải gọi API **cùng site** với backend, nếu không cookie `sameSite: 'lax'` không được gửi kèm. Worker của dashboard chuyển `/api/*` sang backend (hosting chuyển từ Vercel sang Cloudflare Workers ngày 2026-11-16).
 
 ---
 

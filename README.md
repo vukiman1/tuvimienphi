@@ -333,8 +333,7 @@ sudo chmod 600 /home/deploy/.ssh/authorized_keys
 
 Check the `known_hosts` fingerprints against `ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub` run
 on the server before trusting them. Then store everything in the `vps-sieu-toc-production`
-environment. It cannot be called `production`: Vercel already owns `Production`, and GitHub matches
-environment names regardless of case, so the two would share secrets and protection rules.
+environment.
 
 ```bash
 gh api -X PUT repos/vukiman1/tuvimienphi/environments/vps-sieu-toc-production
