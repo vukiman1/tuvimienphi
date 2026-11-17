@@ -1,0 +1,214 @@
+name: Terraform Cloudflare
+
+on:
+  pull_request:
+    branches:
+      - dev
+    paths:
+      - 'infra/cloudflare/**'
+      - '.github/workflows/terraform-cloudflare.yml'
+  push:
+    branches:
+      - dev
+    paths:
+      - 'infra/cloudflare/**'
+      - '.github/workflows/terraform-cloudflare.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  SOPS_VERSION: v3.13.3
+  SOPS_LINUX_AMD64_SHA256: e5bec3346a873ae91d871550f3e698c1aad962aff462a080e40f25fde17fef6b
+  TERRAFORM_VERSION: 1.10.5
+  TF_WORKING_DIR: infra/cloudflare
+
+jobs:
+  plan:
+    name: plan
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    environment: cloudflare-terraform-plan
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Check the plan credentials are provisioned
+        id: guard
+        run: |
+          if [ ! -f terraform-plan.enc.env ]; then
+            echo "::notice::terraform-plan.enc.env is missing; the plan job is inert until it is provisioned"
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install SOPS
+        if: steps.guard.outputs.ready == 'true'
+        run: |
+          sops_bin="${RUNNER_TEMP}/sops"
+          curl --fail --silent --show-error --location --output "$sops_bin" \
+            "https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux.amd64"
+          echo "${SOPS_LINUX_AMD64_SHA256}  ${sops_bin}" | sha256sum --check --status
+          chmod +x "$sops_bin"
+          echo "SOPS_BIN=${sops_bin}" >> "$GITHUB_ENV"
+
+      - name: Decrypt the read-only Terraform credentials
+        if: steps.guard.outputs.ready == 'true'
+        env:
+          SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
+        run: |
+          if [ -z "$SOPS_AGE_KEY" ]; then
+            echo "::error::Set SOPS_AGE_KEY on the cloudflare-terraform-plan environment"
+            exit 1
+          fi
+
+          umask 077
+          rendered="${RUNNER_TEMP}/terraform-plan.env"
+          "$SOPS_BIN" decrypt --input-type dotenv --output-type dotenv terraform-plan.enc.env > "$rendered"
+          value_of() { sed -n "s/^$1=//p" "$rendered" | head -n 1; }
+
+          token="$(value_of CLOUDFLARE_API_TOKEN)"
+          account_id="$(value_of CLOUDFLARE_ACCOUNT_ID)"
+          zone_id="$(value_of ZONE_ID)"
+          state_key_id="$(value_of AWS_ACCESS_KEY_ID)"
+          state_secret="$(value_of AWS_SECRET_ACCESS_KEY)"
+          rm -f "$rendered"
+
+          echo "::add-mask::${token}"
+          echo "::add-mask::${state_key_id}"
+          echo "::add-mask::${state_secret}"
+          {
+            echo "TF_VAR_cloudflare_api_token=${token}"
+            echo "TF_VAR_cloudflare_account_id=${account_id}"
+            echo "TF_VAR_zone_id=${zone_id}"
+            echo "AWS_ACCESS_KEY_ID=${state_key_id}"
+            echo "AWS_SECRET_ACCESS_KEY=${state_secret}"
+          } >> "$GITHUB_ENV"
+
+      - uses: hashicorp/setup-terraform@v3
+        if: steps.guard.outputs.ready == 'true'
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+          terraform_wrapper: false
+
+      - name: Terraform plan
+        id: plan
+        if: steps.guard.outputs.ready == 'true'
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          set +e
+          {
+            terraform fmt -check -recursive &&
+              terraform init -input=false &&
+              terraform validate &&
+              terraform plan -input=false -no-color -lock=false
+          } >plan.txt 2>&1
+          code=$?
+          set -e
+          sed -n '1,400p' plan.txt
+          exit "$code"
+
+      - name: Comment the plan on the PR
+        if: steps.guard.outputs.ready == 'true' && always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          marker='<!-- terraform-cloudflare-plan -->'
+          plan_file="${TF_WORKING_DIR}/plan.txt"
+          plan_body="$(sed -n '1,400p' "$plan_file" 2>/dev/null || echo 'plan did not run')"
+          body="$(printf '%s\n**Terraform plan** `infra/cloudflare` (commit `%s`)\n\n<details><summary>Plan output</summary>\n\n```\n%s\n```\n\n</details>\n' \
+            "$marker" "${HEAD_SHA:0:7}" "$plan_body")"
+
+          existing="$(gh api "repos/${REPOSITORY}/issues/${PR_NUMBER}/comments" --paginate \
+            --jq ".[] | select(.body | startswith(\"${marker}\")) | .id" | head -n 1)"
+          if [ -n "$existing" ]; then
+            gh api -X PATCH "repos/${REPOSITORY}/issues/comments/${existing}" -f body="$body" > /dev/null
+          else
+            gh api -X POST "repos/${REPOSITORY}/issues/${PR_NUMBER}/comments" -f body="$body" > /dev/null
+          fi
+
+  apply:
+    name: apply
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment: vps-sieu-toc-production
+    concurrency:
+      group: terraform-cloudflare-apply
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Check the apply credentials are provisioned
+        id: guard
+        run: |
+          if [ ! -f terraform.enc.env ]; then
+            echo "::notice::terraform.enc.env is missing; the apply job is inert until it is provisioned"
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install SOPS
+        if: steps.guard.outputs.ready == 'true'
+        run: |
+          sops_bin="${RUNNER_TEMP}/sops"
+          curl --fail --silent --show-error --location --output "$sops_bin" \
+            "https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux.amd64"
+          echo "${SOPS_LINUX_AMD64_SHA256}  ${sops_bin}" | sha256sum --check --status
+          chmod +x "$sops_bin"
+          echo "SOPS_BIN=${sops_bin}" >> "$GITHUB_ENV"
+
+      - name: Decrypt the Terraform credentials
+        if: steps.guard.outputs.ready == 'true'
+        env:
+          SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
+        run: |
+          if [ -z "$SOPS_AGE_KEY" ]; then
+            echo "::error::Set SOPS_AGE_KEY on the vps-sieu-toc-production environment"
+            exit 1
+          fi
+
+          umask 077
+          rendered="${RUNNER_TEMP}/terraform.env"
+          "$SOPS_BIN" decrypt --input-type dotenv --output-type dotenv terraform.enc.env > "$rendered"
+          value_of() { sed -n "s/^$1=//p" "$rendered" | head -n 1; }
+
+          token="$(value_of CLOUDFLARE_API_TOKEN)"
+          account_id="$(value_of CLOUDFLARE_ACCOUNT_ID)"
+          zone_id="$(value_of ZONE_ID)"
+          state_key_id="$(value_of AWS_ACCESS_KEY_ID)"
+          state_secret="$(value_of AWS_SECRET_ACCESS_KEY)"
+          rm -f "$rendered"
+
+          echo "::add-mask::${token}"
+          echo "::add-mask::${state_key_id}"
+          echo "::add-mask::${state_secret}"
+          {
+            echo "TF_VAR_cloudflare_api_token=${token}"
+            echo "TF_VAR_cloudflare_account_id=${account_id}"
+            echo "TF_VAR_zone_id=${zone_id}"
+            echo "AWS_ACCESS_KEY_ID=${state_key_id}"
+            echo "AWS_SECRET_ACCESS_KEY=${state_secret}"
+          } >> "$GITHUB_ENV"
+
+      - uses: hashicorp/setup-terraform@v3
+        if: steps.guard.outputs.ready == 'true'
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+          terraform_wrapper: false
+
+      - name: Terraform apply
+        if: steps.guard.outputs.ready == 'true'
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          terraform init -input=false
+          terraform apply -input=false -auto-approve
