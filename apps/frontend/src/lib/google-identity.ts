@@ -7,10 +7,13 @@ const GIS_SRC = 'https://accounts.google.com/gsi/client?hl=en';
 let scriptPromise: Promise<GoogleIdentityApi> | null = null;
 let initialized = false;
 let api: GoogleIdentityApi | null = null;
+let credentialCallback: CredentialCallback | null = null;
+
+type CredentialCallback = (credential: string) => void | Promise<void>;
 
 interface EnsureOptions {
   clientId: string;
-  callback: (credential: string) => void;
+  callback?: CredentialCallback;
 }
 
 function loadScript(): Promise<GoogleIdentityApi> {
@@ -46,10 +49,13 @@ export async function ensureGoogleIdentity({
   callback,
 }: EnsureOptions): Promise<GoogleIdentityApi> {
   const identity = await loadScript();
+  if (callback) {
+    credentialCallback = callback;
+  }
   if (!initialized) {
     identity.initialize({
       client_id: clientId,
-      callback: (response) => callback(response.credential),
+      callback: (response) => void credentialCallback?.(response.credential),
       use_fedcm_for_prompt: true,
     });
     initialized = true;
@@ -62,9 +68,9 @@ export function promptGoogleOneTap(): void {
   api?.prompt();
 }
 
-// Test-only hook to clear the module singleton between cases.
 export function resetGoogleIdentityForTests(): void {
   scriptPromise = null;
   initialized = false;
   api = null;
+  credentialCallback = null;
 }

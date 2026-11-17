@@ -44,4 +44,31 @@ describe('google-identity', () => {
 
     expect(prompt).toHaveBeenCalledTimes(1);
   });
+
+  it('delivers a credential to the One Tap callback when the modal button registered first', async () => {
+    const oneTapCallback = jest.fn();
+    await ensureGoogleIdentity({ clientId: 'client-1' });
+    await ensureGoogleIdentity({ clientId: 'client-1', callback: oneTapCallback });
+
+    initialize.mock.calls[0][0].callback({ credential: 'abc' });
+
+    expect(initialize).toHaveBeenCalledTimes(1);
+    expect(oneTapCallback).toHaveBeenCalledWith('abc');
+  });
+
+  it('delivers a credential to the One Tap callback when the modal button registered after', async () => {
+    const oneTapCallback = jest.fn();
+    await ensureGoogleIdentity({ clientId: 'client-1', callback: oneTapCallback });
+    await ensureGoogleIdentity({ clientId: 'client-1' });
+
+    initialize.mock.calls[0][0].callback({ credential: 'abc' });
+
+    expect(oneTapCallback).toHaveBeenCalledWith('abc');
+  });
+
+  it('ignores a credential that arrives before any callback is registered', async () => {
+    await ensureGoogleIdentity({ clientId: 'client-1' });
+
+    expect(() => initialize.mock.calls[0][0].callback({ credential: 'abc' })).not.toThrow();
+  });
 });

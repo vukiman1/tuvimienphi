@@ -52,8 +52,7 @@ export function GoogleSignInButton() {
     }
     let cancelled = false;
 
-    // The credential callback is registered once by <GoogleOneTap />; this only draws the button.
-    void ensureGoogleIdentity({ clientId, callback: () => undefined }).then((identity) => {
+    void ensureGoogleIdentity({ clientId }).then((identity) => {
       if (!cancelled) {
         identity.renderButton(googleButton, {
           type: 'standard',
