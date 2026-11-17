@@ -491,6 +491,9 @@ importers:
       '@org/shared-contracts':
         specifier: workspace:*
         version: link:../../packages/shared/contracts
+      '@org/shared-kien-thuc':
+        specifier: workspace:*
+        version: link:../../packages/shared/kien-thuc
       '@org/shared-tu-vi':
         specifier: workspace:*
         version: link:../../packages/shared/tu-vi
