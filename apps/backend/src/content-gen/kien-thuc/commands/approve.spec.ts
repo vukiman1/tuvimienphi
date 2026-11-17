@@ -1,7 +1,9 @@
+import { existsSync } from 'node:fs';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import type { PageRef } from '@org/shared-contracts';
+import { MalformedDraftError } from '../errors';
 import { draftExists } from '../store/draft-store';
 import { draftPath, type KienThucDirectories } from '../store/kien-thuc-paths';
 import { reviewedAtOf } from './reviewed-at';
@@ -121,5 +123,30 @@ describe('approvePages', () => {
 
     expect(result.approved).toEqual(['sao/thien-co']);
     expect(result.rejected.map((rejection) => rejection.ref)).toEqual(['cung/menh']);
+  });
+
+  it('writes nothing when another draft cannot be read, and names that file', async () => {
+    await writeDraft('sao/thien-co', thienCoDraft());
+    await writeDraft('cung/menh', BROKEN_DRAFT);
+    const brokenPath = draftPath(directories, 'sao/thai-duong');
+    await mkdir(dirname(brokenPath), { recursive: true });
+    await writeFile(brokenPath, '{ "summary": ', 'utf8');
+
+    const approving = approvePages(['sao/thien-co', 'cung/menh'], directories, now);
+    await expect(approving).rejects.toBeInstanceOf(MalformedDraftError);
+    await expect(approving).rejects.toThrow(brokenPath);
+    expect(existsSync(directories.content)).toBe(false);
+    expect(draftExists(directories, 'sao/thien-co')).toBe(true);
+    expect(draftExists(directories, 'cung/menh')).toBe(true);
+  });
+
+  it('rejects a malformed requested draft and approves the others', async () => {
+    await writeDraft('sao/thien-co', thienCoDraft());
+    await writeDraft('cung/menh', { summary: 'x', writtenBy: 'claude-code', writtenAt: 'now' });
+    const result = await approvePages(['sao/thien-co', 'cung/menh'], directories, now);
+
+    expect(result.approved).toEqual(['sao/thien-co']);
+    expect(result.rejected.map((rejection) => rejection.ref)).toEqual(['cung/menh']);
+    expect(result.rejected[0].violations[0]).toContain(draftPath(directories, 'cung/menh'));
   });
 });

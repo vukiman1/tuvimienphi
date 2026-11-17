@@ -36,9 +36,9 @@ export class MissingDraftError extends Error {
 export class MalformedDraftError extends Error {
   constructor(
     readonly file: string,
-    readonly offendingKey: string,
+    readonly problem: string,
   ) {
-    super(`bản nháp sai định dạng tại "${file}": khóa "${offendingKey}"`);
+    super(`bản nháp sai định dạng tại "${file}": ${problem}`);
     this.name = 'MalformedDraftError';
   }
 }

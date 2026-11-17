@@ -21,6 +21,17 @@ export interface StoredDraft {
   readonly draft: DraftFile;
 }
 
+function parseDraft(path: string, raw: string): unknown {
+  try {
+    return JSON.parse(raw) as unknown;
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      throw new MalformedDraftError(path, `JSON không đọc được (${error.message})`);
+    }
+    throw error;
+  }
+}
+
 export async function readDraft(
   directories: KienThucDirectories,
   ref: PageRef,
@@ -32,9 +43,10 @@ export async function readDraft(
   } catch {
     throw new MissingDraftError(path);
   }
-  const parsed = JSON.parse(raw) as unknown;
+  const parsed = parseDraft(path, raw);
   if (!isDraftFile(parsed)) {
-    throw new MalformedDraftError(path, isRecord(parsed) ? offendingDraftKey(parsed) : 'root');
+    const key = isRecord(parsed) ? offendingDraftKey(parsed) : 'root';
+    throw new MalformedDraftError(path, `khóa "${key}"`);
   }
   return { ...parsed, sections: keepFirstLinkPerTarget(parsed.sections) };
 }
@@ -43,10 +55,8 @@ export function draftExists(directories: KienThucDirectories, ref: PageRef): boo
   return existsSync(draftPath(directories, ref));
 }
 
-export async function readAllDrafts(
-  directories: KienThucDirectories,
-): Promise<readonly StoredDraft[]> {
-  const stored: StoredDraft[] = [];
+export async function listDraftRefs(directories: KienThucDirectories): Promise<readonly PageRef[]> {
+  const refs: PageRef[] = [];
   for (const kind of DRAFT_KINDS) {
     let files: readonly string[];
     try {
@@ -55,9 +65,18 @@ export async function readAllDrafts(
       continue;
     }
     for (const file of [...files].filter((name) => name.endsWith(JSON_SUFFIX)).sort()) {
-      const ref = pageRef(kind, file.slice(0, -JSON_SUFFIX.length));
-      stored.push({ ref, draft: await readDraft(directories, ref) });
+      refs.push(pageRef(kind, file.slice(0, -JSON_SUFFIX.length)));
     }
+  }
+  return refs;
+}
+
+export async function readAllDrafts(
+  directories: KienThucDirectories,
+): Promise<readonly StoredDraft[]> {
+  const stored: StoredDraft[] = [];
+  for (const ref of await listDraftRefs(directories)) {
+    stored.push({ ref, draft: await readDraft(directories, ref) });
   }
   return stored;
 }
