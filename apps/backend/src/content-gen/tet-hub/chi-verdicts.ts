@@ -4,7 +4,7 @@ import {
   ThaiTueRelation,
   type TamTaiNamThu,
 } from '@org/shared-tu-vi';
-import { affirms, mentions } from './check-text';
+import { affirms, mentions } from '../check-text';
 
 export interface ChiVerdicts {
   readonly tamTai: TamTaiNamThu | null;

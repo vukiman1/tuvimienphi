@@ -9,7 +9,7 @@ import {
   tuoiNamBirthYears,
   tuoiNamSlug,
 } from '@org/shared-tu-vi';
-import { AiClient } from '../ai/port/ai.client';
+import { AiClient } from '../../ai/port/ai.client';
 import { generateHubIntro } from './hub-intro';
 import { AiCallPacer } from './ai-call-pacer';
 import { runTetHubGeneration, type PagePlan } from './run-tet-hub-generation';

@@ -1,8 +1,8 @@
 import type { ConGiapArticle, TuoiNamArticle } from '@org/shared-contracts';
 import { conGiapSlug, TET_HUB_VIEW_YEAR, tuoiNamFacts, tuoiNamSlug } from '@org/shared-tu-vi';
-import type { AiClient } from '../ai/port/ai.client';
-import { runWithAiCallContext } from '../ai/port/ai-call-context';
-import { sinhVoiKiem, type CachSinh } from '../api/luan-giai/generation/sinh-voi-kiem';
+import type { AiClient } from '../../ai/port/ai.client';
+import { runWithAiCallContext } from '../../ai/port/ai-call-context';
+import { sinhVoiKiem, type CachSinh } from '../../api/luan-giai/generation/sinh-voi-kiem';
 import { checkConGiap } from './con-giap/check-con-giap';
 import { buildConGiapBrief, conGiapFacts } from './con-giap/con-giap.brief';
 import { buildConGiapMessages, CON_GIAP_SYSTEM_PROMPT } from './con-giap/con-giap.prompt';

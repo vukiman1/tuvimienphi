@@ -1,6 +1,6 @@
 import { CHI, TAM_TAI_LOI } from '@org/shared-tu-vi';
-import type { AiMessage } from '../../ai/port/ai.types';
-import type { LanThu } from '../../api/luan-giai/generation/sinh-voi-kiem';
+import type { AiMessage } from '../../../ai/port/ai.types';
+import type { LanThu } from '../../../api/luan-giai/generation/sinh-voi-kiem';
 import { tamTaiKeyword } from '../chi-verdicts';
 import { rejectedAttemptMessages } from '../rejected-attempts';
 import { ConGiapSection, type ConGiapBrief } from './con-giap.brief';

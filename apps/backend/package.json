@@ -124,7 +124,7 @@
         ],
         "executor": "nx:run-commands",
         "options": {
-          "command": "ts-node -P apps/backend/tsconfig.app.json apps/backend/src/content-gen/generate-tet-hub.ts"
+          "command": "ts-node -P apps/backend/tsconfig.app.json apps/backend/src/content-gen/tet-hub/generate-tet-hub.ts"
         }
       }
     }

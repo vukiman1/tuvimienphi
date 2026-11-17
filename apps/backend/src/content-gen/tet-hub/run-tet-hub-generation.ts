@@ -8,7 +8,8 @@ import {
   tuoiNamSlug,
 } from '@org/shared-tu-vi';
 import type { CliOptions } from './tet-hub-cli-options';
-import { findTooSimilar, TUOI_NAM_SIMILARITY_THRESHOLD, type SimilarPair } from './similarity';
+import type { SimilarPair } from '../shingle-similarity';
+import { findTooSimilar, TUOI_NAM_SIMILARITY_THRESHOLD } from './tuoi-nam-similarity';
 import { introExists, pageExists } from './tet-hub-files';
 import { writeTetHubIntro, writeTetHubManifest, writeTetHubPage } from './tet-hub-writer';
 

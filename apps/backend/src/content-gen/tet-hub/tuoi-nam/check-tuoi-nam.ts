@@ -18,7 +18,7 @@ import {
   SECTION_MAX_PARAGRAPHS,
   SECTION_MIN_PARAGRAPHS,
   splitSentences,
-} from '../check-text';
+} from '../../check-text';
 import { TuoiNamSection, type TuoiNamBrief } from './tuoi-nam.brief';
 import type { TuoiNamDraft } from './tuoi-nam.schema';
 

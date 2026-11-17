@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import configuration from '@org/backend-config';
 import { CryptoModule } from '@org/backend-crypto';
 import { createDatabaseOptions } from '@org/backend-database';
-import { AiModule } from '../ai/ai.module';
+import { AiModule } from '../../ai/ai.module';
 
 @Module({
   imports: [

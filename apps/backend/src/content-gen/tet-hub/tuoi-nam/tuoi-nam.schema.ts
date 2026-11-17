@@ -1,6 +1,6 @@
 import type { TuoiNamArticle } from '@org/shared-contracts';
-import type { AiSchema } from '../../ai/port/ai.types';
-import { isRecord, isStringArray, PARAGRAPHS_SCHEMA } from '../schema-guards';
+import type { AiSchema } from '../../../ai/port/ai.types';
+import { isRecord, isStringArray, PARAGRAPHS_SCHEMA } from '../../schema-guards';
 
 export type TuoiNamDraft = Omit<
   TuoiNamArticle,

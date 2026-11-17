@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common';
-import { AiClient } from '../ai/port/ai.client';
-import type { AiRequest, AiResult } from '../ai/port/ai.types';
+import { AiClient } from '../../ai/port/ai.client';
+import type { AiRequest, AiResult } from '../../ai/port/ai.types';
 import { generateHubIntro } from './hub-intro';
 
 const MODEL = 'test-model';

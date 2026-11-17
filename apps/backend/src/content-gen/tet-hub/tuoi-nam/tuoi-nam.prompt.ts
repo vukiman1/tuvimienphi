@@ -1,6 +1,6 @@
 import { BAT_HAN_LOI, CUU_DIEU_LOI, isHoangOcTot, KIM_LAU_LOI } from '@org/shared-tu-vi';
-import type { AiMessage } from '../../ai/port/ai.types';
-import type { LanThu } from '../../api/luan-giai/generation/sinh-voi-kiem';
+import type { AiMessage } from '../../../ai/port/ai.types';
+import type { LanThu } from '../../../api/luan-giai/generation/sinh-voi-kiem';
 import {
   NO_TAM_TAI_KEYWORD,
   NO_THAI_TUE_KEYWORD,

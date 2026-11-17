@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { TuoiNamArticle } from '@org/shared-contracts';
 import { tuoiNamBirthYears, tuoiNamSlug } from '@org/shared-tu-vi';
-import { isRecord } from './schema-guards';
+import { isRecord } from '../schema-guards';
 import { pageExists, pageFileName } from './tet-hub-files';
 import { isTuoiNamDraft } from './tuoi-nam/tuoi-nam.schema';
 

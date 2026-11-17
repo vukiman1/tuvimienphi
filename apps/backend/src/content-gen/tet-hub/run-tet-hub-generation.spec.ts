@@ -10,7 +10,7 @@ import {
   UnknownTetHubPageError,
   type PagePlan,
 } from './run-tet-hub-generation';
-import { MalformedChapterError } from '../api/luan-giai/luan-giai.errors';
+import { MalformedChapterError } from '../../api/luan-giai/luan-giai.errors';
 
 const INTRO = { intro: ['Một.', 'Hai.'] };
 

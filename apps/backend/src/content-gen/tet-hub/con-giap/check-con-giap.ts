@@ -7,7 +7,7 @@ import {
   paragraphCountViolations,
   SECTION_MAX_PARAGRAPHS,
   SECTION_MIN_PARAGRAPHS,
-} from '../check-text';
+} from '../../check-text';
 import { ConGiapSection, type ConGiapBrief } from './con-giap.brief';
 import type { ConGiapDraft } from './con-giap.schema';
 
