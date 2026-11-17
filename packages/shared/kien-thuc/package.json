@@ -1,0 +1,31 @@
+{
+  "name": "@org/shared-kien-thuc",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@org/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "nx": {
+    "name": "shared-kien-thuc",
+    "tags": [
+      "scope:shared",
+      "type:lib"
+    ]
+  },
+  "dependencies": {
+    "@org/shared-contracts": "workspace:*",
+    "@org/shared-tu-vi": "workspace:*",
+    "tslib": "^2.3.0"
+  }
+}
