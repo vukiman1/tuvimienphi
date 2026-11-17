@@ -52,19 +52,18 @@ for resource in "${resources[@]}"; do
     --terraform-install-path "$init_dir" \
     --resource-type "$resource" \
     --zone "$ZONE_ID" \
-    >"${work_dir}/${resource}.import.sh"
+    --modern-import-block \
+    >"${work_dir}/${resource}.imports.tf"
   mv "${work_dir}/${resource}.tf" "${out_dir}/${resource}.tf"
-  mv "${work_dir}/${resource}.import.sh" "${out_dir}/${resource}.import.sh"
+  mv "${work_dir}/${resource}.imports.tf" "${out_dir}/${resource}.imports.tf"
 done
 
 echo
-echo "Done. Generated config and import commands are in ${out_dir} (gitignored)."
+echo "Done. Generated config and import blocks are in ${out_dir} (gitignored)."
 echo
 echo "Next steps:"
-echo "  1. Copy the real values from generated/cloudflare_dns_record.tf into infra/cloudflare/locals.tf"
-echo "     (replace every __FILL_FROM_CF_TERRAFORMING__)."
-echo "  2. Run terraform import, rewriting each generated address to the module form, e.g.:"
-echo "       terraform import 'module.dns.cloudflare_dns_record.this[\"apex\"]' ${ZONE_ID}/<record_id>"
-echo "       terraform import 'module.redirects.cloudflare_ruleset.dynamic_redirect' ${ZONE_ID}/<ruleset_id>"
-echo "       terraform import 'cloudflare_zone_setting.this[\"ssl\"]' ${ZONE_ID}/ssl"
-echo "  3. terraform plan until it prints 'No changes'."
+echo "  1. Copy the values you need from generated/*.tf into infra/cloudflare/locals.tf."
+echo "     Skip the apex and dashboard records: the Worker custom domains own them."
+echo "  2. Copy the matching import {} blocks from generated/*.imports.tf into infra/cloudflare/imports.tf,"
+echo "     rewriting each address to the module form, e.g. module.dns.cloudflare_dns_record.this[\"api\"]."
+echo "  3. Open a PR: the plan must show 'N to import, 0 to add, 0 to change, 0 to destroy'."
