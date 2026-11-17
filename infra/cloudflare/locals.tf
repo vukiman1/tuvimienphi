@@ -2,24 +2,12 @@ locals {
   tunnel_cname = "c61b019b-fb8c-41d2-9776-c785811cd637.cfargotunnel.com"
 
   dns_records = {
-    apex = {
-      name    = var.zone_name
-      type    = "AAAA"
-      content = "100::"
-      proxied = true
-    }
     www = {
       name    = "www.${var.zone_name}"
       type    = "AAAA"
       content = "100::"
       proxied = true
       comment = "www redirects to the apex via a redirect rule"
-    }
-    dashboard = {
-      name    = "dashboard.${var.zone_name}"
-      type    = "AAAA"
-      content = "100::"
-      proxied = true
     }
     api = {
       name    = "api.${var.zone_name}"

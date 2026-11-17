@@ -5,7 +5,7 @@ terraform {
     region = "auto"
 
     endpoints = {
-      s3 = "https://<account_id>.r2.cloudflarestorage.com"
+      s3 = "https://cd90142d588c7b6d177b93df1cf401ba.r2.cloudflarestorage.com"
     }
 
     skip_credentials_validation = true
