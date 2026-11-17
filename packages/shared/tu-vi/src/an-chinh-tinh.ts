@@ -43,6 +43,26 @@ export function anThienPhu(tuViIndex: number): number {
   return mod12(4 - tuViIndex);
 }
 
+export enum ChinhTinhChom {
+  TuVi = 'Tử Vi',
+  ThienPhu = 'Thiên Phủ',
+}
+
+const CHOM_MEMBERS: Readonly<Record<ChinhTinhChom, readonly ChinhTinhName[]>> = {
+  [ChinhTinhChom.TuVi]: VONG_TU_VI.map(([name]) => name),
+  [ChinhTinhChom.ThienPhu]: VONG_THIEN_PHU.map(([name]) => name),
+};
+
+export function chomMembers(chom: ChinhTinhChom): readonly ChinhTinhName[] {
+  return CHOM_MEMBERS[chom];
+}
+
+export function chinhTinhChom(name: ChinhTinhName): ChinhTinhChom {
+  return CHOM_MEMBERS[ChinhTinhChom.TuVi].includes(name)
+    ? ChinhTinhChom.TuVi
+    : ChinhTinhChom.ThienPhu;
+}
+
 export function anChinhTinh(lunarDay: number, cuc: number): readonly SaoPlacement<ChinhTinhName>[] {
   const tuVi = anTuVi(lunarDay, cuc);
   const thienPhu = anThienPhu(tuVi);

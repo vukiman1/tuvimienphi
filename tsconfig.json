@@ -71,6 +71,9 @@
     },
     {
       "path": "./apps/uptime-monitor"
+    },
+    {
+      "path": "./packages/shared/kien-thuc"
     }
   ]
 }

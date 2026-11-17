@@ -16,6 +16,8 @@ export * from './sao-rating.js';
 export * from './sao-ngu-hanh-data.js';
 export * from './sao-cat-hung.js';
 export * from './an-chinh-tinh.js';
+export { ratingOf, phuTinhRatingOf } from './an-vong-trang-sinh.js';
+export { VONG_TRANG_SINH } from './bang-tra-data.js';
 export * from './tu-hoa.js';
 export { anTuHoaDaiVan } from './an-luu-dai-van.js';
 

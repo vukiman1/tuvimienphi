@@ -85,7 +85,7 @@ export interface Cuc {
   readonly value: number;
 }
 
-const CUC_BY_ELEMENT: Readonly<Record<NguHanh, Cuc>> = {
+export const CUC_BY_ELEMENT: Readonly<Record<NguHanh, Cuc>> = {
   Thủy: { name: 'Thủy Nhị Cục', element: 'Thủy', value: 2 },
   Mộc: { name: 'Mộc Tam Cục', element: 'Mộc', value: 3 },
   Kim: { name: 'Kim Tứ Cục', element: 'Kim', value: 4 },
