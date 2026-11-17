@@ -1,8 +1,13 @@
 import { useCallback } from 'react';
-import { useNavigate, useSearch } from '@tanstack/react-router';
+import { useNavigate, useRouter, useSearch } from '@tanstack/react-router';
 import { isInternalPath } from './route-guards';
 
 export type AuthModalView = 'login' | 'register';
+
+interface AuthModalSearch {
+  auth?: AuthModalView;
+  redirect?: string;
+}
 
 /**
  * The modal is driven by the `auth` search param, so it survives a reload, closes with the back
@@ -10,34 +15,44 @@ export type AuthModalView = 'login' | 'register';
  */
 export function useAuthModal() {
   const navigate = useNavigate();
-  const search = useSearch({ strict: false }) as { auth?: AuthModalView; redirect?: string };
+  const router = useRouter();
+  const search = useSearch({ strict: false }) as AuthModalSearch;
 
   const open = useCallback(
     (view: AuthModalView) =>
-      navigate({ to: '.', search: (previous) => ({ ...previous, auth: view }) }),
+      navigate({
+        to: '.',
+        resetScroll: false,
+        search: (previous) => ({ ...previous, auth: view }),
+      }),
     [navigate],
   );
 
-  const close = () =>
-    navigate({
-      to: '.',
-      search: (previous) => {
-        const next = { ...(previous as Record<string, unknown>) };
-        delete next.auth;
-        delete next.redirect;
-        return next;
-      },
-    });
+  const close = useCallback(
+    () =>
+      navigate({
+        to: '.',
+        resetScroll: false,
+        search: (previous) => {
+          const next = { ...(previous as Record<string, unknown>) };
+          delete next.auth;
+          delete next.redirect;
+          return next;
+        },
+      }),
+    [navigate],
+  );
 
-  /** Called after a successful sign-in: leave the modal and honour a guard's redirect if there is one. */
-  const finish = async () => {
-    const target = isInternalPath(search.redirect) ? search.redirect : null;
-    if (target) {
-      await navigate({ to: target as never });
+  const finish = useCallback(async (): Promise<void> => {
+    const { auth, redirect } = router.state.location.search as AuthModalSearch;
+    if (isInternalPath(redirect)) {
+      await navigate({ to: redirect as never });
       return;
     }
-    await close();
-  };
+    if (auth) {
+      await close();
+    }
+  }, [router, navigate, close]);
 
   return { view: search.auth ?? null, redirect: search.redirect, open, close, finish };
 }

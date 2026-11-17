@@ -4,13 +4,16 @@ import type { GoogleIdentityApi } from '@/types/google-identity';
 // follows the browser, so one part of an English app speaks whatever the visitor's browser does.
 const GIS_SRC = 'https://accounts.google.com/gsi/client?hl=en';
 
+type CredentialCallback = (credential: string) => void | Promise<void>;
+
 let scriptPromise: Promise<GoogleIdentityApi> | null = null;
 let initialized = false;
 let api: GoogleIdentityApi | null = null;
+let credentialCallback: CredentialCallback | null = null;
 
 interface EnsureOptions {
   clientId: string;
-  callback: (credential: string) => void;
+  callback?: CredentialCallback;
 }
 
 function loadScript(): Promise<GoogleIdentityApi> {
@@ -41,15 +44,26 @@ function loadScript(): Promise<GoogleIdentityApi> {
   return scriptPromise;
 }
 
+function dispatchCredential(credential: string): void {
+  if (!credentialCallback) {
+    console.warn('Google returned a credential but no credential callback is registered');
+    return;
+  }
+  void credentialCallback(credential);
+}
+
 export async function ensureGoogleIdentity({
   clientId,
   callback,
 }: EnsureOptions): Promise<GoogleIdentityApi> {
   const identity = await loadScript();
+  if (callback) {
+    credentialCallback = callback;
+  }
   if (!initialized) {
     identity.initialize({
       client_id: clientId,
-      callback: (response) => callback(response.credential),
+      callback: (response) => dispatchCredential(response.credential),
       use_fedcm_for_prompt: true,
     });
     initialized = true;
@@ -62,9 +76,9 @@ export function promptGoogleOneTap(): void {
   api?.prompt();
 }
 
-// Test-only hook to clear the module singleton between cases.
 export function resetGoogleIdentityForTests(): void {
   scriptPromise = null;
   initialized = false;
   api = null;
+  credentialCallback = null;
 }

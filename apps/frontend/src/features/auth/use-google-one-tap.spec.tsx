@@ -23,13 +23,23 @@ jest.mock('@/services/auth-service', () => ({
   authService: { googleOneTap: jest.fn() },
 }));
 const mockNavigate = jest.fn();
+const mockRouter = { state: { location: { search: {} } } };
 jest.mock('@tanstack/react-router', () => ({
   useNavigate: () => mockNavigate,
   useSearch: () => ({}),
+  useRouter: () => mockRouter,
 }));
 jest.mock('@/lib/toast', () => ({
   notify: { success: jest.fn(), error: jest.fn(), info: jest.fn() },
 }));
+
+function registeredCallback(): (credential: string) => void | Promise<void> {
+  const { callback } = jest.mocked(ensureGoogleIdentity).mock.calls[0][0];
+  if (!callback) {
+    throw new Error('One Tap did not register a credential callback');
+  }
+  return callback;
+}
 
 describe('useGoogleOneTap', () => {
   beforeEach(() => {
@@ -66,20 +76,20 @@ describe('useGoogleOneTap', () => {
     expect(ensureGoogleIdentity).not.toHaveBeenCalled();
   });
 
-  it('logs in and navigates home when a credential arrives', async () => {
+  it('signs in without leaving the page when a credential arrives', async () => {
     jest
       .mocked(authService.googleOneTap)
       .mockResolvedValue({ user: { email: 'jane@example.com' } } as never);
     renderHook(() => useGoogleOneTap());
     await waitFor(() => expect(ensureGoogleIdentity).toHaveBeenCalled());
-    const onCredential = jest.mocked(ensureGoogleIdentity).mock.calls[0][0].callback;
+    const onCredential = registeredCallback();
 
     await onCredential('cred-1');
 
     expect(authService.googleOneTap).toHaveBeenCalledWith('cred-1');
     expect(useAuthStore.getState().user).toEqual({ email: 'jane@example.com' });
     expect(notify.success).toHaveBeenCalledWith('Đăng nhập thành công.');
-    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith({ to: '/' }));
+    expect(mockNavigate).not.toHaveBeenCalled();
   });
 
   it('stays silent when no client id is configured', async () => {
@@ -106,7 +116,7 @@ describe('useGoogleOneTap', () => {
     jest.mocked(authService.googleOneTap).mockRejectedValue(new Error('401 Unauthorized'));
     renderHook(() => useGoogleOneTap());
     await waitFor(() => expect(ensureGoogleIdentity).toHaveBeenCalled());
-    const onCredential = jest.mocked(ensureGoogleIdentity).mock.calls[0][0].callback;
+    const onCredential = registeredCallback();
 
     await expect(onCredential('cred-1')).resolves.toBeUndefined();
 
@@ -120,7 +130,7 @@ describe('useGoogleOneTap', () => {
       .mockResolvedValue({ twoFactorRequired: true, challengeToken: 'challenge-1' });
     renderHook(() => useGoogleOneTap());
     await waitFor(() => expect(ensureGoogleIdentity).toHaveBeenCalled());
-    const onCredential = jest.mocked(ensureGoogleIdentity).mock.calls[0][0].callback;
+    const onCredential = registeredCallback();
 
     await onCredential('cred-1');
 
