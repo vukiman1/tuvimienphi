@@ -4,7 +4,6 @@ import { dirname, join } from 'node:path';
 import type { PageRef } from '@org/shared-contracts';
 import { MalformedContentFileError } from '../errors';
 import { draftPath, type KienThucDirectories } from '../store/kien-thuc-paths';
-import { checkedClaim, skippedClaim } from '../validate/facts/fact-subject';
 import { UNPLANNED_PAGE_VIOLATION } from '../validate/validate-page';
 import { approvePages } from './approve';
 import {
@@ -13,8 +12,8 @@ import {
   checkOnePage,
   hasCheckFailures,
   renderPageCheck,
-  type PageCheck,
 } from './check';
+import { snapshotDirectory } from './directory-snapshot';
 
 const FILLER = ['người', 'mới', 'đọc', 'trang', 'giúp', 'hiểu', 'thêm', 'phần', 'ghi', 'lại'];
 
@@ -81,20 +80,45 @@ describe('check', () => {
     expect(check.validation.violations.some((v) => v.includes('sao/thien-co'))).toBe(true);
   });
 
-  it('reports similar pairs and leaves a clean folder passing', async () => {
+  it('passes a clean folder and leaves content untouched', async () => {
     await writeDraft('sao/thien-co', thienCoDraft());
     await approvePages(['sao/thien-co'], directories, now);
-    const before = await readFile(join(directories.content, 'sao/thien-co.json'), 'utf8');
+    const before = await snapshotDirectory(directories.content);
 
     const clean = await checkKienThucContent(directories);
-    expect(clean.pages.every((page) => page.validation.violations.length === 0)).toBe(true);
-    expect(clean.staleIndexes).toEqual([]);
-    expect(clean.planDrift).toEqual([]);
-    expect(await readFile(join(directories.content, 'sao/thien-co.json'), 'utf8')).toBe(before);
+    await checkOnePage('sao/thien-co', directories);
 
+    expect(hasCheckFailures(clean)).toBe(false);
+    expect(await snapshotDirectory(directories.content)).toEqual(before);
+    expect(before.size).toBe(3);
+  });
+
+  it('reports similar pairs across drafts and content', async () => {
+    await writeDraft('sao/thien-co', thienCoDraft());
+    await approvePages(['sao/thien-co'], directories, now);
     await writeDraft('sao/thai-duong', thienCoDraft());
+
     const report = await checkKienThucContent(directories);
-    expect(report.similarPairs.length).toBeGreaterThan(0);
+    expect(report.similarPairs.map((pair) => [pair.a, pair.b])).toEqual([
+      ['sao/thien-co', 'sao/thai-duong'],
+    ]);
+  });
+
+  it('reports a content file that breaks a fact', async () => {
+    await writeDraft('sao/thien-co', thienCoDraft());
+    await approvePages(['sao/thien-co'], directories, now);
+    const path = join(directories.content, 'sao/thien-co.json');
+    const file = JSON.parse(await readFile(path, 'utf8')) as {
+      sections: { heading: string; paragraphs: string[] }[];
+    };
+    file.sections[0].paragraphs[0] = `Thiên Cơ miếu ở Dần. ${file.sections[0].paragraphs[0]}`;
+    await writeFile(path, JSON.stringify(file), 'utf8');
+
+    const report = await checkKienThucContent(directories);
+    const page = report.pages.find((item) => item.ref === 'sao/thien-co');
+    expect(page?.source).toBe(CheckedSource.Content);
+    expect(page?.validation.violations.some((v) => v.includes('Dần'))).toBe(true);
+    expect(hasCheckFailures(report)).toBe(true);
   });
 
   it('does not compare a revision draft with its own approved page', async () => {
@@ -152,18 +176,19 @@ describe('check', () => {
     expect(report.pages.map((page) => page.ref)).toContain('sao/thien-co');
   });
 
-  it('prints skipped claims after the violations', () => {
-    const check: PageCheck = {
-      ref: 'sao/thien-co',
-      source: CheckedSource.Draft,
-      validation: {
-        violations: ['một vi phạm'],
-        claims: [skippedClaim('mệnh đề A', 'lý do'), checkedClaim('mệnh đề B')],
-        warnings: [],
-      },
-      neighbour: null,
-    };
-    const output = renderPageCheck(check);
-    expect(output.indexOf('## Vi phạm')).toBeLessThan(output.indexOf('## Mệnh đề'));
+  it('prints skipped claims after the violations and before the checked ones', async () => {
+    await writeDraft(
+      'sao/thien-co',
+      thienCoDraft('Thiên Cơ miếu ở Dần. Thiên Cơ và Thái Âm miếu ở Dần.'),
+    );
+    const output = renderPageCheck(await checkOnePage('sao/thien-co', directories));
+
+    const violations = output.indexOf('## Vi phạm');
+    const firstSkipped = output.indexOf('[bỏ qua]');
+    const firstChecked = output.indexOf('[đã soát]');
+    expect(violations).toBeGreaterThanOrEqual(0);
+    expect(firstSkipped).toBeGreaterThan(violations);
+    expect(firstChecked).toBeGreaterThan(firstSkipped);
+    expect(output.lastIndexOf('[bỏ qua]')).toBeLessThan(firstChecked);
   });
 });

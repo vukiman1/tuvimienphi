@@ -1,11 +1,13 @@
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { ContentKind, EntryGroup, type EntryFile, type PageRef } from '@org/shared-contracts';
 import { DRAFT_AUTHOR, type DraftFile } from '../store/draft-file';
 import type { StoredDraft } from '../store/draft-store';
-import type { ContentFiles } from '../store/content-store';
-import type { KienThucDirectories } from '../store/kien-thuc-paths';
+import { THIEN_CO_ENTRY } from '../store/content-fixtures';
+import { writeContentPage, writeIndexes, type ContentFiles } from '../store/content-store';
+import { draftPath, type KienThucDirectories } from '../store/kien-thuc-paths';
+import { snapshotDirectory } from './directory-snapshot';
 import { renderPreview, writePreview } from './preview';
 
 const EMPTY_CONTENT: ContentFiles = { lessons: [], entries: [] };
@@ -87,5 +89,19 @@ describe('writePreview', () => {
     const file = join(root, 'tmp', 'kien-thuc-preview.html');
     await writePreview(directories, null, file);
     expect(await readFile(file, 'utf8')).toContain('<!doctype html>');
+  });
+
+  it('writes nothing under content', async () => {
+    await writeContentPage(directories.content, THIEN_CO_ENTRY);
+    await writeIndexes(directories.content, { lessons: [], entries: [THIEN_CO_ENTRY] });
+    const path = draftPath(directories, 'sao/thien-co');
+    await mkdir(dirname(path), { recursive: true });
+    await writeFile(path, JSON.stringify(draft('sao/thien-co', ['Bản mới.']).draft), 'utf8');
+    const before = await snapshotDirectory(directories.content);
+
+    await writePreview(directories, null, join(root, 'tmp', 'kien-thuc-preview.html'));
+
+    expect(await snapshotDirectory(directories.content)).toEqual(before);
+    expect(before.size).toBe(3);
   });
 });

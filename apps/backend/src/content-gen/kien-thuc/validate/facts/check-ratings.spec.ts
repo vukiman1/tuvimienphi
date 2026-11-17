@@ -38,6 +38,13 @@ describe('checkRatings', () => {
     expect(checkRatings('Tả Phù không miếu cũng không hãm.', sao('Tả Phù')).violations).toEqual([]);
   });
 
+  it('rejects a rating claim for any of the four hóa', () => {
+    for (const hoa of ['Hóa Lộc', 'Hóa Quyền', 'Hóa Khoa', 'Hóa Kỵ'] as const) {
+      const { violations } = checkRatings(`${hoa} miếu ở Dần.`, sao(hoa));
+      expect(violations).toEqual([`${hoa} không có bậc, nhưng câu ghi miếu`]);
+    }
+  });
+
   it('reads the scale name as a name, not a claim', () => {
     const subject = sao('Tả Phù');
     expect(checkRatings('Tả Phù không có bậc miếu hãm.', subject).violations).toEqual([]);
@@ -51,6 +58,12 @@ describe('checkRatings', () => {
     const empty = checkRatings('Địa Kiếp hãm ở Tý.', null);
     expect(empty.violations.some((v) => v.includes('không có bậc tại Tý'))).toBe(true);
     expect(checkRatings('Địa Kiếp đắc địa ở Dần.', null).violations).toEqual([]);
+  });
+
+  it('rejects Văn Xương at Mão, a cell the engine leaves empty', () => {
+    expect(checkRatings('Văn Xương đắc địa ở Mão.', null).violations).toEqual([
+      'Văn Xương không có bậc tại Mão',
+    ]);
   });
 
   it('never binds the art to the star', () => {

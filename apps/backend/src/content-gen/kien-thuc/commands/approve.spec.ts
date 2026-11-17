@@ -6,6 +6,7 @@ import type { PageRef } from '@org/shared-contracts';
 import { MalformedDraftError } from '../errors';
 import { draftExists } from '../store/draft-store';
 import { draftPath, type KienThucDirectories } from '../store/kien-thuc-paths';
+import { SYLLABLES_PER_MINUTE } from '../text/syllable-count';
 import { reviewedAtOf } from './reviewed-at';
 import { approvePages } from './approve';
 
@@ -33,6 +34,31 @@ function thienCoDraft(extra = ''): unknown {
         ],
       },
       { heading: 'Ghi nhớ', paragraphs: [`Người mới nên đọc Thiên Cơ nhiều lần. ${filler(160)}`] },
+    ],
+    writtenBy: 'claude-code',
+    writtenAt: '2026-11-15T00:00:00.000Z',
+  };
+}
+
+const LESSON_SYLLABLES = 721;
+
+function lessonDraft(): unknown {
+  return {
+    summary:
+      'Bài này giúp người mới phân biệt phong thủy với tử vi và biết mỗi môn nói được điều gì.',
+    sections: [
+      {
+        heading: 'Hai môn khác nhau',
+        paragraphs: [`${filler(116)} Xem [[bai/tu-vi-la-gi|bài mở đầu]].`, filler(116)],
+      },
+      {
+        heading: 'Mỗi môn nói gì',
+        paragraphs: [`${filler(116)} Đọc thêm [[cung/quan-loc|cung Quan Lộc]].`, filler(116)],
+      },
+      {
+        heading: 'Cách dùng cả hai',
+        paragraphs: [`${filler(116)} Xem [[cung/menh|cung Mệnh]].`, filler(117)],
+      },
     ],
     writtenBy: 'claude-code',
     writtenAt: '2026-11-15T00:00:00.000Z',
@@ -88,6 +114,15 @@ describe('approvePages', () => {
     expect(index.some((item) => item.slug === 'thien-co')).toBe(true);
   });
 
+  it('stamps a lesson with its âm tiết over 180, rounded up, as reading time', async () => {
+    await writeDraft('bai/phong-thuy-va-tu-vi', lessonDraft());
+    const result = await approvePages(['bai/phong-thuy-va-tu-vi'], directories, now);
+
+    expect(result.rejected).toEqual([]);
+    const file = (await readJson('bai/phong-thuy-va-tu-vi.json')) as Record<string, unknown>;
+    expect(file.readingMinutes).toBe(Math.ceil(LESSON_SYLLABLES / SYLLABLES_PER_MINUTE));
+  });
+
   it('refuses a draft that breaks a fact and leaves it in drafts', async () => {
     await writeDraft('sao/thien-co', thienCoDraft('Thiên Cơ miếu ở Dần.'));
     const result = await approvePages(['sao/thien-co'], directories, now);
@@ -109,9 +144,13 @@ describe('approvePages', () => {
   it('replaces an approved page with its rewritten draft', async () => {
     await writeDraft('sao/thien-co', thienCoDraft());
     await approvePages(['sao/thien-co'], directories, now);
-    await writeDraft('sao/thien-co', thienCoDraft());
+    await writeDraft('sao/thien-co', thienCoDraft('Thiên Cơ là sao của mưu trí.'));
     await approvePages(['sao/thien-co'], directories, now);
 
+    const file = (await readJson('sao/thien-co.json')) as {
+      sections: { paragraphs: string[] }[];
+    };
+    expect(file.sections[0].paragraphs[0]).toContain('Thiên Cơ là sao của mưu trí.');
     const manifest = (await readJson('manifest.json')) as { entries: { slug: string }[] };
     expect(manifest.entries.filter((entry) => entry.slug === 'thien-co')).toHaveLength(1);
   });
