@@ -111,6 +111,13 @@ describe('check', () => {
     expect(report.staleIndexes).toContain('manifest.json');
   });
 
+  it('does not flag missing indexes when nothing is approved', async () => {
+    await writeDraft('sao/thien-co', thienCoDraft());
+    const report = await checkKienThucContent(directories);
+    expect(report.staleIndexes).toEqual([]);
+    expect(report.pages.every((page) => page.validation.violations.length === 0)).toBe(true);
+  });
+
   it('prints skipped claims after the violations', () => {
     const check: PageCheck = {
       ref: 'sao/thien-co',

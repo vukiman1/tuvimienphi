@@ -142,17 +142,23 @@ async function readJsonFile(path: string): Promise<unknown> {
   }
 }
 
+function isStaleIndex(onDisk: unknown, rebuilt: unknown, hasContent: boolean): boolean {
+  if (onDisk === null) return hasContent;
+  return JSON.stringify(onDisk) !== JSON.stringify(rebuilt);
+}
+
 async function staleIndexesOf(
   directories: KienThucDirectories,
   content: ContentFiles,
 ): Promise<readonly string[]> {
+  const hasContent = content.lessons.length > 0 || content.entries.length > 0;
   const stale: string[] = [];
   const manifest = await readJsonFile(join(directories.content, KIEN_THUC_MANIFEST_FILE));
-  if (JSON.stringify(manifest) !== JSON.stringify(buildManifest(content))) {
+  if (isStaleIndex(manifest, buildManifest(content), hasContent)) {
     stale.push(KIEN_THUC_MANIFEST_FILE);
   }
   const index = await readJsonFile(join(directories.content, KIEN_THUC_SEARCH_INDEX_FILE));
-  if (JSON.stringify(index) !== JSON.stringify(buildSearchIndex(content))) {
+  if (isStaleIndex(index, buildSearchIndex(content), hasContent)) {
     stale.push(KIEN_THUC_SEARCH_INDEX_FILE);
   }
   return stale;
