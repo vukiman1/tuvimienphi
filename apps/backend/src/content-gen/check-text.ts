@@ -14,29 +14,41 @@ const LOI_NOI_VE_CACH_SOAN = [
   'mô hình ngôn ngữ',
   'trí tuệ nhân tạo',
 ] as const;
-const CUM_BI_CAM = [...LOI_DOA, ...LOI_DOA_TET, ...LOI_BAN_HANG, ...LOI_NOI_VE_CACH_SOAN] as const;
-
-const OLD_STYLE_TONE_MARKS: readonly (readonly [RegExp, string])[] = [
-  [/oà/g, 'òa'],
-  [/oá/g, 'óa'],
-  [/oả/g, 'ỏa'],
-  [/oã/g, 'õa'],
-  [/oạ/g, 'ọa'],
-  [/oè/g, 'òe'],
-  [/oé/g, 'óe'],
-  [/oẻ/g, 'ỏe'],
-  [/oẽ/g, 'õe'],
-  [/oẹ/g, 'ọe'],
-  [/uỳ/g, 'ùy'],
-  [/uý/g, 'úy'],
-  [/uỷ/g, 'ủy'],
-  [/uỹ/g, 'ũy'],
-  [/uỵ/g, 'ụy'],
+export const FORBIDDEN_PHRASES: readonly string[] = [
+  ...LOI_DOA,
+  ...LOI_DOA_TET,
+  ...LOI_BAN_HANG,
+  ...LOI_NOI_VE_CACH_SOAN,
 ];
+
+export type ToneMarkFix = readonly [oldStyle: string, newStyle: string];
+
+export const OLD_STYLE_OA_OE: readonly ToneMarkFix[] = [
+  ['oà', 'òa'],
+  ['oá', 'óa'],
+  ['oả', 'ỏa'],
+  ['oã', 'õa'],
+  ['oạ', 'ọa'],
+  ['oè', 'òe'],
+  ['oé', 'óe'],
+  ['oẻ', 'ỏe'],
+  ['oẽ', 'õe'],
+  ['oẹ', 'ọe'],
+];
+
+export const OLD_STYLE_UY: readonly ToneMarkFix[] = [
+  ['uỳ', 'ùy'],
+  ['uý', 'úy'],
+  ['uỷ', 'ủy'],
+  ['uỹ', 'ũy'],
+  ['uỵ', 'ụy'],
+];
+
+const OLD_STYLE_TONE_MARKS: readonly ToneMarkFix[] = [...OLD_STYLE_OA_OE, ...OLD_STYLE_UY];
 
 export function normalize(text: string): string {
   return OLD_STYLE_TONE_MARKS.reduce(
-    (result, [pattern, replacement]) => result.replace(pattern, replacement),
+    (result, [oldStyle, newStyle]) => result.replaceAll(oldStyle, newStyle),
     text.normalize('NFC').toLowerCase(),
   );
 }
@@ -67,7 +79,7 @@ function precedingWords(sentence: string, index: number): readonly string[] {
   return clause.split(WORD_SEPARATOR).filter((word) => word !== '');
 }
 
-function isAffirmedAt(sentence: string, index: number): boolean {
+export function isAffirmedAt(sentence: string, index: number): boolean {
   const words = precedingWords(sentence, index);
   const lastWord = words[words.length - 1];
   if (lastWord !== undefined && GENERIC_SUBJECT_WORDS.includes(lastWord)) return false;
@@ -88,7 +100,7 @@ export function affirms(text: string, claims: readonly string[]): boolean {
 
 export function forbiddenPhraseViolations(text: string): string[] {
   const normalized = normalize(text);
-  return CUM_BI_CAM.filter((phrase) => normalized.includes(phrase)).map(
+  return FORBIDDEN_PHRASES.filter((phrase) => normalized.includes(phrase)).map(
     (phrase) => `dùng cụm bị cấm "${phrase}"`,
   );
 }

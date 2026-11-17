@@ -1,0 +1,107 @@
+import { readFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import {
+  ContentKind,
+  KIEN_THUC_MANIFEST_FILE,
+  KIEN_THUC_SEARCH_INDEX_FILE,
+  type EntryFile,
+  type LessonFile,
+  type PageRef,
+} from '@org/shared-contracts';
+import { isRecord, isStringArray } from '../../schema-guards';
+import { writeJsonFile } from '../../write-json-file';
+import { buildManifest } from '../indexes/build-manifest';
+import { buildSearchIndex } from '../indexes/build-search-index';
+import { MalformedContentFileError } from '../errors';
+import { isSections } from './draft-file';
+import { JSON_SUFFIX, listJsonSlugs, parseJson } from './json-files';
+import { contentPath } from './kien-thuc-paths';
+
+const ENTRY_KINDS: readonly ContentKind[] = [
+  ContentKind.Sao,
+  ContentKind.Cung,
+  ContentKind.ThuatNgu,
+];
+
+export interface ContentFiles {
+  readonly lessons: readonly LessonFile[];
+  readonly entries: readonly EntryFile[];
+}
+
+interface ParsedContentFile {
+  readonly path: string;
+  readonly value: unknown;
+}
+
+function isLessonFile(value: unknown): value is LessonFile {
+  return (
+    isRecord(value) &&
+    typeof value.slug === 'string' &&
+    typeof value.step === 'number' &&
+    typeof value.order === 'number' &&
+    typeof value.title === 'string' &&
+    typeof value.summary === 'string' &&
+    isSections(value.sections) &&
+    typeof value.readingMinutes === 'number' &&
+    typeof value.reviewedAt === 'string'
+  );
+}
+
+function isEntryFile(value: unknown): value is EntryFile {
+  return (
+    isRecord(value) &&
+    typeof value.kind === 'string' &&
+    typeof value.group === 'string' &&
+    typeof value.slug === 'string' &&
+    typeof value.title === 'string' &&
+    isStringArray(value.aliases) &&
+    typeof value.summary === 'string' &&
+    isSections(value.sections) &&
+    typeof value.learnInLesson === 'string' &&
+    typeof value.reviewedAt === 'string'
+  );
+}
+
+async function readKind(
+  directory: string,
+  kind: ContentKind,
+): Promise<readonly ParsedContentFile[]> {
+  const parsed: ParsedContentFile[] = [];
+  for (const slug of await listJsonSlugs(join(directory, kind))) {
+    const path = join(directory, kind, `${slug}${JSON_SUFFIX}`);
+    const raw = await readFile(path, 'utf8');
+    parsed.push({ path, value: parseJson(raw, () => new MalformedContentFileError(path)) });
+  }
+  return parsed;
+}
+
+export async function readContent(directory: string): Promise<ContentFiles> {
+  const lessons: LessonFile[] = [];
+  for (const { path, value } of await readKind(directory, ContentKind.Bai)) {
+    if (!isLessonFile(value)) throw new MalformedContentFileError(path);
+    lessons.push(value);
+  }
+  const entries: EntryFile[] = [];
+  for (const kind of ENTRY_KINDS) {
+    for (const { path, value } of await readKind(directory, kind)) {
+      if (!isEntryFile(value)) throw new MalformedContentFileError(path);
+      entries.push(value);
+    }
+  }
+  return { lessons, entries };
+}
+
+export function contentExists(directory: string, ref: PageRef): boolean {
+  return existsSync(contentPath(directory, ref));
+}
+
+export function writeContentPage(directory: string, page: LessonFile | EntryFile): Promise<void> {
+  const kind = 'kind' in page ? page.kind : ContentKind.Bai;
+  return writeJsonFile(join(directory, kind), `${page.slug}${JSON_SUFFIX}`, page);
+}
+
+export async function writeIndexes(directory: string, files: ContentFiles): Promise<void> {
+  await writeJsonFile(directory, KIEN_THUC_MANIFEST_FILE, buildManifest(files));
+  await writeJsonFile(directory, KIEN_THUC_SEARCH_INDEX_FILE, buildSearchIndex(files));
+}

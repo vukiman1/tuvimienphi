@@ -360,7 +360,7 @@ const TERM_PLAN: readonly TermPlan[] = [
   },
 ];
 
-const chinhTinhEntries: readonly PlannedStarEntry[] = CHINH_TINH_NAMES.map(
+const CHINH_TINH_ENTRIES: readonly PlannedStarEntry[] = CHINH_TINH_NAMES.map(
   (star): PlannedStarEntry => ({
     kind: ContentKind.Sao,
     group: EntryGroup.ChinhTinh,
@@ -372,7 +372,7 @@ const chinhTinhEntries: readonly PlannedStarEntry[] = CHINH_TINH_NAMES.map(
   }),
 );
 
-const tuHoaEntries: readonly PlannedStarEntry[] = HOA_NAMES.map((star): PlannedStarEntry => ({
+const TU_HOA_ENTRIES: readonly PlannedStarEntry[] = HOA_NAMES.map((star): PlannedStarEntry => ({
   kind: ContentKind.Sao,
   group: EntryGroup.TuHoa,
   slug: HOA_SLUG[star],
@@ -382,7 +382,7 @@ const tuHoaEntries: readonly PlannedStarEntry[] = HOA_NAMES.map((star): PlannedS
   star,
 }));
 
-const phuTinhEntries: readonly PlannedStarEntry[] = PHU_TINH_PLAN.map(
+const PHU_TINH_ENTRIES: readonly PlannedStarEntry[] = PHU_TINH_PLAN.map(
   ({ slug, star, aliases }): PlannedStarEntry => ({
     kind: ContentKind.Sao,
     group: EntryGroup.PhuTinh,
@@ -394,7 +394,7 @@ const phuTinhEntries: readonly PlannedStarEntry[] = PHU_TINH_PLAN.map(
   }),
 );
 
-const cungEntries: readonly PlannedCungEntry[] = CUNG_NAMES.map((cung): PlannedCungEntry => ({
+const CUNG_ENTRIES: readonly PlannedCungEntry[] = CUNG_NAMES.map((cung): PlannedCungEntry => ({
   kind: ContentKind.Cung,
   group: EntryGroup.Cung,
   slug: CUNG_SLUG[cung],
@@ -404,7 +404,7 @@ const cungEntries: readonly PlannedCungEntry[] = CUNG_NAMES.map((cung): PlannedC
   cung,
 }));
 
-const nguHanhEntries: readonly PlannedTermEntry[] = NGU_HANH_PLAN.map(
+const NGU_HANH_ENTRIES: readonly PlannedTermEntry[] = NGU_HANH_PLAN.map(
   ({ slug, title, hanh }): PlannedTermEntry => ({
     kind: ContentKind.ThuatNgu,
     group: EntryGroup.NguHanh,
@@ -416,7 +416,7 @@ const nguHanhEntries: readonly PlannedTermEntry[] = NGU_HANH_PLAN.map(
   }),
 );
 
-const termEntries: readonly PlannedTermEntry[] = TERM_PLAN.map(
+const TERM_ENTRIES: readonly PlannedTermEntry[] = TERM_PLAN.map(
   ({ slug, title, aliases, learnInLesson }): PlannedTermEntry => ({
     kind: ContentKind.ThuatNgu,
     group: EntryGroup.ThuatNgu,
@@ -429,12 +429,12 @@ const termEntries: readonly PlannedTermEntry[] = TERM_PLAN.map(
 );
 
 export const KIEN_THUC_ENTRIES: readonly PlannedEntry[] = [
-  ...chinhTinhEntries,
-  ...tuHoaEntries,
-  ...phuTinhEntries,
-  ...cungEntries,
-  ...nguHanhEntries,
-  ...termEntries,
+  ...CHINH_TINH_ENTRIES,
+  ...TU_HOA_ENTRIES,
+  ...PHU_TINH_ENTRIES,
+  ...CUNG_ENTRIES,
+  ...NGU_HANH_ENTRIES,
+  ...TERM_ENTRIES,
 ];
 
 export function plannedRefOf(page: PlannedPage): PageRef {

@@ -1,4 +1,4 @@
-import { forbiddenPhraseViolations } from './check-text';
+import { forbiddenPhraseViolations, isAffirmedAt, normalize } from './check-text';
 
 describe('forbiddenPhraseViolations', () => {
   it.each([
@@ -24,5 +24,16 @@ describe('forbiddenPhraseViolations', () => {
       'Chuẩn bị đầu vào cho công việc kinh doanh một cách cẩn thận.',
     ].join(' ');
     expect(forbiddenPhraseViolations(text)).toEqual([]);
+  });
+});
+
+describe('isAffirmedAt', () => {
+  it('tells a negated position from an affirmed one', () => {
+    const sentence = normalize('Tả Phù không miếu, Thiên Cơ miếu');
+    const first = sentence.indexOf('miếu');
+    const second = sentence.indexOf('miếu', first + 1);
+
+    expect(isAffirmedAt(sentence, first)).toBe(false);
+    expect(isAffirmedAt(sentence, second)).toBe(true);
   });
 });

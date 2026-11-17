@@ -124,7 +124,17 @@
         ],
         "executor": "nx:run-commands",
         "options": {
-          "command": "ts-node -P apps/backend/tsconfig.app.json apps/backend/src/content-gen/generate-tet-hub.ts"
+          "command": "ts-node -P apps/backend/tsconfig.app.json apps/backend/src/content-gen/tet-hub/generate-tet-hub.ts"
+        }
+      },
+      "kien-thuc": {
+        "dependsOn": [
+          "^build"
+        ],
+        "cache": false,
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "ts-node --transpile-only -P apps/backend/tsconfig.app.json apps/backend/src/content-gen/kien-thuc/kien-thuc-cli.ts"
         }
       }
     }
@@ -166,6 +176,7 @@
     "@org/backend-jwt": "workspace:*",
     "@org/backend-redis": "workspace:*",
     "@org/shared-contracts": "workspace:*",
+    "@org/shared-kien-thuc": "workspace:*",
     "@org/shared-tu-vi": "workspace:*",
     "@react-email/components": "^1.0.12",
     "@react-email/render": "^2.1.0",
