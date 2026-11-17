@@ -1,5 +1,4 @@
-import { writeFile } from 'node:fs/promises';
-import { pagesOfBatch, type KienThucBatch } from './batches';
+import type { KienThucBatch } from './batches';
 import { KienThucCommandName, parseKienThucCommand } from './cli-options';
 import { approvePages } from './commands/approve';
 import { briefOutput } from './commands/brief';
@@ -9,10 +8,7 @@ import {
   hasCheckFailures,
   renderPageCheck,
 } from './commands/check';
-import { buildCorpus } from './commands/corpus';
-import { renderPreview } from './commands/preview';
-import { readContent } from './store/content-store';
-import { readAllDrafts } from './store/draft-store';
+import { writePreview } from './commands/preview';
 import {
   KIEN_THUC_CONTENT_DIRECTORY,
   KIEN_THUC_DRAFTS_DIRECTORY,
@@ -53,16 +49,7 @@ async function runPreview(
   batch: KienThucBatch | null,
   directories: KienThucDirectories,
 ): Promise<number> {
-  const allDrafts = await readAllDrafts(directories);
-  const refs =
-    batch === null ? null : new Set(pagesOfBatch(batch).map((page) => `${page.kind}/${page.slug}`));
-  const drafts = refs === null ? allDrafts : allDrafts.filter((stored) => refs.has(stored.ref));
-  const html = renderPreview(
-    drafts,
-    await readContent(directories.content),
-    await buildCorpus(directories),
-  );
-  await writeFile(PREVIEW_FILE, html, 'utf8');
+  await writePreview(directories, batch, PREVIEW_FILE);
   print(PREVIEW_FILE);
   return 0;
 }

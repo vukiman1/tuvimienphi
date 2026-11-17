@@ -1,8 +1,12 @@
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { ContentKind, EntryGroup, type EntryFile, type PageRef } from '@org/shared-contracts';
 import { DRAFT_AUTHOR, type DraftFile } from '../store/draft-file';
 import type { StoredDraft } from '../store/draft-store';
 import type { ContentFiles } from '../store/content-store';
-import { renderPreview } from './preview';
+import type { KienThucDirectories } from '../store/kien-thuc-paths';
+import { renderPreview, writePreview } from './preview';
 
 const EMPTY_CONTENT: ContentFiles = { lessons: [], entries: [] };
 
@@ -63,5 +67,25 @@ describe('renderPreview', () => {
       [],
     );
     expect(html).toContain('Đã đổi');
+  });
+});
+
+describe('writePreview', () => {
+  let root: string;
+  let directories: KienThucDirectories;
+
+  beforeEach(async () => {
+    root = await mkdtemp(`${tmpdir()}/kien-thuc-preview-`);
+    directories = { content: join(root, 'content'), drafts: join(root, 'drafts') };
+  });
+
+  afterEach(async () => {
+    await rm(root, { recursive: true, force: true });
+  });
+
+  it('creates the folder of the preview file when it is missing', async () => {
+    const file = join(root, 'tmp', 'kien-thuc-preview.html');
+    await writePreview(directories, null, file);
+    expect(await readFile(file, 'utf8')).toContain('<!doctype html>');
   });
 });

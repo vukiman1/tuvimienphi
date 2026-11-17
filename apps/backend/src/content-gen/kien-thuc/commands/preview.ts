@@ -1,21 +1,27 @@
-import { ContentKind } from '@org/shared-contracts';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { dirname } from 'node:path';
+import { ContentKind, type PageRef } from '@org/shared-contracts';
 import { CHI } from '@org/shared-tu-vi';
 import {
   cungRelations,
   plannedPage,
+  plannedRefOf,
   ratingAt,
   saoFacts,
   SaoKind,
   type PlannedPage,
 } from '@org/shared-kien-thuc';
+import { pagesOfBatch, type KienThucBatch } from '../batches';
 import { buildPageBrief } from '../brief/build-page-brief';
 import { scanLinks, toPlainText } from '../text/link-markup';
 import { countSyllables, readingMinutes } from '../text/syllable-count';
 import { closestNeighbour, type CorpusPage } from '../validate/check-similarity';
 import { ClaimStatus } from '../validate/facts/fact-subject';
-import type { ContentFiles } from '../store/content-store';
-import type { StoredDraft } from '../store/draft-store';
+import { readContent, type ContentFiles } from '../store/content-store';
+import { readAllDrafts, type StoredDraft } from '../store/draft-store';
+import type { KienThucDirectories } from '../store/kien-thuc-paths';
 import { bodyPlainText, UNPLANNED_PAGE_VIOLATION, validatePage } from '../validate/validate-page';
+import { buildCorpus } from './corpus';
 
 const EMPTY_CELL = '—';
 
@@ -125,4 +131,21 @@ export function renderPreview(
     ].join('\n');
   });
   return `<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>Kiến thức preview</title></head><body>${cards.join('\n')}</body></html>`;
+}
+
+export async function writePreview(
+  directories: KienThucDirectories,
+  batch: KienThucBatch | null,
+  file: string,
+): Promise<void> {
+  const allDrafts = await readAllDrafts(directories);
+  const refs = batch === null ? null : new Set<PageRef>(pagesOfBatch(batch).map(plannedRefOf));
+  const drafts = refs === null ? allDrafts : allDrafts.filter((stored) => refs.has(stored.ref));
+  const html = renderPreview(
+    drafts,
+    await readContent(directories.content),
+    await buildCorpus(directories),
+  );
+  await mkdir(dirname(file), { recursive: true });
+  await writeFile(file, html, 'utf8');
 }
