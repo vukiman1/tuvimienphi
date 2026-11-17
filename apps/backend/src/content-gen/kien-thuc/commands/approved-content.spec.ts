@@ -1,17 +1,20 @@
+import { existsSync } from 'node:fs';
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { KIEN_THUC_CONTENT_DIRECTORY } from '../store/kien-thuc-paths';
 import { approvedContentFactViolations } from './approved-content';
 
 const WORKSPACE_ROOT = resolve(__dirname, '../../../../../..');
+const CONTENT_DIRECTORY = join(WORKSPACE_ROOT, KIEN_THUC_CONTENT_DIRECTORY);
 
 describe('approvedContentFactViolations', () => {
+  it('reads the content folder of the frontend kiến thức feature', () => {
+    expect(existsSync(dirname(CONTENT_DIRECTORY))).toBe(true);
+  });
+
   it('finds no fact violation in approved content', async () => {
-    const violations = await approvedContentFactViolations(
-      join(WORKSPACE_ROOT, KIEN_THUC_CONTENT_DIRECTORY),
-    );
-    expect(violations).toEqual([]);
+    expect(await approvedContentFactViolations(CONTENT_DIRECTORY)).toEqual([]);
   });
 
   it('fails on a content file that contradicts the engine', async () => {

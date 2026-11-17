@@ -2,6 +2,7 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import type { PageRef } from '@org/shared-contracts';
+import { MalformedContentFileError } from '../errors';
 import { draftPath, type KienThucDirectories } from '../store/kien-thuc-paths';
 import { checkedClaim, skippedClaim } from '../validate/facts/fact-subject';
 import { UNPLANNED_PAGE_VIOLATION } from '../validate/validate-page';
@@ -121,6 +122,17 @@ describe('check', () => {
     const report = await checkKienThucContent(directories);
     expect(report.planDrift.some((drift) => drift.fields.includes('title'))).toBe(true);
     expect(report.staleIndexes).toContain('manifest.json');
+  });
+
+  it('refuses a manifest that is not JSON instead of calling it absent', async () => {
+    await writeDraft('sao/thien-co', thienCoDraft());
+    await approvePages(['sao/thien-co'], directories, now);
+    const manifestPath = join(directories.content, 'manifest.json');
+    await writeFile(manifestPath, '{ "steps": ', 'utf8');
+
+    const checking = checkKienThucContent(directories);
+    await expect(checking).rejects.toBeInstanceOf(MalformedContentFileError);
+    await expect(checking).rejects.toThrow(manifestPath);
   });
 
   it('does not flag missing indexes when nothing is approved', async () => {

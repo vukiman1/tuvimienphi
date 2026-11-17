@@ -1,4 +1,3 @@
-import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import {
   ContentKind,
@@ -10,11 +9,12 @@ import {
 } from '@org/shared-contracts';
 import { plannedPage } from '@org/shared-kien-thuc';
 import { buildPageBrief } from '../brief/build-page-brief';
-import { UnknownPageRefError } from '../errors';
+import { MalformedContentFileError, UnknownPageRefError } from '../errors';
 import { buildManifest } from '../indexes/build-manifest';
 import { buildSearchIndex } from '../indexes/build-search-index';
 import { readContent, type ContentFiles } from '../store/content-store';
 import { draftExists, readAllDrafts, readDraft } from '../store/draft-store';
+import { parseJson, readTextIfPresent } from '../store/json-files';
 import type { KienThucDirectories } from '../store/kien-thuc-paths';
 import type { PageDraftBody } from '../validate/check-shape';
 import {
@@ -147,12 +147,10 @@ function driftOf(content: ContentFiles): readonly PlanDrift[] {
   return drift;
 }
 
-async function readJsonFile(path: string): Promise<unknown> {
-  try {
-    return JSON.parse(await readFile(path, 'utf8'));
-  } catch {
-    return null;
-  }
+async function readIndexFile(path: string): Promise<unknown> {
+  const raw = await readTextIfPresent(path);
+  if (raw === null) return null;
+  return parseJson(raw, () => new MalformedContentFileError(path));
 }
 
 function isStaleIndex(onDisk: unknown, rebuilt: unknown, hasContent: boolean): boolean {
@@ -166,11 +164,11 @@ async function staleIndexesOf(
 ): Promise<readonly string[]> {
   const hasContent = content.lessons.length > 0 || content.entries.length > 0;
   const stale: string[] = [];
-  const manifest = await readJsonFile(join(directories.content, KIEN_THUC_MANIFEST_FILE));
+  const manifest = await readIndexFile(join(directories.content, KIEN_THUC_MANIFEST_FILE));
   if (isStaleIndex(manifest, buildManifest(content), hasContent)) {
     stale.push(KIEN_THUC_MANIFEST_FILE);
   }
-  const index = await readJsonFile(join(directories.content, KIEN_THUC_SEARCH_INDEX_FILE));
+  const index = await readIndexFile(join(directories.content, KIEN_THUC_SEARCH_INDEX_FILE));
   if (isStaleIndex(index, buildSearchIndex(content), hasContent)) {
     stale.push(KIEN_THUC_SEARCH_INDEX_FILE);
   }

@@ -35,4 +35,22 @@ describe('content store', () => {
     await write('bai', 'tu-vi-la-gi.json', broken);
     await expect(readContent(directory)).rejects.toBeInstanceOf(MalformedContentFileError);
   });
+
+  it('reads nothing from a content folder that does not exist yet', async () => {
+    expect(await readContent(join(directory, 'absent'))).toEqual({ lessons: [], entries: [] });
+  });
+
+  it('fails when a kind folder cannot be listed', async () => {
+    await writeFile(join(directory, 'sao'), 'not a folder', 'utf8');
+    await expect(readContent(directory)).rejects.toMatchObject({ code: 'ENOTDIR' });
+  });
+
+  it('throws MalformedContentFileError naming a file that is not JSON', async () => {
+    await mkdir(join(directory, 'sao'), { recursive: true });
+    const path = join(directory, 'sao', 'thien-co.json');
+    await writeFile(path, '{ "slug": ', 'utf8');
+    const reading = readContent(directory);
+    await expect(reading).rejects.toBeInstanceOf(MalformedContentFileError);
+    await expect(reading).rejects.toThrow(path);
+  });
 });

@@ -1,6 +1,6 @@
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { dirname } from 'node:path';
+import { dirname, join } from 'node:path';
 import type { PageRef } from '@org/shared-contracts';
 import { MalformedDraftError, MissingDraftError } from '../errors';
 import { readAllDrafts, readDraft } from './draft-store';
@@ -63,5 +63,31 @@ describe('draft store', () => {
     );
     const draft = await readDraft(directories, 'sao/thien-co');
     expect(draft.sections[0].paragraphs[0]).toBe('Xem [[cung/menh|Mệnh]] và Mệnh lần nữa.');
+  });
+
+  it('lists no drafts when the drafts folder does not exist', async () => {
+    expect(await readAllDrafts(directories)).toEqual([]);
+  });
+
+  it('fails when a kind folder cannot be listed', async () => {
+    await mkdir(directories.drafts, { recursive: true });
+    await writeFile(join(directories.drafts, 'sao'), 'not a folder', 'utf8');
+    await expect(readAllDrafts(directories)).rejects.toMatchObject({ code: 'ENOTDIR' });
+  });
+
+  it('does not report a draft it cannot read as missing', async () => {
+    await mkdir(draftPath(directories, 'sao/thien-co'), { recursive: true });
+    const reading = readDraft(directories, 'sao/thien-co');
+    await expect(reading).rejects.not.toBeInstanceOf(MissingDraftError);
+    await expect(reading).rejects.toMatchObject({ code: 'EISDIR' });
+  });
+
+  it('throws MalformedDraftError naming a draft that is not JSON', async () => {
+    const path = draftPath(directories, 'sao/thien-co');
+    await mkdir(dirname(path), { recursive: true });
+    await writeFile(path, '{ "summary": ', 'utf8');
+    const reading = readDraft(directories, 'sao/thien-co');
+    await expect(reading).rejects.toBeInstanceOf(MalformedDraftError);
+    await expect(reading).rejects.toThrow(path);
   });
 });

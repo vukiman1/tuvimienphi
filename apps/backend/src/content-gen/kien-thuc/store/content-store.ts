@@ -1,4 +1,4 @@
-import { readdir, readFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import {
@@ -15,9 +15,9 @@ import { buildManifest } from '../indexes/build-manifest';
 import { buildSearchIndex } from '../indexes/build-search-index';
 import { MalformedContentFileError } from '../errors';
 import { isSections } from './draft-file';
+import { JSON_SUFFIX, listJsonSlugs, parseJson } from './json-files';
 import { contentPath } from './kien-thuc-paths';
 
-const JSON_SUFFIX = '.json';
 const ENTRY_KINDS: readonly ContentKind[] = [
   ContentKind.Sao,
   ContentKind.Cung,
@@ -27,6 +27,11 @@ const ENTRY_KINDS: readonly ContentKind[] = [
 export interface ContentFiles {
   readonly lessons: readonly LessonFile[];
   readonly entries: readonly EntryFile[];
+}
+
+interface ParsedContentFile {
+  readonly path: string;
+  readonly value: unknown;
 }
 
 function isLessonFile(value: unknown): value is LessonFile {
@@ -58,32 +63,28 @@ function isEntryFile(value: unknown): value is EntryFile {
   );
 }
 
-async function readKind(directory: string, kind: ContentKind): Promise<readonly unknown[]> {
-  let files: readonly string[];
-  try {
-    files = await readdir(join(directory, kind));
-  } catch {
-    return [];
-  }
-  const parsed: unknown[] = [];
-  for (const file of [...files].filter((name) => name.endsWith(JSON_SUFFIX)).sort()) {
-    const path = join(directory, kind, file);
-    parsed.push({ path, value: JSON.parse(await readFile(path, 'utf8')) as unknown });
+async function readKind(
+  directory: string,
+  kind: ContentKind,
+): Promise<readonly ParsedContentFile[]> {
+  const parsed: ParsedContentFile[] = [];
+  for (const slug of await listJsonSlugs(join(directory, kind))) {
+    const path = join(directory, kind, `${slug}${JSON_SUFFIX}`);
+    const raw = await readFile(path, 'utf8');
+    parsed.push({ path, value: parseJson(raw, () => new MalformedContentFileError(path)) });
   }
   return parsed;
 }
 
 export async function readContent(directory: string): Promise<ContentFiles> {
   const lessons: LessonFile[] = [];
-  for (const entry of await readKind(directory, ContentKind.Bai)) {
-    const { path, value } = entry as { path: string; value: unknown };
+  for (const { path, value } of await readKind(directory, ContentKind.Bai)) {
     if (!isLessonFile(value)) throw new MalformedContentFileError(path);
     lessons.push(value);
   }
   const entries: EntryFile[] = [];
   for (const kind of ENTRY_KINDS) {
-    for (const item of await readKind(directory, kind)) {
-      const { path, value } = item as { path: string; value: unknown };
+    for (const { path, value } of await readKind(directory, kind)) {
       if (!isEntryFile(value)) throw new MalformedContentFileError(path);
       entries.push(value);
     }
