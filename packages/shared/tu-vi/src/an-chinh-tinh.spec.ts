@@ -1,4 +1,12 @@
-import { anChinhTinh, anThienPhu, anTuVi } from './an-chinh-tinh.js';
+import {
+  anChinhTinh,
+  anThienPhu,
+  anTuVi,
+  chinhTinhChom,
+  ChinhTinhChom,
+  chomMembers,
+} from './an-chinh-tinh.js';
+import { CHINH_TINH_NAMES } from './sao-names.js';
 
 /** Canh Tuất 1910, ngày 2 tháng 12 âm, giờ Ngọ, Mộc tam cục — số liệu lấy nguyên từ tuvi.vn. */
 const LUNAR_DAY = 2;
@@ -72,5 +80,45 @@ describe('an mười bốn chính tinh', () => {
     const occupied = new Set(anChinhTinh(LUNAR_DAY, MOC_TAM_CUC).map((star) => star.chiIndex));
     expect(occupied.has(2)).toBe(false);
     expect(occupied.has(11)).toBe(false);
+  });
+});
+
+describe('chòm chính tinh', () => {
+  it('puts six stars in chòm Tử Vi and eight in chòm Thiên Phủ', () => {
+    expect(chomMembers(ChinhTinhChom.TuVi)).toEqual([
+      'Tử Vi',
+      'Thiên Cơ',
+      'Thái Dương',
+      'Vũ Khúc',
+      'Thiên Đồng',
+      'Liêm Trinh',
+    ]);
+    expect(chomMembers(ChinhTinhChom.ThienPhu)).toEqual([
+      'Thiên Phủ',
+      'Thái Âm',
+      'Tham Lang',
+      'Cự Môn',
+      'Thiên Tướng',
+      'Thiên Lương',
+      'Thất Sát',
+      'Phá Quân',
+    ]);
+  });
+
+  it('assigns every chính tinh to exactly one chòm', () => {
+    const tuVi = new Set(chomMembers(ChinhTinhChom.TuVi));
+    const thienPhu = new Set(chomMembers(ChinhTinhChom.ThienPhu));
+    for (const name of CHINH_TINH_NAMES) {
+      expect(tuVi.has(name) !== thienPhu.has(name)).toBe(true);
+    }
+    expect(tuVi.size + thienPhu.size).toBe(CHINH_TINH_NAMES.length);
+    for (const name of tuVi) {
+      expect(thienPhu.has(name)).toBe(false);
+    }
+  });
+
+  it('finds the chòm of a star', () => {
+    expect(chinhTinhChom('Liêm Trinh')).toBe(ChinhTinhChom.TuVi);
+    expect(chinhTinhChom('Phá Quân')).toBe(ChinhTinhChom.ThienPhu);
   });
 });
