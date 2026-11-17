@@ -1,4 +1,4 @@
-import { shingleSimilarity } from './shingle-similarity';
+import { shingleContainment, shingleSimilarity } from './shingle-similarity';
 
 const PARAGRAPH = 'Năm nay công việc ổn định, tài chính cần thận trọng, sức khỏe nên giữ nhịp đều.';
 
@@ -28,5 +28,16 @@ describe('shingleSimilarity', () => {
 
   it('ignores case and punctuation', () => {
     expect(shingleSimilarity(PARAGRAPH, PARAGRAPH.toUpperCase().replace(/,/g, ''))).toBe(1);
+  });
+});
+
+describe('shingleContainment', () => {
+  it('measures containment against the shorter text', () => {
+    const shorter = Array.from({ length: 20 }, (_, i) => `w${i}`).join(' ');
+    const longer = `${shorter} ${Array.from({ length: 20 }, (_, i) => `x${i}`).join(' ')}`;
+
+    expect(shingleContainment(shorter, longer)).toBe(1);
+    expect(shingleSimilarity(shorter, longer)).toBeGreaterThan(0.3);
+    expect(shingleSimilarity(shorter, longer)).toBeLessThan(0.6);
   });
 });

@@ -37,3 +37,15 @@ export function shingleSimilarity(
   const union = shinglesA.size + shinglesB.size - shared;
   return union === 0 ? 0 : shared / union;
 }
+
+export function shingleContainment(
+  a: string,
+  b: string,
+  size: number = DEFAULT_SHINGLE_SIZE,
+): number {
+  const shinglesA = toShingles(a, size);
+  const shinglesB = toShingles(b, size);
+  const shared = [...shinglesA].filter((shingle) => shinglesB.has(shingle)).length;
+  const shorter = Math.min(shinglesA.size, shinglesB.size);
+  return shorter === 0 ? 0 : shared / shorter;
+}
