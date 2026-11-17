@@ -19,4 +19,10 @@ describe('checkTuHoaByCan', () => {
   it('ignores hóa named without a can', () => {
     expect(checkTuHoaByCan('Hóa Lộc đi cùng Liêm Trinh.', null).violations).toEqual([]);
   });
+
+  it('does not read the can Quý inside the star Thiên Quý', () => {
+    expect(
+      checkTuHoaByCan('Ân Quang, Thiên Quý gặp Hóa Khoa thì lợi học hành.', null).violations,
+    ).toEqual([]);
+  });
 });
