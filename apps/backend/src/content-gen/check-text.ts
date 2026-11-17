@@ -67,7 +67,7 @@ function precedingWords(sentence: string, index: number): readonly string[] {
   return clause.split(WORD_SEPARATOR).filter((word) => word !== '');
 }
 
-function isAffirmedAt(sentence: string, index: number): boolean {
+export function isAffirmedAt(sentence: string, index: number): boolean {
   const words = precedingWords(sentence, index);
   const lastWord = words[words.length - 1];
   if (lastWord !== undefined && GENERIC_SUBJECT_WORDS.includes(lastWord)) return false;
