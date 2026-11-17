@@ -28,7 +28,7 @@ export default [
     },
   },
   {
-    files: ['src/api/**/*.ts'],
+    files: ['src/api/**/*.ts', 'src/content-gen/**/*.ts'],
     ignores: [AI_ADMIN_FILES],
     rules: {
       'no-restricted-imports': ['error', { patterns: [AI_PORT_ONLY] }],
