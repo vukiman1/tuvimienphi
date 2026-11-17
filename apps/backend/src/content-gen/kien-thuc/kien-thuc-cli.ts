@@ -10,6 +10,7 @@ import {
   renderPageCheck,
 } from './commands/check';
 import { writePreview } from './commands/preview';
+import { formatScore } from './validate/check-similarity';
 import { KIEN_THUC_DIRECTORIES, type KienThucDirectories } from './store/kien-thuc-paths';
 
 const PREVIEW_FILE = 'tmp/kien-thuc-preview.html';
@@ -35,7 +36,7 @@ async function runCheckAll(directories: KienThucDirectories): Promise<number> {
   const report = await checkKienThucContent(directories);
   for (const page of report.pages) print(renderPageCheck(page));
   for (const pair of report.similarPairs)
-    print(`trùng: ${pair.a} ~ ${pair.b} (${pair.score.toFixed(2)})`);
+    print(`trùng: ${pair.a} ~ ${pair.b} (${formatScore(pair.score)})`);
   for (const drift of report.planDrift)
     print(`lệch danh mục ${drift.ref}: ${drift.fields.join(', ')}`);
   for (const stale of report.staleIndexes) print(`chỉ mục cũ: ${stale}`);
@@ -76,6 +77,6 @@ main()
     process.exitCode = code;
   })
   .catch((error: unknown) => {
-    process.stdout.write(`${error instanceof Error ? error.message : String(error)}\n`);
+    process.stderr.write(`${error instanceof Error ? error.message : String(error)}\n`);
     process.exitCode = 1;
   });

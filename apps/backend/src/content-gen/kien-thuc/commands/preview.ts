@@ -15,7 +15,7 @@ import { pagesOfBatch, type KienThucBatch } from '../batches';
 import { buildPageBrief } from '../brief/build-page-brief';
 import { scanLinks, toPlainText } from '../text/link-markup';
 import { countSyllables, readingMinutes } from '../text/syllable-count';
-import { closestNeighbour, type CorpusPage } from '../validate/check-similarity';
+import { closestNeighbour, formatScore, type CorpusPage } from '../validate/check-similarity';
 import { ClaimStatus } from '../validate/facts/fact-subject';
 import { readContent, type ContentFiles } from '../store/content-store';
 import { readAllDrafts, type StoredDraft } from '../store/draft-store';
@@ -125,7 +125,7 @@ export function renderPreview(
       changed.length > 0 ? `<p>Đã đổi: ${escapeHtml(changed.join(', '))}</p>` : '',
       neighbour === null
         ? ''
-        : `<p>Gần nhất: ${escapeHtml(neighbour.ref)} (${neighbour.score.toFixed(2)})</p>`,
+        : `<p>Gần nhất: ${escapeHtml(neighbour.ref)} (${formatScore(neighbour.score)})</p>`,
       ...validation.warnings.map((w) => `<p class="warn">${escapeHtml(w)}</p>`),
       `</section>`,
     ].join('\n');

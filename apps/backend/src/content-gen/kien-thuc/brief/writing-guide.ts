@@ -52,7 +52,7 @@ export function writingGuideFor(page: PlannedPage): readonly WritingRule[] {
     {
       heading: 'Giọng văn',
       lines: [
-        'Không doạ dẫm, không hứa hẹn, không bán hàng, không nói về cách bài được viết.',
+        'Không dọa dẫm, không hứa hẹn, không bán hàng, không nói về cách bài được viết.',
         `Không dùng các cụm: ${[...FORBIDDEN_PHRASES, ...KIEN_THUC_FORBIDDEN].join(', ')}.`,
         ...CALMER_PHRASINGS.map((phrasing) => `Thay "${phrasing.avoid}" bằng "${phrasing.write}".`),
         ...toneExtra,

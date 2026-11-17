@@ -20,6 +20,7 @@ import type { PageDraftBody } from '../validate/check-shape';
 import {
   closestNeighbour,
   findTooSimilarPages,
+  formatScore,
   type Neighbour,
 } from '../validate/check-similarity';
 import { ClaimStatus } from '../validate/facts/fact-subject';
@@ -108,7 +109,7 @@ export function renderPageCheck(check: PageCheck): string {
     lines.push('## Vi phạm', ...check.validation.violations.map((v) => `- ${v}`));
   }
   if (check.neighbour !== null) {
-    lines.push(`Gần nhất: ${check.neighbour.ref} (${check.neighbour.score.toFixed(2)})`);
+    lines.push(`Gần nhất: ${check.neighbour.ref} (${formatScore(check.neighbour.score)})`);
   }
   if (check.validation.warnings.length > 0) {
     lines.push('## Cảnh báo', ...check.validation.warnings.map((w) => `- ${w}`));

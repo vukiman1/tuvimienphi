@@ -19,7 +19,7 @@ export interface Neighbour {
   readonly score: number;
 }
 
-function format(score: number): string {
+export function formatScore(score: number): string {
   return score.toFixed(SCORE_DIGITS);
 }
 
@@ -54,12 +54,12 @@ export function checkSimilarity(
     if (other.ref === page.ref) continue;
     const jaccard = shingleSimilarity(page.plainText, other.plainText);
     if (jaccard >= KIEN_THUC_SIMILARITY_THRESHOLD) {
-      violations.push(`trùng lặp với "${other.ref}" (Jaccard ${format(jaccard)})`);
+      violations.push(`trùng lặp với "${other.ref}" (Jaccard ${formatScore(jaccard)})`);
     }
     if (isEntryLessonPair(page, other)) {
       const containment = shingleContainment(page.plainText, other.plainText);
       if (containment >= ENTRY_LESSON_CONTAINMENT_THRESHOLD) {
-        violations.push(`lặp phần lớn "${other.ref}" (chứa ${format(containment)})`);
+        violations.push(`lặp phần lớn "${other.ref}" (chứa ${formatScore(containment)})`);
       }
     }
   }
@@ -76,7 +76,7 @@ export function similarityWarnings(
     if (other.ref === page.ref || other.group !== page.group) continue;
     const jaccard = shingleSimilarity(page.plainText, other.plainText);
     if (jaccard >= SAME_GROUP_WARNING_THRESHOLD) {
-      warnings.push(`gần "${other.ref}" cùng nhóm (Jaccard ${format(jaccard)})`);
+      warnings.push(`gần "${other.ref}" cùng nhóm (Jaccard ${formatScore(jaccard)})`);
     }
   }
   return warnings;

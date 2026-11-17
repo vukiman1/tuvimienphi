@@ -35,16 +35,19 @@ const IGNORED_VUONG_BEFORE = /(?:thịnh|hưng) $/u;
 const SCALE_NAME_REASON = 'tên thang bậc';
 const NEGATED_REASON = 'phủ định';
 
-interface RatingHit {
+interface RatingWordHit {
   readonly letter: Rating;
   readonly start: number;
   readonly end: number;
   readonly affirmed: boolean;
-  scale: boolean;
 }
 
-function ratingHits(normalizedClause: string): readonly RatingHit[] {
-  const hits: RatingHit[] = findNames(normalizedClause, RATING_WORDS)
+interface RatingHit extends RatingWordHit {
+  readonly scale: boolean;
+}
+
+function ratingWordHits(normalizedClause: string): readonly RatingWordHit[] {
+  return findNames(normalizedClause, RATING_WORDS)
     .filter((hit) => {
       if (hit.name !== 'vượng') return true;
       return !IGNORED_VUONG_BEFORE.test(normalizedClause.slice(0, hit.index));
@@ -54,19 +57,31 @@ function ratingHits(normalizedClause: string): readonly RatingHit[] {
       start: hit.index,
       end: hit.index + hit.name.length,
       affirmed: isAffirmedAt(normalizedClause, hit.index),
-      scale: false,
     }));
+}
+
+function scaleHitIndexes(
+  normalizedClause: string,
+  hits: readonly RatingWordHit[],
+): ReadonlySet<number> {
+  const inScale = new Set<number>();
   let runStart = 0;
   for (let i = 1; i <= hits.length; i += 1) {
     const broken =
       i === hits.length || !SCALE_GAP.test(normalizedClause.slice(hits[i - 1].end, hits[i].start));
     if (!broken) continue;
     if (i - runStart >= 2) {
-      for (let j = runStart; j < i; j += 1) hits[j].scale = true;
+      for (let j = runStart; j < i; j += 1) inScale.add(j);
     }
     runStart = i;
   }
-  return hits;
+  return inScale;
+}
+
+function ratingHits(normalizedClause: string): readonly RatingHit[] {
+  const hits = ratingWordHits(normalizedClause);
+  const inScale = scaleHitIndexes(normalizedClause, hits);
+  return hits.map((hit, index) => ({ ...hit, scale: inScale.has(index) }));
 }
 
 export const checkRatings: FactCheck = (
