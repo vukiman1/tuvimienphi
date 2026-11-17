@@ -1,4 +1,6 @@
 import { plannedPage, type PlannedPage } from '@org/shared-kien-thuc';
+import { FORBIDDEN_PHRASES } from '../../check-text';
+import { SUMMARY_MAX_LENGTH, SUMMARY_MIN_LENGTH } from '../validate/check-shape';
 import { ART_WRITTEN_AS_STAR, KIEN_THUC_FORBIDDEN } from '../validate/check-wording';
 import { CALMER_PHRASINGS, writingGuideFor } from './writing-guide';
 
@@ -17,7 +19,7 @@ function guideText(): string {
 describe('writingGuideFor', () => {
   it('prints every forbidden phrase and art form the validator rejects', () => {
     const text = guideText();
-    for (const phrase of [...KIEN_THUC_FORBIDDEN, ...ART_WRITTEN_AS_STAR]) {
+    for (const phrase of [...FORBIDDEN_PHRASES, ...KIEN_THUC_FORBIDDEN, ...ART_WRITTEN_AS_STAR]) {
       expect(text).toContain(phrase);
     }
   });
@@ -28,5 +30,9 @@ describe('writingGuideFor', () => {
       expect(text).toContain(phrasing.avoid);
       expect(text).toContain(phrasing.write);
     }
+  });
+
+  it('states the summary length the validator enforces', () => {
+    expect(guideText()).toContain(`${SUMMARY_MIN_LENGTH}–${SUMMARY_MAX_LENGTH} ký tự`);
   });
 });

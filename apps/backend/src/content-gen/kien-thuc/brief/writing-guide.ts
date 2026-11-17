@@ -1,8 +1,8 @@
 import { ContentKind } from '@org/shared-contracts';
 import type { PlannedPage } from '@org/shared-kien-thuc';
+import { FORBIDDEN_PHRASES } from '../../check-text';
+import { SUMMARY_MAX_LENGTH, SUMMARY_MIN_LENGTH } from '../validate/check-shape';
 import { ART_WRITTEN_AS_STAR, KIEN_THUC_FORBIDDEN } from '../validate/check-wording';
-
-const LUAN_GIAI_FORBIDDEN = ['tai họa', 'đại họa', 'phải cúng', 'dữ kiện'];
 
 export interface WritingRule {
   readonly heading: string;
@@ -53,14 +53,16 @@ export function writingGuideFor(page: PlannedPage): readonly WritingRule[] {
       heading: 'Giọng văn',
       lines: [
         'Không doạ dẫm, không hứa hẹn, không bán hàng, không nói về cách bài được viết.',
-        `Không dùng các cụm: ${[...KIEN_THUC_FORBIDDEN, ...LUAN_GIAI_FORBIDDEN].join(', ')}.`,
+        `Không dùng các cụm: ${[...FORBIDDEN_PHRASES, ...KIEN_THUC_FORBIDDEN].join(', ')}.`,
         ...CALMER_PHRASINGS.map((phrasing) => `Thay "${phrasing.avoid}" bằng "${phrasing.write}".`),
         ...toneExtra,
       ],
     },
     {
       heading: 'Tóm tắt',
-      lines: ['Một đến hai câu, 60–160 ký tự, cho kết quả tìm kiếm và popover, không có liên kết.'],
+      lines: [
+        `Một đến hai câu, ${SUMMARY_MIN_LENGTH}–${SUMMARY_MAX_LENGTH} ký tự, cho kết quả tìm kiếm và popover, không có liên kết.`,
+      ],
     },
   ];
 }

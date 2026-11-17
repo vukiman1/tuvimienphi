@@ -14,7 +14,12 @@ const LOI_NOI_VE_CACH_SOAN = [
   'mô hình ngôn ngữ',
   'trí tuệ nhân tạo',
 ] as const;
-const CUM_BI_CAM = [...LOI_DOA, ...LOI_DOA_TET, ...LOI_BAN_HANG, ...LOI_NOI_VE_CACH_SOAN] as const;
+export const FORBIDDEN_PHRASES: readonly string[] = [
+  ...LOI_DOA,
+  ...LOI_DOA_TET,
+  ...LOI_BAN_HANG,
+  ...LOI_NOI_VE_CACH_SOAN,
+];
 
 export type ToneMarkFix = readonly [oldStyle: string, newStyle: string];
 
@@ -95,7 +100,7 @@ export function affirms(text: string, claims: readonly string[]): boolean {
 
 export function forbiddenPhraseViolations(text: string): string[] {
   const normalized = normalize(text);
-  return CUM_BI_CAM.filter((phrase) => normalized.includes(phrase)).map(
+  return FORBIDDEN_PHRASES.filter((phrase) => normalized.includes(phrase)).map(
     (phrase) => `dùng cụm bị cấm "${phrase}"`,
   );
 }
