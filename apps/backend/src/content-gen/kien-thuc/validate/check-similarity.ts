@@ -1,4 +1,5 @@
-import type { EntryGroup, PageRef } from '@org/shared-contracts';
+import { ContentKind, type EntryGroup, type PageRef } from '@org/shared-contracts';
+import type { PlannedPage } from '@org/shared-kien-thuc';
 import { shingleContainment, shingleSimilarity, type SimilarPair } from '../../shingle-similarity';
 
 export const KIEN_THUC_SIMILARITY_THRESHOLD = 0.2;
@@ -20,6 +21,10 @@ export interface Neighbour {
 
 function format(score: number): string {
   return score.toFixed(SCORE_DIGITS);
+}
+
+export function groupOf(page: PlannedPage): EntryGroup | null {
+  return page.kind === ContentKind.Bai ? null : page.group;
 }
 
 function isEntryLessonPair(a: CorpusPage, b: CorpusPage): boolean {

@@ -1,4 +1,9 @@
-import { forbiddenPhraseViolations, normalize } from '../../check-text';
+import {
+  forbiddenPhraseViolations,
+  normalize,
+  OLD_STYLE_OA_OE,
+  OLD_STYLE_UY,
+} from '../../check-text';
 import { toPlainText } from '../text/link-markup';
 import type { PageDraftBody } from './check-shape';
 
@@ -11,25 +16,6 @@ export const ART_WRITTEN_AS_STAR: readonly string[] = [
   'Tử Vi Đẩu Số',
 ];
 
-const OA_OE_OPEN: Readonly<Record<string, string>> = {
-  oà: 'òa',
-  oá: 'óa',
-  oả: 'ỏa',
-  oã: 'õa',
-  oạ: 'ọa',
-  oè: 'òe',
-  oé: 'óe',
-  oẻ: 'ỏe',
-  oẽ: 'õe',
-  oẹ: 'ọe',
-};
-const UY_OPEN: Readonly<Record<string, string>> = {
-  uỳ: 'ùy',
-  uý: 'úy',
-  uỷ: 'ủy',
-  uỹ: 'ũy',
-  uỵ: 'ụy',
-};
 const CHI_TY = 'tỵ';
 const CHI_TY_FIXED = 'ị';
 const TOKEN_BREAK = /[^\p{L}]+/u;
@@ -37,10 +23,10 @@ const TOKEN_BREAK = /[^\p{L}]+/u;
 function correctToken(token: string): string | null {
   const lower = token.toLowerCase();
   if (lower === CHI_TY) return token.replace('ỵ', CHI_TY_FIXED);
-  for (const [cluster, fixed] of Object.entries(OA_OE_OPEN)) {
+  for (const [cluster, fixed] of OLD_STYLE_OA_OE) {
     if (lower.endsWith(cluster)) return token.slice(0, token.length - cluster.length) + fixed;
   }
-  for (const [cluster, fixed] of Object.entries(UY_OPEN)) {
+  for (const [cluster, fixed] of OLD_STYLE_UY) {
     if (!lower.endsWith(cluster)) continue;
     const before = lower[lower.length - cluster.length - 1];
     if (before === 'q') return null;

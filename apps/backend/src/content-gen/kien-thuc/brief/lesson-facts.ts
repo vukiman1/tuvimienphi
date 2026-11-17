@@ -4,6 +4,7 @@ import {
   anCungThan,
   anTieuHan,
   anTriet,
+  CAN,
   CHI,
   chomMembers,
   ChinhTinhChom,
@@ -16,7 +17,6 @@ import {
   LUU_TINH_NAMES,
   PHU_TINH_NAMES,
   type CungName,
-  type NguHanh,
   type SaoName,
 } from '@org/shared-tu-vi';
 import {
@@ -26,12 +26,10 @@ import {
   SaoKind,
   type PlannedLesson,
 } from '@org/shared-kien-thuc';
+import { NGU_HANH_ORDER } from './ngu-hanh-order';
 
 const MONTHS = 12;
 const HOURS = 12;
-const CAN_COUNT = 10;
-const CAN_NAMES = ['Giáp', 'Ất', 'Bính', 'Đinh', 'Mậu', 'Kỷ', 'Canh', 'Tân', 'Nhâm', 'Quý'];
-const NGU_HANH_ORDER: readonly NguHanh[] = ['Kim', 'Mộc', 'Thủy', 'Hỏa', 'Thổ'];
 const SINH_CYCLE = 'Mộc sinh Hỏa, Hỏa sinh Thổ, Thổ sinh Kim, Kim sinh Thủy, Thủy sinh Mộc.';
 const KHAC_CYCLE = 'Mộc khắc Thổ, Thổ khắc Thủy, Thủy khắc Hỏa, Hỏa khắc Kim, Kim khắc Mộc.';
 const TAM_HOP_GROUP_CHIS = [8, 2, 5, 11];
@@ -116,9 +114,9 @@ const BY_SLUG: Readonly<Record<string, () => readonly string[]>> = {
     'Tứ hóa đi theo can của năm; mỗi can một bộ bốn sao.',
   ],
   'tuan-va-triet': () =>
-    Array.from({ length: CAN_COUNT }, (_, can) => {
+    CAN.map((name, can) => {
       const triet = anTriet(can);
-      return `Can ${CAN_NAMES[can]}: Triệt ở ${CHI[triet[0]]}, ${CHI[triet[1]]}.`;
+      return `Can ${name}: Triệt ở ${CHI[triet[0]]}, ${CHI[triet[1]]}.`;
     }),
   'cach-xem-dai-van': () => [
     `Tuổi khởi đại vận theo cục: ${NGU_HANH_ORDER.map((hanh) => `${CUC_BY_ELEMENT[hanh].name} khởi tuổi ${CUC_BY_ELEMENT[hanh].value}`).join(', ')}.`,

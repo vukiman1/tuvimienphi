@@ -1,7 +1,6 @@
-import { CHI, type Rating, type SaoName } from '@org/shared-tu-vi';
+import { CAN, CHI, type Rating, type SaoName } from '@org/shared-tu-vi';
 import { saoFacts, SaoKind } from '@org/shared-kien-thuc';
 
-const CAN_NAMES = ['Giáp', 'Ất', 'Bính', 'Đinh', 'Mậu', 'Kỷ', 'Canh', 'Tân', 'Nhâm', 'Quý'];
 const CANH_CAN = 6;
 const RATING_ORDER: readonly Rating[] = ['M', 'V', 'Đ', 'B', 'H'];
 const RATING_WORD: Readonly<Record<Rating, string>> = {
@@ -50,9 +49,9 @@ export function saoBriefLines(star: SaoName): readonly string[] {
   }
   if (facts.kind === SaoKind.TuHoa) {
     for (const row of facts.byCan) {
-      lines.push(`Năm ${CAN_NAMES[row.can]}: ${facts.name} là ${row.star}.`);
+      lines.push(`Năm ${CAN[row.can]}: ${facts.name} là ${row.star}.`);
     }
-    lines.push(`Hàng ${CAN_NAMES[CANH_CAN]} khác nhau giữa các trường phái; theo bảng của engine.`);
+    lines.push(`Hàng ${CAN[CANH_CAN]} khác nhau giữa các trường phái; theo bảng của engine.`);
   }
   return lines;
 }

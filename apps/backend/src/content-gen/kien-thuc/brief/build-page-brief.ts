@@ -9,14 +9,13 @@ import {
   type PlannedPage,
 } from '@org/shared-kien-thuc';
 import { limitsFor } from '../validate/check-shape';
+import { isSampleChartLesson } from '../validate/facts/check-sample-chart';
 import { cungBriefLines, cungRequiredMentions } from './cung-brief';
 import { lessonFactLines } from './lesson-facts';
 import { LESSON_OUTLINES } from './lesson-outlines';
 import type { LinkTarget, PageBrief } from './page-brief';
 import { saoBriefLines, saoRequiredMentions } from './sao-brief';
 import { termBriefLines, termRequiredMentions } from './term-brief';
-
-const SAMPLE_CHART_LESSON_SLUG = 'doc-la-so-cua-chinh-ban';
 
 function allPlannedPages(): readonly PlannedPage[] {
   return [...KIEN_THUC_LESSONS, ...KIEN_THUC_ENTRIES];
@@ -80,7 +79,7 @@ function contentOf(page: PlannedPage): Content {
   switch (page.kind) {
     case ContentKind.Bai: {
       const outline = LESSON_OUTLINES[page.slug];
-      const extras = page.slug === SAMPLE_CHART_LESSON_SLUG ? sampleChartMentions() : [];
+      const extras = isSampleChartLesson(page) ? sampleChartMentions() : [];
       return {
         factLines: lessonFactLines(page),
         mustCover: outline?.mustCover ?? [],

@@ -7,6 +7,7 @@ import { chisIn, starsIn } from './clause-mentions';
 import {
   bindStar,
   checkedClaim,
+  NO_STAR_REASON,
   skippedClaim,
   type ClaimClause,
   type FactCheck,
@@ -86,7 +87,7 @@ export const checkRatings: FactCheck = (
       continue;
     }
     if (binding.kind === 'none') {
-      claims.push(skippedClaim(clause, 'không rõ sao nào'));
+      claims.push(skippedClaim(clause, NO_STAR_REASON));
       continue;
     }
     const affirmed = new Set(

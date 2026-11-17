@@ -1,9 +1,9 @@
 import { ContentKind } from '@org/shared-contracts';
 import { plannedRefOf } from '@org/shared-kien-thuc';
+import { draftPath, KIEN_THUC_DIRECTORIES } from '../store/kien-thuc-paths';
 import type { LinkTarget, PageBrief } from './page-brief';
 import { writingGuideFor } from './writing-guide';
 
-const DRAFTS_DIRECTORY = 'tmp/kien-thuc/drafts';
 const DRAFT_SHAPE = [
   '```json',
   '{',
@@ -26,7 +26,7 @@ function bullets(lines: readonly string[]): readonly string[] {
 export function renderBrief(brief: PageBrief): string {
   const { page, limits } = brief;
   const ref = plannedRefOf(page);
-  const draftPath = `${DRAFTS_DIRECTORY}/${page.kind}/${page.slug}.json`;
+  const draftFile = draftPath(KIEN_THUC_DIRECTORIES, ref);
   const sections: string[] = [
     `# Brief: ${page.title}`,
     `- Ref: \`${ref}\``,
@@ -68,7 +68,7 @@ export function renderBrief(brief: PageBrief): string {
     );
   }
   sections.push('', '## Đích liên kết cho phép', ...brief.linkTargets.map(linkLine));
-  sections.push('', '## Tệp cần ghi', `\`${draftPath}\``, ...DRAFT_SHAPE);
+  sections.push('', '## Tệp cần ghi', `\`${draftFile}\``, ...DRAFT_SHAPE);
   sections.push(
     '',
     '## Tự kiểm',

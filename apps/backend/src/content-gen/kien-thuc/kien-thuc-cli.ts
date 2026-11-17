@@ -10,11 +10,7 @@ import {
   renderPageCheck,
 } from './commands/check';
 import { writePreview } from './commands/preview';
-import {
-  KIEN_THUC_CONTENT_DIRECTORY,
-  KIEN_THUC_DRAFTS_DIRECTORY,
-  type KienThucDirectories,
-} from './store/kien-thuc-paths';
+import { KIEN_THUC_DIRECTORIES, type KienThucDirectories } from './store/kien-thuc-paths';
 
 const PREVIEW_FILE = 'tmp/kien-thuc-preview.html';
 
@@ -57,10 +53,7 @@ async function runPreview(
 
 async function main(): Promise<number> {
   const command = parseKienThucCommand(process.argv.slice(2));
-  const directories: KienThucDirectories = {
-    content: KIEN_THUC_CONTENT_DIRECTORY,
-    drafts: KIEN_THUC_DRAFTS_DIRECTORY,
-  };
+  const directories = KIEN_THUC_DIRECTORIES;
   switch (command.name) {
     case KienThucCommandName.Brief:
       print(briefOutput(command.target));

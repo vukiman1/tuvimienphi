@@ -1,11 +1,10 @@
-import { ContentKind, type EntryGroup } from '@org/shared-contracts';
 import { castSampleChart, plannedRefOf, type PlannedPage } from '@org/shared-kien-thuc';
 import { toPlainText } from '../text/link-markup';
 import { checkLength } from './check-length';
 import { checkLinks } from './check-links';
 import { checkRequiredMentions } from './check-required-mentions';
 import { checkShape, limitsFor, type PageDraftBody } from './check-shape';
-import { checkSimilarity, similarityWarnings, type CorpusPage } from './check-similarity';
+import { checkSimilarity, groupOf, similarityWarnings, type CorpusPage } from './check-similarity';
 import { checkWording } from './check-wording';
 import { claimClausesOf } from './facts/claim-clauses';
 import { checkCatHung } from './facts/check-cat-hung';
@@ -13,7 +12,7 @@ import { checkChom } from './facts/check-chom';
 import { checkHanh } from './facts/check-hanh';
 import { checkRatings } from './facts/check-ratings';
 import { checkRelations } from './facts/check-relations';
-import { checkSampleChart } from './facts/check-sample-chart';
+import { checkSampleChart, isSampleChartLesson } from './facts/check-sample-chart';
 import { checkTuHoaByCan } from './facts/check-tu-hoa-by-can';
 import {
   factSubjectOf,
@@ -22,7 +21,6 @@ import {
   type FactCheckResult,
 } from './facts/fact-subject';
 
-const SAMPLE_CHART_LESSON_SLUG = 'doc-la-so-cua-chinh-ban';
 const FACT_CHECKS: readonly FactCheck[] = [
   checkRatings,
   checkHanh,
@@ -55,8 +53,16 @@ export function bodyPlainText(body: PageDraftBody): string {
     .join('\n');
 }
 
-function groupOf(page: PlannedPage): EntryGroup | null {
-  return page.kind === ContentKind.Bai ? null : page.group;
+function factCheckResults(page: PlannedPage, plainText: string): readonly FactCheckResult[] {
+  const subject = factSubjectOf(page);
+  const results = FACT_CHECKS.map((check) => check(plainText, subject));
+  return isSampleChartLesson(page)
+    ? [...results, checkSampleChart(plainText, castSampleChart())]
+    : results;
+}
+
+export function factViolations(page: PlannedPage, body: PageDraftBody): readonly string[] {
+  return factCheckResults(page, bodyPlainText(body)).flatMap((result) => result.violations);
 }
 
 export function validatePage(body: PageDraftBody, context: PageValidationContext): PageValidation {
@@ -64,7 +70,6 @@ export function validatePage(body: PageDraftBody, context: PageValidationContext
   const self = plannedRefOf(page);
   const limits = limitsFor(page);
   const plainText = bodyPlainText(body);
-  const subject = factSubjectOf(page);
 
   const violations: string[] = [
     ...checkShape(body, page.title, limits),
@@ -74,10 +79,7 @@ export function validatePage(body: PageDraftBody, context: PageValidationContext
     ...checkRequiredMentions(body, requiredMentions),
   ];
 
-  const factResults: FactCheckResult[] = FACT_CHECKS.map((check) => check(plainText, subject));
-  if (page.kind === ContentKind.Bai && page.slug === SAMPLE_CHART_LESSON_SLUG) {
-    factResults.push(checkSampleChart(plainText, castSampleChart()));
-  }
+  const factResults = factCheckResults(page, plainText);
   for (const result of factResults) violations.push(...result.violations);
 
   const corpusPage: CorpusPage = { ref: self, group: groupOf(page), plainText };

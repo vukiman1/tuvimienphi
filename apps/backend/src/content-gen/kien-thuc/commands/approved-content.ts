@@ -1,26 +1,8 @@
 import { ContentKind, pageRef, type PageRef } from '@org/shared-contracts';
-import { castSampleChart, plannedPage } from '@org/shared-kien-thuc';
+import { plannedPage } from '@org/shared-kien-thuc';
 import { readContent } from '../store/content-store';
 import type { PageDraftBody } from '../validate/check-shape';
-import { checkCatHung } from '../validate/facts/check-cat-hung';
-import { checkChom } from '../validate/facts/check-chom';
-import { checkHanh } from '../validate/facts/check-hanh';
-import { checkRatings } from '../validate/facts/check-ratings';
-import { checkRelations } from '../validate/facts/check-relations';
-import { checkSampleChart } from '../validate/facts/check-sample-chart';
-import { checkTuHoaByCan } from '../validate/facts/check-tu-hoa-by-can';
-import { factSubjectOf, type FactCheck } from '../validate/facts/fact-subject';
-import { bodyPlainText } from '../validate/validate-page';
-
-const SAMPLE_CHART_LESSON_SLUG = 'doc-la-so-cua-chinh-ban';
-const FACT_CHECKS: readonly FactCheck[] = [
-  checkRatings,
-  checkHanh,
-  checkChom,
-  checkCatHung,
-  checkRelations,
-  checkTuHoaByCan,
-];
+import { factViolations } from '../validate/validate-page';
 
 export interface ContentFactViolations {
   readonly ref: PageRef;
@@ -30,13 +12,7 @@ export interface ContentFactViolations {
 function violationsFor(ref: PageRef, body: PageDraftBody): readonly string[] {
   const page = plannedPage(ref);
   if (page === undefined) return [];
-  const plainText = bodyPlainText(body);
-  const subject = factSubjectOf(page);
-  const violations = FACT_CHECKS.flatMap((check) => check(plainText, subject).violations);
-  if (page.kind === ContentKind.Bai && page.slug === SAMPLE_CHART_LESSON_SLUG) {
-    violations.push(...checkSampleChart(plainText, castSampleChart()).violations);
-  }
-  return violations;
+  return factViolations(page, body);
 }
 
 export async function approvedContentFactViolations(

@@ -1,14 +1,10 @@
-import { ContentKind, pageRef, type EntryGroup, type PageRef } from '@org/shared-contracts';
-import { plannedPage, type PlannedPage } from '@org/shared-kien-thuc';
+import { ContentKind, pageRef, type PageRef } from '@org/shared-contracts';
+import { plannedPage } from '@org/shared-kien-thuc';
 import { readContent, type ContentFiles } from '../store/content-store';
 import { readAllDrafts, type StoredDraft } from '../store/draft-store';
 import type { KienThucDirectories } from '../store/kien-thuc-paths';
-import type { CorpusPage } from '../validate/check-similarity';
+import { groupOf, type CorpusPage } from '../validate/check-similarity';
 import { bodyPlainText } from '../validate/validate-page';
-
-export function groupOf(page: PlannedPage): EntryGroup | null {
-  return page.kind === ContentKind.Bai ? null : page.group;
-}
 
 export function corpusOf(
   content: ContentFiles,

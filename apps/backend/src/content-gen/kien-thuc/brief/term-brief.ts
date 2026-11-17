@@ -1,4 +1,5 @@
 import {
+  CAN,
   CHI,
   CHI_NGU_HANH,
   CUC_BY_ELEMENT,
@@ -9,9 +10,7 @@ import {
   type NguHanh,
 } from '@org/shared-tu-vi';
 import type { PlannedTermEntry } from '@org/shared-kien-thuc';
-
-const CAN_NAMES = ['Giáp', 'Ất', 'Bính', 'Đinh', 'Mậu', 'Kỷ', 'Canh', 'Tân', 'Nhâm', 'Quý'];
-const NGU_HANH_ORDER: readonly NguHanh[] = ['Kim', 'Mộc', 'Thủy', 'Hỏa', 'Thổ'];
+import { NGU_HANH_ORDER } from './ngu-hanh-order';
 
 function chiOfHanh(hanh: NguHanh): readonly string[] {
   return CHI.filter((_, index) => CHI_NGU_HANH[index] === hanh);
@@ -46,7 +45,7 @@ function hanhLines(hanh: NguHanh): readonly string[] {
 }
 
 const BY_SLUG: Readonly<Record<string, () => readonly string[]>> = {
-  can: () => [`Mười thiên can: ${CAN_NAMES.join(', ')}.`],
+  can: () => [`Mười thiên can: ${CAN.join(', ')}.`],
   chi: () => [`Mười hai địa chi: ${CHI.join(', ')}.`],
   cuc: () => [
     `Năm cục: ${NGU_HANH_ORDER.map((hanh) => `${CUC_BY_ELEMENT[hanh].name} (${CUC_BY_ELEMENT[hanh].value})`).join(', ')}.`,

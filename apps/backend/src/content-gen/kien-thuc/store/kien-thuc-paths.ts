@@ -10,6 +10,11 @@ export interface KienThucDirectories {
   readonly drafts: string;
 }
 
+export const KIEN_THUC_DIRECTORIES: KienThucDirectories = {
+  content: KIEN_THUC_CONTENT_DIRECTORY,
+  drafts: KIEN_THUC_DRAFTS_DIRECTORY,
+};
+
 function parse(ref: PageRef): { readonly kind: string; readonly slug: string } {
   const parsed = parsePageRef(ref);
   if (parsed === null) throw new UnknownPageRefError(ref);

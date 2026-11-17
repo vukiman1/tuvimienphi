@@ -1,3 +1,5 @@
+import { ContentKind } from '@org/shared-contracts';
+import type { PlannedPage } from '@org/shared-kien-thuc';
 import {
   CHINH_TINH_NAMES,
   CUNG_NAMES,
@@ -10,6 +12,7 @@ import { splitClauses } from '../../text/clauses';
 import { findNames } from '../../text/find-names';
 import { checkedClaim, skippedClaim, type ClaimClause, type FactCheckResult } from './fact-subject';
 
+const SAMPLE_CHART_LESSON_SLUG = 'doc-la-so-cua-chinh-ban';
 const SAMPLE_STARS: readonly SaoName[] = [...CHINH_TINH_NAMES, ...HOA_NAMES];
 const CHU_SUFFIX = ' chủ';
 const MUON_WORD = 'mượn';
@@ -19,6 +22,10 @@ function starInCung(cung: NatalCungView, star: SaoName, hasMuon: boolean): boole
   if (cung.chinhTinh.some((placed) => placed.name === star)) return true;
   if (hasMuon && cung.chinhTinhMuon.some((placed) => placed.name === star)) return true;
   return cung.phuTinh.some((placed) => placed.name === star);
+}
+
+export function isSampleChartLesson(page: PlannedPage): boolean {
+  return page.kind === ContentKind.Bai && page.slug === SAMPLE_CHART_LESSON_SLUG;
 }
 
 export function checkSampleChart(plainText: string, chart: NatalChart): FactCheckResult {

@@ -16,27 +16,34 @@ const LOI_NOI_VE_CACH_SOAN = [
 ] as const;
 const CUM_BI_CAM = [...LOI_DOA, ...LOI_DOA_TET, ...LOI_BAN_HANG, ...LOI_NOI_VE_CACH_SOAN] as const;
 
-const OLD_STYLE_TONE_MARKS: readonly (readonly [RegExp, string])[] = [
-  [/oà/g, 'òa'],
-  [/oá/g, 'óa'],
-  [/oả/g, 'ỏa'],
-  [/oã/g, 'õa'],
-  [/oạ/g, 'ọa'],
-  [/oè/g, 'òe'],
-  [/oé/g, 'óe'],
-  [/oẻ/g, 'ỏe'],
-  [/oẽ/g, 'õe'],
-  [/oẹ/g, 'ọe'],
-  [/uỳ/g, 'ùy'],
-  [/uý/g, 'úy'],
-  [/uỷ/g, 'ủy'],
-  [/uỹ/g, 'ũy'],
-  [/uỵ/g, 'ụy'],
+export type ToneMarkFix = readonly [oldStyle: string, newStyle: string];
+
+export const OLD_STYLE_OA_OE: readonly ToneMarkFix[] = [
+  ['oà', 'òa'],
+  ['oá', 'óa'],
+  ['oả', 'ỏa'],
+  ['oã', 'õa'],
+  ['oạ', 'ọa'],
+  ['oè', 'òe'],
+  ['oé', 'óe'],
+  ['oẻ', 'ỏe'],
+  ['oẽ', 'õe'],
+  ['oẹ', 'ọe'],
 ];
+
+export const OLD_STYLE_UY: readonly ToneMarkFix[] = [
+  ['uỳ', 'ùy'],
+  ['uý', 'úy'],
+  ['uỷ', 'ủy'],
+  ['uỹ', 'ũy'],
+  ['uỵ', 'ụy'],
+];
+
+const OLD_STYLE_TONE_MARKS: readonly ToneMarkFix[] = [...OLD_STYLE_OA_OE, ...OLD_STYLE_UY];
 
 export function normalize(text: string): string {
   return OLD_STYLE_TONE_MARKS.reduce(
-    (result, [pattern, replacement]) => result.replace(pattern, replacement),
+    (result, [oldStyle, newStyle]) => result.replaceAll(oldStyle, newStyle),
     text.normalize('NFC').toLowerCase(),
   );
 }
