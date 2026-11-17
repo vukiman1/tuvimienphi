@@ -1,22 +1,15 @@
 import { rm } from 'node:fs/promises';
-import {
-  ContentKind,
-  pageRef,
-  type EntryFile,
-  type EntryGroup,
-  type LessonFile,
-  type PageRef,
-} from '@org/shared-contracts';
+import { ContentKind, type EntryFile, type LessonFile, type PageRef } from '@org/shared-contracts';
 import { plannedPage, type PlannedPage } from '@org/shared-kien-thuc';
 import { buildPageBrief } from '../brief/build-page-brief';
 import { MalformedDraftError, MissingDraftError, UnknownPageRefError } from '../errors';
 import { readContent, writeContentPage, writeIndexes } from '../store/content-store';
-import { readAllDrafts, readDraft } from '../store/draft-store';
+import { readDraft } from '../store/draft-store';
 import type { DraftFile } from '../store/draft-file';
 import { draftPath, type KienThucDirectories } from '../store/kien-thuc-paths';
 import { countSyllables, readingMinutes } from '../text/syllable-count';
-import type { CorpusPage } from '../validate/check-similarity';
-import { bodyPlainText, validatePage } from '../validate/validate-page';
+import { validatePage } from '../validate/validate-page';
+import { buildCorpus } from './corpus';
 import { reviewedAtOf } from './reviewed-at';
 
 export interface ApproveRejection {
@@ -27,10 +20,6 @@ export interface ApproveRejection {
 export interface ApproveResult {
   readonly approved: readonly PageRef[];
   readonly rejected: readonly ApproveRejection[];
-}
-
-function groupOf(page: PlannedPage): EntryGroup | null {
-  return page.kind === ContentKind.Bai ? null : page.group;
 }
 
 function buildFile(
@@ -64,38 +53,6 @@ function buildFile(
     learnInLesson: page.learnInLesson,
     reviewedAt,
   };
-}
-
-async function buildCorpus(
-  directories: KienThucDirectories,
-  exclude: PageRef,
-): Promise<readonly CorpusPage[]> {
-  const content = await readContent(directories.content);
-  const drafts = await readAllDrafts(directories);
-  const pages: CorpusPage[] = [];
-  for (const lesson of content.lessons) {
-    pages.push({
-      ref: pageRef(ContentKind.Bai, lesson.slug),
-      group: null,
-      plainText: bodyPlainText(lesson),
-    });
-  }
-  for (const entry of content.entries) {
-    pages.push({
-      ref: pageRef(entry.kind, entry.slug),
-      group: entry.group,
-      plainText: bodyPlainText(entry),
-    });
-  }
-  for (const stored of drafts) {
-    const page = plannedPage(stored.ref);
-    pages.push({
-      ref: stored.ref,
-      group: page === undefined ? null : groupOf(page),
-      plainText: bodyPlainText(stored.draft),
-    });
-  }
-  return pages.filter((page) => page.ref !== exclude);
 }
 
 export async function approvePages(

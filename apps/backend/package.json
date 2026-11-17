@@ -126,6 +126,15 @@
         "options": {
           "command": "ts-node -P apps/backend/tsconfig.app.json apps/backend/src/content-gen/tet-hub/generate-tet-hub.ts"
         }
+      },
+      "kien-thuc": {
+        "dependsOn": [
+          "^build"
+        ],
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "ts-node --transpile-only -P apps/backend/tsconfig.app.json apps/backend/src/content-gen/kien-thuc/kien-thuc-cli.ts"
+        }
       }
     }
   },
