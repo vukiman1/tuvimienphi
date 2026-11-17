@@ -4,6 +4,7 @@ import { dirname, join } from 'node:path';
 import type { PageRef } from '@org/shared-contracts';
 import { draftPath, type KienThucDirectories } from '../store/kien-thuc-paths';
 import { checkedClaim, skippedClaim } from '../validate/facts/fact-subject';
+import { UNPLANNED_PAGE_VIOLATION } from '../validate/validate-page';
 import { approvePages } from './approve';
 import {
   CheckedSource,
@@ -127,6 +128,16 @@ describe('check', () => {
     const report = await checkKienThucContent(directories);
     expect(report.staleIndexes).toEqual([]);
     expect(report.pages.every((page) => page.validation.violations.length === 0)).toBe(true);
+  });
+
+  it('reports a draft the plan does not know and checks the others', async () => {
+    await writeDraft('sao/thien-co', thienCoDraft());
+    await writeDraft('sao/sao-khong-co', thienCoDraft());
+
+    const report = await checkKienThucContent(directories);
+    const unplanned = report.pages.find((page) => page.ref === 'sao/sao-khong-co');
+    expect(unplanned?.validation.violations).toEqual([UNPLANNED_PAGE_VIOLATION]);
+    expect(report.pages.map((page) => page.ref)).toContain('sao/thien-co');
   });
 
   it('prints skipped claims after the violations', () => {

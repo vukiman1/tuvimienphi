@@ -32,6 +32,8 @@ const FACT_CHECKS: readonly FactCheck[] = [
   checkTuHoaByCan,
 ];
 
+export const UNPLANNED_PAGE_VIOLATION = 'không có trong danh mục';
+
 export interface PageValidationContext {
   readonly page: PlannedPage;
   readonly requiredMentions: readonly string[];

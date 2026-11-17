@@ -23,7 +23,12 @@ import {
   type Neighbour,
 } from '../validate/check-similarity';
 import { ClaimStatus } from '../validate/facts/fact-subject';
-import { bodyPlainText, validatePage, type PageValidation } from '../validate/validate-page';
+import {
+  bodyPlainText,
+  UNPLANNED_PAGE_VIOLATION,
+  validatePage,
+  type PageValidation,
+} from '../validate/validate-page';
 import { buildCorpus } from './corpus';
 
 export enum CheckedSource {
@@ -71,9 +76,17 @@ export async function checkOnePage(
   ref: PageRef,
   directories: KienThucDirectories,
 ): Promise<PageCheck> {
-  const page = plannedPage(ref);
-  if (page === undefined) throw new UnknownPageRefError(ref);
   const hasDraft = draftExists(directories, ref);
+  const source = hasDraft ? CheckedSource.Draft : CheckedSource.Content;
+  const page = plannedPage(ref);
+  if (page === undefined) {
+    const validation: PageValidation = {
+      violations: [UNPLANNED_PAGE_VIOLATION],
+      claims: [],
+      warnings: [],
+    };
+    return { ref, source, validation, neighbour: null };
+  }
   const body = await bodyOf(directories, ref, hasDraft);
   const corpus = await buildCorpus(directories, ref);
   const validation = validatePage(body, {
@@ -83,7 +96,7 @@ export async function checkOnePage(
   });
   return {
     ref,
-    source: hasDraft ? CheckedSource.Draft : CheckedSource.Content,
+    source,
     validation,
     neighbour: closestNeighbour(ref, bodyPlainText(body), corpus),
   };

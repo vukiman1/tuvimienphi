@@ -15,7 +15,7 @@ import { closestNeighbour, type CorpusPage } from '../validate/check-similarity'
 import { ClaimStatus } from '../validate/facts/fact-subject';
 import type { ContentFiles } from '../store/content-store';
 import type { StoredDraft } from '../store/draft-store';
-import { bodyPlainText, validatePage } from '../validate/validate-page';
+import { bodyPlainText, UNPLANNED_PAGE_VIOLATION, validatePage } from '../validate/validate-page';
 
 const EMPTY_CELL = '—';
 
@@ -80,7 +80,7 @@ export function renderPreview(
   const cards = drafts.map((stored) => {
     const page = plannedPage(stored.ref);
     if (page === undefined)
-      return `<section><h2>${escapeHtml(stored.ref)}</h2><p>không có trong danh mục</p></section>`;
+      return `<section><h2>${escapeHtml(stored.ref)}</h2><p>${UNPLANNED_PAGE_VIOLATION}</p></section>`;
     const plainText = bodyPlainText(stored.draft);
     const validation = validatePage(stored.draft, {
       page,
