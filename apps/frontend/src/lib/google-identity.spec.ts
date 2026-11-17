@@ -66,9 +66,13 @@ describe('google-identity', () => {
     expect(oneTapCallback).toHaveBeenCalledWith('abc');
   });
 
-  it('ignores a credential that arrives before any callback is registered', async () => {
+  it('warns instead of dropping silently a credential that arrives before any callback', async () => {
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
     await ensureGoogleIdentity({ clientId: 'client-1' });
 
-    expect(() => initialize.mock.calls[0][0].callback({ credential: 'abc' })).not.toThrow();
+    initialize.mock.calls[0][0].callback({ credential: 'abc' });
+
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('no credential callback'));
+    warn.mockRestore();
   });
 });

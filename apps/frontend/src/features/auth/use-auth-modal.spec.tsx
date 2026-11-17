@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
   RouterProvider,
   createMemoryHistory,
@@ -76,8 +76,10 @@ describe('useAuthModal', () => {
     const onBeforeNavigate = jest.fn();
     router.subscribe('onBeforeNavigate', onBeforeNavigate);
 
-    fireEvent.click(await screen.findByText('finish'));
-    await Promise.resolve();
+    const finishButton = await screen.findByText('finish');
+    await act(async () => {
+      fireEvent.click(finishButton);
+    });
 
     expect(onBeforeNavigate).not.toHaveBeenCalled();
   });
