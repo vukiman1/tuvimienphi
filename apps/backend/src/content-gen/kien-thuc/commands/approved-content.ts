@@ -2,7 +2,7 @@ import { ContentKind, pageRef, type PageRef } from '@org/shared-contracts';
 import { plannedPage } from '@org/shared-kien-thuc';
 import { readContent } from '../store/content-store';
 import type { PageDraftBody } from '../validate/check-shape';
-import { factViolations } from '../validate/validate-page';
+import { factViolations, UNPLANNED_PAGE_VIOLATION } from '../validate/validate-page';
 
 export interface ContentFactViolations {
   readonly ref: PageRef;
@@ -11,7 +11,7 @@ export interface ContentFactViolations {
 
 function violationsFor(ref: PageRef, body: PageDraftBody): readonly string[] {
   const page = plannedPage(ref);
-  if (page === undefined) return [];
+  if (page === undefined) return [UNPLANNED_PAGE_VIOLATION];
   return factViolations(page, body);
 }
 
