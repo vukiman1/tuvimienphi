@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useNavigate } from '@tanstack/react-router';
 import { appConfig } from '@/config/app-config';
 import { ensureGoogleIdentity, promptGoogleOneTap } from '@/lib/google-identity';
 import { notify } from '@/lib/toast';
@@ -10,8 +9,7 @@ import { startSession } from './session';
 import { useAuthModal } from './use-auth-modal';
 
 export function useGoogleOneTap(): void {
-  const navigate = useNavigate();
-  const { open: openAuthModal } = useAuthModal();
+  const { open: openAuthModal, finish: finishAuth } = useAuthModal();
   const setChallengeToken = usePendingTwoFactor((state) => state.setChallengeToken);
   const isAuthenticated = useAuthStore(selectIsAuthenticated);
   const isInitializing = useAuthStore(selectIsInitializing);
@@ -35,9 +33,8 @@ export function useGoogleOneTap(): void {
           return;
         }
         startSession(result.user);
-        // Same confirmation the email and 2FA sign-in paths already show.
         notify.success('Đăng nhập thành công.');
-        await navigate({ to: '/' });
+        await finishAuth();
       } catch (error) {
         console.error('Google One Tap sign-in failed', error);
       }
@@ -56,5 +53,5 @@ export function useGoogleOneTap(): void {
     return () => {
       cancelled = true;
     };
-  }, [clientId, isAuthenticated, isInitializing, navigate, openAuthModal, setChallengeToken]);
+  }, [clientId, isAuthenticated, isInitializing, finishAuth, openAuthModal, setChallengeToken]);
 }
