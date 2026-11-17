@@ -3,7 +3,12 @@ import { pagesOfBatch, type KienThucBatch } from './batches';
 import { KienThucCommandName, parseKienThucCommand } from './cli-options';
 import { approvePages } from './commands/approve';
 import { briefOutput } from './commands/brief';
-import { checkKienThucContent, checkOnePage, renderPageCheck } from './commands/check';
+import {
+  checkKienThucContent,
+  checkOnePage,
+  hasCheckFailures,
+  renderPageCheck,
+} from './commands/check';
 import { buildCorpus } from './commands/corpus';
 import { renderPreview } from './commands/preview';
 import { readContent } from './store/content-store';
@@ -41,12 +46,7 @@ async function runCheckAll(directories: KienThucDirectories): Promise<number> {
   for (const drift of report.planDrift)
     print(`lệch danh mục ${drift.ref}: ${drift.fields.join(', ')}`);
   for (const stale of report.staleIndexes) print(`chỉ mục cũ: ${stale}`);
-  const failed =
-    report.pages.some((page) => page.validation.violations.length > 0) ||
-    report.similarPairs.length > 0 ||
-    report.planDrift.length > 0 ||
-    report.staleIndexes.length > 0;
-  return failed ? 1 : 0;
+  return hasCheckFailures(report) ? 1 : 0;
 }
 
 async function runPreview(

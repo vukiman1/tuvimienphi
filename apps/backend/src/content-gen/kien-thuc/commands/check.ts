@@ -164,6 +164,15 @@ async function staleIndexesOf(
   return stale;
 }
 
+export function hasCheckFailures(report: ContentCheckReport): boolean {
+  return (
+    report.pages.some((page) => page.validation.violations.length > 0) ||
+    report.similarPairs.length > 0 ||
+    report.planDrift.length > 0 ||
+    report.staleIndexes.length > 0
+  );
+}
+
 export async function checkKienThucContent(
   directories: KienThucDirectories,
 ): Promise<ContentCheckReport> {

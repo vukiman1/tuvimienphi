@@ -9,6 +9,7 @@ import {
   CheckedSource,
   checkKienThucContent,
   checkOnePage,
+  hasCheckFailures,
   renderPageCheck,
   type PageCheck,
 } from './check';
@@ -19,7 +20,7 @@ function filler(count: number): string {
   return Array.from({ length: count }, (_, i) => FILLER[i % FILLER.length]).join(' ');
 }
 
-function thienCoDraft(): unknown {
+function thienCoDraft(extra = ''): unknown {
   return {
     summary:
       'Thiên Cơ là một chính tinh thường gặp, bài viết giúp người mới đọc hiểu nét chính của sao.',
@@ -27,7 +28,7 @@ function thienCoDraft(): unknown {
       {
         heading: 'Tổng quan',
         paragraphs: [
-          `Thiên Cơ thuộc hành Mộc. ${filler(160)} Xem thêm [[bai/y-nghia-chinh-tinh|bài chính tinh]].`,
+          `Thiên Cơ thuộc hành Mộc. ${extra} ${filler(160)} Xem thêm [[bai/y-nghia-chinh-tinh|bài chính tinh]].`,
         ],
       },
       {
@@ -92,6 +93,16 @@ describe('check', () => {
     await writeDraft('sao/thai-duong', thienCoDraft());
     const report = await checkKienThucContent(directories);
     expect(report.similarPairs.length).toBeGreaterThan(0);
+  });
+
+  it('does not compare a revision draft with its own approved page', async () => {
+    await writeDraft('sao/thien-co', thienCoDraft());
+    await approvePages(['sao/thien-co'], directories, now);
+    await writeDraft('sao/thien-co', thienCoDraft('Thiên Cơ là sao của mưu trí.'));
+
+    const report = await checkKienThucContent(directories);
+    expect(report.similarPairs).toEqual([]);
+    expect(hasCheckFailures(report)).toBe(false);
   });
 
   it('reports a content title that no longer equals the plan and a stale manifest', async () => {

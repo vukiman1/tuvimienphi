@@ -76,4 +76,9 @@ describe('findTooSimilarPages', () => {
       [...pairs.map((pair) => pair.score)].sort((x, y) => y - x),
     );
   });
+
+  it('never pairs a page with itself', () => {
+    const text = words('p', 100);
+    expect(findTooSimilarPages([entry('sao/a', text), entry('sao/a', text)])).toEqual([]);
+  });
 });

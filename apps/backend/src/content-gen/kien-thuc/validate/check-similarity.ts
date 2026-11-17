@@ -83,6 +83,7 @@ export function findTooSimilarPages(corpus: readonly CorpusPage[]): readonly Sim
     for (let j = i + 1; j < corpus.length; j += 1) {
       const a = corpus[i];
       const b = corpus[j];
+      if (a.ref === b.ref) continue;
       const jaccard = shingleSimilarity(a.plainText, b.plainText);
       if (jaccard >= KIEN_THUC_SIMILARITY_THRESHOLD) {
         pairs.push({ a: a.ref, b: b.ref, score: jaccard });
