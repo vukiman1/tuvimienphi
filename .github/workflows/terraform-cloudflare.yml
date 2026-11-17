@@ -19,6 +19,7 @@ permissions:
   contents: read
 
 env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   SOPS_VERSION: v3.13.3
   SOPS_LINUX_AMD64_SHA256: e5bec3346a873ae91d871550f3e698c1aad962aff462a080e40f25fde17fef6b
   TERRAFORM_VERSION: 1.10.5
@@ -27,7 +28,7 @@ env:
 jobs:
   plan:
     name: plan
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     environment: cloudflare-terraform-plan
     permissions:
@@ -109,7 +110,7 @@ jobs:
           } >plan.txt 2>&1
           code=$?
           set -e
-          sed -n '1,400p' plan.txt
+          cat plan.txt
           exit "$code"
 
       - name: Comment the plan on the PR
@@ -122,7 +123,7 @@ jobs:
         run: |
           marker='<!-- terraform-cloudflare-plan -->'
           plan_file="${TF_WORKING_DIR}/plan.txt"
-          plan_body="$(sed -n '1,400p' "$plan_file" 2>/dev/null || echo 'plan did not run')"
+          plan_body="$(tail -n 400 "$plan_file" 2>/dev/null || echo 'plan did not run')"
           body="$(printf '%s\n**Terraform plan** `infra/cloudflare` (commit `%s`)\n\n<details><summary>Plan output</summary>\n\n```\n%s\n```\n\n</details>\n' \
             "$marker" "${HEAD_SHA:0:7}" "$plan_body")"
 
@@ -136,7 +137,7 @@ jobs:
 
   apply:
     name: apply
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/dev' && github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     environment: vps-sieu-toc-production
     concurrency:
@@ -144,8 +145,6 @@ jobs:
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
 
       - name: Check the apply credentials are provisioned
         id: guard
