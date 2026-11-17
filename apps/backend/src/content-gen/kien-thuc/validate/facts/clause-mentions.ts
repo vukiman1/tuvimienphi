@@ -4,6 +4,8 @@ import { KIEN_THUC_ENTRIES } from '@org/shared-kien-thuc';
 import { escapeRegExp } from '../../../check-text';
 import { findNames, type NameHit } from '../../text/find-names';
 
+export type ChiName = (typeof CHI)[number];
+
 const ALL_STAR_NAMES: readonly SaoName[] = [...CHINH_TINH_NAMES, ...PHU_TINH_NAMES];
 const CUNG_NAME_SET: ReadonlySet<string> = new Set(CUNG_NAMES);
 const CHOM_OR_CUNG_BEFORE = /(?<!\p{L})(?:chòm|cung) $/iu;
@@ -57,7 +59,7 @@ export function starsIn(clause: string): readonly NameHit<SaoName>[] {
   return [...direct, ...aliasHits].sort((a, b) => a.index - b.index);
 }
 
-export function chisIn(clause: string): readonly NameHit<string>[] {
+export function chisIn(clause: string): readonly NameHit<ChiName>[] {
   const text = clause.normalize('NFC');
   return findNames(text, CHI).filter((hit) => {
     if (CUNG_BEFORE.test(text.slice(0, hit.index))) return false;

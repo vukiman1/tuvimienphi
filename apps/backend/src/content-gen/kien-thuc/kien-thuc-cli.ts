@@ -1,3 +1,4 @@
+import type { PageRef } from '@org/shared-contracts';
 import type { KienThucBatch } from './batches';
 import { KienThucCommandName, parseKienThucCommand } from './cli-options';
 import { approvePages } from './commands/approve';
@@ -22,10 +23,10 @@ function print(text: string): void {
 }
 
 async function runApprove(
-  refs: readonly string[],
+  refs: readonly PageRef[],
   directories: KienThucDirectories,
 ): Promise<number> {
-  const result = await approvePages(refs as never, directories, new Date());
+  const result = await approvePages(refs, directories, new Date());
   for (const ref of result.approved) print(`duyệt ${ref}`);
   for (const rejection of result.rejected) {
     print(`từ chối ${rejection.ref}:`);

@@ -22,6 +22,7 @@ export enum KienThucBatch {
   ThuatNgu = 'thuat-ngu',
 }
 
+const BATCH_VALUES: readonly string[] = Object.values(KienThucBatch);
 const CHINH_TINH_LOT_SIZE = 7;
 const STEP_BATCHES: Readonly<Record<string, number>> = {
   [KienThucBatch.Step01]: 1,
@@ -60,7 +61,7 @@ export function pagesOfBatch(batch: KienThucBatch): readonly PlannedPage[] {
 }
 
 export function isKienThucBatch(value: string): value is KienThucBatch {
-  return (Object.values(KienThucBatch) as string[]).includes(value);
+  return BATCH_VALUES.includes(value);
 }
 
 export function allBatches(): readonly KienThucBatch[] {

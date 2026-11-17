@@ -1,4 +1,4 @@
-import { parsePageRef, type PageRef } from '@org/shared-contracts';
+import { pageRef, parsePageRef, type PageRef } from '@org/shared-contracts';
 import { plannedPage } from '@org/shared-kien-thuc';
 import { isKienThucBatch, type KienThucBatch } from './batches';
 import {
@@ -25,10 +25,10 @@ export type KienThucCommand =
 
 function parseRef(value: string): PageRef {
   const parsed = parsePageRef(value);
-  if (parsed === null || plannedPage(value as PageRef) === undefined) {
-    throw new UnknownPageRefError(value);
-  }
-  return value as PageRef;
+  if (parsed === null) throw new UnknownPageRefError(value);
+  const ref = pageRef(parsed.kind, parsed.slug);
+  if (plannedPage(ref) === undefined) throw new UnknownPageRefError(value);
+  return ref;
 }
 
 function parseBatch(value: string): KienThucBatch {

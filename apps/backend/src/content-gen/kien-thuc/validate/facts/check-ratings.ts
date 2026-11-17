@@ -106,8 +106,7 @@ export const checkRatings: FactCheck = (
       continue;
     }
     for (const chiHit of chisIn(clause)) {
-      const index = (CHI as readonly string[]).indexOf(chiHit.name);
-      if (index < 0) continue;
+      const index = CHI.indexOf(chiHit.name);
       const bac = ratingAt(binding.star, index);
       if (bac === null) {
         violations.push(`${binding.star} không có bậc tại ${chiHit.name}`);

@@ -25,6 +25,7 @@ const RELATION_WORDS: Readonly<Record<Relation, readonly string[]>> = {
   [Relation.NhiHop]: ['lục hợp', 'nhị hợp'],
 };
 
+const CHI_ORDER: readonly string[] = CHI;
 const MIXED_REASON = 'nhiều quan hệ';
 const COUNT_REASON = 'không đúng số cung/chi';
 
@@ -34,7 +35,7 @@ interface Participants {
 }
 
 function relationsPresent(normalized: string): readonly Relation[] {
-  return (Object.keys(RELATION_WORDS) as Relation[]).filter((relation) =>
+  return Object.values(Relation).filter((relation) =>
     RELATION_WORDS[relation].some((word) => normalized.includes(word)),
   );
 }
@@ -51,10 +52,7 @@ function isXungPair(order: readonly string[], names: readonly string[]): boolean
 }
 
 function isNhiHopPair(names: readonly string[]): boolean {
-  return (
-    nhiHopIndex((CHI as readonly string[]).indexOf(names[0])) ===
-    (CHI as readonly string[]).indexOf(names[1])
-  );
+  return nhiHopIndex(CHI_ORDER.indexOf(names[0])) === CHI_ORDER.indexOf(names[1]);
 }
 
 export const checkRelations: FactCheck = (
@@ -84,7 +82,7 @@ export const checkRelations: FactCheck = (
             order: CUNG_NAMES,
           }
         : null;
-    const chi: Participants = { names: chis, order: CHI as readonly string[] };
+    const chi: Participants = { names: chis, order: CHI_ORDER };
 
     if (relation === Relation.NhiHop) {
       if (chi.names.length !== 2) {
