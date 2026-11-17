@@ -1,0 +1,19 @@
+terraform {
+  backend "s3" {
+    bucket = "tuvimienphi-tfstate"
+    key    = "cloudflare/terraform.tfstate"
+    region = "auto"
+
+    endpoints = {
+      s3 = "https://cd90142d588c7b6d177b93df1cf401ba.r2.cloudflarestorage.com"
+    }
+
+    skip_credentials_validation = true
+    skip_metadata_api_check     = true
+    skip_region_validation      = true
+    skip_requesting_account_id  = true
+    skip_s3_checksum            = true
+    use_lockfile                = true
+    use_path_style              = true
+  }
+}
