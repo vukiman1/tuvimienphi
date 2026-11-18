@@ -173,5 +173,40 @@
     "title": "Sao Vũ Khúc",
     "aliases": [],
     "summary": "Vũ Khúc là chính tinh hành Kim thuộc chòm Tử Vi, hay được xem là sao của tiền bạc, gợi tính quả quyết, cần cù và thực tế."
+  },
+  {
+    "kind": "thuat-ngu",
+    "slug": "hanh-hoa",
+    "title": "Hành Hỏa",
+    "aliases": [],
+    "summary": "Hành Hỏa là hành mang nghĩa gốc là lửa trong ngũ hành. Trên lá số, Hỏa gắn với hai chi Tị, Ngọ và với Hỏa Lục Cục."
+  },
+  {
+    "kind": "thuat-ngu",
+    "slug": "hanh-kim",
+    "title": "Hành Kim",
+    "aliases": [],
+    "summary": "Hành Kim là một trong năm hành, nghĩa gốc là kim loại. Trên lá số, Kim hiện ở các cung đóng tại Thân, Dậu, ở màu tên sao và ở Kim Tứ Cục."
+  },
+  {
+    "kind": "thuat-ngu",
+    "slug": "hanh-moc",
+    "title": "Hành Mộc",
+    "aliases": [],
+    "summary": "Hành Mộc là một trong năm hành, nghĩa gốc là cây. Trên lá số, Mộc hiện ở tên Mộc Tam Cục và ở hai cung đóng tại Dần, Mão."
+  },
+  {
+    "kind": "thuat-ngu",
+    "slug": "hanh-tho",
+    "title": "Hành Thổ",
+    "aliases": [],
+    "summary": "Hành Thổ là hành mang nghĩa gốc là đất. Thổ giữ bốn chi Sửu, Thìn, Mùi, Tuất, nhiều nhất trong năm hành, và có cục riêng là Thổ Ngũ Cục."
+  },
+  {
+    "kind": "thuat-ngu",
+    "slug": "hanh-thuy",
+    "title": "Hành Thủy",
+    "aliases": [],
+    "summary": "Hành Thủy là một trong năm hành, nghĩa gốc là nước. Trên lá số, Thủy gắn với hai cung đóng tại Tý, Hợi và với Thủy Nhị Cục."
   }
 ]

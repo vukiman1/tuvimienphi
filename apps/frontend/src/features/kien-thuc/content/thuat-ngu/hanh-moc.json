@@ -1,0 +1,38 @@
+{
+  "kind": "thuat-ngu",
+  "group": "ngu-hanh",
+  "slug": "hanh-moc",
+  "title": "Hành Mộc",
+  "aliases": [],
+  "summary": "Hành Mộc là một trong năm hành, nghĩa gốc là cây. Trên lá số, Mộc hiện ở tên Mộc Tam Cục và ở hai cung đóng tại Dần, Mão.",
+  "sections": [
+    {
+      "heading": "Chữ Mộc trong tên Mộc Tam Cục",
+      "paragraphs": [
+        "Nhiều người gặp chữ Mộc lần đầu ở ô giữa lá số. Ô ấy có một dòng ghi \"Bản mệnh:\", nội dung chia hai phần bằng một dấu gạch ngang. Phần đứng sau dấu gạch là [[thuat-ngu/cuc|cục]] của lá số.",
+        "Mộc Tam Cục là cục của hành Mộc. Vậy nếu phần sau dấu gạch ghi Mộc Tam Cục, cục của lá số ấy thuộc hành Mộc. Phần đứng trước dấu gạch là một mục khác, có trang riêng tên [[thuat-ngu/ban-menh|bản mệnh]], nên bạn nên đọc hai phần tách nhau."
+      ]
+    },
+    {
+      "heading": "Hai ô Dần, Mão ở vòng ngoài",
+      "paragraphs": [
+        "Mười hai ô bao quanh ô giữa là mười hai cung, mỗi cung đóng ở một [[thuat-ngu/chi|địa chi]] và mang hành của chi ấy. Hai chi thuộc hành Mộc là Dần và Mão. Trên bàn lá số của trang này, dưới can chi ở góc mỗi ô có một chữ nhỏ ghi hành của cung; ở ô Dần và ô Mão, chữ ấy là Mộc."
+      ]
+    },
+    {
+      "heading": "Mộc đứng đâu giữa năm hành",
+      "paragraphs": [
+        "Mộc là từ Hán Việt, nghĩa gốc là cây. Tử vi gom chi, cung và sao vào năm nhóm gọi là ngũ hành, và Mộc là một nhóm trong số đó. Gọi là hành, nhưng Mộc thường được xem là một cách xếp loại để so các phần của lá số với nhau, hơn là một vật cụ thể.",
+        "Năm hành nối với nhau qua vòng sinh và vòng khắc. Bài [[bai/am-duong-ngu-hanh-co-ban|Âm dương, ngũ hành cơ bản]] đi qua hai vòng ấy và chỉ cách tìm hành của một cung."
+      ]
+    },
+    {
+      "heading": "Đọc chữ Mộc cho nhẹ nhàng",
+      "paragraphs": [
+        "Thấy chữ Mộc ở dòng cục hay ở vài ô quanh bàn, tự nó chưa nói lá số tốt hay xấu. Hành thường được xem là một lớp sắc thái, đọc cùng sao trong cung và [[bai/mieu-vuong-dac-binh-ham|độ sáng của sao]], chứ hiếm khi đứng riêng thành một lời kết luận. Khi xem một cung đóng tại Dần hoặc Mão, bạn có thể ghi chữ Mộc ra lề như một ghi chú phụ, rồi đối chiếu với các sao nằm trong cung ấy."
+      ]
+    }
+  ],
+  "learnInLesson": "am-duong-ngu-hanh-co-ban",
+  "reviewedAt": "2026-11-18"
+}

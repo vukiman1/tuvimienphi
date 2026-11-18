@@ -1,0 +1,45 @@
+{
+  "kind": "thuat-ngu",
+  "group": "ngu-hanh",
+  "slug": "hanh-hoa",
+  "title": "Hành Hỏa",
+  "aliases": [],
+  "summary": "Hành Hỏa là hành mang nghĩa gốc là lửa trong ngũ hành. Trên lá số, Hỏa gắn với hai chi Tị, Ngọ và với Hỏa Lục Cục.",
+  "sections": [
+    {
+      "heading": "Lửa, một ngăn trong năm ngăn",
+      "paragraphs": [
+        "Hỏa là từ Hán Việt chỉ lửa. Hành Hỏa là một trong năm hành mà [[bai/tu-vi-la-gi|tử vi]] dùng để chia các phần của lá số vào từng ngăn. Bạn có thể coi năm hành như năm ngăn kéo có dán nhãn: thứ gì cùng ngăn thì được xem là cùng loại, và người đọc lá số đem các ngăn ra so với nhau."
+      ]
+    },
+    {
+      "heading": "Hỏa, Hóa và Hỏa Tinh",
+      "paragraphs": [
+        "Chữ Hỏa mang dấu hỏi rất dễ đọc nhầm thành Hóa mang dấu sắc. Hóa là chữ mở đầu tên các sao trong nhóm [[bai/tu-hoa-la-gi|tứ hóa]], một chủ đề riêng, chẳng dính gì tới ngũ hành.",
+        "Ngoài ra còn có [[sao/hoa-tinh|Hỏa Tinh]], đó là tên một sao. Trang bạn đang đọc chỉ bàn về hành Hỏa, tức cái nhãn dùng để xếp loại."
+      ]
+    },
+    {
+      "heading": "Ô Tị và ô Ngọ ở mép trên",
+      "paragraphs": [
+        "Mỗi cung trên lá số đóng ở một [[thuat-ngu/chi|địa chi]] và nhận hành theo chi ấy. Chi thuộc hành Hỏa có hai: Tị và Ngọ. Cung nào đóng tại Tị hoặc Ngọ thì mang hành Hỏa; tên cung ở hai chỗ này đổi theo từng người, còn hành thì giữ nguyên.",
+        "Trên bàn lá số của trang này, ô Tị chiếm góc trên bên trái, ô Ngọ đứng sát bên phải nó. Khi bàn hiện ở khổ rộng, hàng thứ hai trong mỗi ô, phía trái, có chữ ghi hành của cung; tại hai ô này bạn sẽ đọc thấy chữ Hỏa."
+      ]
+    },
+    {
+      "heading": "Tên gọi Hỏa Lục Cục",
+      "paragraphs": [
+        "Hỏa còn có mặt trong tên một [[thuat-ngu/cuc|cục]]. Cục của hành Hỏa là Hỏa Lục Cục. Ở ô giữa lá số, dòng Bản mệnh ghi hai phần cách nhau bằng dấu gạch ngang; tên cục nằm ở phần sau.",
+        "Cục và hành của cung là hai lớp riêng. Lá số nào cũng có ô Tị, ô Ngọ mang hành Hỏa, dù dòng Bản mệnh ghi cục gì."
+      ]
+    },
+    {
+      "heading": "Đặt Hỏa cạnh phần còn lại",
+      "paragraphs": [
+        "Thấy chữ Hỏa ở một ô cung hay ở tên cục, bạn chưa nên vội rút ra điều gì về tính cách hay chuyện may rủi. Hành thường được xem là một lớp nền, chỉ rõ nghĩa khi đọc cùng sao trong cung và [[bai/mieu-vuong-dac-binh-ham|độ sáng của sao]]. Hỏa nối với bốn hành kia ra sao qua vòng sinh và vòng khắc, mời bạn xem bài [[bai/am-duong-ngu-hanh-co-ban|Âm dương, ngũ hành cơ bản]]."
+      ]
+    }
+  ],
+  "learnInLesson": "am-duong-ngu-hanh-co-ban",
+  "reviewedAt": "2026-11-18"
+}
