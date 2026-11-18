@@ -1,0 +1,40 @@
+{
+  "kind": "thuat-ngu",
+  "group": "thuat-ngu",
+  "slug": "tam-hop-luc-xung",
+  "title": "Tam hợp, lục xung giữa các tuổi",
+  "aliases": ["tuổi hợp", "tuổi xung"],
+  "summary": "Tam hợp và lục xung xếp mười hai chi tuổi thành bốn nhóm ba tuổi hợp nhau và sáu cặp tuổi đối nhau. Trang này kể đủ các nhóm, các cặp và cách hiểu chúng.",
+  "sections": [
+    {
+      "heading": "Tuổi gọi theo địa chi",
+      "paragraphs": [
+        "Khi nói tuổi Tý hay tuổi Ngọ, người ta đang gọi theo [[thuat-ngu/chi|địa chi]] của năm sinh, tức một trong mười hai chi từ Tý tới Hợi. Tam hợp, lục xung giữa các tuổi là hai cách xếp mười hai chi ấy với nhau, và chúng hay được dùng khi đặt tuổi của hai người cạnh nhau.",
+        "Đây là chuyện giữa tuổi của hai người, khác với tam hợp và xung chiếu giữa các cung trên cùng một lá số. Phần ấy có bài riêng: [[bai/tam-hop-xung-chieu|Tam hợp, xung chiếu giữa các cung]]. Hai chủ đề dùng chung chữ \"tam hợp\" và chữ \"xung\", nhưng một bên so hai người với nhau, còn một bên đọc các ô trong một lá số."
+      ]
+    },
+    {
+      "heading": "Bốn nhóm tam hợp",
+      "paragraphs": [
+        "\"Tam\" là ba, \"hợp\" là hòa vào nhau. Mười hai chi chia thành bốn nhóm, mỗi nhóm ba chi: Tý, Thìn, Thân; Sửu, Tị, Dậu; Dần, Ngọ, Tuất; Mão, Mùi, Hợi. Nếu xếp mười hai chi thành một vòng, từ một chi đếm tiếp bốn bước sẽ gặp chi kế tiếp trong cùng nhóm.",
+        "Hai người có tuổi nằm chung một nhóm, chẳng hạn tuổi Dần và tuổi Tuất, hay được xem là hợp tuổi theo cách nhìn truyền thống. Người ta thường hiểu điều đó như một nét dễ hòa nhịp, dễ cùng nhau góp sức."
+      ]
+    },
+    {
+      "heading": "Sáu cặp lục xung",
+      "paragraphs": [
+        "\"Lục\" là sáu, \"xung\" là đối nhau. Sáu cặp gồm: Tý–Ngọ, Sửu–Mùi, Dần–Thân, Mão–Dậu, Thìn–Tuất, Tị–Hợi. Trên vòng mười hai chi, mỗi cặp là hai chi đứng thẳng đối diện, cách nhau sáu bước.",
+        "Truyền thống xem hai chi trong một cặp xung có chút căng với nhau, giống hai người quen nhìn một việc từ hai phía khác nhau. Đó là cách gọi tên sự khác biệt, không phải lời phán rằng hai người không thể lấy nhau, làm ăn chung hay sống cùng nhau. Sự khác biệt ấy nhiều khi còn giúp hai bên thấy được điều mình bỏ sót."
+      ]
+    },
+    {
+      "heading": "Đặt so tuổi vào đúng chỗ",
+      "paragraphs": [
+        "Chi của năm sinh chỉ là một chi tiết nhỏ so với cả lá số của mỗi người. Hai người cùng tuổi Ngọ vẫn có thể có lá số rất khác nhau, nên so tuổi chỉ cho một nét phác. Cách hai người lắng nghe, chia việc và nhường nhịn nhau thường nói nhiều hơn một cặp chi.",
+        "Chữ \"xung\" cũng xuất hiện khi đặt tuổi cạnh chi của một năm, chẳng hạn tuổi Tý trong năm Ngọ; bài [[bai/sao-thai-tue|Sao Thái Tuế là gì? Thái Tuế và lưu niên]] nói về chuyện ấy. Nếu muốn hiểu kỹ hơn về chính mình, bạn có thể bắt đầu từ [[bai/doc-la-so-cua-chinh-ban|Đọc lá số của chính bạn]]."
+      ]
+    }
+  ],
+  "learnInLesson": "tam-hop-xung-chieu",
+  "reviewedAt": "2026-11-18"
+}
