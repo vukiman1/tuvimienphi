@@ -1,6 +1,13 @@
 [
   {
     "kind": "bai",
+    "slug": "12-cung-tu-vi",
+    "title": "12 cung trong lá số",
+    "aliases": [],
+    "summary": "Mười hai cung trên lá số xếp nối nhau quanh địa bàn theo một thứ tự cố định, mỗi cung nói về một mảng của đời sống."
+  },
+  {
+    "kind": "bai",
     "slug": "am-duong-ngu-hanh-co-ban",
     "title": "Âm dương, ngũ hành cơ bản",
     "aliases": [],
@@ -8,10 +15,24 @@
   },
   {
     "kind": "bai",
+    "slug": "cung-menh-va-cung-than",
+    "title": "Cung Mệnh và cung Thân",
+    "aliases": [],
+    "summary": "Cung Mệnh cho thấy con người gốc của bạn, cung Thân gợi nơi bạn dồn sức khi lớn lên. Bài này giải thích vì sao Thân chỉ rơi vào sáu cung."
+  },
+  {
+    "kind": "bai",
     "slug": "la-so-tu-vi-gom-nhung-gi",
     "title": "Một lá số gồm những gì",
     "aliases": [],
     "summary": "Lá số tử vi gồm mười hai cung xếp quanh một ô giữa. Bài này chỉ ra mỗi phần ghi gì và người mới nên nhìn đâu trước."
+  },
+  {
+    "kind": "bai",
+    "slug": "tam-hop-xung-chieu",
+    "title": "Tam hợp, xung chiếu giữa các cung",
+    "aliases": [],
+    "summary": "Mỗi cung trên lá số có hai cung tam hợp và một đối cung xung chiếu. Bài này chỉ cách tìm chúng và đọc chúng cùng nhau."
   },
   {
     "kind": "bai",
