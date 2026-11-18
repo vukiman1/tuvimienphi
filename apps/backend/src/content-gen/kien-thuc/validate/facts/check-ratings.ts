@@ -2,6 +2,7 @@ import { CHI, type Rating } from '@org/shared-tu-vi';
 import { ratingAt, saoFacts } from '@org/shared-kien-thuc';
 import { isAffirmedAt, normalize } from '../../../check-text';
 import { splitClauses } from '../../text/clauses';
+import { maskNegationInNames } from '../../text/mask-negation-in-names';
 import { findNames } from '../../text/find-names';
 import { chisIn, starsIn } from './clause-mentions';
 import {
@@ -91,7 +92,7 @@ export const checkRatings: FactCheck = (
   const violations: string[] = [];
   const claims: ClaimClause[] = [];
   for (const clause of splitClauses(plainText)) {
-    const hits = ratingHits(normalize(clause));
+    const hits = ratingHits(maskNegationInNames(normalize(clause)));
     if (hits.length === 0) continue;
     const binding = bindStar(
       starsIn(clause).map((hit) => hit.name),

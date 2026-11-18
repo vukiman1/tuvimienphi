@@ -25,4 +25,23 @@ describe('checkTuHoaByCan', () => {
       checkTuHoaByCan('Ân Quang, Thiên Quý gặp Hóa Khoa thì lợi học hành.', null).violations,
     ).toEqual([]);
   });
+
+  it('binds a hóa to the star after it when the clause says where the hóa sits', () => {
+    expect(
+      checkTuHoaByCan(
+        'Năm Đinh, Hóa Lộc ở Thái Âm, Hóa Quyền ở Thiên Đồng, Hóa Khoa ở Thiên Cơ, Hóa Kỵ ở Cự Môn.',
+        null,
+      ).violations,
+    ).toEqual([]);
+  });
+
+  it('binds a hóa to the star before it when the star receives the hóa', () => {
+    expect(checkTuHoaByCan('Năm Đinh, Thái Âm nhận Hóa Lộc.', null).violations).toEqual([]);
+  });
+
+  it('still rejects a wrong star placed after a hóa', () => {
+    const { violations } = checkTuHoaByCan('Năm Đinh, Hóa Lộc ở Thiên Cơ.', null);
+    expect(violations).toHaveLength(1);
+    expect(violations[0]).toContain('Thái Âm');
+  });
 });

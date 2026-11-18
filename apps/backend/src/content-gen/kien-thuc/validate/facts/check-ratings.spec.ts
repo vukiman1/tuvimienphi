@@ -88,4 +88,22 @@ describe('checkRatings', () => {
     expect(result.claims[0].status).toBe(ClaimStatus.Skipped);
     expect(result.claims[0].reason).toBe('hai sao');
   });
+
+  it('does not read the "Không" in Địa Không as a negation', () => {
+    const { violations, claims } = checkRatings(
+      'Địa Không đắc địa tại Dần, Tị, Thân, Hợi.',
+      sao('Địa Không'),
+    );
+    expect(violations).toEqual([]);
+    expect(claims[0].status).toBe(ClaimStatus.Checked);
+  });
+
+  it('checks Địa Không ratings once the name is no longer a negation', () => {
+    expect(checkRatings('Địa Không đắc địa tại Tý.', sao('Địa Không')).violations).toHaveLength(1);
+  });
+
+  it('still reads a real negation after Địa Không', () => {
+    const { claims } = checkRatings('Địa Không không hãm ở Dần.', sao('Địa Không'));
+    expect(claims[0].status).toBe(ClaimStatus.Skipped);
+  });
 });
