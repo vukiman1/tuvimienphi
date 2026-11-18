@@ -84,7 +84,29 @@
     {
       "step": 4,
       "title": "Phụ tinh và Tứ hóa",
-      "lessons": []
+      "lessons": [
+        {
+          "slug": "phu-tinh-thuong-gap",
+          "order": 1,
+          "title": "Phụ tinh thường gặp",
+          "readingMinutes": 5,
+          "reviewedAt": "2026-11-18"
+        },
+        {
+          "slug": "tu-hoa-la-gi",
+          "order": 2,
+          "title": "Tứ hóa là gì",
+          "readingMinutes": 5,
+          "reviewedAt": "2026-11-18"
+        },
+        {
+          "slug": "tuan-va-triet",
+          "order": 3,
+          "title": "Tuần và Triệt",
+          "readingMinutes": 5,
+          "reviewedAt": "2026-11-18"
+        }
+      ]
     },
     {
       "step": 5,
