@@ -1,0 +1,51 @@
+{
+  "slug": "tam-hop-xung-chieu",
+  "step": 2,
+  "order": 3,
+  "title": "Tam hợp, xung chiếu giữa các cung",
+  "summary": "Mỗi cung trên lá số có hai cung tam hợp và một đối cung xung chiếu. Bài này chỉ cách tìm chúng và đọc chúng cùng nhau.",
+  "sections": [
+    {
+      "heading": "Các cung nhìn sang nhau",
+      "paragraphs": [
+        "Ở bài [[bai/cung-menh-va-cung-than|Cung Mệnh và cung Thân]], bạn đã biết chỗ nên xem đầu tiên trên lá số. Nhắc lại một chút: cung là một trong mười hai ô quanh lá số, mỗi ô dùng để xem một mặt trong đời người. Bài này đi thêm một bước: một cung không đứng một mình, mà luôn có những cung khác nhìn sang nó.",
+        "Trên cùng một lá số, tử vi gọi tên hai mối liên hệ chính giữa các cung. Thứ nhất là tam hợp, tức ba cung hợp lại thành một nhóm. Thứ hai là xung chiếu, tức cung nằm ở phía đối diện chiếu thẳng sang. Cung đối diện ấy được gọi là đối cung. Mỗi cung có đúng hai cung tam hợp và một đối cung.",
+        "Bạn đừng nhầm điều này với chuyện tuổi hợp hay tuổi xung giữa hai người. Đó là một chuyện khác, được nói riêng ở trang [[thuat-ngu/tam-hop-luc-xung|Tam hợp, lục xung giữa các tuổi]]. Ở bài này, ta chỉ nói về các cung trong một lá số."
+      ]
+    },
+    {
+      "heading": "Tam hợp: ba cung một nhóm",
+      "paragraphs": [
+        "Tam hợp nghĩa là ba cung hợp lại, trong đó \"tam\" là ba. Trên vành mười hai ô, ba cung tam hợp nằm cách đều nhau: từ một cung, đi tiếp bốn ô thì gặp cung thứ hai, đi thêm bốn ô nữa thì gặp cung thứ ba. Nối ba cung này lại, bạn được một hình tam giác.",
+        "Ví dụ dễ nhớ nhất là nhóm của cung Mệnh: Mệnh tam hợp với [[cung/tai-bach|Tài Bạch]] và [[cung/quan-loc|Quan Lộc]]. Tài Bạch là cung xem chuyện tiền bạc, còn Quan Lộc là cung xem chuyện công việc. Người xem thường đặt ba cung này cạnh nhau khi đọc.",
+        "Bạn có thể hình dung ba cung tam hợp như ba người bạn cùng một hội. Mỗi người giữ việc riêng của mình, nhưng những gì có ở cung này vẫn góp thêm sắc thái cho hai cung kia."
+      ]
+    },
+    {
+      "heading": "Đối cung và xung chiếu",
+      "paragraphs": [
+        "Đối cung là cung nằm thẳng phía bên kia lá số, cách cung đang xem sáu ô. Mười hai ô vì thế chia thành sáu cặp đối nhau. Với cung Mệnh, đối cung là [[cung/thien-di|Thiên Di]], cung thường dùng để xem chuyện đi xa và lúc ra ngoài xã hội.",
+        "Xung chiếu là cách đối cung chiếu thẳng sang cung đang xem. \"Xung\" là đối mặt nhau, còn \"chiếu\" là rọi sang. Hãy hình dung hai người ngồi hai đầu một chiếc bàn: mỗi người một chỗ, nhưng lúc nào cũng nhìn thấy nhau. Vì thế, các sao ở đối cung cũng được tính tới khi đọc cung đang xem.",
+        "Chữ \"xung\" nghe có vẻ căng, nhưng xung chiếu không có nghĩa là xấu. Đó chỉ là tên gọi của vị trí đối diện. Đối cung mang lại điều gì còn tùy vào những sao nằm ở đó."
+      ]
+    },
+    {
+      "heading": "Nhìn thấy ngay trên lá số",
+      "paragraphs": [
+        "Trên lá số của trang này, bạn không cần tự đếm ô. Khi bạn bấm chọn một cung, bảng vẽ một tam giác màu vàng nối cung ấy với hai cung tam hợp, cùng một đường màu cam đỏ nối thẳng sang đối cung. Trên màn hình rộng, chỉ cần rê chuột qua một cung là các đường này cũng hiện ra.",
+        "Phần thông tin của cung còn ghi bằng chữ. Chẳng hạn, khi chọn cung Mệnh, bạn sẽ thấy dòng \"Tam hợp: Quan Lộc · Tài Bạch\" và dòng \"Xung chiếu: Thiên Di\". Bạn thử chọn vài cung khác rồi đối chiếu các dòng chữ với các đường trên bảng, chỉ một lúc là quen mắt."
+      ]
+    },
+    {
+      "heading": "Đọc một cung cùng các cung hội họp",
+      "paragraphs": [
+        "Khi đọc một cung, người xem không dừng lại ở các sao trong ô ấy. Họ nhìn thêm ba cung nữa: hai cung tam hợp và đối cung. Ba cung này được gọi là các cung hội họp, tức những cung cùng hướng về cung đang xem và góp phần vào bức tranh của nó.",
+        "Một thứ tự dễ theo là xem cung đang đọc trước, rồi lần lượt tới đối cung và hai cung tam hợp. Ở mỗi cung, bạn nhìn các sao chính trước, rồi tới [[bai/phu-tinh-thuong-gap|phụ tinh]], tức những sao đi kèm. Có những cung không có sao chính nào, gọi là [[thuat-ngu/vo-chinh-dieu|vô chính diệu]]; khi đó phần thông tin của cung sẽ ghi những sao chính được mượn từ cung xung chiếu, nếu có.",
+        "Đọc như vậy, một cung giống một căn phòng có cửa sổ nhìn ra ba phía: cảnh ngoài cửa sổ cũng góp vào không khí trong phòng. Không cung nào tự mình nói hết mọi điều, nên bạn cứ đọc chậm và đặt các cung cạnh nhau.",
+        "Bài sau, [[bai/y-nghia-chinh-tinh|Ý nghĩa chính tinh]], sẽ giúp bạn hiểu các sao chính mà bạn gặp trong những cung này."
+      ]
+    }
+  ],
+  "readingMinutes": 5,
+  "reviewedAt": "2026-11-18"
+}

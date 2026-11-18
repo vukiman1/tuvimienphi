@@ -30,7 +30,29 @@
     {
       "step": 2,
       "title": "Mười hai cung",
-      "lessons": []
+      "lessons": [
+        {
+          "slug": "12-cung-tu-vi",
+          "order": 1,
+          "title": "12 cung trong lá số",
+          "readingMinutes": 5,
+          "reviewedAt": "2026-11-18"
+        },
+        {
+          "slug": "cung-menh-va-cung-than",
+          "order": 2,
+          "title": "Cung Mệnh và cung Thân",
+          "readingMinutes": 6,
+          "reviewedAt": "2026-11-18"
+        },
+        {
+          "slug": "tam-hop-xung-chieu",
+          "order": 3,
+          "title": "Tam hợp, xung chiếu giữa các cung",
+          "readingMinutes": 5,
+          "reviewedAt": "2026-11-18"
+        }
+      ]
     },
     {
       "step": 3,

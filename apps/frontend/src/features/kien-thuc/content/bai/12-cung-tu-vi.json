@@ -1,0 +1,49 @@
+{
+  "slug": "12-cung-tu-vi",
+  "step": 2,
+  "order": 1,
+  "title": "12 cung trong lá số",
+  "summary": "Mười hai cung trên lá số xếp nối nhau quanh địa bàn theo một thứ tự cố định, mỗi cung nói về một mảng của đời sống.",
+  "sections": [
+    {
+      "heading": "Mỗi cung là một mảng của đời sống",
+      "paragraphs": [
+        "Ở bài [[bai/la-so-tu-vi-gom-nhung-gi|Một lá số gồm những gì]], bạn đã biết vành mười hai ô bao quanh lá số gọi là địa bàn, và mỗi ô là một cung. Bài này đi tiếp một bước: các cung xếp theo thứ tự nào, và mỗi cung dùng để xem chuyện gì.",
+        "Bạn có thể hình dung lá số như một ngôi nhà có mười hai phòng. Mỗi phòng dành cho một mảng của đời sống, như bản thân, gia đình, công việc hay tiền bạc. Khi muốn tìm hiểu một mảng nào đó, người xem sẽ mở đúng căn phòng ấy, tức là đọc cung mang tên mảng đó."
+      ]
+    },
+    {
+      "heading": "Thứ tự các cung quanh địa bàn",
+      "paragraphs": [
+        "Mười hai cung luôn đi theo cùng một thứ tự: Mệnh, Phụ Mẫu, Phúc Đức, Điền Trạch, Quan Lộc, Nô Bộc, Thiên Di, Tật Ách, Tài Bạch, Tử Tức, Phu Thê, Huynh Đệ. Đi hết Huynh Đệ thì vòng quay về đúng cạnh cung Mệnh, nên Mệnh luôn nằm giữa Huynh Đệ ở một bên và Phụ Mẫu ở bên kia.",
+        "Thứ tự này đi thuận theo [[thuat-ngu/chi|địa chi]], tức mười hai chi Tý, Sửu, Dần, Mão và tiếp tục cho tới Hợi. Thuận nghĩa là đi xuôi theo thứ tự ấy. Trên lá số của trang này, các chi nằm cố định: Tý ở cạnh dưới, Ngọ ở cạnh trên, Dần ở góc dưới bên trái, Thân ở góc trên bên phải. Đi thuận theo chi trên bảng chính là đi theo chiều kim đồng hồ.",
+        "Điều thay đổi giữa các lá số là cung Mệnh đóng ở chi nào. Mệnh đứng ở đâu thì mười một cung còn lại cứ thế nối tiếp theo chiều kim đồng hồ. Chẳng hạn, nếu Mệnh ở góc Dần, thì Phụ Mẫu ở Mão ngay phía trên, Thiên Di rơi vào góc Thân phía đối diện, còn Huynh Đệ nằm ở Sửu, sát bên phải Mệnh."
+      ]
+    },
+    {
+      "heading": "Sáu cung đầu: từ Mệnh tới Nô Bộc",
+      "paragraphs": [
+        "[[cung/menh|Mệnh]] nói về bản tính, khí chất và hướng đi chung của cả đời người. [[cung/phu-mau|Phụ Mẫu]], nghĩa là cha mẹ, nói về cha mẹ, bề trên và nếp nhà nơi bạn lớn lên. [[cung/phuc-duc|Phúc Đức]] nói về phúc phần của dòng họ, đời sống tinh thần và sự an ổn trong lòng.",
+        "[[cung/dien-trach|Điền Trạch]], nghĩa gốc là ruộng và nhà, nói về nhà cửa, đất đai, của để dành và không khí trong nhà. [[cung/quan-loc|Quan Lộc]] nói về học hành, công việc, sự nghiệp và cách bạn làm việc. [[cung/no-boc|Nô Bộc]] nói về bạn bè, đồng nghiệp, người dưới quyền và các mối quan hệ ngoài xã hội."
+      ]
+    },
+    {
+      "heading": "Sáu cung sau: từ Thiên Di tới Huynh Đệ",
+      "paragraphs": [
+        "[[cung/thien-di|Thiên Di]] nói về con người bạn khi ra ngoài: lúc đi xa, lúc giao tiếp và những cơ hội ở bên ngoài. [[cung/tat-ach|Tật Ách]] nói về sức khỏe và những điều nên giữ gìn cho thân thể. [[cung/tai-bach|Tài Bạch]] nói về tiền bạc: cách kiếm, cách giữ và cách tiêu.",
+        "[[cung/tu-tuc|Tử Tức]], nghĩa là con cái, nói về con cái, người nhỏ hơn mình và những gì bạn tạo ra. [[cung/phu-the|Phu Thê]], nghĩa là chồng vợ, nói về tình duyên, hôn nhân và người bạn đời. [[cung/huynh-de|Huynh Đệ]], nghĩa là anh em, nói về anh chị em ruột và những người thân thiết như anh em.",
+        "Mười hai câu trên chỉ là nét chính để bạn dễ nhớ. Mỗi cung đều có trang riêng, kể kỹ hơn cung ấy nói về điều gì và nên đọc ra sao."
+      ]
+    },
+    {
+      "heading": "Tìm các cung trên lá số của bạn",
+      "paragraphs": [
+        "Mỗi ô của địa bàn ghi tên cung cùng can chi của ô, tức một can ghép với chi nơi ô đóng, như Bính Dần. Gần tên cung là [[bai/y-nghia-chinh-tinh|chính tinh]], tức những sao chính của cung, nếu cung có. Không phải cung nào cũng có chính tinh; khi một cung không có sao chính nào, ô ấy ghi \"vô chính diệu\". Một ô còn có thể kèm chữ <THÂN> ngay sau tên cung, đó là dấu của cung Thân.",
+        "Cách đọc nhẹ nhàng nhất là bắt đầu từ cung Mệnh, rồi đi theo chiều kim đồng hồ qua từng ô và đọc tên cung. Đi hết một vòng, bạn sẽ biết mỗi mảng đời sống của mình nằm ở góc nào trên bảng.",
+        "Các cung cũng không đứng riêng lẻ mà còn [[bai/tam-hop-xung-chieu|nhìn sang nhau]], phần này bạn sẽ học sau. Bài kế tiếp, [[bai/cung-menh-va-cung-than|Cung Mệnh và cung Thân]], sẽ nói kỹ về hai vị trí được xem đầu tiên trên lá số."
+      ]
+    }
+  ],
+  "readingMinutes": 5,
+  "reviewedAt": "2026-11-18"
+}
