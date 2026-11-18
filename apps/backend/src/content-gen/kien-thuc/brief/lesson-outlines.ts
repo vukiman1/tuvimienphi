@@ -6,7 +6,7 @@ export interface LessonOutline {
 export const LESSON_OUTLINES: Readonly<Record<string, LessonOutline>> = {
   'tu-vi-la-gi': {
     mustCover: [
-      'Lá số được lập từ ngày và giờ sinh.',
+      'Lá số được lập từ giờ, ngày, tháng, năm sinh theo âm lịch và giới tính của một người.',
       'Tử vi dùng để soi chiếu, không dùng để phán số mệnh.',
       'Giới thiệu con đường học phía trước.',
     ],
@@ -15,7 +15,7 @@ export const LESSON_OUTLINES: Readonly<Record<string, LessonOutline>> = {
   'la-so-tu-vi-gom-nhung-gi': {
     mustCover: [
       'Địa bàn mười hai cung quanh lá số.',
-      'Ô giữa ghi bản mệnh, cục, các sao chủ.',
+      'Ô giữa ghi ngày giờ sinh, âm dương, bản mệnh kèm cục, cân lượng, chủ mệnh, chủ thân và lai nhân cung, đúng thứ tự như trên lá số của trang này.',
       'Cách đọc một cung và nên nhìn đâu trước.',
     ],
     requiredMentions: [],
@@ -23,8 +23,9 @@ export const LESSON_OUTLINES: Readonly<Record<string, LessonOutline>> = {
   'am-duong-ngu-hanh-co-ban': {
     mustCover: [
       'Âm và dương là hai mặt của một thể.',
+      'Âm dương hiện trên lá số ở dòng Âm dương của ô giữa, và quyết định đại vận đi thuận hay nghịch.',
       'Năm hành và vòng sinh, vòng khắc.',
-      'Vì sao hành của sao gặp hành của cung.',
+      'Hành của cung là hành của địa chi nơi cung đóng, nên hành của sao gặp hành của cung.',
     ],
     requiredMentions: ['âm dương'],
   },

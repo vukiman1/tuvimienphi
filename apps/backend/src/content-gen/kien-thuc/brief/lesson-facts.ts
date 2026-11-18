@@ -6,6 +6,7 @@ import {
   anTriet,
   CAN,
   CHI,
+  CHI_NGU_HANH,
   chomMembers,
   ChinhTinhChom,
   CHINH_TINH_NAMES,
@@ -33,6 +34,17 @@ const HOURS = 12;
 const SINH_CYCLE = 'Mộc sinh Hỏa, Hỏa sinh Thổ, Thổ sinh Kim, Kim sinh Thủy, Thủy sinh Mộc.';
 const KHAC_CYCLE = 'Mộc khắc Thổ, Thổ khắc Thủy, Thủy khắc Hỏa, Hỏa khắc Kim, Kim khắc Mộc.';
 const TAM_HOP_GROUP_CHIS = [8, 2, 5, 11];
+const THIEN_BAN_ROWS = [
+  'Họ tên',
+  'Năm, Tháng, Ngày, Giờ sinh, mỗi dòng ghi cả dương lịch và âm lịch',
+  'Năm xem',
+  'Âm dương',
+  'Bản mệnh',
+  'Cân lượng',
+  'Chủ mệnh',
+  'Chủ thân',
+  'Lai nhân cung',
+] as const;
 
 export function thanCungCandidates(): readonly CungName[] {
   const offsets = new Set<number>();
@@ -74,12 +86,17 @@ const BY_SLUG: Readonly<Record<string, () => readonly string[]>> = {
   ],
   'la-so-tu-vi-gom-nhung-gi': () => [
     `Mười hai cung: ${CUNG_NAMES.join(', ')}.`,
-    'Ô giữa ghi bản mệnh, cục, Mệnh chủ, Thân chủ, cân lượng và tuổi khởi đại vận.',
+    `Ô giữa của lá số trên trang này ghi theo thứ tự: ${THIEN_BAN_ROWS.join('; ')}.`,
+    'Dòng Bản mệnh ghi cả bản mệnh lẫn cục, ví dụ "Kiếm Phong Kim - Kim Tứ Cục".',
   ],
   'am-duong-ngu-hanh-co-ban': () => [
     `Năm hành: ${NGU_HANH_ORDER.join(', ')}.`,
     `Vòng sinh: ${SINH_CYCLE}`,
     `Vòng khắc: ${KHAC_CYCLE}`,
+    `Hành của một cung là hành của địa chi nơi cung đóng: ${CHI.map((chi, index) => `${chi} ${CHI_NGU_HANH[index]}`).join(', ')}.`,
+    `Can năm sinh chia âm dương: ${CAN.filter((_, index) => index % 2 === 0).join(', ')} là dương; ${CAN.filter((_, index) => index % 2 === 1).join(', ')} là âm.`,
+    'Dòng Âm dương ở ô giữa ghép âm dương của can năm sinh với giới tính: Dương Nam, Âm Nam, Dương Nữ, Âm Nữ.',
+    'Dương Nam và Âm Nữ thì đại vận đi thuận; Âm Nam và Dương Nữ thì đại vận đi nghịch.',
   ],
   '12-cung-tu-vi': () => [`Mười hai cung theo thứ tự địa bàn: ${CUNG_NAMES.join(', ')}.`],
   'cung-menh-va-cung-than': () => [

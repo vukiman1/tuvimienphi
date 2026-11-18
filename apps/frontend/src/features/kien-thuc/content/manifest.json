@@ -1,0 +1,57 @@
+{
+  "steps": [
+    {
+      "step": 1,
+      "title": "Tử vi là gì",
+      "lessons": [
+        {
+          "slug": "tu-vi-la-gi",
+          "order": 1,
+          "title": "Tử vi là gì",
+          "readingMinutes": 4,
+          "reviewedAt": "2026-11-18"
+        },
+        {
+          "slug": "la-so-tu-vi-gom-nhung-gi",
+          "order": 2,
+          "title": "Một lá số gồm những gì",
+          "readingMinutes": 5,
+          "reviewedAt": "2026-11-18"
+        },
+        {
+          "slug": "am-duong-ngu-hanh-co-ban",
+          "order": 3,
+          "title": "Âm dương, ngũ hành cơ bản",
+          "readingMinutes": 5,
+          "reviewedAt": "2026-11-18"
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "title": "Mười hai cung",
+      "lessons": []
+    },
+    {
+      "step": 3,
+      "title": "Chính tinh",
+      "lessons": []
+    },
+    {
+      "step": 4,
+      "title": "Phụ tinh và Tứ hóa",
+      "lessons": []
+    },
+    {
+      "step": 5,
+      "title": "Đại vận và tiểu vận",
+      "lessons": []
+    },
+    {
+      "step": 6,
+      "title": "Ứng dụng vào đời sống",
+      "lessons": []
+    }
+  ],
+  "entries": []
+}

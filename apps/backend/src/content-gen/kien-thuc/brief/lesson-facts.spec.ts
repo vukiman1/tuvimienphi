@@ -51,6 +51,39 @@ describe('lesson facts', () => {
     }
   });
 
+  it('describes the centre of the board the site actually draws', () => {
+    const centre = lessonFactLines(lesson('la-so-tu-vi-gom-nhung-gi')).join(' ');
+    for (const label of [
+      'Âm dương',
+      'Bản mệnh',
+      'Cân lượng',
+      'Chủ mệnh',
+      'Chủ thân',
+      'Lai nhân cung',
+    ]) {
+      expect(centre).toContain(label);
+    }
+    expect(centre).not.toContain('tuổi khởi đại vận');
+    expect(centre).not.toContain('Mệnh chủ');
+  });
+
+  it('says a chart needs the lunar birth time and the gender', () => {
+    const outline = LESSON_OUTLINES['tu-vi-la-gi'].mustCover.join(' ');
+    expect(outline).toContain('giờ, ngày, tháng, năm sinh');
+    expect(outline).toContain('giới tính');
+    expect(outline).not.toContain('Lá số được lập từ ngày và giờ sinh.');
+  });
+
+  it('grounds âm dương and the hành of a cung in engine facts', () => {
+    const facts = lessonFactLines(lesson('am-duong-ngu-hanh-co-ban')).join(' ');
+    expect(facts).toContain('Tý Thủy');
+    expect(facts).toContain('Dần Mộc');
+    expect(facts).toContain('Dương Nam');
+    expect(facts).toContain('Âm Nữ');
+    expect(facts).toContain('thuận');
+    expect(facts).toContain('nghịch');
+  });
+
   it('keeps vô chính diệu a link in lesson 2.3', () => {
     expect(LESSON_OUTLINES['tam-hop-xung-chieu'].mustCover.join(' ')).toContain(
       'thuat-ngu/vo-chinh-dieu',

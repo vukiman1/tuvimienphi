@@ -1,0 +1,44 @@
+{
+  "slug": "la-so-tu-vi-gom-nhung-gi",
+  "step": 1,
+  "order": 2,
+  "title": "Một lá số gồm những gì",
+  "summary": "Lá số tử vi gồm mười hai cung xếp quanh một ô giữa. Bài này chỉ ra mỗi phần ghi gì và người mới nên nhìn đâu trước.",
+  "sections": [
+    {
+      "heading": "Hình dáng chung của một lá số",
+      "paragraphs": [
+        "Lá số là bảng ghi lại vị trí các sao, được lập từ giờ, ngày, tháng, năm sinh theo âm lịch và giới tính của một người. Nếu bạn chưa rõ tử vi là môn gì, hãy đọc qua bài [[bai/tu-vi-la-gi|Tử vi là gì]] trước rồi quay lại đây.",
+        "Nhìn tổng thể, lá số là một hình vuông chia làm hai phần. Phần bao quanh là một vành gồm mười hai ô nhỏ. Phần nằm giữa là một ô lớn, ghi một cột các dòng chữ ngắn.",
+        "Vành mười hai ô bao quanh gọi là địa bàn. Mỗi ô trên địa bàn là một cung, tức một phần của lá số dùng để xem một mặt trong đời người. Ô ở giữa thì không phải là cung, mà là nơi ghi những điều chung của cả lá số. Bạn chưa cần nhớ hết ngay, chỉ cần nắm được hai phần này là việc đọc về sau sẽ nhẹ nhàng hơn."
+      ]
+    },
+    {
+      "heading": "Mười hai cung trên địa bàn",
+      "paragraphs": [
+        "Mười hai cung có tên lần lượt là Mệnh, Phụ Mẫu, Phúc Đức, Điền Trạch, Quan Lộc, Nô Bộc, Thiên Di, Tật Ách, Tài Bạch, Tử Tức, Phu Thê và Huynh Đệ. Mỗi cung chiếm một ô, và mỗi ô gắn với một [[thuat-ngu/chi|địa chi]], tức một trong mười hai chi quen thuộc như Tý, Sửu, Dần.",
+        "Tên cung gợi cho bạn biết cung đó dùng để xem chuyện gì. Chẳng hạn, Phụ Mẫu nói tới cha mẹ, Huynh Đệ nói tới anh chị em, Phu Thê nói tới vợ chồng. Ý nghĩa của từng cung được kể kỹ trong bài [[bai/12-cung-tu-vi|12 cung trong lá số]], nên ở đây bạn chỉ cần làm quen với tên gọi.",
+        "Trong mười hai cung, cung Mệnh là cung bạn sẽ gặp nhiều nhất. Bên cạnh đó, lá số còn đánh dấu một vị trí gọi là cung Thân. Hai khái niệm này đi cùng nhau và được giải thích riêng trong bài [[bai/cung-menh-va-cung-than|Cung Mệnh và cung Thân]]."
+      ]
+    },
+    {
+      "heading": "Ô giữa ghi những gì",
+      "paragraphs": [
+        "Ô giữa ghi những thông tin chung của cả lá số, xếp thành từng dòng. Mỗi dòng có một nhãn ở bên trái và nội dung ở bên phải. Bạn đọc từ trên xuống theo thứ tự dưới đây.",
+        "Dòng đầu là Họ tên của người được lập lá số. Kế đến là bốn dòng Năm, Tháng, Ngày, Giờ, tức năm, tháng, ngày và giờ sinh, mỗi dòng ghi cả theo dương lịch lẫn âm lịch để bạn tiện đối chiếu. Sau đó là dòng Năm xem, tức năm bạn đang chọn để xem trên lá số.",
+        "Tiếp theo là dòng Âm dương, ghi dạng như \"Dương Nam\" hay \"Âm Nữ\", tức ghép âm hoặc dương với nam hoặc nữ. Bài sau, [[bai/am-duong-ngu-hanh-co-ban|Âm dương, ngũ hành cơ bản]], sẽ giải thích dòng này. Dòng Bản mệnh ghi hai thứ, nối bằng một dấu gạch, ví dụ \"Kiếm Phong Kim - Kim Tứ Cục\". Phần trước, Kiếm Phong Kim, là [[thuat-ngu/ban-menh|bản mệnh]]. Phần sau, Kim Tứ Cục, là [[thuat-ngu/cuc|cục]] của lá số, tức một trong năm cục.",
+        "Dòng Cân lượng ghi [[thuat-ngu/can-luong|cân lượng]] của lá số, có nơi còn gọi là cân xương. Hai dòng Chủ mệnh và Chủ thân, mỗi dòng ghi tên một sao. Dòng cuối là Lai nhân cung, ghi tên một cung trên địa bàn; cung ấy được chọn ra sao có trong trang [[thuat-ngu/lai-nhan-cung|Lai nhân cung]]."
+      ]
+    },
+    {
+      "heading": "Cách đọc một cung và nên nhìn đâu trước",
+      "paragraphs": [
+        "Với người mới, thứ tự dễ theo nhất là đi từ chung tới riêng. Trước hết, hãy đọc ô giữa để nắm ngày giờ sinh, bản mệnh và cục. Sau đó, tìm cung Mệnh trên địa bàn, vì đây là chỗ thường được xem đầu tiên.",
+        "Khi đọc một cung, hãy nhìn tên cung để biết cung đó nói về mặt nào, rồi mới xem các sao nằm trong ô. Một ô có thể có nhiều sao cùng lúc. Các sao chính, gọi là [[bai/y-nghia-chinh-tinh|chính tinh]], nên xem trước. Các sao phụ, gọi là [[bai/phu-tinh-thuong-gap|phụ tinh]], xem sau để bổ sung thêm.",
+        "Một cung cũng không đứng riêng lẻ. Khi đã quen, bạn sẽ học thêm [[bai/tam-hop-xung-chieu|cách các cung liên hệ với nhau]] để có cái nhìn đầy đủ hơn. Còn ở bước này, chỉ cần nhận ra từng phần trên lá số là đủ. Bài sau sẽ giới thiệu âm dương và ngũ hành, những khái niệm nền mà các phần ấy dùng tới."
+      ]
+    }
+  ],
+  "readingMinutes": 5,
+  "reviewedAt": "2026-11-18"
+}

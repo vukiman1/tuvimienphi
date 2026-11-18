@@ -1,0 +1,23 @@
+[
+  {
+    "kind": "bai",
+    "slug": "am-duong-ngu-hanh-co-ban",
+    "title": "Âm dương, ngũ hành cơ bản",
+    "aliases": [],
+    "summary": "Âm dương là hai mặt của một thể, ngũ hành là năm hành nối nhau qua vòng sinh và vòng khắc. Cả hai đều hiện ra ngay trên lá số của bạn."
+  },
+  {
+    "kind": "bai",
+    "slug": "la-so-tu-vi-gom-nhung-gi",
+    "title": "Một lá số gồm những gì",
+    "aliases": [],
+    "summary": "Lá số tử vi gồm mười hai cung xếp quanh một ô giữa. Bài này chỉ ra mỗi phần ghi gì và người mới nên nhìn đâu trước."
+  },
+  {
+    "kind": "bai",
+    "slug": "tu-vi-la-gi",
+    "title": "Tử vi là gì",
+    "aliases": [],
+    "summary": "Tử vi soi chiếu bản thân qua lá số lập từ giờ, ngày, tháng, năm sinh âm lịch và giới tính, giúp ta hiểu mình hơn chứ không phán số mệnh."
+  }
+]
