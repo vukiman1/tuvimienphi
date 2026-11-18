@@ -277,6 +277,38 @@
       "reviewedAt": "2026-11-18"
     },
     {
+      "kind": "sao",
+      "group": "tu-hoa",
+      "slug": "hoa-loc",
+      "title": "Hóa Lộc",
+      "learnInLesson": "tu-hoa-la-gi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "tu-hoa",
+      "slug": "hoa-quyen",
+      "title": "Hóa Quyền",
+      "learnInLesson": "tu-hoa-la-gi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "tu-hoa",
+      "slug": "hoa-khoa",
+      "title": "Hóa Khoa",
+      "learnInLesson": "tu-hoa-la-gi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "tu-hoa",
+      "slug": "hoa-ky",
+      "title": "Hóa Kỵ",
+      "learnInLesson": "tu-hoa-la-gi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
       "kind": "cung",
       "group": "cung",
       "slug": "menh",

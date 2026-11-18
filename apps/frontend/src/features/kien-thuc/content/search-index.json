@@ -134,6 +134,34 @@
   },
   {
     "kind": "sao",
+    "slug": "hoa-khoa",
+    "title": "Hóa Khoa",
+    "aliases": [],
+    "summary": "Hóa Khoa là cát tinh hành Thủy trong bộ tứ hóa, thường gợi việc học, tiếng tốt và sự điềm tĩnh ở cung có sao nhận hóa."
+  },
+  {
+    "kind": "sao",
+    "slug": "hoa-ky",
+    "title": "Hóa Kỵ",
+    "aliases": ["Hóa Kị"],
+    "summary": "Hóa Kỵ là hóa thứ tư trong tứ hóa, hành Thủy, thường được đọc là chỗ dễ vướng mắc, dễ trăn trở, cần để tâm hơn ở cung có sao nhận hóa."
+  },
+  {
+    "kind": "sao",
+    "slug": "hoa-loc",
+    "title": "Hóa Lộc",
+    "aliases": [],
+    "summary": "Hóa Lộc là cát tinh hành Mộc, đứng đầu tứ hóa, thường được đọc là nét thông suốt, nguồn lực dễ đến và việc dễ có đà ở cung nó đứng."
+  },
+  {
+    "kind": "sao",
+    "slug": "hoa-quyen",
+    "title": "Hóa Quyền",
+    "aliases": [],
+    "summary": "Hóa Quyền là một trong tứ hóa, gợi sự chủ động, tinh thần nhận trách nhiệm và sức ảnh hưởng của sao mà nó bám vào trên lá số."
+  },
+  {
+    "kind": "sao",
     "slug": "liem-trinh",
     "title": "Sao Liêm Trinh",
     "aliases": [],
