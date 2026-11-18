@@ -1,0 +1,42 @@
+{
+  "kind": "sao",
+  "group": "tu-hoa",
+  "slug": "hoa-khoa",
+  "title": "Hóa Khoa",
+  "aliases": [],
+  "summary": "Hóa Khoa là cát tinh hành Thủy trong bộ tứ hóa, thường gợi việc học, tiếng tốt và sự điềm tĩnh ở cung có sao nhận hóa.",
+  "sections": [
+    {
+      "heading": "Hóa Khoa trong bộ tứ hóa",
+      "paragraphs": [
+        "Hóa Khoa là một trong bốn sao của bộ tứ hóa. Bốn sao này bám vào những sao có sẵn trên lá số và đổi theo năm sinh; cơ chế ấy được giải thích trong bài [[bai/tu-hoa-la-gi|Tứ hóa là gì]].",
+        "Hóa Khoa là cát tinh, mang [[thuat-ngu/hanh-thuy|hành Thủy]]. Thủy là nước, gợi sự mềm mại, thấm dần và trong trẻo. Chữ \"khoa\" vốn gắn với khoa cử, tức chuyện học hành thi cử ngày trước, rồi rộng ra là văn chương và danh tiếng."
+      ]
+    },
+    {
+      "heading": "Mười can, mười sao nhận Hóa Khoa",
+      "paragraphs": [
+        "Sao nào nhận Hóa Khoa tùy vào [[thuat-ngu/can|thiên can]] của năm sinh. Theo bảng trang này dùng: năm Giáp, Vũ Khúc nhận Hóa Khoa; năm Ất, Tử Vi nhận Hóa Khoa; năm Bính, Văn Xương nhận Hóa Khoa; năm Đinh, Thiên Cơ nhận Hóa Khoa; năm Mậu, Hữu Bật nhận Hóa Khoa.",
+        "Năm Kỷ, Thiên Lương nhận Hóa Khoa; năm Canh, Thái Âm nhận Hóa Khoa; năm Tân, Văn Khúc nhận Hóa Khoa; năm Nhâm, Tả Phù nhận Hóa Khoa; năm Quý, Thái Âm cũng nhận Hóa Khoa. Hàng Canh không giống nhau giữa các trường phái, nên sách khác có thể ghi một sao khác; lá số trên trang này theo đúng bảng vừa nêu.",
+        "Như vậy, sáu can trao hóa này cho một chính tinh, còn bốn can Bính, Mậu, Tân, Nhâm trao nó cho một [[bai/phu-tinh-thuong-gap|phụ tinh]]."
+      ]
+    },
+    {
+      "heading": "Sắc thái mà Hóa Khoa thêm vào",
+      "paragraphs": [
+        "Theo cách đọc truyền thống, Hóa Khoa hay được xem là sao của việc học, của tiếng tốt và sự điềm tĩnh. Sao nhận hóa vẫn giữ tính chất riêng, chỉ được nhuộm thêm vẻ chừng mực, có lý lẽ, dễ được người khác tin.",
+        "Ở cung có Hóa Khoa, người xem thường đọc ra lòng ham hiểu biết, cách làm việc có bài bản, hoặc một tiếng nói được nể. Đó là xu hướng chứ không phải lời hứa: Hóa Khoa không bảo đảm đỗ đạt hay nổi tiếng, kết quả vẫn tùy vào công sức và cả lá số.",
+        "Nhiều người còn coi Hóa Khoa là nét giúp giữ bình tĩnh khi gặp chuyện rối, nhờ đó việc khó được gỡ ra nhẹ nhàng hơn. Cách hiểu này nên đọc như một gợi ý về thái độ, không phải tấm khiên che chắn mọi điều."
+      ]
+    },
+    {
+      "heading": "Nhìn Hóa Khoa trên lá số",
+      "paragraphs": [
+        "Hóa Khoa đứng chung ô với sao nhận nó, nên điều cần xem là ô ấy thuộc cung nào. Nếu đó là [[cung/menh|cung Mệnh]], sắc thái học hành, điềm đạm được đọc vào chính con người; nếu là cung khác, nó được đọc vào mảng đời sống mà bài [[bai/12-cung-tu-vi|12 cung trong lá số]] mô tả.",
+        "Bạn không cần tự tra bảng ở trên, vì lá số đã đặt sẵn Hóa Khoa vào đúng ô. Hãy đọc nó cùng sao mà nó bám vào, thay vì tách riêng. Muốn đọc cả lá số theo từng bước, bạn có thể xem bài [[bai/doc-la-so-cua-chinh-ban|Đọc lá số của chính bạn]]."
+      ]
+    }
+  ],
+  "learnInLesson": "tu-hoa-la-gi",
+  "reviewedAt": "2026-11-18"
+}
