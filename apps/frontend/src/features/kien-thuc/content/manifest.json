@@ -138,7 +138,29 @@
     {
       "step": 6,
       "title": "Ứng dụng vào đời sống",
-      "lessons": []
+      "lessons": [
+        {
+          "slug": "ung-dung-tu-vi-cong-viec",
+          "order": 1,
+          "title": "Tử vi trong công việc",
+          "readingMinutes": 5,
+          "reviewedAt": "2026-11-18"
+        },
+        {
+          "slug": "phong-thuy-va-tu-vi",
+          "order": 2,
+          "title": "Phong thủy và tử vi",
+          "readingMinutes": 6,
+          "reviewedAt": "2026-11-18"
+        },
+        {
+          "slug": "doc-la-so-cua-chinh-ban",
+          "order": 3,
+          "title": "Đọc lá số của chính bạn",
+          "readingMinutes": 5,
+          "reviewedAt": "2026-11-18"
+        }
+      ]
     }
   ],
   "entries": []
