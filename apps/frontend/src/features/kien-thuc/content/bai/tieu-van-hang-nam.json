@@ -1,0 +1,51 @@
+{
+  "slug": "tieu-van-hang-nam",
+  "step": 5,
+  "order": 2,
+  "title": "Tiểu vận hằng năm",
+  "summary": "Tiểu vận là cung ứng với một năm trên lá số. Bài này chỉ cách tìm cung ấy và đọc nó cùng năm bạn đang xem.",
+  "sections": [
+    {
+      "heading": "Tiểu vận là gì",
+      "paragraphs": [
+        "Ở bài trước, [[bai/cach-xem-dai-van|Cách xem đại vận]], bạn đã làm quen với những chặng vận lớn, mỗi chặng kéo dài nhiều năm. Bài này nhìn gần hơn, vào từng năm một.",
+        "Tiểu vận nghĩa là vận nhỏ, trong đó \"tiểu\" là nhỏ. Mỗi năm, tiểu vận dừng ở một cung trên lá số, và cung ấy được gọi là cung của năm. Người ta cũng gọi tiểu vận là tiểu hạn; trên lá số của trang này, bạn sẽ gặp chữ Tiểu hạn.",
+        "Sang năm sau, tiểu vận bước sang một cung kế bên. Vì vậy, khi nói tới tiểu vận hằng năm, ta đang nói tới việc mỗi năm có một cung được đặt lên trước để đọc kỹ hơn."
+      ]
+    },
+    {
+      "heading": "Tiểu vận và đại vận khác nhau thế nào",
+      "paragraphs": [
+        "Khác biệt dễ thấy nhất là độ dài. Đại vận là một chặng dài nhiều năm, còn tiểu vận chỉ là một năm. Bạn có thể hình dung đại vận như một mùa, còn tiểu vận như một tháng trong mùa ấy: tháng nào cũng mang chút không khí của mùa, nhưng mỗi tháng có nét riêng.",
+        "Chiều đi của hai bên cũng khác. Đại vận đi thuận hay nghịch tùy dòng Âm dương ở ô giữa, tức ghép âm dương của năm sinh với giới tính. Tiểu vận thì chỉ theo giới tính: nam đi thuận, nữ đi nghịch. Thuận là đi theo chiều kim đồng hồ trên bảng, nghịch là đi ngược lại.",
+        "Vì thế, cung của đại vận và cung của tiểu vận trong cùng một năm có khi trùng nhau, có khi nằm ở hai ô khác nhau. Người xem thường đọc cả hai cùng lúc: đại vận cho biết khung cảnh chung, tiểu vận cho biết năm ấy nên chú ý vào đâu."
+      ]
+    },
+    {
+      "heading": "Tiểu vận bắt đầu từ đâu",
+      "paragraphs": [
+        "Chỗ bắt đầu của tiểu vận dựa vào [[thuat-ngu/chi|địa chi]] của năm sinh, tức chữ đứng sau trong tên năm âm lịch, như Tý trong Giáp Tý. Mười hai chi được chia làm bốn nhóm, mỗi nhóm ba chi, và mỗi nhóm khởi tiểu vận ở một ô riêng.",
+        "Người tuổi Thân, Tý, Thìn, tức sinh năm có chi là một trong ba chi ấy, khởi tiểu vận ở Tuất. Người tuổi Dần, Ngọ, Tuất khởi ở Thìn. Người tuổi Tị, Dậu, Sửu khởi ở Mùi. Người tuổi Hợi, Mão, Mùi khởi ở Sửu. Từ ô khởi ấy, nam đi thuận, nữ đi nghịch, mỗi năm một ô.",
+        "Chẳng hạn, một người nam tuổi Tý có năm đầu đời ở Tuất, năm thứ hai ở Hợi, năm thứ ba ở Tý. Một người nữ cùng tuổi Tý cũng khởi ở Tuất, nhưng năm thứ hai lùi về Dậu, năm thứ ba về Thân. Còn ô ấy đang là cung nào thì tùy từng lá số."
+      ]
+    },
+    {
+      "heading": "Tìm tiểu vận trên lá số",
+      "paragraphs": [
+        "Bạn không cần tự đếm, vì lá số đã đánh dấu sẵn. Ở đầu trang, phía trên lá số, có ô chọn Năm xem. Năm bạn chọn ở đây cũng hiện ra ở dòng Năm xem trong ô giữa lá số.",
+        "Trên bảng đầy đủ ở màn hình rộng, ô của tiểu vận năm ấy có một nhãn nhỏ ghi Tiểu hạn ở góc trên bên phải. Trên màn hình hẹp, nhãn Tiểu hạn nằm ngang phía trên cùng của ô. Khi bấm vào cung ấy, phần chi tiết có thêm một thẻ ghi Tiểu hạn kèm năm đang xem, như Tiểu hạn 2026.",
+        "Đổi Năm xem sang năm khác, bạn sẽ thấy nhãn Tiểu hạn chuyển sang một ô khác. Đó là cách nhanh nhất để thấy tiểu vận đi qua các cung theo từng năm."
+      ]
+    },
+    {
+      "heading": "Đọc tiểu vận cùng năm đang xem",
+      "paragraphs": [
+        "Khi đã tìm ra ô có nhãn Tiểu hạn, hãy nhìn tên cung trước. Tên cung cho biết năm ấy nên dành thêm chú ý cho mảng đời sống nào. Chẳng hạn, tiểu vận rơi vào [[cung/quan-loc|Quan Lộc]] gợi một năm để tâm nhiều hơn tới công việc; ý nghĩa của từng cung có trong bài [[bai/12-cung-tu-vi|12 cung trong lá số]].",
+        "Sau đó, bạn đọc cung ấy như mọi cung khác: các sao chính, các sao đi kèm, rồi tới những cung [[bai/tam-hop-xung-chieu|tam hợp, xung chiếu]] nhìn sang. Cuối cùng, đặt cung của năm vào chặng đại vận đang đi để thấy năm ấy nằm trong khung cảnh nào.",
+        "Tiểu vận chỉ cho biết năm ấy nên nhìn vào đâu, không phải lời báo trước điều gì chắc chắn sẽ tới. Trên bảng đầy đủ, bạn còn có thể gặp vài sao có chữ L. phía trước; trong phần chi tiết của cung, chúng nằm ở mục mang tên năm đang xem. Đó là phần lưu niên, chủ đề của bài sau, [[bai/sao-thai-tue|Sao Thái Tuế là gì? Thái Tuế và lưu niên]]."
+      ]
+    }
+  ],
+  "readingMinutes": 5,
+  "reviewedAt": "2026-11-18"
+}

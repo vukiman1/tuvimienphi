@@ -1,4 +1,4 @@
-import { LUU_TINH_NAMES } from '@org/shared-tu-vi';
+import { LUU_TINH_NAMES, ThaiTueRelation } from '@org/shared-tu-vi';
 import { KIEN_THUC_LESSONS, type PlannedLesson } from '@org/shared-kien-thuc';
 import { checkWording } from '../validate/check-wording';
 import { lessonFactLines, thanCungCandidates } from './lesson-facts';
@@ -82,6 +82,17 @@ describe('lesson facts', () => {
     expect(facts).toContain('Âm Nữ');
     expect(facts).toContain('thuận');
     expect(facts).toContain('nghịch');
+  });
+
+  it('gives the Thái Tuế lesson every relation and a worked year from the engine', () => {
+    const facts = lessonFactLines(lesson('sao-thai-tue')).join(' ');
+    for (const relation of Object.values(ThaiTueRelation)) {
+      expect(facts).toContain(relation);
+    }
+    expect(facts).toContain('Tý và Mùi');
+    expect(facts).toContain('Thìn, Ngọ, Dậu, Hợi');
+    expect(facts).toContain('năm có chi Ngọ');
+    expect(facts).toContain('tuổi Ngọ: trực');
   });
 
   it('keeps vô chính diệu a link in lesson 2.3', () => {

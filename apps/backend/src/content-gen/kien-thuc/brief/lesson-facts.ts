@@ -17,6 +17,8 @@ import {
   HOA_NAMES,
   LUU_TINH_NAMES,
   PHU_TINH_NAMES,
+  phamThaiTue,
+  ThaiTueRelation,
   type CungName,
   type SaoName,
 } from '@org/shared-tu-vi';
@@ -34,6 +36,7 @@ const HOURS = 12;
 const SINH_CYCLE = 'Mộc sinh Hỏa, Hỏa sinh Thổ, Thổ sinh Kim, Kim sinh Thủy, Thủy sinh Mộc.';
 const KHAC_CYCLE = 'Mộc khắc Thổ, Thổ khắc Thủy, Thủy khắc Hỏa, Hỏa khắc Kim, Kim khắc Mộc.';
 const TAM_HOP_GROUP_CHIS = [8, 2, 5, 11];
+const THAI_TUE_EXAMPLE_CHI = 'Ngọ';
 const THIEN_BAN_ROWS = [
   'Họ tên',
   'Năm, Tháng, Ngày, Giờ sinh, mỗi dòng ghi cả dương lịch và âm lịch',
@@ -56,6 +59,34 @@ export function thanCungCandidates(): readonly CungName[] {
     }
   }
   return CUNG_NAMES.filter((_, index) => offsets.has(index));
+}
+
+function chiPairsWith(relation: ThaiTueRelation): readonly string[] {
+  const pairs: string[] = [];
+  for (let first = 0; first < CHI.length; first += 1) {
+    for (let second = first + 1; second < CHI.length; second += 1) {
+      if (phamThaiTue(first, second).includes(relation))
+        pairs.push(`${CHI[first]} và ${CHI[second]}`);
+    }
+  }
+  return pairs;
+}
+
+function thaiTueLines(): readonly string[] {
+  const tuHinh = CHI.filter((_, index) => phamThaiTue(index, index).includes(ThaiTueRelation.Hinh));
+  const exampleChi = CHI.indexOf(THAI_TUE_EXAMPLE_CHI);
+  const example = CHI.map((chi, index) => ({ chi, relations: phamThaiTue(index, exampleChi) }))
+    .filter((row) => row.relations.length > 0)
+    .map((row) => `tuổi ${row.chi}: ${row.relations.join(', ')}`);
+  return [
+    'Phạm Thái Tuế là khi chi năm sinh có một trong năm quan hệ với chi của năm đang xem.',
+    `${ThaiTueRelation.Truc}: chi năm sinh trùng chi năm xem.`,
+    `${ThaiTueRelation.Xung}: chi năm sinh đối chi năm xem, cách nhau sáu ô: ${chiPairsWith(ThaiTueRelation.Xung).join('; ')}.`,
+    `${ThaiTueRelation.Hinh}: ${chiPairsWith(ThaiTueRelation.Hinh).join('; ')}; tự hình khi tuổi gặp năm cùng chi: ${tuHinh.join(', ')}.`,
+    `${ThaiTueRelation.Hai}: ${chiPairsWith(ThaiTueRelation.Hai).join('; ')}.`,
+    `${ThaiTueRelation.Pha}: ${chiPairsWith(ThaiTueRelation.Pha).join('; ')}.`,
+    `Ví dụ năm có chi ${THAI_TUE_EXAMPLE_CHI}: ${example.join('; ')}.`,
+  ];
 }
 
 function phuTinhV1(): readonly SaoName[] {
@@ -145,7 +176,7 @@ const BY_SLUG: Readonly<Record<string, () => readonly string[]>> = {
       const start = CHI[anTieuHan(chi, Gender.Nam, 1)];
       return `Tuổi ${group}: tiểu hạn khởi ở ${start}, nam đi thuận, nữ đi nghịch.`;
     }),
-  'sao-thai-tue': () => [`Các sao lưu niên: ${LUU_TINH_NAMES.join(', ')}.`],
+  'sao-thai-tue': () => [`Các sao lưu niên: ${LUU_TINH_NAMES.join(', ')}.`, ...thaiTueLines()],
   'ung-dung-tu-vi-cong-viec': () => [],
   'phong-thuy-va-tu-vi': () => [],
   'doc-la-so-cua-chinh-ban': doiLaSoLines,

@@ -111,7 +111,29 @@
     {
       "step": 5,
       "title": "Đại vận và tiểu vận",
-      "lessons": []
+      "lessons": [
+        {
+          "slug": "cach-xem-dai-van",
+          "order": 1,
+          "title": "Cách xem đại vận",
+          "readingMinutes": 5,
+          "reviewedAt": "2026-11-18"
+        },
+        {
+          "slug": "tieu-van-hang-nam",
+          "order": 2,
+          "title": "Tiểu vận hằng năm",
+          "readingMinutes": 5,
+          "reviewedAt": "2026-11-18"
+        },
+        {
+          "slug": "sao-thai-tue",
+          "order": 3,
+          "title": "Sao Thái Tuế là gì? Thái Tuế và lưu niên",
+          "readingMinutes": 5,
+          "reviewedAt": "2026-11-18"
+        }
+      ]
     },
     {
       "step": 6,
