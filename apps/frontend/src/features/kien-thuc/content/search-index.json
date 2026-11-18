@@ -124,5 +124,54 @@
     "title": "Ý nghĩa chính tinh",
     "aliases": [],
     "summary": "Chính tinh là mười bốn sao chính trên lá số. Bài này giới thiệu nét chính của từng sao và cách nhận ra chúng trên bảng."
+  },
+  {
+    "kind": "sao",
+    "slug": "liem-trinh",
+    "title": "Sao Liêm Trinh",
+    "aliases": [],
+    "summary": "Liêm Trinh là chính tinh hành Hỏa thuộc chòm Tử Vi, thường gợi tính nguyên tắc, coi trọng sự ngay thẳng, bên trong lại giàu cảm xúc."
+  },
+  {
+    "kind": "sao",
+    "slug": "thai-duong",
+    "title": "Sao Thái Dương",
+    "aliases": [],
+    "summary": "Thái Dương là chính tinh hành Hỏa thuộc chòm Tử Vi, tượng trưng cho mặt trời, thường gợi sự cởi mở, nhiệt thành và tinh thần san sẻ."
+  },
+  {
+    "kind": "sao",
+    "slug": "thien-co",
+    "title": "Sao Thiên Cơ",
+    "aliases": [],
+    "summary": "Thiên Cơ là chính tinh hành Mộc thuộc chòm Tử Vi, thường gợi trí óc nhanh nhạy, hay suy tính và giỏi xoay xở ở cung nó đứng."
+  },
+  {
+    "kind": "sao",
+    "slug": "thien-dong",
+    "title": "Sao Thiên Đồng",
+    "aliases": [],
+    "summary": "Thiên Đồng, sao hành Thủy trong chòm Tử Vi, được xem là ngôi sao của sự hiền lành, vui sống và tâm thế an nhiên, ưa hòa khí hơn tranh đua."
+  },
+  {
+    "kind": "sao",
+    "slug": "thien-phu",
+    "title": "Sao Thiên Phủ",
+    "aliases": [],
+    "summary": "Thiên Phủ là chính tinh hành Thổ, đứng đầu chòm Thiên Phủ; tên sao nghĩa là kho trời, thường gợi sự chu đáo, biết giữ gìn và vun vén."
+  },
+  {
+    "kind": "sao",
+    "slug": "tu-vi",
+    "title": "Sao Tử Vi",
+    "aliases": [],
+    "summary": "Tử Vi là chính tinh hành Thổ, dẫn đầu chòm Tử Vi, thường được xem là sao của sự đường hoàng, tự trọng và sức quy tụ người quanh mình."
+  },
+  {
+    "kind": "sao",
+    "slug": "vu-khuc",
+    "title": "Sao Vũ Khúc",
+    "aliases": [],
+    "summary": "Vũ Khúc là chính tinh hành Kim thuộc chòm Tử Vi, hay được xem là sao của tiền bạc, gợi tính quả quyết, cần cù và thực tế."
   }
 ]

@@ -163,5 +163,62 @@
       ]
     }
   ],
-  "entries": []
+  "entries": [
+    {
+      "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "tu-vi",
+      "title": "Sao Tử Vi",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "thien-co",
+      "title": "Sao Thiên Cơ",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "thai-duong",
+      "title": "Sao Thái Dương",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "vu-khuc",
+      "title": "Sao Vũ Khúc",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "thien-dong",
+      "title": "Sao Thiên Đồng",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "liem-trinh",
+      "title": "Sao Liêm Trinh",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "thien-phu",
+      "title": "Sao Thiên Phủ",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-11-18"
+    }
+  ]
 }
