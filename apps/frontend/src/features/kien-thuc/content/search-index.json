@@ -36,6 +36,13 @@
   },
   {
     "kind": "bai",
+    "slug": "doc-la-so-cua-chinh-ban",
+    "title": "Đọc lá số của chính bạn",
+    "aliases": [],
+    "summary": "Cùng đọc một lá số mẫu theo đúng thứ tự đã học, từ ô giữa, cung Mệnh, các sao tới cung Thân và các vận, rồi tự đọc lá số của bạn."
+  },
+  {
+    "kind": "bai",
     "slug": "la-so-tu-vi-gom-nhung-gi",
     "title": "Một lá số gồm những gì",
     "aliases": [],
@@ -47,6 +54,13 @@
     "title": "Miếu, vượng, đắc, bình, hãm",
     "aliases": [],
     "summary": "Miếu, vượng, đắc địa, bình hòa, hãm là năm bậc cho biết một sao thể hiện bản chất của mình rõ hay nhẹ ở từng cung trên lá số."
+  },
+  {
+    "kind": "bai",
+    "slug": "phong-thuy-va-tu-vi",
+    "title": "Phong thủy và tử vi",
+    "aliases": [],
+    "summary": "Tử vi nhìn con người qua lá số, phong thủy nhìn nơi ta ở. Bài này chỉ ra hai môn gặp nhau ở đâu, mỗi môn nói được gì và không nói được gì."
   },
   {
     "kind": "bai",
@@ -96,6 +110,13 @@
     "title": "Tuần và Triệt",
     "aliases": [],
     "summary": "Tuần và Triệt là hai dấu chắn, mỗi dấu phủ lên hai cung liền nhau, làm giảm và làm chậm sức thể hiện của các sao trong hai cung ấy."
+  },
+  {
+    "kind": "bai",
+    "slug": "ung-dung-tu-vi-cong-viec",
+    "title": "Tử vi trong công việc",
+    "aliases": [],
+    "summary": "Muốn soi chiếu chuyện công việc trên lá số, hãy bắt đầu từ cung Quan Lộc và các cung hội họp, rồi xem đại vận, tiểu vận để biết lúc nào nên chú tâm."
   },
   {
     "kind": "bai",
