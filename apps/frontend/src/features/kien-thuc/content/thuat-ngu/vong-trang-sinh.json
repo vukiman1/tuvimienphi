@@ -1,0 +1,40 @@
+{
+  "kind": "thuat-ngu",
+  "group": "thuat-ngu",
+  "slug": "vong-trang-sinh",
+  "title": "Vòng Tràng Sinh",
+  "aliases": [],
+  "summary": "Vòng Tràng Sinh là chuỗi mười hai sao nối nhau quanh lá số, mỗi cung nhận một chặng, từ Tràng Sinh tới Dưỡng, gợi nhịp lên và lắng của cung ấy.",
+  "sections": [
+    {
+      "heading": "Một chuỗi mười hai chặng",
+      "paragraphs": [
+        "Vòng Tràng Sinh là một chuỗi mười hai sao, đi theo thứ tự cố định: Tràng Sinh, Mộc Dục, Quan Đới, Lâm Quan, Đế Vượng, Suy, Bệnh, Tử, Mộ, Tuyệt, Thai, Dưỡng. Cả vòng mang tên của sao đứng đầu.",
+        "Lá số có một vành mười hai ô bao quanh, mỗi ô là một cung, như bài [[bai/la-so-tu-vi-gom-nhung-gi|Một lá số gồm những gì]] đã mô tả. Vòng này trải hết vành ấy, nên cung nào cũng mang đúng một tên trong chuỗi. Vì vậy người ta hay gọi mỗi sao của vòng là một chặng, hay một giai đoạn."
+      ]
+    },
+    {
+      "heading": "Các tên kể một nhịp lên xuống",
+      "paragraphs": [
+        "Đọc liền mười hai tên, bạn sẽ thấy chúng gợi một vòng đời quen thuộc. Tràng Sinh là lúc mới sinh ra. Các chặng sau lớn dần cho tới Đế Vượng, chặng thịnh nhất.",
+        "Tiếp theo là Suy, Bệnh, Tử, Mộ, Tuyệt, giai đoạn lắng xuống của vòng. Cuối cùng, Thai và Dưỡng gợi sự hình thành và nuôi dưỡng, chuẩn bị cho một lần Tràng Sinh mới. Vì thế các tên trong đoạn này không nên hiểu theo nghĩa đen; chúng giống quãng nghỉ của cây vào mùa lạnh trước khi đâm chồi lại."
+      ]
+    },
+    {
+      "heading": "Nhìn ở đáy mỗi ô",
+      "paragraphs": [
+        "Trên trang này, khi bảng hiện đầy đủ ở màn hình rộng, đáy mỗi ô có một hàng chữ nhỏ gồm ba mục. Tên chặng Tràng Sinh của cung nằm ở giữa hàng ấy và được in đậm hơn hai mục hai bên.",
+        "Trên màn hình hẹp, các ô được thu gọn và không ghi tên chặng. Muốn thấy đủ mười hai chặng, bạn mở lá số trên màn hình rộng hơn rồi đi một vòng quanh bảng."
+      ]
+    },
+    {
+      "heading": "Hiểu cho vừa phải",
+      "paragraphs": [
+        "Người xem thường coi chặng ở một cung như một nét gợi thêm về nhịp của cung ấy: đang lên, đang thịnh hay đang lắng. Nét này được đặt cạnh các sao chính và [[bai/phu-tinh-thuong-gap|phụ tinh]] trong cùng ô, chứ hiếm khi đọc riêng.",
+        "Một cung rơi vào giai đoạn lắng xuống của vòng không có nghĩa mặt đời ấy kém đi. Ngược lại, gặp Đế Vượng cũng chỉ là một gợi ý nhẹ, nên bạn cứ đọc chậm và ghép nó với cả bức tranh."
+      ]
+    }
+  ],
+  "learnInLesson": "phu-tinh-thuong-gap",
+  "reviewedAt": "2026-11-18"
+}

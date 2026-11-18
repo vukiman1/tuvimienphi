@@ -1,0 +1,47 @@
+{
+  "kind": "thuat-ngu",
+  "group": "thuat-ngu",
+  "slug": "ban-menh",
+  "title": "Bản mệnh",
+  "aliases": [],
+  "summary": "Bản mệnh là chữ \"mệnh\" trong câu \"tôi mệnh Kim\": hành lấy từ nạp âm của năm sinh. Nó khác với cung Mệnh trên lá số.",
+  "sections": [
+    {
+      "heading": "Chữ \"mệnh\" trong lời nói hằng ngày",
+      "paragraphs": [
+        "Bạn hẳn đã nghe ai đó nói \"tôi mệnh Kim\" hay \"anh ấy mệnh Thủy\". Chữ \"mệnh\" trong những câu ấy chính là bản mệnh. Đó là một trong năm hành, được gọi tên theo năm sinh âm lịch của người được nhắc tới.",
+        "Vì gắn với năm sinh, bản mệnh là điều nhiều người biết về mình từ sớm, kể cả khi chưa từng mở một lá số. Chỉ cần biết năm sinh âm lịch là tra ra được bản mệnh."
+      ]
+    },
+    {
+      "heading": "Bản mệnh được lấy ra như thế nào",
+      "paragraphs": [
+        "Mỗi năm âm lịch có một tên [[thuat-ngu/nap-am|nạp âm]] gồm ba chữ. Chữ cuối của tên ấy là một hành, và người ta lấy đúng chữ cuối đó để gọi bản mệnh. Như năm mang tên Kiếm Phong Kim thì người sinh năm ấy được gọi là mệnh Kim.",
+        "Bản mệnh vì thế chỉ có năm khả năng: Kim, Mộc, Thủy, Hỏa, Thổ. Mỗi hành có trang riêng, chẳng hạn trang [[thuat-ngu/hanh-kim|Hành Kim]], nếu bạn muốn biết thêm về từng hành."
+      ]
+    },
+    {
+      "heading": "Nửa đầu của dòng Bản mệnh trên lá số",
+      "paragraphs": [
+        "Trên lá số của trang này, ô lớn ở giữa có một dòng mang nhãn Bản mệnh, ghi kiểu \"Kiếm Phong Kim - Kim Tứ Cục\". Nửa đầu, trước dấu gạch, là tên nạp âm của năm sinh; chữ cuối của nửa này cho bạn bản mệnh. Nửa sau là [[thuat-ngu/cuc|cục]], một khái niệm riêng.",
+        "Bài [[bai/la-so-tu-vi-gom-nhung-gi|Một lá số gồm những gì]] kể lần lượt từng dòng của ô giữa, nếu bạn muốn biết dòng này nằm ở đâu giữa các dòng khác."
+      ]
+    },
+    {
+      "heading": "Đừng nhầm với cung Mệnh",
+      "paragraphs": [
+        "Hai cái tên nghe gần nhau nhưng chỉ hai thứ khác hẳn. Bản mệnh là một hành, đọc ra từ dòng Bản mệnh ở ô giữa. [[cung/menh|Cung Mệnh]] là một ô trên vành mười hai cung bao quanh, có sao đóng trong đó.",
+        "Người sinh cùng một năm âm lịch đều có chung bản mệnh, còn vị trí cung Mệnh thì mỗi lá số một khác. Khi đọc sách hay nghe người khác bàn, hãy để ý xem họ đang nói tới hành theo năm sinh hay tới cung đầu tiên của lá số."
+      ]
+    },
+    {
+      "heading": "Giữ bản mệnh ở đúng tầm của nó",
+      "paragraphs": [
+        "Bản mệnh là thuật ngữ hay được nhắc nhất ngoài đời, và cũng hay bị kéo đi xa nhất. Trên lá số, nó chỉ là một chữ trong một dòng của ô giữa, đứng cạnh nhiều dòng khác.",
+        "Một chữ hành chung cho cả năm sinh thường được xem là chưa đủ để nói điều gì chắc về riêng một người. Muốn hiểu lá số của mình, bạn có thể bắt đầu từ bài [[bai/doc-la-so-cua-chinh-ban|Đọc lá số của chính bạn]]."
+      ]
+    }
+  ],
+  "learnInLesson": "la-so-tu-vi-gom-nhung-gi",
+  "reviewedAt": "2026-11-18"
+}

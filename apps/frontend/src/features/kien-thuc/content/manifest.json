@@ -219,6 +219,78 @@
       "title": "Sao Thiên Phủ",
       "learnInLesson": "y-nghia-chinh-tinh",
       "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "thuat-ngu",
+      "group": "thuat-ngu",
+      "slug": "can",
+      "title": "Thiên can",
+      "learnInLesson": "la-so-tu-vi-gom-nhung-gi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "thuat-ngu",
+      "group": "thuat-ngu",
+      "slug": "chi",
+      "title": "Địa chi",
+      "learnInLesson": "la-so-tu-vi-gom-nhung-gi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "thuat-ngu",
+      "group": "thuat-ngu",
+      "slug": "cuc",
+      "title": "Cục",
+      "learnInLesson": "la-so-tu-vi-gom-nhung-gi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "thuat-ngu",
+      "group": "thuat-ngu",
+      "slug": "nap-am",
+      "title": "Nạp âm",
+      "learnInLesson": "la-so-tu-vi-gom-nhung-gi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "thuat-ngu",
+      "group": "thuat-ngu",
+      "slug": "ban-menh",
+      "title": "Bản mệnh",
+      "learnInLesson": "la-so-tu-vi-gom-nhung-gi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "thuat-ngu",
+      "group": "thuat-ngu",
+      "slug": "can-luong",
+      "title": "Cân lượng",
+      "learnInLesson": "la-so-tu-vi-gom-nhung-gi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "thuat-ngu",
+      "group": "thuat-ngu",
+      "slug": "vo-chinh-dieu",
+      "title": "Vô chính diệu",
+      "learnInLesson": "tam-hop-xung-chieu",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "thuat-ngu",
+      "group": "thuat-ngu",
+      "slug": "vong-trang-sinh",
+      "title": "Vòng Tràng Sinh",
+      "learnInLesson": "phu-tinh-thuong-gap",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "thuat-ngu",
+      "group": "thuat-ngu",
+      "slug": "lai-nhan-cung",
+      "title": "Lai nhân cung",
+      "learnInLesson": "cung-menh-va-cung-than",
+      "reviewedAt": "2026-11-18"
     }
   ]
 }

@@ -1,0 +1,40 @@
+{
+  "kind": "thuat-ngu",
+  "group": "thuat-ngu",
+  "slug": "nap-am",
+  "title": "Nạp âm",
+  "aliases": [],
+  "summary": "Nạp âm là tên gọi theo ngũ hành gắn với một cặp can chi, như Kiếm Phong Kim. Trên lá số, nó là phần đầu của dòng Bản mệnh ở ô giữa.",
+  "sections": [
+    {
+      "heading": "Tên gọi dành cho một cặp can chi",
+      "paragraphs": [
+        "Mỗi năm âm lịch được gọi bằng một cặp chữ: một chữ thuộc bộ [[thuat-ngu/can|thiên can]] đứng trước, một chữ thuộc bộ [[thuat-ngu/chi|địa chi]] đứng sau. Ghép lần lượt hai bộ ấy với nhau thì được sáu mươi cặp, rồi vòng lại từ đầu.",
+        "Nạp âm là một cái tên gắn thêm cho mỗi cặp như vậy. Cứ hai cặp liền nhau dùng chung một tên, nên cả vòng sáu mươi cặp chỉ có ba mươi tên nạp âm. Trang này không kể hết ba mươi tên, chỉ giúp bạn nhận ra một tên khi gặp nó."
+      ]
+    },
+    {
+      "heading": "Ba chữ trong một tên",
+      "paragraphs": [
+        "Mỗi tên nạp âm gồm ba chữ, và chữ cuối cùng là tên một hành trong ngũ hành. Lấy ví dụ Kiếm Phong Kim: chữ cuối cho biết tên này thuộc hành nào. Năm hành là gì và chúng liên hệ với nhau ra sao được giới thiệu trong bài [[bai/am-duong-ngu-hanh-co-ban|Âm dương, ngũ hành cơ bản]].",
+        "Hai chữ đứng trước thường được hiểu như một hình ảnh đi kèm. Nhờ phần hình ảnh này, các tên có chung chữ cuối vẫn phân biệt được với nhau."
+      ]
+    },
+    {
+      "heading": "Chỗ nạp âm hiện ra trên lá số",
+      "paragraphs": [
+        "Trên lá số của trang này, hãy nhìn vào ô lớn ở giữa và tìm dòng có nhãn Bản mệnh. Dòng ấy ghi hai phần nối bằng một dấu gạch, chẳng hạn \"Kiếm Phong Kim - Kim Tứ Cục\". Phần đứng trước dấu gạch là nạp âm của cặp can chi năm sinh, tức cặp chữ âm lịch ghi ở dòng Năm.",
+        "Tên nạp âm của năm sinh hay được dùng để gọi [[thuat-ngu/ban-menh|bản mệnh]] của một người, nên dòng này mang nhãn như vậy. Phần đứng sau dấu gạch là [[thuat-ngu/cuc|cục]], một khái niệm khác. Các dòng còn lại trong ô giữa được kể trong bài [[bai/la-so-tu-vi-gom-nhung-gi|Một lá số gồm những gì]]."
+      ]
+    },
+    {
+      "heading": "Nhìn nạp âm như một cái nhãn chung",
+      "paragraphs": [
+        "Vì nạp âm đi theo cặp can chi của năm, mọi người sinh cùng một năm âm lịch đều mang cùng một tên. Người sinh ở năm kế bên cũng có thể mang tên ấy, do hai cặp liền nhau dùng chung một tên.",
+        "Bởi vậy, nạp âm thường được xem là một nét chung của cả một lứa tuổi hơn là điều riêng của từng người. Muốn hiểu một lá số cụ thể, người xem vẫn phải nhìn tới các cung và các sao trên địa bàn."
+      ]
+    }
+  ],
+  "learnInLesson": "la-so-tu-vi-gom-nhung-gi",
+  "reviewedAt": "2026-11-18"
+}

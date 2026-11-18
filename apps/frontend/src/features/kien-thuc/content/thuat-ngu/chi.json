@@ -1,0 +1,40 @@
+{
+  "kind": "thuat-ngu",
+  "group": "thuat-ngu",
+  "slug": "chi",
+  "title": "Địa chi",
+  "aliases": ["chi", "mười hai con giáp"],
+  "summary": "Địa chi là mười hai chữ từ Tý tới Hợi. Trên lá số, mỗi ô của địa bàn gắn cố định với một chi, còn chi của năm sinh là cái người ta gọi là tuổi.",
+  "sections": [
+    {
+      "heading": "Mười hai chữ xếp thành vòng",
+      "paragraphs": [
+        "Địa chi, gọi tắt là chi, là một bộ mười hai chữ theo thứ tự: Tý, Sửu, Dần, Mão, Thìn, Tị, Ngọ, Mùi, Thân, Dậu, Tuất, Hợi. Hết Hợi thì quay lại Tý, nên người ta hay hình dung chúng như một vòng tròn khép kín.",
+        "Trong tên một năm âm lịch như Giáp Tý, chi là chữ đứng sau. Chữ đứng trước thuộc bộ mười chữ, được kể trong trang [[thuat-ngu/can|Thiên can]]."
+      ]
+    },
+    {
+      "heading": "Mỗi ô của địa bàn ứng với một chi",
+      "paragraphs": [
+        "Vành mười hai ô bao quanh lá số gọi là địa bàn, và mỗi ô gắn với đúng một chi. Chỗ của từng chi không đổi từ lá số này sang lá số khác. Trên bảng của trang này, Dần nằm ở góc dưới bên trái; từ đó đi theo chiều kim đồng hồ là Mão, Thìn, rồi tới Tị ở góc trên bên trái, Thân ở góc trên bên phải, Hợi ở góc dưới bên phải, và Tý, Sửu nằm ở cạnh dưới.",
+        "Cái thay đổi giữa các lá số là cung nào rơi vào ô nào. Người này có cung Mệnh ở ô Dần, người khác lại ở ô Ngọ. Thứ tự các cung nối tiếp nhau quanh vòng chi ra sao được trình bày trong bài [[bai/12-cung-tu-vi|12 cung trong lá số]]."
+      ]
+    },
+    {
+      "heading": "Tìm chi trên bảng",
+      "paragraphs": [
+        "Ở góc trên bên trái mỗi ô có một nhãn ngắn, ví dụ \"C.Thìn\": chữ cái đầu là can viết tắt, phần sau dấu chấm là chi của ô. Trên bảng khổ đầy đủ, tên chi còn được in nhỏ trên viền ô giữa, sát cạnh ô của nó.",
+        "Ô giữa cũng có chi. Bốn dòng Năm, Tháng, Ngày, Giờ đều ghi phần âm lịch dạng can chi, như \"Giáp Tý\", và chữ thứ hai chính là chi. Muốn biết các dòng khác trong ô giữa ghi gì, bạn xem bài [[bai/la-so-tu-vi-gom-nhung-gi|Một lá số gồm những gì]]."
+      ]
+    },
+    {
+      "heading": "Tuổi là chi của năm sinh",
+      "paragraphs": [
+        "Khi ai đó nói mình tuổi Mão hay tuổi Tuất, họ đang nói tới chi của năm sinh âm lịch, đọc ở cuối dòng Năm. Người sinh đầu năm dương lịch mà chưa qua Tết vẫn mang chi của năm âm lịch trước, nên hãy dựa vào phần âm lịch thay vì con số dương lịch.",
+        "Mười hai chi tuổi hay được ghép với nhau để nói chuyện hợp hay xung giữa hai người. Các nhóm và các cặp ấy có trang riêng: [[thuat-ngu/tam-hop-luc-xung|Tam hợp, lục xung giữa các tuổi]]. Đó thường được xem là một nét tham khảo theo truyền thống, không phải lời kết luận về một mối quan hệ."
+      ]
+    }
+  ],
+  "learnInLesson": "la-so-tu-vi-gom-nhung-gi",
+  "reviewedAt": "2026-11-18"
+}

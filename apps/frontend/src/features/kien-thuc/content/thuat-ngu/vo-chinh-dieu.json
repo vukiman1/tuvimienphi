@@ -1,0 +1,41 @@
+{
+  "kind": "thuat-ngu",
+  "group": "thuat-ngu",
+  "slug": "vo-chinh-dieu",
+  "title": "Vô chính diệu",
+  "aliases": [],
+  "summary": "Vô chính diệu là cung trên lá số không có chính tinh nào. Khi đọc, người xem thường mượn chính tinh của đối cung; đây không phải dấu hiệu xấu.",
+  "sections": [
+    {
+      "heading": "Một cung vắng sao chính",
+      "paragraphs": [
+        "Lá số có mười hai ô, mỗi ô là một cung. Nhiều cung có [[bai/y-nghia-chinh-tinh|chính tinh]], tức những sao chính mà người xem nhìn tới đầu tiên khi đọc cung ấy.",
+        "Vô chính diệu là tên gọi một cung không có chính tinh nào. \"Vô\" nghĩa là không có, còn \"chính diệu\" là sao chính. Cung vô chính diệu vẫn có thể có [[bai/phu-tinh-thuong-gap|phụ tinh]], tức những sao đi kèm."
+      ]
+    },
+    {
+      "heading": "Mượn sao từ đối cung",
+      "paragraphs": [
+        "Mỗi cung đều có một đối cung, là cung nằm thẳng phía bên kia lá số và chiếu sang nó. Với cung vô chính diệu, người xem thường mượn chính tinh của đối cung để làm điểm tựa khi đọc.",
+        "Cách tìm đối cung và lý do các cung nhìn sang nhau được giảng trong bài [[bai/tam-hop-xung-chieu|Tam hợp, xung chiếu giữa các cung]]. Sao mượn được đặt cạnh phụ tinh tại chỗ và các cung hội họp, chứ không đọc riêng một mình."
+      ]
+    },
+    {
+      "heading": "Nhận ra trên bảng lá số",
+      "paragraphs": [
+        "Ở trang này, chỗ trong ô thường ghi tên chính tinh sẽ hiện dòng chữ \"vô chính diệu\". Nếu có sao mượn, tên sao hiện thêm ở dòng ngay dưới, đặt trong ngoặc đơn.",
+        "Khi bạn bấm chọn cung ấy, mục Chính tinh trong phần thông tin ghi rõ bằng chữ, theo dạng \"Vô chính diệu — mượn <tên sao> từ cung <tên cung>\".",
+        "Lá số mẫu trong bài [[bai/doc-la-so-cua-chinh-ban|Đọc lá số của chính bạn]] có một ví dụ: cung [[cung/tai-bach|Tài Bạch]] để trống phần sao chính, nên mượn Thiên Đồng và Cự Môn từ đối cung Phúc Đức."
+      ]
+    },
+    {
+      "heading": "Không phải điềm xấu",
+      "paragraphs": [
+        "Cái tên nghe có vẻ trống trải, nhưng vô chính diệu không phải dấu hiệu xấu. Nó chỉ cho biết vị trí của các sao chính trên lá số, chứ không nói trước điều gì về mặt đời mà cung ấy đại diện.",
+        "Cung vô chính diệu vẫn được đọc như mọi cung khác: nhìn sao mượn, phụ tinh và các cung hội họp. Bạn cứ đọc chậm, đặt các cung cạnh nhau, rồi mới rút ra cách hiểu của mình."
+      ]
+    }
+  ],
+  "learnInLesson": "tam-hop-xung-chieu",
+  "reviewedAt": "2026-11-18"
+}

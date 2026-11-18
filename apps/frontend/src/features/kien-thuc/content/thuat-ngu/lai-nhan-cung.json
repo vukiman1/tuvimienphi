@@ -1,0 +1,40 @@
+{
+  "kind": "thuat-ngu",
+  "group": "thuat-ngu",
+  "slug": "lai-nhan-cung",
+  "title": "Lai nhân cung",
+  "aliases": [],
+  "summary": "Lai nhân cung là cung mang thiên can trùng can năm sinh. Khái niệm này ít gặp và mỗi trường phái dùng một khác, nên hay được xem như ghi chú phụ.",
+  "sections": [
+    {
+      "heading": "Cung mang can của năm sinh",
+      "paragraphs": [
+        "Lai nhân cung là tên gọi một cung trong mười hai cung của lá số: cung có [[thuat-ngu/can|thiên can]] trùng với can của năm sinh. Thiên can là chữ đứng đầu trong tên năm âm lịch, như chữ Giáp trong Giáp Thìn.",
+        "Mỗi cung trên lá số mang một cặp can chi. Chi của từng ô là cố định, còn can của ô được suy ra từ can năm sinh. Vì vậy ô nào là lai nhân cung chỉ tùy vào can năm sinh; tháng, ngày và giờ sinh không đổi được ô ấy."
+      ]
+    },
+    {
+      "heading": "Dòng cuối của ô giữa",
+      "paragraphs": [
+        "Trên trang này, lai nhân cung nằm ở dòng cuối cùng của ô lớn giữa lá số, dòng có nhãn \"Lai nhân cung:\". Nội dung là tên một cung, chẳng hạn Quan Lộc hay Tài Bạch. Các dòng phía trên được kể trong bài [[bai/la-so-tu-vi-gom-nhung-gi|Một lá số gồm những gì]].",
+        "Bạn có thể tự đối chiếu. Ở dòng đầu mỗi ô cung, bên trái, có can chi viết tắt, như \"C.Thìn\" là Canh Thìn. Ô nào có chữ can giống can năm sinh của bạn thì đó là ô của lai nhân cung."
+      ]
+    },
+    {
+      "heading": "Cùng một ô, tên cung có thể khác",
+      "paragraphs": [
+        "Hai người cùng can năm sinh có lai nhân cung ở cùng một ô. Tuy vậy, tên cung ghi ở ô giữa vẫn có thể khác nhau, vì tên của mười hai cung được xếp bắt đầu từ chỗ đặt [[cung/menh|cung Mệnh]], mà chỗ ấy lại tùy vào tháng và giờ sinh. Cách tìm cung Mệnh có trong bài [[bai/cung-menh-va-cung-than|Cung Mệnh và cung Thân]].",
+        "Mười can rải lên mười hai ô nên có hai can lặp lại. Với một vài năm sinh, can năm hiện ở hai ô cùng lúc. Khi đó trang này chọn một ô theo một quy ước cố định; nơi khác có thể chọn ô còn lại."
+      ]
+    },
+    {
+      "heading": "Một khái niệm ít gặp",
+      "paragraphs": [
+        "Lai nhân cung không có mặt trong mọi sách. Có trường phái dùng nó khi đọc lá số, có trường phái hầu như không nhắc tới, và cách giải thích cũng khác nhau giữa các nơi.",
+        "Vì thế trang này chỉ ghi ra vị trí của cung ấy, không gắn thêm lời đoán nào. Bạn có thể xem nó như một ghi chú bên lề; phần chính khi đọc lá số vẫn là [[bai/12-cung-tu-vi|12 cung trong lá số]] và các sao trong từng cung."
+      ]
+    }
+  ],
+  "learnInLesson": "cung-menh-va-cung-than",
+  "reviewedAt": "2026-11-18"
+}
