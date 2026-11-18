@@ -1,0 +1,51 @@
+{
+  "slug": "tuan-va-triet",
+  "step": 4,
+  "order": 3,
+  "title": "Tuần và Triệt",
+  "summary": "Tuần và Triệt là hai dấu chắn, mỗi dấu phủ lên hai cung liền nhau, làm giảm và làm chậm sức thể hiện của các sao trong hai cung ấy.",
+  "sections": [
+    {
+      "heading": "Hai dấu chắn trên lá số",
+      "paragraphs": [
+        "Ở bài trước, [[bai/tu-hoa-la-gi|Tứ hóa là gì]], bạn đã làm quen với bốn sao Hóa, những dấu gắn thêm vào một số sao để đổi sắc thái của chúng. Bài này giới thiệu hai cái tên có vai trò khác hẳn: Tuần và Triệt. Chúng không thêm ý nghĩa mới cho cung, mà làm nhẹ bớt những gì cung vốn có.",
+        "Người ta vẫn quen gọi là sao Tuần, sao Triệt, nhưng hai dấu này không đứng trong một ô như các sao khác. Mỗi dấu phủ lên hai cung nằm liền nhau, giống một tấm rèm kéo ngang hai ô cửa sổ sát cạnh. Tên đầy đủ thường gặp là Tuần Không và Triệt Lộ, còn trên lá số chỉ ghi gọn Tuần và Triệt.",
+        "Khi Tuần hay Triệt phủ lên một cung, người xem nói cung ấy bị Tuần hay Triệt án ngữ, tức có một dấu chắn đứng ngay lối vào. Mỗi lá số có đúng một Tuần và một Triệt, nên chỉ vài cung chịu dấu chắn, các cung còn lại vẫn để ngỏ."
+      ]
+    },
+    {
+      "heading": "Triệt và Tuần nằm ở đâu",
+      "paragraphs": [
+        "An sao nghĩa là đặt sao vào đúng ô của nó trên lá số. Triệt được an theo [[thuat-ngu/can|thiên can]] của năm sinh, tức chữ đứng đầu trong tên năm âm lịch, như Giáp trong Giáp Tý. Mười can chia thành năm cặp, và hai can trong một cặp cho Triệt ở cùng một chỗ.",
+        "Cụ thể như sau. Năm Giáp và năm Kỷ, Triệt ở Thân, Dậu. Năm Ất và năm Canh, Triệt ở Ngọ, Mùi. Năm Bính và năm Tân, Triệt ở Thìn, Tị. Năm Đinh và năm Nhâm, Triệt ở Dần, Mão. Năm Mậu và năm Quý, Triệt ở Tý, Sửu.",
+        "Mỗi cặp là hai [[thuat-ngu/chi|địa chi]] đứng liền nhau, nên Triệt luôn chắn hai ô sát cạnh. Chẳng hạn, người sinh năm Giáp Tý mang can Giáp, nên Triệt nằm ở hai ô Thân và Dậu. Còn cung nào đóng ở hai ô ấy thì tùy từng lá số.",
+        "Tuần cũng được tìm từ năm sinh, nhưng dựa vào cả can lẫn chi của năm, nên cách tính dài hơn. Bạn không cần tự tính, vì lá số đã đánh dấu sẵn cả hai."
+      ]
+    },
+    {
+      "heading": "Tuần và Triệt chặn điều gì",
+      "paragraphs": [
+        "Hãy hình dung các sao trong một cung như ngọn đèn trong một căn phòng. Tuần hay Triệt giống tấm rèm kéo ngang cửa: đèn vẫn sáng, nhưng ánh sáng lọt ra ngoài nhạt hơn và chậm hơn. Nói gọn, hai dấu này làm giảm, làm chậm sức thể hiện của các sao trong cung bị chắn.",
+        "Điều đáng nhớ là sự chắn này tác động lên cả hai phía. Những nét thuận lợi của cung hiện ra nhẹ hơn, đến muộn hơn; còn những nét gai góc trong cung cũng dịu bớt. Vì thế, gặp Tuần hay Triệt không có nghĩa là cung ấy kém đi, mà chỉ là mọi điều trong cung đi qua một lớp đệm.",
+        "Chữ triệt có nghĩa là cắt ngang, nên nhiều người xem coi Triệt là dấu chắn rõ nét hơn, còn Tuần chắn nhẹ nhàng hơn. Dù là dấu nào, đó vẫn chỉ là sự làm chậm, không phải một cánh cửa đóng hẳn."
+      ]
+    },
+    {
+      "heading": "Nhận ra Tuần và Triệt trên lá số",
+      "paragraphs": [
+        "Trên lá số của trang này, Tuần và Triệt không nằm trong ô nào. Mỗi dấu là một nhãn nhỏ nền sáng, chữ đậm, ghi Tuần hoặc Triệt, đặt ngay trên đường ranh giữa hai cung mà nó chắn. Nhãn đè lên cạnh chung của hai ô: cạnh dọc nếu hai ô cùng hàng, cạnh ngang nếu hai ô cùng cột.",
+        "Khi bấm chọn một cung bị chắn, phần thông tin của cung có thêm một thẻ ghi Tuần hoặc Triệt, xếp cùng hàng với các thẻ [[bai/tam-hop-xung-chieu|tam hợp, xung chiếu]]. Một cung có thể mang cả hai thẻ nếu Tuần và Triệt cùng phủ lên nó. Cung không bị chắn thì không có thẻ nào như vậy."
+      ]
+    },
+    {
+      "heading": "Đọc một cung nằm dưới Tuần hay Triệt",
+      "paragraphs": [
+        "Khi gặp một cung bị chắn, bạn vẫn đọc như mọi cung khác: xem tên cung, rồi tới [[bai/y-nghia-chinh-tinh|chính tinh]] và [[bai/phu-tinh-thuong-gap|phụ tinh]] trong ô, cùng các cung nhìn sang. Chỉ khác là sau khi đọc xong, bạn vặn nhỏ âm lượng một chút: những gì cung ấy nói vẫn đúng hướng, nhưng hiện ra nhẹ hơn và có thể đến chậm hơn.",
+        "Chẳng hạn, nếu cung Quan Lộc, cung xem chuyện công việc, nằm dưới Triệt, người xem thường hiểu là việc làm có thể cần thêm thời gian mới vào nhịp, chứ không phải con đường ấy bị đóng lại. Ngược lại, nếu trong cung có những sao mang nét căng, dấu chắn lại giúp những nét ấy mềm đi.",
+        "Tuần và Triệt chỉ là một lớp trong bức tranh, không phải lời kết luận. Cứ đọc chậm, đặt cung bị chắn cạnh các cung khác, rồi tự cân nhắc. Bài sau, [[bai/cach-xem-dai-van|Cách xem đại vận]], sẽ đưa bạn sang phần thời gian của lá số."
+      ]
+    }
+  ],
+  "readingMinutes": 5,
+  "reviewedAt": "2026-11-18"
+}

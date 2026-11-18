@@ -43,6 +43,13 @@
   },
   {
     "kind": "bai",
+    "slug": "phu-tinh-thuong-gap",
+    "title": "Phụ tinh thường gặp",
+    "aliases": [],
+    "summary": "Phụ tinh là những sao đi kèm chính tinh. Bài này giới thiệu các cặp phụ tinh hay gặp và cách phân biệt cát tinh với hung tinh."
+  },
+  {
+    "kind": "bai",
     "slug": "tam-hop-xung-chieu",
     "title": "Tam hợp, xung chiếu giữa các cung",
     "aliases": [],
@@ -50,10 +57,24 @@
   },
   {
     "kind": "bai",
+    "slug": "tu-hoa-la-gi",
+    "title": "Tứ hóa là gì",
+    "aliases": [],
+    "summary": "Tứ hóa là bốn sao Hóa Lộc, Hóa Quyền, Hóa Khoa, Hóa Kỵ, đi theo can của năm sinh và bám vào những sao có sẵn trên lá số."
+  },
+  {
+    "kind": "bai",
     "slug": "tu-vi-la-gi",
     "title": "Tử vi là gì",
     "aliases": [],
     "summary": "Tử vi soi chiếu bản thân qua lá số lập từ giờ, ngày, tháng, năm sinh âm lịch và giới tính, giúp ta hiểu mình hơn chứ không phán số mệnh."
+  },
+  {
+    "kind": "bai",
+    "slug": "tuan-va-triet",
+    "title": "Tuần và Triệt",
+    "aliases": [],
+    "summary": "Tuần và Triệt là hai dấu chắn, mỗi dấu phủ lên hai cung liền nhau, làm giảm và làm chậm sức thể hiện của các sao trong hai cung ấy."
   },
   {
     "kind": "bai",
