@@ -1,0 +1,41 @@
+{
+  "kind": "cung",
+  "group": "cung",
+  "slug": "tai-bach",
+  "title": "Cung Tài Bạch",
+  "aliases": ["cung tiền bạc"],
+  "summary": "Cung Tài Bạch hay được xem để hiểu cách một người kiếm tiền, giữ tiền và tiêu tiền, cùng thái độ của họ với chuyện tiền bạc.",
+  "sections": [
+    {
+      "heading": "Tiền bạc qua cách nhìn của lá số",
+      "paragraphs": [
+        "Trong mười hai cung được giới thiệu ở bài [[bai/12-cung-tu-vi|12 cung trong lá số]], Tài Bạch là cung dành cho chuyện tiền bạc. Tên cung ghép từ hai chữ Hán: \"tài\" là của cải, \"bạch\" là tấm lụa, thứ ngày xưa có lúc được dùng thay tiền. Gộp lại, Tài Bạch chỉ những gì ta làm ra và có trong tay để chi dùng.",
+        "Cung này thường được đọc để hiểu mối quan hệ của một người với đồng tiền hơn là con số trong túi: kiếm tiền theo lối nào, giữ tiền chặt hay lỏng, tiêu tiền vì nhu cầu hay vì cảm hứng. Nó không cho biết ai sẽ giàu hay nghèo, và cũng không thay được một bảng thu chi thật."
+      ]
+    },
+    {
+      "heading": "Vị trí và những cung soi vào Tài Bạch",
+      "paragraphs": [
+        "Lấy [[cung/menh|cung Mệnh]] làm cung thứ nhất rồi đếm thuận, Tài Bạch đứng ở vị trí thứ chín. Vì Mệnh của mỗi người đóng một chỗ, ô Tài Bạch trên từng lá số cũng nằm ở một góc riêng; bạn chỉ cần tìm ô mang tên cung này.",
+        "Tài Bạch thuộc một nhóm [[bai/tam-hop-xung-chieu|tam hợp]], tức ba cung hợp lại và được đọc cùng nhau. Hai cung còn lại trong nhóm là Mệnh và [[cung/quan-loc|Quan Lộc]]. Tính tình ở Mệnh và thói quen làm việc ở Quan Lộc hay được xem là gốc rễ của cách xoay xở tiền nong, nên người xem ít khi chỉ nhìn riêng một ô.",
+        "Ở phía đối diện, tức đối cung chiếu thẳng sang, là [[cung/phuc-duc|Phúc Đức]], cung hay gắn với đời sống tinh thần và sự an ổn trong lòng. Đặt hai cung này cạnh nhau, người ta thường tự hỏi chuyện tiền nong làm lòng mình nhẹ hay nặng, và một tâm thế bình yên giúp việc chi tiêu, để dành hợp lý tới đâu."
+      ]
+    },
+    {
+      "heading": "Đọc các sao trong ô",
+      "paragraphs": [
+        "Tên cung chỉ cho biết đang bàn về mảng nào; sắc thái cụ thể đến từ các sao nằm trong ô. Thứ tự dễ theo là xem [[bai/y-nghia-chinh-tinh|chính tinh]], tức những sao chính, trước tiên, rồi tới các sao nhỏ đi kèm, sau đó mới nhìn sang hai cung tam hợp và đối cung đã nói ở trên.",
+        "Đừng vội gắn nhãn tốt hay xấu cho một sao chỉ vì nó nằm ở cung tiền bạc. Cùng một sao có thể mang nghĩa khác đi tùy những sao đứng cạnh và những cung chiếu về. Nếu ô này trống sao chính, lá số ghi là [[thuat-ngu/vo-chinh-dieu|vô chính diệu]]; khi ấy các sao chính ở đối cung, nếu có, sẽ được mượn sang để đọc."
+      ]
+    },
+    {
+      "heading": "Dùng cung Tài Bạch cho đúng mức",
+      "paragraphs": [
+        "Những gì đọc được ở đây chỉ là gợi ý về thói quen và xu hướng, không phải lời hứa về một khoản thu hay lời cảnh báo về một khoản hụt. Lá số không chỉ ra nên đặt tiền vào đâu, và cũng không có món đồ nào để mua về nhằm cải thiện cung này.",
+        "Cách dùng hữu ích hơn là đem những nét lá số gợi ra đối chiếu với chính mình: bạn có hay chi theo cảm hứng không, có đang để dành đều đặn không. Chuyện tiền thật vẫn dựa vào thu nhập, kế hoạch chi tiêu và lời khuyên của người có chuyên môn. Khi đã quen ô này, bạn có thể mở bài [[bai/doc-la-so-cua-chinh-ban|Đọc lá số của chính bạn]] để thử tìm nó trên lá số của riêng mình."
+      ]
+    }
+  ],
+  "learnInLesson": "12-cung-tu-vi",
+  "reviewedAt": "2026-11-18"
+}

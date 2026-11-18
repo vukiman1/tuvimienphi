@@ -222,5 +222,96 @@
     "title": "Sao Vũ Khúc",
     "aliases": [],
     "summary": "Vũ Khúc là chính tinh hành Kim thuộc chòm Tử Vi, hay được xem là sao của tiền bạc, gợi tính quả quyết, cần cù và thực tế."
+  },
+  {
+    "kind": "cung",
+    "slug": "dien-trach",
+    "title": "Cung Điền Trạch",
+    "aliases": ["cung nhà đất"],
+    "summary": "Cung Điền Trạch thường được xem để hiểu mối gắn bó của một người với nhà cửa, đất đai, của để dành và bầu không khí nơi mình sống."
+  },
+  {
+    "kind": "cung",
+    "slug": "huynh-de",
+    "title": "Cung Huynh Đệ",
+    "aliases": ["cung anh em"],
+    "summary": "Cung Huynh Đệ hay được xem để hiểu cách bạn gắn bó với anh chị em và những người thân thiết như ruột thịt, như anh em họ hay bạn chí cốt."
+  },
+  {
+    "kind": "cung",
+    "slug": "menh",
+    "title": "Cung Mệnh",
+    "aliases": [],
+    "summary": "Cung Mệnh là cung đầu tiên trên lá số, hay được xem là nơi nói về bản tính, khí chất và hướng đi chung của một người."
+  },
+  {
+    "kind": "cung",
+    "slug": "no-boc",
+    "title": "Cung Nô Bộc",
+    "aliases": ["cung Giao Hữu", "cung bạn bè"],
+    "summary": "Cung Nô Bộc ngày nay hay được đọc như cung của bạn bè, đồng nghiệp và những người bạn cùng làm hoặc dẫn dắt, tức vòng quan hệ ngoài gia đình."
+  },
+  {
+    "kind": "cung",
+    "slug": "phu-mau",
+    "title": "Cung Phụ Mẫu",
+    "aliases": ["cung cha mẹ"],
+    "summary": "Cung Phụ Mẫu thường được xem để hiểu mối gắn bó với cha mẹ, bề trên và những gì bạn mang theo từ nếp nhà nơi mình lớn lên."
+  },
+  {
+    "kind": "cung",
+    "slug": "phu-the",
+    "title": "Cung Phu Thê",
+    "aliases": ["cung vợ chồng"],
+    "summary": "Cung Phu Thê hay được dùng để nhìn cách một người gắn bó, chia sẻ và cư xử trong tình yêu, hôn nhân và các mối quan hệ gần gũi."
+  },
+  {
+    "kind": "cung",
+    "slug": "phuc-duc",
+    "title": "Cung Phúc Đức",
+    "aliases": [],
+    "summary": "Cung Phúc Đức thường được xem để hiểu đời sống tinh thần: điều gì làm lòng bạn yên, những giá trị bạn trân quý và sợi dây nối bạn với cội nguồn."
+  },
+  {
+    "kind": "cung",
+    "slug": "quan-loc",
+    "title": "Cung Quan Lộc",
+    "aliases": ["cung sự nghiệp", "cung công danh"],
+    "summary": "Cung Quan Lộc thường được xem để hiểu chuyện học hành, công việc, sự nghiệp và cách một người bắt tay vào việc của mình."
+  },
+  {
+    "kind": "cung",
+    "slug": "tai-bach",
+    "title": "Cung Tài Bạch",
+    "aliases": ["cung tiền bạc"],
+    "summary": "Cung Tài Bạch hay được xem để hiểu cách một người kiếm tiền, giữ tiền và tiêu tiền, cùng thái độ của họ với chuyện tiền bạc."
+  },
+  {
+    "kind": "cung",
+    "slug": "tat-ach",
+    "title": "Cung Tật Ách",
+    "aliases": ["cung sức khỏe"],
+    "summary": "Cung Tật Ách thường được xem là mảng thân thể, sức lực và nếp sinh hoạt hằng ngày, những điều mỗi người nên để ý và chăm lo cho chính mình."
+  },
+  {
+    "kind": "cung",
+    "slug": "thien-di",
+    "title": "Cung Thiên Di",
+    "aliases": [],
+    "summary": "Cung Thiên Di thường được xem để hiểu con người bạn khi bước ra ngoài: chuyện đi xa, đổi chỗ sống và cách bạn giao tiếp giữa đám đông."
+  },
+  {
+    "kind": "cung",
+    "slug": "tu-tuc",
+    "title": "Cung Tử Tức",
+    "aliases": ["cung con cái"],
+    "summary": "Cung Tử Tức hay được xem để hiểu mối gắn bó của một người với con cái, với lớp người nhỏ tuổi hơn, và cách người ấy chăm chút, nâng đỡ họ."
+  },
+  {
+    "kind": "thuat-ngu",
+    "slug": "tam-hop-luc-xung",
+    "title": "Tam hợp, lục xung giữa các tuổi",
+    "aliases": ["tuổi hợp", "tuổi xung"],
+    "summary": "Tam hợp và lục xung xếp mười hai chi tuổi thành bốn nhóm ba tuổi hợp nhau và sáu cặp tuổi đối nhau. Trang này kể đủ các nhóm, các cặp và cách hiểu chúng."
   }
 ]
