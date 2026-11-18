@@ -1,0 +1,47 @@
+{
+  "kind": "sao",
+  "group": "phu-tinh",
+  "slug": "dia-kiep",
+  "title": "Sao Địa Kiếp",
+  "aliases": ["Không Kiếp"],
+  "summary": "Địa Kiếp là hung tinh hành Hỏa, thường gắn với những bước ngoặt đến nhanh, lối dồn sức vào một lần và kế hoạch hay đổi hướng.",
+  "sections": [
+    {
+      "heading": "Địa Kiếp giữa các sao nhỏ",
+      "paragraphs": [
+        "Địa Kiếp là một [[bai/phu-tinh-thuong-gap|phụ tinh]], tức một sao nhỏ đứng cạnh các sao chính trong mỗi ô của lá số. Địa Kiếp là hung tinh: sao mang nét mạnh và gắt, gợi những chỗ cần để ý hơn chứ không báo trước một điều chắc chắn.",
+        "Sao thuộc [[thuat-ngu/hanh-hoa|hành Hỏa]]. Lửa bén rất nhanh và đổi hình liên tục, khá giống nét riêng của sao này: mọi thứ dễ chuyển động bất ngờ."
+      ]
+    },
+    {
+      "heading": "Khi kế hoạch rẽ ngang",
+      "paragraphs": [
+        "Trong sách vở, chữ \"kiếp\" trong tên sao thường gợi một sức cuốn đến đột ngột. Vì thế, cung có Địa Kiếp hay được đọc là nơi mọi việc dễ đổi chiều nhanh: kế hoạch vừa định xong đã phải vẽ lại, nhịp đang đều bỗng tăng tốc hoặc rẽ sang hướng khác.",
+        "Nét này có cả mặt được việc. Người có sao ở vị trí nổi bật thường được tả là xoay chuyển nhanh, ít ngại làm lại từ đầu và quen thích nghi khi tình hình thay đổi."
+      ]
+    },
+    {
+      "heading": "Dốc hết sức vào một nước đi",
+      "paragraphs": [
+        "Nét thứ hai hay được nhắc là sự táo bạo kiểu dồn tất cả vào một lần. Ở cung có Địa Kiếp, người xem thường thấy xu hướng đặt toàn lực vào một quyết định, thích những bước nhảy lớn hơn là đi từng bậc nhỏ.",
+        "Lời nhắc đi kèm khá giản dị: trước một bước lớn, nên dừng lại một nhịp, chia việc thành vài chặng và chừa chỗ để điều chỉnh khi cần."
+      ]
+    },
+    {
+      "heading": "Bậc của sao: chỉ một ô được ghi",
+      "paragraphs": [
+        "Bậc cho biết nét riêng của một sao hiện rõ hay nhẹ theo chi của ô; năm bậc được giải thích ở bài [[bai/mieu-vuong-dac-binh-ham|Miếu, vượng, đắc, bình, hãm]]. Theo bảng trang này dùng, Địa Kiếp đắc địa tại Dần. Với mười một chi còn lại, bảng ấy không ghi bậc cho sao này.",
+        "Tại Dần, sức chuyển động của sao thường được đọc là có chỗ dùng, hiện ra rõ và dễ thành sự chủ động. Ở những chi bảng bỏ trống, bạn cứ đọc ý nghĩa chung của sao, đừng tự gán thêm chữ bậc."
+      ]
+    },
+    {
+      "heading": "Bắt đầu từ cung chứa sao",
+      "paragraphs": [
+        "Gặp Địa Kiếp trên lá số, câu hỏi đầu tiên là sao đang đứng trong mảng đời sống nào: công việc, tiền bạc hay các mối quan hệ. Mỗi ô là một cung, và [[bai/12-cung-tu-vi|12 cung]] chia nhau các mảng ấy. Rồi nhìn sang [[bai/y-nghia-chinh-tinh|chính tinh]] đứng chung ô: sao chính vẽ khung, còn Địa Kiếp cho biết khung ấy dễ được xoay chuyển tới đâu.",
+        "Hai sao cùng hành Hỏa này thường được nhắc thành một cặp; trang [[sao/dia-khong|Địa Không]] bàn riêng về sao kia."
+      ]
+    }
+  ],
+  "learnInLesson": "phu-tinh-thuong-gap",
+  "reviewedAt": "2026-11-18"
+}

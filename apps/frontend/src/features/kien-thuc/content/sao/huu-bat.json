@@ -1,0 +1,40 @@
+{
+  "kind": "sao",
+  "group": "phu-tinh",
+  "slug": "huu-bat",
+  "title": "Sao Hữu Bật",
+  "aliases": ["Tả Hữu"],
+  "summary": "Hữu Bật là cát tinh hành Thủy, hay được xem là sao của sự phụ giúp khéo léo, mềm mỏng, đến từ những người quanh mình.",
+  "sections": [
+    {
+      "heading": "Người trợ thủ đứng bên phải",
+      "paragraphs": [
+        "Hữu Bật nằm trong nhóm [[bai/phu-tinh-thuong-gap|phụ tinh thường gặp]]: những sao nhỏ không quyết định nét chính của một cung mà góp thêm sắc thái cho nó. \"Hữu\" là phía bên phải. \"Bật\" là phụ tá, người giúp chỉnh lại chỗ còn thiếu sót. Ghép hai chữ, tên sao gợi hình ảnh một trợ thủ đứng sát bên, nhắc một câu đúng lúc, sửa một chi tiết nhỏ.",
+        "Hữu Bật là cát tinh. Chữ \"cát\" nghĩa là lành, nên sao này thường được đọc như một nét dịu và thuận chiều, chứ không phải một điểm cần dè chừng."
+      ]
+    },
+    {
+      "heading": "Nước chảy theo chỗ trũng",
+      "paragraphs": [
+        "Sao mang [[thuat-ngu/hanh-thuy|hành Thủy]]. Nước không giữ một hình dạng cố định: gặp bình thì tròn, gặp khe thì len vào. Người xem tử vi hay mượn hình ảnh ấy để tả kiểu phụ giúp của Hữu Bật: uyển chuyển, biết lựa lời, biết nhìn người mà ứng xử, dễ thích nghi khi hoàn cảnh đổi khác.",
+        "Về tính người, Hữu Bật thường gắn với sự nhã nhặn, độ lượng và khéo giao thiệp. Đó là một khuynh hướng để tham khảo. Sao không hứa rằng sẽ luôn có người chìa tay, và phần việc của chính mình vẫn là phần quyết định."
+      ]
+    },
+    {
+      "heading": "Hữu Bật bên cạnh Tả Phù",
+      "paragraphs": [
+        "Sách cũ hay gọi chung hai sao trái phải là cặp Tả Hữu, và trang [[sao/ta-phu|Tả Phù]] kể về nửa còn lại. Điều Hữu Bật thêm vào cặp ấy là sự mềm dẻo: thiên về hòa giải, nối người với người, gỡ chỗ vướng bằng lời nói hơn là bằng sức bền.",
+        "Vì vậy, khi đọc riêng Hữu Bật, nên chú ý tới cách sự giúp đỡ diễn ra, kín đáo hay khéo léo, chứ không chỉ hỏi có người giúp hay không."
+      ]
+    },
+    {
+      "heading": "Khi bắt gặp sao này trên lá số",
+      "paragraphs": [
+        "Một phụ tinh hiếm khi tự kể trọn câu chuyện. Thấy Hữu Bật trong ô nào, hãy xác định ô ấy là cung nào trong [[bai/12-cung-tu-vi|12 cung]], rồi xem sao chính cùng ô nói gì. Hữu Bật chỉ thêm một lớp nghĩa: việc của cung ấy thường được đọc là có thêm người phụ một tay theo lối mềm mỏng.",
+        "Nếu bạn mới bắt đầu, bài [[bai/doc-la-so-cua-chinh-ban|Đọc lá số của chính bạn]] gợi một thứ tự xem từng bước, để Hữu Bật được đặt đúng chỗ giữa các sao khác."
+      ]
+    }
+  ],
+  "learnInLesson": "phu-tinh-thuong-gap",
+  "reviewedAt": "2026-11-18"
+}

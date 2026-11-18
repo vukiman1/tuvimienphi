@@ -1,0 +1,38 @@
+{
+  "kind": "thuat-ngu",
+  "group": "ngu-hanh",
+  "slug": "hanh-thuy",
+  "title": "Hành Thủy",
+  "aliases": [],
+  "summary": "Hành Thủy là một trong năm hành, nghĩa gốc là nước. Trên lá số, Thủy gắn với hai cung đóng tại Tý, Hợi và với Thủy Nhị Cục.",
+  "sections": [
+    {
+      "heading": "Nước, một trong năm nhóm",
+      "paragraphs": [
+        "Thủy là từ Hán Việt chỉ nước. Trong [[bai/tu-vi-la-gi|tử vi]], hành Thủy là một trong năm hành của ngũ hành, tức năm nhóm dùng để xếp loại các phần của lá số. Ở đây Thủy ít khi được hiểu là dòng sông hay cơn mưa; nó giống một cái nhãn, giúp người xem gom những thứ cùng loại lại với nhau rồi so chúng với nhau."
+      ]
+    },
+    {
+      "heading": "Hàng dưới cùng: ô Tý và ô Hợi",
+      "paragraphs": [
+        "Mười hai cung đóng ở mười hai [[thuat-ngu/chi|địa chi]], và mỗi cung nhận hành của chi nơi nó đóng. Tý và Hợi là hai chi thuộc hành Thủy. Trên bàn lá số của trang này, ô Hợi nằm ở góc dưới bên phải, ô Tý nằm ngay bên trái nó, cũng ở hàng dưới cùng. Dưới can chi của mỗi ô có một chữ nhỏ ghi hành; ở ô Tý và ô Hợi, chữ ấy là Thủy.",
+        "Tên cung đặt vào hai ô này thay đổi theo từng lá số, nên mỗi người sẽ thấy những cung khác nhau ở đó. Chữ Thủy thì đứng yên, vì hành đi theo chi của ô chứ không theo tên cung."
+      ]
+    },
+    {
+      "heading": "Thủy Nhị Cục và dòng Bản mệnh",
+      "paragraphs": [
+        "Chữ Thủy còn có thể hiện ở tên [[thuat-ngu/cuc|cục]] của lá số. Cục của hành Thủy là Thủy Nhị Cục. Bạn tìm nó ở ô giữa, dòng \"Bản mệnh:\", phần đứng sau dấu gạch ngang. Dòng chữ nhỏ ngay trên tiêu đề trang lá số cũng nhắc lại đúng dòng này.",
+        "Phần đứng trước dấu gạch là [[thuat-ngu/ban-menh|bản mệnh]], tính theo [[thuat-ngu/nap-am|nạp âm]] của năm sinh. Đó là một mục riêng, nên muốn biết cục, bạn chỉ cần nhìn phần sau dấu gạch."
+      ]
+    },
+    {
+      "heading": "Khi lá số có nhiều chữ Thủy",
+      "paragraphs": [
+        "Gặp chữ Thủy ở cả ô cung lẫn dòng cục, bạn chưa thể rút ra điều gì về tính cách hay vận may. Hành hay được xem là phần nền: người xem đặt nó cạnh các sao trong cung rồi mới đọc. Cách hành Thủy sinh và khắc với bốn hành kia được bài [[bai/am-duong-ngu-hanh-co-ban|Âm dương, ngũ hành cơ bản]] giải thích qua hai vòng dễ nhớ."
+      ]
+    }
+  ],
+  "learnInLesson": "am-duong-ngu-hanh-co-ban",
+  "reviewedAt": "2026-11-18"
+}
