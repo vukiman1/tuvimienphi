@@ -309,6 +309,110 @@
       "reviewedAt": "2026-11-18"
     },
     {
+      "kind": "sao",
+      "group": "phu-tinh",
+      "slug": "ta-phu",
+      "title": "Sao Tả Phù",
+      "learnInLesson": "phu-tinh-thuong-gap",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "phu-tinh",
+      "slug": "huu-bat",
+      "title": "Sao Hữu Bật",
+      "learnInLesson": "phu-tinh-thuong-gap",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "phu-tinh",
+      "slug": "van-xuong",
+      "title": "Sao Văn Xương",
+      "learnInLesson": "phu-tinh-thuong-gap",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "phu-tinh",
+      "slug": "van-khuc",
+      "title": "Sao Văn Khúc",
+      "learnInLesson": "phu-tinh-thuong-gap",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "phu-tinh",
+      "slug": "thien-khoi",
+      "title": "Sao Thiên Khôi",
+      "learnInLesson": "phu-tinh-thuong-gap",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "phu-tinh",
+      "slug": "thien-viet",
+      "title": "Sao Thiên Việt",
+      "learnInLesson": "phu-tinh-thuong-gap",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "phu-tinh",
+      "slug": "loc-ton",
+      "title": "Sao Lộc Tồn",
+      "learnInLesson": "phu-tinh-thuong-gap",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "phu-tinh",
+      "slug": "kinh-duong",
+      "title": "Sao Kình Dương",
+      "learnInLesson": "phu-tinh-thuong-gap",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "phu-tinh",
+      "slug": "da-la",
+      "title": "Sao Đà La",
+      "learnInLesson": "phu-tinh-thuong-gap",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "phu-tinh",
+      "slug": "dia-khong",
+      "title": "Sao Địa Không",
+      "learnInLesson": "phu-tinh-thuong-gap",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "phu-tinh",
+      "slug": "dia-kiep",
+      "title": "Sao Địa Kiếp",
+      "learnInLesson": "phu-tinh-thuong-gap",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "phu-tinh",
+      "slug": "hoa-tinh",
+      "title": "Sao Hỏa Tinh",
+      "learnInLesson": "phu-tinh-thuong-gap",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "phu-tinh",
+      "slug": "linh-tinh",
+      "title": "Sao Linh Tinh",
+      "learnInLesson": "phu-tinh-thuong-gap",
+      "reviewedAt": "2026-11-18"
+    },
+    {
       "kind": "cung",
       "group": "cung",
       "slug": "menh",

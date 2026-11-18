@@ -134,6 +134,27 @@
   },
   {
     "kind": "sao",
+    "slug": "da-la",
+    "title": "Sao Đà La",
+    "aliases": [],
+    "summary": "Đà La là hung tinh hành Kim, thường được hiểu là nhịp chậm, sự bền bỉ và những việc phải qua nhiều vòng mới xong."
+  },
+  {
+    "kind": "sao",
+    "slug": "dia-khong",
+    "title": "Sao Địa Không",
+    "aliases": ["Không Kiếp"],
+    "summary": "Địa Không là hung tinh hành Hỏa, thường gắn với ý tưởng đi trước thực tế, lối nghĩ khác thường và sự hướng về đời sống tinh thần."
+  },
+  {
+    "kind": "sao",
+    "slug": "dia-kiep",
+    "title": "Sao Địa Kiếp",
+    "aliases": ["Không Kiếp"],
+    "summary": "Địa Kiếp là hung tinh hành Hỏa, thường gắn với những bước ngoặt đến nhanh, lối dồn sức vào một lần và kế hoạch hay đổi hướng."
+  },
+  {
+    "kind": "sao",
     "slug": "hoa-khoa",
     "title": "Hóa Khoa",
     "aliases": [],
@@ -162,6 +183,27 @@
   },
   {
     "kind": "sao",
+    "slug": "hoa-tinh",
+    "title": "Sao Hỏa Tinh",
+    "aliases": ["Hỏa Linh"],
+    "summary": "Hỏa Tinh là hung tinh hành Hỏa, thường gợi tính nóng nảy, những đợt hăng hái bất chợt và các chuyển biến đến nhanh ở cung sao đứng."
+  },
+  {
+    "kind": "sao",
+    "slug": "huu-bat",
+    "title": "Sao Hữu Bật",
+    "aliases": ["Tả Hữu"],
+    "summary": "Hữu Bật là cát tinh hành Thủy, hay được xem là sao của sự phụ giúp khéo léo, mềm mỏng, đến từ những người quanh mình."
+  },
+  {
+    "kind": "sao",
+    "slug": "kinh-duong",
+    "title": "Sao Kình Dương",
+    "aliases": ["Dương Nhận"],
+    "summary": "Kình Dương là hung tinh hành Kim, thường được hiểu là sự sắc sảo, tinh thần cạnh tranh và xu hướng làm nhanh, vượt khó bằng sức."
+  },
+  {
+    "kind": "sao",
     "slug": "liem-trinh",
     "title": "Sao Liêm Trinh",
     "aliases": [],
@@ -169,10 +211,31 @@
   },
   {
     "kind": "sao",
+    "slug": "linh-tinh",
+    "title": "Sao Linh Tinh",
+    "aliases": ["Hỏa Linh"],
+    "summary": "Linh Tinh là một phụ tinh hành Hỏa, thường gợi nỗi bồn chồn âm ỉ, sự căng thẳng ngấm ngầm và những lo nghĩ khó gọi tên ở cung có sao."
+  },
+  {
+    "kind": "sao",
+    "slug": "loc-ton",
+    "title": "Sao Lộc Tồn",
+    "aliases": [],
+    "summary": "Lộc Tồn là cát tinh hành Thổ, thường được xem là sao của sự tích góp, tính cẩn thận và biết giữ gìn những gì mình đã có."
+  },
+  {
+    "kind": "sao",
     "slug": "pha-quan",
     "title": "Sao Phá Quân",
     "aliases": [],
     "summary": "Phá Quân là chính tinh hành Thủy thuộc chòm Thiên Phủ, thường gợi tinh thần đổi mới, dám bỏ lối cũ để làm lại, kèm nét bồn chồn khó ngồi yên."
+  },
+  {
+    "kind": "sao",
+    "slug": "ta-phu",
+    "title": "Sao Tả Phù",
+    "aliases": ["Tả Hữu"],
+    "summary": "Tả Phù là cát tinh hành Thổ, thường được xem là sao của sự trợ giúp: người đỡ một tay và khả năng cùng làm việc với người khác."
   },
   {
     "kind": "sao",
@@ -218,6 +281,13 @@
   },
   {
     "kind": "sao",
+    "slug": "thien-khoi",
+    "title": "Sao Thiên Khôi",
+    "aliases": ["Khôi Việt"],
+    "summary": "Thiên Khôi là cát tinh hành Hỏa, hay được gọi là sao quý nhân, gợi sự chỉ dẫn từ người đi trước ở cung có sao này."
+  },
+  {
+    "kind": "sao",
     "slug": "thien-luong",
     "title": "Sao Thiên Lương",
     "aliases": [],
@@ -239,10 +309,31 @@
   },
   {
     "kind": "sao",
+    "slug": "thien-viet",
+    "title": "Sao Thiên Việt",
+    "aliases": ["Khôi Việt"],
+    "summary": "Thiên Việt, thường gọi là quý nhân ban đêm, gợi sự giúp đỡ kín đáo đến từ phía sau và góp thêm nét thuận cho cung có sao."
+  },
+  {
+    "kind": "sao",
     "slug": "tu-vi",
     "title": "Sao Tử Vi",
     "aliases": [],
     "summary": "Tử Vi là chính tinh hành Thổ, dẫn đầu chòm Tử Vi, thường được xem là sao của sự đường hoàng, tự trọng và sức quy tụ người quanh mình."
+  },
+  {
+    "kind": "sao",
+    "slug": "van-khuc",
+    "title": "Sao Văn Khúc",
+    "aliases": ["Xương Khúc"],
+    "summary": "Sao Văn Khúc thuộc hành Thủy, hay được gắn với tài ăn nói, năng khiếu nghệ thuật và sự mềm mại, linh hoạt trong cách thể hiện mình."
+  },
+  {
+    "kind": "sao",
+    "slug": "van-xuong",
+    "title": "Sao Văn Xương",
+    "aliases": ["Xương Khúc"],
+    "summary": "Văn Xương là cát tinh hành Kim, thường được gắn với chữ nghĩa, việc học và sự chỉn chu, nề nếp trong cách làm việc."
   },
   {
     "kind": "sao",
