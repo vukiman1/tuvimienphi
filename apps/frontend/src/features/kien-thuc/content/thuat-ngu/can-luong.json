@@ -1,0 +1,40 @@
+{
+  "kind": "thuat-ngu",
+  "group": "thuat-ngu",
+  "slug": "can-luong",
+  "title": "Cân lượng",
+  "aliases": ["cân xương"],
+  "summary": "Cân lượng là một con số ghi bằng lượng và chỉ, cộng từ năm, tháng, ngày, giờ sinh. Đây là tục xem dân gian, đọc kèm lá số chứ không phải lời phán.",
+  "sections": [
+    {
+      "heading": "Một con số tính bằng lượng và chỉ",
+      "paragraphs": [
+        "Cân lượng, có nơi còn gọi là cân xương, là một con số được ghi bằng hai đơn vị cân cũ là lượng và chỉ. Một lượng bằng mười chỉ, nên con số này đọc giống như một trọng lượng.",
+        "Dù mang tên gọi về cân nặng, cân lượng không đo thứ gì trên cơ thể. Đó là một trọng lượng quy ước, tính ra từ thời điểm sinh của mỗi người."
+      ]
+    },
+    {
+      "heading": "Bốn phần cộng lại",
+      "paragraphs": [
+        "Cân lượng là tổng của bốn phần: năm sinh, tháng sinh, ngày sinh và giờ sinh. Năm được tra theo cặp [[thuat-ngu/can|thiên can]] và địa chi của năm ấy, tháng và ngày theo âm lịch, còn giờ theo mười hai [[thuat-ngu/chi|địa chi]]. Mỗi phần ứng với một trọng lượng trong bảng truyền lại, và bốn trọng lượng được cộng thành con số sau cùng.",
+        "Vì cả bốn phần đều góp vào tổng, hai người cùng năm sinh vẫn có thể mang cân lượng khác nhau khi sinh khác tháng, khác ngày hay khác giờ."
+      ]
+    },
+    {
+      "heading": "Dòng Cân lượng ở ô giữa",
+      "paragraphs": [
+        "Trên trang này, cân lượng nằm ở ô lớn giữa lá số, trong dòng có nhãn Cân lượng, ngay dưới dòng Bản mệnh. Nội dung ghi dạng như \"4 lượng 2 chỉ\". Khi tổng vừa tròn lượng thì phần chỉ được bỏ đi, chẳng hạn chỉ ghi \"5 lượng\".",
+        "Những dòng còn lại của ô giữa được kể lần lượt trong bài [[bai/la-so-tu-vi-gom-nhung-gi|Một lá số gồm những gì]]."
+      ]
+    },
+    {
+      "heading": "Xem cân lượng như một tục dân gian",
+      "paragraphs": [
+        "Cân lượng thường đi kèm những câu ca cổ truyền gắn với từng mức cân. Những câu ấy thuộc về tục xem dân gian, nên hay được đọc như một nét văn hóa đặt cạnh lá số, chứ không phải lời định đoạt về một đời người.",
+        "Con số nặng hơn không có nghĩa là cuộc sống tốt hơn, và con số nhẹ hơn cũng không có nghĩa là kém đi. Khi đọc lá số, phần chính vẫn là các cung và các sao; bài [[bai/tu-vi-la-gi|Tử vi là gì]] giúp người mới làm quen với môn học này."
+      ]
+    }
+  ],
+  "learnInLesson": "la-so-tu-vi-gom-nhung-gi",
+  "reviewedAt": "2026-11-18"
+}

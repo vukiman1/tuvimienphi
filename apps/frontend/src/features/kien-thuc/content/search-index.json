@@ -428,6 +428,41 @@
   },
   {
     "kind": "thuat-ngu",
+    "slug": "ban-menh",
+    "title": "Bản mệnh",
+    "aliases": [],
+    "summary": "Bản mệnh là chữ \"mệnh\" trong câu \"tôi mệnh Kim\": hành lấy từ nạp âm của năm sinh. Nó khác với cung Mệnh trên lá số."
+  },
+  {
+    "kind": "thuat-ngu",
+    "slug": "can-luong",
+    "title": "Cân lượng",
+    "aliases": ["cân xương"],
+    "summary": "Cân lượng là một con số ghi bằng lượng và chỉ, cộng từ năm, tháng, ngày, giờ sinh. Đây là tục xem dân gian, đọc kèm lá số chứ không phải lời phán."
+  },
+  {
+    "kind": "thuat-ngu",
+    "slug": "can",
+    "title": "Thiên can",
+    "aliases": ["can", "can năm"],
+    "summary": "Thiên can là mười chữ từ Giáp tới Quý, đứng đầu tên năm âm lịch. Can năm sinh góp vào dòng Âm dương, tứ hóa và chỗ đặt Triệt trên lá số."
+  },
+  {
+    "kind": "thuat-ngu",
+    "slug": "chi",
+    "title": "Địa chi",
+    "aliases": ["chi", "mười hai con giáp"],
+    "summary": "Địa chi là mười hai chữ từ Tý tới Hợi. Trên lá số, mỗi ô của địa bàn gắn cố định với một chi, còn chi của năm sinh là cái người ta gọi là tuổi."
+  },
+  {
+    "kind": "thuat-ngu",
+    "slug": "cuc",
+    "title": "Cục",
+    "aliases": ["cục số"],
+    "summary": "Cục là phần ghi ở ô giữa lá số, mang một trong năm tên như Kim Tứ Cục hay Thủy Nhị Cục. Số trong tên cục là tuổi khởi đại vận đầu tiên."
+  },
+  {
+    "kind": "thuat-ngu",
     "slug": "hanh-hoa",
     "title": "Hành Hỏa",
     "aliases": [],
@@ -463,9 +498,37 @@
   },
   {
     "kind": "thuat-ngu",
+    "slug": "lai-nhan-cung",
+    "title": "Lai nhân cung",
+    "aliases": [],
+    "summary": "Lai nhân cung là cung mang thiên can trùng can năm sinh. Khái niệm này ít gặp và mỗi trường phái dùng một khác, nên hay được xem như ghi chú phụ."
+  },
+  {
+    "kind": "thuat-ngu",
+    "slug": "nap-am",
+    "title": "Nạp âm",
+    "aliases": [],
+    "summary": "Nạp âm là tên gọi theo ngũ hành gắn với một cặp can chi, như Kiếm Phong Kim. Trên lá số, nó là phần đầu của dòng Bản mệnh ở ô giữa."
+  },
+  {
+    "kind": "thuat-ngu",
     "slug": "tam-hop-luc-xung",
     "title": "Tam hợp, lục xung giữa các tuổi",
     "aliases": ["tuổi hợp", "tuổi xung"],
     "summary": "Tam hợp và lục xung xếp mười hai chi tuổi thành bốn nhóm ba tuổi hợp nhau và sáu cặp tuổi đối nhau. Trang này kể đủ các nhóm, các cặp và cách hiểu chúng."
+  },
+  {
+    "kind": "thuat-ngu",
+    "slug": "vo-chinh-dieu",
+    "title": "Vô chính diệu",
+    "aliases": [],
+    "summary": "Vô chính diệu là cung trên lá số không có chính tinh nào. Khi đọc, người xem thường mượn chính tinh của đối cung; đây không phải dấu hiệu xấu."
+  },
+  {
+    "kind": "thuat-ngu",
+    "slug": "vong-trang-sinh",
+    "title": "Vòng Tràng Sinh",
+    "aliases": [],
+    "summary": "Vòng Tràng Sinh là chuỗi mười hai sao nối nhau quanh lá số, mỗi cung nhận một chặng, từ Tràng Sinh tới Dưỡng, gợi nhịp lên và lắng của cung ấy."
   }
 ]

@@ -1,0 +1,40 @@
+{
+  "kind": "thuat-ngu",
+  "group": "thuat-ngu",
+  "slug": "cuc",
+  "title": "Cục",
+  "aliases": ["cục số"],
+  "summary": "Cục là phần ghi ở ô giữa lá số, mang một trong năm tên như Kim Tứ Cục hay Thủy Nhị Cục. Số trong tên cục là tuổi khởi đại vận đầu tiên.",
+  "sections": [
+    {
+      "heading": "Năm cục và con số đi kèm",
+      "paragraphs": [
+        "Mỗi lá số có một cục, chọn trong năm cục: Thủy Nhị Cục, Mộc Tam Cục, Kim Tứ Cục, Thổ Ngũ Cục và Hỏa Lục Cục. Tên mỗi cục ghép một hành với một số đếm Hán Việt. Chữ chỉ hành là một trong năm hành, được giới thiệu ở bài [[bai/am-duong-ngu-hanh-co-ban|Âm dương, ngũ hành cơ bản]].",
+        "Số đếm thì dễ nhớ: nhị là hai, tam là ba, tứ là bốn, ngũ là năm, lục là sáu. Vậy Thủy Nhị Cục mang số 2, Mộc Tam Cục mang số 3, Kim Tứ Cục mang số 4, Thổ Ngũ Cục mang số 5, Hỏa Lục Cục mang số 6."
+      ]
+    },
+    {
+      "heading": "Tìm cục ở ô giữa",
+      "paragraphs": [
+        "Trên trang này, cục nằm ở ô giữa lá số, trong dòng có nhãn Bản mệnh. Dòng ấy ghi hai phần nối bằng một dấu gạch, chẳng hạn \"Kiếm Phong Kim - Kim Tứ Cục\". Cục là phần đứng sau dấu gạch.",
+        "Phần đứng trước dấu gạch là [[thuat-ngu/ban-menh|bản mệnh]], một khái niệm khác có trang riêng. Các dòng còn lại của ô giữa được kể lần lượt trong bài [[bai/la-so-tu-vi-gom-nhung-gi|Một lá số gồm những gì]]."
+      ]
+    },
+    {
+      "heading": "Con số của cục dùng vào việc gì",
+      "paragraphs": [
+        "Con số trong tên cục là tuổi bắt đầu đại vận đầu tiên. Đại vận là những chặng mười năm nối nhau trên lá số. Chẳng hạn, lá số Thổ Ngũ Cục có đại vận đầu khởi từ năm tuổi, còn lá số Thủy Nhị Cục khởi từ hai tuổi.",
+        "Các vận nối tiếp nhau ra sao và đọc mỗi vận thế nào được giảng trong bài [[bai/cach-xem-dai-van|Cách xem đại vận]]. Trang này chỉ dừng ở chỗ nhận ra cục và con số của nó."
+      ]
+    },
+    {
+      "heading": "Đọc cục cho đúng mức",
+      "paragraphs": [
+        "Người mới hay nghĩ số lớn thì tốt hơn số nhỏ. Thật ra con số của cục là một mốc tuổi chứ không phải điểm số, nên số sáu hay số hai đều không mang nghĩa hơn kém.",
+        "Cũng nên tách cục khỏi bản mệnh, dù hai phần nằm chung một dòng. Mỗi phần là một khái niệm riêng, có trang giải thích riêng, nên đừng lấy nghĩa của phần này để đọc phần kia."
+      ]
+    }
+  ],
+  "learnInLesson": "la-so-tu-vi-gom-nhung-gi",
+  "reviewedAt": "2026-11-18"
+}

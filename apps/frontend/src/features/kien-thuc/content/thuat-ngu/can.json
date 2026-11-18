@@ -1,0 +1,41 @@
+{
+  "kind": "thuat-ngu",
+  "group": "thuat-ngu",
+  "slug": "can",
+  "title": "Thiên can",
+  "aliases": ["can", "can năm"],
+  "summary": "Thiên can là mười chữ từ Giáp tới Quý, đứng đầu tên năm âm lịch. Can năm sinh góp vào dòng Âm dương, tứ hóa và chỗ đặt Triệt trên lá số.",
+  "sections": [
+    {
+      "heading": "Mười chữ của thiên can",
+      "paragraphs": [
+        "Thiên can, thường gọi tắt là can, là một bộ gồm mười chữ: Giáp, Ất, Bính, Đinh, Mậu, Kỷ, Canh, Tân, Nhâm, Quý. Tên một năm âm lịch ghép một can với một chi, và can là chữ đứng trước, như Giáp trong Giáp Tý. Chữ đứng sau thuộc một bộ khác, được kể trong trang [[thuat-ngu/chi|Địa chi]].",
+        "Mỗi can thuộc về phía âm hoặc phía dương. Mười can được chia thành hai nhóm như thế nào, bạn có thể xem trong bài [[bai/am-duong-ngu-hanh-co-ban|Âm dương, ngũ hành cơ bản]]."
+      ]
+    },
+    {
+      "heading": "Đọc can năm sinh ở ô giữa",
+      "paragraphs": [
+        "Trên lá số của trang này, can năm sinh nằm ở dòng Năm trong ô giữa. Dòng ấy ghi năm dương lịch trước, năm âm lịch sau, ví dụ \"1984 · Giáp Tý\". Chữ đầu của phần âm lịch, ở đây là Giáp, chính là can.",
+        "Nên nhìn phần âm lịch thay vì con số dương lịch, vì người sinh vào đầu năm dương lịch, trước Tết, vẫn thuộc năm âm lịch cũ. Các dòng còn lại của ô giữa được giới thiệu trong bài [[bai/la-so-tu-vi-gom-nhung-gi|Một lá số gồm những gì]]."
+      ]
+    },
+    {
+      "heading": "Ba chỗ can năm sinh để lại dấu",
+      "paragraphs": [
+        "Chỗ thứ nhất là dòng Âm dương, cũng ở ô giữa. Dòng này ghép âm hay dương của can năm sinh với giới tính, nên chỉ ghi một trong bốn dạng: Dương Nam, Âm Nam, Dương Nữ, Âm Nữ.",
+        "Chỗ thứ hai là bộ bốn sao Hóa. Mỗi can ứng với một bộ bốn sao nhận hóa riêng, nên người sinh năm có cùng can thì tứ hóa bám vào cùng bốn sao, chỉ khác nhau ở cung nơi các sao ấy đứng. Bảng ghép này không hoàn toàn giống nhau giữa các trường phái; bài [[bai/tu-hoa-la-gi|Tứ hóa là gì]] nói kỹ hơn.",
+        "Chỗ thứ ba là Triệt, một dấu chắn phủ lên hai ô liền nhau. Mười can chia thành năm cặp, hai can trong một cặp cho Triệt ở cùng một chỗ. Cách đọc dấu chắn này nằm trong bài [[bai/tuan-va-triet|Tuần và Triệt]]."
+      ]
+    },
+    {
+      "heading": "Hiểu can cho vừa",
+      "paragraphs": [
+        "Can năm sinh là chung cho mọi người sinh cùng năm, nên nó chỉ là một chi tiết nhỏ của lá số. Hai người cùng can vẫn có lá số rất khác nhau, vì chỗ đứng của các sao còn tùy vào tháng, ngày và giờ sinh.",
+        "Người xem thường coi can như một điểm khởi đầu cho vài phép an sao, tức đặt sao vào đúng ô của nó, chứ không phải một lời nhận xét về tính cách hay số phận của ai."
+      ]
+    }
+  ],
+  "learnInLesson": "la-so-tu-vi-gom-nhung-gi",
+  "reviewedAt": "2026-11-18"
+}
