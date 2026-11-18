@@ -510,6 +510,46 @@
     },
     {
       "kind": "thuat-ngu",
+      "group": "ngu-hanh",
+      "slug": "hanh-kim",
+      "title": "Hành Kim",
+      "learnInLesson": "am-duong-ngu-hanh-co-ban",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "thuat-ngu",
+      "group": "ngu-hanh",
+      "slug": "hanh-moc",
+      "title": "Hành Mộc",
+      "learnInLesson": "am-duong-ngu-hanh-co-ban",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "thuat-ngu",
+      "group": "ngu-hanh",
+      "slug": "hanh-thuy",
+      "title": "Hành Thủy",
+      "learnInLesson": "am-duong-ngu-hanh-co-ban",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "thuat-ngu",
+      "group": "ngu-hanh",
+      "slug": "hanh-hoa",
+      "title": "Hành Hỏa",
+      "learnInLesson": "am-duong-ngu-hanh-co-ban",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "thuat-ngu",
+      "group": "ngu-hanh",
+      "slug": "hanh-tho",
+      "title": "Hành Thổ",
+      "learnInLesson": "am-duong-ngu-hanh-co-ban",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "thuat-ngu",
       "group": "thuat-ngu",
       "slug": "tam-hop-luc-xung",
       "title": "Tam hợp, lục xung giữa các tuổi",

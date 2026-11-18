@@ -1,0 +1,46 @@
+{
+  "kind": "thuat-ngu",
+  "group": "ngu-hanh",
+  "slug": "hanh-kim",
+  "title": "Hành Kim",
+  "aliases": [],
+  "summary": "Hành Kim là một trong năm hành, nghĩa gốc là kim loại. Trên lá số, Kim hiện ở các cung đóng tại Thân, Dậu, ở màu tên sao và ở Kim Tứ Cục.",
+  "sections": [
+    {
+      "heading": "Kim là gì",
+      "paragraphs": [
+        "Ngũ hành nghĩa là năm hành, và hành Kim là một trong năm hành ấy. Chữ Kim là từ Hán Việt, nghĩa gốc là kim loại. Trong [[bai/tu-vi-la-gi|tử vi]], hành không chỉ một vật cụ thể mà là một cách xếp loại: chi, cung và sao đều được gắn với một hành, nhờ đó người xem đặt chúng cạnh nhau để so."
+      ]
+    },
+    {
+      "heading": "Hai chi Thân, Dậu",
+      "paragraphs": [
+        "Mỗi cung trên lá số đóng ở một [[thuat-ngu/chi|địa chi]], và hành của cung lấy theo chi ấy. Hai chi thuộc hành Kim là Thân và Dậu, nên cung nào đóng tại Thân hoặc Dậu thì mang hành Kim. Mười chi còn lại thuộc các hành khác.",
+        "Khi bạn lập lá số ở đây và xem bàn ở khổ rộng, mỗi ô cung ghi can chi ở góc trên bên trái, và ngay dòng dưới là chữ chỉ hành của cung. Ở hai ô Thân, Dậu, chữ ấy là Kim. Nhìn dọc mép trái các ô, bạn sẽ nhận ra nhanh hai ô thuộc Kim."
+      ]
+    },
+    {
+      "heading": "Màu chữ của tên sao",
+      "paragraphs": [
+        "Mỗi sao cũng có hành riêng. Trên bàn lá số, tên sao được tô màu theo hành của sao. Bên dưới bàn có một dải chú giải ghi đủ năm hành, mỗi hành kèm một biểu tượng và một màu. Sao nào có tên cùng màu với chữ Kim trong chú giải là sao hành Kim.",
+        "Màu ấy chỉ giúp mắt nhận ra hành nhanh hơn, tự nó không mang nghĩa tốt hay xấu. Khi một sao hành Kim nằm trong cung đóng tại Thân hoặc Dậu, sao và cung cùng một hành, một trong mấy cách gặp nhau giữa hành của sao và hành của cung."
+      ]
+    },
+    {
+      "heading": "Kim Tứ Cục trong dòng Bản mệnh",
+      "paragraphs": [
+        "Ô giữa lá số có một dòng tên là Bản mệnh, ghi hai phần nối bằng dấu gạch. Phần đầu là [[thuat-ngu/ban-menh|bản mệnh]] theo [[thuat-ngu/nap-am|nạp âm]] của năm sinh, phần sau là [[thuat-ngu/cuc|cục]] của lá số.",
+        "Cục của hành Kim có tên là Kim Tứ Cục. Nếu phần sau của dòng ghi Kim Tứ Cục, lá số ấy có cục thuộc hành Kim. Cục là một khái niệm riêng, khác với hành của từng cung hay từng sao, nên trang về cục sẽ giải thích kỹ hơn."
+      ]
+    },
+    {
+      "heading": "Đặt hành Kim vào đúng chỗ",
+      "paragraphs": [
+        "Kim cũng đứng trong vòng sinh và vòng khắc của ngũ hành; bài [[bai/am-duong-ngu-hanh-co-ban|Âm dương, ngũ hành cơ bản]] đi qua hai vòng ấy từng bước.",
+        "Thấy chữ Kim ở nhiều chỗ trên lá số không có nghĩa là lá số tốt hơn hay kém đi. Hành thường được xem là một lớp sắc thái, đọc cùng sao, cung và độ sáng của sao, hơn là một lời kết luận đứng riêng."
+      ]
+    }
+  ],
+  "learnInLesson": "am-duong-ngu-hanh-co-ban",
+  "reviewedAt": "2026-11-18"
+}
