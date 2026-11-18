@@ -222,6 +222,94 @@
     },
     {
       "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "thai-am",
+      "title": "Sao Thái Âm",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "tham-lang",
+      "title": "Sao Tham Lang",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "cu-mon",
+      "title": "Sao Cự Môn",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "thien-tuong",
+      "title": "Sao Thiên Tướng",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "thien-luong",
+      "title": "Sao Thiên Lương",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "that-sat",
+      "title": "Sao Thất Sát",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "pha-quan",
+      "title": "Sao Phá Quân",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "tu-hoa",
+      "slug": "hoa-loc",
+      "title": "Hóa Lộc",
+      "learnInLesson": "tu-hoa-la-gi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "tu-hoa",
+      "slug": "hoa-quyen",
+      "title": "Hóa Quyền",
+      "learnInLesson": "tu-hoa-la-gi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "tu-hoa",
+      "slug": "hoa-khoa",
+      "title": "Hóa Khoa",
+      "learnInLesson": "tu-hoa-la-gi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "tu-hoa",
+      "slug": "hoa-ky",
+      "title": "Hóa Kỵ",
+      "learnInLesson": "tu-hoa-la-gi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
       "group": "phu-tinh",
       "slug": "ta-phu",
       "title": "Sao Tả Phù",
@@ -322,6 +410,110 @@
       "slug": "linh-tinh",
       "title": "Sao Linh Tinh",
       "learnInLesson": "phu-tinh-thuong-gap",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "cung",
+      "group": "cung",
+      "slug": "menh",
+      "title": "Cung Mệnh",
+      "learnInLesson": "12-cung-tu-vi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "cung",
+      "group": "cung",
+      "slug": "phu-mau",
+      "title": "Cung Phụ Mẫu",
+      "learnInLesson": "12-cung-tu-vi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "cung",
+      "group": "cung",
+      "slug": "phuc-duc",
+      "title": "Cung Phúc Đức",
+      "learnInLesson": "12-cung-tu-vi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "cung",
+      "group": "cung",
+      "slug": "dien-trach",
+      "title": "Cung Điền Trạch",
+      "learnInLesson": "12-cung-tu-vi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "cung",
+      "group": "cung",
+      "slug": "quan-loc",
+      "title": "Cung Quan Lộc",
+      "learnInLesson": "12-cung-tu-vi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "cung",
+      "group": "cung",
+      "slug": "no-boc",
+      "title": "Cung Nô Bộc",
+      "learnInLesson": "12-cung-tu-vi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "cung",
+      "group": "cung",
+      "slug": "thien-di",
+      "title": "Cung Thiên Di",
+      "learnInLesson": "12-cung-tu-vi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "cung",
+      "group": "cung",
+      "slug": "tat-ach",
+      "title": "Cung Tật Ách",
+      "learnInLesson": "12-cung-tu-vi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "cung",
+      "group": "cung",
+      "slug": "tai-bach",
+      "title": "Cung Tài Bạch",
+      "learnInLesson": "12-cung-tu-vi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "cung",
+      "group": "cung",
+      "slug": "tu-tuc",
+      "title": "Cung Tử Tức",
+      "learnInLesson": "12-cung-tu-vi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "cung",
+      "group": "cung",
+      "slug": "phu-the",
+      "title": "Cung Phu Thê",
+      "learnInLesson": "12-cung-tu-vi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "cung",
+      "group": "cung",
+      "slug": "huynh-de",
+      "title": "Cung Huynh Đệ",
+      "learnInLesson": "12-cung-tu-vi",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "thuat-ngu",
+      "group": "thuat-ngu",
+      "slug": "tam-hop-luc-xung",
+      "title": "Tam hợp, lục xung giữa các tuổi",
+      "learnInLesson": "tam-hop-xung-chieu",
       "reviewedAt": "2026-11-18"
     }
   ]

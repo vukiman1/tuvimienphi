@@ -1,0 +1,48 @@
+{
+  "kind": "cung",
+  "group": "cung",
+  "slug": "quan-loc",
+  "title": "Cung Quan Lộc",
+  "aliases": ["cung sự nghiệp", "cung công danh"],
+  "summary": "Cung Quan Lộc thường được xem để hiểu chuyện học hành, công việc, sự nghiệp và cách một người bắt tay vào việc của mình.",
+  "sections": [
+    {
+      "heading": "Quan Lộc là cung của việc làm",
+      "paragraphs": [
+        "Lá số có mười hai ô, mỗi ô là một cung dùng để xem một mảng của đời sống; bài [[bai/12-cung-tu-vi|12 cung trong lá số]] giới thiệu đủ cả mười hai. Quan Lộc là cung mà người xem tìm tới khi muốn hiểu về học hành, công việc và con đường sự nghiệp.",
+        "Theo nghĩa gốc, \"quan\" là chức việc, còn \"lộc\" là phần được hưởng nhờ chức việc ấy. Ngày nay, cái tên này hay được hiểu rộng hơn: không chỉ là làm quan hay giữ chức, mà là mọi thứ ta làm để góp sức và để được ghi nhận, từ chuyện đi học tới chuyện đi làm."
+      ]
+    },
+    {
+      "heading": "Cung này kể điều gì về bạn",
+      "paragraphs": [
+        "Quan Lộc thường được đọc như một bức tranh về cách bạn làm việc: bạn hợp với nhịp làm đều đặn hay thích thay đổi, quen tự mình gánh vác hay làm tốt hơn khi có người cùng đi, chú tâm vào chuyên môn hay vào việc điều phối người khác.",
+        "Cung này cũng hay được dùng để nhìn lại chuyện học: bạn tiếp thu theo lối nào, và việc học nối vào nghề ra sao. Những gì đọc được ở đây chỉ là xu hướng để bạn tự soi chiếu, không phải lời định trước cho một nghề nào."
+      ]
+    },
+    {
+      "heading": "Tìm Quan Lộc và các cung đi cùng",
+      "paragraphs": [
+        "Tính từ [[cung/menh|cung Mệnh]] là ô thứ nhất và đi thuận, Quan Lộc là cung thứ năm. Mệnh đóng ở ô nào thì Quan Lộc theo đó mà dời đi, nên mỗi lá số có Quan Lộc ở một góc khác nhau.",
+        "Quan Lộc không đứng một mình. Hai cung tam hợp với nó là [[cung/tai-bach|Tài Bạch]] và Mệnh, còn đối cung chiếu thẳng sang là [[cung/phu-the|Phu Thê]]. Cách tìm và ý nghĩa của tam hợp, xung chiếu được giảng trong bài [[bai/tam-hop-xung-chieu|Tam hợp, xung chiếu giữa các cung]].",
+        "Đặt ba cung tam hợp cạnh nhau, người xem thường thấy một mạch nối dễ hiểu: con người bạn, việc bạn làm và đồng tiền bạn kiếm được. Riêng cặp đối cung, người ta hay gợi rằng chuyện việc làm và chuyện gia đình thường soi vào nhau, nên cũng đáng được nhìn cùng."
+      ]
+    },
+    {
+      "heading": "Đọc ô Quan Lộc từ đâu",
+      "paragraphs": [
+        "Trong ô, các sao chính tô màu nhiều nhất cho cách đọc; bài [[bai/y-nghia-chinh-tinh|Ý nghĩa chính tinh]] giúp bạn làm quen với chúng. Sau đó mới tới các sao đi kèm, gọi là [[bai/phu-tinh-thuong-gap|phụ tinh]]. Nếu ô không có sao chính nào, lá số ghi là [[thuat-ngu/vo-chinh-dieu|vô chính diệu]], và cách đọc khi ấy có đôi chút khác.",
+        "Không có sao nào tự nó làm cho cung này tốt hay xấu. Mỗi sao chỉ góp một sắc thái, và sắc thái ấy cần được đặt cạnh các cung hội họp mới đủ nghĩa.",
+        "Muốn đi từng bước, từ ô Quan Lộc sang các cung liên quan rồi tới chuyện chọn lúc để chú tâm, bạn có thể theo bài [[bai/ung-dung-tu-vi-cong-viec|Tử vi trong công việc]]."
+      ]
+    },
+    {
+      "heading": "Giữ lá số ở đúng chỗ",
+      "paragraphs": [
+        "Quan Lộc gợi cho bạn những câu hỏi đáng nghĩ về nghề nghiệp, chứ không hứa thăng tiến và cũng không phán một con đường là sai. Năng lực, sự chuẩn bị và hoàn cảnh thật của bạn vẫn là thứ đáng tin hơn cả khi đưa ra quyết định."
+      ]
+    }
+  ],
+  "learnInLesson": "12-cung-tu-vi",
+  "reviewedAt": "2026-11-18"
+}
