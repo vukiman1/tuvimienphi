@@ -1,0 +1,40 @@
+{
+  "kind": "sao",
+  "group": "phu-tinh",
+  "slug": "ta-phu",
+  "title": "Sao Tả Phù",
+  "aliases": ["Tả Hữu"],
+  "summary": "Tả Phù là cát tinh hành Thổ, thường được xem là sao của sự trợ giúp: người đỡ một tay và khả năng cùng làm việc với người khác.",
+  "sections": [
+    {
+      "heading": "Tên gọi và hành của Tả Phù",
+      "paragraphs": [
+        "Tả Phù thuộc nhóm [[bai/phu-tinh-thuong-gap|phụ tinh]], tức những sao nhỏ đi kèm các sao chính trong mỗi ô của lá số. Chữ \"tả\" nghĩa là bên trái, chữ \"phù\" nghĩa là nâng đỡ. Ghép lại, tên sao gợi hình ảnh một người đứng bên cạnh để góp sức.",
+        "Tả Phù là cát tinh, mang [[thuat-ngu/hanh-tho|hành Thổ]]. Thổ là đất, gợi sự vững vàng, bao dung và đáng tin. Nét đất ấy hợp với vai trò của sao: không phô trương, nhưng làm chỗ dựa."
+      ]
+    },
+    {
+      "heading": "Sắc thái Tả Phù thêm vào một cung",
+      "paragraphs": [
+        "Theo cách đọc truyền thống, Tả Phù hay được xem là sao của sự trợ lực. Ở cung có sao này, người xem thường đọc ra những người sẵn lòng chung tay: bạn bè, đồng nghiệp, người thân, hoặc một người đi trước chịu chỉ bảo.",
+        "Về tính cách, sao này thường gắn với sự hòa nhã, rộng lượng và biết phối hợp. Khi nó nằm ở [[cung/menh|cung Mệnh]], người ta hay tả đương số là dễ gần, quen làm việc theo nhóm, biết gom mọi người quanh một việc chung. Đó là xu hướng để tham khảo, không phải lời bảo đảm rằng lúc nào cũng có người giúp; công sức của chính mình vẫn là phần chính."
+      ]
+    },
+    {
+      "heading": "Một nửa của cặp Tả Hữu",
+      "paragraphs": [
+        "Tả Phù thường được nhắc chung với [[sao/huu-bat|Hữu Bật]] thành cặp Tả Hữu, một bên trái, một bên phải, như hai cánh tay. Khi cả hai cùng có mặt quanh một cung, nét trợ giúp thường được coi là đậm hơn so với khi chỉ có một sao.",
+        "Đứng riêng, Tả Phù với nét Thổ hay được hiểu là kiểu giúp đỡ bền bỉ, có trật tự: người lo liệu, sắp xếp ở phía sau hơn là người đứng ra nói thay."
+      ]
+    },
+    {
+      "heading": "Đọc Tả Phù trên lá số của bạn",
+      "paragraphs": [
+        "Trước hết, hãy xem ô có Tả Phù thuộc cung nào; mảng đời sống mà bài [[bai/12-cung-tu-vi|12 cung trong lá số]] gắn cho cung đó là nơi nét trợ giúp được đọc vào. Các cung [[bai/tam-hop-xung-chieu|tam hợp và xung chiếu]] với ô ấy cũng góp phần vào bức tranh.",
+        "Phụ tinh chỉ tô thêm màu, nên đừng đọc Tả Phù tách riêng. Hãy đặt nó cạnh [[bai/y-nghia-chinh-tinh|chính tinh]] cùng ô: chính tinh cho nét chính, còn Tả Phù cho biết nét ấy có thêm người đồng hành hay không."
+      ]
+    }
+  ],
+  "learnInLesson": "phu-tinh-thuong-gap",
+  "reviewedAt": "2026-11-18"
+}
