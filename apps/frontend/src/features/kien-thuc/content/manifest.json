@@ -221,6 +221,62 @@
       "reviewedAt": "2026-11-18"
     },
     {
+      "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "thai-am",
+      "title": "Sao Thái Âm",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "tham-lang",
+      "title": "Sao Tham Lang",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "cu-mon",
+      "title": "Sao Cự Môn",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "thien-tuong",
+      "title": "Sao Thiên Tướng",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "thien-luong",
+      "title": "Sao Thiên Lương",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "that-sat",
+      "title": "Sao Thất Sát",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-11-18"
+    },
+    {
+      "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "pha-quan",
+      "title": "Sao Phá Quân",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-11-18"
+    },
+    {
       "kind": "cung",
       "group": "cung",
       "slug": "menh",

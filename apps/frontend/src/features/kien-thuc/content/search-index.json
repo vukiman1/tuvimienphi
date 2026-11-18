@@ -127,6 +127,13 @@
   },
   {
     "kind": "sao",
+    "slug": "cu-mon",
+    "title": "Sao Cự Môn",
+    "aliases": [],
+    "summary": "Cự Môn là chính tinh hành Thủy thuộc chòm Thiên Phủ, tên nghĩa là cửa lớn, thường gắn với lời nói, lý lẽ và óc phân tích sắc sảo."
+  },
+  {
+    "kind": "sao",
     "slug": "liem-trinh",
     "title": "Sao Liêm Trinh",
     "aliases": [],
@@ -134,10 +141,38 @@
   },
   {
     "kind": "sao",
+    "slug": "pha-quan",
+    "title": "Sao Phá Quân",
+    "aliases": [],
+    "summary": "Phá Quân là chính tinh hành Thủy thuộc chòm Thiên Phủ, thường gợi tinh thần đổi mới, dám bỏ lối cũ để làm lại, kèm nét bồn chồn khó ngồi yên."
+  },
+  {
+    "kind": "sao",
+    "slug": "thai-am",
+    "title": "Sao Thái Âm",
+    "aliases": [],
+    "summary": "Thái Âm là chính tinh hành Thủy thuộc chòm Thiên Phủ, tượng trưng cho mặt trăng, thường gợi sự dịu dàng, tinh tế và kín đáo."
+  },
+  {
+    "kind": "sao",
     "slug": "thai-duong",
     "title": "Sao Thái Dương",
     "aliases": [],
     "summary": "Thái Dương là chính tinh hành Hỏa thuộc chòm Tử Vi, tượng trưng cho mặt trời, thường gợi sự cởi mở, nhiệt thành và tinh thần san sẻ."
+  },
+  {
+    "kind": "sao",
+    "slug": "tham-lang",
+    "title": "Sao Tham Lang",
+    "aliases": [],
+    "summary": "Sao Tham Lang, hành Thủy, thuộc chòm Thiên Phủ, hay được xem là sao của ham muốn và sức hút: ham học hỏi, đa tài, thích giao thiệp."
+  },
+  {
+    "kind": "sao",
+    "slug": "that-sat",
+    "title": "Sao Thất Sát",
+    "aliases": [],
+    "summary": "Thất Sát là chính tinh hành Kim thuộc chòm Thiên Phủ, thường được xem là sao của sự quyết đoán, dám làm, thích tự lập nhưng dễ nóng vội."
   },
   {
     "kind": "sao",
@@ -155,10 +190,24 @@
   },
   {
     "kind": "sao",
+    "slug": "thien-luong",
+    "title": "Sao Thiên Lương",
+    "aliases": [],
+    "summary": "Thiên Lương là chính tinh hành Mộc thuộc chòm Thiên Phủ, hay được gọi là ấm tinh, gợi hình ảnh người lớn hiền hậu, biết che chở và khuyên bảo."
+  },
+  {
+    "kind": "sao",
     "slug": "thien-phu",
     "title": "Sao Thiên Phủ",
     "aliases": [],
     "summary": "Thiên Phủ là chính tinh hành Thổ, đứng đầu chòm Thiên Phủ; tên sao nghĩa là kho trời, thường gợi sự chu đáo, biết giữ gìn và vun vén."
+  },
+  {
+    "kind": "sao",
+    "slug": "thien-tuong",
+    "title": "Sao Thiên Tướng",
+    "aliases": [],
+    "summary": "Thiên Tướng là chính tinh hành Thủy thuộc chòm Thiên Phủ, thường gợi hình ảnh người phò tá chỉn chu, công bằng và sẵn lòng giúp người quanh mình."
   },
   {
     "kind": "sao",
