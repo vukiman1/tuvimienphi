@@ -15,6 +15,13 @@
   },
   {
     "kind": "bai",
+    "slug": "cach-xem-dai-van",
+    "title": "Cách xem đại vận",
+    "aliases": [],
+    "summary": "Đại vận là chặng mười năm, khởi ở cung Mệnh từ tuổi do cục quyết định, đi thuận hay nghịch theo âm dương. Mỗi vận được đọc như một cung."
+  },
+  {
+    "kind": "bai",
     "slug": "chom-tu-vi-va-chom-thien-phu",
     "title": "Chòm Tử Vi và chòm Thiên Phủ",
     "aliases": [],
@@ -50,10 +57,24 @@
   },
   {
     "kind": "bai",
+    "slug": "sao-thai-tue",
+    "title": "Sao Thái Tuế là gì? Thái Tuế và lưu niên",
+    "aliases": [],
+    "summary": "Thái Tuế là sao đi theo từng năm. Bài này giải thích lưu niên, phạm Thái Tuế với năm quan hệ trực, xung, hình, hại, phá, một cách điềm tĩnh."
+  },
+  {
+    "kind": "bai",
     "slug": "tam-hop-xung-chieu",
     "title": "Tam hợp, xung chiếu giữa các cung",
     "aliases": [],
     "summary": "Mỗi cung trên lá số có hai cung tam hợp và một đối cung xung chiếu. Bài này chỉ cách tìm chúng và đọc chúng cùng nhau."
+  },
+  {
+    "kind": "bai",
+    "slug": "tieu-van-hang-nam",
+    "title": "Tiểu vận hằng năm",
+    "aliases": [],
+    "summary": "Tiểu vận là cung ứng với một năm trên lá số. Bài này chỉ cách tìm cung ấy và đọc nó cùng năm bạn đang xem."
   },
   {
     "kind": "bai",

@@ -1,0 +1,49 @@
+{
+  "slug": "sao-thai-tue",
+  "step": 5,
+  "order": 3,
+  "title": "Sao Thái Tuế là gì? Thái Tuế và lưu niên",
+  "summary": "Thái Tuế là sao đi theo từng năm. Bài này giải thích lưu niên, phạm Thái Tuế với năm quan hệ trực, xung, hình, hại, phá, một cách điềm tĩnh.",
+  "sections": [
+    {
+      "heading": "Thái Tuế là gì",
+      "paragraphs": [
+        "Ở bài [[bai/tieu-van-hang-nam|Tiểu vận hằng năm]], bạn đã thấy lá số có cách đọc riêng cho từng năm. Bài này nói về một cái tên nhiều người nghe tới mỗi dịp đầu năm: Thái Tuế. Nếu bạn tìm đến đây vì đang lo lắng, hãy cứ đọc chậm, vì Thái Tuế không đáng sợ như nhiều lời truyền miệng.",
+        "Chữ \"tuế\" nghĩa là năm, nên Thái Tuế có thể hiểu là sao của năm. Mỗi năm âm lịch mang tên một [[thuat-ngu/chi|địa chi]], tức một trong mười hai chi từ Tý tới Hợi, và Thái Tuế của năm đứng đúng ở ô mang chi ấy trên lá số. Năm nào cũng có Thái Tuế, lá số nào cũng có, nên đó không phải điều gì giáng xuống riêng một người."
+      ]
+    },
+    {
+      "heading": "Lưu niên và các sao lưu niên",
+      "paragraphs": [
+        "Chữ \"lưu\" nghĩa là trôi, còn \"niên\" là năm, nên lưu niên nghĩa là theo năm đang trôi qua. Các sao lưu niên, còn gọi là lưu tinh, là một lớp sao đặt thêm lên lá số theo năm bạn chọn để xem. Lá số gốc, lập từ giờ, ngày, tháng, năm sinh, vẫn giữ nguyên; chỉ lớp sao này đổi theo từng năm.",
+        "Lá số trên trang này có mười bảy sao lưu niên: Thái Tuế, Tang Môn, Bạch Hổ, Kiếp Sát, Thiên Mã, Đào Hoa, Hồng Loan, Thiên Khốc, Thiên Hư, Nguyệt Đức, Thiên Đức, Lộc Tồn, Kình Dương, Thiên Khôi, Thiên Việt, Văn Xương và Văn Khúc. Nhiều tên bạn đã gặp ở bài [[bai/phu-tinh-thuong-gap|Phụ tinh thường gặp]], vì lá số gốc cũng có những sao cùng tên; sao gốc thuộc về lúc bạn sinh ra, còn sao lưu niên đi theo năm đang xem."
+      ]
+    },
+    {
+      "heading": "Phạm Thái Tuế nghĩa là gì",
+      "paragraphs": [
+        "Năm sinh của bạn cũng mang một chi, chính là chi trong tuổi mà bạn hay nói, như tuổi Tý hay tuổi Ngọ. Phạm Thái Tuế là khi chi năm sinh có một trong năm quan hệ với chi của năm đang xem: trực, xung, hình, hại, phá. Bạn chỉ cần đặt chi tuổi mình cạnh chi của năm rồi dò theo các câu dưới đây.",
+        "Trực là khi chi năm sinh trùng chi năm xem. Xung là khi hai chi đối nhau, cách nhau sáu ô: Tý và Ngọ, Sửu và Mùi, Dần và Thân, Mão và Dậu, Thìn và Tuất, Tị và Hợi. Hình gồm các cặp Tý và Mão, Sửu và Mùi, Sửu và Tuất, Dần và Tị, Dần và Thân, Tị và Thân, Mùi và Tuất; ngoài ra, bốn tuổi Thìn, Ngọ, Dậu, Hợi gặp năm cùng chi thì gọi là tự hình.",
+        "Hại gồm các cặp Tý và Mùi, Sửu và Ngọ, Dần và Tị, Mão và Thìn, Thân và Hợi, Dậu và Tuất. Phá gồm các cặp Tý và Dậu, Sửu và Thìn, Dần và Hợi, Mão và Ngọ, Tị và Thân, Mùi và Tuất. Một cặp có thể thuộc nhiều quan hệ cùng lúc, như Dần và Tị vừa là hình vừa là hại.",
+        "Lấy ví dụ một năm có chi Ngọ. Tuổi Tý gặp xung, tuổi Sửu gặp hại, tuổi Mão gặp phá, còn tuổi Ngọ gặp cả trực lẫn hình. Các tuổi còn lại không có quan hệ nào trong năm quan hệ trên với năm ấy."
+      ]
+    },
+    {
+      "heading": "Tìm sao lưu niên trên lá số",
+      "paragraphs": [
+        "Phía trên lá số có ô chọn Năm xem, và ô giữa lá số cũng ghi dòng Năm xem. Đổi năm ở đây thì cả lớp sao lưu niên dời theo, còn các sao gốc đứng yên.",
+        "Trên bảng đầy đủ ở màn hình rộng, sao lưu niên nằm ở một hàng riêng bên dưới các phụ tinh, mỗi tên có chữ L. phía trước, như L.Thái Tuế hay L.Lộc Tồn. Ở chế độ Gọn, bảng chỉ giữ vài sao lưu niên hay được nhắc tới; muốn thấy L.Thái Tuế, bạn chọn Đủ sao. Hàng có chữ ĐV. phía trước thì thuộc về [[bai/cach-xem-dai-van|đại vận]].",
+        "Góc dưới bên phải mỗi ô còn có một nhãn bắt đầu bằng LN., như LN.MỆNH hay LN.TÀI, ghi tên cung mà ô đó mang trong năm đang xem. Trên màn hình hẹp, bạn bấm vào một cung để mở phần chi tiết; sao lưu niên của cung ấy nằm ở mục mang tên năm đang xem, ví dụ \"Năm 2027\"."
+      ]
+    },
+    {
+      "heading": "Một lời nhắc để chú tâm",
+      "paragraphs": [
+        "Nằm trong một quan hệ với Thái Tuế không có nghĩa là năm ấy sẽ có điều không hay. Trang này không bày lễ, vật phẩm hay lời hứa nào; ở đây, phạm Thái Tuế được xem như một lời nhắc sống chú tâm hơn trong năm. Thái Tuế cũng chỉ là một lớp trong bức tranh: muốn đọc một năm, người xem đặt lớp lưu niên cạnh lá số gốc, đại vận và tiểu vận, rồi mới cân nhắc.",
+        "Năm nào cũng có vài tuổi phạm Thái Tuế, và năm nào bạn cũng vẫn là người chọn cách mình sống. Bài sau, [[bai/ung-dung-tu-vi-cong-viec|Tử vi trong công việc]], sẽ cho bạn thấy cách dùng lá số để soi chiếu chuyện công việc hằng ngày."
+      ]
+    }
+  ],
+  "readingMinutes": 5,
+  "reviewedAt": "2026-11-18"
+}
