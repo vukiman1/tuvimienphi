@@ -57,7 +57,29 @@
     {
       "step": 3,
       "title": "Chính tinh",
-      "lessons": []
+      "lessons": [
+        {
+          "slug": "y-nghia-chinh-tinh",
+          "order": 1,
+          "title": "Ý nghĩa chính tinh",
+          "readingMinutes": 4,
+          "reviewedAt": "2026-11-18"
+        },
+        {
+          "slug": "chom-tu-vi-va-chom-thien-phu",
+          "order": 2,
+          "title": "Chòm Tử Vi và chòm Thiên Phủ",
+          "readingMinutes": 5,
+          "reviewedAt": "2026-11-18"
+        },
+        {
+          "slug": "mieu-vuong-dac-binh-ham",
+          "order": 3,
+          "title": "Miếu, vượng, đắc, bình, hãm",
+          "readingMinutes": 5,
+          "reviewedAt": "2026-11-18"
+        }
+      ]
     },
     {
       "step": 4,

@@ -1,0 +1,52 @@
+{
+  "slug": "mieu-vuong-dac-binh-ham",
+  "step": 3,
+  "order": 3,
+  "title": "Miếu, vượng, đắc, bình, hãm",
+  "summary": "Miếu, vượng, đắc địa, bình hòa, hãm là năm bậc cho biết một sao thể hiện bản chất của mình rõ hay nhẹ ở từng cung trên lá số.",
+  "sections": [
+    {
+      "heading": "Cùng một sao, mỗi nơi một vẻ",
+      "paragraphs": [
+        "Ở bài [[bai/chom-tu-vi-va-chom-thien-phu|Chòm Tử Vi và chòm Thiên Phủ]], bạn đã thấy các sao chính, gọi là [[bai/y-nghia-chinh-tinh|chính tinh]], được an vào lá số theo từng nhóm. Bài này đi tiếp một câu hỏi: cùng một sao, khi nằm ở những ô khác nhau, có giống hệt nhau không?",
+        "Câu trả lời của tử vi là không. Mỗi ô trên lá số gắn với một [[thuat-ngu/chi|địa chi]], tức một trong mười hai chi từ Tý tới Hợi. Ở chi này, một sao bộc lộ nét riêng của nó rất rõ; ở chi khác, nét ấy hiện ra nhạt hơn. Mức độ đó được chia thành năm bậc, gọi chung là bậc của sao.",
+        "Bạn có thể hình dung một người làm việc ở nhiều nơi. Có chỗ hợp với họ, họ làm việc tự nhiên và thoải mái; có chỗ lạ lẫm hơn, họ vẫn là chính mình nhưng ít bộc lộ hơn. Bậc của sao cũng vậy: nó không đổi bản chất của sao, chỉ cho biết sao thể hiện bản chất ấy mạnh hay nhẹ ở nơi nó đứng."
+      ]
+    },
+    {
+      "heading": "Năm bậc nghĩa là gì",
+      "paragraphs": [
+        "Năm bậc xếp từ mạnh tới nhẹ như sau. Miếu là bậc cao nhất: sao ở đúng chỗ hợp với mình, bộc lộ bản chất đầy đủ nhất. Vượng đứng ngay sau, sao vẫn sáng rõ và mạnh mẽ. Đắc địa, nghĩa là được đất, cho biết sao ở một nơi thuận và thể hiện mình khá rõ ràng.",
+        "Bình hòa, nghĩa là bình thường, hòa hoãn, là bậc ở giữa: sao không được nâng lên mà cũng không bị kìm lại. Hãm, nghĩa gốc là bị lún xuống, là bậc nhẹ nhất: sao ở nơi khó bộc lộ mình, nên nét riêng của nó hiện ra yếu và kém trọn vẹn hơn.",
+        "Vì thế, hãm không có nghĩa là điều không may chắc chắn sẽ tới, và miếu cũng không phải lời hứa rằng mọi việc đều thuận. Bậc chỉ trả lời một câu hỏi: ý nghĩa vốn có của sao hiện ra rõ tới đâu ở chỗ nó đứng."
+      ]
+    },
+    {
+      "heading": "Ví dụ: Thái Dương và Thái Âm",
+      "paragraphs": [
+        "Hai sao [[sao/thai-duong|Thái Dương]] và [[sao/thai-am|Thái Âm]] cho thấy rất rõ chuyện bậc đổi theo chi. Thái Dương, sao tượng trưng cho mặt trời, miếu tại Tị và Ngọ, vượng tại Dần, Mão, Thìn, đắc địa tại Sửu và Mùi. Ở Thân, Dậu, Tuất, Hợi và Tý, Thái Dương đều hãm.",
+        "Thái Âm, sao tượng trưng cho mặt trăng, miếu tại Dậu, Tuất, Hợi, vượng tại Thân và Tý, đắc địa tại Sửu và Mùi. Ở Dần, Mão, Thìn, Tị và Ngọ, Thái Âm đều hãm.",
+        "Đặt hai dãy cạnh nhau, bạn sẽ thấy chúng gần như đối nhau: chi nào Thái Dương hãm thì ở đó Thái Âm vượng hoặc miếu, và ngược lại. Riêng ở Sửu và Mùi, cả hai sao cùng đắc địa.",
+        "Một người có Thái Dương tại Ngọ và một người có Thái Dương tại Tý cùng mang một sao. Ở người thứ nhất, nét của sao hiện ra đậm; ở người thứ hai, nét ấy kín đáo hơn. Không ai hơn ai, đó chỉ là hai cách cùng một sao lên tiếng."
+      ]
+    },
+    {
+      "heading": "Đọc chữ bậc trên lá số",
+      "paragraphs": [
+        "Trên lá số của trang này, khi xem bảng đầy đủ trên màn hình rộng, bậc được ghi bằng một chữ cái đặt trong ngoặc đơn ngay sau tên sao: M là miếu, V là vượng, Đ là đắc địa, B là bình hòa, H là hãm. Chẳng hạn, ô có Thái Dương tại Ngọ sẽ ghi tên THÁI DƯƠNG kèm (M) ở ngay sau.",
+        "Ngay dưới lá số có một dòng chú thích nhắc lại năm chữ cái này, nên bạn không cần học thuộc. Trên màn hình hẹp, các ô được thu gọn và chỉ ghi tên sao. Khi đó, bạn bấm vào một cung để mở phần chi tiết, nơi bậc của mỗi chính tinh được ghi bằng chữ, đặt cạnh tên sao.",
+        "Chữ bậc không chỉ đi với chính tinh. Trên bảng đầy đủ, một số [[bai/phu-tinh-thuong-gap|phụ tinh]], tức những sao đi kèm, cũng có chữ trong ngoặc sau tên. Cách đọc giống hệt: chữ cái cho biết sao ấy thể hiện mạnh hay nhẹ ở chi đó."
+      ]
+    },
+    {
+      "heading": "Có sao không mang bậc nào",
+      "paragraphs": [
+        "Không phải sao nào cũng có chữ bậc. Nhiều sao trên lá số chỉ ghi tên, không kèm chữ cái nào trong ngoặc. Đó không phải là thiếu sót: những sao ấy đơn giản là không được xếp bậc.",
+        "Với các sao như vậy, bạn đừng tự gán cho chúng chữ miếu hay hãm. Cứ đọc ý nghĩa của sao như bình thường, rồi đặt nó cạnh các sao khác trong cùng cung.",
+        "Khi đã quen với năm chữ cái, nhìn một ô bạn sẽ thấy ngay sao nào đang hiện rõ, sao nào đang nhẹ hơn. Bài sau sẽ giới thiệu những phụ tinh thường gặp, để bạn đọc được thêm các sao nhỏ nằm quanh chính tinh trong mỗi ô."
+      ]
+    }
+  ],
+  "readingMinutes": 5,
+  "reviewedAt": "2026-11-18"
+}

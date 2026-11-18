@@ -15,6 +15,13 @@
   },
   {
     "kind": "bai",
+    "slug": "chom-tu-vi-va-chom-thien-phu",
+    "title": "Chòm Tử Vi và chòm Thiên Phủ",
+    "aliases": [],
+    "summary": "Mười bốn chính tinh chia làm hai nhóm: chòm Tử Vi sáu sao và chòm Thiên Phủ tám sao, hai chòm soi gương nhau qua trục Dần – Thân."
+  },
+  {
+    "kind": "bai",
     "slug": "cung-menh-va-cung-than",
     "title": "Cung Mệnh và cung Thân",
     "aliases": [],
@@ -29,6 +36,13 @@
   },
   {
     "kind": "bai",
+    "slug": "mieu-vuong-dac-binh-ham",
+    "title": "Miếu, vượng, đắc, bình, hãm",
+    "aliases": [],
+    "summary": "Miếu, vượng, đắc địa, bình hòa, hãm là năm bậc cho biết một sao thể hiện bản chất của mình rõ hay nhẹ ở từng cung trên lá số."
+  },
+  {
+    "kind": "bai",
     "slug": "tam-hop-xung-chieu",
     "title": "Tam hợp, xung chiếu giữa các cung",
     "aliases": [],
@@ -40,5 +54,12 @@
     "title": "Tử vi là gì",
     "aliases": [],
     "summary": "Tử vi soi chiếu bản thân qua lá số lập từ giờ, ngày, tháng, năm sinh âm lịch và giới tính, giúp ta hiểu mình hơn chứ không phán số mệnh."
+  },
+  {
+    "kind": "bai",
+    "slug": "y-nghia-chinh-tinh",
+    "title": "Ý nghĩa chính tinh",
+    "aliases": [],
+    "summary": "Chính tinh là mười bốn sao chính trên lá số. Bài này giới thiệu nét chính của từng sao và cách nhận ra chúng trên bảng."
   }
 ]
