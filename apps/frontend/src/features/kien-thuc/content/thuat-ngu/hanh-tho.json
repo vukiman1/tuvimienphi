@@ -1,0 +1,45 @@
+{
+  "kind": "thuat-ngu",
+  "group": "ngu-hanh",
+  "slug": "hanh-tho",
+  "title": "Hành Thổ",
+  "aliases": [],
+  "summary": "Hành Thổ là hành mang nghĩa gốc là đất. Thổ giữ bốn chi Sửu, Thìn, Mùi, Tuất, nhiều nhất trong năm hành, và có cục riêng là Thổ Ngũ Cục.",
+  "sections": [
+    {
+      "heading": "Thổ nghĩa là đất",
+      "paragraphs": [
+        "Thổ là chữ Hán Việt có nghĩa là đất. Cách đọc lá số theo [[bai/tu-vi-la-gi|tử vi]] quy chi, cung và sao về năm hành, gọi chung là ngũ hành, và hành Thổ là một trong năm hành đó. Chữ đất ở đây chủ yếu để gợi hình; khi đọc lá số, Thổ hay được hiểu là tên một nhóm hơn là một thứ cầm nắm được."
+      ]
+    },
+    {
+      "heading": "Bốn chi, nhiều hơn mọi hành khác",
+      "paragraphs": [
+        "Mười hai [[thuat-ngu/chi|địa chi]] được chia cho năm hành, nhưng không chia đều. Hành Thổ nhận bốn chi: Sửu, Thìn, Mùi, Tuất. Mỗi hành còn lại chỉ có hai chi, nên Thổ là hành đông chi nhất.",
+        "Cung lấy hành theo chi nơi nó đóng, vì thế mỗi lá số có bốn trong [[bai/12-cung-tu-vi|mười hai cung]] mang hành Thổ, tức một phần ba số cung. Cung đóng tại Sửu, Thìn, Mùi hay Tuất đều thuộc Thổ, bất kể đó là cung gì."
+      ]
+    },
+    {
+      "heading": "Mỗi cạnh bàn lá số một ô",
+      "paragraphs": [
+        "Trên bàn lá số của trang này, bốn ô Thổ rải quanh vòng ngoài, mỗi cạnh một ô và không ô nào nằm ở góc. Ô Mùi ở hàng trên cùng, thứ ba tính từ trái. Ô Tuất ở cột phải, ngay trên ô góc dưới. Ô Sửu ở hàng dưới cùng, thứ hai tính từ trái. Ô Thìn ở cột trái, ngay dưới ô góc trên.",
+        "Khi bàn hiện ở khổ rộng, mỗi ô ghi hành của cung ngay dưới can chi ở góc trái, có một dấu cộng hoặc trừ đứng trước. Ở bốn ô vừa kể, chữ ấy là Thổ."
+      ]
+    },
+    {
+      "heading": "Thổ Ngũ Cục ở ô giữa",
+      "paragraphs": [
+        "Hành Thổ còn có một [[thuat-ngu/cuc|cục]] mang tên mình là Thổ Ngũ Cục. Ở ô giữa lá số, dòng Bản mệnh có hai vế nối bằng dấu gạch: vế đầu là [[thuat-ngu/ban-menh|bản mệnh]], vế sau là cục. Khi vế sau ghi Thổ Ngũ Cục, cục của lá số ấy thuộc hành Thổ.",
+        "Bốn ô Thổ thì lá số nào cũng có, còn cục thay đổi theo từng người. Đây là hai lớp riêng, nên bạn đọc chúng tách nhau."
+      ]
+    },
+    {
+      "heading": "Đếm ô Thổ không nói lên nhiều",
+      "paragraphs": [
+        "Vì lá số nào cũng có đúng bốn cung Thổ, con số ấy không giúp phân biệt người này với người kia. Hành thường được xem là một lớp nền, chỉ rõ nghĩa khi đặt cạnh các sao trong cung. Thổ sinh và khắc với các hành khác ra sao, bài [[bai/am-duong-ngu-hanh-co-ban|Âm dương, ngũ hành cơ bản]] trình bày qua hai vòng."
+      ]
+    }
+  ],
+  "learnInLesson": "am-duong-ngu-hanh-co-ban",
+  "reviewedAt": "2026-11-18"
+}

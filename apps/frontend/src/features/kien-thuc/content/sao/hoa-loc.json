@@ -1,0 +1,41 @@
+{
+  "kind": "sao",
+  "group": "tu-hoa",
+  "slug": "hoa-loc",
+  "title": "Hóa Lộc",
+  "aliases": [],
+  "summary": "Hóa Lộc là cát tinh hành Mộc, đứng đầu tứ hóa, thường được đọc là nét thông suốt, nguồn lực dễ đến và việc dễ có đà ở cung nó đứng.",
+  "sections": [
+    {
+      "heading": "Một trong bốn hóa",
+      "paragraphs": [
+        "Hóa Lộc là sao đầu tiên trong [[bai/tu-hoa-la-gi|tứ hóa]], nhóm bốn sao không có chỗ đứng riêng mà bám vào một sao sẵn có trên lá số. Ba hóa còn lại có trang riêng: [[sao/hoa-quyen|Hóa Quyền]], [[sao/hoa-khoa|Hóa Khoa]] và [[sao/hoa-ky|Hóa Kỵ]].",
+        "Hóa Lộc là cát tinh, thuộc [[thuat-ngu/hanh-moc|hành Mộc]]. Mộc là cây cối đang lớn, đâm chồi và vươn dần ra, gợi sức sinh sôi. Chữ \"lộc\" thường được hiểu là bổng lộc, nhưng khi đọc lá số, người xem hay hiểu rộng hơn: dòng chảy, nguồn lực và sự trôi chảy của công việc."
+      ]
+    },
+    {
+      "heading": "Can năm sinh chọn sao nhận Hóa Lộc",
+      "paragraphs": [
+        "Sao nào nhận Hóa Lộc là do [[thuat-ngu/can|thiên can]] của năm sinh, tức chữ đầu trong tên năm âm lịch. Theo bảng trang này dùng: năm Giáp, [[sao/liem-trinh|Liêm Trinh]] hóa Lộc; năm Ất, [[sao/thien-co|Thiên Cơ]] hóa Lộc; năm Bính, [[sao/thien-dong|Thiên Đồng]] hóa Lộc; năm Đinh, [[sao/thai-am|Thái Âm]] hóa Lộc; năm Mậu, [[sao/tham-lang|Tham Lang]] hóa Lộc; năm Kỷ, [[sao/vu-khuc|Vũ Khúc]] hóa Lộc; năm Canh, [[sao/thai-duong|Thái Dương]] hóa Lộc; năm Tân, [[sao/cu-mon|Cự Môn]] hóa Lộc; năm Nhâm, [[sao/thien-luong|Thiên Lương]] hóa Lộc; năm Quý, [[sao/pha-quan|Phá Quân]] hóa Lộc.",
+        "Riêng hàng Canh, các trường phái không ghép giống nhau. Lá số ở đây theo đúng bảng vừa kể, nên nếu so với sách khác mà thấy lệch ở năm Canh, đó là chỗ các phái chưa thống nhất chứ không phải lá số bị lập sai."
+      ]
+    },
+    {
+      "heading": "Nét thuận dòng mà Hóa Lộc mang theo",
+      "paragraphs": [
+        "Người xưa hay ví Hóa Lộc với dòng nước chảy thông. Nơi nó đứng, việc thường dễ có đà hơn, nguồn lực dễ tìm đến hơn, các mối quan hệ dễ trơn tru hơn. Đó là sự thuận dòng, không phải lời hứa sẽ có tiền hay gặp may; thuận lợi vẫn cần người trong cuộc nắm lấy và vun đắp.",
+        "Sao nhận hóa vẫn giữ tính chất của mình, Hóa Lộc chỉ làm nét ấy mềm và thông hơn. Một sao thiên về suy tính khi hóa Lộc thường được đọc là ý tưởng dễ được đón nhận; một sao thiên về giao thiệp thì các mối quen biết thường được đọc là cởi mở hơn.",
+        "Cung chứa sao cũng góp phần. Tại [[cung/tai-bach|cung Tài Bạch]], người xem hay đọc là chuyện xoay xở tiền bạc bớt gượng ép; tại [[cung/quan-loc|cung Quan Lộc]], công việc thường được tả là có đà và có người tiếp sức. Các cung [[bai/tam-hop-xung-chieu|chiếu về]] cũng được đặt cạnh để đọc cho trọn."
+      ]
+    },
+    {
+      "heading": "Hóa Lộc nằm ở ô nào trên lá số của bạn",
+      "paragraphs": [
+        "Lá số đã ghi sẵn Hóa Lộc vào ô của sao nhận hóa, nên bạn không cần tự tra. Trên màn hình rộng, nó nằm ở cột phụ tinh bên trái của ô; trên màn hình hẹp, bấm vào từng cung để xem danh sách sao trong cung ấy. Tên cung của ô đó cho biết nét thông suốt đang nói về mảng đời sống nào.",
+        "Nếu thấy một Hóa Lộc có chữ ĐV. phía trước, đó là hóa của [[bai/cach-xem-dai-van|đại vận]], chủ đề có bài riêng. Muốn đọc cả lá số theo thứ tự, bạn có thể bắt đầu từ bài [[bai/doc-la-so-cua-chinh-ban|Đọc lá số của chính bạn]]."
+      ]
+    }
+  ],
+  "learnInLesson": "tu-hoa-la-gi",
+  "reviewedAt": "2026-11-18"
+}
