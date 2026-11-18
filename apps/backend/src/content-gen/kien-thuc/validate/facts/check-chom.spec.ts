@@ -1,7 +1,7 @@
 import { ContentKind } from '@org/shared-contracts';
 import type { SaoName } from '@org/shared-tu-vi';
 import { checkChom } from './check-chom';
-import type { FactSubject } from './fact-subject';
+import { ClaimStatus, type FactSubject } from './fact-subject';
 
 function sao(star: SaoName): FactSubject {
   return { kind: ContentKind.Sao, star };
@@ -31,5 +31,14 @@ describe('checkChom', () => {
 
   it('binds to the entry star', () => {
     expect(checkChom('Sao này đứng trong chòm Tử Vi.', sao('Phá Quân')).violations).toHaveLength(1);
+  });
+
+  it('does not bind a chòm claim about another star to the entry star', () => {
+    const { violations, claims } = checkChom(
+      'Nếu ô ấy có thêm một chính tinh khác, sao đi cùng thuộc chòm Thiên Phủ.',
+      sao('Thiên Cơ'),
+    );
+    expect(violations).toEqual([]);
+    expect(claims[0].status).toBe(ClaimStatus.Skipped);
   });
 });

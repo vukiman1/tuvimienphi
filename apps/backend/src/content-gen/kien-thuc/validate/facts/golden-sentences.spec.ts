@@ -54,6 +54,9 @@ const GOLDEN: readonly { readonly subject: FactSubject; readonly sentence: strin
     sentence:
       'Mệnh, Tài Bạch, Quan Lộc là một bộ tam hợp, còn Phụ Mẫu, Tật Ách, Tử Tức là bộ khác.',
   },
+  { subject: null, sentence: 'Năm Đinh, Hóa Lộc ở Thái Âm, Hóa Quyền ở Thiên Đồng.' },
+  { subject: sao('Địa Không'), sentence: 'Địa Không đắc địa ở Dần, Tị, Thân, Hợi và hãm ở Tý.' },
+  { subject: sao('Thiên Cơ'), sentence: 'Sao đi cùng thuộc chòm Thiên Phủ.' },
 ];
 
 describe('golden sentences', () => {

@@ -45,7 +45,7 @@ export function claimClausesOf(
   for (const clause of splitClauses(plainText)) {
     if (seen.has(clause)) continue;
     const normalized = normalize(clause);
-    if (!CLAIM_WORDS.some((word) => normalized.includes(word))) continue;
+    if (!reported.has(clause) && !CLAIM_WORDS.some((word) => normalized.includes(word))) continue;
     seen.add(clause);
     const claims = reported.get(clause) ?? [];
     const checked = claims.find((claim) => claim.status === ClaimStatus.Checked);

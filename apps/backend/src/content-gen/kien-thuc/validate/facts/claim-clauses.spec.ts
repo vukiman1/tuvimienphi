@@ -18,4 +18,14 @@ describe('claimClausesOf', () => {
     expect(listed[0].status).toBe(ClaimStatus.Skipped);
     expect(listed[1].status).toBe(ClaimStatus.Checked);
   });
+
+  it('lists a clause a checker read even without a claim word', () => {
+    const clause = 'Năm Giáp, Liêm Trinh nhận Hóa Lộc.';
+    const results: readonly FactCheckResult[] = [
+      { violations: [], claims: [checkedClaim(clause)] },
+    ];
+    const listed = claimClausesOf(clause, results);
+    expect(listed).toHaveLength(1);
+    expect(listed[0].status).toBe(ClaimStatus.Checked);
+  });
 });
