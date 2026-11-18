@@ -1,0 +1,41 @@
+{
+  "kind": "cung",
+  "group": "cung",
+  "slug": "tat-ach",
+  "title": "Cung Tật Ách",
+  "aliases": ["cung sức khỏe"],
+  "summary": "Cung Tật Ách thường được xem là mảng thân thể, sức lực và nếp sinh hoạt hằng ngày, những điều mỗi người nên để ý và chăm lo cho chính mình.",
+  "sections": [
+    {
+      "heading": "Một cung về thân thể và thói quen",
+      "paragraphs": [
+        "Tật Ách là một trong mười hai cung của lá số; mỗi cung ứng với một mảng đời sống, như bài [[bai/12-cung-tu-vi|12 cung trong lá số]] đã giới thiệu. Cái tên nghe có phần nặng, vì \"tật\" gợi những lúc trong người không được khỏe, còn \"ách\" gợi những trở ngại. Ngày nay, người xem thường hiểu cung này nhẹ nhàng hơn: đây là mảng thân thể, sức lực và nếp sinh hoạt mà ai cũng nên chăm lo.",
+        "Khi mở ô Tật Ách, câu hỏi hữu ích không phải là \"mình sẽ gặp chuyện gì\", mà là \"mình nên để ý điều gì\". Cung này hay được dùng để nói về nhịp nghỉ ngơi, cách bạn dùng sức và những thói quen nhỏ lặp lại mỗi ngày. Đó đều là những điều bạn có thể tự điều chỉnh."
+      ]
+    },
+    {
+      "heading": "Vị trí trên vành mười hai ô",
+      "paragraphs": [
+        "Coi [[cung/menh|cung Mệnh]] là ô thứ nhất rồi đếm thuận, Tật Ách là cung thứ tám. Vì Mệnh của mỗi người đóng một chỗ, ô Tật Ách cũng nằm ở góc khác nhau trên từng lá số; bạn chỉ cần tìm đúng tên cung trên bảng của mình.",
+        "Ô nằm thẳng phía bên kia và chiếu sang, tức đối cung, là [[cung/phu-mau|Phụ Mẫu]]. Phụ Mẫu là cung về cha mẹ, bề trên và nếp nhà nơi bạn lớn lên. Nếp sống thuở nhỏ thường theo ta khá lâu, nên người xem hay đặt hai ô này cạnh nhau khi đọc.",
+        "Hai cung tam hợp, tức hai cung cùng nhóm ba, là [[cung/huynh-de|Huynh Đệ]] và [[cung/dien-trach|Điền Trạch]]. Huynh Đệ nói về anh chị em và những người thân như anh em. Điền Trạch nói về nhà cửa và không khí trong nhà. Cách nhận ra các cung này trên bảng có trong bài [[bai/tam-hop-xung-chieu|Tam hợp, xung chiếu giữa các cung]]."
+      ]
+    },
+    {
+      "heading": "Các sao tô màu cho ô này",
+      "paragraphs": [
+        "Tên cung chỉ cho biết đang nói tới mảng nào. Sắc thái của ô đến từ những sao đóng ở đó: trước hết là sao chính, được giới thiệu trong bài [[bai/y-nghia-chinh-tinh|Ý nghĩa chính tinh]], rồi tới các [[bai/phu-tinh-thuong-gap|phụ tinh]] đi kèm. Nếu ô không có sao chính nào, bảng sẽ ghi [[thuat-ngu/vo-chinh-dieu|vô chính diệu]].",
+        "Đừng lấy một ngôi sao riêng lẻ để kết luận. Mỗi sao chỉ thêm một nét, và nét ấy cần được đặt bên đối cung cùng hai cung tam hợp thì mới có chỗ trong bức tranh chung. Gặp chữ nào khiến bạn lo, hãy hiểu đó là lời nhắc nên giữ gìn sức khỏe, không phải một lời phán."
+      ]
+    },
+    {
+      "heading": "Lá số không phải một lần khám",
+      "paragraphs": [
+        "Lá số được lập từ giờ, ngày, tháng, năm sinh, nên nó không đo được thân thể bạn lúc này. Những gì đọc ở Tật Ách chỉ là gợi ý để bạn nhìn lại thói quen của mình, không thay cho việc khám sức khỏe.",
+        "Khi có điều gì băn khoăn về sức khỏe, người nên hỏi là bác sĩ chứ không phải lá số. Còn cung này, bạn cứ dùng như một lời nhắc nhẹ: ngủ đủ giấc, ăn uống điều độ, vận động vừa sức và dành thời gian cho mình nghỉ ngơi."
+      ]
+    }
+  ],
+  "learnInLesson": "12-cung-tu-vi",
+  "reviewedAt": "2026-11-18"
+}

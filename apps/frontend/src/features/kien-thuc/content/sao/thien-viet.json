@@ -1,0 +1,40 @@
+{
+  "kind": "sao",
+  "group": "phu-tinh",
+  "slug": "thien-viet",
+  "title": "Sao Thiên Việt",
+  "aliases": ["Khôi Việt"],
+  "summary": "Thiên Việt, thường gọi là quý nhân ban đêm, gợi sự giúp đỡ kín đáo đến từ phía sau và góp thêm nét thuận cho cung có sao.",
+  "sections": [
+    {
+      "heading": "Một sao nhỏ mang nghĩa vượt qua",
+      "paragraphs": [
+        "Thiên Việt thuộc nhóm [[bai/phu-tinh-thuong-gap|phụ tinh]] hay gặp, tức những sao đi kèm, tô thêm sắc thái bên cạnh sao chính của một cung. Chữ \"việt\" có nghĩa là vượt qua, như trong từ \"siêu việt\".",
+        "Thiên Việt là cát tinh. Sao mang [[thuat-ngu/hanh-hoa|hành Hỏa]], nhưng theo lối hình dung quen thuộc, ngọn lửa ấy giống một chiếc đèn hơn là ánh mặt trời: không chói, chỉ đủ soi lối khi trời tối."
+      ]
+    },
+    {
+      "heading": "Quý nhân đến từ phía sau",
+      "paragraphs": [
+        "Trong cách đọc truyền thống, Thiên Việt hay được xem là sao quý nhân, nghĩa là sao gợi những người xuất hiện để giúp mình vượt một chỗ khó. Nét riêng của sao này nằm ở cách sự giúp đỡ đến: thường lặng lẽ, qua một lời giới thiệu, một cái gật đầu sau hậu trường, có khi từ người mình không ngờ tới.",
+        "Sao cũng hay được gắn với sự nhanh nhạy, biết nắm lấy cơ hội lúc nó vừa hé ra. Dù vậy, đó chỉ là xu hướng để tham khảo; không ai nên đọc nó như lời hứa rằng lúc nào cũng có người đỡ."
+      ]
+    },
+    {
+      "heading": "Ngày và đêm của cặp quý nhân",
+      "paragraphs": [
+        "Thiên Việt đi thành cặp với [[sao/thien-khoi|Thiên Khôi]], và cả hai cùng hành Hỏa. Nhiều sách gọi Thiên Việt là quý nhân ban đêm, đối lại với quý nhân ban ngày.",
+        "Nói nôm na, nếu ở sao ban ngày sự nâng đỡ hiện ra công khai, thì ở Thiên Việt nó hay đi đường vòng, ít người nhìn thấy. Hai lối đều được xem là quý nhân, chỉ khác cách xuất hiện."
+      ]
+    },
+    {
+      "heading": "Khi gặp Thiên Việt trong lá số của bạn",
+      "paragraphs": [
+        "Muốn biết sao này nói về mảng nào, hãy xem ô chứa nó là cung nào trong [[bai/12-cung-tu-vi|12 cung]]. Mỗi cung phụ trách một phần đời sống, như công việc, tiền bạc hay gia đình, nên nét quý nhân kín đáo được hiểu theo phần ấy.",
+        "Là sao phụ, Thiên Việt nên được đặt cạnh chính tinh cùng ô và các sao chung quanh rồi mới kết luận. Nếu cần một trình tự từng bước, bài [[bai/doc-la-so-cua-chinh-ban|Đọc lá số của chính bạn]] là chỗ khởi đầu dễ theo."
+      ]
+    }
+  ],
+  "learnInLesson": "phu-tinh-thuong-gap",
+  "reviewedAt": "2026-11-18"
+}

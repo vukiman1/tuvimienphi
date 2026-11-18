@@ -127,6 +127,83 @@
   },
   {
     "kind": "sao",
+    "slug": "cu-mon",
+    "title": "Sao Cự Môn",
+    "aliases": [],
+    "summary": "Cự Môn là chính tinh hành Thủy thuộc chòm Thiên Phủ, tên nghĩa là cửa lớn, thường gắn với lời nói, lý lẽ và óc phân tích sắc sảo."
+  },
+  {
+    "kind": "sao",
+    "slug": "da-la",
+    "title": "Sao Đà La",
+    "aliases": [],
+    "summary": "Đà La là hung tinh hành Kim, thường được hiểu là nhịp chậm, sự bền bỉ và những việc phải qua nhiều vòng mới xong."
+  },
+  {
+    "kind": "sao",
+    "slug": "dia-khong",
+    "title": "Sao Địa Không",
+    "aliases": ["Không Kiếp"],
+    "summary": "Địa Không là hung tinh hành Hỏa, thường gắn với ý tưởng đi trước thực tế, lối nghĩ khác thường và sự hướng về đời sống tinh thần."
+  },
+  {
+    "kind": "sao",
+    "slug": "dia-kiep",
+    "title": "Sao Địa Kiếp",
+    "aliases": ["Không Kiếp"],
+    "summary": "Địa Kiếp là hung tinh hành Hỏa, thường gắn với những bước ngoặt đến nhanh, lối dồn sức vào một lần và kế hoạch hay đổi hướng."
+  },
+  {
+    "kind": "sao",
+    "slug": "hoa-khoa",
+    "title": "Hóa Khoa",
+    "aliases": [],
+    "summary": "Hóa Khoa là cát tinh hành Thủy trong bộ tứ hóa, thường gợi việc học, tiếng tốt và sự điềm tĩnh ở cung có sao nhận hóa."
+  },
+  {
+    "kind": "sao",
+    "slug": "hoa-ky",
+    "title": "Hóa Kỵ",
+    "aliases": ["Hóa Kị"],
+    "summary": "Hóa Kỵ là hóa thứ tư trong tứ hóa, hành Thủy, thường được đọc là chỗ dễ vướng mắc, dễ trăn trở, cần để tâm hơn ở cung có sao nhận hóa."
+  },
+  {
+    "kind": "sao",
+    "slug": "hoa-loc",
+    "title": "Hóa Lộc",
+    "aliases": [],
+    "summary": "Hóa Lộc là cát tinh hành Mộc, đứng đầu tứ hóa, thường được đọc là nét thông suốt, nguồn lực dễ đến và việc dễ có đà ở cung nó đứng."
+  },
+  {
+    "kind": "sao",
+    "slug": "hoa-quyen",
+    "title": "Hóa Quyền",
+    "aliases": [],
+    "summary": "Hóa Quyền là một trong tứ hóa, gợi sự chủ động, tinh thần nhận trách nhiệm và sức ảnh hưởng của sao mà nó bám vào trên lá số."
+  },
+  {
+    "kind": "sao",
+    "slug": "hoa-tinh",
+    "title": "Sao Hỏa Tinh",
+    "aliases": ["Hỏa Linh"],
+    "summary": "Hỏa Tinh là hung tinh hành Hỏa, thường gợi tính nóng nảy, những đợt hăng hái bất chợt và các chuyển biến đến nhanh ở cung sao đứng."
+  },
+  {
+    "kind": "sao",
+    "slug": "huu-bat",
+    "title": "Sao Hữu Bật",
+    "aliases": ["Tả Hữu"],
+    "summary": "Hữu Bật là cát tinh hành Thủy, hay được xem là sao của sự phụ giúp khéo léo, mềm mỏng, đến từ những người quanh mình."
+  },
+  {
+    "kind": "sao",
+    "slug": "kinh-duong",
+    "title": "Sao Kình Dương",
+    "aliases": ["Dương Nhận"],
+    "summary": "Kình Dương là hung tinh hành Kim, thường được hiểu là sự sắc sảo, tinh thần cạnh tranh và xu hướng làm nhanh, vượt khó bằng sức."
+  },
+  {
+    "kind": "sao",
     "slug": "liem-trinh",
     "title": "Sao Liêm Trinh",
     "aliases": [],
@@ -134,10 +211,59 @@
   },
   {
     "kind": "sao",
+    "slug": "linh-tinh",
+    "title": "Sao Linh Tinh",
+    "aliases": ["Hỏa Linh"],
+    "summary": "Linh Tinh là một phụ tinh hành Hỏa, thường gợi nỗi bồn chồn âm ỉ, sự căng thẳng ngấm ngầm và những lo nghĩ khó gọi tên ở cung có sao."
+  },
+  {
+    "kind": "sao",
+    "slug": "loc-ton",
+    "title": "Sao Lộc Tồn",
+    "aliases": [],
+    "summary": "Lộc Tồn là cát tinh hành Thổ, thường được xem là sao của sự tích góp, tính cẩn thận và biết giữ gìn những gì mình đã có."
+  },
+  {
+    "kind": "sao",
+    "slug": "pha-quan",
+    "title": "Sao Phá Quân",
+    "aliases": [],
+    "summary": "Phá Quân là chính tinh hành Thủy thuộc chòm Thiên Phủ, thường gợi tinh thần đổi mới, dám bỏ lối cũ để làm lại, kèm nét bồn chồn khó ngồi yên."
+  },
+  {
+    "kind": "sao",
+    "slug": "ta-phu",
+    "title": "Sao Tả Phù",
+    "aliases": ["Tả Hữu"],
+    "summary": "Tả Phù là cát tinh hành Thổ, thường được xem là sao của sự trợ giúp: người đỡ một tay và khả năng cùng làm việc với người khác."
+  },
+  {
+    "kind": "sao",
+    "slug": "thai-am",
+    "title": "Sao Thái Âm",
+    "aliases": [],
+    "summary": "Thái Âm là chính tinh hành Thủy thuộc chòm Thiên Phủ, tượng trưng cho mặt trăng, thường gợi sự dịu dàng, tinh tế và kín đáo."
+  },
+  {
+    "kind": "sao",
     "slug": "thai-duong",
     "title": "Sao Thái Dương",
     "aliases": [],
     "summary": "Thái Dương là chính tinh hành Hỏa thuộc chòm Tử Vi, tượng trưng cho mặt trời, thường gợi sự cởi mở, nhiệt thành và tinh thần san sẻ."
+  },
+  {
+    "kind": "sao",
+    "slug": "tham-lang",
+    "title": "Sao Tham Lang",
+    "aliases": [],
+    "summary": "Sao Tham Lang, hành Thủy, thuộc chòm Thiên Phủ, hay được xem là sao của ham muốn và sức hút: ham học hỏi, đa tài, thích giao thiệp."
+  },
+  {
+    "kind": "sao",
+    "slug": "that-sat",
+    "title": "Sao Thất Sát",
+    "aliases": [],
+    "summary": "Thất Sát là chính tinh hành Kim thuộc chòm Thiên Phủ, thường được xem là sao của sự quyết đoán, dám làm, thích tự lập nhưng dễ nóng vội."
   },
   {
     "kind": "sao",
@@ -155,10 +281,38 @@
   },
   {
     "kind": "sao",
+    "slug": "thien-khoi",
+    "title": "Sao Thiên Khôi",
+    "aliases": ["Khôi Việt"],
+    "summary": "Thiên Khôi là cát tinh hành Hỏa, hay được gọi là sao quý nhân, gợi sự chỉ dẫn từ người đi trước ở cung có sao này."
+  },
+  {
+    "kind": "sao",
+    "slug": "thien-luong",
+    "title": "Sao Thiên Lương",
+    "aliases": [],
+    "summary": "Thiên Lương là chính tinh hành Mộc thuộc chòm Thiên Phủ, hay được gọi là ấm tinh, gợi hình ảnh người lớn hiền hậu, biết che chở và khuyên bảo."
+  },
+  {
+    "kind": "sao",
     "slug": "thien-phu",
     "title": "Sao Thiên Phủ",
     "aliases": [],
     "summary": "Thiên Phủ là chính tinh hành Thổ, đứng đầu chòm Thiên Phủ; tên sao nghĩa là kho trời, thường gợi sự chu đáo, biết giữ gìn và vun vén."
+  },
+  {
+    "kind": "sao",
+    "slug": "thien-tuong",
+    "title": "Sao Thiên Tướng",
+    "aliases": [],
+    "summary": "Thiên Tướng là chính tinh hành Thủy thuộc chòm Thiên Phủ, thường gợi hình ảnh người phò tá chỉn chu, công bằng và sẵn lòng giúp người quanh mình."
+  },
+  {
+    "kind": "sao",
+    "slug": "thien-viet",
+    "title": "Sao Thiên Việt",
+    "aliases": ["Khôi Việt"],
+    "summary": "Thiên Việt, thường gọi là quý nhân ban đêm, gợi sự giúp đỡ kín đáo đến từ phía sau và góp thêm nét thuận cho cung có sao."
   },
   {
     "kind": "sao",
@@ -169,10 +323,108 @@
   },
   {
     "kind": "sao",
+    "slug": "van-khuc",
+    "title": "Sao Văn Khúc",
+    "aliases": ["Xương Khúc"],
+    "summary": "Sao Văn Khúc thuộc hành Thủy, hay được gắn với tài ăn nói, năng khiếu nghệ thuật và sự mềm mại, linh hoạt trong cách thể hiện mình."
+  },
+  {
+    "kind": "sao",
+    "slug": "van-xuong",
+    "title": "Sao Văn Xương",
+    "aliases": ["Xương Khúc"],
+    "summary": "Văn Xương là cát tinh hành Kim, thường được gắn với chữ nghĩa, việc học và sự chỉn chu, nề nếp trong cách làm việc."
+  },
+  {
+    "kind": "sao",
     "slug": "vu-khuc",
     "title": "Sao Vũ Khúc",
     "aliases": [],
     "summary": "Vũ Khúc là chính tinh hành Kim thuộc chòm Tử Vi, hay được xem là sao của tiền bạc, gợi tính quả quyết, cần cù và thực tế."
+  },
+  {
+    "kind": "cung",
+    "slug": "dien-trach",
+    "title": "Cung Điền Trạch",
+    "aliases": ["cung nhà đất"],
+    "summary": "Cung Điền Trạch thường được xem để hiểu mối gắn bó của một người với nhà cửa, đất đai, của để dành và bầu không khí nơi mình sống."
+  },
+  {
+    "kind": "cung",
+    "slug": "huynh-de",
+    "title": "Cung Huynh Đệ",
+    "aliases": ["cung anh em"],
+    "summary": "Cung Huynh Đệ hay được xem để hiểu cách bạn gắn bó với anh chị em và những người thân thiết như ruột thịt, như anh em họ hay bạn chí cốt."
+  },
+  {
+    "kind": "cung",
+    "slug": "menh",
+    "title": "Cung Mệnh",
+    "aliases": [],
+    "summary": "Cung Mệnh là cung đầu tiên trên lá số, hay được xem là nơi nói về bản tính, khí chất và hướng đi chung của một người."
+  },
+  {
+    "kind": "cung",
+    "slug": "no-boc",
+    "title": "Cung Nô Bộc",
+    "aliases": ["cung Giao Hữu", "cung bạn bè"],
+    "summary": "Cung Nô Bộc ngày nay hay được đọc như cung của bạn bè, đồng nghiệp và những người bạn cùng làm hoặc dẫn dắt, tức vòng quan hệ ngoài gia đình."
+  },
+  {
+    "kind": "cung",
+    "slug": "phu-mau",
+    "title": "Cung Phụ Mẫu",
+    "aliases": ["cung cha mẹ"],
+    "summary": "Cung Phụ Mẫu thường được xem để hiểu mối gắn bó với cha mẹ, bề trên và những gì bạn mang theo từ nếp nhà nơi mình lớn lên."
+  },
+  {
+    "kind": "cung",
+    "slug": "phu-the",
+    "title": "Cung Phu Thê",
+    "aliases": ["cung vợ chồng"],
+    "summary": "Cung Phu Thê hay được dùng để nhìn cách một người gắn bó, chia sẻ và cư xử trong tình yêu, hôn nhân và các mối quan hệ gần gũi."
+  },
+  {
+    "kind": "cung",
+    "slug": "phuc-duc",
+    "title": "Cung Phúc Đức",
+    "aliases": [],
+    "summary": "Cung Phúc Đức thường được xem để hiểu đời sống tinh thần: điều gì làm lòng bạn yên, những giá trị bạn trân quý và sợi dây nối bạn với cội nguồn."
+  },
+  {
+    "kind": "cung",
+    "slug": "quan-loc",
+    "title": "Cung Quan Lộc",
+    "aliases": ["cung sự nghiệp", "cung công danh"],
+    "summary": "Cung Quan Lộc thường được xem để hiểu chuyện học hành, công việc, sự nghiệp và cách một người bắt tay vào việc của mình."
+  },
+  {
+    "kind": "cung",
+    "slug": "tai-bach",
+    "title": "Cung Tài Bạch",
+    "aliases": ["cung tiền bạc"],
+    "summary": "Cung Tài Bạch hay được xem để hiểu cách một người kiếm tiền, giữ tiền và tiêu tiền, cùng thái độ của họ với chuyện tiền bạc."
+  },
+  {
+    "kind": "cung",
+    "slug": "tat-ach",
+    "title": "Cung Tật Ách",
+    "aliases": ["cung sức khỏe"],
+    "summary": "Cung Tật Ách thường được xem là mảng thân thể, sức lực và nếp sinh hoạt hằng ngày, những điều mỗi người nên để ý và chăm lo cho chính mình."
+  },
+  {
+    "kind": "cung",
+    "slug": "thien-di",
+    "title": "Cung Thiên Di",
+    "aliases": [],
+    "summary": "Cung Thiên Di thường được xem để hiểu con người bạn khi bước ra ngoài: chuyện đi xa, đổi chỗ sống và cách bạn giao tiếp giữa đám đông."
+  },
+  {
+    "kind": "cung",
+    "slug": "tu-tuc",
+    "title": "Cung Tử Tức",
+    "aliases": ["cung con cái"],
+    "summary": "Cung Tử Tức hay được xem để hiểu mối gắn bó của một người với con cái, với lớp người nhỏ tuổi hơn, và cách người ấy chăm chút, nâng đỡ họ."
   },
   {
     "kind": "thuat-ngu",
@@ -208,5 +460,12 @@
     "title": "Hành Thủy",
     "aliases": [],
     "summary": "Hành Thủy là một trong năm hành, nghĩa gốc là nước. Trên lá số, Thủy gắn với hai cung đóng tại Tý, Hợi và với Thủy Nhị Cục."
+  },
+  {
+    "kind": "thuat-ngu",
+    "slug": "tam-hop-luc-xung",
+    "title": "Tam hợp, lục xung giữa các tuổi",
+    "aliases": ["tuổi hợp", "tuổi xung"],
+    "summary": "Tam hợp và lục xung xếp mười hai chi tuổi thành bốn nhóm ba tuổi hợp nhau và sáu cặp tuổi đối nhau. Trang này kể đủ các nhóm, các cặp và cách hiểu chúng."
   }
 ]
