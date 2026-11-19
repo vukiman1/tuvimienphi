@@ -10,7 +10,6 @@ import {
   PageHero,
   ReadingZone,
   TextLink,
-  TitleFace,
 } from '@/design-system';
 import { sectionId } from '../active-section';
 import { KienThucCta } from '../components/kien-thuc-cta';
@@ -95,7 +94,7 @@ function LessonSection({ id, section }: LessonSectionProps): ReactElement {
   const titleId = `${id}-title`;
   return (
     <section id={id} aria-labelledby={titleId} className="scroll-mt-6">
-      <DisplayTitle id={titleId} size={DisplaySize.Panel} face={TitleFace.Serif}>
+      <DisplayTitle id={titleId} size={DisplaySize.Panel}>
         {section.heading}
       </DisplayTitle>
       <div className="mt-4 flex flex-col gap-4">

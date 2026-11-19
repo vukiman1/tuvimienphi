@@ -14,6 +14,12 @@ const FADED_TEXT = /opacity-|\btext-[\w-]+\/\d+\b/;
 const PLAIN_RING = /(^|\s)ring-/;
 const RASTER_MEDIA_IMPORT = /from '@\/(config\/media|lib\/zodiac-icons)'/;
 const CHINESE_CHARACTER = /\p{Script=Han}/u;
+const SERIF_TITLE = /\bTitleFace\.Serif\b/;
+const LESSON_AND_ENTRY_FILES: readonly string[] = [
+  'pages/lesson-page.tsx',
+  'pages/entry-page.tsx',
+  'components/kien-thuc-cta.tsx',
+];
 
 interface SourceFile {
   readonly path: string;
@@ -56,6 +62,15 @@ describe('kien-thuc fonts and media', () => {
 
   it('sets italics only in the preloaded Playfair', () => {
     const offenders = offendingStrings((value) => ITALIC.test(value) && !EMPHASIS_FACE.test(value));
+
+    expect(offenders).toEqual([]);
+  });
+
+  it('keeps bold Playfair off lessons and entries, whose h1 already loads the display face', () => {
+    const offenders = sourceFiles(FEATURE_ROOT)
+      .filter(({ path }) => LESSON_AND_ENTRY_FILES.includes(path))
+      .filter(({ text }) => SERIF_TITLE.test(text))
+      .map(({ path }) => path);
 
     expect(offenders).toEqual([]);
   });

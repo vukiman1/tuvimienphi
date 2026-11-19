@@ -215,7 +215,7 @@ describe('LessonPage', () => {
     expect(current.getAttribute('data-status')).toBe('current');
   });
 
-  it('sets each section under a serif h2 with a stable anchor', async () => {
+  it('sets each section under a display-face h2 with a stable anchor', async () => {
     const lesson = await withSecondSection('tu-vi-la-gi');
     await renderLesson(lesson);
 
@@ -228,7 +228,7 @@ describe('LessonPage', () => {
       expect(section.className.split(' ')).toContain('scroll-mt-6');
       expect(headings).toHaveLength(1);
       expect(headings[0].textContent).toBe(lesson.sections[index].heading);
-      expect(headings[0].className.split(' ')).toContain('font-emphasis');
+      expect(headings[0].className.split(' ')).toContain('font-display');
     });
   });
 
