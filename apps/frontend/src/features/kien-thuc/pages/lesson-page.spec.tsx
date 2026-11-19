@@ -27,6 +27,8 @@ const SECOND_SECTION: ContentSection = {
   heading: 'Mục thứ hai',
   paragraphs: ['Đoạn của mục thứ hai, chỉ dùng trong kiểm thử.'],
 };
+const SAMPLE_CAPTION = 'Lá số mẫu: nam, sinh ngày 22/3/1987 dương lịch, giờ Thìn';
+const SAMPLE_BOARD_HEIGHT_TOKENS: readonly string[] = ['min-h-208', 'md:min-h-262', 'lg:min-h-288'];
 const FADED_TEXT_CLASS = /^text-[a-z-]+\/\d+$/;
 const OPACITY_CLASS = /^opacity-/;
 const FORBIDDEN_CLASS_PREFIXES: readonly string[] = ['animate-', 'backdrop-'];
@@ -387,5 +389,25 @@ describe('LessonPage', () => {
     container.querySelectorAll('a, button').forEach((control) => {
       FOCUS_RING_CLASS.split(' ').forEach((token) => expect(control.className).toContain(token));
     });
+  });
+
+  it('shows the sample board after the first section of lesson 6.3', async () => {
+    const container = await renderLesson('doc-la-so-cua-chinh-ban');
+
+    const figure = await screen.findByRole('figure');
+    const firstSection = container.querySelector<HTMLElement>('#muc-1');
+    if (!firstSection) {
+      throw new Error('Lesson 6.3 has no first section');
+    }
+
+    expect(within(figure).getByText(SAMPLE_CAPTION)).toBeTruthy();
+    expect(classTokens(figure)).toEqual(expect.arrayContaining(SAMPLE_BOARD_HEIGHT_TOKENS));
+    expect(firstSection.nextElementSibling).toBe(figure);
+  });
+
+  it('shows no board on other lessons', async () => {
+    await renderLesson('tu-vi-la-gi');
+
+    expect(screen.queryByRole('figure')).toBeNull();
   });
 });

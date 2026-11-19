@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { Fragment, lazy, Suspense, useMemo } from 'react';
 import type { ReactElement } from 'react';
 import { ContentKind, pageRef } from '@org/shared-contracts';
 import type { ContentSection, KienThucManifest, LessonFile } from '@org/shared-contracts';
@@ -15,6 +15,7 @@ import {
 import { sectionId } from '../active-section';
 import { KienThucCta } from '../components/kien-thuc-cta';
 import { LessonToc } from '../components/lesson-toc';
+import { SAMPLE_BOARD_MIN_HEIGHT_CLASS } from '../components/sample-chart-board.constants';
 import { MethodologyNote } from '../components/methodology-note';
 import { NextInPathCard } from '../components/next-in-path-card';
 import { StepTrack } from '../components/step-track';
@@ -29,8 +30,16 @@ import { ProseProvider } from '../prose/prose-context';
 import { publishedLesson } from '../published-pages';
 import type { PublishedLesson } from '../published-pages';
 import { formatReviewedAt } from '../reviewed-date';
+import { SAMPLE_CHART_LESSON_SLUG } from '../sample-chart-view';
 import { useActiveSection } from '../use-active-section';
 
+const SampleChartBoard = lazy(() =>
+  import('../components/sample-chart-board').then((module) => ({
+    default: module.SampleChartBoard,
+  })),
+);
+
+const SAMPLE_BOARD_AFTER_SECTION_INDEX = 0;
 const LESSON_ROUTE = '/kien-thuc/$slug';
 const BYLINE = 'Biên soạn: Admin';
 
@@ -107,6 +116,7 @@ export function LessonPage({ lesson, manifest, loadSearchIndex }: LessonPageProp
     throw new LessonNotInManifestError(lesson.slug);
   }
   const previous = previousInPath(manifest, lesson.slug);
+  const hasSampleBoard = lesson.slug === SAMPLE_CHART_LESSON_SLUG;
 
   return (
     <main className="w-full bg-day">
@@ -121,7 +131,20 @@ export function LessonPage({ lesson, manifest, loadSearchIndex }: LessonPageProp
             <div className="flex flex-col gap-12">
               <ProseProvider manifest={manifest} loadSearchIndex={loadSearchIndex}>
                 {lesson.sections.map((section, index) => (
-                  <LessonSection key={sectionIds[index]} id={sectionIds[index]} section={section} />
+                  <Fragment key={sectionIds[index]}>
+                    <LessonSection id={sectionIds[index]} section={section} />
+                    {hasSampleBoard && index === SAMPLE_BOARD_AFTER_SECTION_INDEX && (
+                      <Suspense
+                        fallback={
+                          <div
+                            className={`${SAMPLE_BOARD_MIN_HEIGHT_CLASS} w-full rounded-2xl bg-day-200`}
+                          />
+                        }
+                      >
+                        <SampleChartBoard />
+                      </Suspense>
+                    )}
+                  </Fragment>
                 ))}
               </ProseProvider>
               <div className="flex flex-col items-start gap-4">
