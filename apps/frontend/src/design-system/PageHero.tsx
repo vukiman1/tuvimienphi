@@ -11,12 +11,27 @@ export const PAINTING_WIDTH = { small: 768, large: 1536 } as const;
 
 export enum PaintingFocus {
   Sky = 'sky',
+  Middle = 'middle',
+  Horizon = 'horizon',
   Whole = 'whole',
 }
 
 const PAINTING_FOCUS_CLASS: Readonly<Record<PaintingFocus, string>> = {
   [PaintingFocus.Sky]: 'inset-0 size-full object-cover object-[70%_12%]',
+  [PaintingFocus.Middle]: 'inset-0 size-full object-cover object-[70%_34%] mask-l-from-50%',
+  [PaintingFocus.Horizon]:
+    'inset-0 size-full object-cover object-[70%_55%] mask-l-from-30% mask-l-to-80%',
   [PaintingFocus.Whole]: 'inset-y-0 right-0 h-full w-auto max-w-none mask-l-from-70%',
+};
+
+export enum PaintingBreakpoint {
+  Tablet = 'tablet',
+  Desktop = 'desktop',
+}
+
+const PAINTING_SHOWN_FROM_CLASS: Readonly<Record<PaintingBreakpoint, string>> = {
+  [PaintingBreakpoint.Tablet]: 'md:block',
+  [PaintingBreakpoint.Desktop]: 'lg:block',
 };
 
 export interface PagePainting {
@@ -31,15 +46,18 @@ interface PageHeroProps {
   readonly lead?: string;
   readonly painting?: PagePainting;
   readonly paintingFocus?: PaintingFocus;
+  readonly paintingFrom?: PaintingBreakpoint;
   readonly children?: ReactNode;
 }
 
 interface HeroPaintingProps {
   readonly painting: PagePainting;
   readonly focus: PaintingFocus;
+  readonly shownFrom: PaintingBreakpoint;
 }
 
-function HeroPainting({ painting, focus }: HeroPaintingProps): ReactElement {
+function HeroPainting({ painting, focus, shownFrom }: HeroPaintingProps): ReactElement {
+  const shownFromClass = PAINTING_SHOWN_FROM_CLASS[shownFrom];
   return (
     <>
       <img
@@ -50,11 +68,18 @@ function HeroPainting({ painting, focus }: HeroPaintingProps): ReactElement {
         sizes="100vw"
         src={painting.large}
         srcSet={`${painting.small} ${PAINTING_WIDTH.small}w, ${painting.large} ${PAINTING_WIDTH.large}w`}
-        className={cn('pointer-events-none absolute hidden md:block', PAINTING_FOCUS_CLASS[focus])}
+        className={cn(
+          'pointer-events-none absolute hidden',
+          shownFromClass,
+          PAINTING_FOCUS_CLASS[focus],
+        )}
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 hidden bg-linear-to-r from-night/90 via-night/50 to-transparent md:block"
+        className={cn(
+          'pointer-events-none absolute inset-0 hidden bg-linear-to-r from-night/90 via-night/50 to-transparent',
+          shownFromClass,
+        )}
       />
     </>
   );
@@ -79,6 +104,7 @@ export function PageHero({
   lead,
   painting,
   paintingFocus = PaintingFocus.Sky,
+  paintingFrom = PaintingBreakpoint.Tablet,
   children,
 }: PageHeroProps): ReactElement {
   return (
@@ -87,7 +113,7 @@ export function PageHero({
         {painting === undefined ? (
           <HeroOrnament />
         ) : (
-          <HeroPainting painting={painting} focus={paintingFocus} />
+          <HeroPainting painting={painting} focus={paintingFocus} shownFrom={paintingFrom} />
         )}
       </div>
       <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-10 md:px-6 md:py-16">

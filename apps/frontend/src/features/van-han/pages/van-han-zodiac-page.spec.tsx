@@ -238,11 +238,25 @@ describe('VanHanZodiacPage', () => {
       expect(screen.queryByRole('navigation', { name: 'Năm khác' })).toBeNull();
     });
 
-    it('loads no image but the con giáp emblems', async () => {
+    it('paints the hero from tablet width as a lazy decorative image phones never show', async () => {
       renderZodiacPage('/van-han/tuoi-ty', { current: VAN_HAN_CURRENT });
 
-      await heroSection();
-      const images = Array.from(document.querySelectorAll('img'));
+      const painting = (await heroSection()).querySelector('img');
+      expect(painting?.getAttribute('alt')).toBe('');
+      expect(painting?.getAttribute('loading')).toBe('lazy');
+      expect(painting?.getAttribute('srcset')).toBe(
+        '/van-han/hero-night-768.webp 768w, /van-han/hero-night-1536.webp 1536w',
+      );
+      expect(classTokens(painting)).toEqual(expect.arrayContaining(['hidden', 'md:block']));
+    });
+
+    it('loads no image below the hero but the con giáp emblems', async () => {
+      renderZodiacPage('/van-han/tuoi-ty', { current: VAN_HAN_CURRENT });
+
+      const hero = await heroSection();
+      const images = Array.from(document.querySelectorAll('img')).filter(
+        (image) => !hero.contains(image),
+      );
       expect(images.length).toBeGreaterThan(0);
       for (const image of images) {
         expect(image.getAttribute('src')).toContain('/tet/emblem/');

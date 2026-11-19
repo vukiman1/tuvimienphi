@@ -1,5 +1,6 @@
 import { useState, type ReactElement } from 'react';
-import { Emphasis, PageHero } from '@/design-system';
+import { Emphasis, PageHero, PaintingBreakpoint, PaintingFocus } from '@/design-system';
+import { NGAY_TOT_PAINTING } from '@/features/ngay-tot/ngay-tot-media';
 import { DayDetailCard } from '@/features/ngay-tot/components/day-detail-card';
 import { HourQualityList } from '@/features/ngay-tot/components/hour-quality-list';
 import { MonthCalendar } from '@/features/ngay-tot/components/month-calendar';
@@ -50,6 +51,9 @@ export function NgayTotPage(): ReactElement {
   return (
     <main className="w-full bg-day">
       <PageHero
+        painting={NGAY_TOT_PAINTING}
+        paintingFocus={PaintingFocus.Horizon}
+        paintingFrom={PaintingBreakpoint.Desktop}
         title={
           <>
             Ngày <Emphasis isAccent>Tốt</Emphasis>
