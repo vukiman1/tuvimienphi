@@ -1,0 +1,18 @@
+{
+  "slug": "am-duong-ngu-hanh-co-ban",
+  "step": 1,
+  "order": 3,
+  "title": "Âm dương, ngũ hành cơ bản",
+  "summary": "Tóm tắt mẫu của bài Âm dương, ngũ hành cơ bản.",
+  "sections": [
+    {
+      "heading": "Mục mẫu",
+      "paragraphs": [
+        "Đoạn mẫu thứ nhất của bài này, chỉ dùng trong kiểm thử.",
+        "Đoạn mẫu thứ hai của bài này."
+      ]
+    }
+  ],
+  "readingMinutes": 3,
+  "reviewedAt": "2026-01-01"
+}

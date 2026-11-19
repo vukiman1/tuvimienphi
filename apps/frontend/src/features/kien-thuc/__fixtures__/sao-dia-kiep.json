@@ -1,0 +1,16 @@
+{
+  "kind": "sao",
+  "group": "phu-tinh",
+  "slug": "dia-kiep",
+  "title": "Sao Địa Kiếp",
+  "aliases": [],
+  "summary": "Tóm tắt mẫu của trang Sao Địa Kiếp.",
+  "sections": [
+    {
+      "heading": "Mục mẫu",
+      "paragraphs": ["Đoạn mẫu thứ nhất của trang này, chỉ dùng trong kiểm thử."]
+    }
+  ],
+  "learnInLesson": "phu-tinh-thuong-gap",
+  "reviewedAt": "2026-01-01"
+}

@@ -1,0 +1,18 @@
+{
+  "slug": "doc-la-so-cua-chinh-ban",
+  "step": 6,
+  "order": 3,
+  "title": "Đọc lá số của chính bạn",
+  "summary": "Tóm tắt mẫu của bài Đọc lá số của chính bạn.",
+  "sections": [
+    {
+      "heading": "Mục mẫu",
+      "paragraphs": [
+        "Đoạn mẫu thứ nhất của bài này, chỉ dùng trong kiểm thử.",
+        "Đoạn mẫu thứ hai của bài này."
+      ]
+    }
+  ],
+  "readingMinutes": 3,
+  "reviewedAt": "2026-01-01"
+}

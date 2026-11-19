@@ -1,0 +1,138 @@
+{
+  "steps": [
+    {
+      "step": 1,
+      "title": "Tử vi là gì",
+      "lessons": [
+        {
+          "slug": "tu-vi-la-gi",
+          "order": 1,
+          "title": "Tử vi là gì",
+          "readingMinutes": 3,
+          "reviewedAt": "2026-01-01"
+        },
+        {
+          "slug": "la-so-tu-vi-gom-nhung-gi",
+          "order": 2,
+          "title": "Một lá số gồm những gì",
+          "readingMinutes": 3,
+          "reviewedAt": "2026-01-01"
+        },
+        {
+          "slug": "am-duong-ngu-hanh-co-ban",
+          "order": 3,
+          "title": "Âm dương, ngũ hành cơ bản",
+          "readingMinutes": 3,
+          "reviewedAt": "2026-01-01"
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "title": "Mười hai cung",
+      "lessons": [
+        {
+          "slug": "12-cung-tu-vi",
+          "order": 1,
+          "title": "12 cung trong lá số",
+          "readingMinutes": 3,
+          "reviewedAt": "2026-01-01"
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "title": "Chính tinh",
+      "lessons": []
+    },
+    {
+      "step": 4,
+      "title": "Phụ tinh và Tứ hóa",
+      "lessons": []
+    },
+    {
+      "step": 5,
+      "title": "Đại vận và tiểu vận",
+      "lessons": []
+    },
+    {
+      "step": 6,
+      "title": "Ứng dụng vào đời sống",
+      "lessons": [
+        {
+          "slug": "doc-la-so-cua-chinh-ban",
+          "order": 3,
+          "title": "Đọc lá số của chính bạn",
+          "readingMinutes": 3,
+          "reviewedAt": "2026-01-01"
+        }
+      ]
+    }
+  ],
+  "entries": [
+    {
+      "kind": "sao",
+      "group": "chinh-tinh",
+      "slug": "thien-co",
+      "title": "Sao Thiên Cơ",
+      "learnInLesson": "y-nghia-chinh-tinh",
+      "reviewedAt": "2026-01-01"
+    },
+    {
+      "kind": "sao",
+      "group": "phu-tinh",
+      "slug": "ta-phu",
+      "title": "Sao Tả Phù",
+      "learnInLesson": "phu-tinh-thuong-gap",
+      "reviewedAt": "2026-01-01"
+    },
+    {
+      "kind": "sao",
+      "group": "phu-tinh",
+      "slug": "dia-kiep",
+      "title": "Sao Địa Kiếp",
+      "learnInLesson": "phu-tinh-thuong-gap",
+      "reviewedAt": "2026-01-01"
+    },
+    {
+      "kind": "cung",
+      "group": "cung",
+      "slug": "menh",
+      "title": "Cung Mệnh",
+      "learnInLesson": "12-cung-tu-vi",
+      "reviewedAt": "2026-01-01"
+    },
+    {
+      "kind": "cung",
+      "group": "cung",
+      "slug": "thien-di",
+      "title": "Cung Thiên Di",
+      "learnInLesson": "12-cung-tu-vi",
+      "reviewedAt": "2026-01-01"
+    },
+    {
+      "kind": "thuat-ngu",
+      "group": "ngu-hanh",
+      "slug": "hanh-kim",
+      "title": "Hành Kim",
+      "learnInLesson": "am-duong-ngu-hanh-co-ban",
+      "reviewedAt": "2026-01-01"
+    },
+    {
+      "kind": "thuat-ngu",
+      "group": "thuat-ngu",
+      "slug": "can",
+      "title": "Thiên can",
+      "learnInLesson": "la-so-tu-vi-gom-nhung-gi",
+      "reviewedAt": "2026-01-01"
+    },
+    {
+      "kind": "thuat-ngu",
+      "group": "thuat-ngu",
+      "slug": "cuc",
+      "title": "Cục",
+      "learnInLesson": "la-so-tu-vi-gom-nhung-gi",
+      "reviewedAt": "2026-01-01"
+    }
+  ]
+}

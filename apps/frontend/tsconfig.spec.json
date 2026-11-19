@@ -25,6 +25,7 @@
     "src/**/*.spec.jsx",
     "src/**/*.d.ts",
     "src/**/__fixtures__/*.json",
+    "src/features/kien-thuc/__fixtures__/*.ts",
     "config/index.ts",
     "tools/**/*.ts"
   ],

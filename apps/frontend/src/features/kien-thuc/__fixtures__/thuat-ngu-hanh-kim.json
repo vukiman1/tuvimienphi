@@ -1,0 +1,16 @@
+{
+  "kind": "thuat-ngu",
+  "group": "ngu-hanh",
+  "slug": "hanh-kim",
+  "title": "Hành Kim",
+  "aliases": [],
+  "summary": "Tóm tắt mẫu của trang Hành Kim.",
+  "sections": [
+    {
+      "heading": "Mục mẫu",
+      "paragraphs": ["Đoạn mẫu thứ nhất của trang này, chỉ dùng trong kiểm thử."]
+    }
+  ],
+  "learnInLesson": "am-duong-ngu-hanh-co-ban",
+  "reviewedAt": "2026-01-01"
+}

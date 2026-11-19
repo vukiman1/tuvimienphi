@@ -1,0 +1,18 @@
+{
+  "slug": "12-cung-tu-vi",
+  "step": 2,
+  "order": 1,
+  "title": "12 cung trong lá số",
+  "summary": "Tóm tắt mẫu của bài 12 cung trong lá số.",
+  "sections": [
+    {
+      "heading": "Mục mẫu",
+      "paragraphs": [
+        "Đoạn mẫu thứ nhất của bài này, chỉ dùng trong kiểm thử.",
+        "Đoạn mẫu thứ hai của bài này."
+      ]
+    }
+  ],
+  "readingMinutes": 3,
+  "reviewedAt": "2026-01-01"
+}

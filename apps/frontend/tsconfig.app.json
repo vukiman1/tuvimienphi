@@ -22,6 +22,7 @@
     "out-tsc",
     "dist",
     "src/test-setup.ts",
+    "src/features/kien-thuc/__fixtures__/*.ts",
     "src/**/*.spec.ts",
     "src/**/*.test.ts",
     "src/**/*.spec.tsx",
@@ -43,6 +44,9 @@
     },
     {
       "path": "../../packages/shared/contracts/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/shared/kien-thuc/tsconfig.lib.json"
     },
     {
       "path": "../../packages/shared/frontend/tsconfig.lib.json"
