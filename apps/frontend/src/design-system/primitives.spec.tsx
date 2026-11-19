@@ -368,6 +368,17 @@ describe('PageHero', () => {
     expect(ornament?.getAttribute('aria-hidden')).toBe('true');
   });
 
+  it('clips its ornament layer while the hero content may overflow the band', () => {
+    const band = renderHero().closest('section') as HTMLElement;
+    const ornamentLayer = band.querySelector('svg')?.parentElement;
+
+    expect(band.className).not.toMatch(/(^|\s)overflow-/);
+    expect(ornamentLayer?.getAttribute('aria-hidden')).toBe('true');
+    expect(ornamentLayer?.className).toContain('absolute');
+    expect(ornamentLayer?.className).toContain('inset-0');
+    expect(ornamentLayer?.className).toContain('overflow-clip');
+  });
+
   it('sets the title in the preloaded sans face', () => {
     const title = renderHero();
 
