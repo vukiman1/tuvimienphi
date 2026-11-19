@@ -16,7 +16,7 @@ import { sectionId } from '../active-section';
 import { KienThucCta } from '../components/kien-thuc-cta';
 import { LessonToc } from '../components/lesson-toc';
 import {
-  SAMPLE_BOARD_MIN_HEIGHT_CLASS,
+  SAMPLE_BOARD_PLACEHOLDER_CLASS,
   SAMPLE_CHART_LESSON_SLUG,
 } from '../components/sample-chart-board.constants';
 import { MethodologyNote } from '../components/methodology-note';
@@ -136,13 +136,7 @@ export function LessonPage({ lesson, manifest, loadSearchIndex }: LessonPageProp
                   <Fragment key={sectionIds[index]}>
                     <LessonSection id={sectionIds[index]} section={section} />
                     {hasSampleBoard && index === SAMPLE_BOARD_AFTER_SECTION_INDEX && (
-                      <Suspense
-                        fallback={
-                          <div
-                            className={`${SAMPLE_BOARD_MIN_HEIGHT_CLASS} w-full rounded-2xl bg-day-200`}
-                          />
-                        }
-                      >
+                      <Suspense fallback={<div className={SAMPLE_BOARD_PLACEHOLDER_CLASS} />}>
                         <SampleChartBoard />
                       </Suspense>
                     )}

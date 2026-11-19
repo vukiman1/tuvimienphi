@@ -2,7 +2,7 @@ import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
 import type { ReactElement } from 'react';
 import { useParams } from '@tanstack/react-router';
 import type { ContentSection, LessonFile } from '@org/shared-contracts';
-import { FOCUS_RING_CLASS } from '@/design-system';
+import { CHAPTER_TONE_CLASS, ChapterTone, FOCUS_RING_CLASS } from '@/design-system';
 import { renderAtRoute } from '@/test-utils/render-at-route';
 import {
   stubIntersectionObserver,
@@ -28,7 +28,7 @@ const SECOND_SECTION: ContentSection = {
   paragraphs: ['Đoạn của mục thứ hai, chỉ dùng trong kiểm thử.'],
 };
 const SAMPLE_CAPTION = 'Lá số mẫu: nam, sinh ngày 22/3/1987 dương lịch, giờ Thìn';
-const SAMPLE_BOARD_HEIGHT_TOKENS: readonly string[] = ['min-h-208', 'md:min-h-262', 'lg:min-h-288'];
+const RESERVED_HEIGHT_CLASS = /(^|:)min-h-/;
 const FADED_TEXT_CLASS = /^text-[a-z-]+\/\d+$/;
 const OPACITY_CLASS = /^opacity-/;
 const FORBIDDEN_CLASS_PREFIXES: readonly string[] = ['animate-', 'backdrop-'];
@@ -401,8 +401,25 @@ describe('LessonPage', () => {
     }
 
     expect(within(figure).getByText(SAMPLE_CAPTION)).toBeTruthy();
-    expect(classTokens(figure)).toEqual(expect.arrayContaining(SAMPLE_BOARD_HEIGHT_TOKENS));
     expect(firstSection.nextElementSibling).toBe(figure);
+  });
+
+  it('leaves no reserved space under the loaded sample board', async () => {
+    await renderLesson('doc-la-so-cua-chinh-ban');
+
+    const figure = await screen.findByRole('figure');
+
+    expect([...figure.classList].filter((token) => RESERVED_HEIGHT_CLASS.test(token))).toEqual([]);
+  });
+
+  it('shows the sample board on a night panel so its night-styled labels keep contrast', async () => {
+    await renderLesson('doc-la-so-cua-chinh-ban');
+
+    const figure = await screen.findByRole('figure');
+
+    expect([...figure.classList]).toEqual(
+      expect.arrayContaining(CHAPTER_TONE_CLASS[ChapterTone.Night].split(' ')),
+    );
   });
 
   it('shows no board on other lessons', async () => {
