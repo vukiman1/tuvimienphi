@@ -150,7 +150,10 @@ export function FactsBlock({ facts, manifest }: FactsBlockProps): ReactElement |
     return null;
   }
   return (
-    <section aria-labelledby={FACTS_TITLE_ID} className="rounded-2xl bg-day-200 px-6 py-6 text-ink">
+    <section
+      aria-labelledby={FACTS_TITLE_ID}
+      className="rounded-2xl bg-day-200 px-4 py-6 text-ink sm:px-6"
+    >
       <h2 id={FACTS_TITLE_ID} className="text-xl font-bold">
         {FACTS_TITLE}
       </h2>
