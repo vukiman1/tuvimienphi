@@ -3,6 +3,7 @@ import App from './app/app';
 import { exposeRootMarkup } from './app/expose-root-markup';
 import { mountApp } from './app/mount-app';
 import { renderAfterFirstLoad } from './app/render-after-first-load';
+import { reportRecoverableError } from './app/report-recoverable-error';
 import { router } from './app/router';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { RootErrorFallback } from '@/features/error/root-error-fallback';
@@ -41,7 +42,7 @@ const app = (
 exposeRootMarkup(app, ROOT_ID);
 
 function renderApp(): void {
-  mountApp(rootElement(), app);
+  mountApp(rootElement(), app, { onRecoverableError: reportRecoverableError });
   dismissSplash();
 }
 
