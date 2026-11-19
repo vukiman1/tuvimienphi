@@ -12,6 +12,9 @@ import { useProse } from './prose-context';
 
 const ESCAPE_KEY = 'Escape';
 const DEFAULT_ROOT_FONT_SIZE_PX = 16;
+const FOCUSABLE_SELECTOR =
+  'a[href], button, input, select, textarea, summary, [tabindex], [contenteditable]';
+const REFOCUS_OPTIONS: FocusOptions = { preventScroll: true };
 
 const TERM_CLASS = cn(
   'underline decoration-gold decoration-dotted decoration-2 underline-offset-4 text-ink',
@@ -50,6 +53,20 @@ function rootFontSizePx(): number {
   return Number.isFinite(fontSize) ? fontSize : DEFAULT_ROOT_FONT_SIZE_PX;
 }
 
+function isFocusableTarget(target: EventTarget | null): boolean {
+  return target instanceof Element && target.closest(FOCUSABLE_SELECTOR) !== null;
+}
+
+function focusAfterNextClick(element: HTMLElement): void {
+  const listeners = new AbortController();
+  const focusElement = (): void => {
+    listeners.abort();
+    element.focus(REFOCUS_OPTIONS);
+  };
+  document.addEventListener('click', focusElement, { signal: listeners.signal });
+  document.addEventListener('pointerdown', () => listeners.abort(), { signal: listeners.signal });
+}
+
 function alignmentOf(term: HTMLElement): PopoverAlign {
   return popoverAlignment(
     term.getBoundingClientRect().left,
@@ -68,13 +85,10 @@ export function TermButton({ pageRef, label }: TermButtonProps): ReactElement {
   const title = publishedTitle(manifest, pageRef) ?? label;
   const summary = summaries.get(pageRef);
 
-  const close = useCallback(
-    (focusOptions?: FocusOptions): void => {
-      closeTerm();
-      buttonRef.current?.focus(focusOptions);
-    },
-    [closeTerm],
-  );
+  const close = useCallback((): void => {
+    closeTerm();
+    buttonRef.current?.focus();
+  }, [closeTerm]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -89,7 +103,10 @@ export function TermButton({ pageRef, label }: TermButtonProps): ReactElement {
       if (event.target instanceof Node && wrapperRef.current?.contains(event.target)) {
         return;
       }
-      close({ preventScroll: true });
+      closeTerm();
+      if (buttonRef.current && !isFocusableTarget(event.target)) {
+        focusAfterNextClick(buttonRef.current);
+      }
     };
     document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('pointerdown', handlePointerDown);
@@ -97,7 +114,7 @@ export function TermButton({ pageRef, label }: TermButtonProps): ReactElement {
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('pointerdown', handlePointerDown);
     };
-  }, [isOpen, close]);
+  }, [isOpen, close, closeTerm]);
 
   const toggle = (): void => {
     if (isOpen) {
@@ -130,7 +147,7 @@ export function TermButton({ pageRef, label }: TermButtonProps): ReactElement {
             <Link className={PANEL_LINK_CLASS} onClick={closeTerm} to={refPath(pageRef)}>
               {linkText(pageRef, title)}
             </Link>
-            <button className={CLOSE_BUTTON_CLASS} onClick={() => close()} type="button">
+            <button className={CLOSE_BUTTON_CLASS} onClick={close} type="button">
               Đóng
             </button>
           </span>

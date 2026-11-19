@@ -44,6 +44,17 @@ function term(name: string): Promise<HTMLElement> {
   return screen.findByRole('button', { name });
 }
 
+function pressLikeBrowser(target: HTMLElement): void {
+  fireEvent.pointerDown(target);
+  const focusable = target.closest<HTMLElement>('a[href], button');
+  if (focusable) {
+    focusable.focus();
+  } else if (document.activeElement instanceof HTMLElement) {
+    document.activeElement.blur();
+  }
+  fireEvent.click(target);
+}
+
 function panelOf(button: HTMLElement): HTMLElement {
   const panel = document.getElementById(button.getAttribute('aria-controls') ?? '');
   if (!panel) {
@@ -175,6 +186,48 @@ describe('TermButton', () => {
     fireEvent.click(button);
     fireEvent.click(within(panel).getByRole('button', { name: 'Đóng' }));
     expect(panel.hidden).toBe(true);
+  });
+
+  it('returns focus to the term after an outside click on plain text', async () => {
+    await renderParagraph();
+    const button = await term('Thiên Cơ');
+    const paragraph = button.closest('p');
+    if (!paragraph) {
+      throw new Error('The term "Thiên Cơ" is not inside a paragraph');
+    }
+
+    fireEvent.click(button);
+    pressLikeBrowser(paragraph);
+
+    expect(panelOf(button).hidden).toBe(true);
+    expect(document.activeElement).toBe(button);
+  });
+
+  it('leaves focus on a focusable element the outside click landed on', async () => {
+    await renderParagraph();
+    const thienCo = await term('Thiên Cơ');
+    const cung = await term('12 cung');
+
+    fireEvent.click(thienCo);
+    pressLikeBrowser(cung);
+
+    expect(panelOf(thienCo).hidden).toBe(true);
+    expect(document.activeElement).toBe(cung);
+  });
+
+  it('does not take focus on a later click once the panel is closed', async () => {
+    await renderParagraph();
+    const button = await term('Thiên Cơ');
+    const paragraph = button.closest('p');
+    if (!paragraph) {
+      throw new Error('The term "Thiên Cơ" is not inside a paragraph');
+    }
+
+    fireEvent.click(button);
+    fireEvent.pointerDown(paragraph);
+    pressLikeBrowser(paragraph);
+
+    expect(document.activeElement).toBe(document.body);
   });
 
   it('marks the term by a dotted underline, not by colour alone', async () => {
