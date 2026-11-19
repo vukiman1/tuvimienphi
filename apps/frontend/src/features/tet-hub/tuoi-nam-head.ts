@@ -1,6 +1,7 @@
 import { tuoiNamSlug, type TuoiNamFacts } from '@org/shared-tu-vi';
 import type { TuoiNamArticle } from '@org/shared-contracts';
-import { articlePageHead, faqPageJsonLd, type SeoHead } from './tet-hub-json-ld';
+import type { SeoHead } from '@/lib/seo';
+import { articlePageHead, faqPageJsonLd } from './tet-hub-json-ld';
 import { tetHubPagePath, tetHubShareImagePath } from './tet-hub-paths';
 import { tuoiNamBreadcrumb } from './tuoi-nam-breadcrumb';
 

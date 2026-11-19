@@ -1,5 +1,5 @@
 import { tuoiNamSlug, type TuoiNamFacts } from '@org/shared-tu-vi';
-import type { BreadcrumbItem } from './breadcrumb-item';
+import type { BreadcrumbItem } from '@/lib/seo';
 import { conGiapBreadcrumb } from './con-giap-breadcrumb';
 import { tetHubPagePath } from './tet-hub-paths';
 

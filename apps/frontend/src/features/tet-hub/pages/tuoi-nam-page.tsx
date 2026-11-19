@@ -1,9 +1,8 @@
 import type { ReactElement } from 'react';
 import type { TuoiNamFacts } from '@org/shared-tu-vi';
 import type { TuoiNamArticle } from '@org/shared-contracts';
-import { Emphasis, PageHero } from '@/design-system';
+import { Breadcrumb, Emphasis, PageHero } from '@/design-system';
 import { HowWeCount } from '../components/HowWeCount';
-import { TetHubBreadcrumb } from '../components/TetHubBreadcrumb';
 import { TetHubCta } from '../components/TetHubCta';
 import { TuoiNamArticleView } from '../components/TuoiNamArticleView';
 import { TuoiNamFaq } from '../components/TuoiNamFaq';
@@ -22,7 +21,7 @@ export function TuoiNamPage({ facts, article }: TuoiNamPageProps): ReactElement 
   return (
     <main className="w-full bg-day">
       <PageHero
-        breadcrumb={<TetHubBreadcrumb items={tuoiNamBreadcrumb(facts)} />}
+        breadcrumb={<Breadcrumb items={tuoiNamBreadcrumb(facts)} />}
         eyebrow={TET_HUB_EYEBROW}
         painting={conGiapPainting(facts.chi)}
         title={

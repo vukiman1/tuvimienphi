@@ -1,14 +1,14 @@
 import type { ReactElement } from 'react';
 import { Link } from '@tanstack/react-router';
-import { FOCUS_RING_CLASS } from '@/design-system';
+import type { BreadcrumbItem } from '@/lib/seo';
 import { cn } from '@/lib/utils';
-import type { BreadcrumbItem } from '../breadcrumb-item';
+import { FOCUS_RING_CLASS } from './focus-ring';
 
-interface TetHubBreadcrumbProps {
+interface BreadcrumbProps {
   readonly items: readonly BreadcrumbItem[];
 }
 
-export function TetHubBreadcrumb({ items }: TetHubBreadcrumbProps): ReactElement {
+export function Breadcrumb({ items }: BreadcrumbProps): ReactElement {
   const current = items[items.length - 1];
   const ancestors = items.slice(0, -1);
 

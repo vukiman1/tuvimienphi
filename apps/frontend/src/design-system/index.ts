@@ -4,6 +4,7 @@ export { LogoTone } from './brand/logo-tone';
 export { LogoMark } from './brand/LogoMark';
 export { CHAPTER_TONE_CLASS, ChapterTone, isDarkTone } from './chapter-tone';
 export { ChapterRail } from './ChapterRail';
+export { Breadcrumb } from './Breadcrumb';
 export { Chip } from './Chip';
 export { CtaButton, CtaTone, type CtaButtonProps } from './CtaButton';
 export { DisplaySize, DisplayTitle, Emphasis, TitleFace } from './DisplayTitle';

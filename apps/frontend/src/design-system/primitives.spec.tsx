@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-router';
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import {
+  Breadcrumb,
   CHAPTER_TONE_CLASS,
   type ChapterAnchor,
   ChapterRail,
@@ -533,5 +534,26 @@ describe('StarRating', () => {
     expect(allTokens.filter((token) => token.includes('opacity') || token.includes('/'))).toEqual(
       [],
     );
+  });
+});
+
+describe('Breadcrumb', () => {
+  it('marks the last breadcrumb item as the current page', async () => {
+    await renderInRouter(
+      <Breadcrumb
+        items={[
+          { name: 'Kiến thức', path: '/kien-thuc' },
+          { name: 'Tử vi 2027', path: '/kien-thuc/tu-vi-2027' },
+        ]}
+      />,
+    );
+
+    const navigation = screen.getByRole('navigation', { name: 'Đường dẫn' });
+    expect(within(navigation).getByRole('link', { name: 'Kiến thức' }).getAttribute('href')).toBe(
+      '/kien-thuc',
+    );
+    const current = within(navigation).getByText('Tử vi 2027');
+    expect(current.getAttribute('aria-current')).toBe('page');
+    expect(within(current).queryByRole('link')).toBeNull();
   });
 });

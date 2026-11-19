@@ -1,12 +1,11 @@
 import type { ReactElement } from 'react';
 import { CHI, TET_HUB_VIEW_YEAR } from '@org/shared-tu-vi';
 import type { ConGiapArticle } from '@org/shared-contracts';
-import { Emphasis, PageHero, ReadingZone } from '@/design-system';
+import { Breadcrumb, Emphasis, PageHero, ReadingZone } from '@/design-system';
 import { ArticleParagraphs } from '../components/ArticleParagraphs';
 import { ArticleSection } from '../components/ArticleSection';
 import { ConGiapYearTiles } from '../components/ConGiapYearTiles';
 import { HowWeCount } from '../components/HowWeCount';
-import { TetHubBreadcrumb } from '../components/TetHubBreadcrumb';
 import { TetHubCta } from '../components/TetHubCta';
 import { conGiapBreadcrumb } from '../con-giap-breadcrumb';
 import { TET_HUB_EYEBROW } from '../tet-hub-eyebrow';
@@ -23,7 +22,7 @@ export function ConGiapPage({ chi, article }: ConGiapPageProps): ReactElement {
   return (
     <main className="w-full bg-day">
       <PageHero
-        breadcrumb={<TetHubBreadcrumb items={conGiapBreadcrumb(chi)} />}
+        breadcrumb={<Breadcrumb items={conGiapBreadcrumb(chi)} />}
         eyebrow={TET_HUB_EYEBROW}
         painting={conGiapPainting(chi)}
         title={

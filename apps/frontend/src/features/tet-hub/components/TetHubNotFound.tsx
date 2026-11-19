@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import { DisplaySize, DisplayTitle, TextLink, TitleFace } from '@/design-system';
+import { KIEN_THUC_PATH } from '../../kien-thuc/kien-thuc-paths';
 import { TET_HUB_NOT_FOUND_DESCRIPTION, TET_HUB_NOT_FOUND_TITLE } from '../tet-hub-not-found-copy';
-import { KIEN_THUC_PATH } from '../tet-hub-paths';
 
 export function TetHubNotFound(): ReactElement {
   return (
