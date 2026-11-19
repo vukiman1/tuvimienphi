@@ -32,7 +32,7 @@ export function HubPage({ manifest, loadSearchIndex }: HubPageProps): ReactEleme
         accent={`${KIEN_THUC_STEPS.length} bước`}
         lead={HUB_LEAD}
       >
-        <div className="flex flex-col gap-6 md:gap-10">
+        <div className="flex flex-col gap-6 md:mt-1 md:gap-5">
           <HeroStartButton manifest={manifest} />
           <div className="w-full md:max-w-sm">
             <SearchBox

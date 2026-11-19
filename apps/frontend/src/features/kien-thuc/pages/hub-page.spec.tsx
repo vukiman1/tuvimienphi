@@ -257,9 +257,11 @@ describe('HubPage', () => {
       expect(painting?.closest('.hidden.md\\:block')).toBeTruthy();
     });
     expect(hero?.querySelector('img')?.className.split(' ')).toEqual(
-      expect.arrayContaining(['size-full', 'object-cover']),
+      expect.arrayContaining(['right-0', 'h-full', 'w-auto']),
     );
-    expect(hero?.className.split(' ')).toContain('md:min-h-[min(56.25vw,calc(100svh_-_3.5rem))]');
+    expect(hero?.className.split(' ')).toEqual(
+      expect.arrayContaining(['md:min-h-[24rem]', 'xl:min-h-[27rem]']),
+    );
   });
 
   it('shows images only as decoration and fades no text', async () => {

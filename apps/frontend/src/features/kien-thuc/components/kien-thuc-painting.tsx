@@ -4,12 +4,12 @@ import { cn } from '@/lib/utils';
 import { KIEN_THUC_PAINTING } from '../kien-thuc-media';
 
 interface KienThucPaintingProps {
-  readonly focusClassName: string;
+  readonly imageClassName: string;
   readonly veilClassName: string;
 }
 
 export function KienThucPainting({
-  focusClassName,
+  imageClassName,
   veilClassName,
 }: KienThucPaintingProps): ReactElement {
   return (
@@ -25,7 +25,7 @@ export function KienThucPainting({
         sizes="100vw"
         src={KIEN_THUC_PAINTING.large}
         srcSet={`${KIEN_THUC_PAINTING.small} ${PAINTING_WIDTH.small}w, ${KIEN_THUC_PAINTING.large} ${PAINTING_WIDTH.large}w`}
-        className={cn('size-full object-cover', focusClassName)}
+        className={imageClassName}
       />
       <div className={cn('absolute inset-0', veilClassName)} />
     </div>

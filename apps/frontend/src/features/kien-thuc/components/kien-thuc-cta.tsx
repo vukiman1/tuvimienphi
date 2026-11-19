@@ -16,7 +16,7 @@ export function KienThucCta({ titleSize = DisplaySize.Card }: KienThucCtaProps):
   return (
     <section className="relative overflow-clip rounded-2xl bg-night text-day">
       <KienThucPainting
-        focusClassName="object-[70%_80%]"
+        imageClassName="size-full object-cover object-[70%_80%]"
         veilClassName="bg-linear-to-r from-night via-night/80 to-night/30"
       />
       <div className="relative flex flex-col items-start gap-6 px-6 py-8 md:flex-row md:items-center md:px-10 md:py-10">
