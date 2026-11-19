@@ -9,6 +9,7 @@ const MIGRATED_FILES = [
   'src/features/tet-hub/**',
   'src/features/la-so/**',
   'src/features/ngay-tot/**',
+  'src/features/kien-thuc/**',
   'src/features/van-han/**',
 ];
 const DESIGN_SYSTEM_FILES = ['src/design-system/**'];
