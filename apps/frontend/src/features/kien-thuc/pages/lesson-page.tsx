@@ -33,6 +33,7 @@ import { publishedLesson } from '../published-pages';
 import type { PublishedLesson } from '../published-pages';
 import { formatReviewedAt } from '../reviewed-date';
 import { useActiveSection } from '../use-active-section';
+import { KIEN_THUC_PAINTING } from '../kien-thuc-media';
 
 const SampleChartBoard = lazy(() =>
   import('../components/sample-chart-board').then((module) => ({
@@ -79,6 +80,7 @@ function LessonHero({ lesson, published, manifest }: LessonHeroProps): ReactElem
         </div>
       }
       title={lesson.title}
+      painting={KIEN_THUC_PAINTING}
     >
       <p className="text-sm text-day-soft">
         {`Bài ${published.position}/${published.stepLessonCount} · ${lesson.readingMinutes} phút đọc · Cập nhật `}

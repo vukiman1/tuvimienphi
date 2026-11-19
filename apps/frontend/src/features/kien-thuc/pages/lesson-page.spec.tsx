@@ -366,10 +366,22 @@ describe('LessonPage', () => {
     expect(screen.getByText(/Tử Vi/, { selector: 'p' })).toBeTruthy();
   });
 
-  it('renders no images', async () => {
+  it('shows images only as lazy decoration, and the painting only from md', async () => {
     const container = await renderLesson('tu-vi-la-gi');
 
-    expect(container.querySelector('img')).toBeNull();
+    const images = [...container.querySelectorAll('img')];
+    const paintings = images.filter((image) =>
+      image.getAttribute('src')?.includes('/kien-thuc/hero-night-'),
+    );
+
+    expect(paintings).toHaveLength(2);
+    images.forEach((image) => {
+      expect(image.getAttribute('alt')).toBe('');
+      expect(image.getAttribute('loading')).toBe('lazy');
+    });
+    paintings.forEach((painting) => {
+      expect(painting.closest('.hidden.md\\:block')).toBeTruthy();
+    });
   });
 
   it('keeps every text at full strength and every control focusable in view', async () => {

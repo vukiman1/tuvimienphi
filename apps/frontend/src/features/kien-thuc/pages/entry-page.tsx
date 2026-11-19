@@ -27,6 +27,7 @@ import { ProseProvider } from '../prose/prose-context';
 import { publishedLesson } from '../published-pages';
 import { relatedEntries } from '../related-entries';
 import { formatReviewedAt } from '../reviewed-date';
+import { KIEN_THUC_PAINTING } from '../kien-thuc-media';
 
 const LESSON_ROUTE = '/kien-thuc/$slug';
 const BYLINE = 'Biên soạn: Admin';
@@ -54,6 +55,7 @@ function EntryHero({ entry }: { readonly entry: EntryFile }): ReactElement {
       breadcrumb={<Breadcrumb items={entryBreadcrumb(entry)} />}
       title={entry.title}
       lead={entry.summary}
+      painting={KIEN_THUC_PAINTING}
     >
       <p className="text-sm text-day-soft">
         {'Cập nhật '}

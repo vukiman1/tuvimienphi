@@ -95,6 +95,9 @@ describe('IndexPage', () => {
 
     expect(heading.textContent).toBe('Các sao trong tử vi');
     expect(hero?.className.split(' ')).toContain('bg-night');
+    expect(hero?.querySelector('img')?.getAttribute('src')).toContain(
+      '/kien-thuc/hero-night-1536.webp',
+    );
     expect(
       within(hero ?? document.body).getByText(
         'Mỗi sao một trang: hành, nhóm sao và bậc ở từng địa chi.',

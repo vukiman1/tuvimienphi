@@ -11,6 +11,7 @@ import type { SearchIndexLoader } from '../content-source';
 import { HubProgressSlot } from '../progress/hub-progress-slot';
 import { publishedLessons } from '../published-pages';
 import { SearchBox } from '../search/search-box';
+import { KIEN_THUC_PAINTING } from '../kien-thuc-media';
 
 const HUB_EYEBROW = 'Học tử vi từ đầu';
 const HUB_LEAD =
@@ -32,6 +33,7 @@ export function HubPage({ manifest, loadSearchIndex }: HubPageProps): ReactEleme
           </>
         }
         lead={HUB_LEAD}
+        painting={KIEN_THUC_PAINTING}
       >
         <div className="flex max-w-xl flex-col gap-4">
           <HeroStartButton manifest={manifest} />

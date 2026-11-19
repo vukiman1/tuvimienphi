@@ -17,7 +17,7 @@ const STEP_ONE_SLUGS: readonly string[] = [
   'la-so-tu-vi-gom-nhung-gi',
   'am-duong-ngu-hanh-co-ban',
 ];
-const STATUS_CELL_CLASS = 'w-28';
+const STATUS_CELL_CLASSES: readonly string[] = ['w-28', 'sm:w-36'];
 const BUTTON_BOX_CLASSES: readonly string[] = ['min-h-20', 'sm:min-h-13'];
 const FADED_TEXT_CLASS = /^text-[a-z-]+\/\d+$/;
 const OPACITY_CLASS = /^opacity-/;
@@ -121,10 +121,15 @@ describe('HubPage', () => {
 
     expect(numbers.map((number) => number?.textContent)).toEqual(['01', '02', '06']);
     numbers.forEach((number) => {
-      expect(number?.classList.contains('font-display')).toBe(true);
-      expect(number?.classList.contains('font-extrabold')).toBe(true);
+      expect(number?.classList.contains('font-emphasis')).toBe(true);
+      expect(number?.classList.contains('italic')).toBe(true);
     });
     expect(within(stepRow('01')).getByText(`3 bài · ${stepOneMinutes} phút`)).toBeTruthy();
+    expect(
+      within(stepRow('02')).getByText(
+        'Mười hai cung, cung Mệnh và cung Thân, tam hợp và xung chiếu.',
+      ),
+    ).toBeTruthy();
     expect(stepRow('01').getAttribute('href')).toBe('/kien-thuc/tu-vi-la-gi');
   });
 
@@ -165,7 +170,7 @@ describe('HubPage', () => {
     const currentStatus = statusCell(stepRow('02'))?.className;
     const resumeButtonBox = heroLink().parentElement?.className;
 
-    expect(emptyStatus?.split(' ')).toContain(STATUS_CELL_CLASS);
+    expect(emptyStatus?.split(' ')).toEqual(expect.arrayContaining(STATUS_CELL_CLASSES));
     expect(readStatus).toBe(emptyStatus);
     expect(currentStatus).toBe(emptyStatus);
     BUTTON_BOX_CLASSES.forEach((token) => {
@@ -198,8 +203,18 @@ describe('HubPage', () => {
     ]);
     expect(within(reference).queryByText(/Tứ hóa/)).toBeNull();
     tiles.forEach((tile) => {
-      expect(tile.querySelector('svg[aria-hidden="true"]')).toBeTruthy();
+      const emblem = tile.querySelector('img');
+      expect(emblem?.getAttribute('alt')).toBe('');
+      expect(emblem?.getAttribute('loading')).toBe('lazy');
+      expect(emblem?.getAttribute('width')).toBe('256');
+      expect(emblem?.getAttribute('height')).toBe('256');
     });
+    expect(tiles[0].querySelector('img')?.getAttribute('src')).toContain(
+      '/kien-thuc/emblems/chinh-tinh-256.webp',
+    );
+    expect(tiles[2].querySelector('img')?.getAttribute('src')).toContain(
+      '/kien-thuc/emblems/cung-256.webp',
+    );
   });
 
   it('drops the reference block when there are no entries', async () => {
@@ -222,7 +237,24 @@ describe('HubPage', () => {
     expect(within(lastSection).getByText('Áp vào lá số của bạn')).toBeTruthy();
   });
 
-  it('renders no images and fades no text', async () => {
+  it('paints the hero and the closing band from md only, lazily', async () => {
+    const container = await renderHub();
+
+    const hero = screen.getByRole('heading', { level: 1 }).closest('section');
+    const sections = container.querySelectorAll('section');
+    const closing = sections[sections.length - 1];
+
+    [hero, closing].forEach((band) => {
+      const painting = band?.querySelector('img');
+      expect(painting?.getAttribute('src')).toContain('/kien-thuc/hero-night-1536.webp');
+      expect(painting?.getAttribute('srcset')).toContain('/kien-thuc/hero-night-768.webp 768w');
+      expect(painting?.getAttribute('alt')).toBe('');
+      expect(painting?.getAttribute('loading')).toBe('lazy');
+      expect(painting?.closest('.hidden.md\\:block')).toBeTruthy();
+    });
+  });
+
+  it('shows images only as decoration and fades no text', async () => {
     markRead(STEP_ONE_SLUGS);
     const container = await renderHub();
 
@@ -231,7 +263,10 @@ describe('HubPage', () => {
     );
     const tokens = visible.flatMap((element) => [...element.classList].map(String));
 
-    expect(container.querySelector('img')).toBeNull();
+    container.querySelectorAll('img').forEach((image) => {
+      expect(image.getAttribute('alt')).toBe('');
+      expect(image.getAttribute('loading')).toBe('lazy');
+    });
     expect(tokens.filter((token) => FADED_TEXT_CLASS.test(token))).toEqual([]);
     expect(tokens.filter((token) => OPACITY_CLASS.test(token))).toEqual([]);
     expect(tokens).not.toContain('font-medium');

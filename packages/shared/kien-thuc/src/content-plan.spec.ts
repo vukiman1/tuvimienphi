@@ -27,6 +27,15 @@ describe('kiến thức content plan', () => {
     expect(KIEN_THUC_LESSONS).toHaveLength(18);
   });
 
+  it('sums up each step in one sentence for the hub', () => {
+    KIEN_THUC_STEPS.forEach(({ summary }) => {
+      expect(summary).toMatch(/^\S[^.]*\.$/);
+    });
+    expect(KIEN_THUC_STEPS[2].summary).toBe(
+      'Mười bốn chính tinh, hai chòm sao và năm bậc từ miếu tới hãm.',
+    );
+  });
+
   it('keeps the eight legacy article slugs as lessons', () => {
     const slugs = new Set(KIEN_THUC_LESSONS.map((lesson) => lesson.slug));
     for (const legacy of [
