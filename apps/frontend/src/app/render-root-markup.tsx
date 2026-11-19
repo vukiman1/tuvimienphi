@@ -12,6 +12,17 @@ class RootMarkupError extends Error {
   }
 }
 
+async function readStreamText(stream: ReadableStream<Uint8Array>): Promise<string> {
+  const reader = stream.getReader();
+  const decoder = new TextDecoder();
+  const parts: string[] = [];
+  for (let chunk = await reader.read(); !chunk.done; chunk = await reader.read()) {
+    parts.push(decoder.decode(chunk.value, { stream: true }));
+  }
+  parts.push(decoder.decode());
+  return parts.join('');
+}
+
 function describeError(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
@@ -35,7 +46,7 @@ export async function renderRootMarkup(app: ReactNode, rootId: string): Promise<
   if (renderErrors.length > 0) {
     throw new RootMarkupError(renderErrors.join(ERROR_SEPARATOR));
   }
-  const html = await new Response(prelude).text();
+  const html = await readStreamText(prelude);
   const root = new DOMParser().parseFromString(html, 'text/html').getElementById(rootId);
   if (!root) {
     throw new RootMarkupError(`the rendered document has no #${rootId} element`);
