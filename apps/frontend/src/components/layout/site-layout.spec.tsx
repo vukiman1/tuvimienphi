@@ -1,3 +1,4 @@
+import { renderToString } from 'react-dom/server';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, render, screen, within } from '@testing-library/react';
 import {
@@ -17,6 +18,30 @@ function ChapterPage() {
       Mở đầu
     </StoryChapter>
   );
+}
+
+async function prerenderedHeaderClasses(
+  staticData: Readonly<{ isStoryPage?: boolean; openingTone?: ChapterTone }>,
+): Promise<readonly string[]> {
+  const rootRoute = createRootRoute({ component: SiteLayout });
+  const pageRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/',
+    component: ChapterPage,
+    staticData,
+  });
+  const router = createRouter({
+    routeTree: rootRoute.addChildren([pageRoute]),
+    history: createMemoryHistory({ initialEntries: ['/'] }),
+  });
+  await router.load();
+  const container = document.createElement('div');
+  container.innerHTML = renderToString(
+    <QueryClientProvider client={new QueryClient()}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>,
+  );
+  return [...(container.querySelector('header')?.classList ?? [])];
 }
 
 async function renderPage(isStoryPage: boolean): Promise<void> {
@@ -70,6 +95,21 @@ async function scrollNightChapterUnderHeader(): Promise<void> {
 describe('SiteLayout', () => {
   beforeEach(() => {
     useAuthStore.setState({ user: null, isInitializing: false });
+  });
+
+  it('prerenders a story page header in the tone the story opens with', async () => {
+    const classes = await prerenderedHeaderClasses({
+      isStoryPage: true,
+      openingTone: ChapterTone.Night,
+    });
+
+    expect(classes).toEqual(expect.arrayContaining(['bg-night/90', 'text-day']));
+  });
+
+  it('prerenders a regular page header on the day surface', async () => {
+    const classes = await prerenderedHeaderClasses({});
+
+    expect(classes).toEqual(expect.arrayContaining(['bg-day', 'text-ink']));
   });
 
   it('puts the header over the story on a route marked as a story page', async () => {

@@ -4,7 +4,6 @@ import {
   DAYS_IN_LONGEST_MONTH,
   GENDER_LABELS,
   Gender,
-  MAX_BIRTH_YEAR,
   MIN_BIRTH_YEAR,
   MONTHS_IN_YEAR,
 } from '@/features/la-so/birth-input';
@@ -18,9 +17,11 @@ function countingOptions(count: number, from: number): readonly SelectOption<str
 
 export const DAY_OPTIONS = countingOptions(DAYS_IN_LONGEST_MONTH, 1);
 export const MONTH_OPTIONS = countingOptions(MONTHS_IN_YEAR, 1);
-export const YEAR_OPTIONS = countingOptions(MAX_BIRTH_YEAR - MIN_BIRTH_YEAR + 1, MIN_BIRTH_YEAR)
-  .slice()
-  .reverse();
+export function yearOptionsUntil(latestYear: number): readonly SelectOption<string>[] {
+  return countingOptions(latestYear - MIN_BIRTH_YEAR + 1, MIN_BIRTH_YEAR)
+    .slice()
+    .reverse();
+}
 
 export const GENDER_OPTIONS: readonly SelectOption<Gender | ''>[] = Object.values(Gender).map(
   (value) => ({

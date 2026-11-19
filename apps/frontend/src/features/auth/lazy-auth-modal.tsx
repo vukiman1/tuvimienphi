@@ -1,5 +1,6 @@
 import { type ReactElement, Suspense, useState } from 'react';
 import { lazyRouteComponent } from '@tanstack/react-router';
+import { useIsClient } from '@/hooks/use-is-client';
 import { useAuthModal } from './use-auth-modal';
 
 interface AuthModalModule {
@@ -18,8 +19,9 @@ export function preloadAuthModal(): void {
 
 export function LazyAuthModal(): ReactElement | null {
   const { view } = useAuthModal();
-  const [hasOpened, setHasOpened] = useState<boolean>(view !== null);
-  if (view !== null && !hasOpened) {
+  const isClient = useIsClient();
+  const [hasOpened, setHasOpened] = useState<boolean>(false);
+  if (isClient && view !== null && !hasOpened) {
     setHasOpened(true);
   }
 

@@ -88,9 +88,10 @@ function SessionPlaceholder({ mutedClass }: SessionPlaceholderProps): ReactEleme
 
 interface SiteHeaderProps {
   readonly isStoryPage?: boolean;
+  readonly openingTone?: ChapterTone;
 }
 
-export function SiteHeader({ isStoryPage = false }: SiteHeaderProps): ReactElement {
+export function SiteHeader({ isStoryPage = false, openingTone }: SiteHeaderProps): ReactElement {
   const { open: openAuth } = useAuthModal();
   const user = useAuthStore(selectUser);
   const isInitializing = useAuthStore(selectIsInitializing);
@@ -101,7 +102,7 @@ export function SiteHeader({ isStoryPage = false }: SiteHeaderProps): ReactEleme
     [],
   );
   const chapterUnderHeader = useChapterAt(probeUnderHeader);
-  const storyTone = chapterUnderHeader?.tone ?? ChapterTone.Day;
+  const storyTone = chapterUnderHeader?.tone ?? openingTone ?? ChapterTone.Day;
   const tone = isStoryPage ? storyTone : null;
   const isOverDark = tone !== null && isDarkTone(tone);
   const mutedClass = mutedTextClass(tone);
@@ -141,20 +142,19 @@ export function SiteHeader({ isStoryPage = false }: SiteHeaderProps): ReactEleme
         </nav>
 
         <div className="inline-flex min-h-9 shrink-0 items-center gap-3" aria-busy={isInitializing}>
-          {isInitializing ? (
-            <SessionPlaceholder mutedClass={mutedClass} />
-          ) : user ? (
+          {user ? (
             <Suspense fallback={<SessionPlaceholder mutedClass={mutedClass} />}>
               <UserMenu />
             </Suspense>
           ) : (
             <button
+              disabled={isInitializing}
               onClick={() => openAuth('login')}
               onFocus={preloadAuthModal}
               onMouseEnter={preloadAuthModal}
               type="button"
               className={cn(
-                'rounded-full border border-current px-4 py-1 text-[0.65rem] font-semibold tracking-[0.12em] uppercase transition-colors hover:bg-current/10 md:px-5 md:py-1.5 md:text-xs md:tracking-[0.18em]',
+                'rounded-full border border-current px-4 py-1 text-[0.65rem] font-semibold tracking-[0.12em] uppercase transition-colors enabled:hover:bg-current/10 disabled:cursor-wait disabled:opacity-60 md:px-5 md:py-1.5 md:text-xs md:tracking-[0.18em]',
                 FOCUS_RING_CLASS,
               )}
             >

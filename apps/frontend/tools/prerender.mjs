@@ -18,6 +18,7 @@ import { renderSitemap } from './sitemap.mjs';
 import { stripGoogleIdentityTags } from './strip-google-identity-tags.mjs';
 import { stripModulePreloadLinks } from './strip-modulepreload-links.mjs';
 import { stripMotionReady } from './strip-motion-ready.mjs';
+import { isHydrationErrorMessage } from './hydration-errors.mjs';
 import { isServerErrorStatus, retryTransient } from './retry-transient.mjs';
 import { fetchPublishedVanHanYears } from './van-han-years.mjs';
 
@@ -33,6 +34,14 @@ const UNREACHABLE_API_ERROR_CODE = 'connectionfailed';
 const FIRST_FAILING_STATUS = 400;
 const ERROR_TOAST_SELECTOR = '.Toastify [role="alert"]';
 const FAILURE_SEPARATOR = '; ';
+const PRERENDER_TIMEZONE = 'Asia/Ho_Chi_Minh';
+const ROUNDTRIP_TIMEZONE = 'UTC';
+const ROUNDTRIP_CLOCK_SHIFT_MS = 27 * 60 * 60 * 1000;
+const HYDRATION_SETTLE_MS = 1_000;
+const APP_MOUNT_TIMEOUT_MS = 15_000;
+const APP_MOUNTED_ATTRIBUTE = 'data-app-mounted';
+const PLAYWRIGHT_TIMEOUT_ERROR = 'TimeoutError';
+const DOCUMENT_CONTENT_TYPE = 'text/html; charset=utf-8';
 
 class PrerenderErrorToastError extends Error {
   constructor(route, toastText) {
@@ -45,6 +54,29 @@ class PrerenderApiError extends Error {
   constructor(route, failures) {
     super(`${route} needed API data the build could not get: ${failures.join(FAILURE_SEPARATOR)}`);
     this.name = 'PrerenderApiError';
+  }
+}
+
+class PrerenderMissingRootError extends Error {
+  constructor(route) {
+    super(`${route} has no #root element to put the static markup in`);
+    this.name = 'PrerenderMissingRootError';
+  }
+}
+
+class PrerenderAppNeverMountedError extends Error {
+  constructor(route) {
+    super(
+      `${route} never mounted the app on its prerendered HTML within ${APP_MOUNT_TIMEOUT_MS} ms`,
+    );
+    this.name = 'PrerenderAppNeverMountedError';
+  }
+}
+
+class PrerenderHydrationError extends Error {
+  constructor(route, messages) {
+    super(`${route} did not hydrate its own prerendered HTML: ${messages.join(FAILURE_SEPARATOR)}`);
+    this.name = 'PrerenderHydrationError';
   }
 }
 
@@ -119,6 +151,73 @@ async function assertRenderedFromApi(page, route, failures) {
   }
 }
 
+async function snapshotDocumentWithRootMarkup(appMountedAttribute) {
+  const markup = await window.renderRootMarkup();
+  const documentCopy = document.documentElement.cloneNode(true);
+  documentCopy.removeAttribute(appMountedAttribute);
+  const root = documentCopy.querySelector('#root');
+  if (!root) {
+    return null;
+  }
+  root.innerHTML = markup;
+  return documentCopy.outerHTML;
+}
+
+async function captureDocumentWithRootMarkup(page, route) {
+  const html = await page.evaluate(snapshotDocumentWithRootMarkup, APP_MOUNTED_ATTRIBUTE);
+  if (html === null) {
+    throw new PrerenderMissingRootError(route);
+  }
+  return html;
+}
+
+async function waitForAppMount(page, route) {
+  try {
+    await page.waitForSelector(`html[${APP_MOUNTED_ATTRIBUTE}]`, {
+      state: 'attached',
+      timeout: APP_MOUNT_TIMEOUT_MS,
+    });
+  } catch (error) {
+    if (error.name !== PLAYWRIGHT_TIMEOUT_ERROR) {
+      throw error;
+    }
+    throw new PrerenderAppNeverMountedError(route);
+  }
+}
+
+async function assertHydratesCleanly({ browser, baseUrl, route, html, readApiOnce }) {
+  const context = await browser.newContext({ timezoneId: ROUNDTRIP_TIMEZONE });
+  const page = await context.newPage();
+  const hydrationErrors = [];
+  const recordIfHydrationError = (message) => {
+    if (isHydrationErrorMessage(message)) {
+      hydrationErrors.push(message.split('\n')[0]);
+    }
+  };
+  page.on('console', (message) => recordIfHydrationError(message.text()));
+  page.on('pageerror', (error) => recordIfHydrationError(error.message));
+  try {
+    await page.clock.setFixedTime(Date.now() + ROUNDTRIP_CLOCK_SHIFT_MS);
+    await page.route(ANALYTICS_BEACON_URLS, (request) => request.abort());
+    await page.route(
+      isApiRequest,
+      forwardApiReadsToProduction({ pageOrigin: baseUrl, readApiOnce, failures: [] }),
+    );
+    await page.route(
+      (url) => url.href === baseUrl + route,
+      (request) => request.fulfill({ status: 200, contentType: DOCUMENT_CONTENT_TYPE, body: html }),
+    );
+    await page.goto(baseUrl + route, { waitUntil: 'networkidle', timeout: 30_000 });
+    await waitForAppMount(page, route);
+    await page.waitForTimeout(HYDRATION_SETTLE_MS);
+  } finally {
+    await context.close();
+  }
+  if (hydrationErrors.length > 0) {
+    throw new PrerenderHydrationError(route, hydrationErrors);
+  }
+}
+
 const frontendRoot = fileURLToPath(new URL('..', import.meta.url));
 const distDir = join(frontendRoot, 'dist');
 
@@ -150,7 +249,8 @@ async function main() {
   const captured = [];
   try {
     for (const route of routes) {
-      const page = await browser.newPage();
+      const context = await browser.newContext({ timezoneId: PRERENDER_TIMEZONE });
+      const page = await context.newPage();
       await page.route(ANALYTICS_BEACON_URLS, (route) => route.abort());
       const failures = [];
       await page.route(
@@ -167,18 +267,19 @@ async function main() {
         await assertRenderedFromApi(page, route, failures);
         // The router injects absolute preview-origin URLs for preloaded chunks (http://localhost:PORT/assets/…).
         // Rewrite them back to root-relative so the assets resolve in production.
-        const raw = (await page.content()).replace(/^<!doctype html>/i, '');
+        const raw = await captureDocumentWithRootMarkup(page, route);
         const html =
           '<!doctype html>\n' +
           stripMotionReady(
             stripModulePreloadLinks(stripGoogleIdentityTags(raw.split(baseUrl).join(''))),
           );
+        await assertHydratesCleanly({ browser, baseUrl, route, html, readApiOnce });
         captured.push({ route, html });
         console.log(`[prerender] ✓ ${route}`);
       } catch (error) {
         console.error(`[prerender] ✗ ${route}: ${error.message}`);
       } finally {
-        await page.close();
+        await context.close();
       }
     }
   } finally {

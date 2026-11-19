@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useState } from 'react';
+import { Suspense, lazy } from 'react';
 import { HeadContent, Outlet, createRootRouteWithContext } from '@tanstack/react-router';
 import type { QueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
@@ -7,7 +7,10 @@ import { NotFoundPage } from '@/features/error/not-found-page';
 import { LazyAuthModal } from '@/features/auth/lazy-auth-modal';
 import { GoogleOneTap } from '@/features/auth/google-one-tap';
 import { useSyncLaSoHistoryOnLogin } from '@/features/la-so/history/use-sync-on-login';
+import { useMediaQuery } from '@/hooks/use-media-query';
 import { SITE_NAME, jsonLdMeta, organizationJsonLd, seo } from '@/lib/seo';
+
+const DESKTOP_MEDIA_QUERY = '(min-width: 768px)';
 
 export interface RouterContext {
   queryClient: QueryClient;
@@ -53,14 +56,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
 function RootRoute() {
   useSyncLaSoHistoryOnLogin();
-  const [isDesktop, setIsDesktop] = useState(() => window.innerWidth >= 768);
-
-  useEffect(() => {
-    const mq = window.matchMedia('(min-width: 768px)');
-    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, []);
+  const isDesktop = useMediaQuery(DESKTOP_MEDIA_QUERY);
 
   return (
     <>

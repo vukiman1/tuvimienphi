@@ -14,6 +14,8 @@ const requireFromHere = createRequire(import.meta.url);
 const isAnalyze = process.env.ANALYZE === 'true';
 const ROUTER_AND_QUERY_PACKAGES =
   /[\\/]node_modules[\\/]@tanstack[\\/](react-router|router-core|history|react-query|query-core|react-store|store)[\\/]/;
+const REACT_DOM_SERVER_RENDERER =
+  /[\\/]react-dom[\\/](static|server)[\w.-]*\.js$|[\\/]react-dom[\\/]cjs[\\/]react-dom-server[\w.-]*\.js$/;
 const STARTUP_UI_PACKAGES =
   /[\\/]node_modules[\\/](clsx|tailwind-merge|class-variance-authority|zustand)[\\/]/;
 const LUCIDE_ICON_RUNTIME =
@@ -88,6 +90,7 @@ export default defineConfig(({ command, mode }) => {
           // Keep heavy, rarely-changing vendors in their own long-cacheable chunks.
           manualChunks(id) {
             if (!id.includes('node_modules')) return undefined;
+            if (REACT_DOM_SERVER_RENDERER.test(id)) return undefined;
             // Match the package dir precisely so sibling packages (@sentry/react,
             // react-toastify, radix-ui) are not swept into the React runtime chunk.
             if (/[\\/](react|react-dom|scheduler)@/.test(id)) return 'react';

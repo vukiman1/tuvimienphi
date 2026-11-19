@@ -109,6 +109,36 @@ describe('SiteHeader', () => {
     expect(mockUserMenuLoaded).not.toHaveBeenCalled();
   });
 
+  it('shows the signed-out login button while the session is still being checked', async () => {
+    useAuthStore.setState({ user: null, isInitializing: true });
+
+    await renderAt('/ngay-tot', () => <SiteHeader />);
+
+    const loginButton = screen.getByRole<HTMLButtonElement>('button', { name: /đăng nhập/i });
+    expect(loginButton.disabled).toBe(true);
+    expect(loginButton.className.split(' ')).toEqual(
+      expect.arrayContaining(['disabled:cursor-wait', 'disabled:opacity-60']),
+    );
+    expect(loginButton.className.split(' ')).not.toContain('hover:bg-current/10');
+    expect(screen.queryByText('Loading session...')).toBeNull();
+  });
+
+  it('keeps the login button box unchanged once the session check finds no user', async () => {
+    useAuthStore.setState({ user: null, isInitializing: true });
+    await renderAt('/ngay-tot', () => <SiteHeader />);
+    const checkingButton = screen.getByRole<HTMLButtonElement>('button', { name: /đăng nhập/i });
+    const checkingClassName = checkingButton.className;
+
+    await act(async () => {
+      useAuthStore.setState({ isInitializing: false });
+    });
+
+    const signedOutButton = screen.getByRole<HTMLButtonElement>('button', { name: /đăng nhập/i });
+    expect(signedOutButton).toBe(checkingButton);
+    expect(signedOutButton.className).toBe(checkingClassName);
+    expect(signedOutButton.disabled).toBe(false);
+  });
+
   it('fills the session slot with the placeholder until the user menu arrives', async () => {
     await renderAt('/ngay-tot', () => <SiteHeader />);
     const sessionSlot = screen.getByRole('button', { name: /đăng nhập/i }).parentElement;

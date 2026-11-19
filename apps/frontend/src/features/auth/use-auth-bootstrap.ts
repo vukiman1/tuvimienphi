@@ -3,6 +3,8 @@ import type { User } from '@org/shared-contracts';
 import { authService } from '@/services/auth-service';
 import { useAuthStore } from '@/stores/auth-store';
 
+export const SESSION_CHECK_TIMEOUT_MS = 8_000;
+
 let bootstrapPromise: Promise<void> | null = null;
 
 export function bootstrapAuth(): Promise<void> {
@@ -10,11 +12,13 @@ export function bootstrapAuth(): Promise<void> {
 
   bootstrapPromise = (async () => {
     const { setUser, setInitializing } = useAuthStore.getState();
+    const stopWaiting = window.setTimeout(() => setInitializing(false), SESSION_CHECK_TIMEOUT_MS);
     try {
       setUser(await resolveSignedInUser());
     } catch (error) {
       console.warn('Could not restore the session; continuing signed out', error);
     } finally {
+      window.clearTimeout(stopWaiting);
       setInitializing(false);
     }
   })();

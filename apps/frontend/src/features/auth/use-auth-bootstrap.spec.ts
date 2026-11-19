@@ -1,6 +1,10 @@
 import { authService } from '@/services/auth-service';
 import { useAuthStore } from '@/stores/auth-store';
-import { bootstrapAuth, resetAuthBootstrapForTests } from './use-auth-bootstrap';
+import {
+  SESSION_CHECK_TIMEOUT_MS,
+  bootstrapAuth,
+  resetAuthBootstrapForTests,
+} from './use-auth-bootstrap';
 
 jest.mock('@/services/auth-service', () => ({
   authService: { getSessionStatus: jest.fn(), refreshToken: jest.fn(), getMe: jest.fn() },
@@ -55,5 +59,25 @@ describe('bootstrapAuth', () => {
 
     expect(useAuthStore.getState().user).toBeNull();
     expect(useAuthStore.getState().isInitializing).toBe(false);
+  });
+
+  it('stops waiting on a session check that hangs, and still applies a late answer', async () => {
+    jest.useFakeTimers();
+    let answer: (status: { user: typeof USER; canRefresh: boolean }) => void = () => undefined;
+    jest.mocked(authService.getSessionStatus).mockReturnValue(
+      new Promise((resolve) => {
+        answer = resolve;
+      }),
+    );
+
+    const bootstrapped = bootstrapAuth();
+    jest.advanceTimersByTime(SESSION_CHECK_TIMEOUT_MS);
+    const isInitializingAfterTimeout = useAuthStore.getState().isInitializing;
+    jest.useRealTimers();
+    answer({ user: USER, canRefresh: true });
+    await bootstrapped;
+
+    expect(isInitializingAfterTimeout).toBe(false);
+    expect(useAuthStore.getState().user).toEqual(USER);
   });
 });

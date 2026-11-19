@@ -42,3 +42,18 @@ export function reportError(error: unknown): void {
 
   void loadSentry().then((Sentry) => Sentry.captureException(error));
 }
+
+export interface WarningReport {
+  readonly fingerprint: readonly string[];
+  readonly sampleRate: number;
+}
+
+export function reportWarning(error: unknown, { fingerprint, sampleRate }: WarningReport): void {
+  if (!isErrorReportingEnabled() || Math.random() >= sampleRate) {
+    return;
+  }
+
+  void loadSentry().then((Sentry) =>
+    Sentry.captureException(error, { level: 'warning', fingerprint: [...fingerprint] }),
+  );
+}

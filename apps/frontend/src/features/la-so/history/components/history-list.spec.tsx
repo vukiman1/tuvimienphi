@@ -1,3 +1,4 @@
+import { renderToString } from 'react-dom/server';
 import { render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
@@ -9,6 +10,7 @@ import {
 import { CalendarType, Gender, type BirthInput } from '@org/shared-contracts';
 import { FOCUS_RING_CLASS } from '@/design-system';
 import { recordLocalHistory } from '../local-history-store';
+import { laSoHistoryQueryKey } from '../use-la-so-history';
 import { HistoryList } from './history-list';
 
 const ENTRY: BirthInput = {
@@ -46,6 +48,19 @@ beforeEach(() => {
 });
 
 describe('HistoryList', () => {
+  it('leaves the history out of the prerendered page, since it lives in the browser', () => {
+    const queryClient = new QueryClient();
+    queryClient.setQueryData(laSoHistoryQueryKey(false), []);
+
+    const markup = renderToString(
+      <QueryClientProvider client={queryClient}>
+        <HistoryList />
+      </QueryClientProvider>,
+    );
+
+    expect(markup).toBe('');
+  });
+
   it('tells a visitor with no charts where to make one', async () => {
     renderList();
 

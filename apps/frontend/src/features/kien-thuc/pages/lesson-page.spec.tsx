@@ -1,6 +1,14 @@
 import { act, fireEvent, screen, waitFor, within } from '@testing-library/react';
 import type { ReactElement } from 'react';
-import { useParams } from '@tanstack/react-router';
+import { renderToString } from 'react-dom/server';
+import {
+  RouterProvider,
+  createMemoryHistory,
+  createRootRoute,
+  createRoute,
+  createRouter,
+  useParams,
+} from '@tanstack/react-router';
 import type { ContentSection, LessonFile } from '@org/shared-contracts';
 import { CHAPTER_TONE_CLASS, ChapterTone, FOCUS_RING_CLASS } from '@/design-system';
 import { focusHashTargetOnRender } from '@/app/focus-hash-target-on-render';
@@ -78,6 +86,30 @@ async function renderLesson(lessonOrSlug: LessonFile | string): Promise<HTMLElem
     ),
   });
   await screen.findByRole('heading', { level: 1 });
+  return container;
+}
+
+async function prerenderLesson(slug: string): Promise<HTMLElement> {
+  const lesson = await fixtureLesson(slug);
+  const rootRoute = createRootRoute();
+  const pageRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: LESSON_ROUTE_PATH,
+    component: () => (
+      <LessonPage
+        lesson={lesson}
+        manifest={FIXTURE_SOURCE.loadManifest()}
+        loadSearchIndex={FIXTURE_SOURCE.loadSearchIndex}
+      />
+    ),
+  });
+  const router = createRouter({
+    routeTree: rootRoute.addChildren([pageRoute]),
+    history: createMemoryHistory({ initialEntries: [lessonPath(slug)] }),
+  });
+  await router.load();
+  const container = document.createElement('div');
+  container.innerHTML = renderToString(<RouterProvider router={router} />);
   return container;
 }
 
@@ -464,6 +496,21 @@ describe('LessonPage', () => {
     expect([...figure.classList]).toEqual(
       expect.arrayContaining(CHAPTER_TONE_CLASS[ChapterTone.Night].split(' ')),
     );
+  });
+
+  it('keeps the board space reserved in the prerendered lesson, even once the board has loaded', async () => {
+    await renderLesson('doc-la-so-cua-chinh-ban');
+    await screen.findByRole('figure');
+
+    const prerendered = await prerenderLesson('doc-la-so-cua-chinh-ban');
+    const afterFirstSection = prerendered.querySelector('#muc-1')?.nextElementSibling;
+
+    expect(prerendered.querySelector('figure')).toBeNull();
+    expect(
+      [...(afterFirstSection?.classList ?? [])].filter((token) =>
+        RESERVED_HEIGHT_CLASS.test(token),
+      ),
+    ).not.toEqual([]);
   });
 
   it('shows no board on other lessons', async () => {

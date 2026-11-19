@@ -1,11 +1,13 @@
 import type { ReactElement } from 'react';
+import { useIsClient } from '@/hooks/use-is-client';
 import { useLaSoHistory } from '../use-la-so-history';
 import { HistoryCard } from './history-card';
 
 export function HistoryList(): ReactElement | null {
+  const isClient = useIsClient();
   const { entries, isLoading, remove } = useLaSoHistory();
 
-  if (isLoading) {
+  if (!isClient || isLoading) {
     return null;
   }
 
