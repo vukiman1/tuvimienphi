@@ -22,3 +22,18 @@ export const KIND_SEARCH_LABEL: Readonly<Record<ContentKind, string>> = {
   [ContentKind.Cung]: 'Cung',
   [ContentKind.ThuatNgu]: 'Thuật ngữ',
 };
+
+export const KIND_INDEX_LEAD: Readonly<Record<EntryKind, string>> = {
+  [ContentKind.Sao]: 'Mỗi sao một trang: hành, nhóm sao và bậc ở từng địa chi.',
+  [ContentKind.Cung]: 'Mười hai cung theo thứ tự trên lá số, mỗi cung một trang.',
+  [ContentKind.ThuatNgu]: 'Ngũ hành và những từ hay gặp khi đọc lá số.',
+};
+
+export const KIND_INDEX_DESCRIPTION: Readonly<Record<EntryKind, string>> = {
+  [ContentKind.Sao]:
+    'Tra cứu từng sao trong lá số tử vi: hành, nhóm sao và bậc ở từng địa chi theo bảng an sao.',
+  [ContentKind.Cung]:
+    'Mười hai cung trong lá số tử vi: cung đối, tam hợp và ý nghĩa của từng cung.',
+  [ContentKind.ThuatNgu]:
+    'Ngũ hành và các thuật ngữ tử vi thường gặp, mỗi từ một trang giải thích ngắn.',
+};

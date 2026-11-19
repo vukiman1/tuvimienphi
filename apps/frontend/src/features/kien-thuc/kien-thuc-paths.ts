@@ -14,6 +14,12 @@ export enum KienThucPageType {
   Term = 'thuat-ngu',
 }
 
+export const ENTRY_SHARE_IMAGE_TYPE: Readonly<Record<EntryKind, KienThucPageType>> = {
+  [ContentKind.Sao]: KienThucPageType.Star,
+  [ContentKind.Cung]: KienThucPageType.Palace,
+  [ContentKind.ThuatNgu]: KienThucPageType.Term,
+};
+
 export class InvalidPageRefError extends Error {
   constructor(readonly ref: string) {
     super(`Cannot build a kiến thức path from page ref "${ref}"`);

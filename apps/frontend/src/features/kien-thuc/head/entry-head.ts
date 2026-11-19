@@ -6,16 +6,10 @@ import {
   KIEN_THUC_NOT_FOUND_DESCRIPTION,
   KIEN_THUC_NOT_FOUND_TITLE,
 } from '../kien-thuc-not-found-copy';
-import { KienThucPageType, entryPath, shareImagePath } from '../kien-thuc-paths';
+import { ENTRY_SHARE_IMAGE_TYPE, entryPath, shareImagePath } from '../kien-thuc-paths';
 import type { EntryPageData } from '../route-data/entry-route';
 import { KienThucPageStatus } from '../route-data/kien-thuc-page-status';
 import { definedTermJsonLd, kienThucArticleJsonLd } from './kien-thuc-json-ld';
-
-const SHARE_IMAGE_TYPE: Readonly<Record<EntryKind, KienThucPageType>> = {
-  [ContentKind.Sao]: KienThucPageType.Star,
-  [ContentKind.Cung]: KienThucPageType.Palace,
-  [ContentKind.ThuatNgu]: KienThucPageType.Term,
-};
 
 type MetaTag = SeoHead['meta'][number];
 
@@ -41,7 +35,7 @@ export function entryHead(kind: EntryKind, slug: string, data: EntryPageData | u
   }
   const { entry } = data;
   const path = entryPath(entry.kind, entry.slug);
-  const image = shareImagePath(SHARE_IMAGE_TYPE[entry.kind]);
+  const image = shareImagePath(ENTRY_SHARE_IMAGE_TYPE[entry.kind]);
   const base = seo({
     title: entry.title,
     description: entry.summary,

@@ -1,6 +1,8 @@
 import { ContentKind } from '@org/shared-contracts';
 import { SITE_LOGO_PATH, SITE_NAME, SITE_URL, absoluteUrl } from '@/lib/seo';
-import { indexPath } from '../kien-thuc-paths';
+import { KIND_INDEX_TITLE } from '../components/kien-thuc-labels';
+import { entryPath, indexPath } from '../kien-thuc-paths';
+import type { IndexTile } from '../route-data/index-route';
 
 const SCHEMA_CONTEXT = 'https://schema.org';
 const CONTENT_LANGUAGE = 'vi';
@@ -58,5 +60,21 @@ export function definedTermJsonLd({
     url: absoluteUrl(path),
     inLanguage: CONTENT_LANGUAGE,
     inDefinedTermSet: absoluteUrl(indexPath(ContentKind.ThuatNgu)),
+  };
+}
+
+export function definedTermSetJsonLd(terms: readonly IndexTile[]): Record<string, unknown> {
+  return {
+    '@context': SCHEMA_CONTEXT,
+    '@type': 'DefinedTermSet',
+    name: KIND_INDEX_TITLE[ContentKind.ThuatNgu],
+    url: absoluteUrl(indexPath(ContentKind.ThuatNgu)),
+    inLanguage: CONTENT_LANGUAGE,
+    hasDefinedTerm: terms.map(({ entry, summary }) => ({
+      '@type': 'DefinedTerm',
+      name: entry.title,
+      description: summary,
+      url: absoluteUrl(entryPath(entry.kind, entry.slug)),
+    })),
   };
 }
