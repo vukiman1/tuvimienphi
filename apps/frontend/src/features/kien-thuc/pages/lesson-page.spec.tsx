@@ -184,38 +184,40 @@ describe('LessonPage', () => {
     expect(isBefore(breadcrumb, screen.getByRole('heading', { level: 1 }))).toBe(true);
   });
 
-  it("draws six track points with this lesson's step current", async () => {
+  it("draws six numbered track points with this lesson's step current", async () => {
     await renderLesson('tu-vi-la-gi');
 
     const [current, ...others] = trackItems();
 
     expect(others).toHaveLength(5);
     expect(current.getAttribute('data-status')).toBe('current');
-    expect(classTokens(current)).toEqual(
-      expect.arrayContaining(['inset-ring-2', 'inset-ring-gold']),
-    );
+    expect(classTokens(current)).toContain('bg-gold');
+    expect(current.querySelector('[aria-hidden="true"]')?.textContent).toBe('1');
     expect(current.querySelector('.sr-only')?.textContent).toBe('Bước 1: Tử vi là gì, đang xem');
-    others.forEach((item) => {
+    others.forEach((item, index) => {
       expect(item.getAttribute('data-status')).toBe('unread');
       expect(classTokens(item)).toContain('inset-ring-1');
       expect(classTokens(item)).not.toContain('bg-gold');
+      expect(item.querySelector('[aria-hidden="true"]')?.textContent).toBe(String(index + 2));
       expect(item.querySelector('.sr-only')?.textContent).toMatch(/, chưa đọc$/);
     });
   });
 
-  it('marks finished steps on the track after mount', async () => {
+  it('marks finished steps on the track with a check after mount', async () => {
     STEP_ONE_SLUGS.forEach(markLessonRead);
 
     await renderLesson('12-cung-tu-vi');
 
     await waitFor(() => expect(trackItems()[0].getAttribute('data-status')).toBe('read'));
     const [read, current] = trackItems();
-    expect(classTokens(read)).toContain('bg-gold');
+    expect(classTokens(read)).toEqual(expect.arrayContaining(['inset-ring-gold', 'bg-gold']));
+    expect(read.querySelector('svg')).toBeTruthy();
+    expect(read.querySelector('[aria-hidden="true"]')?.textContent).toBe('');
     expect(read.querySelector('.sr-only')?.textContent).toBe('Bước 1: Tử vi là gì, đã đọc');
     expect(current.getAttribute('data-status')).toBe('current');
   });
 
-  it('sets each section under a display-face h2 with a stable anchor', async () => {
+  it('sets each section under a starred serif h2 with a stable anchor', async () => {
     const lesson = await withSecondSection('tu-vi-la-gi');
     await renderLesson(lesson);
 
@@ -228,7 +230,8 @@ describe('LessonPage', () => {
       expect(section.className.split(' ')).toContain('scroll-mt-6');
       expect(headings).toHaveLength(1);
       expect(headings[0].textContent).toBe(lesson.sections[index].heading);
-      expect(headings[0].className.split(' ')).toContain('font-display');
+      expect(headings[0].className.split(' ')).toContain('font-emphasis');
+      expect(headings[0].previousElementSibling?.getAttribute('aria-hidden')).toBe('true');
     });
   });
 
@@ -300,6 +303,8 @@ describe('LessonPage', () => {
     expect(within(card).getByRole('link').getAttribute('href')).toBe(
       '/kien-thuc/la-so-tu-vi-gom-nhung-gi',
     );
+    expect(within(card).getByRole('link').className.split(' ')).toContain('font-emphasis');
+    expect(card.querySelectorAll('svg[aria-hidden="true"]')).toHaveLength(2);
   });
 
   it("offers the next step at a step's end", async () => {

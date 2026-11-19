@@ -84,7 +84,7 @@ describe('EntryPage', () => {
     const prose = screen.getByRole('heading', { level: 2, name: 'Mục mẫu' });
 
     expect(isBefore(facts, prose)).toBe(true);
-    expect(prose.className.split(' ')).toContain('font-display');
+    expect(prose.className.split(' ')).toContain('font-emphasis');
   });
 
   it('leads back to the lesson that teaches the entry when it is published', async () => {

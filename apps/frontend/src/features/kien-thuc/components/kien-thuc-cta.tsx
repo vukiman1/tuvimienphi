@@ -32,22 +32,26 @@ function CtaPainting(): ReactElement {
   );
 }
 
-export function KienThucCta(): ReactElement {
+interface KienThucCtaProps {
+  readonly titleSize?: DisplaySize;
+}
+
+export function KienThucCta({ titleSize = DisplaySize.Card }: KienThucCtaProps): ReactElement {
   return (
     <section className="relative overflow-clip rounded-2xl bg-night text-day">
       <CtaPainting />
-      <div className="relative flex flex-col items-start gap-5 px-6 py-8 md:flex-row md:items-center md:gap-6 md:px-10 md:py-10">
-        <img
-          alt=""
-          decoding="async"
-          loading="lazy"
-          width={EMBLEM_WIDTH.small}
-          height={EMBLEM_WIDTH.small}
-          src={MARK_EMBLEM.small}
-          className="size-14 shrink-0 rounded-full md:size-16"
-        />
-        <div className="min-w-0 flex-1">
-          <DisplayTitle size={DisplaySize.Card} face={TitleFace.Serif}>
+      <div className="relative flex flex-col items-start gap-6 px-6 py-8 md:flex-row md:items-center md:px-10 md:py-10">
+        <div className="flex min-w-0 flex-1 items-center gap-4 md:gap-6">
+          <img
+            alt=""
+            decoding="async"
+            loading="lazy"
+            width={EMBLEM_WIDTH.small}
+            height={EMBLEM_WIDTH.small}
+            src={MARK_EMBLEM.small}
+            className="size-14 shrink-0 rounded-full md:size-16"
+          />
+          <DisplayTitle size={titleSize} face={TitleFace.Serif}>
             Áp vào lá số của bạn
           </DisplayTitle>
         </div>

@@ -13,6 +13,10 @@ const EMPHASIS_FACE = /\bfont-emphasis\b/;
 const FADED_TEXT = /opacity-|\btext-[\w-]+\/\d+\b/;
 const PLAIN_RING = /(^|\s)ring-/;
 const RASTER_MEDIA_IMPORT = /from '@\/(config\/media|lib\/zodiac-icons)'/;
+const SERIF_TITLE = /\bTitleFace\.Serif\b/;
+const DISPLAY_TITLE = /<DisplayTitle\b/;
+const SECTION_HEADING_FILE = 'components/section-heading.tsx';
+const LESSON_AND_ENTRY_FILES: readonly string[] = ['pages/lesson-page.tsx', 'pages/entry-page.tsx'];
 const MEDIA_MODULE = 'kien-thuc-media.ts';
 const CHINESE_CHARACTER = /\p{Script=Han}/u;
 const PLAYFAIR_UPRIGHT_WEIGHT = /\bfont-bold\b/;
@@ -71,6 +75,18 @@ describe('kien-thuc fonts and media', () => {
         : !PLAYFAIR_UPRIGHT_WEIGHT.test(value);
     });
 
+    expect(offenders).toEqual([]);
+  });
+
+  it('sets lesson and entry section headings only through the serif SectionHeading', () => {
+    const files = sourceFiles(FEATURE_ROOT);
+    const sectionHeading = files.find(({ path }) => path === SECTION_HEADING_FILE);
+    const offenders = files
+      .filter(({ path }) => LESSON_AND_ENTRY_FILES.includes(path))
+      .filter(({ text }) => DISPLAY_TITLE.test(text))
+      .map(({ path }) => path);
+
+    expect(sectionHeading?.text).toMatch(SERIF_TITLE);
     expect(offenders).toEqual([]);
   });
 

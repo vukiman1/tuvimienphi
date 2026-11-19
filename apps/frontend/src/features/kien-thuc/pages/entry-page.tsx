@@ -6,18 +6,12 @@ import type {
   KienThucManifest,
   ManifestEntry,
 } from '@org/shared-contracts';
-import {
-  Breadcrumb,
-  DisplaySize,
-  DisplayTitle,
-  PageHero,
-  ReadingZone,
-  TextLink,
-} from '@/design-system';
+import { Breadcrumb, DisplaySize, PageHero, ReadingZone, TextLink } from '@/design-system';
 import { EntryTile } from '../components/entry-tile';
 import { FactsBlock } from '../components/facts-block';
 import { KienThucCta } from '../components/kien-thuc-cta';
 import { MethodologyNote } from '../components/methodology-note';
+import { SectionHeading } from '../components/section-heading';
 import type { SearchIndexLoader } from '../content-source';
 import { EntryFactsKind, entryFacts } from '../entry-facts';
 import { entryBreadcrumb } from '../kien-thuc-breadcrumb';
@@ -69,7 +63,7 @@ function EntryHero({ entry }: { readonly entry: EntryFile }): ReactElement {
 function EntrySection({ section }: { readonly section: ContentSection }): ReactElement {
   return (
     <section>
-      <DisplayTitle size={DisplaySize.Panel}>{section.heading}</DisplayTitle>
+      <SectionHeading>{section.heading}</SectionHeading>
       <div className="mt-4 flex flex-col gap-4">
         {section.paragraphs.map((paragraph, index) => (
           <ProseParagraph key={index} text={paragraph} />
@@ -99,9 +93,7 @@ function RelatedEntries({ entries }: RelatedEntriesProps): ReactElement | null {
   }
   return (
     <section aria-labelledby={RELATED_TITLE_ID}>
-      <DisplayTitle id={RELATED_TITLE_ID} size={DisplaySize.Panel}>
-        {RELATED_TITLE}
-      </DisplayTitle>
+      <SectionHeading id={RELATED_TITLE_ID}>{RELATED_TITLE}</SectionHeading>
       <ul className="mt-4 grid gap-3 sm:grid-cols-2">
         {entries.map((related) => (
           <li key={related.slug}>
@@ -136,7 +128,7 @@ export function EntryPage({ entry, manifest, loadSearchIndex }: EntryPageProps):
               reviewedAt={entry.reviewedAt}
               isOwnerRead={OWNER_READ_REFS.includes(ref)}
             />
-            <KienThucCta />
+            <KienThucCta titleSize={DisplaySize.Panel} />
           </div>
         </ReadingZone>
       </section>
