@@ -1,5 +1,6 @@
 import { StrictMode } from 'react';
 import App from './app/app';
+import { AppMountedMarker } from './app/app-mounted-marker';
 import { exposeRootMarkup } from './app/expose-root-markup';
 import { mountApp } from './app/mount-app';
 import { renderAfterFirstLoad } from './app/render-after-first-load';
@@ -36,6 +37,7 @@ const app = (
     <ErrorBoundary fallback={RootErrorFallback}>
       <App />
     </ErrorBoundary>
+    <AppMountedMarker />
   </StrictMode>
 );
 

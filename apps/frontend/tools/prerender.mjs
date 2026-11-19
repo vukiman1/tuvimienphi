@@ -38,6 +38,9 @@ const PRERENDER_TIMEZONE = 'Asia/Ho_Chi_Minh';
 const ROUNDTRIP_TIMEZONE = 'UTC';
 const ROUNDTRIP_CLOCK_SHIFT_MS = 27 * 60 * 60 * 1000;
 const HYDRATION_SETTLE_MS = 1_000;
+const APP_MOUNT_TIMEOUT_MS = 15_000;
+const APP_MOUNTED_ATTRIBUTE = 'data-app-mounted';
+const PLAYWRIGHT_TIMEOUT_ERROR = 'TimeoutError';
 const DOCUMENT_CONTENT_TYPE = 'text/html; charset=utf-8';
 
 class PrerenderErrorToastError extends Error {
@@ -58,6 +61,15 @@ class PrerenderMissingRootError extends Error {
   constructor(route) {
     super(`${route} has no #root element to put the static markup in`);
     this.name = 'PrerenderMissingRootError';
+  }
+}
+
+class PrerenderAppNeverMountedError extends Error {
+  constructor(route) {
+    super(
+      `${route} never mounted the app on its prerendered HTML within ${APP_MOUNT_TIMEOUT_MS} ms`,
+    );
+    this.name = 'PrerenderAppNeverMountedError';
   }
 }
 
@@ -139,9 +151,10 @@ async function assertRenderedFromApi(page, route, failures) {
   }
 }
 
-async function snapshotDocumentWithRootMarkup() {
+async function snapshotDocumentWithRootMarkup(appMountedAttribute) {
   const markup = await window.renderRootMarkup();
   const documentCopy = document.documentElement.cloneNode(true);
+  documentCopy.removeAttribute(appMountedAttribute);
   const root = documentCopy.querySelector('#root');
   if (!root) {
     return null;
@@ -151,11 +164,25 @@ async function snapshotDocumentWithRootMarkup() {
 }
 
 async function captureDocumentWithRootMarkup(page, route) {
-  const html = await page.evaluate(snapshotDocumentWithRootMarkup);
+  const html = await page.evaluate(snapshotDocumentWithRootMarkup, APP_MOUNTED_ATTRIBUTE);
   if (html === null) {
     throw new PrerenderMissingRootError(route);
   }
   return html;
+}
+
+async function waitForAppMount(page, route) {
+  try {
+    await page.waitForSelector(`html[${APP_MOUNTED_ATTRIBUTE}]`, {
+      state: 'attached',
+      timeout: APP_MOUNT_TIMEOUT_MS,
+    });
+  } catch (error) {
+    if (error.name !== PLAYWRIGHT_TIMEOUT_ERROR) {
+      throw error;
+    }
+    throw new PrerenderAppNeverMountedError(route);
+  }
 }
 
 async function assertHydratesCleanly({ browser, baseUrl, route, html, readApiOnce }) {
@@ -181,6 +208,7 @@ async function assertHydratesCleanly({ browser, baseUrl, route, html, readApiOnc
       (request) => request.fulfill({ status: 200, contentType: DOCUMENT_CONTENT_TYPE, body: html }),
     );
     await page.goto(baseUrl + route, { waitUntil: 'networkidle', timeout: 30_000 });
+    await waitForAppMount(page, route);
     await page.waitForTimeout(HYDRATION_SETTLE_MS);
   } finally {
     await context.close();
