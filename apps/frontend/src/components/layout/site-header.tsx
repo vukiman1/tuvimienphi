@@ -88,9 +88,10 @@ function SessionPlaceholder({ mutedClass }: SessionPlaceholderProps): ReactEleme
 
 interface SiteHeaderProps {
   readonly isStoryPage?: boolean;
+  readonly openingTone?: ChapterTone;
 }
 
-export function SiteHeader({ isStoryPage = false }: SiteHeaderProps): ReactElement {
+export function SiteHeader({ isStoryPage = false, openingTone }: SiteHeaderProps): ReactElement {
   const { open: openAuth } = useAuthModal();
   const user = useAuthStore(selectUser);
   const isInitializing = useAuthStore(selectIsInitializing);
@@ -101,7 +102,7 @@ export function SiteHeader({ isStoryPage = false }: SiteHeaderProps): ReactEleme
     [],
   );
   const chapterUnderHeader = useChapterAt(probeUnderHeader);
-  const storyTone = chapterUnderHeader?.tone ?? ChapterTone.Day;
+  const storyTone = chapterUnderHeader?.tone ?? openingTone ?? ChapterTone.Day;
   const tone = isStoryPage ? storyTone : null;
   const isOverDark = tone !== null && isDarkTone(tone);
   const mutedClass = mutedTextClass(tone);

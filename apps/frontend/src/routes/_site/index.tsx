@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
+import { ChapterTone } from '@/design-system';
 import { HomePage } from '@/features/home/pages/home-page';
 import { validateHomeSearch } from '@/features/home/home-search';
 import { SITE_NAME, seo } from '@/lib/seo';
@@ -11,7 +12,7 @@ function HomeRoute(): ReactElement {
 
 export const Route = createFileRoute('/_site/')({
   component: HomeRoute,
-  staticData: { isStoryPage: true },
+  staticData: { isStoryPage: true, openingTone: ChapterTone.Night },
   validateSearch: validateHomeSearch,
   head: () =>
     seo({

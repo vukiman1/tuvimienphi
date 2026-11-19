@@ -9,11 +9,15 @@ export function SiteLayout(): ReactElement {
   const isStoryPage = useMatches({
     select: (matches) => matches.some((match) => match.staticData.isStoryPage === true),
   });
+  const openingTone = useMatches({
+    select: (matches) =>
+      matches.find((match) => match.staticData.openingTone)?.staticData.openingTone,
+  });
 
   return (
     <StoryProvider>
       <div className="flex min-h-screen flex-col overflow-x-clip bg-muted/40">
-        <SiteHeader isStoryPage={isStoryPage} />
+        <SiteHeader isStoryPage={isStoryPage} openingTone={openingTone} />
         <div className="flex-1">
           <Outlet />
         </div>
