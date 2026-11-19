@@ -93,6 +93,20 @@ describe('local progress store', () => {
     expect(listener).toHaveBeenCalledTimes(3);
   });
 
+  it("keeps another tab's write that landed while nothing was subscribed", () => {
+    unsubscribeTabSync();
+    writeOtherTab('["chi"]');
+
+    unsubscribeTabSync = subscribeLocalProgress(() => undefined);
+    expect(readLocalProgress().has('chi')).toBe(true);
+
+    markLessonRead('can');
+    expect(JSON.parse(window.localStorage.getItem(LOCAL_PROGRESS_KEY) ?? '')).toEqual([
+      'chi',
+      'can',
+    ]);
+  });
+
   it("keeps the session's marks when storage refuses the write", () => {
     jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
       throw new DOMException('full', 'QuotaExceededError');

@@ -6,6 +6,7 @@ export const LOCAL_PROGRESS_LIMIT = 200;
 let readOrder: readonly string[] | null = null;
 let snapshot: ReadonlySet<string> = new Set();
 const listeners = new Set<() => void>();
+let isTabSyncAttached = false;
 
 function readRaw(): unknown {
   try {
@@ -83,14 +84,12 @@ function handleStorageEvent(event: StorageEvent): void {
 }
 
 export function subscribeLocalProgress(listener: () => void): () => void {
-  if (listeners.size === 0) {
+  if (!isTabSyncAttached) {
     window.addEventListener('storage', handleStorageEvent);
+    isTabSyncAttached = true;
   }
   listeners.add(listener);
   return () => {
     listeners.delete(listener);
-    if (listeners.size === 0) {
-      window.removeEventListener('storage', handleStorageEvent);
-    }
   };
 }
