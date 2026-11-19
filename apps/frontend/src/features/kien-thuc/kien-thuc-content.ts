@@ -68,7 +68,10 @@ async function readSearchIndex(): Promise<readonly KienThucSearchItem[]> {
 }
 
 function loadSearchIndex(): Promise<readonly KienThucSearchItem[]> {
-  searchIndexPromise ??= readSearchIndex();
+  searchIndexPromise ??= readSearchIndex().catch((error: unknown) => {
+    searchIndexPromise = undefined;
+    throw error;
+  });
   return searchIndexPromise;
 }
 
