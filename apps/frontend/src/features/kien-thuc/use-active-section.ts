@@ -32,6 +32,7 @@ export function useActiveSection(sectionIds: readonly string[]): number {
     };
     window.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', schedule, { passive: true });
+    schedule();
     return () => {
       window.cancelAnimationFrame(frame);
       window.removeEventListener('scroll', schedule);

@@ -1,4 +1,6 @@
 import { act, fireEvent, screen, waitFor, within } from '@testing-library/react';
+import type { ReactElement } from 'react';
+import { useParams } from '@tanstack/react-router';
 import type { ContentSection, LessonFile } from '@org/shared-contracts';
 import { FOCUS_RING_CLASS } from '@/design-system';
 import { renderAtRoute } from '@/test-utils/render-at-route';
@@ -28,8 +30,22 @@ const SECOND_SECTION: ContentSection = {
 const FADED_TEXT_CLASS = /^text-[a-z-]+\/\d+$/;
 const OPACITY_CLASS = /^opacity-/;
 const FORBIDDEN_CLASS_PREFIXES: readonly string[] = ['animate-', 'backdrop-'];
+const BELOW_THE_PROBE_PX = 1000;
+const PASSED_THE_PROBE_PX = 40;
+const SCROLLED_AWAY_PX = -400;
+const RECT_SIZE_PX = 100;
 
 let observer: IntersectionObserverStub;
+let sectionTopsById: Readonly<Record<string, number>> = {};
+
+function stubSectionTops(): void {
+  jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function boundsOf(
+    this: HTMLElement,
+  ): DOMRect {
+    const top = sectionTopsById[this.id] ?? BELOW_THE_PROBE_PX;
+    return new DOMRect(0, top, RECT_SIZE_PX, RECT_SIZE_PX);
+  });
+}
 
 async function fixtureLesson(slug: string): Promise<LessonFile> {
   const lesson = await FIXTURE_SOURCE.loadLesson(slug);
@@ -80,6 +96,33 @@ function endCard(name: string): HTMLElement {
   return screen.getByRole('region', { name });
 }
 
+function currentTocLink(): string | null {
+  const toc = screen.getByRole('navigation', { name: 'Trong bài' });
+  const current = within(toc)
+    .getAllByRole('link')
+    .filter((link) => link.getAttribute('aria-current') === 'location');
+  return current.length === 1 ? current[0].textContent : null;
+}
+
+interface LessonBySlugProps {
+  readonly lessons: ReadonlyMap<string, LessonFile>;
+}
+
+function LessonBySlug({ lessons }: LessonBySlugProps): ReactElement {
+  const { slug } = useParams({ strict: false });
+  const lesson = slug === undefined ? undefined : lessons.get(slug);
+  if (!lesson) {
+    throw new Error(`No fixture lesson "${slug ?? ''}"`);
+  }
+  return (
+    <LessonPage
+      lesson={lesson}
+      manifest={FIXTURE_SOURCE.loadManifest()}
+      loadSearchIndex={FIXTURE_SOURCE.loadSearchIndex}
+    />
+  );
+}
+
 function hasStateBar(link: HTMLElement): boolean {
   return [...link.querySelectorAll('[aria-hidden="true"]')].some((node) =>
     node.classList.contains('inset-ring-gold'),
@@ -89,6 +132,8 @@ function hasStateBar(link: HTMLElement): boolean {
 beforeEach(() => {
   clearLocalProgress();
   observer = stubIntersectionObserver();
+  sectionTopsById = {};
+  stubSectionTops();
 });
 
 afterEach(() => {
@@ -205,27 +250,44 @@ describe('LessonPage', () => {
   });
 
   it('moves the current section as the reader scrolls past it', async () => {
-    const lesson = await withSecondSection('tu-vi-la-gi');
-    await renderLesson(lesson);
-    const second = document.getElementById('muc-2');
-    if (!second) {
-      throw new Error('No second section');
-    }
-    jest.spyOn(second, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 40, 100, 100));
+    await renderLesson(await withSecondSection('tu-vi-la-gi'));
+    await waitFor(() => expect(currentTocLink()).toBe('Mục mẫu'));
 
+    sectionTopsById = { 'muc-1': SCROLLED_AWAY_PX, 'muc-2': PASSED_THE_PROBE_PX };
     fireEvent.scroll(window);
 
-    const toc = screen.getByRole('navigation', { name: 'Trong bài' });
-    await waitFor(() =>
-      expect(
-        within(toc)
-          .getByRole('link', { name: SECOND_SECTION.heading })
-          .getAttribute('aria-current'),
-      ).toBe('location'),
+    await waitFor(() => expect(currentTocLink()).toBe(SECOND_SECTION.heading));
+  });
+
+  it('picks the section already in view on mount without a scroll', async () => {
+    sectionTopsById = { 'muc-1': SCROLLED_AWAY_PX, 'muc-2': PASSED_THE_PROBE_PX };
+
+    await renderLesson(await withSecondSection('tu-vi-la-gi'));
+
+    await waitFor(() => expect(currentTocLink()).toBe(SECOND_SECTION.heading));
+  });
+
+  it('works the current section out again on the next lesson', async () => {
+    const lessons = new Map(
+      await Promise.all(
+        ['tu-vi-la-gi', 'la-so-tu-vi-gom-nhung-gi'].map(
+          async (slug): Promise<[string, LessonFile]> => [slug, await withSecondSection(slug)],
+        ),
+      ),
     );
-    expect(
-      within(toc).getByRole('link', { name: 'Mục mẫu' }).getAttribute('aria-current'),
-    ).toBeNull();
+    sectionTopsById = { 'muc-1': SCROLLED_AWAY_PX, 'muc-2': PASSED_THE_PROBE_PX };
+    await renderAtRoute({
+      path: lessonPath('tu-vi-la-gi'),
+      routePath: LESSON_ROUTE_PATH,
+      element: <LessonBySlug lessons={lessons} />,
+    });
+    await waitFor(() => expect(currentTocLink()).toBe(SECOND_SECTION.heading));
+
+    sectionTopsById = {};
+    fireEvent.click(within(endCard('Bài tiếp theo')).getByRole('link'));
+
+    await screen.findByRole('heading', { level: 1, name: 'Một lá số gồm những gì' });
+    await waitFor(() => expect(currentTocLink()).toBe('Mục mẫu'));
   });
 
   it('offers the next lesson', async () => {
