@@ -34,6 +34,7 @@ const UNREACHABLE_API_ERROR_CODE = 'connectionfailed';
 const FIRST_FAILING_STATUS = 400;
 const ERROR_TOAST_SELECTOR = '.Toastify [role="alert"]';
 const FAILURE_SEPARATOR = '; ';
+const PRERENDER_TIMEZONE = 'Asia/Ho_Chi_Minh';
 const ROUNDTRIP_TIMEZONE = 'UTC';
 const ROUNDTRIP_CLOCK_SHIFT_MS = 27 * 60 * 60 * 1000;
 const HYDRATION_SETTLE_MS = 1_000;
@@ -201,7 +202,8 @@ async function main() {
   const captured = [];
   try {
     for (const route of routes) {
-      const page = await browser.newPage();
+      const context = await browser.newContext({ timezoneId: PRERENDER_TIMEZONE });
+      const page = await context.newPage();
       await page.route(ANALYTICS_BEACON_URLS, (route) => route.abort());
       const failures = [];
       await page.route(
@@ -230,7 +232,7 @@ async function main() {
       } catch (error) {
         console.error(`[prerender] ✗ ${route}: ${error.message}`);
       } finally {
-        await page.close();
+        await context.close();
       }
     }
   } finally {
