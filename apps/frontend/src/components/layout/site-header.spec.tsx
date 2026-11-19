@@ -116,6 +116,10 @@ describe('SiteHeader', () => {
 
     const loginButton = screen.getByRole<HTMLButtonElement>('button', { name: /đăng nhập/i });
     expect(loginButton.disabled).toBe(true);
+    expect(loginButton.className.split(' ')).toEqual(
+      expect.arrayContaining(['disabled:cursor-wait', 'disabled:opacity-60']),
+    );
+    expect(loginButton.className.split(' ')).not.toContain('hover:bg-current/10');
     expect(screen.queryByText('Loading session...')).toBeNull();
   });
 

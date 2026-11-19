@@ -154,7 +154,7 @@ export function SiteHeader({ isStoryPage = false, openingTone }: SiteHeaderProps
               onMouseEnter={preloadAuthModal}
               type="button"
               className={cn(
-                'rounded-full border border-current px-4 py-1 text-[0.65rem] font-semibold tracking-[0.12em] uppercase transition-colors hover:bg-current/10 md:px-5 md:py-1.5 md:text-xs md:tracking-[0.18em]',
+                'rounded-full border border-current px-4 py-1 text-[0.65rem] font-semibold tracking-[0.12em] uppercase transition-colors enabled:hover:bg-current/10 disabled:cursor-wait disabled:opacity-60 md:px-5 md:py-1.5 md:text-xs md:tracking-[0.18em]',
                 FOCUS_RING_CLASS,
               )}
             >
