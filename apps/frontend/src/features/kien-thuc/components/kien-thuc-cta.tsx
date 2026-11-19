@@ -1,36 +1,12 @@
 import type { ReactElement } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { EntryGroup } from '@org/shared-contracts';
-import {
-  CtaButton,
-  CtaTone,
-  DisplaySize,
-  DisplayTitle,
-  PAINTING_WIDTH,
-  TitleFace,
-} from '@/design-system';
+import { CtaButton, CtaTone, DisplaySize, DisplayTitle, TitleFace } from '@/design-system';
 import { BIRTH_FORM_ANCHOR } from '@/features/home/home-anchors';
-import { EMBLEM_WIDTH, KIEN_THUC_PAINTING, groupEmblem } from '../kien-thuc-media';
+import { EMBLEM_WIDTH, groupEmblem } from '../kien-thuc-media';
+import { KienThucPainting } from './kien-thuc-painting';
 
 const MARK_EMBLEM = groupEmblem(EntryGroup.ChinhTinh);
-
-function CtaPainting(): ReactElement {
-  return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden md:block">
-      <img
-        alt=""
-        decoding="async"
-        fetchPriority="low"
-        loading="lazy"
-        sizes="100vw"
-        src={KIEN_THUC_PAINTING.large}
-        srcSet={`${KIEN_THUC_PAINTING.small} ${PAINTING_WIDTH.small}w, ${KIEN_THUC_PAINTING.large} ${PAINTING_WIDTH.large}w`}
-        className="size-full object-cover object-[70%_80%]"
-      />
-      <div className="absolute inset-0 bg-linear-to-r from-night via-night/80 to-night/30" />
-    </div>
-  );
-}
 
 interface KienThucCtaProps {
   readonly titleSize?: DisplaySize;
@@ -39,7 +15,10 @@ interface KienThucCtaProps {
 export function KienThucCta({ titleSize = DisplaySize.Card }: KienThucCtaProps): ReactElement {
   return (
     <section className="relative overflow-clip rounded-2xl bg-night text-day">
-      <CtaPainting />
+      <KienThucPainting
+        focusClassName="object-[70%_80%]"
+        veilClassName="bg-linear-to-r from-night via-night/80 to-night/30"
+      />
       <div className="relative flex flex-col items-start gap-6 px-6 py-8 md:flex-row md:items-center md:px-10 md:py-10">
         <div className="flex min-w-0 flex-1 items-center gap-4 md:gap-6">
           <img

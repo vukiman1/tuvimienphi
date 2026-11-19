@@ -109,6 +109,9 @@ describe('HubPage', () => {
       '/kien-thuc/tu-vi-la-gi',
     );
     expect(hero?.contains(screen.getByRole('combobox'))).toBe(true);
+    expect(screen.getByRole('combobox').className.split(' ')).toEqual(
+      expect.arrayContaining(['bg-night/60', 'text-day', 'placeholder:text-day-soft']),
+    );
   });
 
   it('lists only the steps that have lessons', async () => {
@@ -253,7 +256,10 @@ describe('HubPage', () => {
       expect(painting?.getAttribute('loading')).toBe('lazy');
       expect(painting?.closest('.hidden.md\\:block')).toBeTruthy();
     });
-    expect(hero?.querySelector('img')?.className.split(' ')).toContain('right-0');
+    expect(hero?.querySelector('img')?.className.split(' ')).toEqual(
+      expect.arrayContaining(['size-full', 'object-cover']),
+    );
+    expect(hero?.className.split(' ')).toContain('md:min-h-[min(56.25vw,calc(100svh_-_3.5rem))]');
   });
 
   it('shows images only as decoration and fades no text', async () => {
