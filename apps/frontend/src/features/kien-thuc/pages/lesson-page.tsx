@@ -15,7 +15,10 @@ import {
 import { sectionId } from '../active-section';
 import { KienThucCta } from '../components/kien-thuc-cta';
 import { LessonToc } from '../components/lesson-toc';
-import { SAMPLE_BOARD_MIN_HEIGHT_CLASS } from '../components/sample-chart-board.constants';
+import {
+  SAMPLE_BOARD_MIN_HEIGHT_CLASS,
+  SAMPLE_CHART_LESSON_SLUG,
+} from '../components/sample-chart-board.constants';
 import { MethodologyNote } from '../components/methodology-note';
 import { NextInPathCard } from '../components/next-in-path-card';
 import { StepTrack } from '../components/step-track';
@@ -30,7 +33,6 @@ import { ProseProvider } from '../prose/prose-context';
 import { publishedLesson } from '../published-pages';
 import type { PublishedLesson } from '../published-pages';
 import { formatReviewedAt } from '../reviewed-date';
-import { SAMPLE_CHART_LESSON_SLUG } from '../sample-chart-view';
 import { useActiveSection } from '../use-active-section';
 
 const SampleChartBoard = lazy(() =>

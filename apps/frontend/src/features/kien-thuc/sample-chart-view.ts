@@ -4,7 +4,6 @@ import { KIEN_THUC_SAMPLE_BIRTH } from '@org/shared-kien-thuc';
 import type { ChartView, CungView } from '@/features/la-so/chart-types';
 import { toChartView } from '@/features/la-so/to-chart-view';
 
-export const SAMPLE_CHART_LESSON_SLUG = 'doc-la-so-cua-chinh-ban';
 export const SAMPLE_VIEW_YEAR = 2027;
 
 function sampleBirthHourKey(): BirthInput['hour'] {
