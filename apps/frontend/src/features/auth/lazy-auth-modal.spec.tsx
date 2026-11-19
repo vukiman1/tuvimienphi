@@ -1,4 +1,6 @@
-import type { ReactElement } from 'react';
+import { act, type ReactElement } from 'react';
+import { renderToString } from 'react-dom/server';
+import { hydrateRoot } from 'react-dom/client';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
@@ -36,8 +38,7 @@ jest.mock('./google-sign-in-button', () => ({
   GoogleSignInButton: () => null,
 }));
 
-function renderAt(initialEntry: string): AnyRouter {
-  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+function createAppRouter(initialEntry: string): AnyRouter {
   const rootRoute = createRootRoute({
     validateSearch: z.object({
       auth: z.enum(['login', 'register']).optional(),
@@ -51,18 +52,34 @@ function renderAt(initialEntry: string): AnyRouter {
     ),
   });
   const indexRoute = createRoute({ getParentRoute: () => rootRoute, path: '/' });
-  const router = createRouter({
+  return createRouter({
     routeTree: rootRoute.addChildren([indexRoute]),
     history: createMemoryHistory({ initialEntries: [initialEntry] }),
   });
+}
 
-  render(
+function appTree(router: AnyRouter): ReactElement {
+  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  return (
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
-    </QueryClientProvider>,
+    </QueryClientProvider>
   );
+}
 
+function renderAt(initialEntry: string): AnyRouter {
+  const router = createAppRouter(initialEntry);
+  render(appTree(router));
   return router;
+}
+
+async function prerenderedRoot(): Promise<HTMLElement> {
+  const router = createAppRouter('/');
+  await router.load();
+  const container = document.createElement('div');
+  container.innerHTML = renderToString(appTree(router));
+  document.body.append(container);
+  return container;
 }
 
 describe('LazyAuthModal', () => {
@@ -92,6 +109,23 @@ describe('LazyAuthModal', () => {
 
     expect(await screen.findByRole('dialog')).toBeTruthy();
     expect(await screen.findByRole('button', { name: /tiếp tục với email/i })).toBeTruthy();
+  });
+
+  it('hydrates a prerendered page reloaded with auth=login, then opens the modal', async () => {
+    const container = await prerenderedRoot();
+    const router = createAppRouter('/?auth=login');
+    await router.load();
+    const onRecoverableError = jest.fn();
+
+    const root = await act(async () =>
+      hydrateRoot(container, appTree(router), { onRecoverableError }),
+    );
+    const dialog = await screen.findByRole('dialog');
+    act(() => root.unmount());
+    container.remove();
+
+    expect(onRecoverableError).not.toHaveBeenCalled();
+    expect(dialog).toBeTruthy();
   });
 
   it('closes when dismissed and opens again on the register view', async () => {
