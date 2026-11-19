@@ -127,7 +127,7 @@ export function TermButton({ pageRef, label }: TermButtonProps): ReactElement {
           <span className="block font-bold">{title}</span>
           {summary && <span className="mt-2 block text-sm text-ink-soft">{summary}</span>}
           <span className="mt-4 flex flex-wrap items-center justify-between gap-4">
-            <Link className={PANEL_LINK_CLASS} to={refPath(pageRef)}>
+            <Link className={PANEL_LINK_CLASS} onClick={closeTerm} to={refPath(pageRef)}>
               {linkText(pageRef, title)}
             </Link>
             <button className={CLOSE_BUTTON_CLASS} onClick={() => close()} type="button">

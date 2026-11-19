@@ -1,4 +1,6 @@
-import { fireEvent, screen, within } from '@testing-library/react';
+import { fireEvent, screen, waitFor, within } from '@testing-library/react';
+import type { ReactElement } from 'react';
+import { useRouterState } from '@tanstack/react-router';
 import type { KienThucSearchItem } from '@org/shared-contracts';
 import { FOCUS_RING_CLASS } from '@/design-system';
 import { renderAtRoute } from '@/test-utils/render-at-route';
@@ -9,18 +11,28 @@ import { ProseParagraph } from './prose-paragraph';
 
 const FIRST_PARAGRAPH = lessonTuVi.sections[0].paragraphs[0];
 const THIEN_CO_SUMMARY = 'Tóm tắt mẫu của trang Sao Thiên Cơ.';
+const LESSON_PATH = '/kien-thuc/tu-vi-la-gi';
+const LESSON_ROUTE_PATH = '/kien-thuc/$slug';
+const NEXT_LESSON_PATH = '/kien-thuc/12-cung-tu-vi';
+const PATHNAME_TEST_ID = 'pathname';
 const FORBIDDEN_CLASS_PREFIXES: readonly string[] = ['backdrop-', 'animate-'];
 
 type SearchIndexLoaderMock = jest.Mock<Promise<readonly KienThucSearchItem[]>, []>;
 
+function Pathname(): ReactElement {
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  return <output data-testid={PATHNAME_TEST_ID}>{pathname}</output>;
+}
+
 async function renderParagraph(): Promise<SearchIndexLoaderMock> {
   const loadSearchIndex: SearchIndexLoaderMock = jest.fn(() => FIXTURE_SOURCE.loadSearchIndex());
   await renderAtRoute({
-    path: '/x',
-    routePath: '/x',
+    path: LESSON_PATH,
+    routePath: LESSON_ROUTE_PATH,
     element: (
       <ProseProvider manifest={FIXTURE_SOURCE.loadManifest()} loadSearchIndex={loadSearchIndex}>
         <ProseParagraph text={FIRST_PARAGRAPH} />
+        <Pathname />
       </ProseProvider>
     ),
   });
@@ -109,6 +121,22 @@ describe('TermButton', () => {
 
     expect(panelOf(button).hidden).toBe(true);
     expect(document.activeElement).toBe(button);
+  });
+
+  it('closes when its panel link leads to another lesson on the same route', async () => {
+    await renderParagraph();
+    const button = await term('12 cung');
+    const panel = panelOf(button);
+
+    fireEvent.click(button);
+    fireEvent.click(within(panel).getByRole('link', { name: 'Đọc bài 12 cung trong lá số →' }));
+
+    await waitFor(() =>
+      expect(screen.getByTestId(PATHNAME_TEST_ID).textContent).toBe(NEXT_LESSON_PATH),
+    );
+    expect(button.isConnected).toBe(true);
+    expect(button.getAttribute('aria-expanded')).toBe('false');
+    expect(panel.hidden).toBe(true);
   });
 
   it('closes on an outside click and on Đóng', async () => {
