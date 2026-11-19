@@ -53,6 +53,12 @@
           "^build"
         ]
       },
+      "kien-thuc-og": {
+        "command": "node tools/kien-thuc-og.mjs",
+        "options": {
+          "cwd": "{projectRoot}"
+        }
+      },
       "tet-hub-preview": {
         "command": "node tools/tet-hub-preview.mjs",
         "options": {
