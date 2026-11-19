@@ -19,6 +19,7 @@ import {
   Emphasis,
   FOCUS_RING_CLASS,
   PageHero,
+  PaintingFocus,
   ReadingZone,
   StarRating,
   StickyCta,
@@ -416,6 +417,56 @@ describe('PageHero', () => {
       '/tet/hero-night-768.webp 768w, /tet/hero-night-1536.webp 1536w',
     );
     expect(band.querySelector('svg')).toBeNull();
+  });
+
+  it('keeps the painting cropped to its sky by default', () => {
+    render(
+      <PageHero
+        title="Lá Số Tử Vi"
+        painting={{ small: '/tet/hero-night-768.webp', large: '/tet/hero-night-1536.webp' }}
+      />,
+    );
+    const classes = screen
+      .getByRole('heading', { level: 1 })
+      .closest('section')
+      ?.querySelector('img')
+      ?.getAttribute('class')
+      ?.split(' ');
+
+    expect(classes).toEqual(
+      expect.arrayContaining(['inset-0', 'size-full', 'object-cover', 'object-[70%_12%]']),
+    );
+  });
+
+  it('shows the whole painting at the right edge, fading left, when asked', () => {
+    render(
+      <PageHero
+        title="Kiến thức"
+        painting={{
+          small: '/kien-thuc/hero-night-768.webp',
+          large: '/kien-thuc/hero-night-1536.webp',
+        }}
+        paintingFocus={PaintingFocus.Whole}
+      />,
+    );
+    const classes = screen
+      .getByRole('heading', { level: 1 })
+      .closest('section')
+      ?.querySelector('img')
+      ?.getAttribute('class')
+      ?.split(' ');
+
+    expect(classes).toEqual(
+      expect.arrayContaining([
+        'right-0',
+        'h-full',
+        'w-auto',
+        'mask-l-from-70%',
+        'hidden',
+        'md:block',
+      ]),
+    );
+    expect(classes).not.toContain('object-cover');
   });
 
   it('lets the longest hub title wrap instead of overflowing', () => {

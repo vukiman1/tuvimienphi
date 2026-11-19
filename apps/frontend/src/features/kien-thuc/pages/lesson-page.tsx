@@ -3,7 +3,15 @@ import type { ReactElement } from 'react';
 import { ContentKind, pageRef } from '@org/shared-contracts';
 import type { ContentSection, KienThucManifest, LessonFile } from '@org/shared-contracts';
 import { BookOpen, Clock, Sparkle } from 'lucide-react';
-import { Breadcrumb, Chip, DisplaySize, PageHero, ReadingZone, TextLink } from '@/design-system';
+import {
+  Breadcrumb,
+  Chip,
+  DisplaySize,
+  PageHero,
+  PaintingFocus,
+  ReadingZone,
+  TextLink,
+} from '@/design-system';
 import { sectionId } from '../active-section';
 import { KienThucCta } from '../components/kien-thuc-cta';
 import { LessonToc } from '../components/lesson-toc';
@@ -80,6 +88,7 @@ function LessonHero({ lesson, published, manifest }: LessonHeroProps): ReactElem
       }
       title={lesson.title}
       painting={KIEN_THUC_PAINTING}
+      paintingFocus={PaintingFocus.Whole}
     >
       <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-day-soft">
         <span className="inline-flex items-center gap-2">

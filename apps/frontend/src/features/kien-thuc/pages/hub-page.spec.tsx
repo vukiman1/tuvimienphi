@@ -101,6 +101,7 @@ describe('HubPage', () => {
     expect(heading.querySelectorAll('.italic')).toHaveLength(1);
     expect(accent?.textContent).toBe('6 bước');
     expect(accent?.classList.contains('text-dawn')).toBe(true);
+    expect(accent?.parentElement?.className.split(' ')).toContain('md:block');
     expect(hero?.classList.contains('bg-night')).toBe(true);
     expect(within(hero ?? document.body).getByText('Học tử vi từ đầu')).toBeTruthy();
     expect(within(hero ?? document.body).getByText(HUB_LEAD)).toBeTruthy();
@@ -252,6 +253,7 @@ describe('HubPage', () => {
       expect(painting?.getAttribute('loading')).toBe('lazy');
       expect(painting?.closest('.hidden.md\\:block')).toBeTruthy();
     });
+    expect(hero?.querySelector('img')?.className.split(' ')).toContain('right-0');
   });
 
   it('shows images only as decoration and fades no text', async () => {

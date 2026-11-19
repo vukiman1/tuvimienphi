@@ -6,7 +6,14 @@ import type {
   KienThucManifest,
   ManifestEntry,
 } from '@org/shared-contracts';
-import { Breadcrumb, DisplaySize, PageHero, ReadingZone, TextLink } from '@/design-system';
+import {
+  Breadcrumb,
+  DisplaySize,
+  PageHero,
+  PaintingFocus,
+  ReadingZone,
+  TextLink,
+} from '@/design-system';
 import { EntryTile } from '../components/entry-tile';
 import { FactsBlock } from '../components/facts-block';
 import { KienThucCta } from '../components/kien-thuc-cta';
@@ -50,6 +57,7 @@ function EntryHero({ entry }: { readonly entry: EntryFile }): ReactElement {
       title={entry.title}
       lead={entry.summary}
       painting={KIEN_THUC_PAINTING}
+      paintingFocus={PaintingFocus.Whole}
     >
       <p className="text-sm text-day-soft">
         {'Cập nhật '}
