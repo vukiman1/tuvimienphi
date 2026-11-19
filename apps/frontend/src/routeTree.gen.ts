@@ -26,6 +26,9 @@ import { Route as SiteLaSoIndexRouteImport } from './routes/_site/la-so.index'
 import { Route as SiteLaSoDetailRouteImport } from './routes/_site/la-so.detail'
 import { Route as SiteVanHanIndexRouteImport } from './routes/_site/van-han.index'
 import { Route as SiteVanHanSlugRouteImport } from './routes/_site/van-han.$slug'
+import { Route as SiteKienThucCungSlugRouteImport } from './routes/_site/kien-thuc.cung.$slug'
+import { Route as SiteKienThucSaoSlugRouteImport } from './routes/_site/kien-thuc.sao.$slug'
+import { Route as SiteKienThucThuatNguSlugRouteImport } from './routes/_site/kien-thuc.thuat-ngu.$slug'
 import { Route as SiteKienThucTuVi2027IndexRouteImport } from './routes/_site/kien-thuc.tu-vi-2027.index'
 import { Route as SiteKienThucTuVi2027SlugRouteImport } from './routes/_site/kien-thuc.tu-vi-2027.$slug'
 import { Route as SiteVanHanYearSlugRouteImport } from './routes/_site/van-han.$year.$slug'
@@ -114,6 +117,22 @@ const SiteVanHanSlugRoute = SiteVanHanSlugRouteImport.update({
   path: '/van-han/$slug',
   getParentRoute: () => SiteRoute,
 } as any)
+const SiteKienThucCungSlugRoute = SiteKienThucCungSlugRouteImport.update({
+  id: '/cung/$slug',
+  path: '/cung/$slug',
+  getParentRoute: () => SiteKienThucRoute,
+} as any)
+const SiteKienThucSaoSlugRoute = SiteKienThucSaoSlugRouteImport.update({
+  id: '/sao/$slug',
+  path: '/sao/$slug',
+  getParentRoute: () => SiteKienThucRoute,
+} as any)
+const SiteKienThucThuatNguSlugRoute =
+  SiteKienThucThuatNguSlugRouteImport.update({
+    id: '/thuat-ngu/$slug',
+    path: '/thuat-ngu/$slug',
+    getParentRoute: () => SiteKienThucRoute,
+  } as any)
 const SiteKienThucTuVi2027IndexRoute =
   SiteKienThucTuVi2027IndexRouteImport.update({
     id: '/tu-vi-2027/',
@@ -149,6 +168,9 @@ export interface FileRoutesByFullPath {
   '/kien-thuc/': typeof SiteKienThucIndexRoute
   '/la-so/': typeof SiteLaSoIndexRoute
   '/van-han/': typeof SiteVanHanIndexRoute
+  '/kien-thuc/cung/$slug': typeof SiteKienThucCungSlugRoute
+  '/kien-thuc/sao/$slug': typeof SiteKienThucSaoSlugRoute
+  '/kien-thuc/thuat-ngu/$slug': typeof SiteKienThucThuatNguSlugRoute
   '/kien-thuc/tu-vi-2027/$slug': typeof SiteKienThucTuVi2027SlugRoute
   '/van-han/$year/$slug': typeof SiteVanHanYearSlugRoute
   '/kien-thuc/tu-vi-2027/': typeof SiteKienThucTuVi2027IndexRoute
@@ -167,6 +189,9 @@ export interface FileRoutesByTo {
   '/kien-thuc': typeof SiteKienThucIndexRoute
   '/la-so': typeof SiteLaSoIndexRoute
   '/van-han': typeof SiteVanHanIndexRoute
+  '/kien-thuc/cung/$slug': typeof SiteKienThucCungSlugRoute
+  '/kien-thuc/sao/$slug': typeof SiteKienThucSaoSlugRoute
+  '/kien-thuc/thuat-ngu/$slug': typeof SiteKienThucThuatNguSlugRoute
   '/kien-thuc/tu-vi-2027/$slug': typeof SiteKienThucTuVi2027SlugRoute
   '/van-han/$year/$slug': typeof SiteVanHanYearSlugRoute
   '/kien-thuc/tu-vi-2027': typeof SiteKienThucTuVi2027IndexRoute
@@ -190,6 +215,9 @@ export interface FileRoutesById {
   '/_site/kien-thuc/': typeof SiteKienThucIndexRoute
   '/_site/la-so/': typeof SiteLaSoIndexRoute
   '/_site/van-han/': typeof SiteVanHanIndexRoute
+  '/_site/kien-thuc/cung/$slug': typeof SiteKienThucCungSlugRoute
+  '/_site/kien-thuc/sao/$slug': typeof SiteKienThucSaoSlugRoute
+  '/_site/kien-thuc/thuat-ngu/$slug': typeof SiteKienThucThuatNguSlugRoute
   '/_site/kien-thuc/tu-vi-2027/$slug': typeof SiteKienThucTuVi2027SlugRoute
   '/_site/van-han/$year/$slug': typeof SiteVanHanYearSlugRoute
   '/_site/kien-thuc/tu-vi-2027/': typeof SiteKienThucTuVi2027IndexRoute
@@ -213,6 +241,9 @@ export interface FileRouteTypes {
     | '/kien-thuc/'
     | '/la-so/'
     | '/van-han/'
+    | '/kien-thuc/cung/$slug'
+    | '/kien-thuc/sao/$slug'
+    | '/kien-thuc/thuat-ngu/$slug'
     | '/kien-thuc/tu-vi-2027/$slug'
     | '/van-han/$year/$slug'
     | '/kien-thuc/tu-vi-2027/'
@@ -231,6 +262,9 @@ export interface FileRouteTypes {
     | '/kien-thuc'
     | '/la-so'
     | '/van-han'
+    | '/kien-thuc/cung/$slug'
+    | '/kien-thuc/sao/$slug'
+    | '/kien-thuc/thuat-ngu/$slug'
     | '/kien-thuc/tu-vi-2027/$slug'
     | '/van-han/$year/$slug'
     | '/kien-thuc/tu-vi-2027'
@@ -253,6 +287,9 @@ export interface FileRouteTypes {
     | '/_site/kien-thuc/'
     | '/_site/la-so/'
     | '/_site/van-han/'
+    | '/_site/kien-thuc/cung/$slug'
+    | '/_site/kien-thuc/sao/$slug'
+    | '/_site/kien-thuc/thuat-ngu/$slug'
     | '/_site/kien-thuc/tu-vi-2027/$slug'
     | '/_site/van-han/$year/$slug'
     | '/_site/kien-thuc/tu-vi-2027/'
@@ -386,6 +423,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SiteVanHanSlugRouteImport
       parentRoute: typeof SiteRoute
     }
+    '/_site/kien-thuc/cung/$slug': {
+      id: '/_site/kien-thuc/cung/$slug'
+      path: '/cung/$slug'
+      fullPath: '/kien-thuc/cung/$slug'
+      preLoaderRoute: typeof SiteKienThucCungSlugRouteImport
+      parentRoute: typeof SiteKienThucRoute
+    }
+    '/_site/kien-thuc/sao/$slug': {
+      id: '/_site/kien-thuc/sao/$slug'
+      path: '/sao/$slug'
+      fullPath: '/kien-thuc/sao/$slug'
+      preLoaderRoute: typeof SiteKienThucSaoSlugRouteImport
+      parentRoute: typeof SiteKienThucRoute
+    }
+    '/_site/kien-thuc/thuat-ngu/$slug': {
+      id: '/_site/kien-thuc/thuat-ngu/$slug'
+      path: '/thuat-ngu/$slug'
+      fullPath: '/kien-thuc/thuat-ngu/$slug'
+      preLoaderRoute: typeof SiteKienThucThuatNguSlugRouteImport
+      parentRoute: typeof SiteKienThucRoute
+    }
     '/_site/kien-thuc/tu-vi-2027/': {
       id: '/_site/kien-thuc/tu-vi-2027/'
       path: '/tu-vi-2027'
@@ -413,6 +471,9 @@ declare module '@tanstack/react-router' {
 interface SiteKienThucRouteChildren {
   SiteKienThucSlugRoute: typeof SiteKienThucSlugRoute
   SiteKienThucIndexRoute: typeof SiteKienThucIndexRoute
+  SiteKienThucCungSlugRoute: typeof SiteKienThucCungSlugRoute
+  SiteKienThucSaoSlugRoute: typeof SiteKienThucSaoSlugRoute
+  SiteKienThucThuatNguSlugRoute: typeof SiteKienThucThuatNguSlugRoute
   SiteKienThucTuVi2027SlugRoute: typeof SiteKienThucTuVi2027SlugRoute
   SiteKienThucTuVi2027IndexRoute: typeof SiteKienThucTuVi2027IndexRoute
 }
@@ -420,6 +481,9 @@ interface SiteKienThucRouteChildren {
 const SiteKienThucRouteChildren: SiteKienThucRouteChildren = {
   SiteKienThucSlugRoute: SiteKienThucSlugRoute,
   SiteKienThucIndexRoute: SiteKienThucIndexRoute,
+  SiteKienThucCungSlugRoute: SiteKienThucCungSlugRoute,
+  SiteKienThucSaoSlugRoute: SiteKienThucSaoSlugRoute,
+  SiteKienThucThuatNguSlugRoute: SiteKienThucThuatNguSlugRoute,
   SiteKienThucTuVi2027SlugRoute: SiteKienThucTuVi2027SlugRoute,
   SiteKienThucTuVi2027IndexRoute: SiteKienThucTuVi2027IndexRoute,
 }

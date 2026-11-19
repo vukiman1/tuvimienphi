@@ -1,8 +1,18 @@
+import type { EntryFile } from '@org/shared-contracts';
 import type { BreadcrumbItem } from '@/lib/seo';
-import { KIEN_THUC_PATH, lessonPath } from './kien-thuc-paths';
+import { GROUP_LABEL } from './components/kien-thuc-labels';
+import { KIEN_THUC_PATH, entryPath, indexPath, lessonPath } from './kien-thuc-paths';
 
 const KIEN_THUC_CRUMB: BreadcrumbItem = { name: 'Kiến thức', path: KIEN_THUC_PATH };
 
 export function lessonBreadcrumb(slug: string, title: string): readonly BreadcrumbItem[] {
   return [KIEN_THUC_CRUMB, { name: title, path: lessonPath(slug) }];
+}
+
+export function entryBreadcrumb(entry: EntryFile): readonly BreadcrumbItem[] {
+  return [
+    KIEN_THUC_CRUMB,
+    { name: GROUP_LABEL[entry.group], path: indexPath(entry.kind) },
+    { name: entry.title, path: entryPath(entry.kind, entry.slug) },
+  ];
 }

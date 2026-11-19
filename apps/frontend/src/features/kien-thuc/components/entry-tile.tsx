@@ -9,7 +9,7 @@ interface EntryTileProps {
   readonly kind: EntryKind;
   readonly slug: string;
   readonly title: string;
-  readonly summary: string;
+  readonly summary?: string;
 }
 
 export function EntryTile({ kind, slug, title, summary }: EntryTileProps): ReactElement {
@@ -22,7 +22,7 @@ export function EntryTile({ kind, slug, title, summary }: EntryTileProps): React
       )}
     >
       <span className="font-bold text-ink">{title}</span>
-      <span className="text-sm text-ink-soft">{summary}</span>
+      {summary !== undefined && <span className="text-sm text-ink-soft">{summary}</span>}
     </Link>
   );
 }
