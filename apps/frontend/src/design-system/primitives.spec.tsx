@@ -19,6 +19,7 @@ import {
   Emphasis,
   FOCUS_RING_CLASS,
   PageHero,
+  PaintingBreakpoint,
   PaintingFocus,
   ReadingZone,
   StarRating,
@@ -467,6 +468,64 @@ describe('PageHero', () => {
       ]),
     );
     expect(classes).not.toContain('object-cover');
+  });
+
+  function paintingClassesFor(focus: PaintingFocus): readonly string[] {
+    render(
+      <PageHero
+        title="Vận Hạn"
+        painting={{ small: '/van-han/hero-night-768.webp', large: '/van-han/hero-night-1536.webp' }}
+        paintingFocus={focus}
+      />,
+    );
+    return (
+      screen
+        .getByRole('heading', { level: 1 })
+        .closest('section')
+        ?.querySelector('img')
+        ?.getAttribute('class')
+        ?.split(' ') ?? []
+    );
+  }
+
+  it('crops the painting to the middle of its sky, fading it out under the title, when asked', () => {
+    const classes = paintingClassesFor(PaintingFocus.Middle);
+
+    expect(classes).toEqual(
+      expect.arrayContaining(['object-cover', 'object-[70%_34%]', 'mask-l-from-50%']),
+    );
+  });
+
+  it('crops the painting to its horizon, fading it out under the title and lead, when asked', () => {
+    const classes = paintingClassesFor(PaintingFocus.Horizon);
+
+    expect(classes).toEqual(
+      expect.arrayContaining([
+        'object-cover',
+        'object-[70%_55%]',
+        'mask-l-from-30%',
+        'mask-l-to-80%',
+      ]),
+    );
+  });
+
+  it('keeps the plain Night band below desktop width when the painting is shown from desktop', () => {
+    render(
+      <PageHero
+        title="Ngày Tốt"
+        painting={{ small: '/ngay-tot/hero-dawn-768.webp', large: '/ngay-tot/hero-dawn-1536.webp' }}
+        paintingFrom={PaintingBreakpoint.Desktop}
+      />,
+    );
+    const band = screen.getByRole('heading', { level: 1 }).closest('section') as HTMLElement;
+    const painting = band.querySelector('img');
+    const overlay = painting?.nextElementSibling;
+
+    for (const layer of [painting, overlay]) {
+      const classes = layer?.getAttribute('class')?.split(' ');
+      expect(classes).toEqual(expect.arrayContaining(['hidden', 'lg:block']));
+      expect(classes).not.toContain('md:block');
+    }
   });
 
   it('lets the longest hub title wrap instead of overflowing', () => {

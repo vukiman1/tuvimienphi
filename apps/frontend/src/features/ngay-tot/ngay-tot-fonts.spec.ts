@@ -11,6 +11,7 @@ const DISPLAY_FACE = /\bfont-display\b/;
 const ITALIC = /\bitalic\b/;
 const EMPHASIS_FACE = /\bfont-emphasis\b/;
 const RASTER_MEDIA_IMPORT = /from '@\/(config\/media|lib\/zodiac-icons)'/;
+const MEDIA_MODULE = 'ngay-tot-media.ts';
 
 interface SourceFile {
   readonly path: string;
@@ -51,10 +52,11 @@ describe('ngay-tot fonts and media', () => {
     expect(offenders).toEqual([]);
   });
 
-  it('references no raster media', () => {
+  it('reaches raster media only through its own media module', () => {
     const offenders = sourceFiles(FEATURE_ROOT)
       .filter(({ text }) => RASTER_MEDIA_IMPORT.test(text))
-      .map(({ path }) => path);
+      .map(({ path }) => path)
+      .filter((path) => path !== MEDIA_MODULE);
 
     expect(offenders).toEqual([]);
   });

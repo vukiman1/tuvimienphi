@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import type { VanHanCurrent } from '@org/shared-contracts';
-import { PageHero, TextLink } from '@/design-system';
+import { PageHero, PaintingFocus, TextLink } from '@/design-system';
+import { VAN_HAN_PAINTING } from '@/features/van-han/van-han-media';
 import type { ZodiacChi } from '@/lib/zodiac-icons';
 import { VanHanDetail, VanHanDetailEmpty } from '@/features/van-han/components/van-han-detail';
 import { VanHanFacts } from '@/features/van-han/components/van-han-facts';
@@ -35,6 +36,8 @@ export function VanHanZodiacPage({
             <TextLink to={VAN_HAN_PATH}>{BACK_TO_LIST_LABEL}</TextLink>
           </div>
         }
+        painting={VAN_HAN_PAINTING}
+        paintingFocus={PaintingFocus.Middle}
         title={vanHanZodiacTitle(chi, current)}
       >
         <div className="flex flex-col gap-4">

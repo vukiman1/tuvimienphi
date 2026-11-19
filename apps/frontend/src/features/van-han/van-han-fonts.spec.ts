@@ -13,6 +13,7 @@ const EMPHASIS_FACE = /\bfont-emphasis\b/;
 const RASTER_MEDIA_REFERENCE = /from '@\/config\/media'|\bzodiacIconPath\b/;
 const PNG_PATH = /\.png['"`]$/;
 const HAN_CHARACTER = /\p{Script=Han}/u;
+const MEDIA_MODULE = 'van-han-media.ts';
 
 interface SourceFile {
   readonly path: string;
@@ -59,8 +60,10 @@ describe('van-han fonts and media', () => {
     expect(offenders).toEqual([]);
   });
 
-  it('takes images only from the Tết hub kit', () => {
-    expect(offendingFiles(RASTER_MEDIA_REFERENCE)).toEqual([]);
+  it('takes images only from the Tết hub kit and its own media module', () => {
+    expect(offendingFiles(RASTER_MEDIA_REFERENCE).filter((path) => path !== MEDIA_MODULE)).toEqual(
+      [],
+    );
     expect(offendingStrings((value) => PNG_PATH.test(value))).toEqual([]);
   });
 

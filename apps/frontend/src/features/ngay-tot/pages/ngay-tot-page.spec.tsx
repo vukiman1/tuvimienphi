@@ -109,9 +109,24 @@ describe('NgayTotPage', () => {
     expect(screen.queryByRole('heading', { level: 2, name: 'Giờ tốt xấu trong ngày' })).toBeNull();
   });
 
-  it('renders no images', () => {
+  it('renders no image but the hero painting', () => {
     const { container } = renderPage();
 
-    expect(container.querySelectorAll('img')).toHaveLength(0);
+    const images = container.querySelectorAll('img');
+    expect(images).toHaveLength(1);
+    expect(heroSection().contains(images[0])).toBe(true);
+  });
+
+  it('paints the hero from desktop width as a lazy decorative image phones and tablets never show', () => {
+    renderPage();
+
+    const painting = heroSection().querySelector('img');
+    expect(painting?.getAttribute('alt')).toBe('');
+    expect(painting?.getAttribute('loading')).toBe('lazy');
+    expect(painting?.getAttribute('srcset')).toBe(
+      '/ngay-tot/hero-dawn-768.webp 768w, /ngay-tot/hero-dawn-1536.webp 1536w',
+    );
+    expect(classTokens(painting)).toEqual(expect.arrayContaining(['hidden', 'lg:block']));
+    expect(classTokens(painting)).not.toContain('md:block');
   });
 });

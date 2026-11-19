@@ -57,6 +57,16 @@ export const MEDIA = {
   },
   vanHan: {
     decorCloud: mediaUrl('/van-han/decor-cloud.png'),
+    heroNight: {
+      small: mediaUrl('/van-han/hero-night-768.webp'),
+      large: mediaUrl('/van-han/hero-night-1536.webp'),
+    } satisfies PagePainting,
+  },
+  ngayTot: {
+    heroDawn: {
+      small: mediaUrl('/ngay-tot/hero-dawn-768.webp'),
+      large: mediaUrl('/ngay-tot/hero-dawn-1536.webp'),
+    } satisfies PagePainting,
   },
   kienThuc: {
     heroNight: {
