@@ -141,14 +141,13 @@ export function SiteHeader({ isStoryPage = false }: SiteHeaderProps): ReactEleme
         </nav>
 
         <div className="inline-flex min-h-9 shrink-0 items-center gap-3" aria-busy={isInitializing}>
-          {isInitializing ? (
-            <SessionPlaceholder mutedClass={mutedClass} />
-          ) : user ? (
+          {user ? (
             <Suspense fallback={<SessionPlaceholder mutedClass={mutedClass} />}>
               <UserMenu />
             </Suspense>
           ) : (
             <button
+              disabled={isInitializing}
               onClick={() => openAuth('login')}
               onFocus={preloadAuthModal}
               onMouseEnter={preloadAuthModal}
