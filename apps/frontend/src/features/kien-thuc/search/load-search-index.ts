@@ -1,6 +1,6 @@
 import type { KienThucSearchItem } from '@org/shared-contracts';
-import { KIEN_THUC_SOURCE } from '../kien-thuc-content';
 
-export function loadKienThucSearchIndex(): Promise<readonly KienThucSearchItem[]> {
+export async function loadKienThucSearchIndex(): Promise<readonly KienThucSearchItem[]> {
+  const { KIEN_THUC_SOURCE } = await import('../kien-thuc-content');
   return KIEN_THUC_SOURCE.loadSearchIndex();
 }
