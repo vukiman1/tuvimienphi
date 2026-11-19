@@ -54,6 +54,13 @@ class PrerenderApiError extends Error {
   }
 }
 
+class PrerenderMissingRootError extends Error {
+  constructor(route) {
+    super(`${route} has no #root element to put the static markup in`);
+    this.name = 'PrerenderMissingRootError';
+  }
+}
+
 class PrerenderHydrationError extends Error {
   constructor(route, messages) {
     super(`${route} did not hydrate its own prerendered HTML: ${messages.join(FAILURE_SEPARATOR)}`);
@@ -135,8 +142,20 @@ async function assertRenderedFromApi(page, route, failures) {
 async function snapshotDocumentWithRootMarkup() {
   const markup = await window.renderRootMarkup();
   const documentCopy = document.documentElement.cloneNode(true);
-  documentCopy.querySelector('#root').innerHTML = markup;
+  const root = documentCopy.querySelector('#root');
+  if (!root) {
+    return null;
+  }
+  root.innerHTML = markup;
   return documentCopy.outerHTML;
+}
+
+async function captureDocumentWithRootMarkup(page, route) {
+  const html = await page.evaluate(snapshotDocumentWithRootMarkup);
+  if (html === null) {
+    throw new PrerenderMissingRootError(route);
+  }
+  return html;
 }
 
 async function assertHydratesCleanly({ browser, baseUrl, route, html, readApiOnce }) {
@@ -220,7 +239,7 @@ async function main() {
         await assertRenderedFromApi(page, route, failures);
         // The router injects absolute preview-origin URLs for preloaded chunks (http://localhost:PORT/assets/…).
         // Rewrite them back to root-relative so the assets resolve in production.
-        const raw = await page.evaluate(snapshotDocumentWithRootMarkup);
+        const raw = await captureDocumentWithRootMarkup(page, route);
         const html =
           '<!doctype html>\n' +
           stripMotionReady(
