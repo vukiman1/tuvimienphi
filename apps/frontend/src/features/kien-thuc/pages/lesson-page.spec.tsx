@@ -3,6 +3,7 @@ import type { ReactElement } from 'react';
 import { useParams } from '@tanstack/react-router';
 import type { ContentSection, LessonFile } from '@org/shared-contracts';
 import { CHAPTER_TONE_CLASS, ChapterTone, FOCUS_RING_CLASS } from '@/design-system';
+import { focusHashTargetOnRender } from '@/app/focus-hash-target-on-render';
 import { renderAtRoute } from '@/test-utils/render-at-route';
 import {
   stubIntersectionObserver,
@@ -243,7 +244,10 @@ describe('LessonPage', () => {
     const [first, ...rest] = within(toc).getAllByRole('link');
 
     expect(toc.className.split(' ')).toEqual(expect.arrayContaining(['hidden', 'lg:block']));
-    expect([first, ...rest].map((link) => link.getAttribute('href'))).toEqual(['#muc-1', '#muc-2']);
+    expect([first, ...rest].map((link) => link.getAttribute('href'))).toEqual([
+      '/kien-thuc/tu-vi-la-gi#muc-1',
+      '/kien-thuc/tu-vi-la-gi#muc-2',
+    ]);
     expect(first.getAttribute('aria-current')).toBe('location');
     expect(first.className.split(' ')).toContain('font-bold');
     expect(hasStateBar(first)).toBe(true);
@@ -252,6 +256,29 @@ describe('LessonPage', () => {
       expect(link.className.split(' ')).not.toContain('font-bold');
       expect(hasStateBar(link)).toBe(false);
     });
+  });
+
+  it('jumps to a section from "Trong bài" without leaving the lesson', async () => {
+    const lesson = await withSecondSection('tu-vi-la-gi');
+    const { router } = await renderAtRoute({
+      path: lessonPath(lesson.slug),
+      routePath: LESSON_ROUTE_PATH,
+      element: (
+        <LessonPage
+          lesson={lesson}
+          manifest={FIXTURE_SOURCE.loadManifest()}
+          loadSearchIndex={FIXTURE_SOURCE.loadSearchIndex}
+        />
+      ),
+    });
+    focusHashTargetOnRender(router);
+    const toc = await screen.findByRole('navigation', { name: 'Trong bài' });
+
+    fireEvent.click(within(toc).getByRole('link', { name: SECOND_SECTION.heading }));
+
+    await waitFor(() => expect(router.state.location.hash).toBe('muc-2'));
+    expect(router.state.location.pathname).toBe('/kien-thuc/tu-vi-la-gi');
+    await waitFor(() => expect(document.activeElement?.id).toBe('muc-2'));
   });
 
   it('moves the current section as the reader scrolls past it', async () => {

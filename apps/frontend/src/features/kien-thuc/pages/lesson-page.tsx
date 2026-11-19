@@ -115,7 +115,7 @@ function LessonHero({ lesson, published, manifest }: LessonHeroProps): ReactElem
 function LessonSection({ id, section }: LessonSectionProps): ReactElement {
   const titleId = `${id}-title`;
   return (
-    <section id={id} aria-labelledby={titleId} className="scroll-mt-6">
+    <section id={id} tabIndex={-1} aria-labelledby={titleId} className="scroll-mt-6">
       <SectionHeading id={titleId}>{section.heading}</SectionHeading>
       <div className="mt-4 flex flex-col gap-4">
         {section.paragraphs.map((paragraph, index) => (

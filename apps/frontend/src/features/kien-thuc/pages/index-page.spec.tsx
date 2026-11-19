@@ -1,8 +1,10 @@
-import { screen, within } from '@testing-library/react';
+import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import { ContentKind } from '@org/shared-contracts';
 import type { EntryKind } from '@org/shared-contracts';
 import { FOCUS_RING_CLASS } from '@/design-system';
+import { focusHashTargetOnRender } from '@/app/focus-hash-target-on-render';
 import { renderAtRoute } from '@/test-utils/render-at-route';
+import type { RenderedRoute } from '@/test-utils/render-at-route';
 import { FIXTURE_SOURCE } from '../__fixtures__/fixture-source';
 import { indexPath } from '../kien-thuc-paths';
 import { loadIndexPage } from '../route-data/index-route';
@@ -13,17 +15,22 @@ const FADED_TEXT_CLASS = /^text-[a-z-]+\/\d+$/;
 const OPACITY_CLASS = /^opacity-/;
 const FORBIDDEN_CLASS_PREFIXES: readonly string[] = ['animate-', 'backdrop-'];
 
-async function renderIndex(kind: EntryKind): Promise<HTMLElement> {
+async function renderIndexRoute(kind: EntryKind): Promise<RenderedRoute> {
   const data = await loadIndexPage(kind, FIXTURE_SOURCE);
   if (data.status !== KienThucPageStatus.Found) {
     throw new Error(`The ${kind} index was not found`);
   }
-  const { container } = await renderAtRoute({
+  const rendered = await renderAtRoute({
     path: indexPath(kind),
     routePath: `/kien-thuc/${kind}`,
     element: <IndexPage data={data} />,
   });
   await screen.findByRole('heading', { level: 1 });
+  return rendered;
+}
+
+async function renderIndex(kind: EntryKind): Promise<HTMLElement> {
+  const { container } = await renderIndexRoute(kind);
   return container;
 }
 
@@ -82,9 +89,24 @@ describe('IndexPage', () => {
     const can = screen.getByRole('link', { name: /Thiên can/ });
 
     expect(h2Names()).toEqual(['Ngũ hành', 'Thuật ngữ A–Z']);
-    expect(glossaryLinks.map((link) => link.getAttribute('href'))).toEqual(['#chu-c', '#chu-t']);
+    expect(glossaryLinks.map((link) => link.getAttribute('href'))).toEqual([
+      '/kien-thuc/thuat-ngu#chu-c',
+      '/kien-thuc/thuat-ngu#chu-t',
+    ]);
     expect(document.getElementById('chu-c')?.tabIndex).toBe(-1);
     expect(isBefore(cuc, can)).toBe(true);
+  });
+
+  it('jumps to a letter without leaving the glossary', async () => {
+    const { router } = await renderIndexRoute(ContentKind.ThuatNgu);
+    focusHashTargetOnRender(router);
+    const strip = screen.getByRole('navigation', { name: 'Theo chữ cái' });
+
+    fireEvent.click(within(strip).getByRole('link', { name: 'T' }));
+
+    await waitFor(() => expect(router.state.location.hash).toBe('chu-t'));
+    expect(router.state.location.pathname).toBe('/kien-thuc/thuat-ngu');
+    await waitFor(() => expect(document.activeElement?.id).toBe('chu-t'));
   });
 
   it('opens on a Night hero with a one-line lead', async () => {
