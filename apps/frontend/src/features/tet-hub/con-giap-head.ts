@@ -8,7 +8,8 @@ import {
 } from '@org/shared-tu-vi';
 import type { ConGiapArticle } from '@org/shared-contracts';
 import { conGiapBreadcrumb } from './con-giap-breadcrumb';
-import { articlePageHead, type SeoHead } from './tet-hub-json-ld';
+import type { SeoHead } from '@/lib/seo';
+import { articlePageHead } from './tet-hub-json-ld';
 import { tetHubPagePath, tetHubShareImagePath } from './tet-hub-paths';
 
 function conGiapTitle(chi: number): string {

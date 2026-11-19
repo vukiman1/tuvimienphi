@@ -1,52 +1,31 @@
+import type { ReactElement } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { ArticlePage } from '@/features/kien-thuc/pages/article-page';
-import { findArticle } from '@/features/kien-thuc/kien-thuc-data';
-import { SITE_LOGO_PATH, SITE_NAME, absoluteUrl, jsonLdMeta, seo } from '@/lib/seo';
+import { KienThucNotFound } from '@/features/kien-thuc/components/kien-thuc-not-found';
+import { lessonHead } from '@/features/kien-thuc/head/lesson-head';
+import { LessonPage } from '@/features/kien-thuc/pages/lesson-page';
+import { KienThucPageStatus } from '@/features/kien-thuc/route-data/kien-thuc-page-status';
+import { loadLessonPage } from '@/features/kien-thuc/route-data/lesson-route';
+import { loadKienThucSearchIndex } from '@/features/kien-thuc/search/load-search-index';
+
+function LessonRoute(): ReactElement {
+  const data = Route.useLoaderData();
+  if (data.status === KienThucPageStatus.NotFound) {
+    return <KienThucNotFound />;
+  }
+  return (
+    <LessonPage
+      lesson={data.lesson}
+      manifest={data.manifest}
+      loadSearchIndex={loadKienThucSearchIndex}
+    />
+  );
+}
 
 export const Route = createFileRoute('/_site/kien-thuc/$slug')({
-  component: ArticleRoute,
-  head: ({ params }) => {
-    const article = findArticle(params.slug);
-    if (!article) {
-      return seo({
-        title: 'Không tìm thấy bài viết',
-        description: 'Bài viết bạn tìm không tồn tại hoặc đã được đổi tên.',
-        path: `/kien-thuc/${params.slug}`,
-        noindex: true,
-      });
-    }
-
-    const path = `/kien-thuc/${article.slug}`;
-    const base = seo({
-      title: article.title,
-      description: article.excerpt,
-      path,
-      type: 'article',
-    });
-    return {
-      ...base,
-      meta: [
-        ...base.meta,
-        jsonLdMeta({
-          '@context': 'https://schema.org',
-          '@type': 'Article',
-          headline: article.title,
-          description: article.excerpt,
-          datePublished: article.date,
-          url: absoluteUrl(path),
-          author: { '@type': 'Organization', name: SITE_NAME },
-          publisher: {
-            '@type': 'Organization',
-            name: SITE_NAME,
-            logo: { '@type': 'ImageObject', url: absoluteUrl(SITE_LOGO_PATH) },
-          },
-        }),
-      ],
-    };
-  },
+  loader: ({ params }) =>
+    import('@/features/kien-thuc/kien-thuc-content').then(({ KIEN_THUC_SOURCE }) =>
+      loadLessonPage(params.slug, KIEN_THUC_SOURCE),
+    ),
+  head: ({ params, loaderData }) => lessonHead(params.slug, loaderData),
+  component: LessonRoute,
 });
-
-function ArticleRoute() {
-  const { slug } = Route.useParams();
-  return <ArticlePage slug={slug} />;
-}

@@ -1,6 +1,14 @@
 import type { TuoiNamArticle } from '@org/shared-contracts';
-import type { BreadcrumbItem } from './breadcrumb-item';
-import { SITE_LOGO_PATH, SITE_NAME, absoluteUrl, jsonLdMeta, seo } from '@/lib/seo';
+import {
+  SITE_LOGO_PATH,
+  SITE_NAME,
+  absoluteUrl,
+  breadcrumbJsonLd,
+  jsonLdMeta,
+  seo,
+  type BreadcrumbItem,
+  type SeoHead,
+} from '@/lib/seo';
 
 const SCHEMA_CONTEXT = 'https://schema.org';
 export const TET_HUB_PUBLISHED_AT = '2026-11-08';
@@ -36,19 +44,6 @@ export function articleJsonLd({
   };
 }
 
-export function breadcrumbJsonLd(items: readonly BreadcrumbItem[]): Record<string, unknown> {
-  return {
-    '@context': SCHEMA_CONTEXT,
-    '@type': 'BreadcrumbList',
-    itemListElement: items.map(({ name, path }, index) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      name,
-      item: absoluteUrl(path),
-    })),
-  };
-}
-
 export function faqPageJsonLd(faq: TuoiNamArticle['faq']): Record<string, unknown> {
   return {
     '@context': SCHEMA_CONTEXT,
@@ -60,8 +55,6 @@ export function faqPageJsonLd(faq: TuoiNamArticle['faq']): Record<string, unknow
     })),
   };
 }
-
-export type SeoHead = ReturnType<typeof seo>;
 
 interface ArticlePageHeadInput extends Omit<ArticleJsonLdInput, 'headline'> {
   readonly title: string;

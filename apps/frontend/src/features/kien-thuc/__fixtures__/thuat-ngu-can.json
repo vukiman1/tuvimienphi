@@ -1,0 +1,16 @@
+{
+  "kind": "thuat-ngu",
+  "group": "thuat-ngu",
+  "slug": "can",
+  "title": "Thiên can",
+  "aliases": [],
+  "summary": "Tóm tắt mẫu của trang Thiên can.",
+  "sections": [
+    {
+      "heading": "Mục mẫu",
+      "paragraphs": ["Đoạn mẫu thứ nhất của trang này, chỉ dùng trong kiểm thử."]
+    }
+  ],
+  "learnInLesson": "la-so-tu-vi-gom-nhung-gi",
+  "reviewedAt": "2026-01-01"
+}

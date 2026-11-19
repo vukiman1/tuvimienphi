@@ -40,14 +40,11 @@ export const MEDIA = {
     nightLarge: mediaUrl('/tet/hero-night-1536.webp'),
   },
   home: {
-    readerGalaxy: mediaUrl('/home/reader-galaxy.webp'),
     decorPhongCanh: mediaUrl('/home/decor-phong-canh.webp'),
   },
   laSo: {
     decorLeft: mediaUrl('/la-so/left.webp'),
     decorRight: mediaUrl('/la-so/right.webp'),
-    illustrationCrane: mediaUrl('/la-so/crane-pine.webp'),
-    sealSmall: mediaUrl('/la-so/seal-sm.webp'),
     luopan: mediaUrl('/la-so/luopan.webp'),
     heroNight: {
       small: mediaUrl('/la-so/hero-night-768.webp'),
@@ -58,19 +55,10 @@ export const MEDIA = {
       large: mediaUrl('/la-so/board-night-1536.webp'),
     } satisfies PagePainting,
   },
-  ngayTot: {
-    sceneTop: mediaUrl('/ngay-tot/scene-top.webp'),
-    decorCrane: mediaUrl('/ngay-tot/decor-crane.webp'),
-  },
   vanHan: {
     decorCloud: mediaUrl('/van-han/decor-cloud.png'),
   },
 } as const;
-
-/** Hand-drawn feng-shui glyph for a Kiến Thức topic chip (icon_1..icon_8, in category order). */
-export function categoryIconUrl(index: number): string {
-  return mediaUrl(`/separated_icons/icon_${index}.webp`);
-}
 
 export function conGiapPaintingUrl(conGiapSlug: string, width: number): string {
   return mediaUrl(`/tet/con-giap/${conGiapSlug}-${width}.webp`);

@@ -1,0 +1,18 @@
+{
+  "slug": "tu-vi-la-gi",
+  "step": 1,
+  "order": 1,
+  "title": "Tử vi là gì",
+  "summary": "Tóm tắt mẫu của bài Tử vi là gì.",
+  "sections": [
+    {
+      "heading": "Mục mẫu",
+      "paragraphs": [
+        "Đoạn mẫu có [[sao/thien-co|Thiên Cơ]], [[sao/tu-vi|Tử Vi]] và [[bai/12-cung-tu-vi|12 cung]], chỉ dùng trong kiểm thử.",
+        "Đoạn mẫu thứ hai của bài này."
+      ]
+    }
+  ],
+  "readingMinutes": 3,
+  "reviewedAt": "2026-01-01"
+}

@@ -1,6 +1,7 @@
 import { TET_HUB_VIEW_YEAR } from '@org/shared-tu-vi';
 import { TET_HUB_BREADCRUMB } from './tet-hub-breadcrumb';
-import { articlePageHead, type SeoHead } from './tet-hub-json-ld';
+import type { SeoHead } from '@/lib/seo';
+import { articlePageHead } from './tet-hub-json-ld';
 import { TET_HUB_PATH, TET_HUB_SLUG, tetHubShareImagePath } from './tet-hub-paths';
 
 export const TET_HUB_PAGE_TITLE = `Tử vi ${TET_HUB_VIEW_YEAR} theo tuổi: sao chiếu mệnh, hạn, Tam tai cho 12 con giáp`;

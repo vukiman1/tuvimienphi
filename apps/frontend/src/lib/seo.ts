@@ -14,6 +14,8 @@ export const SITE_URL = 'https://xemtuvimienphi.top';
 
 export const SITE_NAME = 'Tử Vi Miễn Phí';
 
+const SCHEMA_CONTEXT = 'https://schema.org';
+
 /** Default social share image, served from `public/`. */
 const DEFAULT_OG_IMAGE = '/brand/og-default.jpg';
 export const SITE_LOGO_PATH = '/brand/icon-512.png';
@@ -22,6 +24,11 @@ export const SITE_LOGO_PATH = '/brand/icon-512.png';
 export function absoluteUrl(path: string): string {
   if (/^https?:\/\//.test(path)) return path;
   return `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`;
+}
+
+export interface BreadcrumbItem {
+  readonly name: string;
+  readonly path: string;
 }
 
 /** A single entry in TanStack Router's `meta` array. */
@@ -104,6 +111,21 @@ export function seo(options: SeoOptions): { meta: MetaTag[]; links: LinkTag[] } 
  */
 export function jsonLdMeta(data: Record<string, unknown>): MetaTag {
   return { 'script:ld+json': data } as unknown as MetaTag;
+}
+
+export type SeoHead = ReturnType<typeof seo>;
+
+export function breadcrumbJsonLd(items: readonly BreadcrumbItem[]): Record<string, unknown> {
+  return {
+    '@context': SCHEMA_CONTEXT,
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map(({ name, path }, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name,
+      item: absoluteUrl(path),
+    })),
+  };
 }
 
 /** Organization schema — declared once on the root so it rides along on every page. */

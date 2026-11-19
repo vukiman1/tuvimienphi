@@ -1,0 +1,16 @@
+{
+  "kind": "cung",
+  "group": "cung",
+  "slug": "menh",
+  "title": "Cung Mệnh",
+  "aliases": [],
+  "summary": "Tóm tắt mẫu của trang Cung Mệnh.",
+  "sections": [
+    {
+      "heading": "Mục mẫu",
+      "paragraphs": ["Đoạn mẫu thứ nhất của trang này, chỉ dùng trong kiểm thử."]
+    }
+  ],
+  "learnInLesson": "12-cung-tu-vi",
+  "reviewedAt": "2026-01-01"
+}

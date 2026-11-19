@@ -1,0 +1,16 @@
+{
+  "kind": "sao",
+  "group": "chinh-tinh",
+  "slug": "thien-co",
+  "title": "Sao Thiên Cơ",
+  "aliases": [],
+  "summary": "Tóm tắt mẫu của trang Sao Thiên Cơ.",
+  "sections": [
+    {
+      "heading": "Mục mẫu",
+      "paragraphs": ["Đoạn mẫu thứ nhất của trang này, chỉ dùng trong kiểm thử."]
+    }
+  ],
+  "learnInLesson": "y-nghia-chinh-tinh",
+  "reviewedAt": "2026-01-01"
+}

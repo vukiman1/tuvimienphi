@@ -1,0 +1,18 @@
+{
+  "slug": "la-so-tu-vi-gom-nhung-gi",
+  "step": 1,
+  "order": 2,
+  "title": "Một lá số gồm những gì",
+  "summary": "Tóm tắt mẫu của bài Một lá số gồm những gì.",
+  "sections": [
+    {
+      "heading": "Mục mẫu",
+      "paragraphs": [
+        "Đoạn mẫu thứ nhất của bài này, chỉ dùng trong kiểm thử.",
+        "Đoạn mẫu thứ hai của bài này."
+      ]
+    }
+  ],
+  "readingMinutes": 3,
+  "reviewedAt": "2026-01-01"
+}

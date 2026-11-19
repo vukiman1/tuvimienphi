@@ -64,8 +64,10 @@ export function PageHero({
   children,
 }: PageHeroProps): ReactElement {
   return (
-    <section className="relative overflow-clip bg-night text-day">
-      {painting === undefined ? <HeroOrnament /> : <HeroPainting painting={painting} />}
+    <section className="relative bg-night text-day">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-clip">
+        {painting === undefined ? <HeroOrnament /> : <HeroPainting painting={painting} />}
+      </div>
       <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-10 md:px-6 md:py-16">
         {breadcrumb}
         <div className="flex flex-col gap-4">

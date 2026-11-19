@@ -1,9 +1,8 @@
 import type { ReactElement } from 'react';
 import type { TetHubIntro } from '@org/shared-contracts';
-import { PageHero, ReadingZone, TextLink } from '@/design-system';
+import { Breadcrumb, PageHero, ReadingZone, TextLink } from '@/design-system';
 import { ArticleParagraphs } from '../components/ArticleParagraphs';
 import { ConGiapTiles } from '../components/ConGiapTiles';
-import { TetHubBreadcrumb } from '../components/TetHubBreadcrumb';
 import { TetHubCta } from '../components/TetHubCta';
 import { TET_HUB_BREADCRUMB } from '../tet-hub-breadcrumb';
 import { TET_HUB_EYEBROW } from '../tet-hub-eyebrow';
@@ -20,7 +19,7 @@ export function TetHubPage({ intro }: TetHubPageProps): ReactElement {
   return (
     <main className="w-full bg-day">
       <PageHero
-        breadcrumb={<TetHubBreadcrumb items={TET_HUB_BREADCRUMB} />}
+        breadcrumb={<Breadcrumb items={TET_HUB_BREADCRUMB} />}
         eyebrow={TET_HUB_EYEBROW}
         title={TET_HUB_LINK_LABEL}
         painting={TET_EVE_PAINTING}

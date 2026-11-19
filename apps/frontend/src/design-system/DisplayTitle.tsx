@@ -28,6 +28,7 @@ const DISPLAY_SIZE_CLASS: Readonly<Record<DisplaySize, string>> = {
 interface DisplayTitleProps {
   readonly as?: 'h1' | 'h2' | 'h3';
   readonly id?: string;
+  readonly tabIndex?: number;
   readonly size: DisplaySize;
   readonly face?: TitleFace;
   readonly children: ReactNode;
@@ -36,6 +37,7 @@ interface DisplayTitleProps {
 export function DisplayTitle({
   as: Heading = 'h2',
   id,
+  tabIndex,
   size,
   face = TitleFace.Sans,
   children,
@@ -43,6 +45,7 @@ export function DisplayTitle({
   return (
     <Heading
       id={id}
+      tabIndex={tabIndex}
       className={cn(
         'leading-[1.17] text-balance',
         TITLE_FACE_CLASS[face],

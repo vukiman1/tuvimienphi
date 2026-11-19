@@ -24,6 +24,7 @@ interface CtaBaseProps {
 
 interface CtaLinkProps extends CtaBaseProps {
   readonly to: LinkProps['to'];
+  readonly params?: LinkProps['params'];
   readonly search?: LinkProps['search'];
   readonly hash?: string;
 }
@@ -48,7 +49,13 @@ export function CtaButton(props: CtaButtonProps): ReactElement {
   );
   if (isLinkCta(props)) {
     return (
-      <Link to={props.to} search={props.search} hash={props.hash} className={className}>
+      <Link
+        to={props.to}
+        params={props.params}
+        search={props.search}
+        hash={props.hash}
+        className={className}
+      >
         {props.children}
       </Link>
     );

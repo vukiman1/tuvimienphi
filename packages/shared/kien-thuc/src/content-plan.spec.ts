@@ -8,11 +8,11 @@ import { CHINH_TINH_NAMES, CUNG_NAMES, HOA_NAMES } from '@org/shared-tu-vi';
 import {
   KIEN_THUC_ENTRIES,
   KIEN_THUC_LESSONS,
-  KIEN_THUC_STEPS,
   lessonsOfStep,
   plannedPage,
   plannedRefOf,
 } from './content-plan.js';
+import { KIEN_THUC_STEPS } from './content-steps.js';
 
 const normalize = (text: string): string => text.normalize('NFC').toLowerCase();
 
