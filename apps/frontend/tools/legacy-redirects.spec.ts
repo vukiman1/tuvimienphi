@@ -16,6 +16,7 @@ const NGINX_CONF_PATH = join(__dirname, '../nginx.conf');
 const NGINX_REDIRECT_PATTERN = /location = (\S+) \{\s*return 301 (\S+);\s*\}/g;
 const KIEN_THUC_PREFIX = '/kien-thuc/';
 const REF_SEPARATOR = '/';
+const TRAILING_SLASH = '/';
 
 interface LegacyRedirect {
   readonly from: string;
@@ -29,6 +30,10 @@ function loadLegacyRedirects(): readonly LegacyRedirect[] {
   return JSON.parse(output) as readonly LegacyRedirect[];
 }
 
+function withSlashForm(redirect: LegacyRedirect): readonly LegacyRedirect[] {
+  return [redirect, { from: `${redirect.from}${TRAILING_SLASH}`, to: redirect.to }];
+}
+
 function refText(path: string): string {
   const rest = path.slice(KIEN_THUC_PREFIX.length);
   return rest.includes(REF_SEPARATOR) ? rest : `${ContentKind.Bai}${REF_SEPARATOR}${rest}`;
@@ -40,22 +45,23 @@ function plannedPageAt(path: string): PlannedPage | undefined {
 }
 
 const LEGACY_REDIRECTS = loadLegacyRedirects();
+const SERVED_REDIRECTS = LEGACY_REDIRECTS.flatMap(withSlashForm);
 
 describe('LEGACY_REDIRECTS', () => {
-  it('serves every legacy redirect as a 301 on Cloudflare', () => {
+  it('serves every legacy redirect and its trailing-slash form as a 301 on Cloudflare', () => {
     const lines = readFileSync(CLOUDFLARE_REDIRECTS_PATH, 'utf8')
       .split('\n')
       .filter((line) => line.trim() !== '');
 
-    expect(lines).toEqual(LEGACY_REDIRECTS.map(({ from, to }) => `${from} ${to} 301`));
+    expect(lines).toEqual(SERVED_REDIRECTS.map(({ from, to }) => `${from} ${to} 301`));
   });
 
-  it('serves the same redirects from nginx', () => {
+  it('serves the same redirects and trailing-slash forms from nginx', () => {
     const conf = readFileSync(NGINX_CONF_PATH, 'utf8');
 
     const served = [...conf.matchAll(NGINX_REDIRECT_PATTERN)].map(([, from, to]) => ({ from, to }));
 
-    expect(served).toEqual(LEGACY_REDIRECTS);
+    expect(served).toEqual(SERVED_REDIRECTS);
   });
 
   it('redirects only to planned pages and never shadows a lesson', () => {
