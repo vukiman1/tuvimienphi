@@ -16,12 +16,12 @@ import type {
 } from '@org/shared-contracts';
 import { plannedPage } from '@org/shared-kien-thuc';
 import { OWNER_READ_REFS } from './owner-read-refs';
+import { ProseNodeKind, parseProse } from './prose/parse-prose';
 
 const CONTENT_DIRECTORY = join(__dirname, 'content');
 const MANIFEST_PATH = join(CONTENT_DIRECTORY, KIEN_THUC_MANIFEST_FILE);
 const SEARCH_INDEX_PATH = join(CONTENT_DIRECTORY, KIEN_THUC_SEARCH_INDEX_FILE);
 const JSON_EXTENSION = '.json';
-const LINK_PATTERN = /\[\[([a-z-]+)\/([a-z0-9-]+)\|([^\]|]{1,40})\]\]/gu;
 const LINK_OPEN = '[[';
 const HAN_PATTERN = /\p{Script=Han}/u;
 
@@ -105,14 +105,11 @@ describeContent('kien-thuc content files', () => {
     const unplanned: string[] = [];
     const broken: string[] = [];
     for (const { ref, file } of files) {
-      for (const paragraph of paragraphsOf(file)) {
-        const linked = [...paragraph.matchAll(LINK_PATTERN)];
-        for (const match of linked) {
-          if (!plannedRefOf(`${match[1]}/${match[2]}`)) {
-            unplanned.push(`${ref} -> ${match[1]}/${match[2]}`);
-          }
+      for (const node of paragraphsOf(file).flatMap((paragraph) => parseProse(paragraph))) {
+        if (node.kind === ProseNodeKind.Link && !plannedRefOf(node.ref)) {
+          unplanned.push(`${ref} -> ${node.ref}`);
         }
-        if (paragraph.replace(LINK_PATTERN, '').includes(LINK_OPEN)) {
+        if (node.kind === ProseNodeKind.Text && node.text.includes(LINK_OPEN)) {
           broken.push(ref);
         }
       }
