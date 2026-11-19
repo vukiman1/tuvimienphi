@@ -5,6 +5,7 @@ import { FormError } from '@/components/ui/form-error';
 import { FormField } from '@/components/ui/form-field';
 import { SelectField } from '@/components/ui/select-field';
 import { CtaButton, CtaTone } from '@/design-system';
+import { useNow } from '@/hooks/use-now';
 import { useFormWithSubmitError } from '@/lib/use-form-with-submit-error';
 import { CalendarToggle } from '@/features/la-so/components/calendar-toggle';
 import {
@@ -12,7 +13,7 @@ import {
   GENDER_OPTIONS,
   HOUR_OPTIONS,
   MONTH_OPTIONS,
-  YEAR_OPTIONS,
+  yearOptionsUntil,
 } from '@/features/la-so/components/birth-form.constants';
 import type { Gender } from '@/features/la-so/birth-input';
 import {
@@ -35,6 +36,7 @@ interface BirthFormProps {
 
 export function BirthForm({ initialGender, viewYear }: BirthFormProps = {}): ReactElement {
   const navigate = useNavigate();
+  const now = useNow();
 
   const { form, submitError } = useFormWithSubmitError<BirthFormValues>({
     defaultValues: { ...EMPTY_BIRTH_FORM, gender: initialGender ?? EMPTY_BIRTH_FORM.gender },
@@ -115,7 +117,7 @@ export function BirthForm({ initialGender, viewYear }: BirthFormProps = {}): Rea
               className={SELECT_CLASS}
               field={field}
               label="Năm sinh"
-              options={YEAR_OPTIONS}
+              options={yearOptionsUntil(now.getFullYear())}
               placeholder="Năm"
             />
           )}

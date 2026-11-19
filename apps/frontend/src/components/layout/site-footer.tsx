@@ -3,6 +3,7 @@ import { Link } from '@tanstack/react-router';
 import { NAV_ITEMS } from '@/components/layout/nav-items';
 import { appConfig } from '@/config/app-config';
 import { FOCUS_RING_CLASS, Logo, LogoTone } from '@/design-system';
+import { useNow } from '@/hooks/use-now';
 import { cn } from '@/lib/utils';
 
 interface FooterSurface {
@@ -34,6 +35,7 @@ interface SiteFooterProps {
 }
 
 export function SiteFooter({ isStoryPage = false }: SiteFooterProps): ReactElement {
+  const now = useNow();
   const surface = isStoryPage ? NIGHT_SURFACE : DAY_SURFACE;
   return (
     <footer className={surface.footer}>
@@ -71,7 +73,7 @@ export function SiteFooter({ isStoryPage = false }: SiteFooterProps): ReactEleme
           )}
         >
           <p className={cn('text-xs', surface.muted)}>
-            © {new Date().getFullYear()} {appConfig.app.name}
+            © {now.getFullYear()} {appConfig.app.name}
           </p>
           <p className={cn('text-xs', surface.muted)}>Nội dung chỉ mang tính chất tham khảo.</p>
         </div>

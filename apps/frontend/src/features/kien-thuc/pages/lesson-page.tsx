@@ -12,6 +12,7 @@ import {
   ReadingZone,
   TextLink,
 } from '@/design-system';
+import { useIsClient } from '@/hooks/use-is-client';
 import { sectionId } from '../active-section';
 import { KienThucCta } from '../components/kien-thuc-cta';
 import { LessonToc } from '../components/lesson-toc';
@@ -126,6 +127,19 @@ function LessonSection({ id, section }: LessonSectionProps): ReactElement {
   );
 }
 
+function SampleBoardSlot(): ReactElement {
+  const isClient = useIsClient();
+  const placeholder = <div className={SAMPLE_BOARD_PLACEHOLDER_CLASS} />;
+  if (!isClient) {
+    return placeholder;
+  }
+  return (
+    <Suspense fallback={placeholder}>
+      <SampleChartBoard />
+    </Suspense>
+  );
+}
+
 export function LessonPage({ lesson, manifest, loadSearchIndex }: LessonPageProps): ReactElement {
   const sectionIds = useMemo(
     () => lesson.sections.map((_, index) => sectionId(index)),
@@ -155,9 +169,7 @@ export function LessonPage({ lesson, manifest, loadSearchIndex }: LessonPageProp
                   <Fragment key={sectionIds[index]}>
                     <LessonSection id={sectionIds[index]} section={section} />
                     {hasSampleBoard && index === SAMPLE_BOARD_AFTER_SECTION_INDEX && (
-                      <Suspense fallback={<div className={SAMPLE_BOARD_PLACEHOLDER_CLASS} />}>
-                        <SampleChartBoard />
-                      </Suspense>
+                      <SampleBoardSlot />
                     )}
                   </Fragment>
                 ))}

@@ -11,6 +11,7 @@ import {
 import { HourDetailDialog } from '@/features/ngay-tot/components/hour-detail-dialog';
 import { HourDial } from '@/features/ngay-tot/components/hour-dial';
 import type { HourEntry, HourQuality } from '@/features/ngay-tot/hour-quality';
+import { useNow } from '@/hooks/use-now';
 import { cn } from '@/lib/utils';
 
 const HOURS_PER_CHI = 2;
@@ -21,9 +22,8 @@ interface HourQualityListProps {
   readonly isToday: boolean;
 }
 
-function currentChiIndex(): number {
-  const hour = new Date().getHours();
-  return Math.floor(((hour + 1) % HOURS_PER_DAY) / HOURS_PER_CHI);
+function chiIndexAt(time: Date): number {
+  return Math.floor(((time.getHours() + 1) % HOURS_PER_DAY) / HOURS_PER_CHI);
 }
 
 interface GroupLabelProps {
@@ -105,7 +105,8 @@ function HourGrid({
 export function HourQualityList({ items, isToday }: HourQualityListProps): ReactElement {
   const [openEntry, setOpenEntry] = useState<HourEntry | null>(null);
   const openerRef = useRef<HTMLButtonElement | null>(null);
-  const nowIndex = isToday ? currentChiIndex() : null;
+  const now = useNow();
+  const nowIndex = isToday ? chiIndexAt(now) : null;
   const entries = items.map((item, index) => ({
     item,
     chiIndex: index,

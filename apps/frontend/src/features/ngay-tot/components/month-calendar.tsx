@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { FOCUS_RING_CLASS } from '@/design-system';
 import { buildCalendarDays, type CalendarDay } from '@/features/ngay-tot/calendar-day';
+import { useNow } from '@/hooks/use-now';
 import { cn } from '@/lib/utils';
 
 const WEEKDAY_LABELS = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'] as const;
@@ -77,7 +78,8 @@ export function MonthCalendar({
   onStepMonth,
   onGoToday,
 }: MonthCalendarProps): ReactElement {
-  const days = buildCalendarDays({ viewYear, viewMonth, selectedDate, today: new Date() });
+  const today = useNow();
+  const days = buildCalendarDays({ viewYear, viewMonth, selectedDate, today });
 
   return (
     <div className="flex h-full flex-col rounded-2xl border border-ink/15 bg-day p-2 sm:p-3 md:p-5">

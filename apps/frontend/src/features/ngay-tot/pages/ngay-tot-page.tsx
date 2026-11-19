@@ -7,38 +7,45 @@ import { NhiThapBatTuPanel } from '@/features/ngay-tot/components/nhi-thap-bat-t
 import { PhiTinhBoards } from '@/features/ngay-tot/components/phi-tinh-boards';
 import { SchoolTabs, type PageTabId } from '@/features/ngay-tot/components/school-tabs';
 import { XuatHanhHours } from '@/features/ngay-tot/components/xuat-hanh-hours';
+import { useNow } from '@/hooks/use-now';
 import { getGioHoangDao } from '@/lib/gio-hoang-dao';
 import { getGioXuatHanh } from '@/lib/gio-xuat-hanh';
 import { convertSolarToLunar } from '@org/shared-tu-vi';
 import { getNhiThapBatTu } from '@/lib/nhi-thap-bat-tu';
 import { getPhiTinhBoards } from '@/lib/phi-tinh';
 
+interface CalendarMonth {
+  readonly year: number;
+  readonly month: number;
+}
+
+function monthOf(date: Date): CalendarMonth {
+  return { year: date.getFullYear(), month: date.getMonth() + 1 };
+}
+
 export function NgayTotPage(): ReactElement {
+  const now = useNow();
   const [activeTab, setActiveTab] = useState<PageTabId>('hiep-ky');
-  const [selectedDate, setSelectedDate] = useState(() => new Date());
-  const [viewYear, setViewYear] = useState(() => selectedDate.getFullYear());
-  const [viewMonth, setViewMonth] = useState(() => selectedDate.getMonth() + 1);
+  const [pickedDate, setPickedDate] = useState<Date | null>(null);
+  const [steppedMonth, setSteppedMonth] = useState<CalendarMonth | null>(null);
+  const selectedDate = pickedDate ?? now;
+  const { year: viewYear, month: viewMonth } = steppedMonth ?? monthOf(selectedDate);
 
   const stepMonth = (delta: -1 | 1) => {
-    const next = new Date(viewYear, viewMonth - 1 + delta, 1);
-    setViewYear(next.getFullYear());
-    setViewMonth(next.getMonth() + 1);
+    setSteppedMonth(monthOf(new Date(viewYear, viewMonth - 1 + delta, 1)));
   };
 
   const goToday = () => {
-    const today = new Date();
-    setSelectedDate(today);
-    setViewYear(today.getFullYear());
-    setViewMonth(today.getMonth() + 1);
+    setPickedDate(null);
+    setSteppedMonth(null);
   };
 
   const selectDate = (date: Date) => {
-    setSelectedDate(date);
-    setViewYear(date.getFullYear());
-    setViewMonth(date.getMonth() + 1);
+    setPickedDate(date);
+    setSteppedMonth(null);
   };
 
-  const isToday = selectedDate.toDateString() === new Date().toDateString();
+  const isToday = selectedDate.toDateString() === now.toDateString();
 
   return (
     <main className="w-full bg-day">
@@ -77,9 +84,9 @@ export function NgayTotPage(): ReactElement {
                   <XuatHanhHours slots={getGioXuatHanh(convertSolarToLunar(selectedDate))} />
                 </>
               ) : activeTab === 'phi-tinh' ? (
-                <PhiTinhBoards boards={getPhiTinhBoards(selectedDate, new Date().getHours())} />
+                <PhiTinhBoards boards={getPhiTinhBoards(selectedDate, now.getHours())} />
               ) : (
-                <NhiThapBatTuPanel {...getNhiThapBatTu(selectedDate, new Date().getHours())} />
+                <NhiThapBatTuPanel {...getNhiThapBatTu(selectedDate, now.getHours())} />
               )}
             </div>
           </div>

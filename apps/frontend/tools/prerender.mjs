@@ -119,6 +119,13 @@ async function assertRenderedFromApi(page, route, failures) {
   }
 }
 
+async function snapshotDocumentWithRootMarkup() {
+  const markup = await window.renderRootMarkup();
+  const documentCopy = document.documentElement.cloneNode(true);
+  documentCopy.querySelector('#root').innerHTML = markup;
+  return documentCopy.outerHTML;
+}
+
 const frontendRoot = fileURLToPath(new URL('..', import.meta.url));
 const distDir = join(frontendRoot, 'dist');
 
@@ -167,7 +174,7 @@ async function main() {
         await assertRenderedFromApi(page, route, failures);
         // The router injects absolute preview-origin URLs for preloaded chunks (http://localhost:PORT/assets/…).
         // Rewrite them back to root-relative so the assets resolve in production.
-        const raw = (await page.content()).replace(/^<!doctype html>/i, '');
+        const raw = await page.evaluate(snapshotDocumentWithRootMarkup);
         const html =
           '<!doctype html>\n' +
           stripMotionReady(
