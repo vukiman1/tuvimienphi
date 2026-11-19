@@ -32,7 +32,19 @@ describe('useNow', () => {
 
     stampRenderTime();
 
-    expect(document.documentElement.dataset.renderedAt).toBe('2026-11-19T13:15');
+    expect(document.documentElement.dataset.renderedAt).toMatch(
+      /^2026-11-19T13:15[+-]\d{2}:\d{2}$/,
+    );
+  });
+
+  it('reads a stamp written in another time zone as the same wall-clock time', () => {
+    setClock(VISITED_AT);
+    document.documentElement.dataset.renderedAt = '2026-11-19T13:15-08:00';
+
+    const prerendered = document.createElement('div');
+    prerendered.innerHTML = renderToString(<DayAndHour />);
+
+    expect(prerendered.textContent).toBe('19/11 13h');
   });
 
   it('hydrates with the prerender time, then shows the visit time', async () => {
