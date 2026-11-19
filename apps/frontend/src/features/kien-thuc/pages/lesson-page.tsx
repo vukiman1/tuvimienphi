@@ -2,12 +2,13 @@ import { Fragment, lazy, Suspense, useMemo } from 'react';
 import type { ReactElement } from 'react';
 import { ContentKind, pageRef } from '@org/shared-contracts';
 import type { ContentSection, KienThucManifest, LessonFile } from '@org/shared-contracts';
+import { BookOpen, Clock, Sparkle } from 'lucide-react';
 import {
   Breadcrumb,
   Chip,
   DisplaySize,
-  DisplayTitle,
   PageHero,
+  PaintingFocus,
   ReadingZone,
   TextLink,
 } from '@/design-system';
@@ -20,6 +21,7 @@ import {
 } from '../components/sample-chart-board.constants';
 import { MethodologyNote } from '../components/methodology-note';
 import { NextInPathCard } from '../components/next-in-path-card';
+import { SectionHeading } from '../components/section-heading';
 import { StepTrack } from '../components/step-track';
 import type { SearchIndexLoader } from '../content-source';
 import { lessonBreadcrumb } from '../kien-thuc-breadcrumb';
@@ -33,6 +35,7 @@ import { publishedLesson } from '../published-pages';
 import type { PublishedLesson } from '../published-pages';
 import { formatReviewedAt } from '../reviewed-date';
 import { useActiveSection } from '../use-active-section';
+import { KIEN_THUC_PAINTING } from '../kien-thuc-media';
 
 const SampleChartBoard = lazy(() =>
   import('../components/sample-chart-board').then((module) => ({
@@ -43,6 +46,8 @@ const SampleChartBoard = lazy(() =>
 const SAMPLE_BOARD_AFTER_SECTION_INDEX = 0;
 const LESSON_ROUTE = '/kien-thuc/$slug';
 const BYLINE = 'Biên soạn: Admin';
+const META_SEPARATOR = ' · ';
+const META_ICON_CLASS = 'size-4 shrink-0 stroke-dawn';
 
 export class LessonNotInManifestError extends Error {
   constructor(readonly slug: string) {
@@ -75,15 +80,32 @@ function LessonHero({ lesson, published, manifest }: LessonHeroProps): ReactElem
       breadcrumb={
         <div className="flex flex-col items-start gap-4">
           <Breadcrumb items={lessonBreadcrumb(lesson.slug, lesson.title)} />
-          <Chip>{`Bước ${published.step}/${manifest.steps.length} · ${published.stepTitle}`}</Chip>
+          <Chip>
+            <Sparkle aria-hidden="true" className="mr-2 size-5 shrink-0 fill-gold stroke-0" />
+            {`Bước ${published.step}/${manifest.steps.length} · ${published.stepTitle}`}
+          </Chip>
         </div>
       }
       title={lesson.title}
+      painting={KIEN_THUC_PAINTING}
+      paintingFocus={PaintingFocus.Whole}
     >
-      <p className="text-sm text-day-soft">
-        {`Bài ${published.position}/${published.stepLessonCount} · ${lesson.readingMinutes} phút đọc · Cập nhật `}
-        <time dateTime={lesson.reviewedAt}>{formatReviewedAt(lesson.reviewedAt)}</time>
-        {` · ${BYLINE}`}
+      <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-day-soft">
+        <span className="inline-flex items-center gap-2">
+          <BookOpen aria-hidden="true" className={META_ICON_CLASS} />
+          {`Bài ${published.position}/${published.stepLessonCount}`}
+        </span>
+        <span>{META_SEPARATOR}</span>
+        <span className="inline-flex items-center gap-2">
+          <Clock aria-hidden="true" className={META_ICON_CLASS} />
+          {`${lesson.readingMinutes} phút đọc`}
+        </span>
+        <span>{META_SEPARATOR}</span>
+        <span>
+          {'Cập nhật '}
+          <time dateTime={lesson.reviewedAt}>{formatReviewedAt(lesson.reviewedAt)}</time>
+          {`${META_SEPARATOR}${BYLINE}`}
+        </span>
       </p>
       <StepTrack steps={stepTrack(manifest, published.step, readSlugs)} />
     </PageHero>
@@ -93,10 +115,8 @@ function LessonHero({ lesson, published, manifest }: LessonHeroProps): ReactElem
 function LessonSection({ id, section }: LessonSectionProps): ReactElement {
   const titleId = `${id}-title`;
   return (
-    <section id={id} aria-labelledby={titleId} className="scroll-mt-6">
-      <DisplayTitle id={titleId} size={DisplaySize.Panel}>
-        {section.heading}
-      </DisplayTitle>
+    <section id={id} tabIndex={-1} aria-labelledby={titleId} className="scroll-mt-6">
+      <SectionHeading id={titleId}>{section.heading}</SectionHeading>
       <div className="mt-4 flex flex-col gap-4">
         {section.paragraphs.map((paragraph, index) => (
           <ProseParagraph key={index} text={paragraph} />
@@ -156,7 +176,7 @@ export function LessonPage({ lesson, manifest, loadSearchIndex }: LessonPageProp
                 reviewedAt={lesson.reviewedAt}
                 isOwnerRead={OWNER_READ_REFS.includes(pageRef(ContentKind.Bai, lesson.slug))}
               />
-              <KienThucCta />
+              <KienThucCta titleSize={DisplaySize.Panel} />
             </div>
           </ReadingZone>
         </div>

@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import { FOCUS_RING_CLASS } from '@/design-system';
 import { cn } from '@/lib/utils';
 import { letterAnchor } from '../glossary-order';
+import { SamePageLink } from './same-page-link';
 
 const LETTER_STRIP_LABEL = 'Theo chữ cái';
 
@@ -15,15 +16,15 @@ export function LetterStrip({ letters }: LetterStripProps): ReactElement {
       <ul className="flex flex-wrap gap-2">
         {letters.map((letter) => (
           <li key={letter}>
-            <a
-              href={`#${letterAnchor(letter)}`}
+            <SamePageLink
+              hash={letterAnchor(letter)}
               className={cn(
                 'flex size-11 items-center justify-center rounded-xl border border-ink/15 bg-day font-bold text-ink no-underline hover:inset-ring-2 hover:inset-ring-ink',
                 FOCUS_RING_CLASS,
               )}
             >
               {letter}
-            </a>
+            </SamePageLink>
           </li>
         ))}
       </ul>

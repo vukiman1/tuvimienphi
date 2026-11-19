@@ -58,6 +58,12 @@ export const MEDIA = {
   vanHan: {
     decorCloud: mediaUrl('/van-han/decor-cloud.png'),
   },
+  kienThuc: {
+    heroNight: {
+      small: mediaUrl('/kien-thuc/hero-night-768.webp'),
+      large: mediaUrl('/kien-thuc/hero-night-1536.webp'),
+    } satisfies PagePainting,
+  },
 } as const;
 
 export function conGiapPaintingUrl(conGiapSlug: string, width: number): string {
@@ -78,4 +84,8 @@ export function luanGiaiPaintingUrl(cungSlug: string, width: number): string {
 
 export function hanhIconUrl(hanhSlug: string): string {
   return mediaUrl(`/la-so/hanh/hanh-${hanhSlug}-64.webp`);
+}
+
+export function kienThucEmblemUrl(emblemSlug: string, width: number): string {
+  return mediaUrl(`/kien-thuc/emblems/${emblemSlug}-${width}.webp`);
 }

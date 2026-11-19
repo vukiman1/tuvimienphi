@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import { FOCUS_RING_CLASS } from '@/design-system';
 import { cn } from '@/lib/utils';
 import { sectionId } from '../active-section';
+import { SamePageLink } from './same-page-link';
 import { StateBar } from './state-bar';
 
 const TOC_TITLE_ID = 'lesson-toc-title';
@@ -23,9 +24,9 @@ export function LessonToc({ headings, activeIndex }: LessonTocProps): ReactEleme
             const isCurrent = index === activeIndex;
             return (
               <li key={sectionId(index)}>
-                <a
-                  href={`#${sectionId(index)}`}
-                  aria-current={isCurrent ? 'location' : undefined}
+                <SamePageLink
+                  hash={sectionId(index)}
+                  ariaCurrent={isCurrent ? 'location' : undefined}
                   className={cn(
                     'relative flex min-h-11 items-center py-2 pl-4 text-sm text-ink-soft no-underline hover:text-ink',
                     isCurrent && 'font-bold text-ink',
@@ -34,7 +35,7 @@ export function LessonToc({ headings, activeIndex }: LessonTocProps): ReactEleme
                 >
                   {isCurrent && <StateBar />}
                   {heading}
-                </a>
+                </SamePageLink>
               </li>
             );
           })}

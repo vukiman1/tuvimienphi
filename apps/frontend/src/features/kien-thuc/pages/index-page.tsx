@@ -1,12 +1,20 @@
 import type { ReactElement } from 'react';
 import { ENTRY_GROUPS_BY_KIND, EntryGroup } from '@org/shared-contracts';
-import { Breadcrumb, DisplaySize, DisplayTitle, PageHero, TitleFace } from '@/design-system';
+import {
+  Breadcrumb,
+  DisplaySize,
+  DisplayTitle,
+  PageHero,
+  PaintingFocus,
+  TitleFace,
+} from '@/design-system';
 import { EntryTile } from '../components/entry-tile';
 import { GROUP_LABEL, KIND_INDEX_LEAD, KIND_INDEX_TITLE } from '../components/kien-thuc-labels';
 import { LetterStrip } from '../components/letter-strip';
 import { groupByLetter, letterAnchor, sortGlossary } from '../glossary-order';
 import { indexBreadcrumb } from '../kien-thuc-breadcrumb';
 import type { FoundIndexPageData, IndexGroup, IndexTile } from '../route-data/index-route';
+import { KIEN_THUC_PAINTING } from '../kien-thuc-media';
 
 const TILE_GRID_CLASS = 'grid gap-3 sm:grid-cols-2 lg:grid-cols-3';
 
@@ -93,6 +101,8 @@ export function IndexPage({ data }: IndexPageProps): ReactElement {
         breadcrumb={<Breadcrumb items={indexBreadcrumb(kind)} />}
         title={KIND_INDEX_TITLE[kind]}
         lead={KIND_INDEX_LEAD[kind]}
+        painting={KIEN_THUC_PAINTING}
+        paintingFocus={PaintingFocus.Whole}
       />
       <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 py-10 md:px-6">
         {groups.map((group) => (

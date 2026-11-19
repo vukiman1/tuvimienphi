@@ -1,4 +1,5 @@
 import type { ReactElement, ReactNode } from 'react';
+import { cn } from '@/lib/utils';
 import { DisplaySize, DisplayTitle } from './DisplayTitle';
 import { Eyebrow } from './Eyebrow';
 import { Orbit } from './geometry/Orbit';
@@ -7,6 +8,16 @@ const ORBIT_POINTS = 12;
 const ORBIT_VERTICAL_SCALE = 0.42;
 const ORBIT_POINT_RADIUS = 0.7;
 export const PAINTING_WIDTH = { small: 768, large: 1536 } as const;
+
+export enum PaintingFocus {
+  Sky = 'sky',
+  Whole = 'whole',
+}
+
+const PAINTING_FOCUS_CLASS: Readonly<Record<PaintingFocus, string>> = {
+  [PaintingFocus.Sky]: 'inset-0 size-full object-cover object-[70%_12%]',
+  [PaintingFocus.Whole]: 'inset-y-0 right-0 h-full w-auto max-w-none mask-l-from-70%',
+};
 
 export interface PagePainting {
   readonly small: string;
@@ -19,10 +30,16 @@ interface PageHeroProps {
   readonly title: ReactNode;
   readonly lead?: string;
   readonly painting?: PagePainting;
+  readonly paintingFocus?: PaintingFocus;
   readonly children?: ReactNode;
 }
 
-function HeroPainting({ painting }: { readonly painting: PagePainting }): ReactElement {
+interface HeroPaintingProps {
+  readonly painting: PagePainting;
+  readonly focus: PaintingFocus;
+}
+
+function HeroPainting({ painting, focus }: HeroPaintingProps): ReactElement {
   return (
     <>
       <img
@@ -33,7 +50,7 @@ function HeroPainting({ painting }: { readonly painting: PagePainting }): ReactE
         sizes="100vw"
         src={painting.large}
         srcSet={`${painting.small} ${PAINTING_WIDTH.small}w, ${painting.large} ${PAINTING_WIDTH.large}w`}
-        className="pointer-events-none absolute inset-0 hidden size-full object-cover object-[70%_12%] md:block"
+        className={cn('pointer-events-none absolute hidden md:block', PAINTING_FOCUS_CLASS[focus])}
       />
       <div
         aria-hidden="true"
@@ -61,12 +78,17 @@ export function PageHero({
   title,
   lead,
   painting,
+  paintingFocus = PaintingFocus.Sky,
   children,
 }: PageHeroProps): ReactElement {
   return (
     <section className="relative bg-night text-day">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-clip">
-        {painting === undefined ? <HeroOrnament /> : <HeroPainting painting={painting} />}
+        {painting === undefined ? (
+          <HeroOrnament />
+        ) : (
+          <HeroPainting painting={painting} focus={paintingFocus} />
+        )}
       </div>
       <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-10 md:px-6 md:py-16">
         {breadcrumb}

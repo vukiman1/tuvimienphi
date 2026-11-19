@@ -16,7 +16,7 @@ export { pointsOnCircle, type CirclePoint } from './geometry/points-on-circle';
 export { chapterIndexAt, type ChapterBounds } from './motion/active-chapter';
 export { sectionProgress } from './motion/scroll-progress';
 export { useSectionProgress, type SectionProgress } from './motion/use-section-progress';
-export { PAINTING_WIDTH, PageHero, type PagePainting } from './PageHero';
+export { PAINTING_WIDTH, PageHero, PaintingFocus, type PagePainting } from './PageHero';
 export { ReadingZone } from './ReadingZone';
 export { StarRating } from './StarRating';
 export { StickyCta } from './StickyCta';

@@ -13,13 +13,14 @@ const EMPHASIS_FACE = /\bfont-emphasis\b/;
 const FADED_TEXT = /opacity-|\btext-[\w-]+\/\d+\b/;
 const PLAIN_RING = /(^|\s)ring-/;
 const RASTER_MEDIA_IMPORT = /from '@\/(config\/media|lib\/zodiac-icons)'/;
-const CHINESE_CHARACTER = /\p{Script=Han}/u;
 const SERIF_TITLE = /\bTitleFace\.Serif\b/;
-const LESSON_AND_ENTRY_FILES: readonly string[] = [
-  'pages/lesson-page.tsx',
-  'pages/entry-page.tsx',
-  'components/kien-thuc-cta.tsx',
-];
+const DISPLAY_TITLE = /<DisplayTitle\b/;
+const SECTION_HEADING_FILE = 'components/section-heading.tsx';
+const LESSON_AND_ENTRY_FILES: readonly string[] = ['pages/lesson-page.tsx', 'pages/entry-page.tsx'];
+const MEDIA_MODULE = 'kien-thuc-media.ts';
+const CHINESE_CHARACTER = /\p{Script=Han}/u;
+const PLAYFAIR_UPRIGHT_WEIGHT = /\bfont-bold\b/;
+const PLAYFAIR_ITALIC_WEIGHT = /\bfont-semibold\b/;
 
 interface SourceFile {
   readonly path: string;
@@ -66,12 +67,26 @@ describe('kien-thuc fonts and media', () => {
     expect(offenders).toEqual([]);
   });
 
-  it('keeps bold Playfair off lessons and entries, whose h1 already loads the display face', () => {
-    const offenders = sourceFiles(FEATURE_ROOT)
+  it('sets Playfair only as the two faces the home page loads, 700 upright and 600 italic', () => {
+    const offenders = offendingStrings((value) => {
+      if (!EMPHASIS_FACE.test(value)) return false;
+      return ITALIC.test(value)
+        ? !PLAYFAIR_ITALIC_WEIGHT.test(value)
+        : !PLAYFAIR_UPRIGHT_WEIGHT.test(value);
+    });
+
+    expect(offenders).toEqual([]);
+  });
+
+  it('sets lesson and entry section headings only through the serif SectionHeading', () => {
+    const files = sourceFiles(FEATURE_ROOT);
+    const sectionHeading = files.find(({ path }) => path === SECTION_HEADING_FILE);
+    const offenders = files
       .filter(({ path }) => LESSON_AND_ENTRY_FILES.includes(path))
-      .filter(({ text }) => SERIF_TITLE.test(text))
+      .filter(({ text }) => DISPLAY_TITLE.test(text))
       .map(({ path }) => path);
 
+    expect(sectionHeading?.text).toMatch(SERIF_TITLE);
     expect(offenders).toEqual([]);
   });
 
@@ -87,8 +102,12 @@ describe('kien-thuc fonts and media', () => {
     expect(offenders).toEqual([]);
   });
 
-  it('references no raster media', () => {
-    expect(offendingFiles((text) => RASTER_MEDIA_IMPORT.test(text))).toEqual([]);
+  it('reaches raster media only through the one media module', () => {
+    const offenders = offendingFiles((text) => RASTER_MEDIA_IMPORT.test(text)).filter(
+      (path) => path !== MEDIA_MODULE,
+    );
+
+    expect(offenders).toEqual([]);
   });
 
   it('holds no Chinese characters', () => {

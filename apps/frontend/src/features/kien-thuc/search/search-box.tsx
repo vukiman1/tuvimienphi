@@ -24,7 +24,7 @@ const EMPTY_TEXT = 'Không tìm thấy mục nào.';
 const NO_ITEMS: readonly KienThucSearchItem[] = [];
 
 const INPUT_CLASS = cn(
-  'min-h-12 w-full rounded-full bg-day pl-12 pr-5 text-ink inset-ring-1 inset-ring-ink/20',
+  'min-h-12 w-full rounded-full bg-night/60 pl-12 pr-5 text-day inset-ring-1 inset-ring-day-soft placeholder:text-day-soft',
   FOCUS_RING_CLASS,
 );
 const DROPDOWN_CLASS =
@@ -143,7 +143,7 @@ export function SearchBox({ loadSearchIndex, firstLesson }: SearchBoxProps): Rea
       </label>
       <Search
         aria-hidden="true"
-        className="pointer-events-none absolute left-5 top-1/2 size-5 -translate-y-1/2 text-ink"
+        className="pointer-events-none absolute left-5 top-1/2 size-5 -translate-y-1/2 text-day"
       />
       <input
         aria-activedescendant={

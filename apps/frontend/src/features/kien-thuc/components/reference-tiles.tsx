@@ -6,8 +6,8 @@ import type { EntryKind, KienThucManifest } from '@org/shared-contracts';
 import { DisplaySize, DisplayTitle, FOCUS_RING_CLASS, TitleFace } from '@/design-system';
 import { cn } from '@/lib/utils';
 import { indexPath } from '../kien-thuc-paths';
+import { EMBLEM_WIDTH, groupEmblem } from '../kien-thuc-media';
 import { entriesOfKind } from '../published-pages';
-import { GroupGlyph } from './group-glyph';
 import { GROUP_LABEL } from './kien-thuc-labels';
 
 const REFERENCE_TITLE = 'Tra cứu';
@@ -27,8 +27,10 @@ const TILE_LABEL: Readonly<Record<EntryGroup, (count: number) => string>> = {
   [EntryGroup.ThuatNgu]: () => GROUP_LABEL[EntryGroup.ThuatNgu],
 };
 
+const EMBLEM_DISPLAY_SIZE = '5rem';
+
 const TILE_CLASS = cn(
-  'flex min-h-11 items-center gap-3 rounded-xl border border-ink/15 bg-day p-4 font-bold text-ink no-underline hover:inset-ring-2 hover:inset-ring-ink',
+  'flex min-h-11 items-center gap-4 rounded-2xl border border-ink/15 bg-day p-4 font-emphasis text-xl font-bold text-ink no-underline hover:inset-ring-2 hover:inset-ring-ink',
   FOCUS_RING_CLASS,
 );
 
@@ -39,8 +41,29 @@ interface ReferenceTile {
   readonly hash: string | undefined;
 }
 
+interface GroupEmblemProps {
+  readonly group: EntryGroup;
+}
+
 interface ReferenceTilesProps {
   readonly manifest: KienThucManifest;
+}
+
+function GroupEmblem({ group }: GroupEmblemProps): ReactElement {
+  const emblem = groupEmblem(group);
+  return (
+    <img
+      alt=""
+      decoding="async"
+      loading="lazy"
+      width={EMBLEM_WIDTH.large}
+      height={EMBLEM_WIDTH.large}
+      sizes={EMBLEM_DISPLAY_SIZE}
+      src={emblem.large}
+      srcSet={`${emblem.small} ${EMBLEM_WIDTH.small}w, ${emblem.large} ${EMBLEM_WIDTH.large}w`}
+      className="size-16 shrink-0 rounded-full md:size-20"
+    />
+  );
 }
 
 function referenceTiles(manifest: KienThucManifest): readonly ReferenceTile[] {
@@ -80,11 +103,11 @@ export function ReferenceTiles({ manifest }: ReferenceTilesProps): ReactElement 
         </DisplayTitle>
         <p className="text-lg text-ink-soft">{REFERENCE_LEAD}</p>
       </div>
-      <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
         {tiles.map((tile) => (
           <li key={tile.group}>
             <Link to={tile.path} hash={tile.hash} className={TILE_CLASS}>
-              <GroupGlyph group={tile.group} />
+              <GroupEmblem group={tile.group} />
               {tile.label}
             </Link>
           </li>

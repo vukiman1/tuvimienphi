@@ -10,6 +10,7 @@ import {
   createRoute,
   createRouter,
 } from '@tanstack/react-router';
+import type { AnyRouter } from '@tanstack/react-router';
 import type { SeoHead } from '@/lib/seo';
 
 interface RenderAtRouteOptions {
@@ -28,12 +29,16 @@ function RootLayout(): ReactElement {
   );
 }
 
+export interface RenderedRoute extends RenderResult {
+  readonly router: AnyRouter;
+}
+
 export async function renderAtRoute({
   path,
   routePath,
   element,
   head,
-}: RenderAtRouteOptions): Promise<RenderResult> {
+}: RenderAtRouteOptions): Promise<RenderedRoute> {
   const rootRoute = createRootRoute({ component: RootLayout });
   const pageRoute = createRoute({
     getParentRoute: () => rootRoute,
@@ -47,5 +52,5 @@ export async function renderAtRoute({
   });
   const result = render(<RouterProvider router={router} />);
   await router.load();
-  return result;
+  return { ...result, router };
 }
