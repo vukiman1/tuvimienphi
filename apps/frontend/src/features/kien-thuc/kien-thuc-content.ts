@@ -13,6 +13,7 @@ import type {
 } from '@org/shared-contracts';
 import { EMPTY_MANIFEST } from './content-source';
 import type { KienThucContentSource } from './content-source';
+import { cacheUntilRejected } from './search/cache-until-rejected';
 
 type ContentLoaders<T> = Readonly<Record<string, () => Promise<T>>>;
 
@@ -34,8 +35,6 @@ const ENTRY_LOADERS: ContentLoaders<EntryFile> = import.meta.glob<EntryFile>(
 const SEARCH_INDEX_LOADERS: ContentLoaders<readonly KienThucSearchItem[]> = import.meta.glob<
   readonly KienThucSearchItem[]
 >('./content/search-index.json', { import: 'default' });
-
-let searchIndexPromise: Promise<readonly KienThucSearchItem[]> | undefined;
 
 function contentKey(fileName: string): string {
   return `./content/${fileName}`;
@@ -67,13 +66,7 @@ async function readSearchIndex(): Promise<readonly KienThucSearchItem[]> {
   return load ? load() : [];
 }
 
-function loadSearchIndex(): Promise<readonly KienThucSearchItem[]> {
-  searchIndexPromise ??= readSearchIndex().catch((error: unknown) => {
-    searchIndexPromise = undefined;
-    throw error;
-  });
-  return searchIndexPromise;
-}
+const loadSearchIndex = cacheUntilRejected(readSearchIndex);
 
 export const KIEN_THUC_SOURCE: KienThucContentSource = {
   loadManifest,

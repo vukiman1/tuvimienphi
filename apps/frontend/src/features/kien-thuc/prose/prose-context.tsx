@@ -52,7 +52,12 @@ export function ProseProvider({
         return;
       }
       hasRequestedIndexRef.current = true;
-      void loadSearchIndex().then((items) => setSummaries(summariesOf(items)));
+      loadSearchIndex().then(
+        (items) => setSummaries(summariesOf(items)),
+        () => {
+          hasRequestedIndexRef.current = false;
+        },
+      );
     },
     [loadSearchIndex],
   );

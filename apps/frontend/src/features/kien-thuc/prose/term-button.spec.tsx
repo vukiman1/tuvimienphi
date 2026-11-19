@@ -24,8 +24,9 @@ function Pathname(): ReactElement {
   return <output data-testid={PATHNAME_TEST_ID}>{pathname}</output>;
 }
 
-async function renderParagraph(): Promise<SearchIndexLoaderMock> {
-  const loadSearchIndex: SearchIndexLoaderMock = jest.fn(() => FIXTURE_SOURCE.loadSearchIndex());
+async function renderParagraph(loader?: SearchIndexLoaderMock): Promise<SearchIndexLoaderMock> {
+  const loadSearchIndex: SearchIndexLoaderMock =
+    loader ?? jest.fn(() => FIXTURE_SOURCE.loadSearchIndex());
   await renderAtRoute({
     path: LESSON_PATH,
     routePath: LESSON_ROUTE_PATH,
@@ -96,6 +97,29 @@ describe('TermButton', () => {
 
     fireEvent.click(await term('12 cung'));
     expect(loadSearchIndex).toHaveBeenCalledTimes(1);
+  });
+
+  it('retries the search index on a later open after a failed load', async () => {
+    const unhandled = jest.fn();
+    process.on('unhandledRejection', unhandled);
+    const loader: SearchIndexLoaderMock = jest
+      .fn<Promise<readonly KienThucSearchItem[]>, []>()
+      .mockRejectedValueOnce(new Error('offline'))
+      .mockImplementation(() => FIXTURE_SOURCE.loadSearchIndex());
+    await renderParagraph(loader);
+    const button = await term('Thiên Cơ');
+    const panel = panelOf(button);
+
+    fireEvent.click(button);
+    await waitFor(() => expect(loader).toHaveBeenCalledTimes(1));
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    fireEvent.click(button);
+    fireEvent.click(button);
+
+    expect(await within(panel).findByText(THIEN_CO_SUMMARY)).toBeTruthy();
+    expect(loader).toHaveBeenCalledTimes(2);
+    expect(unhandled).not.toHaveBeenCalled();
+    process.off('unhandledRejection', unhandled);
   });
 
   it('keeps one term open at a time', async () => {
