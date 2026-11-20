@@ -1,11 +1,24 @@
-import { AxiosError, type InternalAxiosRequestConfig } from 'axios';
-import { BACKGROUND_REQUEST, httpRequest, infrastructureFailureMessage } from './http-request';
+import { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios';
+import {
+  BACKGROUND_REQUEST,
+  MissingApiEnvelopeError,
+  httpRequest,
+  infrastructureFailureMessage,
+} from './http-request';
 import { notify } from './toast';
 
 jest.mock('./toast', () => ({ notify: { error: jest.fn() } }));
 
 const UNREACHABLE_MESSAGE = 'Chưa kết nối được tới máy chủ. Bạn kiểm tra mạng rồi thử lại nhé.';
 const SERVER_FAILURE_MESSAGE = 'Máy chủ đang gặp sự cố. Bạn thử lại sau ít phút nhé.';
+
+const SPA_FALLBACK_BODY = '<!doctype html><html></html>';
+const OK_STATUS = 200;
+
+function answerWith(body: unknown): (config: InternalAxiosRequestConfig) => Promise<AxiosResponse> {
+  return (config) =>
+    Promise.resolve({ data: body, status: OK_STATUS, statusText: 'OK', headers: {}, config });
+}
 
 function unreachableServer(config: InternalAxiosRequestConfig): Promise<never> {
   return Promise.reject(new AxiosError('Network Error', AxiosError.ERR_NETWORK, config));
@@ -47,5 +60,50 @@ describe('a request that cannot reach the server', () => {
     ).rejects.toBeInstanceOf(AxiosError);
 
     expect(notify.error).not.toHaveBeenCalled();
+  });
+});
+
+describe('a response from the API', () => {
+  it('hands back the data inside the success envelope', async () => {
+    const envelope = { statusCode: OK_STATUS, success: true, data: { year: 2026 } };
+
+    await expect(
+      httpRequest.get('/van-han/current', { adapter: answerWith(envelope) }),
+    ).resolves.toEqual({ year: 2026 });
+  });
+
+  it('hands back undefined when a successful envelope carries no data', async () => {
+    const envelope = { statusCode: OK_STATUS, success: true };
+
+    await expect(
+      httpRequest.post('/auth/logout', undefined, { adapter: answerWith(envelope) }),
+    ).resolves.toBeUndefined();
+  });
+
+  it('pages a list from the envelope metadata', async () => {
+    const metadata = { page: 2, limit: 1, totalItems: 3, totalPages: 3 };
+    const envelope = { statusCode: OK_STATUS, success: true, data: ['Tý'], metadata };
+
+    await expect(
+      httpRequest.getPaginated('/admin/items', { adapter: answerWith(envelope) }),
+    ).resolves.toEqual({ items: ['Tý'], metadata });
+  });
+
+  it('names the URL when a paged body is not an API envelope', async () => {
+    const request = httpRequest.getPaginated('/admin/items', {
+      adapter: answerWith(SPA_FALLBACK_BODY),
+    });
+
+    await expect(request).rejects.toBeInstanceOf(MissingApiEnvelopeError);
+    await expect(request).rejects.toThrow('/admin/items');
+  });
+
+  it('names the URL when the body is not an API envelope', async () => {
+    const request = httpRequest.get('/van-han/current', {
+      adapter: answerWith(SPA_FALLBACK_BODY),
+    });
+
+    await expect(request).rejects.toBeInstanceOf(MissingApiEnvelopeError);
+    await expect(request).rejects.toThrow('/van-han/current');
   });
 });

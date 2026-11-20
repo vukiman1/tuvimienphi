@@ -105,33 +105,54 @@ function toApiError(error: unknown): unknown {
   return error;
 }
 
-function unwrap<T>(envelope: ApiSuccessEnvelope<T>): T {
-  return envelope.data;
+export class MissingApiEnvelopeError extends Error {
+  constructor(readonly url: string) {
+    super(`${url} answered without the API success envelope`);
+    this.name = 'MissingApiEnvelopeError';
+  }
 }
 
-function unwrapPaginated<T>(envelope: ApiSuccessEnvelope<T[]>): PaginatedResult<T> {
-  const metadata: PaginationMetadata = envelope.metadata ?? {
-    page: 1,
-    limit: envelope.data.length,
-    totalItems: envelope.data.length,
-    totalPages: 1,
+function isSuccessEnvelope(body: unknown): body is ApiSuccessEnvelope<unknown> {
+  return typeof body === 'object' && body !== null && 'success' in body && body.success === true;
+}
+
+function envelopeOf<T>(url: string, body: unknown): ApiSuccessEnvelope<T> {
+  if (!isSuccessEnvelope(body)) {
+    throw new MissingApiEnvelopeError(url);
+  }
+  return body as ApiSuccessEnvelope<T>;
+}
+
+function unwrap<T>(url: string): (body: unknown) => T {
+  return (body: unknown): T => envelopeOf<T>(url, body).data;
+}
+
+function unwrapPaginated<T>(url: string): (body: unknown) => PaginatedResult<T> {
+  return (body: unknown): PaginatedResult<T> => {
+    const envelope = envelopeOf<T[]>(url, body);
+    const metadata: PaginationMetadata = envelope.metadata ?? {
+      page: 1,
+      limit: envelope.data.length,
+      totalItems: envelope.data.length,
+      totalPages: 1,
+    };
+    return { items: envelope.data, metadata };
   };
-  return { items: envelope.data, metadata };
 }
 
 export const httpRequest = {
   get: <T>(url: string, config?: AxiosRequestConfig) =>
-    instance.get<unknown, ApiSuccessEnvelope<T>>(url, config).then(unwrap<T>),
+    instance.get<unknown, unknown>(url, config).then(unwrap<T>(url)),
   post: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
-    instance.post<unknown, ApiSuccessEnvelope<T>>(url, data, config).then(unwrap<T>),
+    instance.post<unknown, unknown>(url, data, config).then(unwrap<T>(url)),
   put: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
-    instance.put<unknown, ApiSuccessEnvelope<T>>(url, data, config).then(unwrap<T>),
+    instance.put<unknown, unknown>(url, data, config).then(unwrap<T>(url)),
   patch: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
-    instance.patch<unknown, ApiSuccessEnvelope<T>>(url, data, config).then(unwrap<T>),
+    instance.patch<unknown, unknown>(url, data, config).then(unwrap<T>(url)),
   delete: <T>(url: string, config?: AxiosRequestConfig) =>
-    instance.delete<unknown, ApiSuccessEnvelope<T>>(url, config).then(unwrap<T>),
+    instance.delete<unknown, unknown>(url, config).then(unwrap<T>(url)),
   getPaginated: <T>(url: string, config?: AxiosRequestConfig) =>
-    instance.get<unknown, ApiSuccessEnvelope<T[]>>(url, config).then(unwrapPaginated<T>),
+    instance.get<unknown, unknown>(url, config).then(unwrapPaginated<T>(url)),
 };
 
 export default httpRequest;
