@@ -20,6 +20,7 @@ export const ACTIVITY_LABEL: Record<string, string> = {
   'credits.purchased': 'đã mua lượt',
   'credits.gift_redeemed': 'đã nhập giftcode',
   'credits.settings_updated': 'đã đổi lượt miễn phí mỗi ngày',
+  'user.role_changed': 'được đổi quyền',
   'la-so.viewed': 'xem lá số',
 };
 

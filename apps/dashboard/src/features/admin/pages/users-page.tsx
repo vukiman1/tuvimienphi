@@ -4,6 +4,7 @@ import { Alert, Flex, Table, Typography } from 'antd';
 import { formatNumber } from '@org/frontend-shared';
 import { errorMessage } from '@/lib/api-error';
 import { AdjustCreditsDialog } from '../components/adjust-credits-dialog';
+import { ChangeRoleDialog } from '../components/change-role-dialog';
 import { DailyQuotaSetting } from '../components/daily-quota-setting';
 import { UsersActiveFilters } from '../components/users-active-filters';
 import { readTableChange } from '../components/users-table-adapter';
@@ -25,6 +26,7 @@ const SETTINGS_LOAD_FAILED = 'Không tải được lượt miễn phí mỗi ng
 export function UsersPage() {
   const [filters, setFilters] = useState<AdminUsersFilters>(DEFAULT_USERS_FILTERS);
   const [adjusting, setAdjusting] = useState<AdminUserRow | null>(null);
+  const [changingRole, setChangingRole] = useState<AdminUserRow | null>(null);
   const { data, isFetching, isError, error } = useQuery(adminUsersQuery(filters));
   const creditSettings = useQuery(adminCreditSettingsQuery());
   const dailyChapterQuota = creditSettings.data?.creditSettings.dailyChapterQuota;
@@ -63,7 +65,11 @@ export function UsersPage() {
 
       <Table<AdminUserRow>
         rowKey="id"
-        columns={buildUsersColumns(filters, setAdjusting, dailyChapterQuota)}
+        columns={buildUsersColumns(
+          filters,
+          { onAdjustCredits: setAdjusting, onChangeRole: setChangingRole },
+          dailyChapterQuota,
+        )}
         dataSource={data?.users.users}
         loading={isFetching}
         scroll={{ x: 'max-content' }}
@@ -83,6 +89,7 @@ export function UsersPage() {
       />
 
       <AdjustCreditsDialog user={adjusting} onClose={() => setAdjusting(null)} />
+      <ChangeRoleDialog user={changingRole} onClose={() => setChangingRole(null)} />
     </Flex>
   );
 }

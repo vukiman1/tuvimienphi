@@ -61,5 +61,6 @@ import { SocialAuthService } from './services/social/social-auth.service';
     TwoFactorAccountService,
     EmailCodeService,
   ],
+  exports: [SessionRevocationService],
 })
 export class AuthModule {}

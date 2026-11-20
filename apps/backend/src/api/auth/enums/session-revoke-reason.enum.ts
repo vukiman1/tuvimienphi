@@ -7,4 +7,5 @@ export enum SessionRevokeReason {
   REVOKED_BY_USER = 'revoked_by_user',
   SESSION_LIMIT = 'session_limit',
   SECURITY = 'security',
+  ROLE_CHANGED = 'role_changed',
 }

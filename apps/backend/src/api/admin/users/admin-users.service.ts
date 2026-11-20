@@ -45,7 +45,30 @@ export class AdminUsersService {
     const sortDirection = query.sortDirection ?? DEFAULT_SORT_DIRECTION;
 
     const total = await this.filtered(query).getCount();
-    const { entities, raw } = await this.filtered(query)
+    const users = await this.summarise(
+      this.withSummaryColumns(this.filtered(query))
+        .orderBy(sortColumn, sortDirection)
+        .addOrderBy('user.id', 'DESC')
+        .skip(skip)
+        .take(take),
+    );
+
+    return { total, users };
+  }
+
+  async findSummary(userId: string): Promise<AdminUserSummary | null> {
+    const [user] = await this.summarise(
+      this.withSummaryColumns(this.userRepo.createQueryBuilder('user')).where('user.id = :userId', {
+        userId,
+      }),
+    );
+    return user ?? null;
+  }
+
+  private withSummaryColumns(
+    builder: SelectQueryBuilder<UserEntity>,
+  ): SelectQueryBuilder<UserEntity> {
+    return builder
       .select(LISTED_COLUMNS)
       .addSelect(
         (sub) =>
@@ -62,22 +85,17 @@ export class AdminUsersService {
             .from(UserSessionEntity, 'session')
             .where('session.user_id = user.id'),
         LAST_ACTIVE_AT_ALIAS,
-      )
-      .orderBy(sortColumn, sortDirection)
-      .addOrderBy('user.id', 'DESC')
-      .skip(skip)
-      .take(take)
-      .getRawAndEntities<Record<string, unknown>>();
+      );
+  }
 
-    return {
-      total,
-      users: entities.map((user, index) =>
-        toAdminUserSummary(user, {
-          genCount: raw[index]?.[GEN_COUNT_ALIAS] as string | null,
-          lastActiveAt: raw[index]?.[LAST_ACTIVE_AT_ALIAS] as Date | null,
-        }),
-      ),
-    };
+  private async summarise(builder: SelectQueryBuilder<UserEntity>): Promise<AdminUserSummary[]> {
+    const { entities, raw } = await builder.getRawAndEntities<Record<string, unknown>>();
+    return entities.map((user, index) =>
+      toAdminUserSummary(user, {
+        genCount: raw[index]?.[GEN_COUNT_ALIAS] as string | null,
+        lastActiveAt: raw[index]?.[LAST_ACTIVE_AT_ALIAS] as Date | null,
+      }),
+    );
   }
 
   private filtered(query: ListUsersArgs): SelectQueryBuilder<UserEntity> {

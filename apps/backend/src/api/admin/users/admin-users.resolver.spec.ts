@@ -11,6 +11,7 @@ import type { UserEntity } from '../../user/entities/user.entity';
 import type { AdminUserSummary } from './admin-user.mapper';
 import { AdminUsersResolver } from './admin-users.resolver';
 import type { AdminUsersService } from './admin-users.service';
+import type { UserRoleService } from './user-role.service';
 
 const USER_ID = '2f4c1a52-6a59-4d7e-9a0e-0d3c5b8f7a11';
 const ADMIN = { email: 'admin@tuvimienphi.vn' } as UserEntity;
@@ -22,6 +23,7 @@ function build(adjust: jest.Mock): { resolver: AdminUsersResolver; record: jest.
     { adjust } as unknown as ChapterCreditsService,
     {} as DailyQuotaService,
     { record } as unknown as ActivityLogService,
+    {} as UserRoleService,
   );
   return { resolver, record };
 }
@@ -84,6 +86,7 @@ describe('AdminUsersResolver.users', () => {
         usedBy: jest.fn().mockResolvedValue(new Map([[USER_ID, 2]])),
       } as unknown as DailyQuotaService,
       {} as ActivityLogService,
+      {} as UserRoleService,
     );
 
     const page = await resolver.users({});

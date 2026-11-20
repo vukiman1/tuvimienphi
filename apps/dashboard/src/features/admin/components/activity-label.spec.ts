@@ -19,6 +19,7 @@ const BACKEND_EVENTS = [
   'auth.two_factor.disabled',
   'auth.two_factor.recovery_requested',
   'auth.two_factor.recovered',
+  'user.role_changed',
   'la-so.viewed',
 ];
 

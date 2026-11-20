@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AiModule } from '../../ai/ai.module';
 import { ActivityModule } from '../activity/activity.module';
 import { ActivityLogEntity } from '../activity/entities/activity-log.entity';
+import { AuthModule } from '../auth/auth.module';
 import { AuthIdentityEntity } from '../auth/entities/auth-identity.entity';
 import { CreditsModule } from '../credits/credits.module';
 import { UserSessionEntity } from '../auth/entities/user-session.entity';
@@ -24,6 +25,7 @@ import { AdminGiftCodesResolver } from './gift-codes/admin-gift-codes.resolver';
 import { AdminPaymentsResolver } from './payments/admin-payments.resolver';
 import { AdminUsersResolver } from './users/admin-users.resolver';
 import { AdminUsersService } from './users/admin-users.service';
+import { UserRoleService } from './users/user-role.service';
 import { AdminVanHanResolver } from './van-han/admin-van-han.resolver';
 
 @Module({
@@ -43,10 +45,12 @@ import { AdminVanHanResolver } from './van-han/admin-van-han.resolver';
     ActivityModule,
     PaymentModule,
     GiftCodeModule,
+    AuthModule,
   ],
   providers: [
     AdminUsersService,
     AdminUsersResolver,
+    UserRoleService,
     AdminPaymentsResolver,
     AdminGiftCodesResolver,
     AdminCreditSettingsResolver,

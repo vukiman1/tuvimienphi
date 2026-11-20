@@ -1,5 +1,22 @@
 import { graphql } from '@/gql';
 
+export const adminUserRowFieldsFragment = graphql(`
+  fragment AdminUserRowFields on AdminUser {
+    id
+    email
+    displayName
+    avatar
+    role
+    isEmailVerified
+    balance
+    chapterCredits
+    dailyChapterUsed
+    createdAt
+    genCount
+    lastActiveAt
+  }
+`);
+
 export const adminUsersDocument = graphql(`
   query AdminUsers(
     $page: Int
@@ -29,18 +46,7 @@ export const adminUsersDocument = graphql(`
     ) {
       total
       users {
-        id
-        email
-        displayName
-        avatar
-        role
-        isEmailVerified
-        balance
-        chapterCredits
-        dailyChapterUsed
-        createdAt
-        genCount
-        lastActiveAt
+        ...AdminUserRowFields
       }
     }
   }
@@ -51,6 +57,14 @@ export const adjustChapterCreditsDocument = graphql(`
     adjustChapterCredits(input: $input) {
       userId
       chapterCredits
+    }
+  }
+`);
+
+export const setUserRoleDocument = graphql(`
+  mutation SetUserRole($userId: ID!, $role: Role!) {
+    setUserRole(userId: $userId, role: $role) {
+      ...AdminUserRowFields
     }
   }
 `);

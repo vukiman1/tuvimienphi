@@ -4,10 +4,15 @@ import type {
   AdminUsersQuery,
   AdminUserSortField,
   Role,
+  SetUserRoleMutationVariables,
   SortDirection,
 } from '@/gql/graphql';
 import { graphqlRequest } from '@/lib/graphql-request';
-import { adjustChapterCreditsDocument, adminUsersDocument } from './admin-users.document';
+import {
+  adjustChapterCreditsDocument,
+  adminUsersDocument,
+  setUserRoleDocument,
+} from './admin-users.document';
 
 export const USERS_QUERY_KEY = ['admin', 'users'] as const;
 export const USERS_PAGE_SIZE = 20;
@@ -65,4 +70,22 @@ export function adminUsersQuery(filters: AdminUsersFilters) {
 
 export function adjustChapterCredits(input: AdjustChapterCreditsInput) {
   return graphqlRequest(adjustChapterCreditsDocument, { input });
+}
+
+export async function setUserRole(variables: SetUserRoleMutationVariables): Promise<AdminUserRow> {
+  const { setUserRole: row } = await graphqlRequest(setUserRoleDocument, variables);
+  return row;
+}
+
+export function replaceUserRow(
+  page: AdminUsersQuery | undefined,
+  row: AdminUserRow,
+): AdminUsersQuery | undefined {
+  if (!page) return page;
+  return {
+    users: {
+      ...page.users,
+      users: page.users.users.map((user) => (user.id === row.id ? row : user)),
+    },
+  };
 }
