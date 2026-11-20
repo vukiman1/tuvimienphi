@@ -85,6 +85,10 @@ function effectiveDate(solarDate: Date, hour: number): Date {
   return new Date(solarDate.getFullYear(), solarDate.getMonth(), solarDate.getDate() + 1);
 }
 
+export function natalLunarDate(solarDate: Date, hour: number): LunarDate {
+  return convertSolarToLunar(effectiveDate(solarDate, hour));
+}
+
 export interface SaoView<N extends SaoName = SaoName> {
   readonly name: N;
   /** `null` là câu trả lời hợp lệ: phần lớn phụ tinh không mang bậc nào. */
@@ -178,7 +182,7 @@ const NO_MONTHS: readonly number[] = new Array<number>(CHI_COUNT).fill(0);
 export function castNatal(input: NatalInput): NatalChart {
   const hourChi = hourChiOf(input.hour);
   const date = effectiveDate(input.solarDate, input.hour);
-  const lunar = convertSolarToLunar(date);
+  const lunar = natalLunarDate(input.solarDate, input.hour);
   const year = getYearPillar(lunar.year);
   const day = getDayPillar(date);
 

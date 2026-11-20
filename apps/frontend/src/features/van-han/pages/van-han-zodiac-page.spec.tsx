@@ -12,6 +12,7 @@ import {
 import type { VanHanCurrent } from '@org/shared-contracts';
 import { FOCUS_RING_CLASS } from '@/design-system';
 import { TY_ENTRY, VAN_HAN_CURRENT } from '../__fixtures__/van-han-current';
+import { REMEMBERED_ZODIAC_STORAGE_KEY } from '../remembered-zodiac';
 import { vanHanZodiacHead } from '../van-han-zodiac-head';
 import { VanHanZodiacPage } from './van-han-zodiac-page';
 
@@ -133,6 +134,15 @@ describe('VanHanZodiacPage', () => {
 
     expect(await screen.findByRole('heading', { level: 1, name: 'Vận hạn tuổi Tý' })).toBeTruthy();
     expect(screen.getByText(/chưa được cập nhật/)).toBeTruthy();
+  });
+
+  it('remembers the con giáp being read for the Vận hạn list', async () => {
+    window.localStorage.clear();
+
+    renderZodiacPage('/van-han/2026/tuoi-ty', { current: VAN_HAN_CURRENT, yearInPath: 2026 });
+
+    await screen.findByRole('heading', { level: 1, name: TY_ENTRY.title });
+    expect(window.localStorage.getItem(REMEMBERED_ZODIAC_STORAGE_KEY)).toBe('Tý');
   });
 
   describe('in D3', () => {

@@ -2,6 +2,8 @@ import { conGiapSlug, findConGiapBySlug } from '@org/shared-tu-vi';
 import { ZODIAC_CHI, type ZodiacChi } from '@/lib/zodiac-icons';
 
 export const VAN_HAN_PATH = '/van-han';
+export const VAN_HAN_ZODIAC_ROUTE = '/van-han/$slug';
+export const VAN_HAN_YEAR_ZODIAC_ROUTE = '/van-han/$year/$slug';
 const YEAR_PATTERN = /^[1-9]\d*$/;
 
 function chiIndex(chi: ZodiacChi): number {
