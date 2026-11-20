@@ -15,6 +15,7 @@ export interface GoogleButtonOptions {
   size?: 'large' | 'medium' | 'small';
   text?: 'signin_with' | 'signup_with' | 'continue_with';
   shape?: 'rectangular' | 'pill';
+  logo_alignment?: 'left' | 'center';
   width?: number;
   /** BCP-47 tag. Google localises the button label by browser language unless this is set. */
   locale?: string;

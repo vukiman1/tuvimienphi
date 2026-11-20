@@ -77,10 +77,10 @@ export function AuthMethodPanel({ copy, renderEmailForm, onBack }: AuthMethodPan
       {isUsingEmail ? (
         renderEmailForm()
       ) : (
-        <div className="mt-2 grid gap-3">
+        <div className="mx-auto mt-2 grid w-full max-w-100 gap-3">
           <GoogleSignInButton />
           <AuthOptionButton
-            icon={<Mail className="size-6 text-[#2b1d14]" strokeWidth={1.75} />}
+            icon={<Mail className="size-5 text-[#2b1d14]" strokeWidth={1.75} />}
             label={copy.email.action}
             onClick={() => setIsUsingEmail(true)}
           />
