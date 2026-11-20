@@ -1,4 +1,6 @@
 import { act, render, screen } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import type { ReactElement } from 'react';
 import {
   stubIntersectionObserver,
   type IntersectionObserverStub,
@@ -6,9 +8,18 @@ import {
 import { clearLocalProgress, readLocalProgress } from './local-progress-store';
 import { useMarkReadOnView } from './use-mark-read-on-view';
 
-function LessonEnd() {
+function LessonEnd(): ReactElement {
   const ref = useMarkReadOnView('tu-vi-la-gi');
   return <div ref={ref} data-testid="end" />;
+}
+
+function renderLessonEnd(): void {
+  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  render(
+    <QueryClientProvider client={queryClient}>
+      <LessonEnd />
+    </QueryClientProvider>,
+  );
 }
 
 let observer: IntersectionObserverStub;
@@ -24,13 +35,13 @@ afterEach(() => {
 
 describe('useMarkReadOnView', () => {
   it('does not mark on mount', () => {
-    render(<LessonEnd />);
+    renderLessonEnd();
 
     expect(readLocalProgress().size).toBe(0);
   });
 
   it('marks the lesson when its end is half visible', () => {
-    render(<LessonEnd />);
+    renderLessonEnd();
     const end = screen.getByTestId('end');
 
     act(() => observer.reveal(end, 0.4));

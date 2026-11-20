@@ -45,7 +45,7 @@ export function HubPage({ manifest, loadSearchIndex }: HubPageProps): ReactEleme
       <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 py-10 md:px-6 md:py-14">
         <div className="flex flex-col gap-6">
           <StepList manifest={manifest} />
-          <HubProgressSlot />
+          <HubProgressSlot manifest={manifest} />
         </div>
         <ReferenceTiles manifest={manifest} />
         <div>

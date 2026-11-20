@@ -147,6 +147,8 @@ export const httpRequest = {
     instance.post<unknown, unknown>(url, data, config).then(unwrap<T>(url)),
   put: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
     instance.put<unknown, unknown>(url, data, config).then(unwrap<T>(url)),
+  putNoContent: (url: string, data?: unknown, config?: AxiosRequestConfig): Promise<void> =>
+    instance.put<unknown, unknown>(url, data, config).then(() => undefined),
   patch: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
     instance.patch<unknown, unknown>(url, data, config).then(unwrap<T>(url)),
   delete: <T>(url: string, config?: AxiosRequestConfig) =>

@@ -12,7 +12,9 @@ import {
 import type { ContentSection, LessonFile } from '@org/shared-contracts';
 import { CHAPTER_TONE_CLASS, ChapterTone, FOCUS_RING_CLASS } from '@/design-system';
 import { focusHashTargetOnRender } from '@/app/focus-hash-target-on-render';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderAtRoute } from '@/test-utils/render-at-route';
+import { useAuthStore } from '@/stores/auth-store';
 import {
   stubIntersectionObserver,
   type IntersectionObserverStub,
@@ -108,8 +110,13 @@ async function prerenderLesson(slug: string): Promise<HTMLElement> {
     history: createMemoryHistory({ initialEntries: [lessonPath(slug)] }),
   });
   await router.load();
+  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   const container = document.createElement('div');
-  container.innerHTML = renderToString(<RouterProvider router={router} />);
+  container.innerHTML = renderToString(
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>,
+  );
   return container;
 }
 
@@ -166,6 +173,7 @@ function hasStateBar(link: HTMLElement): boolean {
 
 beforeEach(() => {
   clearLocalProgress();
+  useAuthStore.setState({ user: null, isInitializing: true });
   observer = stubIntersectionObserver();
   sectionTopsById = {};
   stubSectionTops();
@@ -420,6 +428,31 @@ describe('LessonPage', () => {
     expect(isBefore(methodology, closing)).toBe(true);
     expect(methodology.textContent).not.toContain('Bảng dữ kiện');
     expect(methodology.textContent).not.toContain('Nội dung đã được đọc và duyệt');
+  });
+
+  it('puts the progress card after Bài tiếp theo and before the Night card', async () => {
+    useAuthStore.setState({ user: null, isInitializing: false });
+    markLessonRead('12-cung-tu-vi');
+    await renderLesson('tu-vi-la-gi');
+
+    const next = endCard('Bài tiếp theo');
+    const card = await screen.findByRole('complementary', { name: /Bạn đã đọc/ });
+    const closing = screen.getByRole('heading', { name: 'Áp vào lá số của bạn' });
+
+    expect(isBefore(next, card)).toBe(true);
+    expect(isBefore(card, closing)).toBe(true);
+  });
+
+  it('never puts the progress card among the prose sections', async () => {
+    useAuthStore.setState({ user: null, isInitializing: false });
+    markLessonRead('12-cung-tu-vi');
+    const container = await renderLesson('tu-vi-la-gi');
+
+    const card = await screen.findByRole('complementary', { name: /Bạn đã đọc/ });
+    const sections = [...container.querySelectorAll('[id^="muc-"]')];
+
+    sections.forEach((section) => expect(section.contains(card)).toBe(false));
+    expect(isBefore(sections[sections.length - 1], card)).toBe(true);
   });
 
   it('renders term links through the prose renderer', async () => {

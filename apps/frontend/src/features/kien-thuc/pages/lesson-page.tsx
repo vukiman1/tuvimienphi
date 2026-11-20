@@ -182,7 +182,7 @@ export function LessonPage({ lesson, manifest, loadSearchIndex }: LessonPageProp
                   </TextLink>
                 )}
               </div>
-              <LessonEndSlot />
+              <LessonEndSlot manifest={manifest} lessonSlug={lesson.slug} />
               <MethodologyNote
                 hasFacts={false}
                 reviewedAt={lesson.reviewedAt}

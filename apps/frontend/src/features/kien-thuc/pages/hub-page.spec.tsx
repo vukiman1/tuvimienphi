@@ -2,6 +2,7 @@ import { cleanup, screen, within } from '@testing-library/react';
 import type { KienThucManifest } from '@org/shared-contracts';
 import { FOCUS_RING_CLASS } from '@/design-system';
 import { renderAtRoute } from '@/test-utils/render-at-route';
+import { useAuthStore } from '@/stores/auth-store';
 import { FIXTURE_SOURCE } from '../__fixtures__/fixture-source';
 import { hubHead } from '../head/hub-head';
 import { clearLocalProgress, markLessonRead } from '../progress/local-progress-store';
@@ -87,9 +88,27 @@ function heroLink(): HTMLElement {
 
 beforeEach(() => {
   clearLocalProgress();
+  useAuthStore.setState({ user: null, isInitializing: true });
 });
 
+function isBefore(first: Node, second: Node): boolean {
+  return (first.compareDocumentPosition(second) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0;
+}
+
 describe('HubPage', () => {
+  it('offers the progress card right after the path', async () => {
+    useAuthStore.setState({ user: null, isInitializing: false });
+    markRead(['tu-vi-la-gi', '12-cung-tu-vi']);
+    await renderHub();
+
+    const card = await screen.findByRole('complementary', { name: /Bạn đã đọc/ });
+    const path = screen.getByRole('list', { name: 'Lộ trình' });
+    const reference = screen.getByRole('region', { name: 'Tra cứu' });
+
+    expect(isBefore(path, card)).toBe(true);
+    expect(isBefore(card, reference)).toBe(true);
+  });
+
   it('opens with the Night hero, one accent and the start button', async () => {
     await renderHub();
 
