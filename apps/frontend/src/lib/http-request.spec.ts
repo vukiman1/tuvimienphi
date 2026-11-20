@@ -80,6 +80,18 @@ describe('a response from the API', () => {
     ).resolves.toBeUndefined();
   });
 
+  it('resolves a no-content PUT even though a 204 carries no envelope', async () => {
+    await expect(
+      httpRequest.putNoContent(
+        '/learning/progress',
+        { slugs: ['tu-vi-la-gi'] },
+        {
+          adapter: answerWith(''),
+        },
+      ),
+    ).resolves.toBeUndefined();
+  });
+
   it('pages a list from the envelope metadata', async () => {
     const metadata = { page: 2, limit: 1, totalItems: 3, totalPages: 3 };
     const envelope = { statusCode: OK_STATUS, success: true, data: ['Tý'], metadata };
