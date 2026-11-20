@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import { render } from '@testing-library/react';
 import type { RenderResult } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   HeadContent,
   Outlet,
@@ -31,6 +32,7 @@ function RootLayout(): ReactElement {
 
 export interface RenderedRoute extends RenderResult {
   readonly router: AnyRouter;
+  readonly queryClient: QueryClient;
 }
 
 export async function renderAtRoute({
@@ -50,7 +52,12 @@ export async function renderAtRoute({
     routeTree: rootRoute.addChildren([pageRoute]),
     history: createMemoryHistory({ initialEntries: [path] }),
   });
-  const result = render(<RouterProvider router={router} />);
+  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  const result = render(
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>,
+  );
   await router.load();
-  return { ...result, router };
+  return { ...result, router, queryClient };
 }
