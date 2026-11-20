@@ -40,4 +40,18 @@ describe('startApp', () => {
     expect(loadApp).toHaveBeenCalledTimes(1);
     expect(whenFirstPainted).not.toHaveBeenCalled();
   });
+
+  it('still loads the app when waiting for the paint fails', async () => {
+    const waitFailure = new TypeError('supportedEntryTypes is undefined');
+    const loadApp = jest.fn(() => Promise.resolve());
+
+    const started = startApp({
+      isPrerendered: () => true,
+      whenFirstPainted: () => Promise.reject(waitFailure),
+      loadApp,
+    });
+
+    await expect(started).rejects.toBe(waitFailure);
+    expect(loadApp).toHaveBeenCalledTimes(1);
+  });
 });

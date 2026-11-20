@@ -1,18 +1,33 @@
 import { FIRST_PAINT_WAIT_LIMIT_MS, whenFirstPainted } from './when-first-painted';
 
-type ObserverCallback = (list: { getEntriesByName: (name: string) => readonly unknown[] }) => void;
+interface PaintEntryList {
+  readonly getEntriesByName: (name: string) => readonly unknown[];
+}
+
+type ObserverCallback = (list: PaintEntryList, observer: FakePaintObserver) => void;
+
+const FIRST_CONTENTFUL_PAINT = 'first-contentful-paint';
+
+function entryList(paintNames: readonly string[]): PaintEntryList {
+  return { getEntriesByName: (name) => paintNames.filter((paintName) => paintName === name) };
+}
 
 class FakePaintObserver {
-  static readonly supportedEntryTypes: readonly string[] = ['paint'];
+  static supportedEntryTypes: readonly string[] | undefined = ['paint'];
+  static bufferedPaints: readonly string[] = [];
   static current: FakePaintObserver | null = null;
+  observedWith: PerformanceObserverInit | null = null;
   isDisconnected = false;
 
   constructor(private readonly callback: ObserverCallback) {
     FakePaintObserver.current = this;
   }
 
-  observe(): void {
-    return undefined;
+  observe(options: PerformanceObserverInit): void {
+    this.observedWith = options;
+    if (options.buffered && FakePaintObserver.bufferedPaints.length > 0) {
+      this.callback(entryList(FakePaintObserver.bufferedPaints), this);
+    }
   }
 
   disconnect(): void {
@@ -20,21 +35,30 @@ class FakePaintObserver {
   }
 
   report(paintNames: readonly string[]): void {
-    this.callback({
-      getEntriesByName: (name) => paintNames.filter((paintName) => paintName === name),
-    });
+    this.callback(entryList(paintNames), this);
   }
 }
 
 const ORIGINAL_OBSERVER = globalThis.PerformanceObserver;
 
-function settled(promise: Promise<void>): Promise<boolean> {
-  return Promise.race([promise.then(() => true), Promise.resolve().then(() => false)]);
+const MICROTASK_TURNS_TO_SETTLE = 5;
+
+async function settled(promise: Promise<void>): Promise<boolean> {
+  let isSettled = false;
+  void promise.then(() => {
+    isSettled = true;
+  });
+  for (let turn = 0; turn < MICROTASK_TURNS_TO_SETTLE; turn += 1) {
+    await Promise.resolve();
+  }
+  return isSettled;
 }
 
 describe('whenFirstPainted', () => {
   beforeEach(() => {
     jest.useFakeTimers();
+    FakePaintObserver.supportedEntryTypes = ['paint'];
+    FakePaintObserver.bufferedPaints = [];
     Object.assign(globalThis, { PerformanceObserver: FakePaintObserver });
   });
 
@@ -44,12 +68,27 @@ describe('whenFirstPainted', () => {
     FakePaintObserver.current = null;
   });
 
+  it('asks for paint entries, including the ones already recorded', () => {
+    void whenFirstPainted();
+
+    expect(FakePaintObserver.current?.observedWith).toEqual({ type: 'paint', buffered: true });
+  });
+
   it('resolves once the first contentful paint is reported', async () => {
     const painted = whenFirstPainted();
     FakePaintObserver.current?.report(['first-paint']);
     expect(await settled(painted)).toBe(false);
 
-    FakePaintObserver.current?.report(['first-contentful-paint']);
+    FakePaintObserver.current?.report([FIRST_CONTENTFUL_PAINT]);
+
+    expect(await settled(painted)).toBe(true);
+    expect(FakePaintObserver.current?.isDisconnected).toBe(true);
+  });
+
+  it('resolves at once when the page painted before it started waiting', async () => {
+    FakePaintObserver.bufferedPaints = ['first-paint', FIRST_CONTENTFUL_PAINT];
+
+    const painted = whenFirstPainted();
 
     expect(await settled(painted)).toBe(true);
     expect(FakePaintObserver.current?.isDisconnected).toBe(true);
@@ -63,9 +102,22 @@ describe('whenFirstPainted', () => {
     expect(await settled(painted)).toBe(true);
   });
 
-  it('does not wait where paint timing is not supported', async () => {
+  it('does not wait where there is no PerformanceObserver', async () => {
     Object.assign(globalThis, { PerformanceObserver: undefined });
 
     expect(await settled(whenFirstPainted())).toBe(true);
+  });
+
+  it('does not wait where the observer cannot list its entry types', async () => {
+    FakePaintObserver.supportedEntryTypes = undefined;
+
+    expect(await settled(whenFirstPainted())).toBe(true);
+  });
+
+  it('does not wait where the observer does not support paint entries', async () => {
+    FakePaintObserver.supportedEntryTypes = ['navigation', 'resource'];
+
+    expect(await settled(whenFirstPainted())).toBe(true);
+    expect(FakePaintObserver.current).toBeNull();
   });
 });

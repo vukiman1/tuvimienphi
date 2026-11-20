@@ -9,8 +9,13 @@ export async function startApp({
   whenFirstPainted,
   loadApp,
 }: StartAppSteps): Promise<void> {
-  if (isPrerendered()) {
-    await whenFirstPainted();
+  if (!isPrerendered()) {
+    await loadApp();
+    return;
   }
-  await loadApp();
+  try {
+    await whenFirstPainted();
+  } finally {
+    await loadApp();
+  }
 }
