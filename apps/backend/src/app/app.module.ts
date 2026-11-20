@@ -15,6 +15,7 @@ import { CreditsModule } from '../api/credits/credits.module';
 import { FunnelModule } from '../api/funnel/funnel.module';
 import { GiftCodeModule } from '../api/gift-code/gift-code.module';
 import { LaSoModule } from '../api/la-so/la-so.module';
+import { LearningModule } from '../api/learning/learning.module';
 import { LuanGiaiModule } from '../api/luan-giai/luan-giai.module';
 import { PaymentModule } from '../api/payment/payment.module';
 import { UserModule } from '../api/user/user.module';
@@ -58,6 +59,7 @@ import { queueBoardRootImports } from './queue-board-registration';
     AdminModule,
     UserModule,
     LaSoModule,
+    LearningModule,
     LuanGiaiModule,
     CreditsModule,
     FunnelModule,
