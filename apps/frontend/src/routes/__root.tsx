@@ -7,6 +7,7 @@ import { NotFoundPage } from '@/features/error/not-found-page';
 import { LazyAuthModal } from '@/features/auth/lazy-auth-modal';
 import { GoogleOneTap } from '@/features/auth/google-one-tap';
 import { useSyncLaSoHistoryOnLogin } from '@/features/la-so/history/use-sync-on-login';
+import { useLearningProgressSync } from '@/features/kien-thuc/progress/use-learning-progress-sync';
 import { useMediaQuery } from '@/hooks/use-media-query';
 import { SITE_NAME, jsonLdMeta, organizationJsonLd, seo } from '@/lib/seo';
 
@@ -56,6 +57,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
 function RootRoute() {
   useSyncLaSoHistoryOnLogin();
+  useLearningProgressSync();
   const isDesktop = useMediaQuery(DESKTOP_MEDIA_QUERY);
 
   return (
