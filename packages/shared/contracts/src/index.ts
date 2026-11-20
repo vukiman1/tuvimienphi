@@ -224,3 +224,4 @@ export * from './credits.js';
 export * from './email-code.js';
 export * from './tuoi-nam.js';
 export * from './kien-thuc.js';
+export * from './learning-progress.js';

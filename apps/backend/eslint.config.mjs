@@ -12,6 +12,11 @@ const AI_NO_ADAPTERS = {
   message: 'Admin reaches AI vendors through AiHealthService, never ai/providers/*.',
 };
 
+const LEARNING_ADAPTERS_HIDDEN = {
+  regex: '(^|/)adapters/',
+  message: 'Learning code reaches storage only through port/LearningProgressStore.',
+};
+
 export default [
   ...baseConfig,
   {
@@ -38,6 +43,13 @@ export default [
     files: [AI_ADMIN_FILES],
     rules: {
       'no-restricted-imports': ['error', { patterns: [AI_NO_ADAPTERS] }],
+    },
+  },
+  {
+    files: ['src/api/learning/**/*.ts'],
+    ignores: ['src/api/learning/adapters/**/*.ts', 'src/api/learning/learning.module.ts'],
+    rules: {
+      'no-restricted-imports': ['error', { patterns: [AI_PORT_ONLY, LEARNING_ADAPTERS_HIDDEN] }],
     },
   },
 ];
