@@ -25,8 +25,8 @@ import { SetUserRoleArgs } from './dto/set-user-role.args';
 import {
   OwnRoleChangeError,
   RoleChangeUserNotFoundError,
+  RoleLockedError,
   RoleNotAssignableError,
-  SuperAdminRoleLockedError,
 } from './user-role.errors';
 import { UserRoleService } from './user-role.service';
 
@@ -35,6 +35,7 @@ const USER_NOT_FOUND_MESSAGE = 'Không tìm thấy người dùng.';
 const ROLE_NOT_ASSIGNABLE_MESSAGE = 'Chỉ có thể đặt quyền Người dùng hoặc Quản trị viên.';
 const OWN_ROLE_CHANGE_MESSAGE = 'Bạn không thể tự đổi quyền của chính mình.';
 const SUPER_ADMIN_ROLE_LOCKED_MESSAGE = 'Không thể đổi quyền của quản trị viên cấp cao.';
+const ROLE_LOCKED_MESSAGE = 'Chỉ đổi được quyền của Người dùng hoặc Quản trị viên.';
 
 @Resolver(() => AdminUser)
 @UseGuards(GqlAuthGuard(StrategyKey.JWT.ADMIN), RolesGuard)
@@ -98,8 +99,10 @@ export class AdminUsersResolver {
       if (error instanceof OwnRoleChangeError) {
         throw new BadRequestException(OWN_ROLE_CHANGE_MESSAGE);
       }
-      if (error instanceof SuperAdminRoleLockedError) {
-        throw new BadRequestException(SUPER_ADMIN_ROLE_LOCKED_MESSAGE);
+      if (error instanceof RoleLockedError) {
+        throw new BadRequestException(
+          error.role === Roles.SUPER_ADMIN ? SUPER_ADMIN_ROLE_LOCKED_MESSAGE : ROLE_LOCKED_MESSAGE,
+        );
       }
       if (error instanceof RoleChangeUserNotFoundError) {
         throw new NotFoundException(USER_NOT_FOUND_MESSAGE);

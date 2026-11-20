@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Roles } from '@org/backend-enum';
 import { DataSource, type EntityManager } from 'typeorm';
 import { ActivityLogService } from '../../activity/activity-log.service';
@@ -9,8 +9,8 @@ import { UserRoleEvent } from './user-role-event';
 import {
   OwnRoleChangeError,
   RoleChangeUserNotFoundError,
+  RoleLockedError,
   RoleNotAssignableError,
-  SuperAdminRoleLockedError,
 } from './user-role.errors';
 
 export const ASSIGNABLE_ROLES: readonly Roles[] = [Roles.USER, Roles.ADMIN];
@@ -33,39 +33,32 @@ interface RoleTransition {
 
 @Injectable()
 export class UserRoleService {
+  private readonly logger = new Logger(UserRoleService.name);
+
   constructor(
     private readonly dataSource: DataSource,
     private readonly sessionRevocation: SessionRevocationService,
     private readonly activityLog: ActivityLogService,
   ) {}
 
-  async change({ actor, userId, role }: RoleChangeCommand): Promise<void> {
-    if (!ASSIGNABLE_ROLES.includes(role)) {
-      throw new RoleNotAssignableError(role);
-    }
-    if (actor.id === userId) {
-      throw new OwnRoleChangeError(userId);
+  async change(command: RoleChangeCommand): Promise<void> {
+    if (!ASSIGNABLE_ROLES.includes(command.role)) {
+      throw new RoleNotAssignableError(command.role);
     }
 
     const transition = await this.dataSource.transaction((manager) =>
-      this.writeRole(manager, userId, role),
+      this.writeRole(manager, command),
     );
     if (transition.previousRole === transition.role) {
       return;
     }
 
-    this.activityLog.record(UserRoleEvent.CHANGED, {
-      userId,
-      actorEmail: actor.email,
-      metadata: { previousRole: transition.previousRole, role: transition.role },
-    });
-    await this.sessionRevocation.revokeAll(userId, SessionRevokeReason.ROLE_CHANGED);
+    await this.signOutEverywhere(command);
   }
 
   private async writeRole(
     manager: EntityManager,
-    userId: string,
-    role: Roles,
+    { actor, userId, role }: RoleChangeCommand,
   ): Promise<RoleTransition> {
     const user = await manager.findOne(UserEntity, {
       where: { id: userId },
@@ -75,12 +68,35 @@ export class UserRoleService {
     if (!user) {
       throw new RoleChangeUserNotFoundError(userId);
     }
-    if (user.role === Roles.SUPER_ADMIN) {
-      throw new SuperAdminRoleLockedError(userId);
+    if (user.id === actor.id) {
+      throw new OwnRoleChangeError(user.id);
     }
-    if (user.role !== role) {
-      await manager.update(UserEntity, { id: userId }, { role });
+    if (!ASSIGNABLE_ROLES.includes(user.role)) {
+      throw new RoleLockedError(user.id, user.role);
     }
+    if (user.role === role) {
+      return { previousRole: user.role, role };
+    }
+
+    await manager.update(UserEntity, { id: user.id }, { role });
+    await this.activityLog.recordWithin(manager, UserRoleEvent.CHANGED, {
+      userId: user.id,
+      actorEmail: actor.email,
+      metadata: { previousRole: user.role, role },
+    });
     return { previousRole: user.role, role };
+  }
+
+  private async signOutEverywhere({ actor, userId, role }: RoleChangeCommand): Promise<void> {
+    try {
+      await this.sessionRevocation.revokeAll(userId, SessionRevokeReason.ROLE_CHANGED);
+    } catch (error) {
+      this.logger.error({
+        message: `Role of user ${userId} changed to ${role} but their sessions could not be revoked`,
+        userId,
+        actorEmail: actor.email,
+        error,
+      });
+    }
   }
 }

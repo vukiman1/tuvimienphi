@@ -1,10 +1,14 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import type { UserRole } from '@org/shared-contracts';
 import type { Role } from '../../../gql/graphql';
 import { useAuthStore } from '../../../stores/auth-store';
 import type { AdminUserRow } from '../data/admin-users.query';
-import { OWN_ROW_REASON, SUPER_ADMIN_ROW_REASON } from './role-change-policy';
+import {
+  LOCKED_ROLE_ROW_REASON,
+  OWN_ROW_REASON,
+  SUPER_ADMIN_ROW_REASON,
+} from './role-change-policy';
 import { UserRowActions } from './user-row-actions';
 
 const VIEWER_EMAIL = 'owner@example.com';
@@ -30,7 +34,7 @@ function signInAs(role: UserRole): void {
   useAuthStore.setState({ user: { email: VIEWER_EMAIL, role } });
 }
 
-function renderActions(user: AdminUserRow) {
+function renderActions(user: AdminUserRow): Mock {
   const onChangeRole = vi.fn();
   render(<UserRowActions user={user} onAdjustCredits={vi.fn()} onChangeRole={onChangeRole} />);
   return onChangeRole;
@@ -80,5 +84,14 @@ describe('UserRowActions', () => {
 
     expect(roleButton()).toHaveProperty('disabled', true);
     expect(roleButton()?.getAttribute('aria-description')).toBe(SUPER_ADMIN_ROW_REASON);
+  });
+
+  it('disables the role action on a seller, whose role the console does not manage', () => {
+    signInAs('SUPER_ADMIN');
+
+    renderActions(row('seller@example.com', 'SELLER'));
+
+    expect(roleButton()).toHaveProperty('disabled', true);
+    expect(roleButton()?.getAttribute('aria-description')).toBe(LOCKED_ROLE_ROW_REASON);
   });
 });

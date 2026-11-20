@@ -17,8 +17,8 @@ import type { AdminUsersService } from './admin-users.service';
 import {
   OwnRoleChangeError,
   RoleChangeUserNotFoundError,
+  RoleLockedError,
   RoleNotAssignableError,
-  SuperAdminRoleLockedError,
 } from './user-role.errors';
 import type { UserRoleService } from './user-role.service';
 
@@ -79,7 +79,14 @@ describe('AdminUsersResolver.setUserRole', () => {
 
   it.each([
     [new OwnRoleChangeError(SUPER_ADMIN.id), 'Bạn không thể tự đổi quyền của chính mình.'],
-    [new SuperAdminRoleLockedError(TARGET_ID), 'Không thể đổi quyền của quản trị viên cấp cao.'],
+    [
+      new RoleLockedError(TARGET_ID, Roles.SUPER_ADMIN),
+      'Không thể đổi quyền của quản trị viên cấp cao.',
+    ],
+    [
+      new RoleLockedError(TARGET_ID, Roles.SELLER),
+      'Chỉ đổi được quyền của Người dùng hoặc Quản trị viên.',
+    ],
     [
       new RoleNotAssignableError(Roles.SELLER),
       'Chỉ có thể đặt quyền Người dùng hoặc Quản trị viên.',

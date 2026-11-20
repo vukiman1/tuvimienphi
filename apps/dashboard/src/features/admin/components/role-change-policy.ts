@@ -12,6 +12,7 @@ export const ASSIGNABLE_ROLE_LABEL = {
 
 export const OWN_ROW_REASON = 'Không thể tự đổi quyền của chính mình.';
 export const SUPER_ADMIN_ROW_REASON = 'Không thể đổi quyền của quản trị viên cấp cao.';
+export const LOCKED_ROLE_ROW_REASON = 'Chỉ đổi được quyền của Người dùng hoặc Quản trị viên.';
 
 export type RoleChangeAvailability =
   | { readonly kind: 'hidden' }
@@ -35,6 +36,9 @@ export function roleChangeAvailability(
   }
   if (target.role === 'SUPER_ADMIN') {
     return { kind: 'blocked', reason: SUPER_ADMIN_ROW_REASON };
+  }
+  if (!isAssignableRole(target.role)) {
+    return { kind: 'blocked', reason: LOCKED_ROLE_ROW_REASON };
   }
   return { kind: 'allowed' };
 }

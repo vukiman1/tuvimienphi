@@ -14,10 +14,13 @@ export class OwnRoleChangeError extends Error {
   }
 }
 
-export class SuperAdminRoleLockedError extends Error {
-  constructor(userId: string) {
-    super(`Cannot change the role of super admin ${userId}`);
-    this.name = 'SuperAdminRoleLockedError';
+export class RoleLockedError extends Error {
+  constructor(
+    userId: string,
+    readonly role: Roles,
+  ) {
+    super(`Cannot change the role of ${role} user ${userId} from the console`);
+    this.name = 'RoleLockedError';
   }
 }
 
