@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react';
+import { useEffect, type ReactElement } from 'react';
 import type { VanHanCurrent } from '@org/shared-contracts';
 import { PageHero, PaintingFocus, TextLink } from '@/design-system';
 import { VAN_HAN_PAINTING } from '@/features/van-han/van-han-media';
@@ -7,6 +7,7 @@ import { VanHanDetail, VanHanDetailEmpty } from '@/features/van-han/components/v
 import { VanHanFacts } from '@/features/van-han/components/van-han-facts';
 import { VanHanYearSwitch } from '@/features/van-han/components/van-han-year-switch';
 import { ZodiacPicker } from '@/features/van-han/components/zodiac-picker';
+import { rememberZodiac } from '@/features/van-han/remembered-zodiac';
 import { VAN_HAN_PATH, vanHanZodiacSlug } from '@/features/van-han/van-han-paths';
 import { resolveVanHanView } from '@/features/van-han/van-han-view';
 import { vanHanZodiacTitle } from '@/features/van-han/van-han-zodiac-head';
@@ -28,6 +29,7 @@ export function VanHanZodiacPage({
   yearInPath,
 }: VanHanZodiacPageProps): ReactElement {
   const view = resolveVanHanView(current, chi);
+  useEffect(() => rememberZodiac(chi), [chi]);
   return (
     <main className="w-full bg-day">
       <PageHero

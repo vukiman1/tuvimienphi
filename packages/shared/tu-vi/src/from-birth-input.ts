@@ -1,5 +1,5 @@
 import { BIRTH_HOURS, CalendarType, type BirthHour, type BirthInput } from '@org/shared-contracts';
-import { castChart, type TuViChart } from './cast-chart.js';
+import { castChart, natalLunarDate, type TuViChart } from './cast-chart.js';
 import { convertLunarToSolar } from './lich/lunar-calendar.js';
 import { Gender } from './van-han.js';
 
@@ -17,6 +17,25 @@ export class UnknownBirthHourError extends Error {
   }
 }
 
+function solarDateOf(input: BirthInput): Date {
+  return input.calendar === CalendarType.Lunar
+    ? convertLunarToSolar({
+        day: input.day,
+        month: input.month,
+        year: input.year,
+        isLeapMonth: false,
+      })
+    : new Date(input.year, input.month - 1, input.day);
+}
+
+function birthHourOf(input: BirthInput): BirthHour {
+  const birthHour = BIRTH_HOURS.find((entry) => entry.key === input.hour);
+  if (!birthHour) {
+    throw new UnknownBirthHourError(input.hour);
+  }
+  return birthHour;
+}
+
 /**
  * Đường duy nhất đi từ thông tin người dùng nhập tới lá số. Frontend và backend đều phải đi qua đây:
  * hai bên dựng lá số khác nhau cho cùng một `birthKey` là đầu độc cache luận giải, vì bài được lưu
@@ -26,20 +45,8 @@ export class UnknownBirthHourError extends Error {
  * suy thẳng từ ngày âm được. Form chưa hỏi tháng nhuận nên hiểu là tháng thường.
  */
 export function chartFromBirthInput(input: BirthInput, viewYear?: number): ChartFromBirth {
-  const solarDate =
-    input.calendar === CalendarType.Lunar
-      ? convertLunarToSolar({
-          day: input.day,
-          month: input.month,
-          year: input.year,
-          isLeapMonth: false,
-        })
-      : new Date(input.year, input.month - 1, input.day);
-
-  const birthHour = BIRTH_HOURS.find((entry) => entry.key === input.hour);
-  if (!birthHour) {
-    throw new UnknownBirthHourError(input.hour);
-  }
+  const solarDate = solarDateOf(input);
+  const birthHour = birthHourOf(input);
 
   const chart = castChart({
     solarDate,
@@ -49,4 +56,8 @@ export function chartFromBirthInput(input: BirthInput, viewYear?: number): Chart
   });
 
   return { chart, solarDate, birthHour };
+}
+
+export function natalLunarYear(input: BirthInput): number {
+  return natalLunarDate(solarDateOf(input), birthHourOf(input).hour).year;
 }
