@@ -1,5 +1,5 @@
 import { Logger } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import type { EntityManager, Repository } from 'typeorm';
 import { ActivityLogEntity } from './entities/activity-log.entity';
 import { ActivityLogService } from './activity-log.service';
 
@@ -85,5 +85,39 @@ describe('ActivityLogService.record', () => {
       userAgent: 'Mozilla/5.0',
       metadata: { jti: 'session-1' },
     });
+  });
+});
+
+describe('ActivityLogService.recordWithin', () => {
+  it('writes the event through the caller’s transaction', async () => {
+    const insert = jest.fn().mockResolvedValue(undefined);
+    const manager = { insert } as unknown as EntityManager;
+    const occurredAt = new Date('2026-11-20T03:00:00.000Z');
+
+    await serviceWith(jest.fn()).recordWithin(manager, 'user.role_changed', {
+      userId: 'user-1',
+      actorEmail: 'owner@example.com',
+      metadata: { previousRole: 'USER', role: 'ADMIN' },
+      occurredAt,
+    });
+
+    expect(insert).toHaveBeenCalledWith(ActivityLogEntity, {
+      event: 'user.role_changed',
+      occurredAt,
+      userId: 'user-1',
+      actorEmail: 'owner@example.com',
+      ipAddress: null,
+      userAgent: null,
+      metadata: { previousRole: 'USER', role: 'ADMIN' },
+    });
+  });
+
+  it('fails the transaction when the event cannot be written', async () => {
+    const failure = new Error('database is down');
+    const manager = { insert: jest.fn().mockRejectedValue(failure) } as unknown as EntityManager;
+
+    await expect(serviceWith(jest.fn()).recordWithin(manager, 'user.role_changed')).rejects.toBe(
+      failure,
+    );
   });
 });

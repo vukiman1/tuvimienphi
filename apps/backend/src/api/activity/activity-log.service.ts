@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import type { QueryDeepPartialEntity } from 'typeorm';
+import type { EntityManager, QueryDeepPartialEntity } from 'typeorm';
 import { Repository } from 'typeorm';
 import { ActivityLogEntity } from './entities/activity-log.entity';
 
@@ -26,11 +26,38 @@ export class ActivityLogService {
   ) {}
 
   record(event: string, context: ActivityContext = {}): void {
+    const payload = this.toPayload(event, context);
+    if (!payload) {
+      return;
+    }
+
+    void this.repo.insert(payload).catch((error: unknown) => {
+      this.logger.error({ message: `Could not record ${event}`, error });
+    });
+  }
+
+  async recordWithin(
+    manager: EntityManager,
+    event: string,
+    context: ActivityContext = {},
+  ): Promise<void> {
+    const payload = this.toPayload(event, context);
+    if (!payload) {
+      return;
+    }
+
+    await manager.insert(ActivityLogEntity, payload);
+  }
+
+  private toPayload(
+    event: string,
+    context: ActivityContext,
+  ): QueryDeepPartialEntity<ActivityLogEntity> | null {
     if (event.length > MAX_EVENT_LENGTH) {
       this.logger.error(
         `Activity event "${event}" is ${event.length} characters, over the ${MAX_EVENT_LENGTH} the column holds`,
       );
-      return;
+      return null;
     }
 
     const rawIpAddress = context.ipAddress ?? null;
@@ -41,7 +68,7 @@ export class ActivityLogService {
       );
     }
 
-    const payload: QueryDeepPartialEntity<ActivityLogEntity> = {
+    return {
       event,
       occurredAt: context.occurredAt ?? new Date(),
       userId: context.userId ?? null,
@@ -50,9 +77,5 @@ export class ActivityLogService {
       userAgent: context.userAgent ?? null,
       metadata: context.metadata ?? null,
     };
-
-    void this.repo.insert(payload).catch((error: unknown) => {
-      this.logger.error({ message: `Could not record ${event}`, error });
-    });
   }
 }

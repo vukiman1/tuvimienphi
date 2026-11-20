@@ -255,6 +255,8 @@ export type AssignPaymentMutationVariables = Exact<{
 
 export type AssignPaymentMutation = { assignPayment: { id: string, status: PaymentStatus, creditsGranted: number, userEmail: string | null } };
 
+export type AdminUserRowFieldsFragment = { id: string, email: string, displayName: string | null, avatar: string | null, role: Role, isEmailVerified: boolean, balance: number, chapterCredits: number, dailyChapterUsed: number, createdAt: string, genCount: number, lastActiveAt: string | null };
+
 export type AdminUsersQueryVariables = Exact<{
   page?: number | null | undefined;
   limit?: number | null | undefined;
@@ -278,6 +280,14 @@ export type AdjustChapterCreditsMutationVariables = Exact<{
 
 
 export type AdjustChapterCreditsMutation = { adjustChapterCredits: { userId: string, chapterCredits: number } };
+
+export type SetUserRoleMutationVariables = Exact<{
+  userId: string | number;
+  role: Role;
+}>;
+
+
+export type SetUserRoleMutation = { setUserRole: { id: string, email: string, displayName: string | null, avatar: string | null, role: Role, isEmailVerified: boolean, balance: number, chapterCredits: number, dailyChapterUsed: number, createdAt: string, genCount: number, lastActiveAt: string | null } };
 
 export type VanHanYearsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -376,6 +386,22 @@ export const MetricFieldsFragmentDoc = new TypedDocumentString(`
   }
 }
     `, {"fragmentName":"MetricFields"}) as unknown as TypedDocumentString<MetricFieldsFragment, unknown>;
+export const AdminUserRowFieldsFragmentDoc = new TypedDocumentString(`
+    fragment AdminUserRowFields on AdminUser {
+  id
+  email
+  displayName
+  avatar
+  role
+  isEmailVerified
+  balance
+  chapterCredits
+  dailyChapterUsed
+  createdAt
+  genCount
+  lastActiveAt
+}
+    `, {"fragmentName":"AdminUserRowFields"}) as unknown as TypedDocumentString<AdminUserRowFieldsFragment, unknown>;
 export const VanHanEntryFieldsFragmentDoc = new TypedDocumentString(`
     fragment VanHanEntryFields on AdminVanHanEntry {
   id
@@ -687,22 +713,24 @@ export const AdminUsersDocument = new TypedDocumentString(`
   ) {
     total
     users {
-      id
-      email
-      displayName
-      avatar
-      role
-      isEmailVerified
-      balance
-      chapterCredits
-      dailyChapterUsed
-      createdAt
-      genCount
-      lastActiveAt
+      ...AdminUserRowFields
     }
   }
 }
-    `) as unknown as TypedDocumentString<AdminUsersQuery, AdminUsersQueryVariables>;
+    fragment AdminUserRowFields on AdminUser {
+  id
+  email
+  displayName
+  avatar
+  role
+  isEmailVerified
+  balance
+  chapterCredits
+  dailyChapterUsed
+  createdAt
+  genCount
+  lastActiveAt
+}`) as unknown as TypedDocumentString<AdminUsersQuery, AdminUsersQueryVariables>;
 export const AdjustChapterCreditsDocument = new TypedDocumentString(`
     mutation AdjustChapterCredits($input: AdjustChapterCreditsInput!) {
   adjustChapterCredits(input: $input) {
@@ -711,6 +739,26 @@ export const AdjustChapterCreditsDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<AdjustChapterCreditsMutation, AdjustChapterCreditsMutationVariables>;
+export const SetUserRoleDocument = new TypedDocumentString(`
+    mutation SetUserRole($userId: ID!, $role: Role!) {
+  setUserRole(userId: $userId, role: $role) {
+    ...AdminUserRowFields
+  }
+}
+    fragment AdminUserRowFields on AdminUser {
+  id
+  email
+  displayName
+  avatar
+  role
+  isEmailVerified
+  balance
+  chapterCredits
+  dailyChapterUsed
+  createdAt
+  genCount
+  lastActiveAt
+}`) as unknown as TypedDocumentString<SetUserRoleMutation, SetUserRoleMutationVariables>;
 export const VanHanYearsDocument = new TypedDocumentString(`
     query VanHanYears {
   vanHanYears {

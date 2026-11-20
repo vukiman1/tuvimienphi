@@ -1,8 +1,9 @@
-import { Avatar, Button, Flex, Tag, Typography, type TableProps } from 'antd';
+import { Avatar, Flex, Tag, Typography, type TableProps } from 'antd';
 import { formatDate, formatNumber, initials } from '@org/frontend-shared';
 import type { Role } from '@/gql/graphql';
 import type { AdminUserRow, AdminUsersFilters } from '../data/admin-users.query';
 import { ROLE_LABEL } from './role-label';
+import { UserRowActions, type UserRowActionHandlers } from './user-row-actions';
 import {
   EMAIL_STATUS_FILTER_KEY,
   EMAIL_STATUS_VALUE,
@@ -43,7 +44,7 @@ function formatDailyUsage(used: number, dailyChapterQuota: number | undefined): 
 
 export function buildUsersColumns(
   filters: AdminUsersFilters,
-  onAdjustCredits: (user: AdminUserRow) => void,
+  rowActions: UserRowActionHandlers,
   dailyChapterQuota: number | undefined,
 ): TableProps<AdminUserRow>['columns'] {
   return [
@@ -134,12 +135,8 @@ export function buildUsersColumns(
     {
       key: 'actions',
       title: '',
-      width: 110,
-      render: (_, user) => (
-        <Button type="link" onClick={() => onAdjustCredits(user)}>
-          Chỉnh lượt
-        </Button>
-      ),
+      width: 180,
+      render: (_, user) => <UserRowActions user={user} {...rowActions} />,
     },
   ];
 }

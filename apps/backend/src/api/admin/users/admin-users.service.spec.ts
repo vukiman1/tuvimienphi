@@ -16,6 +16,11 @@ class FakeQueryBuilder {
   readonly conditions: RecordedCondition[] = [];
   readonly ordering: RecordedOrder[] = [];
 
+  where(clause: string, params: Record<string, unknown> = {}): this {
+    this.conditions.push({ clause, params });
+    return this;
+  }
+
   andWhere(clause: string, params: Record<string, unknown> = {}): this {
     this.conditions.push({ clause, params });
     return this;
@@ -191,5 +196,23 @@ describe('AdminUsersService.list', () => {
     });
 
     expect(builder.conditions).toHaveLength(5);
+  });
+});
+
+describe('AdminUsersService.findSummary', () => {
+  it('looks one user up by a bound id', async () => {
+    const { service, builders } = serviceWithRecorder();
+
+    await service.findSummary('user-1');
+
+    expect(builders[0].conditions).toEqual([
+      { clause: 'user.id = :userId', params: { userId: 'user-1' } },
+    ]);
+  });
+
+  it('answers null when nobody has that id', async () => {
+    const { service } = serviceWithRecorder();
+
+    expect(await service.findSummary('missing')).toBeNull();
   });
 });
