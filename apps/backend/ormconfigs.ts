@@ -15,6 +15,7 @@ import { CreditSettingsEntity } from './src/api/credits/entities/credit-settings
 import { FunnelDailyEntity } from './src/api/funnel/entities/funnel-daily.entity';
 import { GiftCodeEntity } from './src/api/gift-code/entities/gift-code.entity';
 import { GiftCodeRedemptionEntity } from './src/api/gift-code/entities/gift-code-redemption.entity';
+import { LearningProgressEntity } from './src/api/learning/adapters/learning-progress.entity';
 import { PaymentEntity } from './src/api/payment/entities/payment.entity';
 import { VanHanEntity } from './src/api/van-han/entities/van-han.entity';
 import { VanHanPublishedYearEntity } from './src/api/van-han/entities/van-han-published-year.entity';
@@ -85,6 +86,7 @@ export const options: DataSourceOptions = {
     GiftCodeRedemptionEntity,
     CreditSettingsEntity,
     FunnelDailyEntity,
+    LearningProgressEntity,
   ],
   migrationsTableName: 'migrations',
   migrations: [join(__dirname, `src/migrations/*.${migrationExtension}`)],
