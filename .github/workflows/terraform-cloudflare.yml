@@ -90,7 +90,7 @@ jobs:
             echo "AWS_SECRET_ACCESS_KEY=${state_secret}"
           } >> "$GITHUB_ENV"
 
-      - uses: hashicorp/setup-terraform@v3
+      - uses: hashicorp/setup-terraform@v4
         if: steps.guard.outputs.ready == 'true'
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
@@ -199,7 +199,7 @@ jobs:
             echo "AWS_SECRET_ACCESS_KEY=${state_secret}"
           } >> "$GITHUB_ENV"
 
-      - uses: hashicorp/setup-terraform@v3
+      - uses: hashicorp/setup-terraform@v4
         if: steps.guard.outputs.ready == 'true'
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
