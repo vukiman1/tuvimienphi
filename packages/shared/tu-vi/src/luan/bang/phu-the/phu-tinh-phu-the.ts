@@ -45,7 +45,7 @@ export const PHU_TINH_PHU_THE: Readonly<Partial<Record<PhuTinhName, LuanDe>>> = 
     tuKhoa: ['bị cắt ngang', 'việc xen vào'],
   },
   'Thiên Không': {
-    y: 'dễ lý tưởng hoá người ấy rồi hụt hẫng khi thực tế không như hình dung',
+    y: 'dễ lý tưởng hóa người ấy rồi hụt hẫng khi thực tế không như hình dung',
     do: ['Thiên Không'],
     sac: Sac.Nghich,
     trong: 55,
@@ -157,17 +157,17 @@ export const PHU_TINH_PHU_THE: Readonly<Partial<Record<PhuTinhName, LuanDe>>> = 
     tuKhoa: ['lục đục', 'đỡ lời'],
   },
   'Thiên Đức': {
-    y: 'có đức lành che chở, chuyện căng giữa hai người cũng dễ hoá nhẹ',
+    y: 'có đức lành che chở, chuyện căng giữa hai người cũng dễ hóa nhẹ',
     do: ['Thiên Đức'],
     sac: Sac.HoaGiai,
     trong: 50,
-    tuKhoa: ['đức lành', 'hoá nhẹ'],
+    tuKhoa: ['đức lành', 'hóa nhẹ'],
   },
   'Thiên Hỉ': {
-    y: 'chuyện tình cảm có nhiều dịp vui chung, không khí giữa hai người hoà hợp',
+    y: 'chuyện tình cảm có nhiều dịp vui chung, không khí giữa hai người hòa hợp',
     do: ['Thiên Hỉ'],
     sac: Sac.HoaGiai,
     trong: 45,
-    tuKhoa: ['dịp vui chung', 'hoà hợp'],
+    tuKhoa: ['dịp vui chung', 'hòa hợp'],
   },
 };

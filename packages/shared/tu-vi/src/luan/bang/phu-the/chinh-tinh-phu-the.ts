@@ -62,7 +62,7 @@ export const CHINH_TINH_PHU_THE: Partial<Record<ChinhTinhName, CellLuan>> = {
   ),
   'Thiên Đồng': cell(
     'Thiên Đồng',
-    ['người bạn đời ôn hoà, dễ tính, ở bên nhau thấy nhẹ nhõm', 'ôn hoà', 'nhẹ nhõm'],
+    ['người bạn đời ôn hòa, dễ tính, ở bên nhau thấy nhẹ nhõm', 'ôn hòa', 'nhẹ nhõm'],
     [
       'người ấy ngại nói thẳng nên chuyện cần nói rõ giữa hai người hay bị gác lại',
       'ngại nói thẳng',

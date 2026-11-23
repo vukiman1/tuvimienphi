@@ -48,31 +48,31 @@ export const AN_NGU_LUAN: Readonly<Record<'Tuần' | 'Triệt', readonly LuanDe[
 /** Tứ hoá rơi vào cung. Cũng đang tác động ngầm qua trọng số mà bài chưa hề nhắc tên. */
 export const TU_HOA_LUAN: Readonly<Record<HoaName, LuanDe>> = {
   'Hóa Lộc': de(
-    'có Hoá Lộc nên phần này thường có nguồn, không đến nỗi bí đường',
+    'có Hóa Lộc nên phần này thường có nguồn, không đến nỗi bí đường',
     Sac.Thuan,
     84,
-    'Hoá Lộc',
+    'Hóa Lộc',
     'có nguồn',
   ),
   'Hóa Quyền': de(
-    'có Hoá Quyền nên tiếng nói ở phần này có trọng lượng',
+    'có Hóa Quyền nên tiếng nói ở phần này có trọng lượng',
     Sac.Thuan,
     84,
-    'Hoá Quyền',
+    'Hóa Quyền',
     'trọng lượng',
   ),
   'Hóa Khoa': de(
-    'có Hoá Khoa nên phần này dễ được ghi nhận và có tiếng',
+    'có Hóa Khoa nên phần này dễ được ghi nhận và có tiếng',
     Sac.Thuan,
     82,
-    'Hoá Khoa',
+    'Hóa Khoa',
     'ghi nhận',
   ),
   'Hóa Kỵ': de(
-    'có Hoá Kỵ nên phần này hay vướng, được việc thì cũng phải qua trắc trở',
+    'có Hóa Kỵ nên phần này hay vướng, được việc thì cũng phải qua trắc trở',
     Sac.Nghich,
     86,
-    'Hoá Kỵ',
+    'Hóa Kỵ',
     'vướng',
   ),
 };

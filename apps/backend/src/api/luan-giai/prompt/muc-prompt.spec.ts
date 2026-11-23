@@ -21,11 +21,11 @@ describe('mucSystemPrompt', () => {
     expect(prompt).toContain('giữ nguyên chữ hoa đúng như trong brief');
   });
 
-  it('ví dụ tên hoá viết "Hoá" đúng như mệnh đề hoá trong brief', () => {
+  it('ví dụ tên hoá viết "Hóa" đúng như mệnh đề hoá trong brief', () => {
     const prompt = mucSystemPrompt('Mệnh');
 
-    expect(prompt).toContain('"Hoá Kỵ", "Hoá Quyền"');
-    expect(prompt).not.toContain('"Hóa Kỵ", "Hóa Quyền"');
+    expect(prompt).toContain('"Hóa Kỵ", "Hóa Quyền"');
+    expect(prompt).not.toContain('"Hoá Kỵ", "Hoá Quyền"');
   });
 
   it('cho phụ tinh sinh ra mệnh đề một cặp ** riêng cạnh ý của nó', () => {

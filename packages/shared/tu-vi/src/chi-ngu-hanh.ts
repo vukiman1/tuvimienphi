@@ -35,7 +35,7 @@ const KHAC: Readonly<Record<NguHanh, NguHanh>> = {
 };
 
 export enum TheSinhKhac {
-  TiHoa = 'tị hoà',
+  TiHoa = 'tị hòa',
   SaoSinhCung = 'sao sinh cung',
   CungSinhSao = 'cung sinh sao',
   SaoKhacCung = 'sao khắc cung',

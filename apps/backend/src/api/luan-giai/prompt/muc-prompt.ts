@@ -32,7 +32,7 @@ QUY TẮC HÌNH THỨC:
    cặp ** riêng, đặt cùng câu với ý của nó. Các phụ tinh còn lại gói theo vai: hung tinh vào MỘT cặp **,
    cát tinh vào MỘT cặp ** khác.
 4b. Mệnh đề không có sao sinh ra nó (do[] rỗng — tên một cách cục như "Sát Phá Tham", "Cơ Nguyệt Đồng Lương",
-   "Lộc Mã"; tên một hoá như "Hoá Kỵ", "Hoá Quyền"; tên án ngữ như "Tuần", "Triệt"): viết tên đó không bọc
+   "Lộc Mã"; tên một hoá như "Hóa Kỵ", "Hóa Quyền"; tên án ngữ như "Tuần", "Triệt"): viết tên đó không bọc
    trong cặp **, giữ nguyên chữ hoa đúng như trong brief, không gán cho một sao cụ thể nào.
    Riêng hoá nào đã có tên trong catTinh hoặc hungTinh thì là phụ tinh: viết theo mục 4.
 5. Không nhắc tên sao nào ngoài brief.

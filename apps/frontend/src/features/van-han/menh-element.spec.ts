@@ -7,8 +7,12 @@ describe('elementOfMenh', () => {
     expect(elementOfMenh('Lư Trung Hỏa')).toBe('Hỏa');
   });
 
+  it('reads old-style diacritics as the same element', () => {
+    expect(elementOfMenh('Thiên Hà Thuỷ')).toBe('Thủy');
+    expect(elementOfMenh('Lư Trung Hoả')).toBe('Hỏa');
+  });
+
   it('falls back to Thổ for a mệnh it cannot read', () => {
     expect(elementOfMenh('')).toBe('Thổ');
-    expect(elementOfMenh('Thiên Hà Thuỷ')).toBe('Thổ');
   });
 });
