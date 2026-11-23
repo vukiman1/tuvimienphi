@@ -235,7 +235,7 @@ describe('checkParagraphs', () => {
   it('chặn việc nói sao chiếu tới là đang đóng tại cung', () => {
     const loi = kiem({
       ...DAT,
-      doan2: DAT.doan2.replace('**Thiên Thọ** hội chiếu tới, chủ', '**Thiên Thọ** toạ thủ, chủ'),
+      doan2: DAT.doan2.replace('**Thiên Thọ** hội chiếu tới, chủ', '**Thiên Thọ** tọa thủ, chủ'),
     });
     expect(loi.join('\n')).toMatch(/Thiên Thọ.*tam hợp.*không đứng tại cung/);
   });

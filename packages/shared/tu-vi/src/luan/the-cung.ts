@@ -8,10 +8,10 @@ export type AnNgu = 'Tuần' | 'Triệt' | null;
 
 /**
  * Sao tác động tới một cung theo bốn thế, xếp từ mạnh xuống nhẹ. Nhãn viết đúng cách gọi trên lá số
- * để mô hình dùng lại được nguyên văn — gọi một sao xung chiếu là "toạ thủ" là nói sai vị trí.
+ * để mô hình dùng lại được nguyên văn — gọi một sao xung chiếu là "tọa thủ" là nói sai vị trí.
  */
 export enum TheChieu {
-  ToaThu = 'toạ thủ',
+  ToaThu = 'tọa thủ',
   XungChieu = 'xung chiếu',
   TamHop = 'tam hợp',
   NhiHop = 'nhị hợp',
@@ -25,7 +25,7 @@ export interface SaoTheoThe {
 }
 
 /**
- * Toàn bộ dữ kiện cần để luận một cung. Luận một cung mà chỉ đọc sao toạ thủ là đọc thiếu: tam hợp,
+ * Toàn bộ dữ kiện cần để luận một cung. Luận một cung mà chỉ đọc sao tọa thủ là đọc thiếu: tam hợp,
  * xung chiếu và nhị hợp đều tác động, chỉ khác mức.
  */
 export interface TheCung {

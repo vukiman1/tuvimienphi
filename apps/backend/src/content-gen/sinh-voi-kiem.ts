@@ -1,10 +1,10 @@
-import type { AiClient } from '../../../ai/port/ai.client';
-import type { AiMessage, AiSchema } from '../../../ai/port/ai.types';
+import type { AiClient } from '../ai/port/ai.client';
+import type { AiMessage, AiSchema } from '../ai/port/ai.types';
 import {
   ChapterRejectedError,
   ChapterTimedOutError,
   MalformedChapterError,
-} from '../luan-giai.errors';
+} from '../api/luan-giai/luan-giai.errors';
 
 export const MAX_ATTEMPTS = 5;
 

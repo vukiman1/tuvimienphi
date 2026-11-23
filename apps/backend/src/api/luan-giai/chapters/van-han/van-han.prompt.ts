@@ -42,8 +42,8 @@ A. MỌI mệnh đề trong luan[] phải xuất hiện, mỗi mệnh đề dùn
 B. Mỗi mệnh đề phải nằm CÙNG CÂU với ít nhất một sao trong do[] của nó.
 C. KHÔNG làm nhẹ mệnh đề sac="nghich". Viết đúng mức độ brief nêu.
 D. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong brief.
-E. laVoChinhDieu=true nghĩa là cung đại vận KHÔNG có chính tinh nào toạ thủ: viết rõ là cung trống và sao chiếu tới.
-F. Chỉ sao the="toạ thủ" mới được nói là đóng tại cung. Sao "xung chiếu", "tam hợp", "nhị hợp" thì viết
+E. laVoChinhDieu=true nghĩa là cung đại vận KHÔNG có chính tinh nào tọa thủ: viết rõ là cung trống và sao chiếu tới.
+F. Chỉ sao the="tọa thủ" mới được nói là đóng tại cung. Sao "xung chiếu", "tam hợp", "nhị hợp" thì viết
    "hội chiếu", "chiếu tới", "cùng chiếu về". Đừng viết "thủ mệnh", "chiếu mệnh".
 
 QUY TẮC HÌNH THỨC:

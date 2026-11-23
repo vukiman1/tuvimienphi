@@ -93,8 +93,8 @@ export const CHINH_TINH_RATINGS: Readonly<Record<ChinhTinhName, readonly Rating[
  *
  * Mọi ô sao có thể tới được đều đã quan sát; không còn ô nào thiếu dữ liệu.
  *
- * Kình Dương, Đà La và Lộc Tồn không bao giờ đóng ở tứ mộ, Thiên Mã chỉ đóng ở tứ sinh — những cung
- * đó `null` vì sao không tới được, không phải vì thiếu bảng.
+ * Kình Dương không bao giờ đóng ở tứ sinh, Đà La ở tứ chính, Lộc Tồn ở tứ mộ, Thiên Mã chỉ đóng ở
+ * tứ sinh — những cung đó `null` vì sao không tới được, không phải vì thiếu bảng.
  */
 export const PHU_TINH_RATINGS: Readonly<
   Partial<Record<PhuTinhName, ReadonlyArray<Rating | null>>>

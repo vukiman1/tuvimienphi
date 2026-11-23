@@ -16,7 +16,7 @@ const NHIEU_CAT_TINH: NatalChart = castNatal({
   gender: Gender.Nu,
 });
 
-/** Mệnh vô chính diệu: không chính tinh nào toạ thủ nên mục ngũ hành không đủ mệnh đề. */
+/** Mệnh vô chính diệu: không chính tinh nào tọa thủ nên mục ngũ hành không đủ mệnh đề. */
 const MENH_TRONG: NatalChart = castNatal({
   solarDate: new Date(1968, 0, 2),
   hour: 17,

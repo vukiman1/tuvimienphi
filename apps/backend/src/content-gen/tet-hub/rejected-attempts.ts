@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common';
 import type { AiMessage } from '../../ai/port/ai.types';
-import type { LanThu } from '../../api/luan-giai/generation/sinh-voi-kiem';
+import type { LanThu } from '../sinh-voi-kiem';
 
 type RejectionLogger = (attempt: number, model: string, violations: readonly string[]) => void;
 

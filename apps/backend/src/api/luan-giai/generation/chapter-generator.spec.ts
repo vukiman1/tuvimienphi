@@ -25,7 +25,7 @@ import {
   RequiredMucFailedError,
 } from '../luan-giai.errors';
 import { GIA_DAO_SYSTEM_PROMPT } from '../chapters/tinh-duyen/tinh-duyen.prompt';
-import { MAX_ATTEMPTS } from './sinh-voi-kiem';
+import { MAX_ATTEMPTS } from '../../../content-gen/sinh-voi-kiem';
 import { THAN_CU_CHAPTER } from '../chapters/than-cu/than-cu.chapter';
 import { TINH_DUYEN_CHAPTER } from '../chapters/tinh-duyen/tinh-duyen.chapter';
 import { checkParagraphs } from '../validate/check-paragraphs';

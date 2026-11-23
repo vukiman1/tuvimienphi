@@ -1,7 +1,7 @@
 import { Sac, type LuanDe } from '../luan-de.js';
 
 /**
- * Cung an Thân vô chính diệu: không chính tinh nào toạ thủ nên cung trống, phải mượn chính tinh từ
+ * Cung an Thân vô chính diệu: không chính tinh nào tọa thủ nên cung trống, phải mượn chính tinh từ
  * cung xung chiếu. Hai mệnh đề dưới đây nói về chính cái TRỐNG đó — nó là nét luận riêng, không
  * phải chuyện của sao mượn.
  *
@@ -24,5 +24,5 @@ export const VO_CHINH_DIEU: readonly LuanDe[] = [
   },
 ];
 
-/** Sao mượn tác động nhẹ hơn sao toạ thủ thật: nó đứng ở cung khác, chỉ chiếu sang. */
+/** Sao mượn tác động nhẹ hơn sao tọa thủ thật: nó đứng ở cung khác, chỉ chiếu sang. */
 export const MUON_FACTOR = 0.7;
