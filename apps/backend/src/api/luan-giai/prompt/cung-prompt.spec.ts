@@ -10,7 +10,7 @@ const PROMPT = cungSystemPrompt({
 describe('cungSystemPrompt', () => {
   it('gọi đúng tên cung ở luật E, F, G', () => {
     expect(PROMPT).toContain('Bài luận CUNG PHU THÊ');
-    expect(PROMPT).toContain('cung Phu Thê KHÔNG có chính tinh nào toạ thủ, nết thử khi ấy');
+    expect(PROMPT).toContain('cung Phu Thê KHÔNG có chính tinh nào tọa thủ, nết thử khi ấy');
     expect(PROMPT).toContain('đóng tại cung Phu Thê');
   });
 

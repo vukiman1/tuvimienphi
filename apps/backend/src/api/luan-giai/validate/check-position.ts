@@ -27,7 +27,7 @@ export function checkPosition(brief: ChapterBrief, bai: BaiCanKiem): string[] {
         .filter((sao) => thuong.includes(sao.ten.toLowerCase()))
         .map(
           (sao) =>
-            `đoạn ${chiSo + 1}: "${sao.ten}" ở thế ${sao.the}, không đứng tại cung — đừng nói là toạ thủ hay đóng tại đây`,
+            `đoạn ${chiSo + 1}: "${sao.ten}" ở thế ${sao.the}, không đứng tại cung — đừng nói là tọa thủ hay đóng tại đây`,
         );
     }),
   );

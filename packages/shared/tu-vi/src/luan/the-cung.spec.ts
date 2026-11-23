@@ -14,7 +14,7 @@ const CHART = castNatal({ solarDate: new Date(1960, 4, 26), hour: 21, gender: Ge
 const ANCHORS = Array.from({ length: CHI_COUNT }, (_, chiIndex) => chiIndex);
 
 describe('theCuaChi', () => {
-  it('calls the anchor itself toạ thủ', () => {
+  it('calls the anchor itself tọa thủ', () => {
     expect(theCuaChi(TY, TY)).toBe(TheChieu.ToaThu);
   });
 

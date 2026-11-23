@@ -104,7 +104,7 @@ export interface NatalCungView {
   readonly hasTuan: boolean;
   readonly hasTriet: boolean;
   readonly chinhTinh: readonly SaoView<ChinhTinhName>[];
-  /** Cung không có chính tinh nào toạ thủ. */
+  /** Cung không có chính tinh nào tọa thủ. */
   readonly isVoChinhDieu: boolean;
   /**
    * Chính tinh mượn từ cung xung chiếu khi cung này vô chính diệu, giữ nguyên bậc miếu vượng ở cung

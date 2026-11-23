@@ -37,5 +37,5 @@ QUY TẮC HÌNH THỨC:
    Riêng hoá nào đã có tên trong catTinh hoặc hungTinh thì là phụ tinh: viết theo mục 4.
 5. Không nhắc tên sao nào ngoài brief.
 ${luatViTri(cung)}
-7. Chỉ sao có the="toạ thủ" mới được nói là đóng tại cung; sao ở thế khác thì viết "hội chiếu", "chiếu tới".`;
+7. Chỉ sao có the="tọa thủ" mới được nói là đóng tại cung; sao ở thế khác thì viết "hội chiếu", "chiếu tới".`;
 }

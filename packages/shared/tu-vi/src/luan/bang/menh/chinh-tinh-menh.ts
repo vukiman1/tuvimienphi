@@ -12,7 +12,7 @@ function them(y: string, sao: ChinhTinhName, sac: Sac, ...tuKhoa: string[]): Lua
  * Chính tinh nhuộm vào cung Mệnh, luận về BẢN TÍNH và cách hành xử thường ngày — khác chương Thân
  * cư, chỗ đó luận đời người ngả về cung nào.
  *
- * Tra theo sao chứ không theo vị trí: một sao toạ thủ hay chiếu tới đều nhuộm cùng một nét, chỉ
+ * Tra theo sao chứ không theo vị trí: một sao tọa thủ hay chiếu tới đều nhuộm cùng một nét, chỉ
  * khác đậm nhạt, và phần đậm nhạt đã nằm ở trọng số theo thế chiếu.
  *
  * Toàn bộ nội dung là bản nháp, CHƯA có người biết tử vi soát.

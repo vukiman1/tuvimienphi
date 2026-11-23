@@ -5,14 +5,14 @@ import { buildMenhBrief } from './build-menh-brief.js';
 import { Sac } from './luan-de.js';
 import { TheChieu } from './the-cung.js';
 
-/** Mệnh tại Mùi: Thiên Tướng toạ thủ, Tử Vi và Phá Quân xung chiếu, Thiên Phủ tam hợp, Triệt án ngữ. */
+/** Mệnh tại Mùi: Thiên Tướng tọa thủ, Tử Vi và Phá Quân xung chiếu, Thiên Phủ tam hợp, Triệt án ngữ. */
 const THIEN_TUONG: NatalChart = castNatal({
   solarDate: new Date(1960, 4, 26),
   hour: 21,
   gender: Gender.Nam,
 });
 
-/** Mệnh yếu: chính tinh chỉ chiếu tới và đều hãm, nên mệnh đề của Đà La toạ thủ thắng. */
+/** Mệnh yếu: chính tinh chỉ chiếu tới và đều hãm, nên mệnh đề của Đà La tọa thủ thắng. */
 const MENH_YEU: NatalChart = castNatal({
   solarDate: new Date(1992, 0, 1),
   hour: 7,
@@ -31,7 +31,7 @@ describe('buildMenhBrief', () => {
     ]);
   });
 
-  it('xếp mệnh đề của sao toạ thủ trên mệnh đề của sao chiếu tới', () => {
+  it('xếp mệnh đề của sao tọa thủ trên mệnh đề của sao chiếu tới', () => {
     const brief = buildMenhBrief(THIEN_TUONG);
     const thuan = brief?.luan.filter((de) => de.sac === Sac.Thuan) ?? [];
 

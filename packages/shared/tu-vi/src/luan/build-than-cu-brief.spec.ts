@@ -92,7 +92,7 @@ describe('buildThanCuBrief', () => {
     expect(brief?.chinhTinh.every((sao) => sao.the === TheChieu.XungChieu)).toBe(true);
   });
 
-  it('chính tinh toạ thủ của Thân mang thế toạ thủ', () => {
+  it('chính tinh tọa thủ của Thân mang thế tọa thủ', () => {
     const brief = buildThanCuBrief(LIEM_THAM);
 
     expect(brief?.chinhTinh.every((sao) => sao.the === TheChieu.ToaThu)).toBe(true);

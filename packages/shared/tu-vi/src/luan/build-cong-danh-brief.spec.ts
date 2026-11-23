@@ -31,7 +31,7 @@ describe('buildCongDanhBrief', () => {
     ]);
   });
 
-  it('xếp mệnh đề của sao toạ thủ trên mệnh đề của sao chiếu tới', () => {
+  it('xếp mệnh đề của sao tọa thủ trên mệnh đề của sao chiếu tới', () => {
     const brief = buildCongDanhBrief(THIEN_LUONG);
     const thuan = brief?.luan.filter((de) => de.sac === Sac.Thuan) ?? [];
 

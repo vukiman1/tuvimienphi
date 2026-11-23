@@ -22,15 +22,15 @@ const baiVoiCau = (cau: string): ReturnType<typeof baiChinh> =>
   baiChinh({ doan1: cau, doan2: 'Đoạn hai không nhắc sao nào.' });
 
 describe('checkPosition', () => {
-  it('chặn chính tinh xung chiếu bị nói là toạ thủ', () => {
-    const loi = checkPosition(BRIEF, baiVoiCau('**Thái Dương** toạ thủ, mang lại sự ấm áp.'));
+  it('chặn chính tinh xung chiếu bị nói là tọa thủ', () => {
+    const loi = checkPosition(BRIEF, baiVoiCau('**Thái Dương** tọa thủ, mang lại sự ấm áp.'));
 
     expect(loi).toHaveLength(1);
     expect(loi[0]).toMatch(/Thái Dương.*xung chiếu.*không đứng tại cung/);
   });
 
-  it('cho qua chính tinh toạ thủ được nói là toạ thủ', () => {
-    expect(checkPosition(BRIEF, baiVoiCau('**Tử Vi** toạ thủ, mang lại uy quyền.'))).toEqual([]);
+  it('cho qua chính tinh tọa thủ được nói là tọa thủ', () => {
+    expect(checkPosition(BRIEF, baiVoiCau('**Tử Vi** tọa thủ, mang lại uy quyền.'))).toEqual([]);
   });
 
   it('chặn chính tinh mượn ở cung vô chính diệu', () => {

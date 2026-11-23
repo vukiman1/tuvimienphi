@@ -16,7 +16,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Công danh 1`] = `
       {
         "bac": "M",
         "ten": "Thái Âm",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "V",
@@ -122,7 +122,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Công danh 1`] = `
         {
           "bac": "M",
           "ten": "Thái Âm",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "V",
@@ -196,7 +196,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Công danh 1`] = `
         {
           "bac": "M",
           "ten": "Thái Âm",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "V",
@@ -220,7 +220,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Công danh 1`] = `
       "hungTinh": [
         {
           "ten": "Linh Tinh",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Thiên Diêu",
@@ -550,7 +550,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Thân cư 1`] = `
     "catTinh": [
       {
         "ten": "Hóa Lộc",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
     ],
     "chi": "Tị",
@@ -559,7 +559,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Thân cư 1`] = `
       {
         "bac": "V",
         "ten": "Thiên Cơ",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
     ],
     "cung": "Phu Thê",
@@ -567,7 +567,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Thân cư 1`] = `
     "hungTinh": [
       {
         "ten": "Thiên Diêu",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
     ],
     "laVoChinhDieu": false,
@@ -628,7 +628,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Thân cư 1`] = `
       "catTinh": [
         {
           "ten": "Hóa Lộc",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
       ],
       "chi": "Tị",
@@ -637,7 +637,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Thân cư 1`] = `
         {
           "bac": "V",
           "ten": "Thiên Cơ",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
       ],
       "cung": "Phu Thê",
@@ -649,7 +649,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Thân cư 1`] = `
       "hungTinh": [
         {
           "ten": "Thiên Diêu",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
       ],
       "laVoChinhDieu": false,
@@ -684,7 +684,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Thân cư 1`] = `
       "catTinh": [
         {
           "ten": "Hóa Lộc",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
       ],
       "chi": "Tị",
@@ -693,7 +693,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Thân cư 1`] = `
         {
           "bac": "V",
           "ten": "Thiên Cơ",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
       ],
       "cung": "Phu Thê",
@@ -704,7 +704,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Thân cư 1`] = `
       "hungTinh": [
         {
           "ten": "Thiên Diêu",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
       ],
       "laVoChinhDieu": false,
@@ -737,7 +737,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Thân cư 1`] = `
       "catTinh": [
         {
           "ten": "Hóa Lộc",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
       ],
       "chi": "Tị",
@@ -746,20 +746,20 @@ exports[`brief của lá số 1955-06-26 21h Nữ Thân cư 1`] = `
         {
           "bac": "V",
           "ten": "Thiên Cơ",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
       ],
       "cung": "Phu Thê",
       "duKien": [
         "Tuần án ngữ",
         "cách Cơ Nguyệt Đồng Lương",
-        "Hóa Lộc toạ thủ",
+        "Hóa Lộc tọa thủ",
       ],
       "gioiTinh": "nu",
       "hungTinh": [
         {
           "ten": "Thiên Diêu",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
       ],
       "laVoChinhDieu": false,
@@ -814,12 +814,12 @@ exports[`brief của lá số 1955-06-26 21h Nữ Tài bạch 1`] = `
       {
         "bac": "V",
         "ten": "Thái Dương",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "V",
         "ten": "Thiên Lương",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "M",
@@ -893,7 +893,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Tình duyên 1`] = `
     "catTinh": [
       {
         "ten": "Hóa Lộc",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
     ],
     "chi": "Tị",
@@ -902,7 +902,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Tình duyên 1`] = `
       {
         "bac": "V",
         "ten": "Thiên Cơ",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "M",
@@ -981,7 +981,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Tình duyên 1`] = `
       "catTinh": [
         {
           "ten": "Thiên Đức",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
       ],
       "chi": "Thìn",
@@ -990,7 +990,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Tình duyên 1`] = `
         {
           "bac": "H",
           "ten": "Thất Sát",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "M",
@@ -1098,7 +1098,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Tình duyên 1`] = `
         {
           "bac": "H",
           "ten": "Phá Quân",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "V",
@@ -1199,11 +1199,11 @@ exports[`brief của lá số 1955-06-26 21h Nữ Tình duyên 1`] = `
       "catTinh": [
         {
           "ten": "Thiên Y",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Hóa Lộc",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Hồng Loan",
@@ -1216,7 +1216,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Tình duyên 1`] = `
         {
           "bac": "V",
           "ten": "Thiên Cơ",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "M",
@@ -1290,7 +1290,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Tình duyên 1`] = `
         {
           "bac": "V",
           "ten": "Thiên Cơ",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "M",
@@ -1314,7 +1314,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Tình duyên 1`] = `
       "hungTinh": [
         {
           "ten": "Thiên Diêu",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Cô Thần",
@@ -1378,7 +1378,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Vận hạn 1`] = `
     "catTinh": [
       {
         "ten": "Thiên Hỉ",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
     ],
     "chi": "Dần",
@@ -1387,12 +1387,12 @@ exports[`brief của lá số 1955-06-26 21h Nữ Vận hạn 1`] = `
       {
         "bac": "V",
         "ten": "Vũ Khúc",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "M",
         "ten": "Thiên Tướng",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "H",
@@ -1499,7 +1499,7 @@ exports[`brief của lá số 1955-06-26 21h Nữ Vận hạn 1`] = `
       "catTinh": [
         {
           "ten": "Hóa Quyền",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Hóa Khoa",
@@ -1516,12 +1516,12 @@ exports[`brief của lá số 1955-06-26 21h Nữ Vận hạn 1`] = `
         {
           "bac": "H",
           "ten": "Thiên Đồng",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "H",
           "ten": "Cự Môn",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "V",
@@ -1596,12 +1596,12 @@ exports[`brief của lá số 1955-06-26 21h Nữ Vận hạn 1`] = `
         {
           "bac": "H",
           "ten": "Thiên Đồng",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "H",
           "ten": "Cự Môn",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "V",
@@ -1615,11 +1615,11 @@ exports[`brief của lá số 1955-06-26 21h Nữ Vận hạn 1`] = `
       "hungTinh": [
         {
           "ten": "Hóa Kỵ",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Thiên Hư",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Kình Dương",
@@ -1717,7 +1717,7 @@ exports[`brief của lá số 1955-12-09 7h Nữ Công danh 1`] = `
       {
         "bac": "Đ",
         "ten": "Thiên Tướng",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "H",
@@ -1806,7 +1806,7 @@ exports[`brief của lá số 1955-12-09 7h Nữ Công danh 1`] = `
         {
           "bac": "Đ",
           "ten": "Thiên Tướng",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "H",
@@ -1884,7 +1884,7 @@ exports[`brief của lá số 1955-12-09 7h Nữ Mệnh 1`] = `
       {
         "bac": "Đ",
         "ten": "Thiên Phủ",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "Đ",
@@ -1967,7 +1967,7 @@ exports[`brief của lá số 1955-12-09 7h Nữ Mệnh 1`] = `
         {
           "bac": "Đ",
           "ten": "Thiên Phủ",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -1991,7 +1991,7 @@ exports[`brief của lá số 1955-12-09 7h Nữ Mệnh 1`] = `
       "hungTinh": [
         {
           "ten": "Địa Không",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Phá Toái",
@@ -2054,7 +2054,7 @@ exports[`brief của lá số 1955-12-09 7h Nữ Mệnh 1`] = `
         {
           "bac": "Đ",
           "ten": "Thiên Phủ",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -2639,12 +2639,12 @@ exports[`brief của lá số 1955-12-09 7h Nữ Tình duyên 1`] = `
       {
         "bac": "H",
         "ten": "Vũ Khúc",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "H",
         "ten": "Phá Quân",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "Đ",
@@ -2742,7 +2742,7 @@ exports[`brief của lá số 1955-12-09 7h Nữ Tình duyên 1`] = `
         {
           "bac": "H",
           "ten": "Thiên Đồng",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "H",
@@ -2850,12 +2850,12 @@ exports[`brief của lá số 1955-12-09 7h Nữ Tình duyên 1`] = `
         {
           "bac": "V",
           "ten": "Thiên Cơ",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "V",
           "ten": "Thái Âm",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "V",
@@ -2959,12 +2959,12 @@ exports[`brief của lá số 1955-12-09 7h Nữ Tình duyên 1`] = `
         {
           "bac": "H",
           "ten": "Vũ Khúc",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "H",
           "ten": "Phá Quân",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -3036,12 +3036,12 @@ exports[`brief của lá số 1955-12-09 7h Nữ Tình duyên 1`] = `
         {
           "bac": "H",
           "ten": "Vũ Khúc",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "H",
           "ten": "Phá Quân",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -3139,7 +3139,7 @@ exports[`brief của lá số 1955-12-09 7h Nữ Vận hạn 1`] = `
     "catTinh": [
       {
         "ten": "Thiên Hỉ",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
     ],
     "chi": "Dần",
@@ -3250,7 +3250,7 @@ exports[`brief của lá số 1955-12-09 7h Nữ Vận hạn 1`] = `
       "catTinh": [
         {
           "ten": "Hóa Khoa",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Hóa Lộc",
@@ -3267,12 +3267,12 @@ exports[`brief của lá số 1955-12-09 7h Nữ Vận hạn 1`] = `
         {
           "bac": "Đ",
           "ten": "Liêm Trinh",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
           "ten": "Thất Sát",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -3372,12 +3372,12 @@ exports[`brief của lá số 1955-12-09 7h Nữ Vận hạn 1`] = `
         {
           "bac": "Đ",
           "ten": "Liêm Trinh",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
           "ten": "Thất Sát",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -3411,7 +3411,7 @@ exports[`brief của lá số 1955-12-09 7h Nữ Vận hạn 1`] = `
       "hungTinh": [
         {
           "ten": "Thiên Hư",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Kình Dương",
@@ -3514,7 +3514,7 @@ exports[`brief của lá số 1956-03-03 1h Nam Công danh 1`] = `
       {
         "bac": "Đ",
         "ten": "Thiên Đồng",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "H",
@@ -3601,7 +3601,7 @@ exports[`brief của lá số 1956-03-03 1h Nam Công danh 1`] = `
       "catTinh": [
         {
           "ten": "Hóa Lộc",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Thiên Thọ",
@@ -3618,7 +3618,7 @@ exports[`brief của lá số 1956-03-03 1h Nam Công danh 1`] = `
         {
           "bac": "Đ",
           "ten": "Thiên Đồng",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "H",
@@ -3692,7 +3692,7 @@ exports[`brief của lá số 1956-03-03 1h Nam Công danh 1`] = `
         {
           "bac": "Đ",
           "ten": "Thiên Đồng",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "H",
@@ -3716,7 +3716,7 @@ exports[`brief của lá số 1956-03-03 1h Nam Công danh 1`] = `
       "hungTinh": [
         {
           "ten": "Kiếp Sát",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Cô Thần",
@@ -3781,7 +3781,7 @@ exports[`brief của lá số 1956-03-03 1h Nam Mệnh 1`] = `
     "catTinh": [
       {
         "ten": "Nguyệt Đức",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
     ],
     "chi": "Sửu",
@@ -3818,7 +3818,7 @@ exports[`brief của lá số 1956-03-03 1h Nam Mệnh 1`] = `
     "hungTinh": [
       {
         "ten": "Thiên Diêu",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
     ],
     "laVoChinhDieu": true,
@@ -4016,7 +4016,7 @@ exports[`brief của lá số 1956-03-03 1h Nam Mệnh 1`] = `
       "hungTinh": [
         {
           "ten": "Thiên Diêu",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Kiếp Sát",
@@ -4447,12 +4447,12 @@ exports[`brief của lá số 1956-03-03 1h Nam Tài bạch 1`] = `
       {
         "bac": "M",
         "ten": "Thiên Cơ",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "M",
         "ten": "Cự Môn",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "Đ",
@@ -4533,7 +4533,7 @@ exports[`brief của lá số 1956-03-03 1h Nam Tài bạch 1`] = `
       "catTinh": [
         {
           "ten": "Hóa Quyền",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Nguyệt Đức",
@@ -4550,12 +4550,12 @@ exports[`brief của lá số 1956-03-03 1h Nam Tài bạch 1`] = `
         {
           "bac": "M",
           "ten": "Thiên Cơ",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "M",
           "ten": "Cự Môn",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -4619,12 +4619,12 @@ exports[`brief của lá số 1956-03-03 1h Nam Tài bạch 1`] = `
         {
           "bac": "M",
           "ten": "Thiên Cơ",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "M",
           "ten": "Cự Môn",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -4704,7 +4704,7 @@ exports[`brief của lá số 1956-03-03 1h Nam Tình duyên 1`] = `
     "catTinh": [
       {
         "ten": "Thiên Thọ",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
     ],
     "chi": "Hợi",
@@ -4713,7 +4713,7 @@ exports[`brief của lá số 1956-03-03 1h Nam Tình duyên 1`] = `
       {
         "bac": "H",
         "ten": "Thiên Lương",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "Đ",
@@ -4808,12 +4808,12 @@ exports[`brief của lá số 1956-03-03 1h Nam Tình duyên 1`] = `
         {
           "bac": "V",
           "ten": "Tử Vi",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "V",
           "ten": "Thiên Tướng",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -4909,7 +4909,7 @@ exports[`brief của lá số 1956-03-03 1h Nam Tình duyên 1`] = `
         {
           "bac": "V",
           "ten": "Liêm Trinh",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -5015,7 +5015,7 @@ exports[`brief của lá số 1956-03-03 1h Nam Tình duyên 1`] = `
       "catTinh": [
         {
           "ten": "Thiên Thọ",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Hóa Lộc",
@@ -5032,7 +5032,7 @@ exports[`brief của lá số 1956-03-03 1h Nam Tình duyên 1`] = `
         {
           "bac": "H",
           "ten": "Thiên Lương",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -5106,7 +5106,7 @@ exports[`brief của lá số 1956-03-03 1h Nam Tình duyên 1`] = `
         {
           "bac": "H",
           "ten": "Thiên Lương",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -5130,7 +5130,7 @@ exports[`brief của lá số 1956-03-03 1h Nam Tình duyên 1`] = `
       "hungTinh": [
         {
           "ten": "Cô Thần",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Kiếp Sát",
@@ -5194,7 +5194,7 @@ exports[`brief của lá số 1956-03-03 1h Nam Vận hạn 1`] = `
     "catTinh": [
       {
         "ten": "Hồng Loan",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "ten": "Nguyệt Đức",
@@ -5207,12 +5207,12 @@ exports[`brief của lá số 1956-03-03 1h Nam Vận hạn 1`] = `
       {
         "bac": "Đ",
         "ten": "Thái Dương",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "Đ",
         "ten": "Thái Âm",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "H",
@@ -5304,15 +5304,15 @@ exports[`brief của lá số 1956-03-03 1h Nam Vận hạn 1`] = `
       "catTinh": [
         {
           "ten": "Hóa Lộc",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Hóa Khoa",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Thiên Việt",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
       ],
       "chi": "Dậu",
@@ -5321,12 +5321,12 @@ exports[`brief của lá số 1956-03-03 1h Nam Vận hạn 1`] = `
         {
           "bac": "M",
           "ten": "Thiên Cơ",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "M",
           "ten": "Cự Môn",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -5401,12 +5401,12 @@ exports[`brief của lá số 1956-03-03 1h Nam Vận hạn 1`] = `
         {
           "bac": "M",
           "ten": "Thiên Cơ",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "M",
           "ten": "Cự Môn",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -5420,11 +5420,11 @@ exports[`brief của lá số 1956-03-03 1h Nam Vận hạn 1`] = `
       "hungTinh": [
         {
           "ten": "Hóa Kỵ",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Tang Môn",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Bạch Hổ",
@@ -5805,7 +5805,7 @@ exports[`brief của lá số 1960-05-26 21h Nam Mệnh 1`] = `
       {
         "bac": "Đ",
         "ten": "Thiên Tướng",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "Đ",
@@ -5908,7 +5908,7 @@ exports[`brief của lá số 1960-05-26 21h Nam Mệnh 1`] = `
         {
           "bac": "Đ",
           "ten": "Thiên Tướng",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -5969,7 +5969,7 @@ exports[`brief của lá số 1960-05-26 21h Nam Mệnh 1`] = `
         {
           "bac": "Đ",
           "ten": "Thiên Tướng",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -5993,7 +5993,7 @@ exports[`brief của lá số 1960-05-26 21h Nam Mệnh 1`] = `
       "hungTinh": [
         {
           "ten": "Đà La",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Thiên Không",
@@ -6057,7 +6057,7 @@ exports[`brief của lá số 1960-05-26 21h Nam Mệnh 1`] = `
         {
           "bac": "Đ",
           "ten": "Thiên Tướng",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -6133,7 +6133,7 @@ exports[`brief của lá số 1960-05-26 21h Nam Thân cư 1`] = `
     "catTinh": [
       {
         "ten": "Thiên Thọ",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "ten": "Hóa Quyền",
@@ -6146,12 +6146,12 @@ exports[`brief của lá số 1960-05-26 21h Nam Thân cư 1`] = `
       {
         "bac": "H",
         "ten": "Liêm Trinh",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "H",
         "ten": "Tham Lang",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
     ],
     "cung": "Phu Thê",
@@ -6159,7 +6159,7 @@ exports[`brief của lá số 1960-05-26 21h Nam Thân cư 1`] = `
     "hungTinh": [
       {
         "ten": "Đại Hao",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
     ],
     "laVoChinhDieu": false,
@@ -6237,7 +6237,7 @@ exports[`brief của lá số 1960-05-26 21h Nam Thân cư 1`] = `
       "catTinh": [
         {
           "ten": "Thiên Thọ",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Hóa Quyền",
@@ -6250,12 +6250,12 @@ exports[`brief của lá số 1960-05-26 21h Nam Thân cư 1`] = `
         {
           "bac": "H",
           "ten": "Liêm Trinh",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "H",
           "ten": "Tham Lang",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
       ],
       "cung": "Phu Thê",
@@ -6267,7 +6267,7 @@ exports[`brief của lá số 1960-05-26 21h Nam Thân cư 1`] = `
       "hungTinh": [
         {
           "ten": "Đại Hao",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
       ],
       "laVoChinhDieu": false,
@@ -6302,7 +6302,7 @@ exports[`brief của lá số 1960-05-26 21h Nam Thân cư 1`] = `
       "catTinh": [
         {
           "ten": "Thiên Thọ",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Hóa Quyền",
@@ -6315,12 +6315,12 @@ exports[`brief của lá số 1960-05-26 21h Nam Thân cư 1`] = `
         {
           "bac": "H",
           "ten": "Liêm Trinh",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "H",
           "ten": "Tham Lang",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
       ],
       "cung": "Phu Thê",
@@ -6331,7 +6331,7 @@ exports[`brief của lá số 1960-05-26 21h Nam Thân cư 1`] = `
       "hungTinh": [
         {
           "ten": "Đại Hao",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
       ],
       "laVoChinhDieu": false,
@@ -6364,7 +6364,7 @@ exports[`brief của lá số 1960-05-26 21h Nam Thân cư 1`] = `
       "catTinh": [
         {
           "ten": "Thiên Thọ",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Hóa Quyền",
@@ -6377,12 +6377,12 @@ exports[`brief của lá số 1960-05-26 21h Nam Thân cư 1`] = `
         {
           "bac": "H",
           "ten": "Liêm Trinh",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "H",
           "ten": "Tham Lang",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
       ],
       "cung": "Phu Thê",
@@ -6395,7 +6395,7 @@ exports[`brief của lá số 1960-05-26 21h Nam Thân cư 1`] = `
       "hungTinh": [
         {
           "ten": "Đại Hao",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
       ],
       "laVoChinhDieu": false,
@@ -6450,7 +6450,7 @@ exports[`brief của lá số 1960-05-26 21h Nam Tài bạch 1`] = `
       {
         "bac": "B",
         "ten": "Thiên Phủ",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "Đ",
@@ -6535,7 +6535,7 @@ exports[`brief của lá số 1960-05-26 21h Nam Tài bạch 1`] = `
       "catTinh": [
         {
           "ten": "Hồng Loan",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Hóa Quyền",
@@ -6552,7 +6552,7 @@ exports[`brief của lá số 1960-05-26 21h Nam Tài bạch 1`] = `
         {
           "bac": "B",
           "ten": "Thiên Phủ",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -6626,7 +6626,7 @@ exports[`brief của lá số 1960-05-26 21h Nam Tài bạch 1`] = `
         {
           "bac": "B",
           "ten": "Thiên Phủ",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -6716,7 +6716,7 @@ exports[`brief của lá số 1960-05-26 21h Nam Tình duyên 1`] = `
     "catTinh": [
       {
         "ten": "Thiên Thọ",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
     ],
     "chi": "Tị",
@@ -6725,12 +6725,12 @@ exports[`brief của lá số 1960-05-26 21h Nam Tình duyên 1`] = `
       {
         "bac": "H",
         "ten": "Liêm Trinh",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "H",
         "ten": "Tham Lang",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "Đ",
@@ -6835,7 +6835,7 @@ exports[`brief của lá số 1960-05-26 21h Nam Tình duyên 1`] = `
         {
           "bac": "H",
           "ten": "Thái Âm",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "H",
@@ -6943,12 +6943,12 @@ exports[`brief của lá số 1960-05-26 21h Nam Tình duyên 1`] = `
         {
           "bac": "M",
           "ten": "Thiên Đồng",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "V",
           "ten": "Thiên Lương",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -7039,11 +7039,11 @@ exports[`brief của lá số 1960-05-26 21h Nam Tình duyên 1`] = `
       "catTinh": [
         {
           "ten": "Nguyệt Đức",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Thiên Thọ",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Hóa Quyền",
@@ -7056,12 +7056,12 @@ exports[`brief của lá số 1960-05-26 21h Nam Tình duyên 1`] = `
         {
           "bac": "H",
           "ten": "Liêm Trinh",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "H",
           "ten": "Tham Lang",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -7140,12 +7140,12 @@ exports[`brief của lá số 1960-05-26 21h Nam Tình duyên 1`] = `
         {
           "bac": "H",
           "ten": "Liêm Trinh",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "H",
           "ten": "Tham Lang",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -7174,15 +7174,15 @@ exports[`brief của lá số 1960-05-26 21h Nam Tình duyên 1`] = `
       "hungTinh": [
         {
           "ten": "Kiếp Sát",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Thiên Diêu",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Đại Hao",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
       ],
       "laVoChinhDieu": false,
@@ -7248,12 +7248,12 @@ exports[`brief của lá số 1960-05-26 21h Nam Vận hạn 1`] = `
       {
         "bac": "Đ",
         "ten": "Tử Vi",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "V",
         "ten": "Phá Quân",
-        "the": "toạ thủ",
+        "the": "tọa thủ",
       },
       {
         "bac": "Đ",
@@ -7365,11 +7365,11 @@ exports[`brief của lá số 1960-05-26 21h Nam Vận hạn 1`] = `
       "catTinh": [
         {
           "ten": "Hóa Quyền",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Thiên Mã",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "ten": "Thiên Khôi",
@@ -7382,12 +7382,12 @@ exports[`brief của lá số 1960-05-26 21h Nam Vận hạn 1`] = `
         {
           "bac": "H",
           "ten": "Liêm Trinh",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "H",
           "ten": "Tham Lang",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",
@@ -7477,12 +7477,12 @@ exports[`brief của lá số 1960-05-26 21h Nam Vận hạn 1`] = `
         {
           "bac": "H",
           "ten": "Liêm Trinh",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "H",
           "ten": "Tham Lang",
-          "the": "toạ thủ",
+          "the": "tọa thủ",
         },
         {
           "bac": "Đ",

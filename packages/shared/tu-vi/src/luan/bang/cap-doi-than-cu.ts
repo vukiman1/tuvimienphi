@@ -3,7 +3,7 @@ import { Sac } from '../luan-de.js';
 import type { CellLuan } from './cell-luan.js';
 
 /**
- * Ô riêng cho tổ hợp hai chính tinh cùng toạ thủ. Được ưu tiên hơn phần ghép từ hai ô sao đơn.
+ * Ô riêng cho tổ hợp hai chính tinh cùng tọa thủ. Được ưu tiên hơn phần ghép từ hai ô sao đơn.
  *
  * Cần có vì cặp đôi không phải lúc nào cũng bằng tổng hai phần: Sát Phá Tham hay Cơ Nguyệt Đồng
  * Lương là cách cục có tên, luận theo tổ hợp chứ không cộng dồn. Bảng này thưa và sẽ dày lên dần;

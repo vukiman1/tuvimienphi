@@ -38,7 +38,7 @@ function clampToCenterEdge(value: number): number {
 }
 
 /**
- * Điểm neo của một cung trên viền thiên bàn, trong hệ toạ độ `viewBox="0 0 4 4"`.
+ * Điểm neo của một cung trên viền thiên bàn, trong hệ tọa độ `viewBox="0 0 4 4"`.
  *
  * Neo là điểm trên viền thiên bàn **gần cung đó nhất**: lấy tâm ô cung rồi kéo về trong phạm vi
  * thiên bàn. Thiên bàn là hình lồi nên mọi đường nối hai neo đều nằm trọn bên trong nó — không bị

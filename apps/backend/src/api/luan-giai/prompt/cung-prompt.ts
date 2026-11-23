@@ -39,11 +39,11 @@ D. KHÔNG thêm kết luận, lời hứa hay trấn an nào không có trong br
    hướng người đọc còn quyền chủ động là đủ.
 E. Bài luận CUNG ${cung.toUpperCase()}, đọc cả tam phương tứ chính: cung ${cung}, cung xung chiếu và hai cung
    tam hợp. Viết về ${vietVe}, không viết về ${khongVietVe} cụ thể.
-F. laVoChinhDieu=true nghĩa là cung ${cung} KHÔNG có chính tinh nào toạ thủ, ${khiVoChinhDieu} khi ấy
-   do các sao chiếu tới định hình. Phải viết rõ là cung trống và sao chiếu tới, đừng viết chúng toạ thủ.
-G. Mỗi sao trong brief có trường "the" ghi thế chiếu của nó. Chỉ sao the="toạ thủ" mới được nói là
+F. laVoChinhDieu=true nghĩa là cung ${cung} KHÔNG có chính tinh nào tọa thủ, ${khiVoChinhDieu} khi ấy
+   do các sao chiếu tới định hình. Phải viết rõ là cung trống và sao chiếu tới, đừng viết chúng tọa thủ.
+G. Mỗi sao trong brief có trường "the" ghi thế chiếu của nó. Chỉ sao the="tọa thủ" mới được nói là
    đóng tại cung ${cung}. Sao "xung chiếu", "tam hợp", "nhị hợp" đứng ở cung KHÁC và chiếu tới — viết
-   "hội chiếu", "chiếu tới", "cùng chiếu về" chứ đừng viết "toạ thủ" hay "đóng tại đây".
+   "hội chiếu", "chiếu tới", "cùng chiếu về" chứ đừng viết "tọa thủ" hay "đóng tại đây".
 
 QUY TẮC HÌNH THỨC:
 1. Mỗi đoạn đúng 2 câu.
@@ -52,7 +52,7 @@ QUY TẮC HÌNH THỨC:
     SAI: **==nhẹ nhõm==**    SAI: ==**Tham Lang (H)**==
 3. Chính tinh: mỗi sao một cặp ** RIÊNG của chính nó, kèm bậc — **Tham Lang (H)**. Mọi lần nhắc đều phải
    kèm bậc, kể cả lần thứ hai trong bài. Quy tắc "gộp chung một cặp" ở mục 4 CHỈ áp dụng cho phụ tinh —
-   tuyệt đối đừng gộp nhiều chính tinh vào một cặp **, kể cả khi chúng cùng toạ thủ hay cùng thế chiếu.
+   tuyệt đối đừng gộp nhiều chính tinh vào một cặp **, kể cả khi chúng cùng tọa thủ hay cùng thế chiếu.
    SAI: **Thiên Tướng (Đ), Tử Vi (Đ)**   (hai chính tinh gộp chung một cặp)
 4. Phụ tinh (KHÁC chính tinh ở mục 3) gói theo vai — ĐẾM LẠI TRƯỚC KHI TRẢ LỜI: trong cả đoạn chỉ được
    có ĐÚNG MỘT cặp ** cho hung tinh và MỘT cặp ** cho cát tinh, kể cả khi các sao đó ở các thế chiếu

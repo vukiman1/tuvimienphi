@@ -111,14 +111,14 @@ function theCuc(chart: NatalChart): { luan: LuanDe[]; duKien: string[] } {
     luan.push(SINH_KHAC_LUAN[theSinhKhac(CHINH_TINH_NGU_HANH[sao.name], hanhCung)]);
   }
 
-  // Chỉ lấy hoá toạ thủ: hoá ở cung khác chiếu sang là chuyện của cung đó, không phải thế cục ở đây.
+  // Chỉ lấy hoá tọa thủ: hoá ở cung khác chiếu sang là chuyện của cung đó, không phải thế cục ở đây.
   const hoaTaiCho = the.phuTinh
     .filter((sao) => sao.the === TheChieu.ToaThu)
     .map((sao) => sao.name)
     .filter((ten): ten is HoaName => (HOA_NAMES as readonly string[]).includes(ten));
 
   for (const hoa of hoaTaiCho) {
-    duKien.push(`${hoa} toạ thủ`);
+    duKien.push(`${hoa} tọa thủ`);
     luan.push(TU_HOA_LUAN[hoa]);
   }
 
