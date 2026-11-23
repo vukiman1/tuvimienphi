@@ -15,7 +15,7 @@ import { parseDoanChinh, parseMuc } from './parse-paragraphs';
 import { buildMessages } from '../prompt/build-messages';
 import { DOAN_CHINH_SCHEMA, MUC_SCHEMA, type DoanChinh, type MucParagraph } from './chapter-schema';
 import { mucSystemPrompt } from '../prompt/muc-prompt';
-import { sinhVoiKiem } from './sinh-voi-kiem';
+import { sinhVoiKiem } from '../../../content-gen/sinh-voi-kiem';
 import { baiChinh, baiMuc } from '../validate/to-bai';
 import { checkParagraphs } from '../validate/check-paragraphs';
 

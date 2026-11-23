@@ -1,6 +1,6 @@
-import { AiClient } from '../../../ai/port/ai.client';
-import type { AiRequest, AiResult } from '../../../ai/port/ai.types';
-import { MalformedChapterError } from '../luan-giai.errors';
+import { AiClient } from '../ai/port/ai.client';
+import type { AiRequest, AiResult } from '../ai/port/ai.types';
+import { MalformedChapterError } from '../api/luan-giai/luan-giai.errors';
 import { type CachSinh, sinhVoiKiem } from './sinh-voi-kiem';
 
 const BUDGET_MS = 60_000;

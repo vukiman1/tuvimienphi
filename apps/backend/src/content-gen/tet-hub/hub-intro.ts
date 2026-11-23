@@ -7,7 +7,7 @@ import type { TetHubIntro } from '@org/shared-contracts';
 import type { AiClient } from '../../ai/port/ai.client';
 import type { AiSchema } from '../../ai/port/ai.types';
 import { runWithAiCallContext } from '../../ai/port/ai-call-context';
-import { sinhVoiKiem, type CachSinh } from '../../api/luan-giai/generation/sinh-voi-kiem';
+import { sinhVoiKiem, type CachSinh } from '../sinh-voi-kiem';
 import { forbiddenPhraseViolations, paragraphCountViolations } from '../check-text';
 import { logRejectedAttempt, rejectedAttemptMessages } from './rejected-attempts';
 import { isRecord, isStringArray } from '../schema-guards';
